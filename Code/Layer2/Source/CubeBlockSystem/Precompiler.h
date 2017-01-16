@@ -1,0 +1,10 @@
+#pragma once
+#include "Common.h"
+#include "RenderSystem/IRenderSystemInterface.h"
+#include "ICubeBlockSystemInterface.h"
+#include "Area.h"
+#include "IBlockFaceImp.h"
+#include "IBlockImp.h"
+#include "IRenderMaterialImp.h"
+#include "ISceneImp.h"
+#include "ISystemImp.h"

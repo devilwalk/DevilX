@@ -1,0 +1,57 @@
+#include "Precompiler.h"
+using namespace NSDevilX;
+using namespace NSRenderSystem;
+using namespace NSGL4;
+
+NSDevilX::NSRenderSystem::NSGL4::CConstantBufferDescriptionManager::CConstantBufferDescriptionManager()
+{}
+
+NSDevilX::NSRenderSystem::NSGL4::CConstantBufferDescriptionManager::~CConstantBufferDescriptionManager()
+{
+}
+
+Void NSDevilX::NSRenderSystem::NSGL4::CConstantBufferDescriptionManager::registerDescription(GLuint program,GLuint index)
+{
+	String block_name;
+	block_name.resize(100);
+	GLsizei name_length;
+	glGetActiveUniformBlockName(program,index,100,&name_length,&block_name[0]);
+	if(mDescriptions.has(block_name.c_str()))
+	{
+		CConstantBufferDescription * test_desc=mDescriptions.get(block_name.c_str());
+
+		GLint block_size_in_bytes;
+		glGetActiveUniformBlockiv(program,index,GL_UNIFORM_BLOCK_DATA_SIZE,&block_size_in_bytes);
+		GLint block_uniform_count;
+		glGetActiveUniformBlockiv(program,index,GL_UNIFORM_BLOCK_ACTIVE_UNIFORMS,&block_uniform_count);
+		assert(block_size_in_bytes==test_desc->getSizeInBytes());
+		assert(block_uniform_count==test_desc->getConstantDescriptions().size());
+		TVector<GLint> uniform_indices;
+		uniform_indices.resize(block_uniform_count);
+		glGetActiveUniformBlockiv(program,index,GL_UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES,&uniform_indices[0]);
+		for(GLint i=0;i<block_uniform_count;++i)
+		{
+			const auto uniform_index=static_cast<GLuint>(uniform_indices[i]);
+			String constant_name;
+			constant_name.resize(100);
+			GLsizei name_length;
+			glGetActiveUniformName(program,uniform_index,static_cast<GLsizei>(constant_name.size()),&name_length,&constant_name[0]);
+			GLint uniform_offset=0;
+			glGetActiveUniformsiv(program,1,&uniform_index,GL_UNIFORM_OFFSET,&uniform_offset);
+			GLint uniform_type=0;
+			glGetActiveUniformsiv(program,1,&uniform_index,GL_UNIFORM_TYPE,&uniform_type);
+			auto test_const_desc=test_desc->getConstantDesc(constant_name.c_str());
+			assert(test_const_desc.mOffsetInBytes==uniform_offset);
+			assert(test_const_desc.mType==uniform_type);
+		}
+	}
+	else
+	{
+		mDescriptions.add(block_name.c_str(),DEVILX_NEW CConstantBufferDescription(program,index));
+	}
+}
+
+CConstantBufferDescription * NSDevilX::NSRenderSystem::NSGL4::CConstantBufferDescriptionManager::getDescription(const String & constBufferName) const
+{
+	return mDescriptions.has(constBufferName)?mDescriptions.get(constBufferName):nullptr;
+}

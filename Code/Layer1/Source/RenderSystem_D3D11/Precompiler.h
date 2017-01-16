@@ -1,0 +1,45 @@
+#pragma once
+#include "Common.h"
+#include "Include.h"
+#include <d3d11_2.h>
+#include <d3dcompiler.h>
+#include <atlcomcli.h>
+#define DEVILX_RENDERSYSTEM_D3D11_ST 0
+#define DEVILX_RENDERSYSTEM_D3D11_MT_DS 1
+#define DEVILX_RENDERSYSTEM_D3D11_MT 2
+#define DEVILX_RENDERSYSTEM_D3D11_MODE DEVILX_RENDERSYSTEM_D3D11_MT_DS
+#include "HLSL5DefnitionShaderCodeFunction.h"
+#include "HLSL4_1DefnitionShaderCodeFunction.h"
+#include "D3D11BaseObject.h"
+#include "D3D11Enum.h"
+#include "D3D11Utility.h"
+#include "D3D11Camera.h"
+#include "D3D11ClearViewportShader.h"
+#include "D3D11ConstantBuffer.h"
+#include "D3D11ConstantBufferDescription.h"
+#include "D3D11ConstantBufferDescriptionManager.h"
+#include "D3D11DepthStencil.h"
+#include "D3D11RenderOperation.h"
+#include "D3D11RenderTask.h"
+#include "D3D11Scene.h"
+#include "D3D11ForwardPixelShaderGenerator.h"
+#include "D3D11ForwardVertexShaderGenerator.h"
+#include "D3D11Geometry.h"
+#include "D3D11IndexBufferImp.h"
+#include "D3D11Light.h"
+#include "D3D11Material.h"
+#include "D3D11Pass.h"
+#include "D3D11Renderable.h"
+#include "D3D11RenderableObject.h"
+#include "D3D11RenderTarget.h"
+#include "D3D11RenderTargetImp.h"
+#include "D3D11RenderTask.h"
+#include "D3D11Shader.h"
+#include "D3D11ShaderCodeManager.h"
+#include "D3D11SystemImp.h"
+#include "D3D11Technique.h"
+#include "D3D11Texture.h"
+#include "D3D11Transformer.h"
+#include "D3D11VertexBufferImp.h"
+#include "D3D11Viewport.h"
+#include "D3D11ViewportImp.h"
