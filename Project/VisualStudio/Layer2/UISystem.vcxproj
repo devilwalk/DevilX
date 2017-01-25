@@ -19,10 +19,44 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\Code\Layer2\Include\UISystem\EventManager.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Include\UISystem\IElementImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Include\UISystem\IEventSceneImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Include\UISystem\IGraphicSceneImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Include\UISystem\IGraphicWindowImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Include\UISystem\IEventWindowImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Include\UISystem\ISystemImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Include\UISystem\Renderable.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Include\UISystem\RenderManager.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Include\UISystem\RenderRectangle.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\UISystem\IUIElement.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\UISystem\IUIEnum.h" />
-    <ClInclude Include="..\..\..\Code\Layer2\Interface\UISystem\IUIFocus.h" />
-    <ClInclude Include="..\..\..\Code\Layer2\Interface\UISystem\IUITextWindow.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Interface\UISystem\IUIEventScene.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Interface\UISystem\IUIEventWindow.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Interface\UISystem\IUIEvent.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Interface\UISystem\IUIGraphicScene.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Interface\UISystem\IUIGraphicWindow.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Interface\UISystem\IUISystem.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Interface\UISystem\IUISystemInterface.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Source\UISystem\Precompiler.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\Code\Layer2\Source\UISystem\EventManager.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer2\Source\UISystem\IElementImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer2\Source\UISystem\IEventSceneImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer2\Source\UISystem\IEventWindowImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer2\Source\UISystem\IGraphicSceneImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer2\Source\UISystem\IGraphicWindowImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer2\Source\UISystem\ISystemImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer2\Source\UISystem\Precompiler.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer2\Source\UISystem\Renderable.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer2\Source\UISystem\RenderManager.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer2\Source\UISystem\RenderRectangle.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{BFC5FA51-9ACC-4611-BC5D-8054C6D6EFAC}</ProjectGuid>
@@ -81,41 +115,21 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <SDLCheck>true</SDLCheck>
-    </ClCompile>
+    <ClCompile />
     <Link>
       <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <SDLCheck>true</SDLCheck>
-    </ClCompile>
+    <ClCompile />
     <Link>
       <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -125,14 +139,8 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

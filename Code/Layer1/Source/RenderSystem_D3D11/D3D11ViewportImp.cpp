@@ -61,7 +61,7 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CViewportImp::onMessage(IViewportImp * n
 		}
 		break;
 	case IViewportImp::EMessage_EndCameraChange:
-		mCamera=getInterfaceImp()->getCamera()?CSystemImp::getSingleton().getScene(static_cast<ISceneElementImp*>(getInterfaceImp()->getCamera()->queryInterface_ISceneElement())->getScene())->getCamera(static_cast<ICameraImp*>(getInterfaceImp()->getCamera())):nullptr;
+		mCamera=getInterfaceImp()->getCamera()?CSystemImp::getSingleton().getScene(static_cast<ISceneImp*>(static_cast<ISceneElementImp*>(getInterfaceImp()->getCamera()->queryInterface_ISceneElement())->getScene()))->getCamera(static_cast<ICameraImp*>(getInterfaceImp()->getCamera())):nullptr;
 		getInternal()->setCamera(mCamera);
 		break;
 	}

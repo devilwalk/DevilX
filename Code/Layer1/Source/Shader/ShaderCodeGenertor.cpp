@@ -141,7 +141,7 @@ void generatorCpp(const std::vector<std::string> & files,const std::string & ver
 		}
 		while(has_include);
 	}
-	for(auto i=0;i<functions.size();++i)
+	for(size_t i=0;i<functions.size();++i)
 	{
 		buf+=function_names[i]+"=\""+functions[i]+"\";\r\n";
 	}

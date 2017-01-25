@@ -48,6 +48,7 @@
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonPlane.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonPlatformDefine.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonPlatformInclude.h" />
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonWindow.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonRange.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonRay.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonReadWriteLocker.h" />
@@ -103,6 +104,7 @@
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonTransformNode.cpp" />
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonVectorF.cpp" />
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonVectorI.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonWindow.cpp" />
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\Precompiler.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

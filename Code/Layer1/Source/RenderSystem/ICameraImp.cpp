@@ -202,7 +202,7 @@ Void NSDevilX::NSRenderSystem::ICameraImp::findVisibleObjectsMT()
 		mVisibleRenderableObjects.clear();
 		TVector<ISceneElementImp*> temp;
 		const CPlaneBoundedVolume & volume=_getPlaneBoundedVolume();
-		mSceneElement->getScene()->getManager()->findVisibleObjects(volume,temp);
+		static_cast<ISceneImp*>(mSceneElement->getScene())->getManager()->findVisibleObjects(volume,temp);
 		for(auto object:temp)
 		{
 			switch(object->getContainerObjectType())

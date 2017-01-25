@@ -21,8 +21,8 @@ namespace NSDevilX
 			}
 
 			// Inherited via IPhysicalDeviceManager
-			virtual UInt16 getDeviceCount() const override;
-			virtual IPhysicalDevice * getDevice(UInt16 index) const override;
+			virtual UInt32 getDeviceCount() const override;
+			virtual IPhysicalDevice * getDevice(UInt32 index) const override;
 		};
 	}
 }

@@ -4,6 +4,106 @@
 #include "CommonVectorI.h"
 namespace NSDevilX
 {
+	class CRangeI
+		:public TBaseObject<CRangeI>
+	{
+	protected:
+		Int32 mMin;
+		Int32 mMax;
+	public:
+		CRangeI()
+			:mMin(1)
+			,mMax(0)
+		{}
+		CRangeI(Int32 minPosition,Int32 maxPosition)
+			:mMin(minPosition)
+			,mMax(maxPosition)
+		{}
+		~CRangeI()
+		{}
+		Boolean isValidate()const
+		{
+			return getMax()>=getMin();
+		}
+		Void setMin(Int32 value)
+		{
+			mMin=value;
+		}
+		Int32 getMin()const
+		{
+			return mMin;
+		}
+		Void setMax(Int32 value)
+		{
+			mMax=value;
+		}
+		Int32 getMax()const
+		{
+			return mMax;
+		}
+		Boolean merge(const CRangeI & range)
+		{
+			assert(isValidate()&&range.isValidate());
+			if((getMin()>range.getMax())||(range.getMin()>getMax()))
+				return false;
+			else
+			{
+				setMin(std::min<UInt32>(getMin(),range.getMin()));
+				setMax(std::max<UInt32>(getMax(),range.getMax()));
+				return true;
+			}
+		}
+		UInt32 length()const
+		{
+			return static_cast<UInt32>(getMax()-getMin()+1);
+		}
+	};
+	class CRangesI
+		:public TList<CRangeI>
+	{
+	public:
+		using TList<CRangeI>::TList;
+		Void addRange(const CRangeI & range)
+		{
+			if(range.isValidate())
+			{
+				if(front().getMin()>range.getMax())
+					push_front(range);
+				else if(back().getMax()<range.getMin())
+					push_back(range);
+				else
+				{
+					iterator iter=end();
+					for(iter=begin();end()!=iter;++iter)
+					{
+						auto & test=*iter;
+						if(test.merge(range))
+						{
+							break;
+						}
+					}
+					if(end()==iter)
+					{
+						for(iter=begin();end()!=iter;++iter)
+						{
+							auto & test=*iter;
+							if(test.getMin()>range.getMax())
+							{
+								insert(iter,range);
+								break;
+							}
+						}
+					}
+					else
+					{
+						auto test=*iter;
+						erase(iter);
+						addRange(test);
+					}
+				}
+			}
+		}
+	};
 	class CRange3I
 		:public TBaseObject<CRange3I>
 	{

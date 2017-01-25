@@ -5,7 +5,7 @@ using namespace NSD3D11;
 
 NSDevilX::NSRenderSystem::NSD3D11::CRenderableObject::CRenderableObject(IRenderableObjectImp * interfaceImp)
 	:TInterfaceObject<IRenderableObjectImp>(interfaceImp)
-	,mScene(CSystemImp::getSingleton().getScene(static_cast<ISceneElementImp*>(interfaceImp->queryInterface_ISceneElement())->getScene()))
+	,mScene(CSystemImp::getSingleton().getScene(static_cast<ISceneImp*>(static_cast<ISceneElementImp*>(interfaceImp->queryInterface_ISceneElement())->getScene())))
 	,mTransformer(nullptr)
 {
 	_updateTransformer();

@@ -21,7 +21,7 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CRenderOperation::process()
 {
 	ID3D11Buffer * vertex_buffers[16]={nullptr};
 	UINT vertex_strides[16]={0};
-	UINT vertex_offsets[16]={mVertexBufferOffset};
+	const UINT vertex_offsets[16]={0};
 	for(decltype(mPass->getVertexShader()->getInputElementDescs().size()) i=0;i<mPass->getVertexShader()->getInputElementDescs().size();++i)
 	{
 		vertex_buffers[i]=mGeometry->getVertexBuffer()->getBuffers()[mPass->getVertexShader()->getInputSlots()[i]];
@@ -79,7 +79,7 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CRenderOperation::process()
 	mContext->OMSetBlendState(mPass->getBlendState(),reinterpret_cast<const Float*>(&CFloat4::sOne),0xffffffff);
 	mContext->OMSetDepthStencilState(mPass->getDepthStencilState(),0);
 	if(mIndexCount)
-		mContext->DrawIndexed(mIndexCount,mIndexBufferOffset,0);
+		mContext->DrawIndexed(mIndexCount,mIndexBufferOffset,mVertexBufferOffset);
 	else
-		mContext->Draw(mVertexCount,0);
+		mContext->Draw(mVertexCount,mVertexBufferOffset);
 }

@@ -6,7 +6,7 @@ using namespace NSD3D11;
 NSDevilX::NSRenderSystem::NSD3D11::CLight::CLight(ILightImp * interfaceImp)
 	:TInterfaceObject<ILightImp>(interfaceImp)
 	,CConstantBufferContainer((interfaceImp->getType()==IEnum::ELightType_Directional)?"cbDirectionLight":((interfaceImp->getType()==IEnum::ELightType_Point)?"cbPointLight":"cbSpotLight"))
-	,mScene(CSystemImp::getSingleton().getScene(static_cast<ISceneElementImp*>(interfaceImp->queryInterface_ISceneElement())->getScene()))
+	,mScene(CSystemImp::getSingleton().getScene(static_cast<ISceneImp*>(static_cast<ISceneElementImp*>(interfaceImp->queryInterface_ISceneElement())->getScene())))
 {
 	getInterfaceImp()->setUserPointer(0,this);
 }

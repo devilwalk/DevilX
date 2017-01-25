@@ -57,16 +57,21 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CIndexBufferImp::_update()
 				desc.StructureByteStride=sizeof(UInt32);
 				desc.ByteWidth=getInterfaceImp()->getCount()*desc.StructureByteStride;
 				desc.Usage=D3D11_USAGE_DEFAULT;
-				D3D11_SUBRESOURCE_DATA sub_data;
-				sub_data.pSysMem=getInterfaceImp()->getIndices();
-				sub_data.SysMemPitch=desc.ByteWidth;
-				sub_data.SysMemSlicePitch=desc.ByteWidth;
-				CSystemImp::getSingleton().getDevice()->CreateBuffer(&desc,&sub_data,&buf);
+				CSystemImp::getSingleton().getDevice()->CreateBuffer(&desc,nullptr,&buf);
 				mBuffer=buf;
 			}
+			if(getInterfaceImp()->getIndicesDirties().empty())
+				CSystemImp::getSingleton().getImmediateContext()->UpdateSubresource(getBuffer(),0,nullptr,getInterfaceImp()->getIndices(),getInterfaceImp()->getCount()*sizeof(UInt32),getInterfaceImp()->getCount()*sizeof(UInt32));
 			else
 			{
-				CSystemImp::getSingleton().getImmediateContext()->UpdateSubresource(getBuffer(),0,nullptr,getInterfaceImp()->getIndices(),getInterfaceImp()->getCount()*sizeof(UInt32),getInterfaceImp()->getCount()*sizeof(UInt32));
+				for(auto const & dirty:getInterfaceImp()->getIndicesDirties())
+				{
+					D3D11_BOX dst_box={0};
+					dst_box.left=dirty.getMin()*sizeof(UInt32);
+					dst_box.right=dirty.getMax()*sizeof(UInt32);
+					ConstVoidPtr src_ptr=reinterpret_cast<ConstVoidPtr>(reinterpret_cast<SizeT>(getInterfaceImp()->getIndices())+dst_box.left);
+					CSystemImp::getSingleton().getImmediateContext()->UpdateSubresource(getBuffer(),0,&dst_box,src_ptr,dst_box.right-dst_box.left+1,dst_box.right-dst_box.left+1);
+				}
 			}
 			getInterfaceImp()->removeDirtyFlag(IIndexBufferImp::EDirtyFlag_Index);
 		}

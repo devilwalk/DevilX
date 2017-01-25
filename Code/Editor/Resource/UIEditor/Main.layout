@@ -1,0 +1,13 @@
+<Root>
+  <Panel name="Menu" width="100%" height="10%" colour="0 0 0 0">
+    <Item name="File" text="File">
+      <Item name="New" text="New" />
+      <Item name="Open" text="Open" />
+      <Item name="Close" text="Close" />
+      <Item name="Save" text="Save" />
+      <Item name="SaveAs" text="SaveAs" />
+      <Item name="Exit" text="Exit" />
+    </Item>
+  </Panel>
+  <PropertySheet name="WorkAreas" width="100%" height="10%" />
+</Root>

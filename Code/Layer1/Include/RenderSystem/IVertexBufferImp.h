@@ -39,6 +39,18 @@ namespace NSDevilX
 				EDirtyFlag_BlendIndex,
 				EDirtyFlag_Diffuse
 			};
+			struct SDirties
+				:public CRangesI
+			{
+				using CRangesI::CRangesI;
+				Void addDirty(UInt32 offset=0,UInt32 count=0)
+				{
+					if((0==offset)&&(0==count))
+						clear();
+					else
+						addRange(CRangeI(offset,count));
+				}
+			};
 		protected:
 			UInt32 mCount;
 			const CFloat3 * mPositions;
@@ -48,36 +60,71 @@ namespace NSDevilX
 			const CFloat4 * mBlendWeights;
 			const UInt8 * mBlendIndices;
 			const RGBA * mDiffuses;
+			SDirties mPositionsDirty;
+			SDirties mNormalsDirty;
+			SDirties mTangentsDirty;
+			SDirties mTextureCoordsDirty[2];
+			SDirties mBlendWeightsDirty;
+			SDirties mBlendIndicesDirty;
+			SDirties mDiffusesDirty;
 		public:
 			IVertexBufferImp();
-
+			const SDirties & getPositionsDirties()const
+			{
+				return mPositionsDirty;
+			}
+			const SDirties & getNormalsDirties()const
+			{
+				return mNormalsDirty;
+			}
+			const SDirties & getTangentsDirties()const
+			{
+				return mTangentsDirty;
+			}
+			const SDirties & getTextureCoordsDities(IEnum::ETextureCoord index=IEnum::ETextureCoord_0)const
+			{
+				return mTextureCoordsDirty[index];
+			}
+			const SDirties & getBlendWeightsDirties()const
+			{
+				return mBlendWeightsDirty;
+			}
+			const SDirties & getBlendIndicesDirties()const
+			{
+				return mBlendIndicesDirty;
+			}
+			const SDirties & getDiffusesDirties()const
+			{
+				return mDiffusesDirty;
+			}
 			virtual Void setCount(UInt32 count) override;
 			virtual UInt32 getCount() const override;
-			virtual Void setPositions(const CFloat3 * positions) override;
-			virtual Void updatePositions() override;
+			virtual Void setPositions(const CFloat3 * positions,UInt32 count=0) override;
+			virtual Void updatePositions(UInt32 offset=0,UInt32 count=0) override;
 			virtual const CFloat3 * getPositions() const override;
-			virtual Void setNormals(const CFloat3 * normals) override;
-			virtual Void updateNormals() override;
+			virtual Void setNormals(const CFloat3 * normals,UInt32 count=0) override;
+			virtual Void updateNormals(UInt32 offset=0,UInt32 count=0) override;
 			virtual const CFloat3 * getNormals() const override;
-			virtual Void setTangents(const CFloat3 * tangents) override;
-			virtual Void updateTangents() override;
+			virtual Void setTangents(const CFloat3 * tangents,UInt32 count=0) override;
+			virtual Void updateTangents(UInt32 offset=0,UInt32 count=0) override;
 			virtual const CFloat3 * getTangents() const override;
-			virtual Void setTextureCoords(const CFloat2 * uvs,IEnum::ETextureCoord index=IEnum::ETextureCoord_0) override;
-			virtual Void updateTextureCoords(IEnum::ETextureCoord index=IEnum::ETextureCoord_0) override;
+			virtual Void setTextureCoords(const CFloat2 * uvs,UInt32 count=0,IEnum::ETextureCoord index=IEnum::ETextureCoord_0) override;
+			virtual Void updateTextureCoords(UInt32 offset=0,UInt32 count=0,IEnum::ETextureCoord index=IEnum::ETextureCoord_0) override;
 			virtual const CFloat2 * getTextureCoords(IEnum::ETextureCoord index=IEnum::ETextureCoord_0) const override;
-			virtual Void setBlendWeights(const CFloat4 * blendWeights) override;
-			virtual Void updateBlendWeights() override;
+			virtual Void setBlendWeights(const CFloat4 * blendWeights,UInt32 count=0) override;
+			virtual Void updateBlendWeights(UInt32 offset=0,UInt32 count=0) override;
 			virtual const CFloat4 * getBlendWeights() const override;
-			virtual Void setBlendIndices(const UInt8 * blendIndices) override;
-			virtual Void updateBlendIndices() override;
+			virtual Void setBlendIndices(const UInt8 * blendIndices,UInt32 count=0) override;
+			virtual Void updateBlendIndices(UInt32 offset=0,UInt32 count=0) override;
 			virtual const UInt8 * getBlendIndices() const override;
-			virtual Void setDiffuses(const RGBA * colours) override;
-			virtual Void updateDiffuses() override;
+			virtual Void setDiffuses(const RGBA * colours,UInt32 count=0) override;
+			virtual Void updateDiffuses(UInt32 offset=0,UInt32 count=0) override;
 			virtual const RGBA * getDiffuses() const override;
 		protected:
 			~IVertexBufferImp();
 			virtual Void _preProcessDirtyFlagAdd(UInt32 flagIndex) override;
 			virtual Void _postProcessDirtyFlagAdd(UInt32 flagIndex) override;
+			virtual Void _postProcessDirtyFlagRemove(UInt32 flagIndex) override;
 		};
 	}
 }

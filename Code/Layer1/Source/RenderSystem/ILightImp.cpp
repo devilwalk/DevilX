@@ -287,10 +287,10 @@ Void NSDevilX::NSRenderSystem::ILightImp::findVisibleObjectsMT()
 		switch(getType())
 		{
 		case IEnum::ELightType_Point:
-			mSceneElement->getScene()->getManager()->findVisibleObjects(mPointLightProperty->getBoundMT(),temp);
+			static_cast<ISceneImp*>(mSceneElement->getScene())->getManager()->findVisibleObjects(mPointLightProperty->getBoundMT(),temp);
 			break;
 		case IEnum::ELightType_Spot:
-			mSceneElement->getScene()->getManager()->findVisibleObjects(mSpotLightProperty->getBoundMT(),temp);
+			static_cast<ISceneImp*>(mSceneElement->getScene())->getManager()->findVisibleObjects(mSpotLightProperty->getBoundMT(),temp);
 			break;
 		}
 		mVisibleRenderableObjects.clear();

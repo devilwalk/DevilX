@@ -51,5 +51,6 @@
 #include "CommonTransformNode.h"
 #include "CommonUserDataContainer.h"
 #include "CommonVector.h"
+#include "CommonWindow.h"
 #include "CommonVectorF.h"
 #include "CommonVectorI.h"

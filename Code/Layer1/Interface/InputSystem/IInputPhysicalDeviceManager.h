@@ -9,8 +9,8 @@ namespace NSDevilX
 		protected:
 			virtual ~IPhysicalDeviceManager(){}
 		public:
-			virtual UInt16 getDeviceCount()const=0;
-			virtual IPhysicalDevice * getDevice(UInt16 index)const=0;
+			virtual UInt32 getDeviceCount()const=0;
+			virtual IPhysicalDevice * getDevice(UInt32 index)const=0;
 		};
 	}
 }

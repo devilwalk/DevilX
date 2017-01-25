@@ -22,6 +22,11 @@ const String & NSDevilX::NSRenderSystem::ISceneElementImp::getName() const
 	return mName;
 }
 
+IScene * NSDevilX::NSRenderSystem::ISceneElementImp::getScene() const
+{
+	return mScene;
+}
+
 Void NSDevilX::NSRenderSystem::ISceneElementImp::setTransformer(ITransformer * transformer)
 {
 	if(transformer!=mTransformer)

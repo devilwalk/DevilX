@@ -4,14 +4,13 @@ namespace NSDevilX
 {
 	namespace NSUISystem
 	{
-		class ITextWindow
+		class IEvent
 		{
 		protected:
-			virtual ~ITextWindow(){}
+			virtual ~IEvent(){}
 		public:
 			virtual IElement * queryInterface_IElement()const=0;
-			virtual Void setText(const String & text)=0;
-			virtual const String & getText()const=0;
+			virtual UInt32 getType()const=0;
 		};
 	}
 }

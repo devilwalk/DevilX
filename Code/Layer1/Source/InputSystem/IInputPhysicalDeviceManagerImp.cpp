@@ -12,12 +12,12 @@ NSDevilX::NSInputSystem::IPhysicalDeviceManagerImp::~IPhysicalDeviceManagerImp()
 	}
 }
 
-UInt16 NSDevilX::NSInputSystem::IPhysicalDeviceManagerImp::getDeviceCount() const
+UInt32 NSDevilX::NSInputSystem::IPhysicalDeviceManagerImp::getDeviceCount() const
 {
-	return static_cast<UInt16>(mDeviceList.size());
+	return static_cast<UInt32>(mDeviceList.size());
 }
 
-IPhysicalDevice * NSDevilX::NSInputSystem::IPhysicalDeviceManagerImp::getDevice(UInt16 index) const
+IPhysicalDevice * NSDevilX::NSInputSystem::IPhysicalDeviceManagerImp::getDevice(UInt32 index) const
 {
 	return mDeviceList[index];
 }

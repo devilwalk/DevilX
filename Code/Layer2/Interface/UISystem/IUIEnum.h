@@ -6,10 +6,10 @@ namespace NSDevilX
 		class IEnum
 		{
 		public:
-			enum ERelativeMode
+			enum EWindowType
 			{
-				ERelativeMode_Parent,
-				ERelativeMode_Global
+				EWindowType_Text,
+				EWindowType_Image
 			};
 		};
 	}

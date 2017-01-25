@@ -81,6 +81,8 @@ namespace NSDevilX
 		}
 #define END_CLASS };
 	BEGIN_VECTOR_CLASS(DirectX,INT,SInt,2)
+	static const CSInt2 sZero;
+	static const CSInt2 sOne;
 	CSInt2(Int32 value)
 		:DirectX::XMINT2(value,value)
 	{}

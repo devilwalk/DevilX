@@ -43,10 +43,6 @@ namespace NSDevilX
 		public:
 			ISceneElementImp(const String & name,ISceneImp * scene,VoidPtr containerObject,EContainerObjectType type);
 			virtual ~ISceneElementImp();
-			ISceneImp * getScene()const
-			{
-				return mScene;
-			}
 			template<class T>
 			T * getContainerObject()const
 			{
@@ -57,6 +53,8 @@ namespace NSDevilX
 				return mContainerObjectType;
 			}
 			virtual const String & getName() const override;
+
+			virtual IScene * getScene() const override;
 
 			virtual Void setTransformer(ITransformer * transformer) override;
 

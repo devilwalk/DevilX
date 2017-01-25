@@ -192,7 +192,7 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::prepare()
 		mLightTaskPool.push_back(static_cast<CLightTask*>(mTasks.back()));
 		mTasks.pop_back();
 	}
-	for(auto const & light_pair:static_cast<ISceneElementImp*>(mViewport->getCamera()->getInterfaceImp()->queryInterface_ISceneElement())->getScene()->getLights())
+	for(auto const & light_pair:static_cast<ISceneImp*>(static_cast<ISceneElementImp*>(mViewport->getCamera()->getInterfaceImp()->queryInterface_ISceneElement())->getScene())->getLights())
 	{
 		auto light=light_pair.second;
 		if(light->getType()!=IEnum::ELightType_Directional)

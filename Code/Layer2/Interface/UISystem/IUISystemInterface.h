@@ -1,0 +1,9 @@
+#pragma once
+#include "IUIElement.h"
+#include "IUIEnum.h"
+#include "IUIEvent.h"
+#include "IUIEventScene.h"
+#include "IUIEventWindow.h"
+#include "IUIGraphicScene.h"
+#include "IUIGraphicWindow.h"
+#include "IUISystem.h"
