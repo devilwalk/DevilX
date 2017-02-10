@@ -20,8 +20,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIButton.h" />
-    <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIPanel.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUICombox.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIPanel.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIEditBox.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIListBox.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIControl.h" />

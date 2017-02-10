@@ -1,6 +1,7 @@
 #include "IRenderEnum.h"
 #include "IRenderResourceManager.h"
-#include "IRenderTarget.h"
+#include "IRenderWindow.h"
+#include "IRenderRenderableSurface.h"
 #include "IRenderScene.h"
 namespace NSDevilX
 {
@@ -17,6 +18,9 @@ namespace NSDevilX
 			virtual IWindow * createWindow(VoidPtr windowHandle)=0;
 			virtual Void destroyWindow(IWindow * window)=0;
 			virtual IWindow * getWindow(VoidPtr windowHandle)const=0;
+			virtual IRenderableSurface * createRenderableSurface(const String & name)=0;
+			virtual Void destroyRenderableSurface(IRenderableSurface * surface)=0;
+			virtual IRenderableSurface * getRenderableSurface(const String & name)const=0;
 			virtual IScene * createScene(const String & name,IEnum::ESceneManagerAlgorithm algorithm)=0;
 			virtual Void destroyScene(IScene * scene)=0;
 			virtual IScene * getScene(const String & name)const=0;

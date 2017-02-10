@@ -6,4 +6,5 @@
 #include <tchar.h>
 #elif DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_LINUX
 #include <dlfcn.h>
+#include <endian.h>
 #endif

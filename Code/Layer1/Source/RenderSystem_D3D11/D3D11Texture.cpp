@@ -6,7 +6,11 @@ using namespace NSD3D11;
 NSDevilX::NSRenderSystem::NSD3D11::CTexture2D::CTexture2D(ITexture2DImp * interfaceImp)
 	:TInterfaceObject<ITexture2DImp>(interfaceImp)
 {
-	CSystemImp::getSingleton().addListener(static_cast<TMessageReceiver<CSystemImp>*>(this),CSystemImp::EMessage_BeginFrame);
+	getInterfaceImp()->addListener(static_cast<TMessageReceiver<ITexture2DImp>*>(this),ITexture2DImp::EMessage_EndArraySizeChange);
+	getInterfaceImp()->addListener(static_cast<TMessageReceiver<ITexture2DImp>*>(this),ITexture2DImp::EMessage_EndFormatChange);
+	getInterfaceImp()->addListener(static_cast<TMessageReceiver<ITexture2DImp>*>(this),ITexture2DImp::EMessage_EndMipmapChange);
+	getInterfaceImp()->addListener(static_cast<TMessageReceiver<ITexture2DImp>*>(this),ITexture2DImp::EMessage_EndPixelsChange);
+	getInterfaceImp()->addListener(static_cast<TMessageReceiver<ITexture2DImp>*>(this),ITexture2DImp::EMessage_EndSizeChange);
 }
 
 NSDevilX::NSRenderSystem::NSD3D11::CTexture2D::~CTexture2D()
@@ -15,6 +19,21 @@ NSDevilX::NSRenderSystem::NSD3D11::CTexture2D::~CTexture2D()
 
 Void NSDevilX::NSRenderSystem::NSD3D11::CTexture2D::onMessage(ITexture2DImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
 {
+	switch(message)
+	{
+	case ITexture2DImp::EMessage_EndArraySizeChange:
+	case ITexture2DImp::EMessage_EndFormatChange:
+	case ITexture2DImp::EMessage_EndMipmapChange:
+	case ITexture2DImp::EMessage_EndSizeChange:
+		addDirtyFlag(EDirtyFlag_Resource);
+		_registerToSystemImp();
+		break;
+	case ITexture2DImp::EMessage_EndPixelsChange:
+		addDirtyFlag(EDirtyFlag_Content);
+		mDirtyContentSubTextureKeys.insert(*static_cast<UInt32*>(data));
+		_registerToSystemImp();
+		break;
+	}
 }
 
 Void NSDevilX::NSRenderSystem::NSD3D11::CTexture2D::onMessage(CSystemImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
@@ -29,23 +48,13 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CTexture2D::onMessage(CSystemImp * notif
 
 Void NSDevilX::NSRenderSystem::NSD3D11::CTexture2D::_update()
 {
-	if((getInterfaceImp()->hasDirtyFlag(ITexture2DImp::EDirtyFlag_ArraySize)
-		||getInterfaceImp()->hasDirtyFlag(ITexture2DImp::EDirtyFlag_Format)
-		||getInterfaceImp()->hasDirtyFlag(ITexture2DImp::EDirtyFlag_Mipmap)
-		||getInterfaceImp()->hasDirtyFlag(ITexture2DImp::EDirtyFlag_Size)
-		)&&_recreateInternal()
-		)
+	if(hasDirtyFlag(EDirtyFlag_Resource)&&_recreateInternal())
 	{
-		getInterfaceImp()->removeDirtyFlag(ITexture2DImp::EDirtyFlag_ArraySize);
-		getInterfaceImp()->removeDirtyFlag(ITexture2DImp::EDirtyFlag_Format);
-		getInterfaceImp()->removeDirtyFlag(ITexture2DImp::EDirtyFlag_Mipmap);
-		getInterfaceImp()->removeDirtyFlag(ITexture2DImp::EDirtyFlag_Size);
+		removeDirtyFlag(EDirtyFlag_Resource);
 	}
-	if(getInterfaceImp()->hasDirtyFlag(ITexture2DImp::EDirtyFlag_Pixels)
-		&&_updatePixels()
-		)
+	if(hasDirtyFlag(EDirtyFlag_Content)&&_updatePixels())
 	{
-		getInterfaceImp()->removeDirtyFlag(ITexture2DImp::EDirtyFlag_Pixels);
+		removeDirtyFlag(EDirtyFlag_Content);
 	}
 }
 
@@ -57,18 +66,20 @@ Boolean NSDevilX::NSRenderSystem::NSD3D11::CTexture2D::_recreateInternal()
 	{
 		D3D11_TEXTURE2D_DESC desc;
 		desc.ArraySize=1;
-		desc.BindFlags=D3D11_BIND_SHADER_RESOURCE;
 		desc.CPUAccessFlags=0;
 		desc.Format=CUtility::getDXGIFormat(getInterfaceImp()->getFormat());
 		desc.Height=getInterfaceImp()->getHeight();
-		switch(getInterfaceImp()->getMipmapCount())
-		{
-		case 0xffffffff:
+		if(getInterfaceImp()->isAutoMipmap())
 			desc.MipLevels=0;
-		default:
+		else
 			desc.MipLevels=getInterfaceImp()->getMipmapCount()+1;
-		}
+		desc.BindFlags=D3D11_BIND_SHADER_RESOURCE;
 		desc.MiscFlags=0;
+		if(0==desc.MipLevels)
+		{
+			desc.MiscFlags|=D3D11_RESOURCE_MISC_GENERATE_MIPS;
+			desc.BindFlags|=D3D11_BIND_RENDER_TARGET;
+		}
 		desc.SampleDesc.Count=1;
 		desc.SampleDesc.Quality=0;
 		desc.Usage=D3D11_USAGE_DEFAULT;
@@ -89,35 +100,49 @@ Boolean NSDevilX::NSRenderSystem::NSD3D11::CTexture2D::_recreateInternal()
 
 Boolean NSDevilX::NSRenderSystem::NSD3D11::CTexture2D::_updatePixels()
 {
-	if(TCOMInternalObject<ID3D11Texture2D>::getInternal())
-	{
-		const auto row_pitch=CUtility::getRowPitch(CUtility::getDXGIFormat(getInterfaceImp()->getFormat()),getInterfaceImp()->getWidth());
-		const auto depth_pitch=row_pitch*getInterfaceImp()->getHeight();
-		auto pixels=getInterfaceImp()->getPixels();
-		switch(getInterfaceImp()->getFormat())
-		{
-		case IEnum::ETextureFormat_R8G8B8A8:
-		{
-			DWORD * abgr=static_cast<DWORD*>(DEVILX_ALLOC(depth_pitch));
-			for(UInt32 i=0,count=getInterfaceImp()->getHeight()*getInterfaceImp()->getWidth();i<count;++i)
-			{
-				abgr[i]=((static_cast<const DWORD*>(pixels)[i]&0xff)<<24)|((static_cast<const DWORD*>(pixels)[i]&0xff00)<<8)|((static_cast<const DWORD*>(pixels)[i]&0xff0000)>>8)|((static_cast<const DWORD*>(pixels)[i]&0xff000000)>>24);
-			}
-			pixels=abgr;
-		}
-		break;
-		}
-		CSystemImp::getSingleton().getImmediateContext()->UpdateSubresource1(TCOMInternalObject<ID3D11Texture2D>::getInternal(),0,nullptr,pixels,row_pitch,depth_pitch,0);
-		switch(getInterfaceImp()->getFormat())
-		{
-		case IEnum::ETextureFormat_R8G8B8A8:
-			DEVILX_FREE(const_cast<VoidPtr>(pixels));
-			break;
-		}
-		return true;
-	}
-	else
-	{
+	if(nullptr==TCOMInternalObject<ID3D11Texture2D>::getInternal())
 		return false;
+	Boolean ret=true;
+	for(auto iter=mDirtyContentSubTextureKeys.begin();mDirtyContentSubTextureKeys.end()!=iter;)
+	{
+		auto sub_tex_key=*iter;
+		auto sub_tex=getInterfaceImp()->getSubTextures().get(sub_tex_key);
+		if(sub_tex->mRenderTargetPixels)
+		{
+			_updateFromRenderableSources(sub_tex);
+			ret=false;
+			++iter;
+		}
+		else
+		{
+			_updateFromMemorySources(sub_tex);
+			iter=mDirtyContentSubTextureKeys.erase(iter);
+		}
 	}
+	return ret;
+}
+
+Void NSDevilX::NSRenderSystem::NSD3D11::CTexture2D::_updateFromMemorySources(ITexture2DImp::SSubTexture * subTexture)
+{
+	if(subTexture->mMemoryPixels)
+	{
+		const auto row_pitch=CUtility::getRowPitch(CUtility::getDXGIFormat(getInterfaceImp()->getFormat()),subTexture->mWidth);
+		const auto depth_pitch=row_pitch*subTexture->mHeight;
+		CSystemImp::getSingleton().getImmediateContext()->UpdateSubresource1(TCOMInternalObject<ID3D11Texture2D>::getInternal(),D3D11CalcSubresource(0,subTexture->mArrayIndex,subTexture->mMipmapLevel),nullptr,subTexture->mMemoryPixels,row_pitch,depth_pitch,0);
+		if(getInterfaceImp()->isAutoMipmap())
+			CSystemImp::getSingleton().getImmediateContext()->GenerateMips(TCOMInternalObject<ID3D11ShaderResourceView>::getInternal());
+	}
+}
+
+Void NSDevilX::NSRenderSystem::NSD3D11::CTexture2D::_updateFromRenderableSources(ITexture2DImp::SSubTexture * subTexture)
+{
+	CSystemImp::getSingleton().getImmediateContext()->CopySubresourceRegion1(TCOMInternalObject<ID3D11Texture2D>::getInternal()
+		,D3D11CalcSubresource(0,subTexture->mArrayIndex,subTexture->mMipmapLevel)
+		,0
+		,0
+		,0
+		,CSystemImp::getSingleton().getRenderTarget(subTexture->mRenderTargetPixels)->getRenderTargetResource()
+		,0
+		,nullptr,
+		0);
 }

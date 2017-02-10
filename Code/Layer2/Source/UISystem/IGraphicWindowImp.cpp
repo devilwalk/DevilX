@@ -7,8 +7,8 @@ NSDevilX::NSUISystem::IGraphicWindowImp::IGraphicWindowImp(const String & name)
 	,mImage(nullptr)
 	,mColour(CColour::sWhite)
 	,mRenderRectangle(nullptr)
-	,mPixelStart(CFloat2::sZero)
-	,mPixelEnd(CFloat2::sOne)
+	,mUVStart(CFloat2::sZero)
+	,mUVEnd(CFloat2::sOne)
 {
 	mElement=DEVILX_NEW IElementImp(name);
 	mElement->addListener(this,IElementImp::EMessage_EndPositionChange);
@@ -32,8 +32,8 @@ Void NSDevilX::NSUISystem::IGraphicWindowImp::setImage(const CImage * img,Direct
 	{
 		mImage=img;
 		DirectX::XMVECTOR img_size_vec=CFloat2(static_cast<Float>(mImage->getWidth()),static_cast<Float>(mImage->getHeight()));
-		mPixelStart=pixelStartVec/img_size_vec;
-		mPixelEnd=pixelEndVec/img_size_vec;
+		mUVStart=pixelStartVec/img_size_vec;
+		mUVEnd=pixelEndVec/img_size_vec;
 	}
 	else
 	{
@@ -73,5 +73,5 @@ Void NSDevilX::NSUISystem::IGraphicWindowImp::_updateRenderRectangle()
 		,CFloat3(mElement->getPosition().x,1.0f-(mElement->getPosition().y+mElement->getSize().y),mElement->getPosition().z)
 		,CFloat3(mElement->getPosition().x+mElement->getSize().x,1.0f-(mElement->getPosition().y+mElement->getSize().y),mElement->getPosition().z)
 	);
-	mRenderRectangle->setTextureCoord(mPixelStart,CFloat2(mPixelEnd.x,mPixelStart.y),CFloat2(mPixelStart.x,mPixelEnd.y),mPixelEnd);
+	mRenderRectangle->setTextureCoord(mUVStart,CFloat2(mUVEnd.x,mUVStart.y),CFloat2(mUVStart.x,mUVEnd.y),mUVEnd);
 }

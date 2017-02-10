@@ -5,10 +5,17 @@ Void NSDevilX::CImage::convertRGB8ToRGBA8(const Byte * src,Byte * dst,UInt32 pix
 {
 	for(UInt32 i=0;i<pixelCount;++i)
 	{
+#if DEVILX_BYTE_ORDER==DEVILX_BYTE_ORDER_BIG_ENDIAN
+		dst[i*4+3]=255;
+		dst[i*4+2]=src[i*3+2];
+		dst[i*4+1]=src[i*3+1];
+		dst[i*4]=src[i*3];
+#else
 		dst[i*4]=255;
 		dst[i*4+1]=src[i*3];
 		dst[i*4+2]=src[i*3+1];
 		dst[i*4+3]=src[i*3+2];
+#endif
 	}
 }
 
@@ -16,9 +23,15 @@ Void NSDevilX::CImage::convertRGBA8ToRGB8(const Byte * src,Byte * dst,UInt32 pix
 {
 	for(UInt32 i=0;i<pixelCount;++i)
 	{
-		dst[i*3]=src[i*4+1];
-		dst[i*3+1]=src[i*4+2];
+#if DEVILX_BYTE_ORDER==DEVILX_BYTE_ORDER_BIG_ENDIAN
+		dst[i*3]=src[i*4];
+		dst[i*3+1]=src[i*4+1];
+		dst[i*3+2]=src[i*4+2];
+#else
 		dst[i*3+2]=src[i*4+3];
+		dst[i*3+1]=src[i*4+2];
+		dst[i*3]=src[i*4+1];
+#endif
 	}
 }
 
@@ -48,12 +61,6 @@ NSDevilX::CImage::CImage(CDataStream * dataStream)
 	mWidth=FreeImage_GetWidth(bmp);
 	mHeight=FreeImage_GetHeight(bmp);
 	mPixels.resize(getWidth()*getHeight()*sibpp);
-	for(UInt32 v=0;v<getHeight();++v)
-	{
-		//freeimage uv原点在左下角
-		auto data=FreeImage_GetScanLine(bmp,getHeight()-v-1);
-		memcpy(&mPixels[sibpp*getWidth()*v],data,sibpp*getWidth());
-	}
 	switch(FreeImage_GetImageType(bmp))
 	{
 	case FIT_UNKNOWN:mPixelType=EPixelType_Unknown;break;	//! unknown type
@@ -69,9 +76,47 @@ NSDevilX::CImage::CImage(CDataStream * dataStream)
 		case 16:
 			break;
 		case 24:
+			for(UInt32 v=0;v<getHeight();++v)
+			{
+				//freeimage uv原点在左下角
+				auto data=FreeImage_GetScanLine(bmp,getHeight()-v-1);
+				for(UInt32 u=0;u<getWidth();++u)
+				{
+#if DEVILX_BYTE_ORDER==DEVILX_BYTE_ORDER_BIG_ENDIAN
+					mPixels[sibpp*(getWidth()*v+u)]=data[FI_RGBA_RED];
+					mPixels[sibpp*(getWidth()*v+u)+1]=data[FI_RGBA_GREEN];
+					mPixels[sibpp*(getWidth()*v+u)+2]=data[FI_RGBA_BLUE];
+#else
+					mPixels[sibpp*(getWidth()*v+u)+2]=data[FI_RGBA_RED];
+					mPixels[sibpp*(getWidth()*v+u)+1]=data[FI_RGBA_GREEN];
+					mPixels[sibpp*(getWidth()*v+u)]=data[FI_RGBA_BLUE];
+#endif
+					data+=sibpp;
+				}
+			}
 			mPixelType=EPixelType_RGB8;
 			break;
 		case 32:
+			for(UInt32 v=0;v<getHeight();++v)
+			{
+				//freeimage uv原点在左下角
+				auto data=FreeImage_GetScanLine(bmp,getHeight()-v-1);
+				for(UInt32 u=0;u<getWidth();++u)
+				{
+#if DEVILX_BYTE_ORDER==DEVILX_BYTE_ORDER_BIG_ENDIAN
+					mPixels[sibpp*(getWidth()*v+u)]=data[FI_RGBA_RED];
+					mPixels[sibpp*(getWidth()*v+u)+1]=data[FI_RGBA_GREEN];
+					mPixels[sibpp*(getWidth()*v+u)+2]=data[FI_RGBA_BLUE];
+					mPixels[sibpp*(getWidth()*v+u)+3]=data[FI_RGBA_ALPHA];
+#else
+					mPixels[sibpp*(getWidth()*v+u)+3]=data[FI_RGBA_RED];
+					mPixels[sibpp*(getWidth()*v+u)+2]=data[FI_RGBA_GREEN];
+					mPixels[sibpp*(getWidth()*v+u)+1]=data[FI_RGBA_BLUE];
+					mPixels[sibpp*(getWidth()*v+u)]=data[FI_RGBA_ALPHA];
+#endif
+					data+=sibpp;
+				}
+			}
 			mPixelType=EPixelType_RGBA8;
 			break;
 		}

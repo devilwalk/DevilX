@@ -22,8 +22,8 @@ namespace NSDevilX
 		protected:
 			IElementImp * mElement;
 			const CImage * mImage;
-			CFloat2 mPixelStart;
-			CFloat2 mPixelEnd;
+			CFloat2 mUVStart;
+			CFloat2 mUVEnd;
 			CColour mColour;
 			CRenderRectangle * mRenderRectangle;
 		public:
@@ -32,7 +32,7 @@ namespace NSDevilX
 
 			// Í¨¹ý IImageWindow ¼Ì³Ð
 			virtual IElement * queryInterface_IElement() const override;
-			virtual Void setImage(const CImage * img,DirectX::FXMVECTOR pixelStartVec=CSInt2::sZero,DirectX::FXMVECTOR pixelEndVec=CSInt2::sOne) override;
+			virtual Void setImage(const CImage * img,DirectX::FXMVECTOR pixelStartVec,DirectX::FXMVECTOR pixelEndVec) override;
 			virtual Void setColour(const CColour & colour) override;
 			virtual const CColour & getColour() const override;
 

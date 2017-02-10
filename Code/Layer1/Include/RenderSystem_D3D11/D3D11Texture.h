@@ -1,5 +1,7 @@
 #pragma once
 #include "D3D11BaseObject.h"
+#include "D3D11Resource.h"
+#include "D3D11RenderableSurfaceImp.h"
 namespace NSDevilX
 {
 	namespace NSRenderSystem
@@ -8,7 +10,15 @@ namespace NSDevilX
 		{
 			class CTexture
 				:public TCOMInternalObject<ID3D11ShaderResourceView>
+				,public CResource
+				,public CDirtyFlagContainer
 			{
+			public:
+				enum EDirtyFlag
+				{
+					EDirtyFlag_Resource,
+					EDirtyFlag_Content
+				};
 			protected:
 				CTexture(){}
 				virtual ~CTexture(){}
@@ -17,9 +27,10 @@ namespace NSDevilX
 				:public TInterfaceObject<ITexture2DImp>
 				,public TCOMInternalObject<ID3D11Texture2D>
 				,public TBaseObject<CTexture2D>
-				,public TMessageReceiver<CSystemImp>
 				,public CTexture
 			{
+			protected:
+				TSet<UInt32> mDirtyContentSubTextureKeys;
 			public:
 				CTexture2D(ITexture2DImp * interfaceImp);
 				~CTexture2D();
@@ -30,6 +41,8 @@ namespace NSDevilX
 				Void _update();
 				Boolean _recreateInternal();
 				Boolean _updatePixels();
+				Void _updateFromMemorySources(ITexture2DImp::SSubTexture * subTexture);
+				Void _updateFromRenderableSources(ITexture2DImp::SSubTexture * subTexture);
 			};
 		}
 	}

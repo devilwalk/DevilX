@@ -51,3 +51,15 @@ Void NSDevilX::NSUISystem::CRenderable::SRenderGeometry::freeRectangle(UInt32 ve
 	mGeometry->getVertexBuffer()->updateTextureCoords(vertexIndex,4);
 	mGeometry->getVertexBuffer()->updateDiffuses(vertexIndex,4);
 }
+
+NSDevilX::NSUISystem::CRenderable::CRenderable(const CImage * img)
+	:mImage(img)
+	,mGeometry(nullptr)
+{
+	mGeometry=DEVILX_NEW SRenderGeometry();
+}
+
+NSDevilX::NSUISystem::CRenderable::~CRenderable()
+{
+	DEVILX_DELETE(mGeometry);
+}

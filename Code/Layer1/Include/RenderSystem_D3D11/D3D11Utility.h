@@ -8,23 +8,32 @@ namespace NSDevilX
 			class CUtility
 			{
 			public:
-				static DXGI_FORMAT getDXGIFormat(IEnum::ETextureFormat format)
+				static DXGI_FORMAT getDXGIFormat(IEnum::ETexture2DFormat format)
 				{
 					switch(format)
 					{
-					case IEnum::ETextureFormat_R8G8B8A8:
+					case IEnum::ETexture2DFormat_R8G8B8A8:
 						return DXGI_FORMAT_R8G8B8A8_UNORM;
-					case IEnum::ETextureFormat_BC1:
+					case IEnum::ETexture2DFormat_BC1:
 						return DXGI_FORMAT_BC1_UNORM;
-					case IEnum::ETextureFormat_BC2:
+					case IEnum::ETexture2DFormat_BC2:
 						return DXGI_FORMAT_BC2_UNORM;
-					case IEnum::ETextureFormat_BC3:
+					case IEnum::ETexture2DFormat_BC3:
 						return DXGI_FORMAT_BC3_UNORM;
-					case IEnum::ETextureFormat_Font:
+					case IEnum::ETexture2DFormat_Font:
 						return DXGI_FORMAT_A8_UNORM;
-					case IEnum::ETextureFormat_Shadow:
+					case IEnum::ETexture2DFormat_Shadow:
 						return DXGI_FORMAT_D32_FLOAT;
-					case IEnum::ETextureFormat_Environment:
+					case IEnum::ETexture2DFormat_Environment:
+						return DXGI_FORMAT_R8G8B8A8_UNORM;
+					}
+					return DXGI_FORMAT_UNKNOWN;
+				}
+				static DXGI_FORMAT getDXGIFormat(IEnum::ERenderableSurfaceFormat format)
+				{
+					switch(format)
+					{
+					case IEnum::ERenderableSurfaceFormat_R8G8B8A8:
 						return DXGI_FORMAT_R8G8B8A8_UNORM;
 					}
 					return DXGI_FORMAT_UNKNOWN;

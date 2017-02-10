@@ -62,6 +62,31 @@ IWindow * NSDevilX::NSRenderSystem::ISystemImp::getWindow(VoidPtr windowHandle) 
 	return mWindows.get(windowHandle);
 }
 
+IRenderableSurface * NSDevilX::NSRenderSystem::ISystemImp::createRenderableSurface(const String & name)
+{
+	if(mRenderableSurfaces.has(name))
+		return nullptr;
+	notify(EMessage_BeginRenderableSurfaceCreate);
+	IRenderableSurfaceImp * ret=DEVILX_NEW IRenderableSurfaceImp(name);
+	mRenderableSurfaces[name]=ret;
+	notify(EMessage_EndRenderableSurfaceCreate,ret);
+	return ret;
+}
+
+Void NSDevilX::NSRenderSystem::ISystemImp::destroyRenderableSurface(IRenderableSurface * surface)
+{
+	if(!mRenderableSurfaces.has(static_cast<IRenderableSurfaceImp*>(surface)->getName()))
+		return;
+	notify(EMessage_BeginRenderableSurfaceDestroy,static_cast<IRenderableSurfaceImp*>(surface));
+	mRenderableSurfaces.destroy(static_cast<IRenderableSurfaceImp*>(surface)->getName());
+	notify(EMessage_EndRenderableSurfaceDestroy);
+}
+
+IRenderableSurface * NSDevilX::NSRenderSystem::ISystemImp::getRenderableSurface(const String & name) const
+{
+	return mRenderableSurfaces.get(name);
+}
+
 IScene * NSDevilX::NSRenderSystem::ISystemImp::createScene(const String & name,IEnum::ESceneManagerAlgorithm algorithm)
 {
 	if(mScenes.has(name))

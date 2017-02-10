@@ -1,6 +1,7 @@
 #pragma once
 #include "IResourceManagerImp.h"
-#include "IRenderTargetImp.h"
+#include "IWindowImp.h"
+#include "IRenderableSurfaceImp.h"
 #include "ISceneImp.h"
 namespace NSDevilX
 {
@@ -24,7 +25,11 @@ namespace NSDevilX
 				EMessage_BeginSceneCreate,
 				EMessage_EndSceneCreate,
 				EMessage_BeginSceneDestroy,
-				EMessage_EndSceneDestroy
+				EMessage_EndSceneDestroy,
+				EMessage_BeginRenderableSurfaceCreate,
+				EMessage_EndRenderableSurfaceCreate,
+				EMessage_BeginRenderableSurfaceDestroy,
+				EMessage_EndRenderableSurfaceDestroy
 			};
 		protected:
 			Bool mExit;
@@ -32,6 +37,7 @@ namespace NSDevilX
 			Float mFrameTimeInSecond;
 			IResourceManagerImp * mResourceManager;
 			TResourcePtrContainer<VoidPtr,IWindowImp> mWindows;
+			TNamedResourcePtrContainer<IRenderableSurfaceImp> mRenderableSurfaces;
 			TNamedResourcePtrContainer<ISceneImp> mScenes;
 		public:
 			ISystemImp();
@@ -55,6 +61,9 @@ namespace NSDevilX
 			virtual IWindow * createWindow(VoidPtr windowHandle) override;
 			virtual Void destroyWindow(IWindow * window) override;
 			virtual IWindow * getWindow(VoidPtr windowHandle) const override;
+			virtual IRenderableSurface * createRenderableSurface(const String & name) override;
+			virtual Void destroyRenderableSurface(IRenderableSurface * surface) override;
+			virtual IRenderableSurface * getRenderableSurface(const String & name) const override;
 			virtual IScene * createScene(const String & name,IEnum::ESceneManagerAlgorithm algorithm) override;
 			virtual Void destroyScene(IScene * scene) override;
 			virtual IScene * getScene(const String & name) const override;

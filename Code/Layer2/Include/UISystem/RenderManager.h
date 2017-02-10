@@ -12,6 +12,7 @@ namespace NSDevilX
 		protected:
 			NSRenderSystem::IViewport * const mViewport;
 			NSRenderSystem::IRenderableObject * mRenderableObject;
+			NSRenderSystem::IVisibleArea * mVisibleArea;
 		public:
 			CRenderManager(NSRenderSystem::IViewport * vp);
 			~CRenderManager();

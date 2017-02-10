@@ -52,15 +52,28 @@ namespace NSDevilX
 				ETextureUnitStateType_Normal,
 				ETextureUnitStateType_Light
 			};
-			enum ETextureFormat
+			enum ERenderableSurfaceFormat
 			{
-				ETextureFormat_R8G8B8A8,
-				ETextureFormat_BC1,
-				ETextureFormat_BC2,
-				ETextureFormat_BC3,
-				ETextureFormat_Font,
-				ETextureFormat_Shadow,
-				ETextureFormat_Environment
+				ERenderableSurfaceFormat_R8G8B8A8
+			};
+			enum ETexture2DFormat
+			{
+				ETexture2DFormat_R8G8B8A8,
+				ETexture2DFormat_BC1,
+				ETexture2DFormat_BC2,
+				ETexture2DFormat_BC3,
+				ETexture2DFormat_Font,
+				ETexture2DFormat_Shadow,
+				ETexture2DFormat_Environment
+			};
+			enum ETextureCubeFormat
+			{
+				ETextureCubeFormat_R8G8B8A8,
+				ETextureCubeFormat_BC1,
+				ETextureCubeFormat_BC2,
+				ETextureCubeFormat_BC3,
+				ETextureCubeFormat_Shadow,
+				ETextureCubeFormat_Environment
 			};
 			enum ETextureType
 			{

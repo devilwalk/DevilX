@@ -1,6 +1,7 @@
 #pragma once
 #include "D3D11Shader.h"
-#include "D3D11RenderTargetImp.h"
+#include "D3D11WindowImp.h"
+#include "D3D11RenderableSurfaceImp.h"
 #include "D3D11Geometry.h"
 #include "D3D11ClearViewportShader.h"
 #include "D3D11Scene.h"
@@ -64,6 +65,7 @@ namespace NSDevilX
 				TVector<ID3D11DepthStencilState*> mDepthStencilStates;
 				TVector<ID3D11SamplerState*> mSamplerStates;
 				TResourcePtrContainer<IWindowImp*const,CWindowImp> mWindows;
+				TResourcePtrContainer<IRenderableSurfaceImp*const,CRenderableSurfaceImp> mRenderableSurfaces;
 				TResourcePtrContainer<ISceneImp*const,CScene> mScenes;
 				TResourcePtrContainer<IGeometryImp*const,CGeometry> mGeometrys;
 				TResourcePtrContainer<ITexture2DImp*const,CTexture2D> mTexture2Ds;
@@ -138,6 +140,17 @@ namespace NSDevilX
 				CWindowImp * getWindow(IWindowImp * interfaceImp)const
 				{
 					return mWindows.get(interfaceImp);
+				}
+				CRenderableSurfaceImp * getRenderableSurface(IRenderableSurfaceImp * interfaceImp)const
+				{
+					return mRenderableSurfaces.get(interfaceImp);
+				}
+				CRenderTargetImp * getRenderTarget(IRenderTargetImp * interfaceImp)const
+				{
+					if(dynamic_cast<IRenderableSurfaceImp*>(interfaceImp))
+						return getRenderableSurface(static_cast<IRenderableSurfaceImp*>(interfaceImp));
+					else
+						return getWindow(static_cast<IWindowImp*>(interfaceImp));
 				}
 				CGeometry * getGeometry(IGeometryImp * interfaceImp)const
 				{

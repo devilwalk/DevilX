@@ -145,6 +145,8 @@ NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::CSystemImp()
 	ISystemImp::getSingleton().addListener(static_cast<TMessageReceiver<ISystemImp>*>(this),ISystemImp::EMessage_BeginWindowDestroy);
 	ISystemImp::getSingleton().addListener(static_cast<TMessageReceiver<ISystemImp>*>(this),ISystemImp::EMessage_EndSceneCreate);
 	ISystemImp::getSingleton().addListener(static_cast<TMessageReceiver<ISystemImp>*>(this),ISystemImp::EMessage_BeginSceneDestroy);
+	ISystemImp::getSingleton().addListener(static_cast<TMessageReceiver<ISystemImp>*>(this),ISystemImp::EMessage_EndRenderableSurfaceCreate);
+	ISystemImp::getSingleton().addListener(static_cast<TMessageReceiver<ISystemImp>*>(this),ISystemImp::EMessage_BeginRenderableSurfaceDestroy);
 	ISystemImp::getSingleton().addListener(static_cast<TMessageReceiver<ISystemImp>*>(this),ISystemImp::EMessage_Update);
 	ISystemImp::getSingleton().addListener(static_cast<TMessageReceiver<ISystemImp>*>(this),ISystemImp::EMessage_Destruction);
 	static_cast<IResourceManagerImp*>(ISystemImp::getSingleton().queryInterface_IResourceManager())->addListener(static_cast<TMessageReceiver<IResourceManagerImp>*>(this),IResourceManagerImp::EMessage_EndGeometryCreate);
@@ -443,6 +445,15 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::onMessage(ISystemImp * notif
 		mScenes.destroy(static_cast<ISceneImp*>(data));
 	}
 	break;
+	case ISystemImp::EMessage_EndRenderableSurfaceCreate:
+	{
+		CRenderableSurfaceImp * renderable_surface=DEVILX_NEW CRenderableSurfaceImp(static_cast<IRenderableSurfaceImp*>(data));
+		mRenderableSurfaces[static_cast<IRenderableSurfaceImp*>(data)]=renderable_surface;
+	}
+	break;
+	case ISystemImp::EMessage_BeginRenderableSurfaceDestroy:
+		mRenderableSurfaces.destroy(static_cast<IRenderableSurfaceImp*>(data));
+		break;
 	case ISystemImp::EMessage_Destruction:
 		DEVILX_DELETE(this);
 		break;

@@ -30,6 +30,7 @@
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\Include.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IRenderableImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IRenderableObjectImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IRenderableSurfaceImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IRenderTargetImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IResourceManagerImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\ISceneElementImp.h" />
@@ -42,10 +43,11 @@
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IVertexBufferImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IViewportImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IVisibleAreaImp.h" />
-    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\MipmapRenderTarget.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IWindowImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\SceneManager.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderable.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderableObject.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderRenderableSurface.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderCamera.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderColourUnitState.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderEnum.h" />
@@ -67,6 +69,7 @@
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderVertexBuffer.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderViewport.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderVisibleArea.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderWindow.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Source\RenderSystem\Precompiler.h" />
   </ItemGroup>
   <ItemGroup>
@@ -79,6 +82,7 @@
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IMaterialImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IRenderableImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IRenderableObjectImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IRenderableSurfaceImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IRenderTargetImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IResourceManagerImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\ISceneElementImp.cpp" />
@@ -91,7 +95,7 @@
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IVertexBufferImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IViewportImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IVisibleAreaImp.cpp" />
-    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\MipmapRenderTarget.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IWindowImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\Precompiler.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

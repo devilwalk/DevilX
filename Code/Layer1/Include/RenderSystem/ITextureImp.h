@@ -1,9 +1,9 @@
 #pragma once
-#include "MipmapRenderTarget.h"
 namespace NSDevilX
 {
 	namespace NSRenderSystem
 	{
+		class ISystemImp;
 		class ITextureImp
 			:public ITexture
 		{
@@ -15,11 +15,11 @@ namespace NSDevilX
 			virtual const String & getName() const override;
 		};
 		class ITexture2DImp
-			:public ITexture2D
+			:public ITexture2DReadable
+			,public ITexture2DWritable
 			,public ITextureImp
 			,public TBaseObject<ITexture2DImp>
 			,public CMessageNotifier
-			,public CDirtyFlagContainer
 		{
 		public:
 			enum EMessage
@@ -35,28 +35,84 @@ namespace NSDevilX
 				EMessage_BeginPixelsChange,
 				EMessage_EndPixelsChange
 			};
-			enum EDirtyFlag
+			struct SSubTexture
+				:public TBaseObject<SSubTexture>
+				,public TMessageReceiver<ISystemImp>
 			{
-				EDirtyFlag_Size,
-				EDirtyFlag_Mipmap,
-				EDirtyFlag_ArraySize,
-				EDirtyFlag_Format,
-				EDirtyFlag_Pixels
+				ITexture2DImp * const mTexture;
+				const UInt32 mWidth,mHeight;
+				const UInt32 mMipmapLevel;
+				const UInt32 mArrayIndex;
+				ConstVoidPtr mMemoryPixels;
+				IRenderTargetImp * mRenderTargetPixels;
+				explicit SSubTexture(ITexture2DImp * texture,UInt32 width,UInt32 height,UInt32 mipmapLevel,UInt32 arrayIndex);
+				Void setMemoryPixels(ConstVoidPtr pixels);
+				Void setRenderTargetPixels(IRenderTargetImp * target);
+
+				// 通过 TMessageReceiver 继承
+				virtual Void onMessage(ISystemImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 			};
 		protected:
 			UInt32 mWidth,mHeight;
-			IEnum::ETextureFormat mFormat;
+			IEnum::ETexture2DFormat mFormat;
 			UInt32 mMipmapCount;
+			UInt32 mRealMipmapCount;
 			UInt32 mArraySize;
-			ConstVoidPtr mPixels;
+			TResourcePtrContainer<UInt32,SSubTexture> mSubTextures;
 		public:
 			ITexture2DImp(const String & name);
 			~ITexture2DImp();
-
+			static UInt32 encodeSubTextureKey(UInt32 mipmapLevel,UInt32 arrayIndex)
+			{
+				return (arrayIndex<<16)+mipmapLevel;
+			}
+			static Void decodeSubTextureKey(UInt32 key,UInt32 * mipmapLevel,UInt32 * arrayIndex)
+			{
+				if(arrayIndex)
+					*arrayIndex=key>>16;
+				if(mipmapLevel)
+					*mipmapLevel=key&0xffff;
+			}
+			static UInt32 getMipmapPixelByteOffset(IEnum::ETexture2DFormat format,UInt32 mipmapLevel,UInt32 width,UInt32 height)
+			{
+				UInt32 bpp=0;
+				switch(format)
+				{
+				case IEnum::ETexture2DFormat_R8G8B8A8:
+					bpp=4;
+					break;
+				}
+				auto next_width=width;
+				auto next_height=height;
+				UInt32 pitch=0;
+				do
+				{
+					pitch+=next_width*next_height;
+					next_width>>=1;
+					next_width=std::max<UInt32>(next_width,1);
+					next_height>>=1;
+					next_height=std::max<UInt32>(next_height,1);
+				}
+				while(mipmapLevel--);
+				return bpp*pitch;
+			}
+			const decltype(mSubTextures) & getSubTextures()
+			{
+				_createSubTextures();
+				return mSubTextures;
+			}
+			UInt32 getRealMipmapCount()
+			{
+				_createSubTextures();
+				return mRealMipmapCount;
+			}
+			Boolean isAutoMipmap()const
+			{
+				return getMipmapCount()==static_cast<UInt32>(-1);
+			}
 			// 通过 ITexture 继承
-			virtual IRenderTarget * queryInterface_IRenderTarget(UInt32 mipmapLevel=0,UInt32 arrayIndex=0) const override;
-			virtual ITexture2D * queryInterface_ITexture2D() const override;
-			virtual ITextureCube * queryInterface_ITextureCube() const override;
+			virtual ITexture2DReadable * queryInterface_ITexture2DReadable() const override;
+			virtual ITexture2DWritable * queryInterface_ITexture2DWritable() const override;
 			virtual IEnum::ETextureType getType() const override;
 			virtual Void setSize(UInt32 width,UInt32 height) override;
 			virtual UInt32 getWidth() const override;
@@ -65,11 +121,14 @@ namespace NSDevilX
 			virtual UInt32 getMipmapCount() const override;
 			virtual Void setArraySize(UInt32 size) override;
 			virtual UInt32 getArraySize() const override;
-			virtual Void setFormat(IEnum::ETextureFormat format) override;
-			virtual IEnum::ETextureFormat getFormat() const override;
-			virtual Void setPixels(ConstVoidPtr pixels,UInt32 arrayIndex=0) override;
-			virtual Void updatePixels() override;
-			virtual ConstVoidPtr getPixels(UInt32 arrayIndex=0) const;
+			virtual Void setFormat(IEnum::ETexture2DFormat format) override;
+			virtual IEnum::ETexture2DFormat getFormat() const override;
+			virtual Void setPixels(ConstVoidPtr pixels,UInt32 mipmapLevel=-1,UInt32 arrayIndex=0) override;
+			virtual Void setPixels(IRenderTarget * target,UInt32 mipmapLevel=0,UInt32 arrayIndex=0) override;
+			virtual Void updatePixels(UInt32 mipmapLevel=0,UInt32 arrayIndex=0) override;
+			virtual ConstVoidPtr getPixels(UInt32 mipmapLevel=-1,UInt32 arrayIndex=-1) const override;
+		protected:
+			Void _createSubTextures();
 		};
 	}
 }

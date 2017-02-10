@@ -24,7 +24,7 @@ namespace NSDevilX
 			};
 		protected:
 			const CImage * const mImage;
-			SRenderGeometry mGeometry;
+			SRenderGeometry * mGeometry;
 		public:
 			CRenderable(const CImage * img);
 			~CRenderable();

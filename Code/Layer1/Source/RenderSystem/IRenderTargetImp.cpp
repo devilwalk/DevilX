@@ -2,22 +2,10 @@
 using namespace NSDevilX;
 using namespace NSRenderSystem;
 NSDevilX::NSRenderSystem::IRenderTargetImp::IRenderTargetImp()
-	:mWidth(0)
-	,mHeight(0)
 {}
 
 NSDevilX::NSRenderSystem::IRenderTargetImp::~IRenderTargetImp()
 {
-}
-
-UInt32 NSDevilX::NSRenderSystem::IRenderTargetImp::getWidth() const
-{
-	return mWidth;
-}
-
-UInt32 NSDevilX::NSRenderSystem::IRenderTargetImp::getHeight() const
-{
-	return mHeight;
 }
 
 IViewport * NSDevilX::NSRenderSystem::IRenderTargetImp::createViewport(const String & name)
@@ -76,21 +64,4 @@ Void NSDevilX::NSRenderSystem::IRenderTargetImp::onMessage(IViewportImp * notifi
 		mOrders[notifier->getOrder()].insert(mViewports.getIndex(notifier->getName()));
 		break;
 	}
-}
-
-NSDevilX::NSRenderSystem::IWindowImp::IWindowImp(VoidPtr handle)
-	:mHandle(handle)
-{}
-
-NSDevilX::NSRenderSystem::IWindowImp::~IWindowImp()
-{}
-
-IRenderTarget * NSDevilX::NSRenderSystem::IWindowImp::queryInterface_IRenderTarget() const
-{
-	return const_cast<IWindowImp*>(this);
-}
-
-Void NSDevilX::NSRenderSystem::IWindowImp::resize()
-{
-	notify(EMessage_Resize);
 }

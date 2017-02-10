@@ -1,5 +1,6 @@
-<Root>
-  <Panel name="Menu" width="100%" height="10%" colour="0 0 0 0">
+<Window>
+  <Title name="MainTitle" x="0" y="0" width="100%" height="10%" colour="0 0 0 255" />
+  <Menu align="left" x="0" y="10%" width="100%" height="10%" colour="0 0 0 0">
     <Item name="File" text="File">
       <Item name="New" text="New" />
       <Item name="Open" text="Open" />
@@ -8,6 +9,13 @@
       <Item name="SaveAs" text="SaveAs" />
       <Item name="Exit" text="Exit" />
     </Item>
+  </Menu>
+  <Panel x="0" y="20%" width="15%" height="70%" colour="0 0 0 0">
+    
   </Panel>
-  <PropertySheet name="WorkAreas" width="100%" height="10%" />
-</Root>
+  <EditorWorkArea x="15%" y="20%" width="70%" height="70%" colour="255 255 255 255" />
+  <Panel x="85%" y="20%" width="15%" height="70%" colour="0 0 0 0">
+    
+  </Panel>
+  <EditorInformationBar x="0" y="90%" width="100%" height="10%" colour="127 127 127 255" />
+</Window>

@@ -18,7 +18,7 @@ NSDevilX::NSUIEditor::CApp::CApp()
 		auto dev=NSInputSystem::getSystem()->getPhysicalDeviceManager()->getDevice(i);
 		if((!mMouse)&&(NSInputSystem::IEnum::EPhysicalDeviceType_Mouse==dev->getType()))
 			mMouse=NSInputSystem::getSystem()->getVirtualDeviceManager()->createDevice("EditorMouse",dev);
-		if((!mMouse)&&(NSInputSystem::IEnum::EPhysicalDeviceType_Keyboard==dev->getType()))
+		if((!mKeyboard)&&(NSInputSystem::IEnum::EPhysicalDeviceType_Keyboard==dev->getType()))
 			mKeyboard=NSInputSystem::getSystem()->getVirtualDeviceManager()->createDevice("EditorKeyboard",dev);
 	}
 }
@@ -33,7 +33,7 @@ Void NSDevilX::NSUIEditor::CApp::run()
 {
 #if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
 	MSG msg={0};
-	while(true)
+	while(WM_QUIT!=msg.message)
 	{
 		if(PeekMessage(&msg,static_cast<HWND>(getWindow()->getHandle()),0,0,PM_REMOVE))
 		{

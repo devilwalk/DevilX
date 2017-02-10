@@ -7,6 +7,7 @@
 #include "IRenderGeometry.h"
 #include "IRenderLight.h"
 #include "IRenderMaterial.h"
+#include "IRenderRenderableSurface.h"
 #include "IRenderResourceManager.h"
 #include "IRenderSceneElement.h"
 #include "IRenderSky.h"
@@ -20,3 +21,4 @@
 #include "IRenderVertexBuffer.h"
 #include "IRenderViewport.h"
 #include "IRenderVisibleArea.h"
+#include "IRenderWindow.h"
