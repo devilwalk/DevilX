@@ -2,19 +2,12 @@
 using namespace NSDevilX;
 using namespace NSRenderSystem;
 
-NSDevilX::NSRenderSystem::ITextureUnitStateImp::ITextureUnitStateImp(IEnum::ETextureUnitStateType type,IMaterialImp * material)
-	:mType(type)
-	,mMaterial(material)
-	,mTexture(nullptr)
+NSDevilX::NSRenderSystem::ITextureUnitStateImp::ITextureUnitStateImp()
+	:mTexture(nullptr)
 {}
 
 NSDevilX::NSRenderSystem::ITextureUnitStateImp::~ITextureUnitStateImp()
 {}
-
-IEnum::ETextureUnitStateType NSDevilX::NSRenderSystem::ITextureUnitStateImp::getType() const
-{
-	return mType;
-}
 
 Void NSDevilX::NSRenderSystem::ITextureUnitStateImp::setTexture(ITexture * texture)
 {

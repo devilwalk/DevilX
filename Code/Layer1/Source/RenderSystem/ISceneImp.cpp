@@ -4,7 +4,7 @@ using namespace NSRenderSystem;
 NSDevilX::NSRenderSystem::ISceneImp::ISceneImp(const String & name,IEnum::ESceneManagerAlgorithm algorithm)
 	:mName(name)
 	,mManager(nullptr)
-	,mAmbientColour(CColour::sWhite)
+	,mAmbientColour(CFloatRGBA::sWhite)
 {
 	switch(algorithm)
 	{
@@ -79,29 +79,29 @@ ILight * NSDevilX::NSRenderSystem::ISceneImp::getLight(const String & name) cons
 	return mLights.get(name);
 }
 
-IRenderableObject * NSDevilX::NSRenderSystem::ISceneImp::createRenderableObject(const String & name)
+IEntity * NSDevilX::NSRenderSystem::ISceneImp::createEntity(const String & name)
 {
-	if(mRenderableObjects.has(name))
+	if(mEntities.has(name))
 		return nullptr;
-	notify(EMessage_BeginRenderableObjectCreate);
-	IRenderableObjectImp * ret=DEVILX_NEW IRenderableObjectImp(name,this);
-	mRenderableObjects[name]=ret;
-	notify(EMessage_EndRenderableObjectCreate,ret);
+	notify(EMessage_BeginEntityCreate);
+	IEntityImp * ret=DEVILX_NEW IEntityImp(name,this);
+	mEntities[name]=ret;
+	notify(EMessage_EndEntityCreate,ret);
 	return ret;
 }
 
-Void NSDevilX::NSRenderSystem::ISceneImp::destroyRenderableObject(IRenderableObject * obj)
+Void NSDevilX::NSRenderSystem::ISceneImp::destroyEntity(IEntity * obj)
 {
-	if(!mRenderableObjects.has(obj->queryInterface_ISceneElement()->getName()))
+	if(!mEntities.has(obj->queryInterface_ISceneElement()->getName()))
 		return;
-	notify(EMessage_BeginRenderableObjectDestroy,static_cast<IRenderableObjectImp*>(obj));
-	mRenderableObjects.destroy(obj->queryInterface_ISceneElement()->getName());
-	notify(EMessage_EndRenderableObjectDestroy);
+	notify(EMessage_BeginEntityDestroy,static_cast<IEntityImp*>(obj));
+	mEntities.destroy(obj->queryInterface_ISceneElement()->getName());
+	notify(EMessage_EndEntityDestroy);
 }
 
-IRenderableObject * NSDevilX::NSRenderSystem::ISceneImp::getRenderableObject(const String & name) const
+IEntity * NSDevilX::NSRenderSystem::ISceneImp::getEntity(const String & name) const
 {
-	return mRenderableObjects.get(name);
+	return mEntities.get(name);
 }
 
 IVisibleArea * NSDevilX::NSRenderSystem::ISceneImp::createVisibleArea(const String & name)
@@ -127,6 +127,31 @@ Void NSDevilX::NSRenderSystem::ISceneImp::destroyVisibleArea(IVisibleArea * area
 	notify(EMessage_BeginVisibleAreaDestroy,static_cast<IVisibleAreaImp*>(area));
 	mVisibleAreas.destroy(area->getName());
 	notify(EMessage_EndVisibleAreaDestroy);
+}
+
+ISky * NSDevilX::NSRenderSystem::ISceneImp::createSky(const String & name)
+{
+	if(mSkys.has(name))
+		return nullptr;
+	notify(EMessage_BeginSkyCreate);
+	auto * ret=DEVILX_NEW ISkyImp(name,this);
+	mSkys[name]=ret;
+	notify(EMessage_EndSkyCreate,ret);
+	return ret;
+}
+
+ISky * NSDevilX::NSRenderSystem::ISceneImp::getSky(const String & name) const
+{
+	return mSkys.get(name);
+}
+
+Void NSDevilX::NSRenderSystem::ISceneImp::destroySky(ISky * sky)
+{
+	if(!mSkys.has(sky->queryInterface_ISceneElement()->getName()))
+		return;
+	notify(EMessage_BeginSkyDestroy,static_cast<ISkyImp*>(sky));
+	mSkys.destroy(sky->queryInterface_ISceneElement()->getName());
+	notify(EMessage_EndSkyDestroy);
 }
 
 Void NSDevilX::NSRenderSystem::ISceneImp::setAmbientColour(const CColour & colour)

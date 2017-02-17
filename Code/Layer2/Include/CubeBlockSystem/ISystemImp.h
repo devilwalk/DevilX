@@ -17,8 +17,8 @@ namespace NSDevilX
 			};
 		protected:
 			CThreadPool * mRenderableThreadPool;
-			TNamedResourcePtrContainer<IBlockImp> mBlocks;
-			TNamedResourcePtrContainer<IRenderMaterialImp> mRenderMaterials;
+			TNamedResourcePtrMap<IBlockImp> mBlocks;
+			TNamedResourcePtrMap<IRenderMaterialImp> mRenderMaterials;
 			TResourcePtrSet<ISceneImp> mScenes;
 		public:
 			ISystemImp();

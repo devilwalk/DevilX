@@ -36,9 +36,9 @@ namespace NSDevilX
 			UInt32 mFrameIndex;
 			Float mFrameTimeInSecond;
 			IResourceManagerImp * mResourceManager;
-			TResourcePtrContainer<VoidPtr,IWindowImp> mWindows;
-			TNamedResourcePtrContainer<IRenderableSurfaceImp> mRenderableSurfaces;
-			TNamedResourcePtrContainer<ISceneImp> mScenes;
+			TResourcePtrMap<VoidPtr,IWindowImp> mWindows;
+			TNamedResourcePtrMap<IRenderableSurfaceImp> mRenderableSurfaces;
+			TNamedResourcePtrMap<ISceneImp> mScenes;
 		public:
 			ISystemImp();
 			~ISystemImp();

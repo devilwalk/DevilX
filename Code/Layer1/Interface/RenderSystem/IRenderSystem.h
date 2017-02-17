@@ -1,7 +1,7 @@
 #include "IRenderEnum.h"
 #include "IRenderResourceManager.h"
 #include "IRenderWindow.h"
-#include "IRenderRenderableSurface.h"
+#include "IRenderableSurface.h"
 #include "IRenderScene.h"
 namespace NSDevilX
 {

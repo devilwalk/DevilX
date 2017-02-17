@@ -26,9 +26,6 @@
     <ClInclude Include="..\..\..\Code\Layer2\Include\UISystem\IGraphicWindowImp.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\UISystem\IEventWindowImp.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\UISystem\ISystemImp.h" />
-    <ClInclude Include="..\..\..\Code\Layer2\Include\UISystem\Renderable.h" />
-    <ClInclude Include="..\..\..\Code\Layer2\Include\UISystem\RenderManager.h" />
-    <ClInclude Include="..\..\..\Code\Layer2\Include\UISystem\RenderRectangle.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\UISystem\IUIElement.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\UISystem\IUIEnum.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\UISystem\IUIEventScene.h" />
@@ -54,9 +51,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Layer2\Source\UISystem\Renderable.cpp" />
-    <ClCompile Include="..\..\..\Code\Layer2\Source\UISystem\RenderManager.cpp" />
-    <ClCompile Include="..\..\..\Code\Layer2\Source\UISystem\RenderRectangle.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{BFC5FA51-9ACC-4611-BC5D-8054C6D6EFAC}</ProjectGuid>

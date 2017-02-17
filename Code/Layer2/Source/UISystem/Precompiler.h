@@ -8,6 +8,3 @@
 #include "IGraphicSceneImp.h"
 #include "IGraphicWindowImp.h"
 #include "ISystemImp.h"
-#include "Renderable.h"
-#include "RenderManager.h"
-#include "RenderRectangle.h"

@@ -14,7 +14,7 @@ NSDevilX::NSCubeBlockSystem::CArea::SRenderable::~SRenderable()
 	if(mRenderable)
 	{
 		NSRenderSystem::getSystem()->queryInterface_IResourceManager()->destroyGeometry(mRenderable->getGeometry());
-		mArea->getRenderableObject()->destroyRenderable(mRenderable);
+		mArea->getEntity()->destroyRenderable(mRenderable);
 	}
 }
 
@@ -22,15 +22,15 @@ Void NSDevilX::NSCubeBlockSystem::CArea::SRenderable::initialize()
 {
 	if(!mRenderable)
 	{
-		mRenderable=mArea->getRenderableObject()->createRenderable(CStringConverter::toString(mMaterial));
-		mRenderable->setGeometry(NSRenderSystem::getSystem()->queryInterface_IResourceManager()->createGeometry(mArea->getRenderableObject()->queryInterface_ISceneElement()->getName()+"/"+mRenderable->getName()));
+		mRenderable=mArea->getEntity()->createRenderable(CStringConverter::toString(mMaterial));
+		mRenderable->setGeometry(NSRenderSystem::getSystem()->queryInterface_IResourceManager()->createGeometry(mArea->getEntity()->queryInterface_ISceneElement()->getName()+"/"+mRenderable->getName()));
 		mRenderable->getGeometry()->setVertexBuffer(sGeometry->getVertexBuffer());
 		mRenderable->queryInterface_IGeometryUsage()->setVertexCount(sGeometry->getVertexBuffer()->getCount());
-		mRenderable->queryInterface_IMaterial()->setLightEnable(True);
+		mRenderable->setLightEnable(True);
 		if(mMaterial)
 		{
-			mRenderable->queryInterface_IMaterial()->getColourUnitState(NSRenderSystem::IEnum::EColourUnitStateType_Diffuse)->setValue(mMaterial->getColour());
-			mRenderable->queryInterface_IMaterial()->getColourUnitState(NSRenderSystem::IEnum::EColourUnitStateType_Ambient)->setValue(mMaterial->getColour());
+			mRenderable->getColourUnitState(NSRenderSystem::IEnum::EEntityColourUnitStateType_Diffuse)->setValue(mMaterial->getColour());
+			mRenderable->getColourUnitState(NSRenderSystem::IEnum::EEntityColourUnitStateType_Ambient)->setValue(mMaterial->getColour());
 		}
 	}
 }
@@ -40,8 +40,8 @@ Void NSDevilX::NSCubeBlockSystem::CArea::SRenderable::onMessage(IRenderMaterialI
 	switch(message)
 	{
 	case IRenderMaterialImp::EMessage_EndColourChange:
-		mRenderable->queryInterface_IMaterial()->getColourUnitState(NSRenderSystem::IEnum::EColourUnitStateType_Diffuse)->setValue(mMaterial->getColour());
-		mRenderable->queryInterface_IMaterial()->getColourUnitState(NSRenderSystem::IEnum::EColourUnitStateType_Ambient)->setValue(mMaterial->getColour());
+		mRenderable->getColourUnitState(NSRenderSystem::IEnum::EEntityColourUnitStateType_Diffuse)->setValue(mMaterial->getColour());
+		mRenderable->getColourUnitState(NSRenderSystem::IEnum::EEntityColourUnitStateType_Ambient)->setValue(mMaterial->getColour());
 		break;
 	}
 }
@@ -50,7 +50,7 @@ NSRenderSystem::IGeometry * NSDevilX::NSCubeBlockSystem::CArea::sGeometry=nullpt
 NSDevilX::NSCubeBlockSystem::CArea::CArea(DirectX::FXMVECTOR positionVec,ISceneImp * scene)
 	:mPosition(positionVec)
 	,mScene(scene)
-	,mRenderableObject(nullptr)
+	,mEntity(nullptr)
 	,mVisibleArea(nullptr)
 	,mNeedFillRenderable(false)
 	,mNeedUpdateRenderable(false)
@@ -68,7 +68,7 @@ NSDevilX::NSCubeBlockSystem::CArea::~CArea()
 	mRenderables.clear();
 	mRenderables.unLockWrite();
 	mScene->getRenderScene()->destroyVisibleArea(mVisibleArea);
-	mScene->getRenderScene()->destroyRenderableObject(mRenderableObject);
+	mScene->getRenderScene()->destroyEntity(mEntity);
 }
 
 Void NSDevilX::NSCubeBlockSystem::CArea::setBlockMT(DirectX::FXMVECTOR positionVec,IBlockImp * block)
@@ -595,14 +595,14 @@ Void NSDevilX::NSCubeBlockSystem::CArea::_initialize()
 		sGeometry->getVertexBuffer()->setNormals(normals);
 		sGeometry->getVertexBuffer()->setTextureCoords(texture_coords);
 	}
-	if(!mRenderableObject)
+	if(!mEntity)
 	{
-		mRenderableObject=mScene->getRenderScene()->createRenderableObject("Cube/Area/"+CStringConverter::toString(mPosition.x)+"_"+CStringConverter::toString(mPosition.y)+"_"+CStringConverter::toString(mPosition.z));
-		mRenderableObject->queryInterface_ISceneElement()->getTransformer()->setPosition(CFloat3(static_cast<Float>(mPosition.x),static_cast<Float>(mPosition.y),static_cast<Float>(mPosition.z))*32.0f);
-		mVisibleArea=mScene->getRenderScene()->createVisibleArea(mRenderableObject->queryInterface_ISceneElement()->getName());
-		mVisibleArea->attachObject(mRenderableObject->queryInterface_ISceneElement());
+		mEntity=mScene->getRenderScene()->createEntity("Cube/Area/"+CStringConverter::toString(mPosition.x)+"_"+CStringConverter::toString(mPosition.y)+"_"+CStringConverter::toString(mPosition.z));
+		mEntity->queryInterface_ISceneElement()->getTransformer()->setPosition(CFloat3(static_cast<Float>(mPosition.x),static_cast<Float>(mPosition.y),static_cast<Float>(mPosition.z))*32.0f);
+		mVisibleArea=mScene->getRenderScene()->createVisibleArea(mEntity->queryInterface_ISceneElement()->getName());
+		mVisibleArea->attachObject(mEntity->queryInterface_ISceneElement());
 		mVisibleArea->setBoundingBox(DirectX::BoundingBox(CFloat3(16.0f,16.0f,16.0f),CFloat3(16.5f,16.5f,16.5f)));
-		mVisibleArea->setTransformer(mRenderableObject->queryInterface_ISceneElement()->getTransformer());
+		mVisibleArea->setTransformer(mEntity->queryInterface_ISceneElement()->getTransformer());
 	}
 }
 

@@ -16,3 +16,4 @@
 #include <thread>
 #include <bitset>
 #include <array>
+#include <math.h>

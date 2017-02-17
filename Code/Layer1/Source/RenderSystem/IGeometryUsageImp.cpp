@@ -1,9 +1,8 @@
 #include "Precompiler.h"
 using namespace NSDevilX;
 using namespace NSRenderSystem;
-NSDevilX::NSRenderSystem::IGeometryUsageImp::IGeometryUsageImp(IRenderableImp * renderable)
-	:mRenderable(renderable)
-	,mVertexBufferOffset(0)
+NSDevilX::NSRenderSystem::IGeometryUsageImp::IGeometryUsageImp()
+	:mVertexBufferOffset(0)
 	,mIndexBufferOffset(0)
 	,mVertexCount(0)
 	,mIndexCount(0)

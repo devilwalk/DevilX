@@ -12,6 +12,7 @@ namespace NSDevilX
 				:public TInterfaceObject<ILightImp>
 				,public TBaseObject<CLight>
 				,public CConstantBufferContainer
+				,public TMessageReceiver<IColourUnitStateImp>
 			{
 			protected:
 				CScene * const mScene;
@@ -25,7 +26,7 @@ namespace NSDevilX
 
 				// Inherited via TInterfaceObject
 				virtual Void onMessage(ILightImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
-
+				virtual Void onMessage(IColourUnitStateImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 				// Inherited via CConstantBufferContainer
 				virtual Void _updateConstantBuffer(Byte * buffer) override;
 			};

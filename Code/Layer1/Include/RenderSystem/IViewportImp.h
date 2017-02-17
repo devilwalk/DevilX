@@ -1,4 +1,5 @@
 #pragma once
+#include "IOverlayElementImp.h"
 namespace NSDevilX
 {
 	namespace NSRenderSystem
@@ -6,6 +7,7 @@ namespace NSDevilX
 		class IRenderTargetImp;
 		class IViewportImp
 			:public IViewport
+			,public IOverlay
 			,public TBaseObject<IViewportImp>
 			,public CMessageNotifier
 		{
@@ -28,6 +30,10 @@ namespace NSDevilX
 				EMessage_EndTechniqueChange,
 				EMessage_BeginClearColourChange,
 				EMessage_EndClearColourChange,
+				EMessage_BeginOverlayElementCreate,
+				EMessage_EndOverlayElementCreate,
+				EMessage_BeginOverlayElementDestroy,
+				EMessage_EndOverlayElementDestroy
 			};
 		protected:
 			const String mName;
@@ -36,7 +42,8 @@ namespace NSDevilX
 			float mLeft,mTop,mWidth,mHeight;
 			UInt32 mOrder;
 			Int32 mTechnique;
-			CColour mClearColour;
+			CFloatRGBA mClearColour;
+			TNamedResourcePtrMap<IOverlayElementImp> mOverlayElements;
 		public:
 			IViewportImp(const String & name,IRenderTargetImp * rt);
 			~IViewportImp();
@@ -46,6 +53,7 @@ namespace NSDevilX
 			}
 			Boolean isFullViewport()const;
 			// Inherited via IViewport
+			virtual IOverlay * queryInterface_IOverlay() const override;
 			virtual const String & getName() const override;
 			virtual Void setCamera(ICamera * camera) override;
 			virtual ICamera * getCamera() const override;
@@ -63,6 +71,11 @@ namespace NSDevilX
 			virtual IEnum::ERenderTechnique getTechnique() const override;
 			virtual Void setClearColour(const CColour & colour) override;
 			virtual const CColour & getClearColour() const override;
+
+			// Í¨¹ý IOverlay ¼Ì³Ð
+			virtual IOverlayElement * createElement(const String & name) override;
+			virtual IOverlayElement * getElement(const String & name) const override;
+			virtual Void destroyElement(IOverlayElement * element) override;
 		};
 	}
 }

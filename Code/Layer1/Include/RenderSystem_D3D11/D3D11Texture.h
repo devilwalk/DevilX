@@ -1,7 +1,6 @@
 #pragma once
 #include "D3D11BaseObject.h"
 #include "D3D11Resource.h"
-#include "D3D11RenderableSurfaceImp.h"
 namespace NSDevilX
 {
 	namespace NSRenderSystem

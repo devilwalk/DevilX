@@ -7,6 +7,7 @@ namespace NSDevilX
 			:public ITextureUnitState
 			,public TBaseObject<ITextureUnitStateImp>
 			,public CMessageNotifier
+			,public CUserDataContainer
 		{
 		public:
 			enum EMessage
@@ -15,15 +16,12 @@ namespace NSDevilX
 				EMessage_EndTextureChange
 			};
 		protected:
-			IEnum::ETextureUnitStateType const mType;
-			IMaterialImp * const mMaterial;
 			ITexture * mTexture;
 		public:
-			ITextureUnitStateImp(IEnum::ETextureUnitStateType type,IMaterialImp * material);
+			ITextureUnitStateImp();
 			~ITextureUnitStateImp();
 
 			// Inherited via ITextureUnitState
-			virtual IEnum::ETextureUnitStateType getType() const override;
 			virtual Void setTexture(ITexture * texture) override;
 			virtual ITexture * getTexture() const override;
 		};

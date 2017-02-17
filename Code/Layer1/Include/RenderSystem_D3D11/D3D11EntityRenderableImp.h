@@ -1,34 +1,36 @@
 #pragma once
 #include "D3D11BaseObject.h"
 #include "D3D11Geometry.h"
-#include "D3D11Material.h"
+#include "D3D11EntityMaterial.h"
 namespace NSDevilX
 {
 	namespace NSRenderSystem
 	{
 		namespace NSD3D11
 		{
-			class CRenderableObject;
-			class CRenderable
-				:public TInterfaceObject<IRenderableImp>
-				,public TBaseObject<CRenderable>
+			class CEntityImp;
+			class CLight;
+			class CRenderOperation;
+			class CEntityRenderableImp
+				:public TInterfaceObject<IEntityRenderableImp>
+				,public TBaseObject<CEntityRenderableImp>
 				,public TMessageReceiver<IGeometryUsageImp>
 			{
 			protected:
-				CRenderableObject * const mRenderableObject;
+				CEntityImp * const mEntity;
 				CGeometry * mGeometry;
-				CMaterial * mMaterial;
+				CEntityMaterial * mMaterial;
 				D3D11_PRIMITIVE_TOPOLOGY mPrimitiveTopology;
 			public:
-				CRenderable(IRenderableImp * interfaceImp,CRenderableObject * obj);
-				~CRenderable();
-				CRenderableObject * getObject()const
+				CEntityRenderableImp(IEntityRenderableImp * interfaceImp,CEntityImp * obj);
+				~CEntityRenderableImp();
+				CEntityImp * getEntity()const
 				{
-					return mRenderableObject;
+					return mEntity;
 				}
 				Void renderForward(CLight * light,CRenderOperation & operation);
 				// Í¨¹ý TInterfaceObject ¼Ì³Ð
-				virtual Void onMessage(IRenderableImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
+				virtual Void onMessage(IEntityRenderableImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 
 				// Inherited via TMessageReceiver
 				virtual Void onMessage(IGeometryUsageImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;

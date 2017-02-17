@@ -13,8 +13,8 @@ namespace NSDevilX
 				,public TInternalObject<btCollisionWorld>
 			{
 			protected:
-				TResourcePtrContainer<IEntityImp*,CEntity> mEntitys;
-				TResourcePtrContainer<IQueryImp*,CQuery> mQuerys;
+				TResourcePtrMap<IEntityImp*,CEntity> mEntitys;
+				TResourcePtrMap<IQueryImp*,CQuery> mQuerys;
 			public:
 				CScene(ISceneImp * interfaceImp);
 				~CScene();

@@ -12,7 +12,7 @@ namespace NSDevilX
 		protected:
 			const String mName;
 			CEventManager * mManager;
-			TNamedResourcePtrContainer<IEventWindowImp> mWindows;
+			TNamedResourcePtrMap<IEventWindowImp> mWindows;
 		public:
 			IEventSceneImp(const String & name);
 			~IEventSceneImp();

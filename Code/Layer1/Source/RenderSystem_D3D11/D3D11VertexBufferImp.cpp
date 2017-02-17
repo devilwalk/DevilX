@@ -147,7 +147,9 @@ Bool NSDevilX::NSRenderSystem::NSD3D11::CVertexBufferImp::_update(CEnum::EVertex
 		{
 			D3D11_BOX dst_box={0};
 			dst_box.left=dirty.getMin()*CUtility::getStride(type);
-			dst_box.right=dirty.getMax()*CUtility::getStride(type);
+			dst_box.right=(dirty.getMax()+1)*CUtility::getStride(type);
+			dst_box.bottom=1;
+			dst_box.back=1;
 			ConstVoidPtr src_ptr=reinterpret_cast<ConstVoidPtr>(reinterpret_cast<SizeT>(data_ptr)+dst_box.left);
 			CSystemImp::getSingleton().getImmediateContext()->UpdateSubresource(getBuffers()[type],0,&dst_box,src_ptr,dst_box.right-dst_box.left+1,dst_box.right-dst_box.left+1);
 		}

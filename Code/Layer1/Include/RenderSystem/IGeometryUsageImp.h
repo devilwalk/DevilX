@@ -3,7 +3,6 @@ namespace NSDevilX
 {
 	namespace NSRenderSystem
 	{
-		class IRenderableImp;
 		class IGeometryUsageImp
 			:public IGeometryUsage
 			,public TBaseObject<IGeometryUsageImp>
@@ -24,11 +23,10 @@ namespace NSDevilX
 				EMessage_EndOperationTypeChange
 			};
 		protected:
-			IRenderableImp * const mRenderable;
 			UInt32 mVertexBufferOffset,mIndexBufferOffset,mVertexCount,mIndexCount;
 			IEnum::EOperationType mOperationType;
 		public:
-			IGeometryUsageImp(IRenderableImp * renderable);
+			IGeometryUsageImp();
 			virtual ~IGeometryUsageImp();
 
 			// Í¨¹ý ISubMesh ¼Ì³Ð

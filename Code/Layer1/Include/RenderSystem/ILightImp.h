@@ -127,10 +127,10 @@ namespace NSDevilX
 			{
 				EMessage_BeginDestruction,
 				EMessage_EndDestruction,
-				EMessage_BeginColourChange,
-				EMessage_EndColourChange,
 				EMessage_BeginShadowEnableChange,
-				EMessage_EndShadowEnableChange
+				EMessage_EndShadowEnableChange,
+				EMessage_BeginColourUnitStateCreate,
+				EMessage_EndColourUnitStateCreate
 			};
 		protected:
 			const IEnum::ELightType mType;
@@ -141,26 +141,29 @@ namespace NSDevilX
 				IPointLightPropertyImp * mPointLightProperty;
 				ISpotLightPropertyImp * mSpotLightProperty;
 			};
-			CColour mColour;
 			Bool mShadowEnable;
-			TVector<IRenderableObjectImp*> mVisibleRenderableObjects;
+			TVector<IColourUnitStateImp*> mColourUnitStates;
+			TVector<IEntityImp*> mVisibleEntities;
 			TSharedReadData<UInt32> mVisibleElementsFrameIndex;
 		public:
 			ILightImp(const String & name,IEnum::ELightType type,ISceneImp * scene);
 			virtual ~ILightImp();
-			decltype(mVisibleRenderableObjects) const & getVisibleRenderableObjects()const
+			decltype(mVisibleEntities) const & getVisibleEntities()const
 			{
-				return mVisibleRenderableObjects;
+				return mVisibleEntities;
 			}
 			Void findVisibleObjectsMT();
+			IColourUnitStateImp * getColourUnitState(IEnum::ELightColourUnitStateType type)const
+			{
+				return (mColourUnitStates.size()>type)?mColourUnitStates[type]:nullptr;
+			}
 			// Inherited via ILight
 			virtual ISceneElement * queryInterface_ISceneElement() const override;
 			virtual IDirectionLightProperty * queryInterface_IDirectionLightProperty() const override;
 			virtual IPointLightProperty * queryInterface_IPointLightProperty() const override;
 			virtual ISpotLightProperty * queryInterface_ISpotLightProperty() const override;
 			virtual IEnum::ELightType getType() const override;
-			virtual Void setColour(const CColour & colour) override;
-			virtual const CColour & getColour() const override;
+			virtual IColourUnitState * getColourUnitState(IEnum::ELightColourUnitStateType type) override;
 			virtual Void setShadowEnable(Bool enable) override;
 			virtual Bool getShadowEnable() const override;
 		};

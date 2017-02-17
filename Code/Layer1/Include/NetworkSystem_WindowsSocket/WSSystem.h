@@ -16,8 +16,8 @@ namespace NSDevilX
 				SOCKET mServerSocket;
 				HANDLE mServerListenThread;
 				UInt16 mServerPort;
-				TResourcePtrContainer<ConstVoidPtr,Void> mInstanceByInterfaceImps;
-				TResourcePtrContainer<ILinkImp*,CLink> mLinks;
+				TResourcePtrMap<ConstVoidPtr,Void> mInstanceByInterfaceImps;
+				TResourcePtrMap<ILinkImp*,CLink> mLinks;
 				TVectorMT<SOCKET> mUnprocessedSockets;
 			public:
 				CSystem();

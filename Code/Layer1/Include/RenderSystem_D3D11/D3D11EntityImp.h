@@ -1,6 +1,6 @@
 #pragma once
 #include "D3D11BaseObject.h"
-#include "D3D11Renderable.h"
+#include "D3D11EntityRenderableImp.h"
 #include "D3D11Transformer.h"
 namespace NSDevilX
 {
@@ -9,18 +9,18 @@ namespace NSDevilX
 		namespace NSD3D11
 		{
 			class CScene;
-			class CRenderableObject
-				:public TBaseObject<CRenderableObject>
-				,public TInterfaceObject<IRenderableObjectImp>
+			class CEntityImp
+				:public TBaseObject<CEntityImp>
+				,public TInterfaceObject<IEntityImp>
 				,public TMessageReceiver<ISceneElementImp>
 			{
 			protected:
 				CScene * const mScene;
 				CTransformer * mTransformer;
-				TResourcePtrContainer<IRenderableImp*const,CRenderable> mRenderables;
+				TResourcePtrMap<IEntityRenderableImp*const,CEntityRenderableImp> mRenderables;
 			public:
-				CRenderableObject(IRenderableObjectImp * interfaceImp);
-				virtual ~CRenderableObject();
+				CEntityImp(IEntityImp * interfaceImp);
+				virtual ~CEntityImp();
 				CScene * getScene()const
 				{
 					return mScene;
@@ -30,7 +30,7 @@ namespace NSDevilX
 					return mTransformer;
 				}
 				// Í¨¹ý TInterfaceObject ¼Ì³Ð
-				virtual Void onMessage(IRenderableObjectImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
+				virtual Void onMessage(IEntityImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 				virtual Void onMessage(ISceneElementImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 			protected:
 				Void _updateTransformer();

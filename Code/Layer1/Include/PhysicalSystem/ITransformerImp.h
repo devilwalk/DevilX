@@ -27,11 +27,11 @@ namespace NSDevilX
 			~ITransformerImp();
 
 			// Inherited via ITransformer
-			virtual Void setPosition(DirectX::FXMVECTOR position) override;
+			virtual Void setPosition(const CFloat3 & position) override;
 			virtual const CFloat3 & getPosition() const override;
-			virtual Void setOrientation(DirectX::FXMVECTOR orientation) override;
+			virtual Void setOrientation(const CFloat4 & orientation) override;
 			virtual const CFloat4 & getOrientation() const override;
-			virtual Void setScale(DirectX::FXMVECTOR scale) override;
+			virtual Void setScale(const CFloat3 & scale) override;
 			virtual const CFloat3 & getScale() const override;
 		};
 	}

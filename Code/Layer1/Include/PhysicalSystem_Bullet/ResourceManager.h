@@ -11,7 +11,7 @@ namespace NSDevilX
 				,public TMessageReceiver<IResourceManagerImp>
 			{
 			protected:
-				TResourcePtrContainer<IMeshImp*,CMesh> mMeshes;
+				TResourcePtrMap<IMeshImp*,CMesh> mMeshes;
 			public:
 				CResourceManager();
 				~CResourceManager();

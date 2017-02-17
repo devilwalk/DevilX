@@ -44,7 +44,7 @@ namespace NSDevilX
 		Boolean merge(const CRangeI & range)
 		{
 			assert(isValidate()&&range.isValidate());
-			if((getMin()>range.getMax())||(range.getMin()>getMax()))
+			if((getMin()-1>range.getMax())||(range.getMin()-1>getMax()))
 				return false;
 			else
 			{
@@ -67,10 +67,10 @@ namespace NSDevilX
 		{
 			if(range.isValidate())
 			{
-				if(front().getMin()>range.getMax())
-					push_front(range);
-				else if(back().getMax()<range.getMin())
+				if((empty())||(back().getMax()<range.getMin()-1))
 					push_back(range);
+				else if(front().getMin()-1>range.getMax())
+					push_front(range);
 				else
 				{
 					iterator iter=end();

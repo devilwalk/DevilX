@@ -8,7 +8,9 @@ NSDevilX::NSRenderSystem::NSD3D11::CViewportImp::CViewportImp(IViewportImp * int
 	,mRenderTarget(CSystemImp::getSingleton().getWindow(static_cast<IWindowImp*>(interfaceImp->getRenderTarget())))
 	,mCamera(nullptr)
 	,mTask(nullptr)
+	,mOverlayManager(nullptr)
 {
+	mOverlayManager=DEVILX_NEW COverlayManager(this);
 	setInternal(DEVILX_NEW CViewport(getRenderTarget()->getInternal()));
 	_updateInternal();
 	_updateRenderTask();
@@ -29,6 +31,7 @@ NSDevilX::NSRenderSystem::NSD3D11::CViewportImp::~CViewportImp()
 {
 	DEVILX_DELETE(mTask);
 	DEVILX_DELETE(getInternal());
+	DEVILX_DELETE(mOverlayManager);
 }
 
 Void NSDevilX::NSRenderSystem::NSD3D11::CViewportImp::prepare()
@@ -40,6 +43,7 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CViewportImp::prepare()
 Void NSDevilX::NSRenderSystem::NSD3D11::CViewportImp::render()
 {
 	mTask->process();
+	mOverlayManager->render();
 }
 
 Void NSDevilX::NSRenderSystem::NSD3D11::CViewportImp::onMessage(IViewportImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)

@@ -2,19 +2,27 @@
 using namespace NSDevilX;
 using namespace NSRenderSystem;
 
-NSDevilX::NSRenderSystem::IColourUnitStateImp::IColourUnitStateImp(IEnum::EColourUnitStateType type,IMaterialImp * material)
-	:mType(type)
-	,mMaterial(material)
-	,mEnable(True)
-	,mValue(CColour::sWhite)
-{}
+NSDevilX::NSRenderSystem::IColourUnitStateImp::IColourUnitStateImp(CColour::EType colourType)
+	:mEnable(True)
+	,mValue(nullptr)
+{
+	switch(colourType)
+	{
+	case CColour::EType_Alpha:
+		mValue=DEVILX_NEW CFloatAlpha(1.0f);
+		break;
+	case CColour::EType_RGB:
+		mValue=DEVILX_NEW CFloatRGB(CFloatRGB::sWhite);
+		break;
+	case CColour::EType_RGBA:
+		mValue=DEVILX_NEW CFloatRGBA(CFloatRGBA::sWhite);
+		break;
+	}
+}
 
 NSDevilX::NSRenderSystem::IColourUnitStateImp::~IColourUnitStateImp()
-{}
-
-IEnum::EColourUnitStateType NSDevilX::NSRenderSystem::IColourUnitStateImp::getType() const
 {
-	return mType;
+	DEVILX_DELETE(mValue);
 }
 
 Void NSDevilX::NSRenderSystem::IColourUnitStateImp::setEnable(Bool enable)
@@ -37,7 +45,7 @@ Void NSDevilX::NSRenderSystem::IColourUnitStateImp::setValue(const CColour & col
 	if(colour!=getValue())
 	{
 		notify(EMessage_BeginValueChange);
-		mValue=colour;
+		*mValue=colour;
 		notify(EMessage_EndValueChange);
 	}
 }
@@ -45,5 +53,5 @@ Void NSDevilX::NSRenderSystem::IColourUnitStateImp::setValue(const CColour & col
 const CColour & NSDevilX::NSRenderSystem::IColourUnitStateImp::getValue() const
 {
 	// TODO: insert return statement here
-	return mValue;
+	return *mValue;
 }

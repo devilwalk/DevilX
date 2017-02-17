@@ -46,7 +46,7 @@ Void NSDevilX::NSRenderSystem::IVertexBufferImp::setPositions(const CFloat3 * po
 
 Void NSDevilX::NSRenderSystem::IVertexBufferImp::updatePositions(UInt32 offset,UInt32 count)
 {
-	mPositionsDirty.addDirty(offset,count);
+	mPositionsDirty.addDirty(offset,count?count:getCount());
 	addDirtyFlag(EDirtyFlag_Position);
 }
 
@@ -73,7 +73,7 @@ Void NSDevilX::NSRenderSystem::IVertexBufferImp::setNormals(const CFloat3 * norm
 
 Void NSDevilX::NSRenderSystem::IVertexBufferImp::updateNormals(UInt32 offset,UInt32 count)
 {
-	mNormalsDirty.addDirty(offset,count);
+	mNormalsDirty.addDirty(offset,count?count:getCount());
 	addDirtyFlag(EDirtyFlag_Normal);
 }
 
@@ -100,7 +100,7 @@ Void NSDevilX::NSRenderSystem::IVertexBufferImp::setTangents(const CFloat3 * tan
 
 Void NSDevilX::NSRenderSystem::IVertexBufferImp::updateTangents(UInt32 offset,UInt32 count)
 {
-	mTangentsDirty.addDirty(offset,count);
+	mTangentsDirty.addDirty(offset,count?count:getCount());
 	addDirtyFlag(EDirtyFlag_Tangent);
 }
 
@@ -142,7 +142,7 @@ Void NSDevilX::NSRenderSystem::IVertexBufferImp::setTextureCoords(const CFloat2 
 
 Void NSDevilX::NSRenderSystem::IVertexBufferImp::updateTextureCoords(UInt32 offset,UInt32 count,IEnum::ETextureCoord index)
 {
-	mTextureCoordsDirty[index].addDirty(offset,count);
+	mTextureCoordsDirty[index].addDirty(offset,count?count:getCount());
 	switch(index)
 	{
 	case NSDevilX::NSRenderSystem::IEnum::ETextureCoord_0:
@@ -170,7 +170,7 @@ Void NSDevilX::NSRenderSystem::IVertexBufferImp::setBlendWeights(const CFloat4 *
 
 Void NSDevilX::NSRenderSystem::IVertexBufferImp::updateBlendWeights(UInt32 offset,UInt32 count)
 {
-	mBlendWeightsDirty.addDirty(offset,count);
+	mBlendWeightsDirty.addDirty(offset,count?count:getCount());
 	addDirtyFlag(EDirtyFlag_BlendWeight);
 }
 
@@ -190,7 +190,7 @@ Void NSDevilX::NSRenderSystem::IVertexBufferImp::setBlendIndices(const UInt8 * b
 
 Void NSDevilX::NSRenderSystem::IVertexBufferImp::updateBlendIndices(UInt32 offset,UInt32 count)
 {
-	mBlendIndicesDirty.addDirty(offset,count);
+	mBlendIndicesDirty.addDirty(offset,count?count:getCount());
 	addDirtyFlag(EDirtyFlag_BlendIndex);
 }
 
@@ -217,7 +217,7 @@ Void NSDevilX::NSRenderSystem::IVertexBufferImp::setDiffuses(const RGBA * colour
 
 Void NSDevilX::NSRenderSystem::IVertexBufferImp::updateDiffuses(UInt32 offset,UInt32 count)
 {
-	mDiffusesDirty.addDirty(offset,count);
+	mDiffusesDirty.addDirty(offset,count?count:getCount());
 	addDirtyFlag(EDirtyFlag_Diffuse);
 }
 

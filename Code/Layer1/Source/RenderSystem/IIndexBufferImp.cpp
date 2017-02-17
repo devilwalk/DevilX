@@ -39,7 +39,7 @@ Void NSDevilX::NSRenderSystem::IIndexBufferImp::setIndices(const UInt32 * indice
 
 Void NSDevilX::NSRenderSystem::IIndexBufferImp::updateIndices(UInt32 offset,UInt32 count)
 {
-	mIndicesDirties.addDirty(offset,count);
+	mIndicesDirties.addDirty(offset,count?count:getCount());
 	addDirtyFlag(EDirtyFlag_Index);
 }
 

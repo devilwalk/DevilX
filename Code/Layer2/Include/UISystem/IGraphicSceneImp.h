@@ -1,5 +1,4 @@
 #pragma once
-#include "RenderManager.h"
 #include "IGraphicWindowImp.h"
 namespace NSDevilX
 {
@@ -10,9 +9,8 @@ namespace NSDevilX
 			,public IGraphicScene
 		{
 		protected:
-			NSRenderSystem::IViewport * const mRenderViewport;
-			CRenderManager * mRenderManager;
-			TNamedResourcePtrContainer<IGraphicWindowImp> mWindows;
+			NSRenderSystem::IViewport * const mViewport;
+			TNamedResourcePtrMap<IGraphicWindowImp> mWindows;
 		public:
 			IGraphicSceneImp(NSRenderSystem::IViewport * viewport);
 			~IGraphicSceneImp();

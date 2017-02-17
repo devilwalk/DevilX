@@ -11,7 +11,7 @@ namespace NSDevilX
 				,public TMessageReceiver<IVirtualDeviceManagerImp>
 			{
 			public:
-				typedef TResourcePtrContainer<IVirtualDeviceImp*,CVirtualDevice> Devices;
+				typedef TResourcePtrMap<IVirtualDeviceImp*,CVirtualDevice> Devices;
 			protected:
 				Devices mDevices;
 			public:

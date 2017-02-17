@@ -4,6 +4,7 @@ namespace NSDevilX
 	namespace NSRenderSystem
 	{
 		class ISystemImp;
+		class IRenderTargetImp;
 		class ITextureImp
 			:public ITexture
 		{
@@ -58,7 +59,7 @@ namespace NSDevilX
 			UInt32 mMipmapCount;
 			UInt32 mRealMipmapCount;
 			UInt32 mArraySize;
-			TResourcePtrContainer<UInt32,SSubTexture> mSubTextures;
+			TResourcePtrMap<UInt32,SSubTexture> mSubTextures;
 		public:
 			ITexture2DImp(const String & name);
 			~ITexture2DImp();

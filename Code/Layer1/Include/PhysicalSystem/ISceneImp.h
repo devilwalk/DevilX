@@ -25,8 +25,8 @@ namespace NSDevilX
 			};
 		protected:
 			const String mName;
-			TNamedResourcePtrContainer<IEntityImp> mEntitys;
-			TNamedResourcePtrContainer<IQueryImp> mQuerys;
+			TNamedResourcePtrMap<IEntityImp> mEntitys;
+			TNamedResourcePtrMap<IQueryImp> mQuerys;
 		public:
 			ISceneImp(const String & name);
 			~ISceneImp();

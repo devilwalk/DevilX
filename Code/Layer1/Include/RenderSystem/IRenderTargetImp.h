@@ -24,7 +24,7 @@ namespace NSDevilX
 		protected:
 			Viewports mViewports;
 			Orders mOrders;
-			CColour mClearColour;
+			CFloatRGBA mClearColour;
 		public:
 			IRenderTargetImp();
 			virtual ~IRenderTargetImp();

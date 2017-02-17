@@ -13,6 +13,7 @@ String DeferredLightingGBufferShader;
 String DeferredShadingGBufferShader;
 String ForwardShader;
 String Function;
+String OverlayShader;
 CDefinitionShader();
 };
 }

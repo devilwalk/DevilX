@@ -27,8 +27,8 @@ namespace NSDevilX
 				EMessage_IndexBufferDestroy
 			};
 		protected:
-			TNamedResourcePtrContainer<IGeometryImp> mGeometrys;
-			TNamedResourcePtrContainer<ITextureImp> mTextures;
+			TNamedResourcePtrMap<IGeometryImp> mGeometrys;
+			TNamedResourcePtrMap<ITextureImp> mTextures;
 		public:
 			IResourceManagerImp();
 			~IResourceManagerImp();

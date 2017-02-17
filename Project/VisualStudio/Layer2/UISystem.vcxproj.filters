@@ -36,19 +36,10 @@
     <ClInclude Include="..\..\..\Code\Layer2\Interface\UISystem\IUIEventWindow.h">
       <Filter>Interface Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer2\Include\UISystem\RenderRectangle.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer2\Include\UISystem\RenderManager.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\Layer2\Include\UISystem\IEventWindowImp.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Layer2\Include\UISystem\IElementImp.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer2\Include\UISystem\Renderable.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Layer2\Interface\UISystem\IUIEvent.h">
@@ -86,12 +77,6 @@
     <ClCompile Include="..\..\..\Code\Layer2\Source\UISystem\IElementImp.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Layer2\Source\UISystem\RenderManager.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Layer2\Source\UISystem\RenderRectangle.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Code\Layer2\Source\UISystem\IEventWindowImp.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -99,9 +84,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Layer2\Source\UISystem\ISystemImp.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Layer2\Source\UISystem\Renderable.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Layer2\Source\UISystem\IEventSceneImp.cpp">

@@ -18,7 +18,7 @@ namespace NSDevilX
 				EMessage_BeginDeviceDestroy,
 				EMessage_EndDeviceDestroy
 			};
-			typedef TNamedResourcePtrContainer<IVirtualDeviceImp> DeviceList;
+			typedef TNamedResourcePtrMap<IVirtualDeviceImp> DeviceList;
 		protected:
 			DeviceList mDeviceList;
 		public:

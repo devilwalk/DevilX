@@ -61,6 +61,7 @@ NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::CSystemImp()
 	,mConstantBufferDescriptionManager(nullptr)
 	,mShaderModelType(CEnum::EShaderModelType_4_1)
 	,mDefinitionShader5(nullptr)
+	,mOverlayMaterialManager(nullptr)
 {
 	DEVILX_NEW ISystemImp();
 	mRenderTaskThreadPool=DEVILX_NEW CThreadPool(4);
@@ -141,6 +142,7 @@ NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::CSystemImp()
 	mShaderCodeManager=DEVILX_NEW CShaderCodeManager;
 	mConstantBufferDescriptionManager=DEVILX_NEW CConstantBufferDescriptionManager;
 	mClearViewportShader=DEVILX_NEW CClearViewportShader();
+	mOverlayMaterialManager=DEVILX_NEW COverlayMaterialManager;
 	ISystemImp::getSingleton().addListener(static_cast<TMessageReceiver<ISystemImp>*>(this),ISystemImp::EMessage_EndWindowCreate);
 	ISystemImp::getSingleton().addListener(static_cast<TMessageReceiver<ISystemImp>*>(this),ISystemImp::EMessage_BeginWindowDestroy);
 	ISystemImp::getSingleton().addListener(static_cast<TMessageReceiver<ISystemImp>*>(this),ISystemImp::EMessage_EndSceneCreate);
@@ -173,6 +175,7 @@ NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::~CSystemImp()
 	DEVILX_DELETE(mShaderCodeManager);
 	DEVILX_DELETE(mConstantBufferDescriptionManager);
 	DEVILX_DELETE(mClearViewportShader);
+	DEVILX_DELETE(mOverlayMaterialManager);
 	for(auto state:mRasterizerStates)
 	{
 		state->Release();
@@ -198,8 +201,7 @@ NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::~CSystemImp()
 	mInstanceByInternals.clear();
 	mInstanceByCOMInternals.clear();
 #ifdef DEVILX_DEBUG
-	mVertexShaders.destroyAll();
-	mPixelShaders.destroyAll();
+	mShaders.destroyAll();
 	mWindows.destroyAll();
 	mScenes.destroyAll();
 	mGeometrys.destroyAll();
@@ -375,24 +377,46 @@ ID3D11SamplerState * NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::getSamplerSt
 
 CVertexShader * NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::getVertexShader(ID3DBlob * code)
 {
-	CVertexShader * ret=mVertexShaders[code];
+	auto * ret=mShaders[code];
 	if(nullptr==ret)
 	{
 		ret=DEVILX_NEW CVertexShader(code);
-		mVertexShaders[code]=ret;
+		mShaders[code]=ret;
 	}
-	return ret;
+	return dynamic_cast<CVertexShader*>(ret);
+}
+
+CHullShader * NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::getHullShader(ID3DBlob * code)
+{
+	auto * ret=mShaders[code];
+	if(nullptr==ret)
+	{
+		ret=DEVILX_NEW CHullShader(code);
+		mShaders[code]=ret;
+	}
+	return dynamic_cast<CHullShader*>(ret);
+}
+
+CDomainShader * NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::getDomainShader(ID3DBlob * code)
+{
+	auto * ret=mShaders[code];
+	if(nullptr==ret)
+	{
+		ret=DEVILX_NEW CDomainShader(code);
+		mShaders[code]=ret;
+	}
+	return dynamic_cast<CDomainShader*>(ret);
 }
 
 CPixelShader * NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::getPixelShader(ID3DBlob * code)
 {
-	CPixelShader * ret=mPixelShaders[code];
+	auto * ret=mShaders[code];
 	if(nullptr==ret)
 	{
 		ret=DEVILX_NEW CPixelShader(code);
-		mPixelShaders[code]=ret;
+		mShaders[code]=ret;
 	}
-	return ret;
+	return dynamic_cast<CPixelShader*>(ret);
 }
 
 CTransformer * NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::createTransformer(ITransformerImp * interfaceImp)

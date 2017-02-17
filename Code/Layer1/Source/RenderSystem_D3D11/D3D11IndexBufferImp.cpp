@@ -68,7 +68,9 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CIndexBufferImp::_update()
 				{
 					D3D11_BOX dst_box={0};
 					dst_box.left=dirty.getMin()*sizeof(UInt32);
-					dst_box.right=dirty.getMax()*sizeof(UInt32);
+					dst_box.right=(dirty.getMax()+1)*sizeof(UInt32);
+					dst_box.bottom=1;
+					dst_box.back=1;
 					ConstVoidPtr src_ptr=reinterpret_cast<ConstVoidPtr>(reinterpret_cast<SizeT>(getInterfaceImp()->getIndices())+dst_box.left);
 					CSystemImp::getSingleton().getImmediateContext()->UpdateSubresource(getBuffer(),0,&dst_box,src_ptr,dst_box.right-dst_box.left+1,dst_box.right-dst_box.left+1);
 				}

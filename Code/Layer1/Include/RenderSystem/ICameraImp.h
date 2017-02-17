@@ -85,6 +85,8 @@ namespace NSDevilX
 			virtual Void _recalcProjectionMatrix() override;
 		};
 		class IViewportImp;
+		class ILightImp;
+		class IEntityImp;
 		class ICameraImp
 			:public ICamera
 			,public TBaseObject<ICameraImp>
@@ -136,7 +138,7 @@ namespace NSDevilX
 			CPlaneBoundedVolume mPlaneBoundedVolume;
 			TVector<ILightImp*> mVisibleLights;
 			TVector<ICameraImp*> mVisibleCameras;
-			TVector<IRenderableObjectImp*> mVisibleRenderableObjects;
+			TVector<IEntityImp*> mVisibleEntities;
 			TSharedReadData<UInt32> mVisibleObjectsFrameIndex;
 		public:
 			ICameraImp(const String & name,ISceneImp * scene);
@@ -152,9 +154,9 @@ namespace NSDevilX
 			const CMatrix4F & getViewMatrixMT();
 			const CMatrix4F & getPrjectionMatrixMT()const;
 			Void findVisibleObjectsMT();
-			const decltype(mVisibleRenderableObjects) & getVisibleRenderableObjects()const
+			const decltype(mVisibleEntities) & getVisibleEntities()const
 			{
-				return mVisibleRenderableObjects;
+				return mVisibleEntities;
 			}
 			const decltype(mVisibleLights) & getVisibleLights()const
 			{

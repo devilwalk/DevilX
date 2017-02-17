@@ -11,7 +11,7 @@ namespace NSDevilX
 			virtual ~IQueryResultReceiver(){}
 		public:
 			virtual Void addHitSubEntity(ISubEntity * subEntity)=0;
-			virtual Void addHitPoint(DirectX::FXMVECTOR position,DirectX::FXMVECTOR normal)=0;
+			virtual Void addHitPoint(const CFloat3 & position,const CFloat3 & normal)=0;
 		};
 	}
 }

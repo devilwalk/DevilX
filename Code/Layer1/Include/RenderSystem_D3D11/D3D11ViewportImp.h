@@ -2,6 +2,7 @@
 #include "D3D11RenderTask.h"
 #include "D3D11Viewport.h"
 #include "D3D11Camera.h"
+#include "D3D11OverlayManager.h"
 namespace NSDevilX
 {
 	namespace NSRenderSystem
@@ -26,6 +27,7 @@ namespace NSDevilX
 				CRenderTargetImp * const mRenderTarget;
 				CCamera * mCamera;
 				CRenderTask * mTask;
+				COverlayManager * mOverlayManager;
 			public:
 				CViewportImp(IViewportImp * interfaceImp);
 				~CViewportImp();
@@ -36,6 +38,10 @@ namespace NSDevilX
 				CCamera * getCamera()const
 				{
 					return mCamera;
+				}
+				COverlayManager * getOverlayManager()const
+				{
+					return mOverlayManager;
 				}
 				Void prepare();
 				Void render();

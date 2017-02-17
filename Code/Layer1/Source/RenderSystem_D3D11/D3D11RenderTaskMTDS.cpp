@@ -115,7 +115,7 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CClearViewportTask::process()
 		for(auto i=0;i<8;++i)
 		{
 			if((mClearColour[i]>=CFloat4::sZero)&&mViewport->getRenderTarget()->getRTView(i))
-				context->ClearRenderTargetView(mViewport->getRenderTarget()->getRTView(i),reinterpret_cast<ConstFloatPtr>(&mClearColour));
+				context->ClearRenderTargetView(mViewport->getRenderTarget()->getRTView(i),reinterpret_cast<ConstFloatPtr>(static_cast<CFloat4*>(&mClearColour[i])));
 		}
 		UINT clear_flag=(mClearDepth>=0.0f?D3D11_CLEAR_DEPTH:0)|(mClearStencil>=0?D3D11_CLEAR_STENCIL:0);
 		if(mViewport->getRenderTarget()->getDSView())
@@ -247,26 +247,16 @@ NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::CAmbientTask::~CAmbi
 
 Void NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::CAmbientTask::process()
 {
-	TVector<CRenderable*> solid_renderables,transparent_renderables,sky_solid_renderables,sky_transparent_renderables;
-	for(auto object:mViewport->getCamera()->getInterfaceImp()->getVisibleRenderableObjects())
+	TVector<CEntityRenderableImp*> solid_renderables,transparent_renderables;
+	for(auto object:mViewport->getCamera()->getInterfaceImp()->getVisibleEntities())
 	{
 		for(UInt32 i=0;i<object->getRenderableCount();++i)
 		{
-			auto renderable=static_cast<CRenderable*>(static_cast<IRenderableImp*>(object->getRenderable(i))->getUserPointer(0));
-			if(renderable->getInterfaceImp()->getSky())
-			{
-				if(renderable->getInterfaceImp()->queryInterface_IMaterial()->getTransparentEnable())
-					sky_transparent_renderables.push_back(renderable);
-				else
-					sky_solid_renderables.push_back(renderable);
-			}
+			auto renderable=static_cast<CEntityRenderableImp*>(static_cast<IEntityRenderableImp*>(object->getRenderable(i))->getUserPointer(0));
+			if(renderable->getInterfaceImp()->getTransparentEnable())
+				transparent_renderables.push_back(renderable);
 			else
-			{
-				if(renderable->getInterfaceImp()->queryInterface_IMaterial()->getTransparentEnable())
-					transparent_renderables.push_back(renderable);
-				else
-					solid_renderables.push_back(renderable);
-			}
+				solid_renderables.push_back(renderable);
 		}
 	}
 	TVector<CConstantBuffer*> common_constant_buffers;
@@ -292,24 +282,6 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::CAmbientTask::p
 	}
 	CRenderOperation operation(CSystemImp::getSingleton().getImmediateContext());
 	for(auto renderable:solid_renderables)
-	{
-		renderable->renderForward(nullptr,operation);
-		for(auto cb:operation.mConstantBuffers)
-			cb->submit();
-		operation.mConstantBuffers.insert(operation.mConstantBuffers.end(),common_constant_buffers.begin(),common_constant_buffers.end());
-		operation.process();
-		operation.mConstantBuffers.clear();
-	}
-	for(auto renderable:sky_solid_renderables)
-	{
-		renderable->renderForward(nullptr,operation);
-		for(auto cb:operation.mConstantBuffers)
-			cb->submit();
-		operation.mConstantBuffers.insert(operation.mConstantBuffers.end(),common_constant_buffers.begin(),common_constant_buffers.end());
-		operation.process();
-		operation.mConstantBuffers.clear();
-	}
-	for(auto renderable:sky_transparent_renderables)
 	{
 		renderable->renderForward(nullptr,operation);
 		for(auto cb:operation.mConstantBuffers)
@@ -369,17 +341,20 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::CLightTask::pro
 			common_constant_buffers.push_back(cb);
 		}
 		CRenderOperation operation(CSystemImp::getSingleton().getImmediateContext());
-		for(auto object:mViewport->getCamera()->getInterfaceImp()->getVisibleRenderableObjects())
+		for(auto object:mViewport->getCamera()->getInterfaceImp()->getVisibleEntities())
 		{
 			for(UInt32 i=0;i<object->getRenderableCount();++i)
 			{
-				auto renderable=static_cast<CRenderable*>(static_cast<IRenderableImp*>(object->getRenderable(i))->getUserPointer(0));
-				renderable->renderForward(mLight,operation);
-				for(auto cb:operation.mConstantBuffers)
-					cb->submit();
-				operation.mConstantBuffers.insert(operation.mConstantBuffers.end(),common_constant_buffers.begin(),common_constant_buffers.end());
-				operation.process();
-				operation.mConstantBuffers.clear();
+				auto renderable=static_cast<CEntityRenderableImp*>(static_cast<IEntityRenderableImp*>(object->getRenderable(i))->getUserPointer(0));
+				if(renderable->getInterfaceImp()->getLightEnable())
+				{
+					renderable->renderForward(mLight,operation);
+					for(auto cb:operation.mConstantBuffers)
+						cb->submit();
+					operation.mConstantBuffers.insert(operation.mConstantBuffers.end(),common_constant_buffers.begin(),common_constant_buffers.end());
+					operation.process();
+					operation.mConstantBuffers.clear();
+				}
 			}
 		}
 	}
@@ -425,16 +400,19 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::CLightTask::pre
 		mSubmitConstantBuffers.push_back(cb);
 	}
 	CRenderOperation operation(mContext);
-	for(auto object:mLight->getInterfaceImp()->getVisibleRenderableObjects())
+	for(auto object:mLight->getInterfaceImp()->getVisibleEntities())
 	{
 		for(UInt32 i=0;i<object->getRenderableCount();++i)
 		{
-			auto renderable=static_cast<CRenderable*>(static_cast<IRenderableImp*>(object->getRenderable(i))->getUserPointer(0));
-			renderable->renderForward(mLight,operation);
-			mSubmitConstantBuffers.insert(mSubmitConstantBuffers.end(),operation.mConstantBuffers.begin(),operation.mConstantBuffers.end());
-			operation.mConstantBuffers.insert(operation.mConstantBuffers.end(),common_constant_buffers.begin(),common_constant_buffers.end());
-			operation.process();
-			operation.mConstantBuffers.clear();
+			auto renderable=static_cast<CEntityRenderableImp*>(static_cast<IEntityRenderableImp*>(object->getRenderable(i))->getUserPointer(0));
+			if(renderable->getInterfaceImp()->getLightEnable())
+			{
+				renderable->renderForward(mLight,operation);
+				mSubmitConstantBuffers.insert(mSubmitConstantBuffers.end(),operation.mConstantBuffers.begin(),operation.mConstantBuffers.end());
+				operation.mConstantBuffers.insert(operation.mConstantBuffers.end(),common_constant_buffers.begin(),common_constant_buffers.end());
+				operation.process();
+				operation.mConstantBuffers.clear();
+			}
 		}
 	}
 	CRenderTask::prepare();

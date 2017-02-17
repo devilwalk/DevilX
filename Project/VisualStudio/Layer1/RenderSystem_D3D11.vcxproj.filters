@@ -14,7 +14,7 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="Shader">
-      <UniqueIdentifier>{ee86ccc6-dd49-4224-abb0-cc4eb66b770c}</UniqueIdentifier>
+      <UniqueIdentifier>{8d83b352-6a57-485c-b930-14a6bc3fbfc5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -63,18 +63,6 @@
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11Light.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11Material.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11Pass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11Renderable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11RenderableObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11RenderOperation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -108,9 +96,6 @@
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11SystemImp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11Technique.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11Texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -132,12 +117,6 @@
     <ClInclude Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\Precompiler.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer1\Include\Shader\HLSL4_1DefnitionShaderCodeFunction.h">
-      <Filter>Shader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer1\Include\Shader\HLSL5DefnitionShaderCodeFunction.h">
-      <Filter>Shader</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11Resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -145,6 +124,45 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11RenderableSurfaceImp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11OverlayRenderable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11OverlayMaterial.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11OverlayManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11EntityMaterial.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11EntityImp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11EntityRenderableImp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11EntityTechnique.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11EntityPass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11Pass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Include\Shader\HLSL4_1DefnitionShaderCodeFunction.h">
+      <Filter>Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Include\Shader\HLSL5DefnitionShaderCodeFunction.h">
+      <Filter>Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11OverlayMaterialManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11SkyImp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -185,18 +203,6 @@
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11Light.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11Material.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11Pass.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11Renderable.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11RenderableObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11RenderOperation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -227,9 +233,6 @@
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11SystemImp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11Technique.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -248,12 +251,6 @@
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\Precompiler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Layer1\Source\Shader\HLSL4_1DefnitionShaderCodeFunction.cpp">
-      <Filter>Shader</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Layer1\Source\Shader\HLSL5DefnitionShaderCodeFunction.cpp">
-      <Filter>Shader</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11Resource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -261,6 +258,45 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11RenderableSurfaceImp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11OverlayRenderable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11OverlayMaterial.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11OverlayManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11EntityMaterial.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11EntityRenderableImp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11EntityImp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11EntityTechnique.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11EntityPass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11Pass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer1\Source\Shader\HLSL4_1DefnitionShaderCodeFunction.cpp">
+      <Filter>Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer1\Source\Shader\HLSL5DefnitionShaderCodeFunction.cpp">
+      <Filter>Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11OverlayMaterialManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11SkyImp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

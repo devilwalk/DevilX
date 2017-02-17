@@ -18,7 +18,7 @@ std::vector<std::string> findDirs()
 	char filename[MAX_PATH]={0};
 	GetModuleFileNameA(NULL,filename,MAX_PATH);
 	std::string dir=filename;
-	dir=dir.substr(0,dir.find("\\Project"));
+	dir=dir.substr(0,dir.find("\\DevilX")+7);
 	dir+="\\Code\\Layer1\\Source\\Shader";
 	WIN32_FIND_DATAA wfd;
 	auto handle=FindFirstFileA((dir+"\\*").c_str(),&wfd);

@@ -199,7 +199,7 @@ Void NSDevilX::NSRenderSystem::ICameraImp::findVisibleObjectsMT()
 	{
 		mVisibleCameras.clear();
 		mVisibleLights.clear();
-		mVisibleRenderableObjects.clear();
+		mVisibleEntities.clear();
 		TVector<ISceneElementImp*> temp;
 		const CPlaneBoundedVolume & volume=_getPlaneBoundedVolume();
 		static_cast<ISceneImp*>(mSceneElement->getScene())->getManager()->findVisibleObjects(volume,temp);
@@ -213,8 +213,8 @@ Void NSDevilX::NSRenderSystem::ICameraImp::findVisibleObjectsMT()
 			case ISceneElementImp::EContainerObjectType_Light:
 				mVisibleLights.push_back(object->getContainerObject<ILightImp>());
 				break;
-			case ISceneElementImp::EContainerObjectType_RenderableObject:
-				mVisibleRenderableObjects.push_back(object->getContainerObject<IRenderableObjectImp>());
+			case ISceneElementImp::EContainerObjectType_Entity:
+				mVisibleEntities.push_back(object->getContainerObject<IEntityImp>());
 				break;
 			}
 		}

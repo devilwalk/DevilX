@@ -4,20 +4,20 @@
 #include "CommonSTLMT.h"
 namespace NSDevilX
 {
-	template<class ValueT>
-	class TResourcePtrSet
-		:public TSet<ValueT*>
+	template<class ContainerT>
+	class TResourcePtrContainer
+		:public ContainerT
 	{
 	public:
-		using TSet<ValueT*>::TSet;
-		using TSet<ValueT*>::operator=;
-		virtual ~TResourcePtrSet()
+		using ContainerT::ContainerT;
+		using ContainerT::operator=;
+		virtual ~TResourcePtrContainer()
 		{
 			destroyAll();
 		}
-		Void destroy(ValueT * value)
+		Void destroy(typename ContainerT::value_type value)
 		{
-			this->erase(value);
+			this->remove(value);
 			delete value;
 		}
 		Void destroyAll()
@@ -29,20 +29,20 @@ namespace NSDevilX
 			this->clear();
 		}
 	};
-	template<class ValueT>
-	class TRefResourcePtrSet
-		:public TSet<ValueT*>
+	template<class ContainerT>
+	class TRefResourcePtrContainer
+		:public ContainerT
 	{
 	public:
-		using TSet<ValueT*>::TSet;
-		using TSet<ValueT*>::operator=;
-		virtual ~TRefResourcePtrSet()
+		using ContainerT::ContainerT;
+		using ContainerT::operator=;
+		virtual ~TRefResourcePtrContainer()
 		{
 			destroyAll();
 		}
-		Void destroy(ValueT * value)
+		Void destroy(typename ContainerT::value_type value)
 		{
-			this->erase(value);
+			this->remove(value);
 			value->release();
 		}
 		Void destroyAll()
@@ -53,6 +53,35 @@ namespace NSDevilX
 			}
 			this->clear();
 		}
+	};
+	template<class ValueT>
+	class TResourcePtrList
+		:public TResourcePtrContainer<TList<ValueT*> >
+	{
+	public:
+		using TResourcePtrContainer<TList<ValueT*> >::TResourcePtrContainer;
+		using TResourcePtrContainer<TList<ValueT*> >::operator=;
+		virtual ~TResourcePtrList(){}
+	};
+	template<class ValueT>
+	class TResourcePtrSet
+		:public TResourcePtrContainer<TSet<ValueT*> >
+	{
+	public:
+		using TResourcePtrContainer<TSet<ValueT*> >::TResourcePtrContainer;
+		using TResourcePtrContainer<TSet<ValueT*> >::operator=;
+		virtual ~TResourcePtrSet()
+		{}
+	};
+	template<class ValueT>
+	class TRefResourcePtrSet
+		:public TRefResourcePtrContainer<TSet<ValueT*> >
+	{
+	public:
+		using TRefResourcePtrContainer<TSet<ValueT*> >::TRefResourcePtrContainer;
+		using TRefResourcePtrContainer<TSet<ValueT*> >::operator=;
+		virtual ~TRefResourcePtrSet()
+		{}
 	};
 	template<class ValueT>
 	class TRefResourcePtrSetMT
@@ -85,7 +114,7 @@ namespace NSDevilX
 		}
 	};
 	template<typename KeyT,class ValueT,typename SortfuncT=std::less<KeyT> >
-	class TResourcePtrContainer
+	class TResourcePtrMap
 		:public TMap<KeyT,ValueT*,SortfuncT>
 	{
 	public:
@@ -93,7 +122,7 @@ namespace NSDevilX
 		using TMap<KeyT,ValueT*,SortfuncT>::TMap;
 		using TMap<KeyT,ValueT*,SortfuncT>::operator[];
 		using TMap<KeyT,ValueT*,SortfuncT>::operator=;
-		virtual ~TResourcePtrContainer()
+		virtual ~TResourcePtrMap()
 		{
 			destroyAll();
 		}
@@ -121,12 +150,12 @@ namespace NSDevilX
 		}
 	};
 	template<typename KeyT,class ValueT,typename SortfuncT=std::less<KeyT> >
-	class TResourcePtrContainerMT
+	class TResourcePtrMapMT
 		:public TMapMT<KeyT,ValueT*,SortfuncT>
 	{
 	public:
 		typedef ValueT ResourceType;
-		virtual ~TResourcePtrContainerMT()
+		virtual ~TResourcePtrMapMT()
 		{
 			destroyAllMT();
 		}
@@ -180,14 +209,14 @@ namespace NSDevilX
 		}
 	};
 	template<typename KeyT,class ValueT,typename SortfuncT=std::less<KeyT> >
-	class TRefResourcePtrContainer
+	class TRefResourcePtrMap
 		:public TMap<KeyT,ValueT*,SortfuncT>
 	{
 	public:
 		using TMap<KeyT,ValueT*,SortfuncT>::TMap;
 		using TMap<KeyT,ValueT*,SortfuncT>::operator[];
 		using TMap<KeyT,ValueT*,SortfuncT>::operator=;
-		virtual ~TRefResourcePtrContainer()
+		virtual ~TRefResourcePtrMap()
 		{
 			destroyAll();
 		}
@@ -206,11 +235,11 @@ namespace NSDevilX
 		}
 	};
 	template<typename KeyT,class ValueT,typename SortfuncT=std::less<KeyT> >
-	class TRefResourcePtrContainerMT
+	class TRefResourcePtrMapMT
 		:public TMapMT<KeyT,ValueT*,SortfuncT>
 	{
 	public:
-		virtual ~TRefResourcePtrContainerMT()
+		virtual ~TRefResourcePtrMapMT()
 		{
 			destroyAllMT();
 		}
@@ -264,22 +293,22 @@ namespace NSDevilX
 		}
 	};
 	template<class T>
-	class TNamedResourcePtrContainer
-		:public TResourcePtrContainer<const String,T>
+	class TNamedResourcePtrMap
+		:public TResourcePtrMap<const String,T>
 	{
 	public:
-		using TResourcePtrContainer<const String,T>::TResourcePtrContainer;
-		using TResourcePtrContainer<const String,T>::operator[];
-		using TResourcePtrContainer<const String,T>::operator=;
+		using TResourcePtrMap<const String,T>::TResourcePtrMap;
+		using TResourcePtrMap<const String,T>::operator[];
+		using TResourcePtrMap<const String,T>::operator=;
 	};
 	template<class T>
-	class TNamedRefResourcePtrContainer
-		:public TRefResourcePtrContainer<const String,T>
+	class TNamedRefResourcePtrMap
+		:public TRefResourcePtrMap<const String,T>
 	{
 	public:
-		using TRefResourcePtrContainer<const String,T>::TRefResourcePtrContainer;
-		using TRefResourcePtrContainer<const String,T>::operator[];
-		using TRefResourcePtrContainer<const String,T>::operator=;
+		using TRefResourcePtrMap<const String,T>::TRefResourcePtrMap;
+		using TRefResourcePtrMap<const String,T>::operator[];
+		using TRefResourcePtrMap<const String,T>::operator=;
 	};
 	template<class T>
 	class TBaseNamedIndexResourcePtrContainer

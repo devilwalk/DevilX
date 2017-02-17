@@ -6,8 +6,6 @@ namespace NSDevilX
 	namespace NSRenderSystem
 	{
 		class ISceneImp;
-		class IRenderableObjectImp;
-		class ILightImp;
 		class ISceneElementImp
 			:public ISceneElement
 			,public TBaseObject<ISceneElementImp>
@@ -30,9 +28,10 @@ namespace NSDevilX
 			};
 			enum EContainerObjectType
 			{
-				EContainerObjectType_RenderableObject,
+				EContainerObjectType_Entity,
 				EContainerObjectType_Light,
-				EContainerObjectType_Camera
+				EContainerObjectType_Camera,
+				EContainerObjectType_Sky
 			};
 		protected:
 			const String mName;

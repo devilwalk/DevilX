@@ -9,6 +9,7 @@ namespace NSDevilX
 			{
 				class ID3DIncludeImp_HLSL5
 					:public ID3DInclude
+					,public TBaseObject<ID3DIncludeImp_HLSL5>
 				{
 					// Inherited via ID3DInclude
 					virtual HRESULT __stdcall Open(D3D_INCLUDE_TYPE IncludeType,LPCSTR pFileName,LPCVOID pParentData,LPCVOID * ppData,UINT * pBytes) override
@@ -32,6 +33,7 @@ namespace NSDevilX
 				};
 				class ID3DIncludeImp_HLSL4_1
 					:public ID3DInclude
+					,public TBaseObject<ID3DIncludeImp_HLSL4_1>
 				{
 					// Inherited via ID3DInclude
 					virtual HRESULT __stdcall Open(D3D_INCLUDE_TYPE IncludeType,LPCSTR pFileName,LPCVOID pParentData,LPCVOID * ppData,UINT * pBytes) override
@@ -70,7 +72,7 @@ NSDevilX::NSRenderSystem::NSD3D11::CShaderCodeManager::~CShaderCodeManager()
 		code_pair.second->Release();
 }
 
-ID3DBlob * NSDevilX::NSRenderSystem::NSD3D11::CShaderCodeManager::registerVertexShader(const String & key,const String & code,CEnum::EShaderModelType smType,const D3D_SHADER_MACRO * macros)
+ID3DBlob * NSDevilX::NSRenderSystem::NSD3D11::CShaderCodeManager::registerShader(const String & key,const String & code,CEnum::EShaderType type,CEnum::EShaderModelType modeType,const D3D_SHADER_MACRO * macros)
 {
 	ID3DBlob * ret=nullptr;
 	UINT flag=0;
@@ -79,59 +81,30 @@ ID3DBlob * NSDevilX::NSRenderSystem::NSD3D11::CShaderCodeManager::registerVertex
 #else
 	flag=D3DCOMPILE_SKIP_VALIDATION|D3DCOMPILE_OPTIMIZATION_LEVEL3;
 #endif
+	String entry;
+	String target;
+	switch(type)
+	{
+	case CEnum::EShaderType_VertexShader:entry="vsMain";target="vs_";break;
+	case CEnum::EShaderType_HullShader:entry="hsMain";target="hs_";break;
+	case CEnum::EShaderType_DomainShader:entry="dsMain";target="ds_";break;
+	case CEnum::EShaderType_PixelShader:entry="psMain";target="ps_";break;
+	case CEnum::EShaderType_ComputeShader:entry="csMain";target="cs_";break;
+	}
+	ID3DInclude * include=nullptr;
 	CComPtr<ID3DBlob> error;
-	switch(smType)
+	switch(modeType)
 	{
 	case CEnum::EShaderModelType_4_1:
-	{
-		NSInternal::ID3DIncludeImp_HLSL4_1 include;
-		D3DCompile(&code[0],code.size(),nullptr,macros,&include,"vsMain","vs_4_1",flag,0,&ret,&error);
-	}
-	break;
+		include=DEVILX_NEW NSInternal::ID3DIncludeImp_HLSL4_1;
+		target+="4_1";
+		break;
 	case CEnum::EShaderModelType_5:
-	{
-		NSInternal::ID3DIncludeImp_HLSL5 include;
-		D3DCompile(&code[0],code.size(),nullptr,macros,&include,"vsMain","vs_5_0",flag,0,&ret,&error);
+		include=DEVILX_NEW NSInternal::ID3DIncludeImp_HLSL5;
+		target+="5_0";
+		break;
 	}
-	break;
-	}
-	if(error.p)
-	{
-		OutputDebugStringA(static_cast<LPCSTR>(error->GetBufferPointer()));
-		OutputDebugStringA("\r\n");
-	}
-	if(ret)
-	{
-		mCodes.add(key,ret);
-	}
-	return ret;
-}
-
-ID3DBlob * NSDevilX::NSRenderSystem::NSD3D11::CShaderCodeManager::registerPixelShader(const String & key,const String & code,CEnum::EShaderModelType smType,const D3D_SHADER_MACRO * macros)
-{
-	ID3DBlob * ret=nullptr;
-	UINT flag=0;
-#ifdef DEVILX_DEBUG
-	flag=D3DCOMPILE_DEBUG|D3DCOMPILE_SKIP_OPTIMIZATION|D3DCOMPILE_WARNINGS_ARE_ERRORS;
-#else
-	flag=D3DCOMPILE_SKIP_VALIDATION|D3DCOMPILE_OPTIMIZATION_LEVEL3;
-#endif
-	CComPtr<ID3DBlob> error;
-	switch(smType)
-	{
-	case CEnum::EShaderModelType_4_1:
-	{
-		NSInternal::ID3DIncludeImp_HLSL4_1 include;
-		D3DCompile(&code[0],code.size(),nullptr,macros,&include,"psMain","ps_4_1",flag,0,&ret,&error);
-	}
-	break;
-	case CEnum::EShaderModelType_5:
-	{
-		NSInternal::ID3DIncludeImp_HLSL5 include;
-		D3DCompile(&code[0],code.size(),nullptr,macros,&include,"psMain","ps_5_0",flag,0,&ret,&error);
-	}
-	break;
-	}
+	D3DCompile(&code[0],code.size(),nullptr,macros,include,entry.c_str(),target.c_str(),flag,0,&ret,&error);
 	if(error.p)
 	{
 		OutputDebugStringA(static_cast<LPCSTR>(error->GetBufferPointer()));

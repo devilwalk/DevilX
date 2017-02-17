@@ -59,15 +59,17 @@ ID3DBlob * NSDevilX::NSRenderSystem::NSD3D11::CForwardPixelShaderCodeGenerator::
 			}
 		}
 		macro_list.push_back(CMacro());
+		String code;
 		switch(CSystemImp::getSingleton().getShaderModelType())
 		{
 		case CEnum::EShaderModelType_4_1:
-			ret=CSystemImp::getSingleton().getShaderCodeManager()->registerPixelShader(code_key,CSystemImp::getSingleton().getDefinitionShader4_1()->ForwardShader,CSystemImp::getSingleton().getShaderModelType(),&macro_list[0]);
+			code=CSystemImp::getSingleton().getDefinitionShader4_1()->ForwardShader;
 			break;
 		case CEnum::EShaderModelType_5:
-			ret=CSystemImp::getSingleton().getShaderCodeManager()->registerPixelShader(code_key,CSystemImp::getSingleton().getDefinitionShader5()->ForwardShader,CSystemImp::getSingleton().getShaderModelType(),&macro_list[0]);
+			code=CSystemImp::getSingleton().getDefinitionShader5()->ForwardShader;
 			break;
 		}
+		ret=CSystemImp::getSingleton().getShaderCodeManager()->registerShader(code_key,code,CEnum::EShaderType_PixelShader,CSystemImp::getSingleton().getShaderModelType(),&macro_list[0]);
 	}
 	return ret;
 }

@@ -83,6 +83,45 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Editor", "Editor", "{E1B8AC
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UIEditor", "Editor\UIEditor.vcxproj", "{641B7340-AF01-4A78-B736-2A4D17CFD6C2}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shader", "Shader", "{5F075A03-B5A6-4BDB-8252-A7E64A979480}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HLSL5", "HLSL5", "{6A14648D-0832-4377-828D-03699AF28B3B}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\Code\Layer1\Source\Shader\HLSL5\CascadedShadowMap.hlsl = ..\..\Code\Layer1\Source\Shader\HLSL5\CascadedShadowMap.hlsl
+		..\..\Code\Layer1\Source\Shader\HLSL5\ClearViewport.hlsl = ..\..\Code\Layer1\Source\Shader\HLSL5\ClearViewport.hlsl
+		..\..\Code\Layer1\Source\Shader\HLSL5\ConstantBuffer.hlsl = ..\..\Code\Layer1\Source\Shader\HLSL5\ConstantBuffer.hlsl
+		..\..\Code\Layer1\Source\Shader\HLSL5\DeferredLightingGBufferShader.hlsl = ..\..\Code\Layer1\Source\Shader\HLSL5\DeferredLightingGBufferShader.hlsl
+		..\..\Code\Layer1\Source\Shader\HLSL5\DeferredShadingGBufferShader.hlsl = ..\..\Code\Layer1\Source\Shader\HLSL5\DeferredShadingGBufferShader.hlsl
+		..\..\Code\Layer1\Source\Shader\HLSL5\ForwardShader.hlsl = ..\..\Code\Layer1\Source\Shader\HLSL5\ForwardShader.hlsl
+		..\..\Code\Layer1\Source\Shader\HLSL5\Function.hlsl = ..\..\Code\Layer1\Source\Shader\HLSL5\Function.hlsl
+		..\..\Code\Layer1\Source\Shader\HLSL5\OverlayShader.hlsl = ..\..\Code\Layer1\Source\Shader\HLSL5\OverlayShader.hlsl
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HLSL4_1", "HLSL4_1", "{822330CB-A043-4DCB-8078-24C7A27BE794}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\Code\Layer1\Source\Shader\HLSL4_1\ClearViewport.hlsl = ..\..\Code\Layer1\Source\Shader\HLSL4_1\ClearViewport.hlsl
+		..\..\Code\Layer1\Source\Shader\HLSL4_1\ConstantBuffer.hlsl = ..\..\Code\Layer1\Source\Shader\HLSL4_1\ConstantBuffer.hlsl
+		..\..\Code\Layer1\Source\Shader\HLSL4_1\DeferredLightingGBufferShader.hlsl = ..\..\Code\Layer1\Source\Shader\HLSL4_1\DeferredLightingGBufferShader.hlsl
+		..\..\Code\Layer1\Source\Shader\HLSL4_1\DeferredShadingGBufferShader.hlsl = ..\..\Code\Layer1\Source\Shader\HLSL4_1\DeferredShadingGBufferShader.hlsl
+		..\..\Code\Layer1\Source\Shader\HLSL4_1\ForwardShader.hlsl = ..\..\Code\Layer1\Source\Shader\HLSL4_1\ForwardShader.hlsl
+		..\..\Code\Layer1\Source\Shader\HLSL4_1\Function.hlsl = ..\..\Code\Layer1\Source\Shader\HLSL4_1\Function.hlsl
+		..\..\Code\Layer1\Source\Shader\HLSL4_1\OverlayShader.hlsl = ..\..\Code\Layer1\Source\Shader\HLSL4_1\OverlayShader.hlsl
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GLSL4_5", "GLSL4_5", "{C75FD1DB-FD2F-4699-B0AA-C63EB059384F}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\Code\Layer1\Source\Shader\GLSL4_5\ClearViewportPixel.glsl = ..\..\Code\Layer1\Source\Shader\GLSL4_5\ClearViewportPixel.glsl
+		..\..\Code\Layer1\Source\Shader\GLSL4_5\ClearViewportVertex.glsl = ..\..\Code\Layer1\Source\Shader\GLSL4_5\ClearViewportVertex.glsl
+		..\..\Code\Layer1\Source\Shader\GLSL4_5\ConstantBuffer.glsl = ..\..\Code\Layer1\Source\Shader\GLSL4_5\ConstantBuffer.glsl
+		..\..\Code\Layer1\Source\Shader\GLSL4_5\DeferredLightingGBufferShader.glsl = ..\..\Code\Layer1\Source\Shader\GLSL4_5\DeferredLightingGBufferShader.glsl
+		..\..\Code\Layer1\Source\Shader\GLSL4_5\DeferredShadingGBufferShader.glsl = ..\..\Code\Layer1\Source\Shader\GLSL4_5\DeferredShadingGBufferShader.glsl
+		..\..\Code\Layer1\Source\Shader\GLSL4_5\Defines.glsl = ..\..\Code\Layer1\Source\Shader\GLSL4_5\Defines.glsl
+		..\..\Code\Layer1\Source\Shader\GLSL4_5\ForwardShaderCommon.glsl = ..\..\Code\Layer1\Source\Shader\GLSL4_5\ForwardShaderCommon.glsl
+		..\..\Code\Layer1\Source\Shader\GLSL4_5\ForwardShaderPixel.glsl = ..\..\Code\Layer1\Source\Shader\GLSL4_5\ForwardShaderPixel.glsl
+		..\..\Code\Layer1\Source\Shader\GLSL4_5\ForwardShaderVertex.glsl = ..\..\Code\Layer1\Source\Shader\GLSL4_5\ForwardShaderVertex.glsl
+		..\..\Code\Layer1\Source\Shader\GLSL4_5\Function.glsl = ..\..\Code\Layer1\Source\Shader\GLSL4_5\Function.glsl
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -276,5 +315,8 @@ Global
 		{6F67BE02-CD38-4BDB-81AB-D629D2500402} = {4DA610B1-0E58-4355-BE3A-3E5988CF2B11}
 		{0EAE0DBF-8E60-4363-A680-460B5E1CD4EB} = {1CFAFD2E-0DAA-4421-8054-33F66811C676}
 		{641B7340-AF01-4A78-B736-2A4D17CFD6C2} = {E1B8AC70-0880-428F-A69B-0BBD91F13A50}
+		{6A14648D-0832-4377-828D-03699AF28B3B} = {5F075A03-B5A6-4BDB-8252-A7E64A979480}
+		{822330CB-A043-4DCB-8078-24C7A27BE794} = {5F075A03-B5A6-4BDB-8252-A7E64A979480}
+		{C75FD1DB-FD2F-4699-B0AA-C63EB059384F} = {5F075A03-B5A6-4BDB-8252-A7E64A979480}
 	EndGlobalSection
 EndGlobal

@@ -38,19 +38,29 @@ namespace NSDevilX
 				EOperationType_TriangleList,
 				EOperationType_TriangleStrip
 			};
-			enum EColourUnitStateType
+			enum ESkyColourUnitStateType
 			{
-				EColourUnitStateType_Ambient,
-				EColourUnitStateType_Diffuse,
-				EColourUnitStateType_Specular,
-				EColourUnitStateType_Emissive
+
 			};
-			enum ETextureUnitStateType
+			enum ELightColourUnitStateType
 			{
-				ETextureUnitStateType_Diffuse,
-				ETextureUnitStateType_Specular,
-				ETextureUnitStateType_Normal,
-				ETextureUnitStateType_Light
+				ELightColourUnitStateType_Diffuse,
+				ELightColourUnitStateType_Specular
+			};
+			enum EEntityColourUnitStateType
+			{
+				EEntityColourUnitStateType_Alpha,
+				EEntityColourUnitStateType_Ambient,
+				EEntityColourUnitStateType_Diffuse,
+				EEntityColourUnitStateType_Specular,
+				EEntityColourUnitStateType_Emissive
+			};
+			enum EEntityTextureUnitStateType
+			{
+				EEntityTextureUnitStateType_Diffuse,
+				EEntityTextureUnitStateType_Specular,
+				EEntityTextureUnitStateType_Normal,
+				EEntityTextureUnitStateType_Light
 			};
 			enum ERenderableSurfaceFormat
 			{

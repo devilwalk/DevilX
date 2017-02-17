@@ -12,7 +12,7 @@ namespace NSDevilX
 			CDirectory * mCurrentWorldDirectory;
 			TVector<CModule*> mPlugins;
 			TBaseNamedIndexResourcePtrContainer<ITerrainGenerator> mTerrainGenerators;
-			TNamedResourcePtrContainer<CSceneManager> mSceneManagers;
+			TNamedResourcePtrMap<CSceneManager> mSceneManagers;
 		public:
 			CWorld();
 			~CWorld();

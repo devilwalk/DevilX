@@ -28,10 +28,7 @@ namespace NSDevilX
 				using CRangesI::CRangesI;
 				Void addDirty(UInt32 offset=0,UInt32 count=0)
 				{
-					if((0==offset)&&(0==count))
-						clear();
-					else
-						addRange(CRangeI(offset,count));
+					addRange(CRangeI(offset,count+offset-1));
 				}
 			};
 		protected:

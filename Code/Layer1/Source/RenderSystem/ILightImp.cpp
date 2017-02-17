@@ -218,7 +218,6 @@ NSDevilX::NSRenderSystem::ILightImp::ILightImp(const String & name,IEnum::ELight
 	:mType(type)
 	,mSceneElement(0)
 	,mDirectionLightProperty(0)
-	,mColour(CColour::sWhite)
 	,mShadowEnable(False)
 	,mVisibleElementsFrameIndex(0)
 {
@@ -293,13 +292,13 @@ Void NSDevilX::NSRenderSystem::ILightImp::findVisibleObjectsMT()
 			static_cast<ISceneImp*>(mSceneElement->getScene())->getManager()->findVisibleObjects(mSpotLightProperty->getBoundMT(),temp);
 			break;
 		}
-		mVisibleRenderableObjects.clear();
+		mVisibleEntities.clear();
 		for(auto object:temp)
 		{
 			switch(object->getContainerObjectType())
 			{
-			case ISceneElementImp::EContainerObjectType_RenderableObject:
-				mVisibleRenderableObjects.push_back(object->getContainerObject<IRenderableObjectImp>());
+			case ISceneElementImp::EContainerObjectType_Entity:
+				mVisibleEntities.push_back(object->getContainerObject<IEntityImp>());
 				break;
 			}
 		}
@@ -333,20 +332,17 @@ IEnum::ELightType NSDevilX::NSRenderSystem::ILightImp::getType() const
 	return mType;
 }
 
-Void NSDevilX::NSRenderSystem::ILightImp::setColour(const CColour & colour)
+IColourUnitState * NSDevilX::NSRenderSystem::ILightImp::getColourUnitState(IEnum::ELightColourUnitStateType type)
 {
-	if(colour!=getColour())
+	if(static_cast<decltype(type)>(mColourUnitStates.size())<=type)
+		mColourUnitStates.resize(type+1);
+	if(!mColourUnitStates[type])
 	{
-		notify(EMessage_BeginColourChange);
-		mColour=colour;
-		notify(EMessage_EndColourChange);
+		notify(EMessage_BeginColourUnitStateCreate);
+		mColourUnitStates[type]=DEVILX_NEW IColourUnitStateImp();
+		notify(EMessage_EndColourUnitStateCreate,&type);
 	}
-}
-
-const CColour & NSDevilX::NSRenderSystem::ILightImp::getColour() const
-{
-	// TODO: insert return statement here
-	return mColour;
+	return mColourUnitStates[type];
 }
 
 Void NSDevilX::NSRenderSystem::ILightImp::setShadowEnable(Bool enable)

@@ -18,12 +18,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderable.h">
-      <Filter>Interface Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderableObject.h">
-      <Filter>Interface Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderCamera.h">
       <Filter>Interface Files</Filter>
     </ClInclude>
@@ -43,9 +37,6 @@
       <Filter>Interface Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderLight.h">
-      <Filter>Interface Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderMaterial.h">
       <Filter>Interface Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderResourceManager.h">
@@ -108,16 +99,7 @@
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\ILightImp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IMaterialImp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\Include.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IRenderableImp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IRenderableObjectImp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IRenderTargetImp.h">
@@ -165,13 +147,34 @@
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderWindow.h">
       <Filter>Interface Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderRenderableSurface.h">
-      <Filter>Interface Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IWindowImp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IRenderableSurfaceImp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderableSurface.h">
+      <Filter>Interface Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderOverlay.h">
+      <Filter>Interface Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderOverlayElement.h">
+      <Filter>Interface Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IOverlayElementImp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderEntityRenderable.h">
+      <Filter>Interface Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderEntity.h">
+      <Filter>Interface Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IEntityImp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IEntityRenderableImp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -192,15 +195,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\ILightImp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IMaterialImp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IRenderableImp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IRenderableObjectImp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IRenderTargetImp.cpp">
@@ -249,6 +243,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IRenderableSurfaceImp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IOverlayElementImp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IEntityRenderableImp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IEntityImp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,4 +1,5 @@
 #include "Precompiler.h"
+#include "..\..\Include\RenderSystem_D3D11\D3D11Shader.h"
 using namespace NSDevilX;
 using namespace NSRenderSystem;
 using namespace NSD3D11;
@@ -152,3 +153,59 @@ NSDevilX::NSRenderSystem::NSD3D11::CPixelShader::CPixelShader(ID3DBlob * code)
 NSDevilX::NSRenderSystem::NSD3D11::CPixelShader::~CPixelShader()
 {
 }
+
+NSDevilX::NSRenderSystem::NSD3D11::CHullShader::CHullShader(ID3DBlob * code)
+	:CShader(code)
+{
+	decltype(getInternal()) temp_internal=nullptr;
+	CSystemImp::getSingleton().getDevice()->CreateHullShader(mCode->GetBufferPointer(),mCode->GetBufferSize(),NULL,&temp_internal);
+	setInternal(temp_internal);
+	CComPtr<ID3D11ShaderReflection> reflection;
+	D3DReflect(mCode->GetBufferPointer(),mCode->GetBufferSize(),__uuidof(ID3D11ShaderReflection),reinterpret_cast<VoidPtr*>(&reflection));
+	D3D11_SHADER_DESC shader_desc;
+	reflection->GetDesc(&shader_desc);
+	for(decltype(shader_desc.BoundResources) i=0;i<shader_desc.BoundResources;++i)
+	{
+		D3D11_SHADER_INPUT_BIND_DESC input_bind_desc;
+		reflection->GetResourceBindingDesc(i,&input_bind_desc);
+		mResourceSlots[input_bind_desc.Name]=input_bind_desc.BindPoint;
+	}
+	for(decltype(shader_desc.ConstantBuffers) i=0;i<shader_desc.ConstantBuffers;++i)
+	{
+		ID3D11ShaderReflectionConstantBuffer * cb_reflection=reflection->GetConstantBufferByIndex(i);
+		D3D11_SHADER_BUFFER_DESC shader_buffer_desc;
+		cb_reflection->GetDesc(&shader_buffer_desc);
+		CSystemImp::getSingleton().getConstantBufferDescriptionManager()->registerDescription(cb_reflection);
+	}
+}
+
+NSDevilX::NSRenderSystem::NSD3D11::CHullShader::~CHullShader()
+{}
+
+NSDevilX::NSRenderSystem::NSD3D11::CDomainShader::CDomainShader(ID3DBlob * code)
+	:CShader(code)
+{
+	decltype(getInternal()) temp_internal=nullptr;
+	CSystemImp::getSingleton().getDevice()->CreateDomainShader(mCode->GetBufferPointer(),mCode->GetBufferSize(),NULL,&temp_internal);
+	setInternal(temp_internal);
+	CComPtr<ID3D11ShaderReflection> reflection;
+	D3DReflect(mCode->GetBufferPointer(),mCode->GetBufferSize(),__uuidof(ID3D11ShaderReflection),reinterpret_cast<VoidPtr*>(&reflection));
+	D3D11_SHADER_DESC shader_desc;
+	reflection->GetDesc(&shader_desc);
+	for(decltype(shader_desc.BoundResources) i=0;i<shader_desc.BoundResources;++i)
+	{
+		D3D11_SHADER_INPUT_BIND_DESC input_bind_desc;
+		reflection->GetResourceBindingDesc(i,&input_bind_desc);
+		mResourceSlots[input_bind_desc.Name]=input_bind_desc.BindPoint;
+	}
+	for(decltype(shader_desc.ConstantBuffers) i=0;i<shader_desc.ConstantBuffers;++i)
+	{
+		ID3D11ShaderReflectionConstantBuffer * cb_reflection=reflection->GetConstantBufferByIndex(i);
+		D3D11_SHADER_BUFFER_DESC shader_buffer_desc;
+		cb_reflection->GetDesc(&shader_buffer_desc);
+		CSystemImp::getSingleton().getConstantBufferDescriptionManager()->registerDescription(cb_reflection);
+	}
+}
+
+NSDevilX::NSRenderSystem::NSD3D11::CDomainShader::~CDomainShader()
+{}

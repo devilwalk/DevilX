@@ -332,11 +332,14 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::CLightTask::pro
 			{
 				auto renderable=static_cast<CRenderable*>(static_cast<IRenderableImp*>(object->getRenderable(i))->getUserPointer(0));
 				renderable->renderForward(mLight,operation);
-				for(auto cb:operation.mConstantBuffers)
-					cb->submit();
-				operation.mConstantBuffers.insert(operation.mConstantBuffers.end(),common_constant_buffers.begin(),common_constant_buffers.end());
-				operation.process();
-				operation.mConstantBuffers.clear();
+				if(renderable->getInterfaceImp()->queryInterface_IMaterial()->getLightEnable())
+				{
+					for(auto cb:operation.mConstantBuffers)
+						cb->submit();
+					operation.mConstantBuffers.insert(operation.mConstantBuffers.end(),common_constant_buffers.begin(),common_constant_buffers.end());
+					operation.process();
+					operation.mConstantBuffers.clear();
+				}
 			}
 		}
 	}
@@ -347,12 +350,15 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::CLightTask::pro
 			for(UInt32 i=0;i<object->getRenderableCount();++i)
 			{
 				auto renderable=static_cast<CRenderable*>(static_cast<IRenderableImp*>(object->getRenderable(i))->getUserPointer(0));
-				renderable->renderForward(mLight,operation);
-				for(auto cb:operation.mConstantBuffers)
-					cb->submit();
-				operation.mConstantBuffers.insert(operation.mConstantBuffers.end(),common_constant_buffers.begin(),common_constant_buffers.end());
-				operation.process();
-				operation.mConstantBuffers.clear();
+				if(renderable->getInterfaceImp()->queryInterface_IMaterial()->getLightEnable())
+				{
+					renderable->renderForward(mLight,operation);
+					for(auto cb:operation.mConstantBuffers)
+						cb->submit();
+					operation.mConstantBuffers.insert(operation.mConstantBuffers.end(),common_constant_buffers.begin(),common_constant_buffers.end());
+					operation.process();
+					operation.mConstantBuffers.clear();
+				}
 			}
 		}
 	}

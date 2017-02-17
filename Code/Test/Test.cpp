@@ -23,11 +23,9 @@ public:
 		std::cout<<"HitSubEntity:"<<subEntity->getSubMesh()->getName().c_str()<<std::endl;
 	}
 
-	virtual Void addHitPoint(DirectX::FXMVECTOR position,DirectX::FXMVECTOR normal) override
+	virtual Void addHitPoint(const CFloat3 & position,const CFloat3 & normal) override
 	{
-		CFloat3 pos(position);
-		CFloat3 nor(normal);
-		std::cout<<"HitPosition:x:"<<pos.x<<" y:"<<pos.y<<" z:"<<pos.z<<"\tHitNormal:x:"<<nor.x<<" y:"<<nor.y<<" z:"<<nor.z<<std::endl;
+		std::cout<<"HitPosition:x:"<<position.x<<" y:"<<position.y<<" z:"<<position.z<<"\tHitNormal:x:"<<normal.x<<" y:"<<normal.y<<" z:"<<normal.z<<std::endl;
 	}
 
 };
@@ -64,7 +62,7 @@ int main()
 	window.setSize(CSInt2(window_size[current_window_size_index],window_size[current_window_size_index]));
 	MSG msg={0};
 	auto render_scene=NSRenderSystem::getSystem()->createScene("Test",NSRenderSystem::IEnum::ESceneManagerAlgorithm_Simple);
-	render_scene->setAmbientColour(CColour::sRed);
+	render_scene->setAmbientColour(CFloatRGBA::sRed);
 	auto render_camera=render_scene->createCamera("Test");
 	render_camera->setNearClipPlane(1.0f);
 	render_camera->setFarClipPlane(1000.0f);
@@ -91,15 +89,32 @@ int main()
 	auto * render_window=NSRenderSystem::getSystem()->createWindow(window.getHandle());
 	auto render_viewport=render_window->queryInterface_IRenderTarget()->createViewport("Test");
 	render_viewport->setCamera(render_camera);
-	render_viewport->setClearColour(CColour::sBlack);
-	render_viewport->setWidth(0.5f);
+	render_viewport->setClearColour(CFloatRGBA::sBlack);
+	//render_viewport->setWidth(0.5f);
 
-	auto block_terrain_gen=NSCubeBlockWorld::getWorld()->getTerrainGenerator("Simple");
+	/*auto block_terrain_gen=NSCubeBlockWorld::getWorld()->getTerrainGenerator("Simple");
 	auto block_scene_manager=NSCubeBlockWorld::getWorld()->createSceneManager("Test",block_terrain_gen,render_scene);
 	block_scene_manager->setRange(CRange3I(CSInt3(INT_MIN,INT_MIN,INT_MIN),CSInt3(INT_MAX,0,INT_MAX)));
 	auto block_loader=block_scene_manager->createLoader("Test");
-	block_loader->setChunkRange(CSInt3(1,1,1));
+	block_loader->setChunkRange(CSInt3(1,1,1));*/
 
+	auto ui_graphic_scene=NSUISystem::getSystem()->createGraphicScene(render_viewport);
+	auto ui_graphic_window_lt=ui_graphic_scene->createWindow("Test_LT");
+	ui_graphic_window_lt->queryInterface_IElement()->setPosition(CFloat2::sZero);
+	ui_graphic_window_lt->queryInterface_IElement()->setSize(CFloat2(0.5f));
+	ui_graphic_window_lt->setColour(CFloatRGBA::sRed);
+	auto ui_graphic_window_rt=ui_graphic_scene->createWindow("Test_RT");
+	ui_graphic_window_rt->queryInterface_IElement()->setPosition(CFloat2(0.5f,0.0f));
+	ui_graphic_window_rt->queryInterface_IElement()->setSize(CFloat2(0.5f));
+	ui_graphic_window_rt->setColour(CFloatRGBA::sGreen);
+	auto ui_graphic_window_lb=ui_graphic_scene->createWindow("Test_LB");
+	ui_graphic_window_lb->queryInterface_IElement()->setPosition(CFloat2(0.0f,0.5f));
+	ui_graphic_window_lb->queryInterface_IElement()->setSize(CFloat2(0.5f));
+	ui_graphic_window_lb->setColour(CFloatRGBA::sBlue);
+	auto ui_graphic_window_rb=ui_graphic_scene->createWindow("Test_RB");
+	ui_graphic_window_rb->queryInterface_IElement()->setPosition(CFloat2(0.5f,0.5f));
+	ui_graphic_window_rb->queryInterface_IElement()->setSize(CFloat2(0.5f));
+	ui_graphic_window_rb->setColour(CFloatRGBA::sWhite);
 	struct SUIEvent
 		:public NSUISystem::IEvent
 		,public NSUISystem::IElement
@@ -110,10 +125,12 @@ int main()
 			EType_MouseRightButtonDown
 		};
 		const EType mType;
-		CFloat3 mPosition;
+		CFloat2 mPosition;
+		Int32 mOrder;
 		SUIEvent(EType type)
 			:mType(type)
-			,mPosition(CFloat3(1000000.0f))
+			,mPosition(CFloat2(1000000.0f))
+			,mOrder(0)
 		{}
 		virtual IElement * queryInterface_IElement() const override
 		{
@@ -127,20 +144,28 @@ int main()
 		{
 			return CStringConverter::sBlank;
 		}
-		virtual Void setPosition(DirectX::FXMVECTOR positionVec) override
+		virtual Void setPosition(const CFloat2 & position) override
 		{
-			mPosition=positionVec;
+			mPosition=position;
 		}
-		virtual const CFloat3 & getPosition() const override
+		virtual const CFloat2 & getPosition() const override
 		{
 			return mPosition;
 		}
-		virtual Void setSize(DirectX::FXMVECTOR sizeVec) override
+		virtual Void setSize(const CFloat2 & size) override
 		{
 		}
 		virtual const CFloat2 & getSize() const override
 		{
 			return CFloat2::sZero;
+		}
+		virtual Void setOrder(Int32 order) override
+		{
+			mOrder=order;
+		}
+		virtual Int32 getOrder()const
+		{
+			return mOrder;
 		}
 	};
 	SUIEvent mouse_left_button_down_event(SUIEvent::EType_MouseLeftButtonDown);
@@ -257,7 +282,7 @@ int main()
 		}
 		render_camera->queryInterface_ISceneElement()->getTransformer()->setPosition(camera_node.getDerivedPosition());
 		render_camera->queryInterface_ISceneElement()->getTransformer()->setOrientation(camera_node.getDerivedOrientation());
-		block_loader->setBlockPosition(CSInt3(camera_node.getDerivedPosition())-CSInt3::sUnitY*2);
+		//block_loader->setBlockPosition(CSInt3(camera_node.getDerivedPosition())-CSInt3::sUnitY*2);
 		NSCubeBlockWorld::getWorld()->update();
 		NSRenderSystem::getSystem()->update();
 		NSNetworkSystem::getSystem()->update();

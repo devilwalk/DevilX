@@ -3,22 +3,24 @@ using namespace NSDevilX;
 using namespace NSUISystem;
 
 NSDevilX::NSUISystem::IGraphicSceneImp::IGraphicSceneImp(NSRenderSystem::IViewport * viewport)
-	:mRenderViewport(viewport)
-{}
+	:mViewport(viewport)
+{
+}
 
 NSDevilX::NSUISystem::IGraphicSceneImp::~IGraphicSceneImp()
-{}
+{
+}
 
 NSRenderSystem::IViewport * NSDevilX::NSUISystem::IGraphicSceneImp::getRenderViewport() const
 {
-	return mRenderViewport;
+	return mViewport;
 }
 
 IGraphicWindow * NSDevilX::NSUISystem::IGraphicSceneImp::createWindow(const String & name)
 {
 	if(mWindows.has(name))
 		return nullptr;
-	auto ret=DEVILX_NEW IGraphicWindowImp(name);
+	auto ret=DEVILX_NEW IGraphicWindowImp(name,this);
 	mWindows.add(name,ret);
 	return ret;
 }

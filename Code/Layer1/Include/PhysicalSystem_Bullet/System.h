@@ -21,9 +21,9 @@ namespace NSDevilX
 				};
 			protected:
 				CResourceManager * mResourceManager;
-				TResourcePtrContainer<ISceneImp*,CScene> mScenes;
-				TResourcePtrContainer<ConstVoidPtr,Void> mInstanceByInterfaceImps;
-				TResourcePtrContainer<ConstVoidPtr,Void> mInstanceByInternals;
+				TResourcePtrMap<ISceneImp*,CScene> mScenes;
+				TResourcePtrMap<ConstVoidPtr,Void> mInstanceByInterfaceImps;
+				TResourcePtrMap<ConstVoidPtr,Void> mInstanceByInternals;
 			public:
 				CSystem();
 				~CSystem();

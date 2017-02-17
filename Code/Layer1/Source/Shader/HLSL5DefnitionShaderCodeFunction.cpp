@@ -738,4 +738,50 @@ float2 getQuadPosition(int vertexID)\r\n\
         ret = float2(1.0, -1.0);\r\n\
     return ret;\r\n\
 }";
+OverlayShader="#include \"Function.hlsl\"\r\n\
+struct SVertexShaderInput\r\n\
+{\r\n\
+    float3 mPosition : SV_Position;\r\n\
+	float2 mMainUV : TEXCOORD0;\r\n\
+    float4 mDiffuse : DIFFUSE;\r\n\
+};\r\n\
+struct SVertexShaderOutput\r\n\
+{\r\n\
+    float4 mPosition : SV_Position;\r\n\
+	float2 mMainUV : TEXCOORD0;\r\n\
+    float4 mDiffuse : DIFFUSE;\r\n\
+};\r\n\
+SVertexShaderOutput vsMain(SVertexShaderInput input)\r\n\
+{\r\n\
+    SVertexShaderOutput output;\r\n\
+    output.mPosition = float4(input.mPosition, 1.0);\r\n\
+	output.mMainUV = input.mMainUV;\r\n\
+	output.mDiffuse = input.mDiffuse;\r\n\
+    return output;\r\n\
+}\r\n\
+#ifndef USE_DIFFUSE_TEXTURE\r\n\
+#define USE_DIFFUSE_TEXTURE 0\r\n\
+#endif\r\n\
+SamplerState gDiffuseSamplerState;\r\n\
+Texture2D<float4> gDiffuseTexture;\r\n\
+struct SPixelShaderOutput\r\n\
+{\r\n\
+    float4 mColour : SV_Target;\r\n\
+};\r\n\
+SPixelShaderOutput psMain(SVertexShaderOutput input)\r\n\
+{\r\n\
+    SPixelShaderOutput output = (SPixelShaderOutput) 0;\r\n\
+    float3 colour_emissive = input.mDiffuse.rgb;\r\n\
+    float alpha = input.mDiffuse.a;\r\n\
+#if USE_DIFFUSE_TEXTURE\r\n\
+	float4 diffuse_texture_sampler = gDiffuseTexture.Sample(gDiffuseSamplerState, input.mMainUV);\r\n\
+	float3 diffuse_texture_colour = diffuse_texture_sampler.rgb;\r\n\
+	float diffuse_texture_alpha = diffuse_texture_sampler.a;\r\n\
+	alpha *= diffuse_texture_alpha;\r\n\
+	colour_emissive *= diffuse_texture_colour;\r\n\
+#endif\r\n\
+    output.mColour.rgb = colour_emissive;\r\n\
+    output.mColour.a = alpha;\r\n\
+    return output;\r\n\
+}";
 }

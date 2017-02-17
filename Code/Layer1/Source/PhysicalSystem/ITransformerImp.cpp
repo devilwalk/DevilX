@@ -10,7 +10,7 @@ NSDevilX::NSPhysicalSystem::ITransformerImp::ITransformerImp()
 NSDevilX::NSPhysicalSystem::ITransformerImp::~ITransformerImp()
 {}
 
-Void NSDevilX::NSPhysicalSystem::ITransformerImp::setPosition(DirectX::FXMVECTOR position)
+Void NSDevilX::NSPhysicalSystem::ITransformerImp::setPosition(const CFloat3 & position)
 {
 	if(position!=mPosition)
 	{
@@ -26,7 +26,7 @@ const CFloat3 & NSDevilX::NSPhysicalSystem::ITransformerImp::getPosition() const
 	return mPosition;
 }
 
-Void NSDevilX::NSPhysicalSystem::ITransformerImp::setOrientation(DirectX::FXMVECTOR orientation)
+Void NSDevilX::NSPhysicalSystem::ITransformerImp::setOrientation(const CFloat4 & orientation)
 {
 	if(orientation!=mOrientation)
 	{
@@ -42,7 +42,7 @@ const CFloat4 & NSDevilX::NSPhysicalSystem::ITransformerImp::getOrientation() co
 	return mOrientation;
 }
 
-Void NSDevilX::NSPhysicalSystem::ITransformerImp::setScale(DirectX::FXMVECTOR scale)
+Void NSDevilX::NSPhysicalSystem::ITransformerImp::setScale(const CFloat3 & scale)
 {
 	if(scale!=mScale)
 	{

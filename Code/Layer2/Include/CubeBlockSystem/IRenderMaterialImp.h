@@ -16,7 +16,7 @@ namespace NSDevilX
 			};
 		protected:
 			const String & mName;
-			CColour mColour;
+			CFloatRGBA mColour;
 		public:
 			IRenderMaterialImp(const String & name);
 			~IRenderMaterialImp();

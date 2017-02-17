@@ -22,7 +22,7 @@ namespace NSDevilX
 			};
 		protected:
 			Bool mExit;
-			TNamedResourcePtrContainer<ILinkImp> mLinks;
+			TNamedResourcePtrMap<ILinkImp> mLinks;
 		public:
 			ISystemImp();
 			~ISystemImp();

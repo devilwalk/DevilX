@@ -23,6 +23,11 @@ Boolean NSDevilX::NSRenderSystem::IViewportImp::isFullViewport() const
 	return mLeft==0&&mTop==0&&mWidth==1.0f&&mHeight==1.0f;
 }
 
+IOverlay * NSDevilX::NSRenderSystem::IViewportImp::queryInterface_IOverlay() const
+{
+	return const_cast<IViewportImp*>(this);
+}
+
 const String & NSDevilX::NSRenderSystem::IViewportImp::getName() const
 {
 	// TODO: insert return statement here
@@ -163,4 +168,29 @@ const CColour & NSDevilX::NSRenderSystem::IViewportImp::getClearColour() const
 {
 	// TODO: insert return statement here
 	return mClearColour;
+}
+
+IOverlayElement * NSDevilX::NSRenderSystem::IViewportImp::createElement(const String & name)
+{
+	if(mOverlayElements.has(name))
+		return nullptr;
+	notify(EMessage_BeginOverlayElementCreate);
+	auto ret=DEVILX_NEW IOverlayElementImp(name);
+	mOverlayElements.add(name,ret);
+	notify(EMessage_EndOverlayElementCreate,ret);
+	return ret;
+}
+
+IOverlayElement * NSDevilX::NSRenderSystem::IViewportImp::getElement(const String & name) const
+{
+	return mOverlayElements.get(name);
+}
+
+Void NSDevilX::NSRenderSystem::IViewportImp::destroyElement(IOverlayElement * element)
+{
+	if(!mOverlayElements.has(element->getName()))
+		return;
+	notify(EMessage_BeginOverlayElementDestroy,static_cast<IOverlayElementImp*>(element));
+	mOverlayElements.destroy(element->getName());
+	notify(EMessage_EndOverlayElementDestroy);
 }

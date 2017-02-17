@@ -1,5 +1,6 @@
 #pragma once
 #include "IRenderCamera.h"
+#include "IRenderOverlay.h"
 namespace NSDevilX
 {
 	namespace NSRenderSystem
@@ -9,6 +10,7 @@ namespace NSDevilX
 		protected:
 			virtual ~IViewport(){}
 		public:
+			virtual IOverlay * queryInterface_IOverlay()const=0;
 			virtual const String & getName()const=0;
 			virtual Void setCamera(ICamera * camera)=0;
 			virtual ICamera * getCamera()const=0;

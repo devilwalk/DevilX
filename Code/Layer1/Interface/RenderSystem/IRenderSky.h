@@ -1,4 +1,7 @@
 #pragma once
+#include "IRenderSceneElement.h"
+#include "IRenderColourUnitState.h"
+#include "IRenderTextureUnitState.h"
 namespace NSDevilX
 {
 	namespace NSRenderSystem
@@ -8,8 +11,15 @@ namespace NSDevilX
 		protected:
 			virtual ~ISky(){}
 		public:
-			virtual Void setOrder(UInt32 order)=0;
-			virtual UInt32 getOrder()const=0;
+			virtual ISceneElement * queryInterface_ISceneElement()const=0;
+			virtual Void setGeometry(IGeometry * geometry)=0;
+			virtual IGeometry * getGeometry()const=0;
+			virtual Void setVisible(Bool visible)=0;
+			virtual Bool getVisible()const=0;
+			virtual Void setOrder(Int32 order)=0;
+			virtual Int32 getOrder()const=0;
+			virtual IColourUnitState * getColourUnitState()=0;
+			virtual ITextureUnitState * getTextureUnitState()=0;
 		};
 	}
 }

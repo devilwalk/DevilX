@@ -25,7 +25,7 @@ const CMatrix4F & NSDevilX::NSRenderSystem::ITransformerImp::getTransformMT()
 	return mTransform;
 }
 
-Void NSDevilX::NSRenderSystem::ITransformerImp::setPosition(DirectX::FXMVECTOR pos)
+Void NSDevilX::NSRenderSystem::ITransformerImp::setPosition(const CFloat3 & pos)
 {
 	if(pos!=mPosition)
 	{
@@ -41,7 +41,7 @@ const CFloat3 & NSDevilX::NSRenderSystem::ITransformerImp::getPosition() const
 	return mPosition;
 }
 
-Void NSDevilX::NSRenderSystem::ITransformerImp::setOrientation(DirectX::FXMVECTOR orientation)
+Void NSDevilX::NSRenderSystem::ITransformerImp::setOrientation(const CFloat4 & orientation)
 {
 	if(mOrientation!=orientation)
 	{
@@ -57,7 +57,7 @@ const CFloat4 & NSDevilX::NSRenderSystem::ITransformerImp::getOrientation() cons
 	return mOrientation;
 }
 
-Void NSDevilX::NSRenderSystem::ITransformerImp::setScale(DirectX::FXMVECTOR scale)
+Void NSDevilX::NSRenderSystem::ITransformerImp::setScale(const CFloat3 & scale)
 {
 	if(mScale!=scale)
 	{

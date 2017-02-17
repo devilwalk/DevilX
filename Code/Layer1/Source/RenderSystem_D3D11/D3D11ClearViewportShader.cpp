@@ -24,15 +24,17 @@ ID3DBlob * NSDevilX::NSRenderSystem::NSD3D11::CClearViewportShader::_generateVer
 	ID3DBlob * ret=CSystemImp::getSingleton().getShaderCodeManager()->getCode(code_key);
 	if(nullptr==ret)
 	{
+		String code;
 		switch(CSystemImp::getSingleton().getShaderModelType())
 		{
 		case CEnum::EShaderModelType_4_1:
-			ret=CSystemImp::getSingleton().getShaderCodeManager()->registerVertexShader(code_key,CSystemImp::getSingleton().getDefinitionShader4_1()->ClearViewport,CSystemImp::getSingleton().getShaderModelType(),nullptr);
+			code=CSystemImp::getSingleton().getDefinitionShader4_1()->ClearViewport;
 			break;
 		case CEnum::EShaderModelType_5:
-			ret=CSystemImp::getSingleton().getShaderCodeManager()->registerVertexShader(code_key,CSystemImp::getSingleton().getDefinitionShader5()->ClearViewport,CSystemImp::getSingleton().getShaderModelType(),nullptr);
+			code=CSystemImp::getSingleton().getDefinitionShader5()->ClearViewport;
 			break;
 		}
+		ret=CSystemImp::getSingleton().getShaderCodeManager()->registerShader(code_key,code,CEnum::EShaderType_VertexShader,CSystemImp::getSingleton().getShaderModelType(),nullptr);
 	}
 	return ret;
 }
@@ -43,15 +45,17 @@ ID3DBlob * NSDevilX::NSRenderSystem::NSD3D11::CClearViewportShader::_generatePix
 	ID3DBlob * ret=CSystemImp::getSingleton().getShaderCodeManager()->getCode(code_key);
 	if(nullptr==ret)
 	{
+		String code;
 		switch(CSystemImp::getSingleton().getShaderModelType())
 		{
 		case CEnum::EShaderModelType_4_1:
-			ret=CSystemImp::getSingleton().getShaderCodeManager()->registerPixelShader(code_key,CSystemImp::getSingleton().getDefinitionShader4_1()->ClearViewport,CSystemImp::getSingleton().getShaderModelType(),nullptr);
+			code=CSystemImp::getSingleton().getDefinitionShader4_1()->ClearViewport;
 			break;
 		case CEnum::EShaderModelType_5:
-			ret=CSystemImp::getSingleton().getShaderCodeManager()->registerPixelShader(code_key,CSystemImp::getSingleton().getDefinitionShader5()->ClearViewport,CSystemImp::getSingleton().getShaderModelType(),nullptr);
+			code=CSystemImp::getSingleton().getDefinitionShader5()->ClearViewport;
 			break;
 		}
+		ret=CSystemImp::getSingleton().getShaderCodeManager()->registerShader(code_key,code,CEnum::EShaderType_PixelShader,CSystemImp::getSingleton().getShaderModelType(),nullptr);
 	}
 	return ret;
 }

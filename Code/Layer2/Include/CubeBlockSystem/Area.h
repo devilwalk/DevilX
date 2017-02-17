@@ -18,7 +18,7 @@ namespace NSDevilX
 			public:
 				IRenderMaterialImp * const mMaterial;
 				CArea * const mArea;
-				NSRenderSystem::IRenderable * mRenderable;
+				NSRenderSystem::IEntityRenderable * mRenderable;
 				TVector<UInt32> mIndicesFill;
 				TVector<UInt32> mIndices;
 				SRenderable(IRenderMaterialImp * material,CArea * area);
@@ -33,7 +33,7 @@ namespace NSDevilX
 			const CSInt3 mPosition;
 			ISceneImp * const mScene;
 			TMapMT<IBlockImp*,TListMT<CRange3I*>*> mBlocks;
-			NSRenderSystem::IRenderableObject * mRenderableObject;
+			NSRenderSystem::IEntity * mEntity;
 			NSRenderSystem::IVisibleArea * mVisibleArea;
 			TMapMT<IRenderMaterialImp*,SRenderable*> mRenderables;
 			std::atomic_bool mNeedFillRenderable;
@@ -49,9 +49,9 @@ namespace NSDevilX
 			{
 				return mScene;
 			}
-			NSRenderSystem::IRenderableObject * getRenderableObject()const
+			NSRenderSystem::IEntity * getEntity()const
 			{
-				return mRenderableObject;
+				return mEntity;
 			}
 			Void setBlockMT(DirectX::FXMVECTOR positionVec,IBlockImp * block);
 			Void setBlockMT(const CRange3I & range,IBlockImp * block);

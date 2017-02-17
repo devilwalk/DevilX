@@ -1,10 +1,10 @@
 #pragma once
-#include "IRenderTarget.h"
 #include "IRenderEnum.h"
 namespace NSDevilX
 {
 	namespace NSRenderSystem
 	{
+		class IRenderTarget;
 		class ITexture2DReadable
 		{
 		protected:

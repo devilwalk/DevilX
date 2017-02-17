@@ -13,6 +13,14 @@ namespace NSDevilX
 					EShaderModelType_5,
 					EShaderModelType_4_1
 				};
+				enum EShaderType
+				{
+					EShaderType_VertexShader,
+					EShaderType_HullShader,
+					EShaderType_DomainShader,
+					EShaderType_PixelShader,
+					EShaderType_ComputeShader
+				};
 				enum ETechniqueType
 				{
 					ETechniqueType_Forward,

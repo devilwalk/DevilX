@@ -116,6 +116,10 @@ namespace NSDevilX
 				++iter;
 			return *iter;
 		}
+		Boolean remove(T const & t)
+		{
+			return 0<this->erase(t);
+		}
 	};
 	template<typename KeyT,typename ValueT,typename SortfuncT=std::less<KeyT> >
 	class TMap
@@ -138,6 +142,10 @@ namespace NSDevilX
 		Void add(KeyT const & key,ValueT const & value)
 		{
 			this->insert(value_type(key,value));
+		}
+		Boolean remove(ValueT const & t)
+		{
+			return 0<this->erase(t);
 		}
 	};
 }

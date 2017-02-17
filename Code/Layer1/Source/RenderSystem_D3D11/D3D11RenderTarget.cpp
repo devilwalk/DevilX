@@ -54,7 +54,8 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CRenderTarget::setDSView(ID3D11DepthSten
 
 Void NSDevilX::NSRenderSystem::NSD3D11::CRenderTarget::clearMT(UInt32 index,ID3D11DeviceContext1 * context,const CColour & colour)
 {
-	context->ClearRenderTargetView(mRenderTargets[index],reinterpret_cast<ConstFloatPtr>(&colour));
+	CFloat4 clear_colour=CFloat4(colour.r(),colour.g(),colour.b(),colour.a());
+	context->ClearRenderTargetView(mRenderTargets[index],reinterpret_cast<ConstFloatPtr>(&clear_colour));
 }
 
 Void NSDevilX::NSRenderSystem::NSD3D11::CRenderTarget::clearMT(ID3D11DeviceContext1 * context,Float depth,Int32 stencil)

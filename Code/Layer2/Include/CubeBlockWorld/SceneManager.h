@@ -16,7 +16,7 @@ namespace NSDevilX
 			NSCubeBlockSystem::IScene * mBlockScene;
 			ITerrainGeneratorInstance * mTerrainGeneratorInstance;
 			CRange3I mRange;
-			TNamedResourcePtrContainer<CSceneLoader> mLoaders;
+			TNamedResourcePtrMap<CSceneLoader> mLoaders;
 			TVectorMT<TVectorMT<TVectorMT<TSharedReadData<Int32>*>*>*> mChunkLoadeds[2][2][2];
 		public:
 			CSceneManager(const String & name,ITerrainGenerator * generator,NSRenderSystem::IScene * renderScene);

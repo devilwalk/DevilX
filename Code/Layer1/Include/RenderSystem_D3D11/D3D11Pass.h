@@ -7,38 +7,27 @@ namespace NSDevilX
 	{
 		namespace NSD3D11
 		{
-			class CTechnique;
 			class CPass
-				:public TBaseObject<CPass>
-				,public TMessageReceiver<IMaterialImp>
-				,public TMessageReceiver<IRenderableImp>
-				,public TMessageReceiver<IGeometryImp>
-				,public TMessageReceiver<ITextureUnitStateImp>
 			{
 			protected:
-				CEnum::EForwardPassType const mForwardType;
-				CTechnique * const mTechnique;
 				CVertexShader * mVertexShader;
+				CHullShader * mHullShader;
+				CDomainShader * mDomainShader;
 				CPixelShader * mPixelShader;
 				ID3D11RasterizerState1 * mRasterizerState;
 				ID3D11BlendState1 * mBlendState;
 				ID3D11DepthStencilState * mDepthState;
 				TVector<CTexture*> mVSTextures;
+				TVector<CTexture*> mHSTextures;
+				TVector<CTexture*> mDSTextures;
 				TVector<CTexture*> mPSTextures;
 				TVector<ID3D11SamplerState*> mVSSamplerStates;
+				TVector<ID3D11SamplerState*> mHSSamplerStates;
+				TVector<ID3D11SamplerState*> mDSSamplerStates;
 				TVector<ID3D11SamplerState*> mPSSamplerStates;
 			public:
-				CPass(CTechnique * technique);
-				CPass(CEnum::EForwardPassType type,CTechnique * technique);
-				~CPass();
-				CEnum::EForwardPassType getForwardType()const
-				{
-					return mForwardType;
-				}
-				CTechnique * getTechnique()const
-				{
-					return mTechnique;
-				}
+				CPass();
+				virtual ~CPass();
 				CVertexShader * getVertexShader()const
 				{
 					return mVertexShader;
@@ -67,6 +56,22 @@ namespace NSDevilX
 				{
 					return mVSSamplerStates;
 				}
+				decltype(mHSTextures) const & getHSTextures()const
+				{
+					return mHSTextures;
+				}
+				decltype(mHSSamplerStates) const & getHSSamplerStates()const
+				{
+					return mHSSamplerStates;
+				}
+				decltype(mDSTextures) const & getDSTextures()const
+				{
+					return mDSTextures;
+				}
+				decltype(mDSSamplerStates) const & getDSSamplerStates()const
+				{
+					return mDSSamplerStates;
+				}
 				decltype(mPSTextures) const & getPSTextures()const
 				{
 					return mPSTextures;
@@ -75,20 +80,6 @@ namespace NSDevilX
 				{
 					return mPSSamplerStates;
 				}
-
-				// Í¨¹ý TMessageReceiver ¼Ì³Ð
-				virtual Void onMessage(IMaterialImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
-				virtual Void onMessage(IRenderableImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
-				virtual Void onMessage(IGeometryImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
-				virtual Void onMessage(ITextureUnitStateImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
-			protected:
-				Void _updateShader();
-				Void _updateTextures();
-				Void _updateRasterizerState();
-				Void _updateBlendState();
-				Void _updateDepthStencilState();
-				Void _registerToIGeometryImp();
-				Void _unregisterToIGeometryImp();
 			};
 		}
 	}

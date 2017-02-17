@@ -10,6 +10,7 @@
 #include "D3D11ConstantBufferContainer.h"
 #include "D3D11Enum.h"
 #include "D3D11DepthStencil.h"
+#include "D3D11OverlayMaterialManager.h"
 namespace NSDevilX
 {
 	namespace NSRenderSystem
@@ -49,6 +50,7 @@ namespace NSDevilX
 				CThreadPool * mRenderTaskThreadPool;
 				CShaderCodeManager * mShaderCodeManager;
 				CConstantBufferDescriptionManager * mConstantBufferDescriptionManager;
+				COverlayMaterialManager * mOverlayMaterialManager;
 				union
 				{
 					NSHLSL5::CDefinitionShader * mDefinitionShader5;
@@ -58,26 +60,25 @@ namespace NSDevilX
 				CClearViewportShader * mClearViewportShader;
 				TVector<SInputLayout*> mInputLayouts;
 				TVector<CDepthStencil*> mDepthStencils;
-				TResourcePtrContainer<ID3DBlob*,CVertexShader> mVertexShaders;
-				TResourcePtrContainer<ID3DBlob*,CPixelShader> mPixelShaders;
+				TResourcePtrMap<ID3DBlob*,CShader> mShaders;
 				TVector<ID3D11RasterizerState1*> mRasterizerStates;
 				TVector<ID3D11BlendState1*> mBlendStates;
 				TVector<ID3D11DepthStencilState*> mDepthStencilStates;
 				TVector<ID3D11SamplerState*> mSamplerStates;
-				TResourcePtrContainer<IWindowImp*const,CWindowImp> mWindows;
-				TResourcePtrContainer<IRenderableSurfaceImp*const,CRenderableSurfaceImp> mRenderableSurfaces;
-				TResourcePtrContainer<ISceneImp*const,CScene> mScenes;
-				TResourcePtrContainer<IGeometryImp*const,CGeometry> mGeometrys;
-				TResourcePtrContainer<ITexture2DImp*const,CTexture2D> mTexture2Ds;
-				TResourcePtrContainer<IVertexBufferImp*const,CVertexBufferImp> mVertexBuffers;
-				TResourcePtrContainer<IIndexBufferImp*const,CIndexBufferImp> mIndexBuffers;
-				TResourcePtrContainer<ITransformerImp*,CTransformer> mTransformers;
+				TResourcePtrMap<IWindowImp*const,CWindowImp> mWindows;
+				TResourcePtrMap<IRenderableSurfaceImp*const,CRenderableSurfaceImp> mRenderableSurfaces;
+				TResourcePtrMap<ISceneImp*const,CScene> mScenes;
+				TResourcePtrMap<IGeometryImp*const,CGeometry> mGeometrys;
+				TResourcePtrMap<ITexture2DImp*const,CTexture2D> mTexture2Ds;
+				TResourcePtrMap<IVertexBufferImp*const,CVertexBufferImp> mVertexBuffers;
+				TResourcePtrMap<IIndexBufferImp*const,CIndexBufferImp> mIndexBuffers;
+				TResourcePtrMap<ITransformerImp*,CTransformer> mTransformers;
 				D3D11_RASTERIZER_DESC1 mDefaultRasterizerStateDesc;
 				D3D11_BLEND_DESC1 mDefaultBlendStateDesc;
 				D3D11_DEPTH_STENCIL_DESC mDefaultDepthStencilDesc;
 				D3D11_SAMPLER_DESC mDefaultSamplerDesc;
-				TResourcePtrContainer<ConstVoidPtr,Void> mInstanceByInternals;
-				TResourcePtrContainer<const IUnknown*,Void> mInstanceByCOMInternals;
+				TResourcePtrMap<ConstVoidPtr,Void> mInstanceByInternals;
+				TResourcePtrMap<const IUnknown*,Void> mInstanceByCOMInternals;
 			public:
 				CSystemImp();
 				~CSystemImp();
@@ -117,6 +118,10 @@ namespace NSDevilX
 				{
 					return mConstantBufferDescriptionManager;
 				}
+				COverlayMaterialManager * getOverlayMaterialManager()const
+				{
+					return mOverlayMaterialManager;
+				}
 				NSHLSL5::CDefinitionShader * getDefinitionShader5()const
 				{
 					return mDefinitionShader5;
@@ -132,6 +137,8 @@ namespace NSDevilX
 				ID3D11DepthStencilState * getDepthStencilState(const D3D11_DEPTH_STENCIL_DESC & desc);
 				ID3D11SamplerState * getSamplerState(const D3D11_SAMPLER_DESC & desc);
 				CVertexShader * getVertexShader(ID3DBlob * code);
+				CHullShader * getHullShader(ID3DBlob * code);
+				CDomainShader * getDomainShader(ID3DBlob * code);
 				CPixelShader * getPixelShader(ID3DBlob * code);
 				CScene * getScene(ISceneImp * interfaceImp)const
 				{
