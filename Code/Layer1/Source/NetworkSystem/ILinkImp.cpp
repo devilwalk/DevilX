@@ -2,19 +2,13 @@
 using namespace NSDevilX;
 using namespace NSNetworkSystem;
 
-NSDevilX::NSNetworkSystem::ILinkImp::ILinkImp(const String & name,const String & destIP)
-	:mName(name)
-	,mDestination(destIP)
+NSDevilX::NSNetworkSystem::ILinkImp::ILinkImp(const String & destIP,UInt16 port)
+	:mDestination(destIP)
+	,mPort(port)
 {}
 
 NSDevilX::NSNetworkSystem::ILinkImp::~ILinkImp()
 {
-}
-
-const String & NSDevilX::NSNetworkSystem::ILinkImp::getName() const
-{
-	// TODO: insert return statement here
-	return mName;
 }
 
 const String & NSDevilX::NSNetworkSystem::ILinkImp::getDestination() const
@@ -23,7 +17,12 @@ const String & NSDevilX::NSNetworkSystem::ILinkImp::getDestination() const
 	return mDestination;
 }
 
-Void NSDevilX::NSNetworkSystem::ILinkImp::pushSendData(ConstBytePtr data,UInt32 sizeInBytes)
+UInt16 NSDevilX::NSNetworkSystem::ILinkImp::getPort() const
+{
+	return mPort;
+}
+
+Void NSDevilX::NSNetworkSystem::ILinkImp::pushSendData(ConstVoidPtr data,UInt32 sizeInBytes)
 {
 	notify(EMessage_BeginPushSendData);
 	TVector<Byte> send_data;
@@ -38,7 +37,7 @@ UInt32 NSDevilX::NSNetworkSystem::ILinkImp::getFirstReceiveDataSizeInBytes() con
 	return mReceiveDatas.empty()?0:static_cast<UInt32>(mReceiveDatas.front().size());
 }
 
-Void NSDevilX::NSNetworkSystem::ILinkImp::popReceiveData(BytePtr data)
+Void NSDevilX::NSNetworkSystem::ILinkImp::popReceiveData(VoidPtr data)
 {
 	memcpy(data,&mReceiveDatas.front()[0],mReceiveDatas.front().size());
 	mReceiveDatas.pop_front();

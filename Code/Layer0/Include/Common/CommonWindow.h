@@ -1,9 +1,20 @@
 #pragma once
 #include "CommonType.h"
 #include "CommonVectorI.h"
+#include "CommonMemoryAllocatorObjectTemplate.h"
 namespace NSDevilX
 {
+	class CDesktop
+		:public TBaseObject<CDesktop>
+	{
+	public:
+		CDesktop();
+		~CDesktop();
+		VoidPtr getHandle()const;
+		CSInt2 getSize();
+	};
 	class CWindow
+		:public TBaseObject<CWindow>
 	{
 	protected:
 		VoidPtr mHandle;

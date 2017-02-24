@@ -77,3 +77,25 @@ Void NSDevilX::CWindow::setSize(const CSInt2 & size)
 		}
 	}
 }
+
+NSDevilX::CDesktop::CDesktop()
+{}
+
+NSDevilX::CDesktop::~CDesktop()
+{}
+
+VoidPtr NSDevilX::CDesktop::getHandle() const
+{
+#if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
+	return GetDesktopWindow();
+#endif
+}
+
+CSInt2 NSDevilX::CDesktop::getSize()
+{
+#if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
+	RECT rc;
+	GetClientRect(static_cast<HWND>(getHandle()),&rc);
+	return CSInt2(rc.right-rc.left,rc.bottom-rc.top);
+#endif
+}

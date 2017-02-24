@@ -6,4 +6,5 @@
 #include "WSBaseObject.h"
 #include "WSLink.h"
 #include "WSLinker.h"
+#include "WSProtocol.h"
 #include "WSSystem.h"

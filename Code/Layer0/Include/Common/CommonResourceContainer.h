@@ -64,6 +64,33 @@ namespace NSDevilX
 		virtual ~TResourcePtrList(){}
 	};
 	template<class ValueT>
+	class TResourcePtrListMT
+		:public TResourcePtrContainer<TListMT<ValueT*> >
+	{
+	public:
+		using TResourcePtrContainer<TListMT<ValueT*> >::TResourcePtrContainer;
+		using TResourcePtrContainer<TListMT<ValueT*> >::operator=;
+		virtual ~TResourcePtrListMT()
+		{
+			destroyAllMT();
+		}
+		Void destroyMT(ValueT * value)
+		{
+			eraseMT(value);
+			delete value;
+		}
+		Void destroyAllMT()
+		{
+			this->lockWrite();
+			for(auto res:*this)
+			{
+				delete res;
+			}
+			this->clear();
+			this->unLockWrite();
+		}
+	};
+	template<class ValueT>
 	class TResourcePtrSet
 		:public TResourcePtrContainer<TSet<ValueT*> >
 	{
@@ -161,14 +188,14 @@ namespace NSDevilX
 		}
 		Void destroy(const KeyT & key)
 		{
-			delete get(key);
-			this->erase(key);
+			auto iter=this->find(key);
+			delete iter->second;
+			this->erase(iter);
 		}
 		Void destroyMT(const KeyT & key)
 		{
 			this->lockWrite();
-			delete get(key);
-			this->erase(key);
+			destroy(key);
 			this->unLockWrite();
 		}
 		Void destroyAll()
@@ -182,11 +209,7 @@ namespace NSDevilX
 		Void destroyAllMT()
 		{
 			this->lockWrite();
-			for(auto res:*this)
-			{
-				delete res.second;
-			}
-			this->clear();
+			destroyAll();
 			this->unLockWrite();
 		}
 		ValueT * get(KeyT const & key)const
@@ -220,10 +243,11 @@ namespace NSDevilX
 		{
 			destroyAll();
 		}
-		Void destroy(const KeyT & name)
+		Void destroy(const KeyT & key)
 		{
-			((*this)[name])->release();
-			this->erase(name);
+			auto iter=this->find(key);
+			iter->second->release();
+			this->erase(iter);
 		}
 		Void destroyAll()
 		{
@@ -245,14 +269,14 @@ namespace NSDevilX
 		}
 		Void destroy(const KeyT & name)
 		{
-			get(name)->release();
-			this->erase(name);
+			auto iter=this->find(key);
+			iter->second->release();
+			this->erase(iter);
 		}
 		Void destroyMT(const KeyT & name)
 		{
 			this->lockWrite();
-			get(name)->release();
-			this->erase(name);
+			destroy(name);
 			this->unLockWrite();
 		}
 		Void destroyAll()
@@ -266,11 +290,7 @@ namespace NSDevilX
 		Void destroyAllMT()
 		{
 			this->lockWrite();
-			for(auto res:*this)
-			{
-				res.second->release();
-			}
-			this->clear();
+			destroyAll();
 			this->unLockWrite();
 		}
 		ValueT * get(KeyT const & key)const

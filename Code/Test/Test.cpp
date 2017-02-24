@@ -29,9 +29,42 @@ public:
 	}
 
 };
+NSNetworkSystem::ILink * gLocalSendLink=nullptr;
+NSNetworkSystem::ILink * gLocalReceiveLink=nullptr;
 int main()
 {
-	//auto link=NSNetworkSystem::getSystem()->createLink("Test","127.0.0.1");
+	struct SNetworkSystemListener
+		:public NSNetworkSystem::ISystemListener
+	{
+	public:
+		TVector<String> mSendData;
+		SNetworkSystemListener()
+		{
+			for(SizeT i=0;i<300;++i)
+			{
+				mSendData.push_back(CStringConverter::toString(i));
+			}
+		}
+		virtual Void onSearch(String destIP,UInt16 port) override
+		{
+			if((!gLocalSendLink)&&(destIP=="127.0.0.1"))
+			{
+				gLocalSendLink=NSNetworkSystem::getSystem()->createLink(destIP,port);
+			}
+		}
+		virtual Void onConnect(const String & destIP) override
+		{
+			if((!gLocalReceiveLink)&&(destIP=="127.0.0.1"))
+			{
+				gLocalReceiveLink=NSNetworkSystem::getSystem()->createLink(destIP,-1);
+			}
+		}
+		virtual Void onDeconnect(const String & destIP) override
+		{}
+	};
+	SNetworkSystemListener network_system_listener;
+	NSNetworkSystem::getSystem()->setListener(&network_system_listener);
+	NSNetworkSystem::getSystem()->search("127.0.0.1",49152,49200);
 	//CModule * game_module=DEVILX_NEW CModule("Game3D");
 	auto physical_scene=NSPhysicalSystem::getSystem()->createScene("Test");
 	auto physical_geometry=NSPhysicalSystem::getSystem()->queryInterface_IResourceManager()->createGeometry("Test");
@@ -289,6 +322,22 @@ int main()
 
 		ui_event_scene->route(&mouse_left_button_down_event);
 		ui_event_scene->route(&mouse_right_button_down_event);
+
+		if(gLocalSendLink)
+		{
+			for(auto const & data:network_system_listener.mSendData)
+				gLocalSendLink->pushSendData(&data[0],static_cast<UInt32>(data.size()));
+		}
+		if(gLocalReceiveLink)
+		{
+			while(auto size=gLocalReceiveLink->getFirstReceiveDataSizeInBytes())
+			{
+				String receive_data;
+				receive_data.resize(size);
+				gLocalReceiveLink->popReceiveData(&receive_data[0]);
+				std::cout<<receive_data<<std::endl;
+			}
+		}
 		if(PeekMessage(&msg,static_cast<HWND>(window.getHandle()),0,0,PM_REMOVE))
 		{
 			TranslateMessage(&msg);

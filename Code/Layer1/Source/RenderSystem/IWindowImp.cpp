@@ -19,7 +19,7 @@ UInt32 NSDevilX::NSRenderSystem::IWindowImp::getWidth() const
 #if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
 	RECT rc;
 	::GetClientRect(static_cast<HWND>(getHandle()),&rc);
-	return rc.right-rc.left+1;
+	return rc.right-rc.left;
 #elif DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_X
 #endif
 }
@@ -29,7 +29,7 @@ UInt32 NSDevilX::NSRenderSystem::IWindowImp::getHeight() const
 #if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
 	RECT rc;
 	::GetClientRect(static_cast<HWND>(getHandle()),&rc);
-	return rc.bottom-rc.top+1;
+	return rc.bottom-rc.top;
 #elif DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_X
 #endif
 }

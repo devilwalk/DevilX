@@ -1,10 +1,6 @@
 #include "Precompiler.h"
 using namespace NSDevilX;
 using namespace NSUIEditor;
-Void main()
-{
-	CApp::getSingleton().run();
-}
 
 NSDevilX::NSUIEditor::CApp::CApp()
 	:mWindow(nullptr)

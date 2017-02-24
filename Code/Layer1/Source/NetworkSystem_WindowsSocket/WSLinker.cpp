@@ -10,24 +10,40 @@ namespace NSDevilX
 				static DWORD CALLBACK readProc(LPVOID parameter)
 				{
 					auto linker=static_cast<CLinker*>(parameter);
-					Char data_buf[4096]={0};
+					CProtocol protocol;
+					Char data_buf[UINT16_MAX+1]={0};
 					WSABUF buf;
 					buf.len=sizeof(data_buf);
 					buf.buf=data_buf;
 					DWORD recv_size;
 					DWORD flag=0;
+					auto socket=linker->getSocket();
 					while(linker->getSocket()!=INVALID_SOCKET)
 					{
 						SecureZeroMemory(data_buf,sizeof(data_buf));
-						auto ret=WSARecv(linker->getSocket(),&buf,1,&recv_size,&flag,nullptr,nullptr);
+						auto ret=WSARecv(socket,&buf,1,&recv_size,&flag,nullptr,nullptr);
 						switch(ret)
 						{
 						case 0:
-							if(recv_size>1)
+						{
+							auto unparse_size=recv_size;
+							auto unparse_buf=data_buf;
+							while(unparse_size)
 							{
-								linker->addRecvData(data_buf,recv_size);
+								if(protocol.parse(unparse_buf,unparse_size))
+								{
+									linker->addRecvData(protocol.getUserData(),protocol.getUserSizeInBytes());
+									unparse_buf+=protocol.getUserSizeInBytes();
+									unparse_size-=protocol.getUserSizeInBytes();
+								}
+								else
+								{
+									OutputDebugStringA("\r\nreadProc:Parse Failed!!!\r\n");
+									break;
+								}
 							}
-							break;
+						}
+						break;
 						case SOCKET_ERROR:
 							OutputDebugStringA(("\r\nreadProc:"+CStringConverter::toString(WSAGetLastError())+"\r\n").c_str());
 							linker->disconnect();
@@ -37,47 +53,37 @@ namespace NSDevilX
 				}
 				static DWORD CALLBACK writeProc(LPVOID parameter)
 				{
-					auto linker=static_cast<CLinker*>(parameter);
-					Char conect_data[]={'D','e','v','i','l','X'};
-					CTimer timer;
+					const auto linker=static_cast<CLinker*>(parameter);
+					TVector<Byte> datas;
+					CProtocol protocol;
 					WSABUF buf;
 					DWORD send_size;
+					auto socket=linker->getSocket();
+					auto event_handle=linker->getWriteThreadEvent();
 					while(linker->getSocket()!=INVALID_SOCKET)
 					{
-						timer.updateCurrentTime();
-						linker->getSendDatas().lockRead();
-						if(linker->getSendDatas().empty())
+						WaitForSingleObject(event_handle,INFINITE);
+						linker->getSendDatas().lockWrite();
+						for(const auto & data:linker->getSendDatas())
 						{
-							if(timer.getInMillisecond()>1000)
-							{
-								timer.updateLastTime();
-								buf.len=sizeof(conect_data);
-								buf.buf=conect_data;
-							}
-							else
-							{
-								linker->getSendDatas().unLockRead();
-								continue;
-							}
+							protocol.setUserData(&data[0],static_cast<UInt16>(data.size()));
+							datas.resize(datas.size()+protocol.getSendSizeInByts());
+							memcpy(&datas[datas.size()-protocol.getSendSizeInByts()],protocol.getSendData(),protocol.getSendSizeInByts());
 						}
-						else
+						linker->getSendDatas().clear();
+						linker->getSendDatas().unLockWrite();
+						if(!datas.empty())
 						{
-							buf.len=static_cast<decltype(buf.len)>(linker->getSendDatas().front().size());
-							buf.buf=reinterpret_cast<decltype(buf.buf)>(&linker->getSendDatas().front()[0]);
-						}
-						auto ret=WSASend(linker->getSocket(),&buf,1,&send_size,0,nullptr,nullptr);
-						linker->getSendDatas().unLockRead();
-						switch(ret)
-						{
-						case 0:
-							linker->getSendDatas().lockWrite();
-							if(!linker->getSendDatas().empty())
-								linker->getSendDatas().pop_front();
-							linker->getSendDatas().unLockWrite();
-							break;
-						case SOCKET_ERROR:
-							OutputDebugStringA(("\r\nwriteProc:"+CStringConverter::toString(WSAGetLastError())+"\r\n").c_str());
-							break;
+							buf.len=static_cast<decltype(buf.len)>(datas.size());
+							buf.buf=reinterpret_cast<decltype(buf.buf)>(&datas[0]);
+							auto ret=WSASend(socket,&buf,1,&send_size,0,nullptr,nullptr);
+							switch(ret)
+							{
+							case SOCKET_ERROR:
+								OutputDebugStringA(("\r\nwriteProc:"+CStringConverter::toString(WSAGetLastError())+"\r\n").c_str());
+								break;
+							}
+							datas.clear();
 						}
 					}
 					return 0;
@@ -90,34 +96,50 @@ using namespace NSDevilX;
 using namespace NSNetworkSystem;
 using namespace NSWindowsSocket;
 
-NSDevilX::NSNetworkSystem::NSWindowsSocket::CLinker::CLinker(SOCKET s,ConstVoidPtr initData,SizeT dataSizeInBytes)
+NSDevilX::NSNetworkSystem::NSWindowsSocket::CLinker::CLinker(SOCKET s)
 	:mSocket(s)
 	,mReadThread(INVALID_HANDLE_VALUE)
 	,mWriteThread(INVALID_HANDLE_VALUE)
+	,mWriteThreadEvent(INVALID_HANDLE_VALUE)
 	,mDisconnect(False)
 {
-	if(initData)
+	sockaddr_in addr;
+	int name_len=sizeof(sockaddr_in);
+	if(getpeername(getSocket(),reinterpret_cast<sockaddr*>(&addr),&name_len))
 	{
-		addSendData(initData,dataSizeInBytes);
+		auto last_error=WSAGetLastError();
+		OutputDebugStringA(("CLinker::CLinker::getpeername:"+CStringConverter::toString(last_error)+"\r\n").c_str());
 	}
-	mReadThread=CreateThread(nullptr,0,NSInternal::readProc,this,0,nullptr);
-	mWriteThread=CreateThread(nullptr,0,NSInternal::writeProc,this,0,nullptr);
-	ISystemImp::getSingleton().addListener(this,ISystemImp::EMessage_Update);
+	mDestIP=inet_ntoa(addr.sin_addr);
+	setActive(true);
 }
 
 NSDevilX::NSNetworkSystem::NSWindowsSocket::CLinker::~CLinker()
 {
-	notify(EMessage_BeginDestruction);
 	if(INVALID_SOCKET!=mSocket)
 	{
 		closesocket(mSocket);
 		mSocket=INVALID_SOCKET;
 	}
-	WaitForSingleObject(mReadThread,INFINITE);
-	CloseHandle(mReadThread);
-	WaitForSingleObject(mWriteThread,INFINITE);
-	CloseHandle(mWriteThread);
-	notify(EMessage_EndDestruction);
+	if(INVALID_HANDLE_VALUE!=mReadThread)
+	{
+		WaitForSingleObject(mReadThread,INFINITE);
+		CloseHandle(mReadThread);
+	}
+	if(INVALID_HANDLE_VALUE!=getWriteThreadEvent())
+	{
+		SetEvent(getWriteThreadEvent());
+	}
+	if(INVALID_HANDLE_VALUE!=mWriteThread)
+	{
+		WaitForSingleObject(mWriteThread,INFINITE);
+		CloseHandle(mWriteThread);
+	}
+	if(INVALID_HANDLE_VALUE!=getWriteThreadEvent())
+	{
+		CloseHandle(getWriteThreadEvent());
+		mWriteThreadEvent=INVALID_HANDLE_VALUE;
+	}
 }
 
 Void NSDevilX::NSNetworkSystem::NSWindowsSocket::CLinker::addSendData(ConstVoidPtr data,SizeT sizeInBytes)
@@ -126,6 +148,7 @@ Void NSDevilX::NSNetworkSystem::NSWindowsSocket::CLinker::addSendData(ConstVoidP
 	send_data.resize(sizeInBytes);
 	memcpy(&send_data[0],data,sizeInBytes);
 	mSendDatas.pushBackMT(send_data);
+	SetEvent(getWriteThreadEvent());
 }
 
 Void NSDevilX::NSNetworkSystem::NSWindowsSocket::CLinker::addRecvData(ConstVoidPtr data,SizeT sizeInBytes)
@@ -141,17 +164,38 @@ Void NSDevilX::NSNetworkSystem::NSWindowsSocket::CLinker::disconnect()
 	closesocket(mSocket);
 	mSocket=INVALID_SOCKET;
 	mDisconnect=True;
+	CSystem::getSingleton().removeLinkerMT(this);
 }
 
-Void NSDevilX::NSNetworkSystem::NSWindowsSocket::CLinker::onMessage(ISystemImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
+Void NSDevilX::NSNetworkSystem::NSWindowsSocket::CLinker::setActive(Boolean active)
 {
-	switch(message)
+	if(isActive()!=active)
 	{
-	case ISystemImp::EMessage_Update:
-		if(mDisconnect)
+		if(active)
 		{
-			DEVILX_DELETE(this);
+			mWriteThreadEvent=CreateEvent(nullptr,FALSE,getSendDatas().empty()?FALSE:TRUE,nullptr);
+			mReadThread=CreateThread(nullptr,0,NSInternal::readProc,this,0,nullptr);
+			mWriteThread=CreateThread(nullptr,0,NSInternal::writeProc,this,0,nullptr);
 		}
-		break;
+		else
+		{
+			auto save_socket=getSocket();
+			mSocket=INVALID_SOCKET;
+			SetEvent(getWriteThreadEvent());
+			WaitForSingleObject(mReadThread,INFINITE);
+			CloseHandle(mReadThread);
+			mReadThread=INVALID_HANDLE_VALUE;
+			WaitForSingleObject(mWriteThread,INFINITE);
+			CloseHandle(mWriteThread);
+			mWriteThread=INVALID_HANDLE_VALUE;
+			CloseHandle(getWriteThreadEvent());
+			mWriteThreadEvent=INVALID_HANDLE_VALUE;
+			mSocket=save_socket;
+		}
 	}
+}
+
+Boolean NSDevilX::NSNetworkSystem::NSWindowsSocket::CLinker::isActive() const
+{
+	return INVALID_HANDLE_VALUE!=mReadThread;
 }

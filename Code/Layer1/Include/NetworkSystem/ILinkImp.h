@@ -15,12 +15,12 @@ namespace NSDevilX
 				EMessage_EndPushSendData
 			};
 		protected:
-			const String mName;
 			const String mDestination;
+			const UInt16 mPort;
 			TList<TVector<Byte> > mSendDatas;
 			TList<TVector<Byte> > mReceiveDatas;
 		public:
-			ILinkImp(const String & name,const String & destIP);
+			ILinkImp(const String & destIP,UInt16 port);
 			~ILinkImp();
 			decltype(mSendDatas) & getSendDatas()
 			{
@@ -31,11 +31,11 @@ namespace NSDevilX
 				mReceiveDatas.push_back(data);
 			}
 			// Inherited via ILink
-			virtual const String & getName() const override;
 			virtual const String & getDestination() const override;
-			virtual Void pushSendData(ConstBytePtr data,UInt32 sizeInBytes) override;
+			virtual UInt16 getPort() const override;
+			virtual Void pushSendData(ConstVoidPtr data,UInt32 sizeInBytes) override;
 			virtual UInt32 getFirstReceiveDataSizeInBytes() const override;
-			virtual Void popReceiveData(BytePtr data) override;
+			virtual Void popReceiveData(VoidPtr data) override;
 		};
 	}
 }

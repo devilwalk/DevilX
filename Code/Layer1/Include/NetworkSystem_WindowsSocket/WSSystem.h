@@ -18,7 +18,9 @@ namespace NSDevilX
 				UInt16 mServerPort;
 				TResourcePtrMap<ConstVoidPtr,Void> mInstanceByInterfaceImps;
 				TResourcePtrMap<ILinkImp*,CLink> mLinks;
-				TVectorMT<SOCKET> mUnprocessedSockets;
+				TResourcePtrListMT<CLinker> mUnprocessedLinkers;
+				TMapMT<String,TList<UInt16> > mSearchPorts;
+				TListMT<String> mOnConnectIPs;
 			public:
 				CSystem();
 				~CSystem();
@@ -29,10 +31,6 @@ namespace NSDevilX
 				UInt16 getServerPort()const
 				{
 					return mServerPort;
-				}
-				Void addUnprocessedSokcetMT(SOCKET s)
-				{
-					mUnprocessedSockets.pushBackMT(s);
 				}
 				VoidPtr getInstanceByInterfaceImp(ConstVoidPtr interfaceImp)const
 				{
@@ -50,6 +48,9 @@ namespace NSDevilX
 				{
 					mInstanceByInterfaceImps.erase(interfaceImp);
 				}
+				Void addLinkerMT(CLinker * linker);
+				Void removeLinkerMT(CLinker * linker);
+				Void addSearchPortMT(const String & ip,UInt16 port);
 				// Inherited via TMessageReceiver
 				virtual Void onMessage(ISystemImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 			};
