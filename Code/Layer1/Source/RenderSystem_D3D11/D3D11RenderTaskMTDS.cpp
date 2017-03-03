@@ -34,8 +34,7 @@ NSDevilX::NSRenderSystem::NSD3D11::CRenderTask::CRenderTask(CViewport * viewport
 NSDevilX::NSRenderSystem::NSD3D11::CRenderTask::~CRenderTask()
 {
 	clearState();
-	for(auto task:mTasks)
-		DEVILX_DELETE(task);
+	mTasks.destroyAll();
 	auto ref_count=mContext->Release();
 	assert(0==ref_count);
 	if(mCommandList)
@@ -60,7 +59,10 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CRenderTask::prepare()
 	else
 	{
 		for(auto task:mTasks)
-			task->prepare();
+		{
+			if(task)
+				task->prepare();
+		}
 	}
 }
 
@@ -76,7 +78,10 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CRenderTask::process()
 	else
 	{
 		for(auto task:mTasks)
-			task->process();
+		{
+			if(task)
+				task->process();
+		}
 	}
 }
 
@@ -92,7 +97,10 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CRenderTask::clearState()
 	else
 	{
 		for(auto task:mTasks)
-			task->clearState();
+		{
+			if(task)
+				task->clearState();
+		}
 	}
 }
 
@@ -421,8 +429,10 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::CLightTask::pre
 NSDevilX::NSRenderSystem::NSD3D11::CForwardRenderTask::CForwardRenderTask(CViewport * viewport)
 	:CRenderTask(viewport)
 {
-	mTasks.push_back(DEVILX_NEW CClearViewportTask(viewport));
-	mTasks.push_back(DEVILX_NEW CRenderSceneForwardTask(viewport));
+	mTasks.resize(2);
+	mTasks[0]=DEVILX_NEW CClearViewportTask(viewport);
+	if(getViewport()->getCamera())
+		mTasks[1]=DEVILX_NEW CRenderSceneForwardTask(viewport);
 }
 
 NSDevilX::NSRenderSystem::NSD3D11::CForwardRenderTask::~CForwardRenderTask()
@@ -445,7 +455,15 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CForwardRenderTask::setClearStencil(Int3
 
 Void NSDevilX::NSRenderSystem::NSD3D11::CForwardRenderTask::prepare()
 {
-	mTasks[1]->submit();
+	if(getViewport()->getCamera()&&(nullptr==mTasks[1]))
+		mTasks[1]=DEVILX_NEW CRenderSceneForwardTask(getViewport());
+	else if((nullptr==getViewport()->getCamera())&&((nullptr!=mTasks[1])))
+	{
+		DEVILX_DELETE(mTasks[1]);
+		mTasks[1]=nullptr;
+	}
+	if(mTasks[1])
+		mTasks[1]->submit();
 }
 
 NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneGBufferTask::CRenderSceneGBufferTask(CViewport * viewport)

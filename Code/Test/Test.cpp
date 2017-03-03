@@ -52,14 +52,14 @@ int main()
 				gLocalSendLink=NSNetworkSystem::getSystem()->createLink(destIP,port);
 			}
 		}
-		virtual Void onConnect(const String & destIP) override
+		virtual Void onConnect(String destIP,UInt16 port) override
 		{
 			if((!gLocalReceiveLink)&&(destIP=="127.0.0.1"))
 			{
-				gLocalReceiveLink=NSNetworkSystem::getSystem()->createLink(destIP,-1);
+				gLocalReceiveLink=NSNetworkSystem::getSystem()->createLink(destIP,port);
 			}
 		}
-		virtual Void onDeconnect(const String & destIP) override
+		virtual Void onDeconnect(NSNetworkSystem::ILink * link) override
 		{}
 	};
 	SNetworkSystemListener network_system_listener;

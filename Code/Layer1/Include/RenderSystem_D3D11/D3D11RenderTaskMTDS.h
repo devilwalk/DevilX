@@ -15,7 +15,7 @@ namespace NSDevilX
 				ID3D11DeviceContext1 * mContext;
 				ID3D11CommandList * mCommandList;
 				UInt32 mThreadSyncGroupID;
-				TVector<CRenderTask*> mTasks;
+				TResourcePtrVector<CRenderTask> mTasks;
 			public:
 				CRenderTask(CViewport * viewport);
 				virtual ~CRenderTask();

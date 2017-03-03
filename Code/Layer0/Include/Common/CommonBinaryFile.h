@@ -10,16 +10,13 @@ namespace NSDevilX
 	public:
 		struct SChunkBase
 		{
+			friend class CBinaryFileChunk;
 		public:
-			Void writeTo(VoidPtr & dst,Bool movePointer=True)const;
-			Void writeTo(CDataStreamWriter * writer)const;
-			Boolean readFrom(VoidPtr & src,Bool movePointer=True);
-			Boolean readFrom(CDataStreamReader * reader,Bool movePointer=True);
+			virtual Void writeTo(VoidPtr & dst,Bool movePointer=True)const;
+			virtual Void writeTo(CDataStreamWriter * writer,Bool movePointer=True)const;
+			virtual Boolean readFrom(VoidPtr & src,Bool movePointer=True);
+			virtual Boolean readFrom(CDataStreamReader * reader,Bool movePointer=True);
 		protected:
-			virtual Void _preWriteTo(VoidPtr & dst,Bool movePointer=True)const;
-			virtual Void _preWriteTo(CDataStreamWriter * writer)const;
-			virtual Boolean _preReadFrom(VoidPtr & src,Bool movePointer=True);
-			virtual Boolean _preReadFrom(CDataStreamReader * reader,Bool movePointer=True);
 			virtual ConstVoidPtr _getWritePointer()const=0;
 			virtual UInt32 _getWriteSize()const=0;
 			virtual VoidPtr _getReadPointer()=0;
@@ -46,13 +43,16 @@ namespace NSDevilX
 			,public SChunkBase
 		{
 		protected:
-			UInt32 mSizeInBytes;
+			UInt32 & mSizeInBytesRef;
 		public:
-			SSizeChunk();
-			SSizeChunk(UInt32 sizeInBytes);
+			static UInt32 getSize()
+			{
+				return sizeof(UInt32);
+			}
+			SSizeChunk(UInt32 & sizeInBytesRef);
 			UInt32 getValue()const
 			{
-				return mSizeInBytes;
+				return mSizeInBytesRef;
 			}
 		protected:
 			virtual ConstVoidPtr _getWritePointer()const override;
@@ -65,26 +65,26 @@ namespace NSDevilX
 			,public TBaseObject<SDataChunk>
 		{
 		protected:
+			SSizeChunk * mSizeChunk;
 			TVector<Byte> mData;
 		public:
 			SDataChunk();
-			SDataChunk(ConstBytePtr data,UInt32 sizeInBytes);
+			SDataChunk(ConstVoidPtr data,UInt32 sizeInBytes);
+			~SDataChunk();
 			ConstBytePtr getData()const
 			{
 				if(getSizeInBytes())
-					return &mData[0];
+					return &mData[SSizeChunk::getSize()];
 				else
 					return nullptr;
 			}
 			UInt32 getSizeInBytes()const
 			{
-				return static_cast<UInt32>(mData.size());
+				return mSizeChunk?mSizeChunk->getValue():0;
 			}
+			virtual Boolean readFrom(VoidPtr & src,Bool movePointer=True) override;
+			virtual Boolean readFrom(CDataStreamReader * reader,Bool movePointer=True) override;
 		protected:
-			virtual Void _preWriteTo(VoidPtr & dst,Bool movePointer=True)const override;
-			virtual Void _preWriteTo(CDataStreamWriter * writer)const override;
-			virtual Boolean _preReadFrom(VoidPtr & src,Bool movePointer=True)override;
-			virtual Boolean _preReadFrom(CDataStreamReader * reader,Bool movePointer=True)override;
 			virtual ConstVoidPtr _getWritePointer()const override;
 			virtual UInt32 _getWriteSize()const override;
 			virtual VoidPtr _getReadPointer()override;
@@ -96,7 +96,7 @@ namespace NSDevilX
 		public:
 			SStringChunk();
 			SStringChunk(const String & value);
-			const String getValue()const;
+			String getValue()const;
 		};
 		static const STagChunk msBegin;
 		static const STagChunk msEnd;
@@ -105,7 +105,7 @@ namespace NSDevilX
 		SDataChunk mData;
 	public:
 		CBinaryFileChunk();
-		CBinaryFileChunk(const String & name,ConstBytePtr data,UInt32 sizeInBytes);
+		CBinaryFileChunk(const String & name,ConstVoidPtr data,UInt32 sizeInBytes);
 		~CBinaryFileChunk();
 		String getName()const
 		{
@@ -113,7 +113,11 @@ namespace NSDevilX
 		}
 		ConstBytePtr getData()const
 		{
-			return mData.getData();;
+			return mData.getData();
+		}
+		String getDataInString()const
+		{
+			return static_cast<const SStringChunk*>(&mData)->getValue();
 		}
 		UInt32 getSizeInBytes()const
 		{
@@ -133,7 +137,7 @@ namespace NSDevilX
 		Chunks mChunks;
 	public:
 		CBinaryFile();
-		Boolean addChunk(const String & name,ConstBytePtr data,UInt32 sizeInBytes);
+		Boolean addChunk(const String & name,ConstVoidPtr data,UInt32 sizeInBytes);
 		const CBinaryFileChunk * getChunk(const String & name)const;
 		const CBinaryFileChunk * getChunk(SizeT index)const
 		{

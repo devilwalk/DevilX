@@ -20,7 +20,7 @@ namespace NSDevilX
 				TResourcePtrMap<ILinkImp*,CLink> mLinks;
 				TResourcePtrListMT<CLinker> mUnprocessedLinkers;
 				TMapMT<String,TList<UInt16> > mSearchPorts;
-				TListMT<String> mOnConnectIPs;
+				TListMT<std::pair<String,UInt16> > mOnConnects;
 			public:
 				CSystem();
 				~CSystem();

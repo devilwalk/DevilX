@@ -66,6 +66,19 @@ String NSDevilX::CDirectory::getCurrentDirectory()
 	return ret.c_str();
 }
 
+String NSDevilX::CDirectory::getApplicationDirectory()
+{
+	String ret;
+#if DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_WINDOWS
+	ret.resize(MAX_PATH);
+	::GetModuleFileNameA(nullptr,&ret[0],MAX_PATH);
+	ret=ret.substr(0,ret.find_last_of('\\'));
+#elif DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_LINUX
+#error("not implement!!")
+#endif
+	return cleanPath(ret);
+}
+
 String NSDevilX::CDirectory::getAbsolutePath(const String & path,String currentPath)
 {
 	String ret;

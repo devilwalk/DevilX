@@ -55,6 +55,42 @@ namespace NSDevilX
 		}
 	};
 	template<class ValueT>
+	class TResourcePtrVector
+		:public TResourcePtrContainer<TVector<ValueT*> >
+	{
+	public:
+		using TResourcePtrContainer<TVector<ValueT*> >::TResourcePtrContainer;
+		using TResourcePtrContainer<TVector<ValueT*> >::operator=;
+		virtual ~TResourcePtrVector(){}
+	};
+	template<class ValueT>
+	class TResourcePtrVectorMT
+		:public TResourcePtrContainer<TVectorMT<ValueT*> >
+	{
+	public:
+		using TResourcePtrContainer<TVectorMT<ValueT*> >::TResourcePtrContainer;
+		using TResourcePtrContainer<TVectorMT<ValueT*> >::operator=;
+		virtual ~TResourcePtrVectorMT()
+		{
+			destroyAllMT();
+		}
+		Void destroyMT(ValueT * value)
+		{
+			eraseMT(value);
+			delete value;
+		}
+		Void destroyAllMT()
+		{
+			this->lockWrite();
+			for(auto res:*this)
+			{
+				delete res;
+			}
+			this->clear();
+			this->unLockWrite();
+		}
+	};
+	template<class ValueT>
 	class TResourcePtrList
 		:public TResourcePtrContainer<TList<ValueT*> >
 	{

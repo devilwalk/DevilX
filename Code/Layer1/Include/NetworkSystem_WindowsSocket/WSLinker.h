@@ -14,6 +14,7 @@ namespace NSDevilX
 				HANDLE mReadThread,mWriteThread;
 				HANDLE mWriteThreadEvent;
 				String mDestIP;
+				UInt16 mDestPort;
 				TListMT<TVector<Byte> > mSendDatas;
 				TVectorMT<TVector<Byte> > mRecvDatas;
 			public:
@@ -26,6 +27,10 @@ namespace NSDevilX
 				const String & getDestIP()const
 				{
 					return mDestIP;
+				}
+				UInt16 getDestPort()const
+				{
+					return mDestPort;
 				}
 				HANDLE getWriteThreadEvent()const
 				{

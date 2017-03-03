@@ -10,8 +10,8 @@ namespace NSDevilX
 			virtual ~ISystemListener(){}
 		public:
 			virtual Void onSearch(String destIP,UInt16 port)=0;
-			virtual Void onConnect(const String & destIP)=0;
-			virtual Void onDeconnect(const String & destIP)=0;
+			virtual Void onConnect(String destIP,UInt16 port)=0;
+			virtual Void onDeconnect(ILink * link)=0;
 		};
 		class ISystem
 		{

@@ -186,16 +186,23 @@ NSDevilX::NSNetworkSystem::NSWindowsSocket::CSystem::~CSystem()
 Void NSDevilX::NSNetworkSystem::NSWindowsSocket::CSystem::addLinkerMT(CLinker * linker)
 {
 	mUnprocessedLinkers.pushBackMT(linker);
-	mOnConnectIPs.pushBackMT(linker->getDestIP());
+	mOnConnects.pushBackMT(decltype(mOnConnects)::value_type(linker->getDestIP(),linker->getDestPort()));
 }
 
 Void NSDevilX::NSNetworkSystem::NSWindowsSocket::CSystem::removeLinkerMT(CLinker * linker)
 {
+	Boolean processed=false;
 	mUnprocessedLinkers.lockWrite();
 	if(mUnprocessedLinkers.has(linker))
+	{
 		mUnprocessedLinkers.destroy(linker);
+		processed=true;
+	}
 	mUnprocessedLinkers.unLockWrite();
-	ISystemImp::getSingleton().getListener()->onDeconnect(linker->getDestIP());
+	if(!processed)
+	{
+		ISystemImp::getSingleton().getListener()->onDeconnect(ISystemImp::getSingleton().getLink(linker->getDestIP(),linker->getDestPort()));
+	}
 }
 
 Void NSDevilX::NSNetworkSystem::NSWindowsSocket::CSystem::addSearchPortMT(const String & ip,UInt16 port)
@@ -223,37 +230,36 @@ Void NSDevilX::NSNetworkSystem::NSWindowsSocket::CSystem::onMessage(ISystemImp *
 		}
 		mSearchPorts.clear();
 		mSearchPorts.unLockWrite();
-		mOnConnectIPs.lockWrite();
+		mOnConnects.lockWrite();
 		if(ISystemImp::getSingleton().getListener())
 		{
-			for(auto const & ip:mOnConnectIPs)
+			for(auto const & connect:mOnConnects)
 			{
-				ISystemImp::getSingleton().getListener()->onConnect(ip);
+				ISystemImp::getSingleton().getListener()->onConnect(connect.first,connect.second);
 			}
 		}
-		mOnConnectIPs.clear();
-		mOnConnectIPs.unLockWrite();
+		mOnConnects.clear();
+		mOnConnects.unLockWrite();
 		break;
 	case ISystemImp::EMessage_EndCreateLink:
 	{
 		auto link_imp=static_cast<ILinkImp*>(data);
-		if(static_cast<UInt16>(-1)==link_imp->getPort())
+		CLinker * unprocessed_linker=nullptr;
+		mUnprocessedLinkers.lockWrite();
+		for(auto iter=mUnprocessedLinkers.begin();mUnprocessedLinkers.end()!=iter;++iter)
 		{
-			CLinker * dst_linker=nullptr;
-			mUnprocessedLinkers.lockWrite();
-			for(auto iter=mUnprocessedLinkers.begin();mUnprocessedLinkers.end()!=iter;++iter)
+			auto linker=*iter;
+			if((linker->getDestIP()==link_imp->getDestination())
+				&&(linker->getDestPort()==link_imp->getPort()))
 			{
-				auto linker=*iter;
-				if(linker->getDestIP()==link_imp->getDestination())
-				{
-					dst_linker=linker;
-					mUnprocessedLinkers.erase(iter);
-					break;
-				}
+				unprocessed_linker=linker;
+				mUnprocessedLinkers.erase(iter);
+				break;
 			}
-			mUnprocessedLinkers.unLockWrite();
-			mLinks[static_cast<ILinkImp*>(data)]=DEVILX_NEW CLinkFrom(link_imp,dst_linker);
 		}
+		mUnprocessedLinkers.unLockWrite();
+		if(unprocessed_linker)
+			mLinks[static_cast<ILinkImp*>(data)]=DEVILX_NEW CLinkFrom(link_imp,unprocessed_linker);
 		else
 			mLinks[static_cast<ILinkImp*>(data)]=DEVILX_NEW CLinkTo(static_cast<ILinkImp*>(data));
 	}

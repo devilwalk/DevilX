@@ -12,6 +12,7 @@ namespace NSDevilX
 	public:
 		static String cleanPath(const String & path);
 		static String getCurrentDirectory();
+		static String getApplicationDirectory();
 		static String getAbsolutePath(const String & path,String currentPath="");
 		static Void create(const String & fullName);
 		CDirectory(const String & name,CDirectory * parent=nullptr)

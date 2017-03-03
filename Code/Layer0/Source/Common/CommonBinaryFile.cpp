@@ -5,7 +5,6 @@ Void NSDevilX::CBinaryFileChunk::SChunkBase::writeTo(VoidPtr & dst,Bool movePoin
 {
 	if(!_getWriteSize())
 		return;
-	_preWriteTo(dst,movePointer);
 	memcpy(dst,_getWritePointer(),_getWriteSize());
 	if(movePointer)
 	{
@@ -13,58 +12,33 @@ Void NSDevilX::CBinaryFileChunk::SChunkBase::writeTo(VoidPtr & dst,Bool movePoin
 	}
 }
 
-Void NSDevilX::CBinaryFileChunk::SChunkBase::writeTo(CDataStreamWriter * writer) const
+Void NSDevilX::CBinaryFileChunk::SChunkBase::writeTo(CDataStreamWriter * writer,Bool movePointer) const
 {
 	if(!_getWriteSize())
 		return;
-	_preWriteTo(writer);
 	writer->process(_getWritePointer(),_getWriteSize());
+	if(!movePointer)
+	{
+		writer->move(-static_cast<Int32>(_getWriteSize()));
+	}
 }
 
 Boolean NSDevilX::CBinaryFileChunk::SChunkBase::readFrom(VoidPtr & src,Bool movePointer)
 {
-	if(_preReadFrom(src,movePointer))
+	memcpy(_getReadPointer(),src,_getReadSize());
+	if(movePointer)
 	{
-		memcpy(_getReadPointer(),src,_getReadSize());
-		if(movePointer)
-		{
-			src=static_cast<BytePtr>(src)+_getReadSize();
-		}
-		return true;
+		src=static_cast<BytePtr>(src)+_getReadSize();
 	}
-	else
-	{
-		return false;
-	}
+	return true;
 }
 
 Boolean NSDevilX::CBinaryFileChunk::SChunkBase::readFrom(CDataStreamReader * reader,Bool movePointer)
 {
-	Boolean ret=_preReadFrom(reader,movePointer);
-	if(ret)
-	{
-		ret&=reader->process(_getReadSize(),_getReadPointer());
-		if(!movePointer)
-			reader->move(-static_cast<Int32>(_getReadSize()));
-	}
+	Boolean ret=reader->process(_getReadSize(),_getReadPointer());
+	if(!movePointer)
+		reader->move(-static_cast<Int32>(_getReadSize()));
 	return ret;
-}
-
-Void NSDevilX::CBinaryFileChunk::SChunkBase::_preWriteTo(VoidPtr & dst,Bool movePointer) const
-{}
-
-Void NSDevilX::CBinaryFileChunk::SChunkBase::_preWriteTo(CDataStreamWriter * writer) const
-{
-}
-
-Boolean NSDevilX::CBinaryFileChunk::SChunkBase::_preReadFrom(VoidPtr & src,Bool movePointer)
-{
-	return true;
-}
-
-Boolean NSDevilX::CBinaryFileChunk::SChunkBase::_preReadFrom(CDataStreamReader * reader,Bool movePointer)
-{
-	return true;
 }
 
 NSDevilX::CBinaryFileChunk::STagChunk::STagChunk()
@@ -104,17 +78,13 @@ UInt32 NSDevilX::CBinaryFileChunk::STagChunk::_getReadSize() const
 	return static_cast<UInt32>(mValue.size());
 }
 
-NSDevilX::CBinaryFileChunk::SSizeChunk::SSizeChunk()
-	:mSizeInBytes(0)
-{}
-
-NSDevilX::CBinaryFileChunk::SSizeChunk::SSizeChunk(UInt32 sizeInBytes)
-	:mSizeInBytes(sizeInBytes)
+NSDevilX::CBinaryFileChunk::SSizeChunk::SSizeChunk(UInt32 & sizeInBytesRef)
+	:mSizeInBytesRef(sizeInBytesRef)
 {}
 
 ConstVoidPtr NSDevilX::CBinaryFileChunk::SSizeChunk::_getWritePointer() const
 {
-	return &mSizeInBytes;
+	return &mSizeInBytesRef;
 }
 
 UInt32 NSDevilX::CBinaryFileChunk::SSizeChunk::_getWriteSize() const
@@ -124,7 +94,7 @@ UInt32 NSDevilX::CBinaryFileChunk::SSizeChunk::_getWriteSize() const
 
 VoidPtr NSDevilX::CBinaryFileChunk::SSizeChunk::_getReadPointer()
 {
-	return &mSizeInBytes;
+	return &mSizeInBytesRef;
 }
 
 UInt32 NSDevilX::CBinaryFileChunk::SSizeChunk::_getReadSize() const
@@ -133,45 +103,47 @@ UInt32 NSDevilX::CBinaryFileChunk::SSizeChunk::_getReadSize() const
 }
 
 NSDevilX::CBinaryFileChunk::SDataChunk::SDataChunk()
-{}
-
-NSDevilX::CBinaryFileChunk::SDataChunk::SDataChunk(ConstBytePtr data,UInt32 sizeInBytes)
+	:mSizeChunk(nullptr)
 {
-	mData.resize(sizeInBytes);
-	memcpy(&mData[0],data,sizeInBytes);
 }
 
-Void NSDevilX::CBinaryFileChunk::SDataChunk::_preWriteTo(VoidPtr & dst,Bool movePointer) const
+NSDevilX::CBinaryFileChunk::SDataChunk::SDataChunk(ConstVoidPtr data,UInt32 sizeInBytes)
+	:mSizeChunk(nullptr)
 {
-	SSizeChunk size_chunk(static_cast<UInt32>(_getWriteSize()));
-	size_chunk.writeTo(dst,movePointer);
+	mData.resize(SSizeChunk::getSize()+sizeInBytes);
+	memcpy(&mData[0],&sizeInBytes,SSizeChunk::getSize());
+	memcpy(&mData[SSizeChunk::getSize()],data,sizeInBytes);
+	mSizeChunk=DEVILX_NEW SSizeChunk(*reinterpret_cast<UInt32*>(&mData[0]));
 }
 
-Void NSDevilX::CBinaryFileChunk::SDataChunk::_preWriteTo(CDataStreamWriter * writer) const
+NSDevilX::CBinaryFileChunk::SDataChunk::~SDataChunk()
 {
-	SSizeChunk size_chunk(static_cast<UInt32>(_getWriteSize()));
-	size_chunk.writeTo(writer);
+	DEVILX_DELETE(mSizeChunk);
 }
 
-Boolean NSDevilX::CBinaryFileChunk::SDataChunk::_preReadFrom(VoidPtr & src,Bool movePointer)
+Boolean NSDevilX::CBinaryFileChunk::SDataChunk::readFrom(VoidPtr & src,Bool movePointer)
 {
-	SSizeChunk size_chunk;
-	Boolean ret=size_chunk.readFrom(src,movePointer);
-	if(ret)
-	{
-		mData.resize(size_chunk.getValue());
-	}
+	DEVILX_DELETE(mSizeChunk);
+	mSizeChunk=nullptr;
+	UInt32 temp_size=0;
+	SSizeChunk size_chunk(temp_size);
+	auto ret=size_chunk.readFrom(src,False);
+	mData.resize(SSizeChunk::getSize()+size_chunk.getValue());
+	ret&=SChunkBase::readFrom(src,movePointer);
+	mSizeChunk=DEVILX_NEW SSizeChunk(*reinterpret_cast<UInt32*>(&mData[0]));
 	return ret;
 }
 
-Boolean NSDevilX::CBinaryFileChunk::SDataChunk::_preReadFrom(CDataStreamReader * reader,Bool movePointer)
+Boolean NSDevilX::CBinaryFileChunk::SDataChunk::readFrom(CDataStreamReader * reader,Bool movePointer)
 {
-	SSizeChunk size_chunk;
-	Boolean ret=size_chunk.readFrom(reader,movePointer);
-	if(ret)
-	{
-		mData.resize(size_chunk.getValue());
-	}
+	DEVILX_DELETE(mSizeChunk);
+	mSizeChunk=nullptr;
+	UInt32 temp_size=0;
+	SSizeChunk size_chunk(temp_size);
+	auto ret=size_chunk.readFrom(reader,False);
+	mData.resize(SSizeChunk::getSize()+size_chunk.getValue());
+	ret&=SChunkBase::readFrom(reader,movePointer);
+	mSizeChunk=DEVILX_NEW SSizeChunk(*reinterpret_cast<UInt32*>(&mData[0]));
 	return ret;
 }
 
@@ -202,9 +174,12 @@ NSDevilX::CBinaryFileChunk::SStringChunk::SStringChunk(const String & value)
 	:SDataChunk(reinterpret_cast<ConstBytePtr>(&value[0]),static_cast<UInt32>(value.size()))
 {}
 
-const String NSDevilX::CBinaryFileChunk::SStringChunk::getValue() const
+String NSDevilX::CBinaryFileChunk::SStringChunk::getValue() const
 {
-	return String(mData.begin(),mData.end());
+	String ret;
+	ret.resize(getSizeInBytes());
+	memcpy(&ret[0],getData(),getSizeInBytes());
+	return ret;
 }
 
 const NSDevilX::CBinaryFileChunk::STagChunk NSDevilX::CBinaryFileChunk::msBegin("BEGIN");
@@ -212,7 +187,7 @@ const NSDevilX::CBinaryFileChunk::STagChunk NSDevilX::CBinaryFileChunk::msEnd("E
 NSDevilX::CBinaryFileChunk::CBinaryFileChunk()
 {}
 
-NSDevilX::CBinaryFileChunk::CBinaryFileChunk(const String & name,ConstBytePtr data,UInt32 sizeInBytes)
+NSDevilX::CBinaryFileChunk::CBinaryFileChunk(const String & name,ConstVoidPtr data,UInt32 sizeInBytes)
 	:mName(name)
 	,mData(data,sizeInBytes)
 {
@@ -266,10 +241,19 @@ Boolean NSDevilX::CBinaryFileChunk::readFrom(CDataStreamReader * reader,Bool mov
 		ret&=(msBegin==chunk);
 		if(ret)
 		{
-			ret&=chunk.readFrom(reader,movePointer);
-			ret&=mName.readFrom(reader,movePointer);
-			ret&=mData.readFrom(reader,movePointer);
-			ret&=chunk.readFrom(reader,movePointer);
+			Int32 offset=0;
+			ret&=chunk.readFrom(reader);
+			offset-=static_cast<Int32>(static_cast<const SChunkBase*>(&chunk)->_getReadSize());
+			ret&=mName.readFrom(reader);
+			offset-=static_cast<Int32>(static_cast<const SChunkBase*>(&mName)->_getReadSize());
+			ret&=mData.readFrom(reader);
+			offset-=static_cast<Int32>(static_cast<const SChunkBase*>(&mData)->_getReadSize());
+			ret&=chunk.readFrom(reader);
+			offset-=static_cast<Int32>(static_cast<const SChunkBase*>(&chunk)->_getReadSize());
+			if(!movePointer)
+			{
+				reader->move(offset);
+			}
 			assert(msEnd==chunk);
 		}
 	}
@@ -284,7 +268,7 @@ NSDevilX::CBinaryFile::CBinaryFile()
 	}
 }
 
-Boolean NSDevilX::CBinaryFile::addChunk(const String & name,ConstBytePtr data,UInt32 sizeInBytes)
+Boolean NSDevilX::CBinaryFile::addChunk(const String & name,ConstVoidPtr data,UInt32 sizeInBytes)
 {
 	Boolean ret=getChunk(name)?false:true;
 	if(ret)

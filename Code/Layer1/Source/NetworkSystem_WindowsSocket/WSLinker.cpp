@@ -111,6 +111,7 @@ NSDevilX::NSNetworkSystem::NSWindowsSocket::CLinker::CLinker(SOCKET s)
 		OutputDebugStringA(("CLinker::CLinker::getpeername:"+CStringConverter::toString(last_error)+"\r\n").c_str());
 	}
 	mDestIP=inet_ntoa(addr.sin_addr);
+	mDestPort=ntohs(addr.sin_port);
 	setActive(true);
 }
 
