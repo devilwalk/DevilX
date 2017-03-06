@@ -24,6 +24,7 @@ NSDevilX::NSFightChess::CLoginPage::CLoginPage()
 	background->queryInterface_IElement()->setPosition(CFloat2(0.25f));
 	background->queryInterface_IElement()->setSize(CFloat2(0.5f));
 	background->setColour(CFloatRGB::sWhite);
+	background->setTexture(CApp::getSingleton().getGame()->getFontManager()->getRenderTexture(),CSInt2::sZero,CSInt2(31,31));
 	mGraphicWindows.push_back(background);
 }
 

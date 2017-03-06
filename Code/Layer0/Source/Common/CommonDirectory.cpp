@@ -76,7 +76,19 @@ String NSDevilX::CDirectory::getApplicationDirectory()
 #elif DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_LINUX
 #error("not implement!!")
 #endif
-	return cleanPath(ret);
+	return cleanPath(ret.c_str());
+}
+
+String NSDevilX::CDirectory::getSystemFontsDirectory()
+{
+	String ret;
+#if DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_WINDOWS
+	ret.resize(MAX_PATH);
+	::GetWindowsDirectoryA(&ret[0],MAX_PATH);
+#elif DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_LINUX
+#error("not implement!!")
+#endif
+	return cleanPath(ret.c_str());
 }
 
 String NSDevilX::CDirectory::getAbsolutePath(const String & path,String currentPath)

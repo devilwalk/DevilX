@@ -6,6 +6,8 @@
 #include "Actor.h"
 #include "App.h"
 #include "Buff.h"
+#include "Entity.h"
+#include "FontManager.h"
 #include "Register.h"
 #include "Game.h"
 #include "Grid.h"

@@ -5,6 +5,7 @@ using namespace NSFightChess;
 NSDevilX::NSFightChess::CGame::CGame()
 	:mViewport(nullptr)
 	,mServerManager(nullptr)
+	,mFontManager(nullptr)
 	,mUIManager(nullptr)
 {
 	mViewport=CApp::getSingleton().getRenderWindow()->queryInterface_IRenderTarget()->createViewport("Main");
@@ -15,12 +16,14 @@ NSDevilX::NSFightChess::CGame::CGame()
 NSDevilX::NSFightChess::CGame::~CGame()
 {
 	DEVILX_DELETE(mServerManager);
+	DEVILX_DELETE(mFontManager);
 	DEVILX_DELETE(mUIManager);
 }
 
 Void NSDevilX::NSFightChess::CGame::initialize()
 {
 	mServerManager=DEVILX_NEW CServerManager;
+	mFontManager=DEVILX_NEW CFontManager;
 	mUIManager=DEVILX_NEW CUIManager;
 
 	startModule("Login");

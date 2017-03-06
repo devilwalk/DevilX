@@ -80,6 +80,10 @@ Void NSDevilX::NSRenderSystem::NSD3D11::COverlayRenderable::removeElement(IOverl
 	mGeometry->getInterfaceImp()->getVertexBuffer()->updatePositions(vertex_start,4);
 	mFrees.push_back(vertex_start);
 	mRectangles.erase(element);
+	element->removeListener(static_cast<TMessageReceiver<IOverlayElementImp>*>(this),IOverlayElementImp::EMessage_EndPositionChange);
+	element->removeListener(static_cast<TMessageReceiver<IOverlayElementImp>*>(this),IOverlayElementImp::EMessage_EndSizeChange);
+	element->removeListener(static_cast<TMessageReceiver<IOverlayElementImp>*>(this),IOverlayElementImp::EMessage_EndUVTransformChange);
+	element->removeListener(static_cast<TMessageReceiver<IOverlayElementImp>*>(this),IOverlayElementImp::EMessage_EndColourUnitStateCreate);
 }
 
 Void NSDevilX::NSRenderSystem::NSD3D11::COverlayRenderable::onMessage(IOverlayElementImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)

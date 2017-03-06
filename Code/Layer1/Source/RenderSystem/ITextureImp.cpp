@@ -20,10 +20,11 @@ Void NSDevilX::NSRenderSystem::ITexture2DImp::SSubTexture::setMemoryPixels(Const
 
 Void NSDevilX::NSRenderSystem::ITexture2DImp::SSubTexture::setRenderTargetPixels(IRenderTargetImp * target)
 {
-	Boolean old_enable=mRenderTargetPixels!=nullptr;
-	Boolean new_enable=target!=nullptr;
+	const Boolean old_enable=mRenderTargetPixels!=nullptr;
+	const Boolean new_enable=target!=nullptr;
 	mRenderTargetPixels=target;
-	mMemoryPixels=nullptr;
+	if(new_enable)
+		mMemoryPixels=nullptr;
 	if(old_enable!=new_enable)
 	{
 		if(new_enable)
@@ -173,7 +174,7 @@ Void NSDevilX::NSRenderSystem::ITexture2DImp::setPixels(ConstVoidPtr pixels,UInt
 	_createSubTextures();
 	if(static_cast<UInt32>(-1)==mipmapLevel)
 	{
-		for(UInt32 mipmap_level=0;mipmap_level<=mRealMipmapCount;++mipmapLevel)
+		for(UInt32 mipmap_level=0;mipmap_level<=mRealMipmapCount;++mipmap_level)
 		{
 			auto key=encodeSubTextureKey(mipmap_level,arrayIndex);
 			const auto sub_tex=mSubTextures.get(key);

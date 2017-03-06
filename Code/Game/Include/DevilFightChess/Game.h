@@ -1,5 +1,6 @@
 #pragma once
 #include "ServerManager.h"
+#include "FontManager.h"
 #include "UIManager.h"
 #include "Module.h"
 namespace NSDevilX
@@ -12,6 +13,7 @@ namespace NSDevilX
 		protected:
 			NSRenderSystem::IViewport * mViewport;
 			CServerManager * mServerManager;
+			CFontManager * mFontManager;
 			CUIManager * mUIManager;
 			TSet<CModule*> mActiveModules;
 			TNamedResourcePtrMap<CModule> mModules;
@@ -21,6 +23,10 @@ namespace NSDevilX
 			CServerManager * getServerManager()const
 			{
 				return mServerManager;
+			}
+			CFontManager * getFontManager()const
+			{
+				return mFontManager;
 			}
 			CUIManager * getUIManager()const
 			{

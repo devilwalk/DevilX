@@ -204,7 +204,7 @@ Void NSDevilX::CMessageNotifier::removeListener(CMessageReceiver * receiver,UInt
 {
 	if(
 		(!_getSource(message))
-	   ||receiver->hasListener(message)
+	   ||(!receiver->hasListener(message))
 	   )
 		return;
 	_getSourceList()[message]->removeListener(receiver->getListener(message));

@@ -13,8 +13,8 @@ COverlayMaterial * NSDevilX::NSRenderSystem::NSD3D11::COverlayMaterialManager::g
 {
 	COverlayMaterial * ret=nullptr;
 	CTexture * tex=nullptr;
-	if(element->getTextureUnitState()->getTexture())
-		tex=CSystemImp::getSingleton().getTexture(static_cast<ITextureImp*>(element->getTextureUnitState()->getTexture()));
+	if(const_cast<const IOverlayElementImp*>(element)->getTextureUnitState()&&const_cast<const IOverlayElementImp*>(element)->getTextureUnitState()->getTexture())
+		tex=CSystemImp::getSingleton().getTexture(static_cast<ITextureImp*>(const_cast<const IOverlayElementImp*>(element)->getTextureUnitState()->getTexture()));
 	for(auto material:mMaterials)
 	{
 		if(nullptr==tex)

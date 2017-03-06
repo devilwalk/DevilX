@@ -20,12 +20,6 @@ namespace NSDevilX
 						return DXGI_FORMAT_BC2_UNORM;
 					case IEnum::ETexture2DFormat_BC3:
 						return DXGI_FORMAT_BC3_UNORM;
-					case IEnum::ETexture2DFormat_Font:
-						return DXGI_FORMAT_A8_UNORM;
-					case IEnum::ETexture2DFormat_Shadow:
-						return DXGI_FORMAT_D32_FLOAT;
-					case IEnum::ETexture2DFormat_Environment:
-						return DXGI_FORMAT_R8G8B8A8_UNORM;
 					}
 					return DXGI_FORMAT_UNKNOWN;
 				}

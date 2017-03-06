@@ -118,6 +118,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Actor.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\App.h" />
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\FontManager.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Register.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\LocalServer.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Login.h" />
@@ -135,6 +136,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Actor.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\App.cpp" />
+    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\FontManager.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Game.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Grid.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\LocalServer.cpp" />

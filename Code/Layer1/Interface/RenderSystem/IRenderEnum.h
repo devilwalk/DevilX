@@ -71,19 +71,14 @@ namespace NSDevilX
 				ETexture2DFormat_R8G8B8A8,
 				ETexture2DFormat_BC1,
 				ETexture2DFormat_BC2,
-				ETexture2DFormat_BC3,
-				ETexture2DFormat_Font,
-				ETexture2DFormat_Shadow,
-				ETexture2DFormat_Environment
+				ETexture2DFormat_BC3
 			};
 			enum ETextureCubeFormat
 			{
 				ETextureCubeFormat_R8G8B8A8,
 				ETextureCubeFormat_BC1,
 				ETextureCubeFormat_BC2,
-				ETextureCubeFormat_BC3,
-				ETextureCubeFormat_Shadow,
-				ETextureCubeFormat_Environment
+				ETextureCubeFormat_BC3
 			};
 			enum ETextureType
 			{
