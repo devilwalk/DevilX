@@ -7,8 +7,8 @@ namespace NSDevilX
 			:public TBaseObject<CGrid>
 		{
 		protected:
-			UInt16 mRowIndex;
-			UInt16 mColumnIndex;
+			const UInt16 mRowIndex;
+			const UInt16 mColumnIndex;
 		public:
 			CGrid(UInt16 rowIndex,UInt16 columnIndex);
 			~CGrid();

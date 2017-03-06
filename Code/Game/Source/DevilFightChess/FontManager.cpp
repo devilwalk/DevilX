@@ -65,9 +65,8 @@ Void NSDevilX::NSFightChess::CFontManager::getUV(WChar ch,CFloat2 * uvOffset,CFl
 		{
 			for(UInt32 u=0;u<mFTFace->glyph->bitmap.width;++u)
 			{
-				const auto bitmap_row=mFTFace->glyph->bitmap.rows-v-1;
-				auto font_img_pixel=mFTFace->glyph->bitmap.buffer[bitmap_row*mFTFace->glyph->bitmap.width+u];
-				auto & pixel_ref=mPixels[(pixel_start_v+u)*mRenderTexture->queryInterface_ITexture2DReadable()->getWidth()+pixel_start_u+v];
+				auto font_img_pixel=mFTFace->glyph->bitmap.buffer[v*mFTFace->glyph->bitmap.width+u];
+				auto & pixel_ref=mPixels[(pixel_start_v+v)*mRenderTexture->queryInterface_ITexture2DReadable()->getWidth()+pixel_start_u+u];
 				pixel_ref=CFloatRGBA(font_img_pixel,font_img_pixel,font_img_pixel,font_img_pixel).rgba8();
 			}
 		}

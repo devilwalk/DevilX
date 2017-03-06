@@ -37,6 +37,10 @@ namespace NSDevilX
 				// Í¨¹ý TMessageReceiver ¼Ì³Ð
 				virtual Void onMessage(IOverlayElementImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 				virtual Void onMessage(IColourUnitStateImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
+			protected:
+				Void _updateElementPosition(IOverlayElementImp * element);
+				Void _updateElementTextureCoord(IOverlayElementImp * element);
+				Void _updateElementDiffuse(IOverlayElementImp * element);
 			};
 		}
 	}

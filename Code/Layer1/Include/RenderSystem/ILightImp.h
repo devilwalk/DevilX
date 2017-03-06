@@ -155,7 +155,7 @@ namespace NSDevilX
 			Void findVisibleObjectsMT();
 			IColourUnitStateImp * getColourUnitState(IEnum::ELightColourUnitStateType type)const
 			{
-				return (mColourUnitStates.size()>type)?mColourUnitStates[type]:nullptr;
+				return (mColourUnitStates.size()>static_cast<UInt32>(type))?mColourUnitStates[type]:nullptr;
 			}
 			// Inherited via ILight
 			virtual ISceneElement * queryInterface_ISceneElement() const override;
