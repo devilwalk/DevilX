@@ -27,6 +27,14 @@ Void NSDevilX::NSRenderSystem::IVertexBufferImp::setCount(UInt32 count)
 	{
 		mCount=count;
 		addDirtyFlag(EDirtyFlag_Count);
+		updatePositions(0,getCount());
+		updateNormals(0,getCount());
+		updateTangents(0,getCount());
+		updateTextureCoords(0,getCount());
+		updateTextureCoords(0,getCount(),IEnum::ETextureCoord_1);
+		updateBlendWeights(0,getCount());
+		updateBlendIndices(0,getCount());
+		updateDiffuses(0,getCount());
 	}
 }
 

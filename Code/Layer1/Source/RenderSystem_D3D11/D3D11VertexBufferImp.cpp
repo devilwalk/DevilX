@@ -140,7 +140,10 @@ Bool NSDevilX::NSRenderSystem::NSD3D11::CVertexBufferImp::_update(CEnum::EVertex
 		mBuffers[type]=buf;
 	}
 	if(dirties->empty())
-		CSystemImp::getSingleton().getImmediateContext()->UpdateSubresource(getBuffers()[type],0,nullptr,data_ptr,getInterfaceImp()->getCount()*CUtility::getStride(type),getInterfaceImp()->getCount()*CUtility::getStride(type));
+	{
+		if(data_ptr)
+			CSystemImp::getSingleton().getImmediateContext()->UpdateSubresource(getBuffers()[type],0,nullptr,data_ptr,getInterfaceImp()->getCount()*CUtility::getStride(type),getInterfaceImp()->getCount()*CUtility::getStride(type));
+	}
 	else
 	{
 		for(auto const & dirty:*dirties)

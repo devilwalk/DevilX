@@ -61,7 +61,10 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CIndexBufferImp::_update()
 				mBuffer=buf;
 			}
 			if(getInterfaceImp()->getIndicesDirties().empty())
-				CSystemImp::getSingleton().getImmediateContext()->UpdateSubresource(getBuffer(),0,nullptr,getInterfaceImp()->getIndices(),getInterfaceImp()->getCount()*sizeof(UInt32),getInterfaceImp()->getCount()*sizeof(UInt32));
+			{
+				if(getInterfaceImp()->getIndices())
+					CSystemImp::getSingleton().getImmediateContext()->UpdateSubresource(getBuffer(),0,nullptr,getInterfaceImp()->getIndices(),getInterfaceImp()->getCount()*sizeof(UInt32),getInterfaceImp()->getCount()*sizeof(UInt32));
+			}
 			else
 			{
 				for(auto const & dirty:getInterfaceImp()->getIndicesDirties())

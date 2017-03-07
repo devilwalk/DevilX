@@ -25,7 +25,8 @@ NSDevilX::NSFightChess::CLoginPage::CLoginPage()
 	background->queryInterface_IElement()->setSize(CFloat2(0.5f));
 	background->setColour(CFloatRGB::sWhite);
 	mGraphicWindows.push_back(background);
-	CApp::getSingleton().getGame()->getUIManager()->createStaticText("LoginPage/Username",L"用户名",CFloat2(0.25f),CFloat2(0.1f));
+	CApp::getSingleton().getGame()->getUIManager()->createStaticText("LoginPage/StaticText/Username",L"用户名:",background->queryInterface_IElement()->convertPosition(CFloat2(0.2f)),background->queryInterface_IElement()->convertSize(CFloat2(0.2f,0.05f)));
+	CApp::getSingleton().getGame()->getUIManager()->createStaticText("LoginPage/StaticText/Password",L"密码:",background->queryInterface_IElement()->convertPosition(CFloat2(0.2f,0.25f)),background->queryInterface_IElement()->convertSize(CFloat2(0.2f,0.05f)));
 }
 
 NSDevilX::NSFightChess::CLoginPage::~CLoginPage()

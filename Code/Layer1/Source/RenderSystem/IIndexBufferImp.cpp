@@ -20,6 +20,7 @@ Void NSDevilX::NSRenderSystem::IIndexBufferImp::setCount(UInt32 count)
 	{
 		mCount=count;
 		addDirtyFlag(EDirtyFlag_Count);
+		updateIndices(0,getCount());
 	}
 }
 

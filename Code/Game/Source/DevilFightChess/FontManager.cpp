@@ -55,7 +55,7 @@ Void NSDevilX::NSFightChess::CFontManager::getPixelRange(WChar ch,CSInt2 * pixel
 		const UInt32 ret_pixel_start_v=pixel_start_v;
 		for(auto v=0;v<sFontSize;++v)
 		{
-			memset(&mPixels[(pixel_start_v+v)*mRenderTexture->queryInterface_ITexture2DReadable()->getWidth()],0,sFontSize*sizeof(RGBA));
+			memset(&mPixels[(pixel_start_v+v)*mRenderTexture->queryInterface_ITexture2DReadable()->getWidth()+pixel_start_u],0,sFontSize*sizeof(RGBA));
 		}
 		pixel_start_u+=mFTFace->glyph->bitmap_left;
 		auto under_base_line_distance=sFontSize-mFTFace->size->metrics.ascender/64;

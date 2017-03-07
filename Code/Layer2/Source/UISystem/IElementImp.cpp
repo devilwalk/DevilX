@@ -64,3 +64,13 @@ Int32 NSDevilX::NSUISystem::IElementImp::getOrder() const
 {
 	return mOrder;
 }
+
+CFloat2 NSDevilX::NSUISystem::IElementImp::convertSize(const CFloat2 & relativeSize) const
+{
+	return relativeSize*getSize();
+}
+
+CFloat2 NSDevilX::NSUISystem::IElementImp::convertPosition(const CFloat2 & relativePosition) const
+{
+	return relativePosition*getSize()+getPosition();
+}

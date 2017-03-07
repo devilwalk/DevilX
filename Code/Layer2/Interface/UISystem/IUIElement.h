@@ -15,6 +15,8 @@ namespace NSDevilX
 			virtual const CFloat2 & getSize()const=0;
 			virtual Void setOrder(Int32 order)=0;
 			virtual Int32 getOrder()const=0;
+			virtual CFloat2 convertSize(const CFloat2 & relativeSize)const=0;
+			virtual CFloat2 convertPosition(const CFloat2 & relativePosition)const=0;
 		};
 	}
 }
