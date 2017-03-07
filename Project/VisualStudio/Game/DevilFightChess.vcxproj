@@ -123,6 +123,8 @@
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\LocalServer.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Login.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Module.h" />
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Geometry.h" />
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\CreateRoom.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Server.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\ServerManager.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Terrain.h" />
@@ -138,6 +140,7 @@
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\App.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\FontManager.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Game.cpp" />
+    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Geometry.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Grid.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\LocalServer.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Login.cpp" />

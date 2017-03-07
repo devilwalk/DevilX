@@ -83,7 +83,7 @@ namespace NSDevilX
 	BEGIN_VECTOR_CLASS(DirectX,INT,SInt,2)
 	static const CSInt2 sZero;
 	static const CSInt2 sOne;
-	CSInt2(Int32 value)
+	CSInt2(Int32 value=0)
 		:DirectX::XMINT2(value,value)
 	{}
 	CSInt2(Int32 x,Int32 y)
@@ -96,7 +96,7 @@ namespace NSDevilX
 	static const CSInt3 sUnitY;
 	static const CSInt3 sUnitZ;
 	static const CSInt3 sOne;
-	CSInt3(Int32 value)
+	CSInt3(Int32 value=0)
 		:DirectX::XMINT3(value,value,value)
 	{}
 	CSInt3(Int32 x,Int32 y,Int32 z)
@@ -104,7 +104,7 @@ namespace NSDevilX
 	{}
 	END_CLASS
 	BEGIN_VECTOR_CLASS(DirectX,INT,SInt,4)
-	CSInt4(Int32 value)
+	CSInt4(Int32 value=0)
 		:DirectX::XMINT4(value,value,value,value)
 	{}
 	CSInt4(Int32 x,Int32 y,Int32 z,Int32 w)

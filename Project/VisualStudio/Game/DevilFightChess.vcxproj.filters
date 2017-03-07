@@ -60,6 +60,12 @@
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\FontManager.h">
       <Filter>Include</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Geometry.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\CreateRoom.h">
+      <Filter>Include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\App.cpp">
@@ -99,6 +105,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\FontManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Geometry.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

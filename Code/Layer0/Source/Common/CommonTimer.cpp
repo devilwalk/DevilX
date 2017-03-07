@@ -1,6 +1,17 @@
 #include "Precompiler.h"
 using namespace NSDevilX;
 
+SizeT NSDevilX::CTimer::getSystemTime()
+{
+	SizeT ret=0;
+#if DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_WINDOWS
+	ret=GetTickCount();
+#elif DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_LINUX
+	ret=clock();
+#endif
+	return ret;
+}
+
 NSDevilX::CTimer::CTimer()
 	:mLastTime(0)
 	,mCurrentTime(0)

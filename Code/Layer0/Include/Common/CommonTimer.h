@@ -12,6 +12,7 @@ namespace NSDevilX
 		long long mCurrentTime;
 		long long mLastTime;
 	public:
+		static SizeT getSystemTime();
 		CTimer();
 		~CTimer();
 		SizeT getInMillisecond();

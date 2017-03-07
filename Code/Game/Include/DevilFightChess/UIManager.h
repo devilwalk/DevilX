@@ -6,8 +6,15 @@ namespace NSDevilX
 		class CUIManager
 			:public TBaseObject<CUIManager>
 		{
+		public:
+			struct SStaticText
+				:public TBaseObject<SStaticText>
+			{
+				TVector<NSUISystem::IGraphicWindow*> mUIGraphicWindows;
+			};
 		protected:
 			NSUISystem::IGraphicScene * mGraphicScene;
+			TNamedResourcePtrMap<SStaticText> mStaticTexts;
 		public:
 			CUIManager();
 			~CUIManager();
@@ -15,6 +22,7 @@ namespace NSDevilX
 			{
 				return mGraphicScene;
 			}
+			Void createStaticText(const String & name,const WString & text,const CFloat2 & position,const CFloat2 & size,const CColour & colour=CFloatRGBA::sBlack);
 		};
 	}
 }
