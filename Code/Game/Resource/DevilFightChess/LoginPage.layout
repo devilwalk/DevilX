@@ -1,9 +1,9 @@
 <Control Name="LoginPage/Control_Background" Position="0.25,0.25" Size="0.5,0.5" Colour="1.0,1.0,1.0,1.0">
-  <StaticText Name="LoginPage/StaticText_Title" Position="0.4,0" Size="0.2,0.1" Text="用户登录" Colour="1.0,0,0,0"/>
-  <StaticText Name="LoginPage/StaticText_Username" Position="0.25,0.25" Size="0.2,0.05" Text="用户名:" Colour="1.0,0,0,0"/>
+  <StaticText Name="LoginPage/StaticText_Title" Position="0.4,0" Size="0.2,0.1" Text="用户登录" Colour="0,0,0,1.0"/>
+  <StaticText Name="LoginPage/StaticText_Username" Position="0.25,0.25" Size="0.2,0.05" Text="用户名:" Colour="0,0,0,1.0"/>
   <EditText Name="LoginPage/EditText_Username" Position="0.45,0.25" Size="0.4,0.05" Colour="0.5,0.5,0.5,1.0"/>
-  <StaticText Name="LoginPage/StaticText_Password" Position="0.25,0.5" Size="0.2,0.05" Text="密码:" Colour="1.0,0,0,0"/>
+  <StaticText Name="LoginPage/StaticText_Password" Position="0.25,0.5" Size="0.2,0.05" Text="密码:" Colour="0,0,0,1.0"/>
   <EditText Name="LoginPage/EditText_Password" Position="0.45,0.5" Size="0.4,0.05" Colour="0.5,0.5,0.5,1.0"/>
-  <Button Name="LoginPage/Button_OK" Position="0.25,0.8" Size="0.2,0.05" Text="登录" Colour="0,0,0,0"/>
-  <Button Name="LoginPage/Button_Register" Position="0.55,0.8" Size="0.2,0.05" Text="注册" Colour="0,0,0,0"/>
+  <Button Name="LoginPage/Button_OK" Position="0.25,0.8" Size="0.2,0.05" Text="登录" Colour="0,0,0,1.0"/>
+  <Button Name="LoginPage/Button_Register" Position="0.55,0.8" Size="0.2,0.05" Text="注册" Colour="0,0,0,1.0"/>
 </Control>
