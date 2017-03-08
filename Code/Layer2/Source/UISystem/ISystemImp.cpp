@@ -52,3 +52,22 @@ Void NSDevilX::NSUISystem::ISystemImp::destroyGraphicScene(IGraphicScene * scene
 {
 	mGraphicScenes.destroy(scene->getRenderViewport());
 }
+
+IElement * NSDevilX::NSUISystem::ISystemImp::createLayer(const String & name)
+{
+	if(mLayers.has(name))
+		return nullptr;
+	auto ret=DEVILX_NEW IElementImp(name);
+	mLayers.add(name,ret);
+	return ret;
+}
+
+IElement * NSDevilX::NSUISystem::ISystemImp::getLayer(const String & name) const
+{
+	return mLayers.get(name);
+}
+
+Void NSDevilX::NSUISystem::ISystemImp::destroyLayer(IElement * element)
+{
+	mLayers.destroy(element->getName());
+}

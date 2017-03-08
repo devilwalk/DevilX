@@ -83,6 +83,10 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PostBuildEvent />
+    <PreBuildEvent>
+      <Command>copy $(ProjectDir)..\..\..\Code\Game\Resource\$(ProjectName)\* $(OutDir)Resource\</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile />
@@ -90,6 +94,10 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PostBuildEvent />
+    <PreBuildEvent>
+      <Command>copy $(ProjectDir)..\..\..\Code\Game\Resource\$(ProjectName)\* $(OutDir)Resource\</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -102,6 +110,10 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PostBuildEvent />
+    <PreBuildEvent>
+      <Command>copy $(ProjectDir)..\..\..\Code\Game\Resource\$(ProjectName)\* $(OutDir)Resource\</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -114,6 +126,10 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PostBuildEvent />
+    <PreBuildEvent>
+      <Command>copy $(ProjectDir)..\..\..\Code\Game\Resource\$(ProjectName)\* $(OutDir)Resource\</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Actor.h" />
@@ -133,6 +149,7 @@
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Grid.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Scene.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\UIManager.h" />
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\UIScript.h" />
     <ClInclude Include="..\..\..\Code\Game\Source\DevilFightChess\Precompiler.h" />
   </ItemGroup>
   <ItemGroup>
@@ -155,6 +172,10 @@
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\ServerManager.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Terrain.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\UIManager.cpp" />
+    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\UIScript.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\Code\Game\Resource\DevilFightChess\LoginPage.layout" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

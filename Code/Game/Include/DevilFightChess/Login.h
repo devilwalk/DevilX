@@ -10,8 +10,7 @@ namespace NSDevilX
 		{
 		protected:
 			NSUISystem::IEventScene * mEventScene;
-			TVector<NSUISystem::IGraphicWindow*> mGraphicWindows;
-			TVector<NSUISystem::IEventWindow*> mEventWindows;
+			TVector<CUIControl*> mControl;
 		public:
 			CLoginPage();
 			~CLoginPage();

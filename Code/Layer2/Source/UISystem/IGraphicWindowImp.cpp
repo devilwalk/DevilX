@@ -11,9 +11,9 @@ NSDevilX::NSUISystem::IGraphicWindowImp::IGraphicWindowImp(const String & name,I
 {
 	mRenderOverlayElement=mScene->getRenderViewport()->queryInterface_IOverlay()->createElement(name);
 	mElement=DEVILX_NEW IElementImp(name);
-	mElement->addListener(this,IElementImp::EMessage_EndPositionChange);
-	mElement->addListener(this,IElementImp::EMessage_EndSizeChange);
-	mElement->addListener(this,IElementImp::EMessage_EndOrderChange);
+	mElement->addListener(this,IElementImp::EMessage_EndDerivedPositionChange);
+	mElement->addListener(this,IElementImp::EMessage_EndDerivedSizeChange);
+	mElement->addListener(this,IElementImp::EMessage_EndDerivedOrderChange);
 }
 
 NSDevilX::NSUISystem::IGraphicWindowImp::~IGraphicWindowImp()
@@ -70,14 +70,14 @@ Void NSDevilX::NSUISystem::IGraphicWindowImp::onMessage(IElementImp * notifier,U
 {
 	switch(message)
 	{
-	case IElementImp::EMessage_EndPositionChange:
-		mRenderOverlayElement->setPosition(notifier->getPosition());
+	case IElementImp::EMessage_EndDerivedPositionChange:
+		mRenderOverlayElement->setPosition(notifier->getDerivedPosition());
 		break;
-	case IElementImp::EMessage_EndSizeChange:
-		mRenderOverlayElement->setSize(notifier->getSize());
+	case IElementImp::EMessage_EndDerivedSizeChange:
+		mRenderOverlayElement->setSize(notifier->getDerivedSize());
 		break;
-	case IElementImp::EMessage_EndOrderChange:
-		mRenderOverlayElement->setOrder(notifier->getOrder());
+	case IElementImp::EMessage_EndDerivedOrderChange:
+		mRenderOverlayElement->setOrder(notifier->getDerivedOrder());
 		break;
 	}
 }

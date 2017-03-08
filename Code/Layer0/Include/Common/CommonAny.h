@@ -8,91 +8,104 @@ namespace NSDevilX
 	class CAny
 		:public TBaseObject<CAny>
 	{
-	protected:
-		union
+	public:
+		struct SBaseHolder
 		{
-			Int8Ptr mInt8Ptr;
-			UInt8Ptr mUInt8Ptr;
-			Int16Ptr mInt16Ptr;
-			UInt16Ptr mUInt16Ptr;
-			Int32Ptr mInt32Ptr;
-			UInt32Ptr mUInt32Ptr;
-			Int64Ptr mInt64Ptr;
-			UInt64Ptr mUInt64Ptr;
-			SizeTPtr mSizeTPtr;
-			FloatPtr mFloatPtr;
-			DoubleFloatPtr mDoubleFloatPtr;
-			VoidPtr mVoidPtr;
-			BooleanPtr mBooleanPtr;
-			CharPtr mCharPtr;
-			BytePtr mBytePtr;
-			WCharPtr mWCharPtr;
-			BoolPtr mBoolPtr;
+			virtual ~SBaseHolder(){}
+			virtual Void setValue(ConstVoidPtr value)=0;
+			virtual ConstVoidPtr getValue()const=0;
+			virtual Boolean isEqual(ConstVoidPtr value)const=0;
+			virtual SBaseHolder * clone()const=0;
 		};
-		SizeT mSize;
+		template<typename T>
+		struct THolder
+			:public SBaseHolder
+			,public TBaseObject<THolder<T> >
+		{
+			T mValue;
+			THolder(const T & value)
+				:mValue(value)
+			{}
+			virtual Void setValue(ConstVoidPtr value) override
+			{
+				mValue=*static_cast<const T*>(value);
+			}
+			virtual ConstVoidPtr getValue() const override
+			{
+				return &mValue;
+			}
+			virtual Boolean isEqual(ConstVoidPtr value) const override
+			{
+				return mValue==*static_cast<const T*>(value);
+			}
+			virtual SBaseHolder * clone() const override
+			{
+				return DEVILX_NEW THolder<T>(mValue);
+			}
+		};
+	protected:
+		SBaseHolder * mValue;
 	public:
 		CAny()
-			:mVoidPtr(0)
-			,mSize(0)
+			:mValue(nullptr)
 		{}
 		template<typename T>
 		CAny(T const & t)
-			:mVoidPtr(0)
-			,mSize(0)
+			:mValue(nullptr)
 		{
 			*this=t;
 		}
 		CAny(const CAny & t)
+			:mValue(nullptr)
 		{
 			*this=t;
 		}
 		~CAny()
 		{
-			DEVILX_FREE(mVoidPtr);
+			DEVILX_DELETE(mValue);
 		}
 		const CAny & operator=(const CAny & t)
 		{
-			if(t.mSize!=mSize)
-			{
-				DEVILX_FREE(mVoidPtr);
-				mSize=t.mSize;
-				mVoidPtr=DEVILX_ALLOC(mSize);
-#ifdef DEVILX_MEMORY_TRACK_ENABLE
-				getDefaultMemoryTracker()->allocate(mVoidPtr,mSize,__FILE__,__FUNCTION__,__LINE__);
-#endif
-			}
-			memcpy(mVoidPtr,t.mVoidPtr,mSize);
+			if(mValue)
+				mValue->setValue(t.mValue->getValue());
+			else if(t.mValue)
+				mValue=t.mValue->clone();
 			return *this;
 		}
 		template<typename T>
 		const CAny & operator=(const T & t)
 		{
-			if(sizeof(T)!=mSize)
-			{
-				DEVILX_FREE(mVoidPtr);
-				mSize=sizeof(T);
-				mVoidPtr=DEVILX_ALLOC(mSize);
-			}
-			memcpy(mVoidPtr,&t,sizeof(T));
+			if(mValue)
+				mValue->setValue(&t);
+			else
+				mValue=DEVILX_NEW THolder<T>(t);
 			return *this;
 		}
 		Boolean operator==(const CAny & t)const
 		{
-			return (mSize==t.mSize)&&memcmp(mVoidPtr,t.mVoidPtr,mSize);
+			if(isValidate()&&t.isValidate())
+				return mValue->isEqual(t.mValue->getValue());
+			else
+				return isValidate()==t.isValidate();
 		}
 		template<typename T>
 		Boolean operator==(const T & t)const
 		{
-			return (mSize==sizeof(T))&&memcmp(mVoidPtr,&t,sizeof(T));
+			if(isValidate()&&t.isValidate())
+				return mValue->isEqual(&t);
+			else
+				return isValidate()==t.isValidate();
+
 		}
 		Boolean isValidate()const
 		{
-			return (!mVoidPtr)||(!mSize);
+			return nullptr!=mValue;
 		}
 		template<typename T>
 		const T & get()const
 		{
-			return *reinterpret_cast<T*>(mVoidPtr);
+			assert(mValue);
+			return *reinterpret_cast<const T*>(mValue->getValue());
 		}
 	};
 }

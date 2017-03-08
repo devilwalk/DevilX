@@ -103,6 +103,7 @@ namespace NSDevilX
 		using CFloat4::operator=;
 		CFloatRGBA(UInt8 r=0,UInt8 g=0,UInt8 b=0,UInt8 a=0);
 		CFloatRGBA(const CColour & cpy);
+		const CFloatRGBA & operator=(const CFloatRGBA & cpy);
 		virtual const CColour & operator=(const CColour & cpy) override;
 		virtual Boolean operator==(const CColour & test) const override;
 		virtual Boolean operator!=(const CColour & test) const override;

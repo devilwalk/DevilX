@@ -5,12 +5,44 @@ using namespace NSUISystem;
 NSDevilX::NSUISystem::IElementImp::IElementImp(const String & name)
 	:mName(name)
 	,mPosition(CFloat2::sZero)
+	,mDerivedPosition(CFloat2::sZero)
 	,mSize(CFloat2::sZero)
+	,mDerivedSize(CFloat2::sZero)
 	,mOrder(0)
+	,mDerivedOrder(0)
+	,mParent(nullptr)
 {}
 
 NSDevilX::NSUISystem::IElementImp::~IElementImp()
 {}
+
+Void NSDevilX::NSUISystem::IElementImp::setParent(IElement * parent)
+{
+	if(parent!=getParent())
+	{
+		if(mParent)
+		{
+			mParent->removeListener(this,IElementImp::EMessage_EndDerivedOrderChange);
+			mParent->removeListener(this,IElementImp::EMessage_EndDerivedPositionChange);
+			mParent->removeListener(this,IElementImp::EMessage_EndDerivedSizeChange);
+		}
+		mParent=static_cast<IElementImp*>(parent);
+		_updateDerivedPosition();
+		_updateDerivedSize();
+		_updateDerivedOrder();
+		if(mParent)
+		{
+			mParent->addListener(this,IElementImp::EMessage_EndDerivedOrderChange);
+			mParent->addListener(this,IElementImp::EMessage_EndDerivedPositionChange);
+			mParent->addListener(this,IElementImp::EMessage_EndDerivedSizeChange);
+		}
+	}
+}
+
+IElement * NSDevilX::NSUISystem::IElementImp::getParent() const
+{
+	return mParent;
+}
 
 const String & NSDevilX::NSUISystem::IElementImp::getName() const
 {
@@ -22,9 +54,8 @@ Void NSDevilX::NSUISystem::IElementImp::setPosition(const CFloat2 & position)
 {
 	if(position!=getPosition())
 	{
-		notify(EMessage_BeginPositionChange);
 		mPosition=position;
-		notify(EMessage_EndPositionChange);
+		_updateDerivedPosition();
 	}
 }
 
@@ -34,13 +65,17 @@ const CFloat2 & NSDevilX::NSUISystem::IElementImp::getPosition() const
 	return mPosition;
 }
 
+const CFloat2 & NSDevilX::NSUISystem::IElementImp::getDerivedPosition() const
+{
+	return mDerivedPosition;
+}
+
 Void NSDevilX::NSUISystem::IElementImp::setSize(const CFloat2 & size)
 {
 	if(size!=getSize())
 	{
-		notify(EMessage_BeginSizeChange);
 		mSize=size;
-		notify(EMessage_EndSizeChange);
+		_updateDerivedSize();
 	}
 }
 
@@ -50,19 +85,28 @@ const CFloat2 & NSDevilX::NSUISystem::IElementImp::getSize() const
 	return mSize;
 }
 
+const CFloat2 & NSDevilX::NSUISystem::IElementImp::getDerivedSize() const
+{
+	return mDerivedSize;
+}
+
 Void NSDevilX::NSUISystem::IElementImp::setOrder(Int32 order)
 {
 	if(order!=getOrder())
 	{
-		notify(EMessage_BeginOrderChange);
 		mOrder=order;
-		notify(EMessage_EndOrderChange);
+		_updateDerivedOrder();
 	}
 }
 
 Int32 NSDevilX::NSUISystem::IElementImp::getOrder() const
 {
 	return mOrder;
+}
+
+Int32 NSDevilX::NSUISystem::IElementImp::getDerivedOrder() const
+{
+	return mDerivedOrder;
 }
 
 CFloat2 NSDevilX::NSUISystem::IElementImp::convertSize(const CFloat2 & relativeSize) const
@@ -73,4 +117,63 @@ CFloat2 NSDevilX::NSUISystem::IElementImp::convertSize(const CFloat2 & relativeS
 CFloat2 NSDevilX::NSUISystem::IElementImp::convertPosition(const CFloat2 & relativePosition) const
 {
 	return relativePosition*getSize()+getPosition();
+}
+
+Void NSDevilX::NSUISystem::IElementImp::_updateDerivedPosition()
+{
+	notify(EMessage_BeginDerivedPositionChange);
+	if(mParent)
+	{
+		mDerivedPosition=mParent->getDerivedPosition()+getPosition()*mParent->getDerivedSize();
+	}
+	else
+	{
+		mDerivedPosition=getPosition();
+	}
+	notify(EMessage_EndDerivedPositionChange);
+}
+
+Void NSDevilX::NSUISystem::IElementImp::_updateDerivedSize()
+{
+	notify(EMessage_BeginDerivedSizeChange);
+	if(mParent)
+	{
+		mDerivedSize=getSize()*mParent->getDerivedSize();
+	}
+	else
+	{
+		mDerivedSize=getSize();
+	}
+	notify(EMessage_EndDerivedSizeChange);
+}
+
+Void NSDevilX::NSUISystem::IElementImp::_updateDerivedOrder()
+{
+	notify(EMessage_BeginDerivedOrderChange);
+	if(mParent)
+	{
+		mDerivedOrder=mParent->getDerivedOrder()+1;
+	}
+	else
+	{
+		mDerivedOrder=getOrder();
+	}
+	notify(EMessage_EndDerivedOrderChange);
+}
+
+Void NSDevilX::NSUISystem::IElementImp::onMessage(IElementImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
+{
+	switch(message)
+	{
+	case IElementImp::EMessage_EndDerivedPositionChange:
+		_updateDerivedPosition();
+		break;
+	case IElementImp::EMessage_EndDerivedSizeChange:
+		_updateDerivedPosition();
+		_updateDerivedSize();
+		break;
+	case IElementImp::EMessage_EndDerivedOrderChange:
+		_updateDerivedOrder();
+		break;
+	}
 }

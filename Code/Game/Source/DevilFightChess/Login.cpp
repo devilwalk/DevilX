@@ -20,19 +20,14 @@ NSDevilX::NSFightChess::CLoginPage::CLoginPage()
 	:mEventScene(nullptr)
 {
 	mEventScene=NSUISystem::getSystem()->createEventScene("LoginPage");
-	auto background=CApp::getSingleton().getGame()->getUIManager()->getGraphicScene()->createWindow("LoginPage/Background");
-	background->queryInterface_IElement()->setPosition(CFloat2(0.25f));
-	background->queryInterface_IElement()->setSize(CFloat2(0.5f));
-	background->setColour(CFloatRGB::sWhite);
-	mGraphicWindows.push_back(background);
-	CApp::getSingleton().getGame()->getUIManager()->createStaticText("LoginPage/StaticText/Username",L"ÓÃ»§Ãû:",background->queryInterface_IElement()->convertPosition(CFloat2(0.2f)),background->queryInterface_IElement()->convertSize(CFloat2(0.2f,0.05f)));
-	CApp::getSingleton().getGame()->getUIManager()->createStaticText("LoginPage/StaticText/Password",L"ÃÜÂë:",background->queryInterface_IElement()->convertPosition(CFloat2(0.2f,0.25f)),background->queryInterface_IElement()->convertSize(CFloat2(0.2f,0.05f)));
+	CUIScript script;
+	mControl=script.process(CDirectory::getApplicationDirectory()+"/Resource/LoginPage.layout");
 }
 
 NSDevilX::NSFightChess::CLoginPage::~CLoginPage()
 {
-	for(auto window:mGraphicWindows)
-		CApp::getSingleton().getGame()->getUIManager()->getGraphicScene()->destroyWindow(window);
+	for(auto window:mControl)
+		CApp::getSingleton().getGame()->getUIManager()->destroyControl(window);
 	NSUISystem::getSystem()->destroyEventScene(mEventScene);
 }
 

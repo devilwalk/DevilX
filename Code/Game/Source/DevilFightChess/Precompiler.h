@@ -21,3 +21,4 @@
 #include "ServerManager.h"
 #include "Terrain.h"
 #include "UIManager.h"
+#include "UIScript.h"

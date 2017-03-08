@@ -70,6 +70,12 @@ NSDevilX::CFloatRGBA::CFloatRGBA(const CColour & cpy)
 	:CFloat4(cpy.r(),cpy.g(),cpy.b(),cpy.a())
 {}
 
+const CFloatRGBA & NSDevilX::CFloatRGBA::operator=(const CFloatRGBA & cpy)
+{
+	// TODO: 在此处插入 return 语句
+	return static_cast<const CFloatRGBA&>(operator=(static_cast<const CColour &>(cpy)));
+}
+
 const CColour & NSDevilX::CFloatRGBA::operator=(const CColour & cpy)
 {
 	*this=CFloat4(cpy.r(),cpy.g(),cpy.b(),cpy.a());

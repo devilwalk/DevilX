@@ -40,6 +40,47 @@ namespace NSDevilX
 			WString ret(value.begin(),value.end());
 			return ret;
 		}
+		static WString UTF8ToWString(const String & value)
+		{
+			WString ret;
+			for(size_t i=0;i<value.length();)
+			{
+				Byte c=value[i];
+				if((c&0x80))
+				{
+					UInt32 byte_count=0;
+					for(int bit=0;bit<8;++bit)
+					{
+						if((c>>(8-bit-1))&0x1)
+							++byte_count;
+						else
+							break;
+					}
+					assert(byte_count>=2);
+					WChar wc=0;
+					for(Int32 byte_index=byte_count-1;byte_index>=0;--byte_index)
+					{
+						Byte b=value[i+byte_index];
+						if(byte_index==0)
+						{
+							wc|=(b&0x1f)<<((byte_count-1)*6);
+						}
+						else
+						{
+							wc|=(b&0x3f)<<((byte_count-byte_index-1)*6);
+						}
+					}
+					ret.push_back(wc);
+					i+=byte_count;
+				}
+				else
+				{
+					ret.push_back(c);
+					++i;
+				}
+			}
+			return ret;
+		}
 		template<typename T>
 		static T toValue(const String & str)
 		{
