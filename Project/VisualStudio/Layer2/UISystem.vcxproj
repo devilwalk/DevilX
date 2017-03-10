@@ -31,6 +31,7 @@
     <ClInclude Include="..\..\..\Code\Layer2\Interface\UISystem\IUIEventScene.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\UISystem\IUIEventWindow.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\UISystem\IUIEvent.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Interface\UISystem\IUIGraphicMaterial.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\UISystem\IUIGraphicScene.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\UISystem\IUIGraphicWindow.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\UISystem\IUISystem.h" />

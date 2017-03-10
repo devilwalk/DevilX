@@ -1,3 +1,10 @@
 #pragma once
 #include "Common.h"
+#include "RenderSystem/IRenderSystemInterface.h"
+#include "UISystem/IUISystemInterface.h"
 #include "IGUISystemInterface.h"
+#include "IControlImp.h"
+#include "ISceneImp.h"
+#include "IStaticTextImp.h"
+#include "ISystemImp.h"
+#include "IWindowImp.h"

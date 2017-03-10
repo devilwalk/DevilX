@@ -9,11 +9,9 @@ namespace NSDevilX
 		public:
 			static const UInt8 sFontSize;
 		protected:
-			FT_Library mFTLibrary;
-			FT_Face mFTFace;
+			CFontImage * mImg;
 			NSRenderSystem::ITexture * mRenderTexture;
 			TVector<RGBA> mPixels;
-			TMap<WChar,std::pair<CSInt2,CSInt2> > mCharPixelRanges;
 		public:
 			CFontManager();
 			~CFontManager();

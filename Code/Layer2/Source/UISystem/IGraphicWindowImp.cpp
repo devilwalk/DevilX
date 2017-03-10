@@ -27,6 +27,11 @@ IElement * NSDevilX::NSUISystem::IGraphicWindowImp::queryInterface_IElement() co
 	return mElement;
 }
 
+IGraphicScene * NSDevilX::NSUISystem::IGraphicWindowImp::getScene() const
+{
+	return mScene;
+}
+
 Void NSDevilX::NSUISystem::IGraphicWindowImp::setTexture(NSRenderSystem::ITexture * texture,const CSInt2 & pixelStart,const CSInt2 & pixelEnd)
 {
 	mRenderOverlayElement->getTextureUnitState()->setTexture(texture);

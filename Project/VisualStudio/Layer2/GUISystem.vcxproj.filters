@@ -24,30 +24,57 @@
     <ClInclude Include="..\..\..\Code\Layer2\Source\GUISystem\Precompiler.h">
       <Filter>源文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIEditBox.h">
-      <Filter>Interface Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIControl.h">
       <Filter>Interface Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIElement.h">
+    <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUISystem.h">
       <Filter>Interface Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIPanel.h">
+    <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIScene.h">
       <Filter>Interface Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIListBox.h">
+    <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIStaticText.h">
       <Filter>Interface Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIButton.h">
       <Filter>Interface Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUICombox.h">
+    <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIWindow.h">
       <Filter>Interface Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\IControlImp.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\IWindowImp.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\ISceneImp.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\ISystemImp.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\IStaticTextImp.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\Precompiler.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\IControlImp.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\IWindowImp.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\ISceneImp.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\ISystemImp.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\IStaticTextImp.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

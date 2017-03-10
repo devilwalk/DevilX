@@ -14,7 +14,10 @@ NSDevilX::NSUISystem::IElementImp::IElementImp(const String & name)
 {}
 
 NSDevilX::NSUISystem::IElementImp::~IElementImp()
-{}
+{
+	notify(EMessage_BeginDestruction);
+	notify(EMessage_EndDestruction);
+}
 
 Void NSDevilX::NSUISystem::IElementImp::setParent(IElement * parent)
 {
@@ -25,6 +28,7 @@ Void NSDevilX::NSUISystem::IElementImp::setParent(IElement * parent)
 			mParent->removeListener(this,IElementImp::EMessage_EndDerivedOrderChange);
 			mParent->removeListener(this,IElementImp::EMessage_EndDerivedPositionChange);
 			mParent->removeListener(this,IElementImp::EMessage_EndDerivedSizeChange);
+			mParent->removeListener(this,IElementImp::EMessage_EndDestruction);
 		}
 		mParent=static_cast<IElementImp*>(parent);
 		_updateDerivedPosition();
@@ -35,6 +39,7 @@ Void NSDevilX::NSUISystem::IElementImp::setParent(IElement * parent)
 			mParent->addListener(this,IElementImp::EMessage_EndDerivedOrderChange);
 			mParent->addListener(this,IElementImp::EMessage_EndDerivedPositionChange);
 			mParent->addListener(this,IElementImp::EMessage_EndDerivedSizeChange);
+			mParent->addListener(this,IElementImp::EMessage_EndDestruction);
 		}
 	}
 }
@@ -174,6 +179,9 @@ Void NSDevilX::NSUISystem::IElementImp::onMessage(IElementImp * notifier,UInt32 
 		break;
 	case IElementImp::EMessage_EndDerivedOrderChange:
 		_updateDerivedOrder();
+		break;
+	case IElementImp::EMessage_EndDestruction:
+		setParent(nullptr);
 		break;
 	}
 }

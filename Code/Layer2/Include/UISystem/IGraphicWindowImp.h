@@ -20,6 +20,7 @@ namespace NSDevilX
 			~IGraphicWindowImp();
 			// Í¨¹ý IImageWindow ¼Ì³Ð
 			virtual IElement * queryInterface_IElement() const override;
+			virtual IGraphicScene * getScene() const override;
 			virtual Void setTexture(NSRenderSystem::ITexture * texture,const CSInt2 & pixelStart,const CSInt2 & pixelEnd) override;
 			virtual NSRenderSystem::ITexture * getTexture() const override;
 			virtual const CSInt2 & getPixelStart() const override;

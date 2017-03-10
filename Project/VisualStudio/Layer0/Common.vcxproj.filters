@@ -189,6 +189,12 @@
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonFontImage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonFontManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonAnimationFrame.cpp">
@@ -270,6 +276,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonFontImage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonFontManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

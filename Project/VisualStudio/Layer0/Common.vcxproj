@@ -34,6 +34,8 @@
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonDirectory.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonDirtyFlagContainer.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonFileStream.h" />
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonFontImage.h" />
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonFontManager.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonFunctionWorker.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonImage.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonLuaEngine.h" />
@@ -86,6 +88,8 @@
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonDataStream.cpp" />
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonDirectory.cpp" />
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonFileStream.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonFontImage.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonFontManager.cpp" />
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonImage.cpp" />
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonLuaEngine.cpp" />
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonMatrix.cpp" />

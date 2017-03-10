@@ -5,6 +5,7 @@ using namespace NSFightChess;
 NSDevilX::NSFightChess::CUIControl::CUIControl(const String & name,const CFloat2 & position,const CFloat2 & size,CUIControl * parent)
 	:mName(name)
 	,mLayer(nullptr)
+	,mUIEventWindow(nullptr)
 {
 	mLayer=NSUISystem::getSystem()->createLayer(name);
 	mLayer->setPosition(position);
@@ -24,6 +25,11 @@ Void NSDevilX::NSFightChess::CUIControl::addGraphicWindow(NSUISystem::IGraphicWi
 {
 	window->queryInterface_IElement()->setParent(getLayer());
 	mUIGraphicWindows.push_back(window);
+}
+
+Void NSDevilX::NSFightChess::CUIControl::setEventListener(NSUISystem::IEventListener * listener)
+{
+	return Void();
 }
 
 NSDevilX::NSFightChess::CUIManager::CUIManager()
@@ -54,7 +60,7 @@ CUIControl * NSDevilX::NSFightChess::CUIManager::createStaticText(const String &
 {
 	assert(!mControls.has(name));
 	const auto word_width=1.0f/text.length();
-	auto static_text=DEVILX_NEW CUIControl(name,position,size,parent);
+	auto control=DEVILX_NEW CUIControl(name,position,size,parent);
 	TVector<CSInt2> pixel_starts;
 	pixel_starts.resize(text.length());
 	TVector<CSInt2> pixel_ends;
@@ -67,8 +73,16 @@ CUIControl * NSDevilX::NSFightChess::CUIManager::createStaticText(const String &
 		window->setTexture(CApp::getSingleton().getGame()->getFontManager()->getRenderTexture(),pixel_starts[i],pixel_ends[i]);
 		window->queryInterface_IElement()->setPosition(CFloat2(word_width,0.0f)*static_cast<Float>(i));
 		window->queryInterface_IElement()->setSize(CFloat2(word_width,1.0f));
-		static_text->addGraphicWindow(window);
+		control->addGraphicWindow(window);
 	}
-	mControls.add(name,static_text);
-	return static_text;
+	mControls.add(name,control);
+	return control;
+}
+
+CUIControl * NSDevilX::NSFightChess::CUIManager::createEditBox(const String & name,const CFloat2 & position,const CFloat2 & size,const CColour & colour,CUIControl * parent)
+{
+	assert(!mControls.has(name));
+	auto control=DEVILX_NEW CUIControl(name,position,size,parent);
+	mControls.add(name,control);
+	return nullptr;
 }

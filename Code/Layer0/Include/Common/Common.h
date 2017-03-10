@@ -16,6 +16,8 @@
 #include "CommonDirectory.h"
 #include "CommonDirtyFlagContainer.h"
 #include "CommonFileStream.h"
+#include "CommonFontImage.h"
+#include "CommonFontManager.h"
 #include "CommonFunctionWorker.h"
 #include "CommonImage.h"
 #include "CommonLuaEngine.h"

@@ -19,32 +19,27 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\IControlImp.h" />
-    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\ISceneImp.h" />
-    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\IStaticTextImp.h" />
-    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\ISystemImp.h" />
-    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\IWindowImp.h" />
-    <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIButton.h" />
-    <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIControl.h" />
-    <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIScene.h" />
-    <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIStaticText.h" />
-    <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUISystem.h" />
-    <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUISystemInterface.h" />
-    <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIWindow.h" />
-    <ClInclude Include="..\..\..\Code\Layer2\Source\GUISystem\Precompiler.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Include\ResourceSystem\IResourceImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Include\ResourceSystem\ISystemImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Interface\ResourceSystem\IResource.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Interface\ResourceSystem\IResourceSystem.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Interface\ResourceSystem\IResourceSystemInterface.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Source\ResourceSystem\Precompiler.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\IControlImp.cpp" />
-    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\ISceneImp.cpp" />
-    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\IStaticTextImp.cpp" />
-    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\ISystemImp.cpp" />
-    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\IWindowImp.cpp" />
-    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\Precompiler.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer2\Source\ResourceSystem\IResourceImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer2\Source\ResourceSystem\ISystemImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer2\Source\ResourceSystem\Precompiler.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{0EAE0DBF-8E60-4363-A680-460B5E1CD4EB}</ProjectGuid>
+    <ProjectGuid>{F43877F7-806A-49AF-AC38-72CFF8A43E22}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>Layer2</RootNamespace>
+    <RootNamespace>Layer1</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -98,41 +93,21 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <SDLCheck>true</SDLCheck>
-    </ClCompile>
+    <ClCompile />
     <Link>
       <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <SDLCheck>true</SDLCheck>
-    </ClCompile>
+    <ClCompile />
     <Link>
       <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -142,14 +117,8 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

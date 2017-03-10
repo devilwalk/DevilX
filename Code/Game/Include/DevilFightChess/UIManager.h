@@ -9,9 +9,10 @@ namespace NSDevilX
 			const String mName;
 			NSUISystem::IElement * mLayer;
 			TVector<NSUISystem::IGraphicWindow*> mUIGraphicWindows;
+			NSUISystem::IEventWindow * mUIEventWindow;
 		public:
 			CUIControl(const String & name,const CFloat2 & position,const CFloat2 & size,CUIControl * parent=nullptr);
-			~CUIControl();
+			virtual ~CUIControl();
 			const String & getName()const
 			{
 				return mName;
@@ -21,10 +22,7 @@ namespace NSDevilX
 				return mLayer;
 			}
 			Void addGraphicWindow(NSUISystem::IGraphicWindow * window);
-			NSUISystem::IGraphicWindow * getGraphicWindow(UInt32 index=0)const
-			{
-				return mUIGraphicWindows[index];
-			}
+			Void setEventListener(NSUISystem::IEventListener * listener);
 		};
 		class CUIManager
 			:public TBaseObject<CUIManager>
@@ -42,6 +40,7 @@ namespace NSDevilX
 			CUIControl * createControl(const String & name,const CFloat2 & position,const CFloat2 & size,CUIControl * parent=nullptr);
 			Void destroyControl(CUIControl * control);
 			CUIControl * createStaticText(const String & name,const WString & text,const CFloat2 & position,const CFloat2 & size,const CColour & colour=CFloatRGBA::sBlack,CUIControl * parent=nullptr);
+			CUIControl * createEditBox(const String & name,const CFloat2 & position,const CFloat2 & size,const CColour & colour=CFloatRGBA::sBlack,CUIControl * parent=nullptr);
 		};
 	}
 }

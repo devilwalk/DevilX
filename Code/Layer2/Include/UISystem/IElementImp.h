@@ -17,7 +17,9 @@ namespace NSDevilX
 				EMessage_BeginDerivedSizeChange,
 				EMessage_EndDerivedSizeChange,
 				EMessage_BeginDerivedOrderChange,
-				EMessage_EndDerivedOrderChange
+				EMessage_EndDerivedOrderChange,
+				EMessage_BeginDestruction,
+				EMessage_EndDestruction
 			};
 		protected:
 			const String mName;

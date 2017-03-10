@@ -1,6 +1,6 @@
 #pragma once
-#include "IGUIButton.h"
 #include "IGUIControl.h"
-#include "IGUIElement.h"
-#include "IGUIListBox.h"
-#include "IGUIPanel.h"
+#include "IGUIScene.h"
+#include "IGUIStaticText.h"
+#include "IGUISystem.h"
+#include "IGUIWindow.h"
