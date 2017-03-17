@@ -23,6 +23,10 @@ namespace NSDevilX
 		{
 			return mSize;
 		}
+		const CSInt2 & getFontSize()const
+		{
+			return mFontSize;
+		}
 		const UInt8 * getPixels()const
 		{
 			return mPixels.empty()?nullptr:&mPixels[0];

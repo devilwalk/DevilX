@@ -116,7 +116,7 @@ Boolean NSDevilX::NSFightChess::CUIScript::_processAttribute(const String & name
 	}
 	else if(name==String("Text"))
 	{
-		ret=CAny(CStringConverter::UTF8ToWString(value));
+		ret=CAny(static_cast<WString>(CUTF8String(CStringConverter::toWString(value))));
 	}
 	else
 	{

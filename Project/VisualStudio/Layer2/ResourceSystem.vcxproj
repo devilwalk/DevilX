@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\Code\Layer2\Include\ResourceSystem\IOFunction.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\ResourceSystem\IResourceImp.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\ResourceSystem\ISystemImp.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\ResourceSystem\IResource.h" />

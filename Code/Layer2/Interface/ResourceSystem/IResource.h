@@ -4,20 +4,19 @@ namespace NSDevilX
 	namespace NSResourceSystem
 	{
 		class IResource;
-		class ILoadRenderTextureCallback
+		class ILoadedResource
 		{
 		protected:
-			virtual ~ILoadRenderTextureCallback(){}
+			virtual ~ILoadedResource(){}
 		public:
-			virtual Void onLoaded(IResource * resource,NSRenderSystem::ITexture * texture)=0;
+			virtual IResource * queryInterface_IResource()const=0;
 		};
-		class ILoadRenderGeometryCallback
+		class ILoadCallback
 		{
 		protected:
-			virtual ~ILoadRenderGeometryCallback()
-			{}
+			virtual ~ILoadCallback(){}
 		public:
-			virtual Void onLoaded(IResource * resource,NSRenderSystem::IGeometry * geometry)=0;
+			virtual Void onLoaded(ILoadedResource * resource)=0;
 		};
 		class IResource
 		{
@@ -26,9 +25,8 @@ namespace NSDevilX
 		public:
 			virtual const String & getName()const=0;
 			virtual const String & getFileName()const=0;
-			virtual Void load(ILoadRenderTextureCallback * callback)=0;
-			virtual Void load(ILoadRenderGeometryCallback * callback)=0;
-			virtual Void unload()=0;
+			virtual Void load(ILoadCallback * callback)=0;
+			virtual Bool isLoaded()const=0;
 		};
 	}
 }

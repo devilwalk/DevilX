@@ -36,6 +36,9 @@
     <ClInclude Include="..\..\..\Code\Layer2\Include\ResourceSystem\IResourceImp.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer2\Include\ResourceSystem\IOFunction.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Layer2\Source\ResourceSystem\ISystemImp.cpp">

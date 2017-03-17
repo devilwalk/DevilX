@@ -45,11 +45,14 @@
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonMemoryTracker.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonMessageMode.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonModule.h" />
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonNames.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonNode.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonOctree.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonPlane.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonPlatformDefine.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonPlatformInclude.h" />
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonUTFChar.h" />
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonUTFString.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonWindow.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonRange.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonRay.h" />
@@ -106,6 +109,8 @@
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonThreadPool.cpp" />
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonTimer.cpp" />
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonTransformNode.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonUTFChar.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonUTFString.cpp" />
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonVectorF.cpp" />
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonVectorI.cpp" />
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonWindow.cpp" />
