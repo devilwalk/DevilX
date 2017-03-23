@@ -10,9 +10,7 @@ namespace NSDevilX
 			virtual ~IWindow(){}
 		public:
 			virtual IRenderTarget * queryInterface_IRenderTarget()const=0;
-			virtual UInt32 getWidth()const=0;
-			virtual UInt32 getHeight()const=0;
-			virtual Void resize()=0;
+			virtual CWindow * getWindow()const=0;
 		};
 	}
 }

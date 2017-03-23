@@ -37,29 +37,29 @@ Void NSDevilX::NSRenderSystem::ISystemImp::update()
 	++mFrameIndex;
 }
 
-IWindow * NSDevilX::NSRenderSystem::ISystemImp::createWindow(VoidPtr windowHandle)
+IWindow * NSDevilX::NSRenderSystem::ISystemImp::createWindow(CWindow * window)
 {
-	if(mWindows.has(windowHandle))
+	if(mWindows.has(window))
 		return nullptr;
 	notify(EMessage_BeginWindowCreate);
-	IWindowImp * ret=DEVILX_NEW IWindowImp(windowHandle);
-	mWindows[windowHandle]=ret;
+	IWindowImp * ret=DEVILX_NEW IWindowImp(window);
+	mWindows[window]=ret;
 	notify(EMessage_EndWindowCreate,ret);
 	return ret;
 }
 
 Void NSDevilX::NSRenderSystem::ISystemImp::destroyWindow(IWindow * window)
 {
-	if(!mWindows.has(static_cast<IWindowImp*>(window)->getHandle()))
+	if(!mWindows.has(window->getWindow()))
 		return;
 	notify(EMessage_BeginWindowDestroy,static_cast<IWindowImp*>(window));
-	mWindows.destroy(static_cast<IWindowImp*>(window)->getHandle());
+	mWindows.destroy(window->getWindow());
 	notify(EMessage_EndWindowDestroy);
 }
 
-IWindow * NSDevilX::NSRenderSystem::ISystemImp::getWindow(VoidPtr windowHandle) const
+IWindow * NSDevilX::NSRenderSystem::ISystemImp::getWindow(CWindow * window) const
 {
-	return mWindows.get(windowHandle);
+	return mWindows.get(window);
 }
 
 IRenderableSurface * NSDevilX::NSRenderSystem::ISystemImp::createRenderableSurface(const String & name)

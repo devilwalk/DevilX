@@ -33,7 +33,9 @@ namespace NSDevilX
 		virtual ~CWindowEventListener(){}
 	public:
 		virtual Void onCharEvent(CWindow * window,const CUTF8Char & ch){}
-		virtual Void onButtonEvent(CWindow * window,EMouseButtonType buttonType,EMouseButtonEventType eventType,const CUInt2 & position){}
+		virtual Void onMouseButtonEvent(CWindow * window,EMouseButtonType buttonType,EMouseButtonEventType eventType,const CUInt2 & position){}
+		virtual Void onMouseMoveEvent(CWindow * window,const CUInt2 & position){}
+		virtual Void onMouseWheelEvent(CWindow * window,Int32 offset){}
 	};
 	class CWindow
 		:public TBaseObject<CWindow>
@@ -60,7 +62,7 @@ namespace NSDevilX
 		{
 			return mSize;
 		}
-		Void setEventListener(CWindowEventListener * listener);
+		Void setEventListener(CWindowEventListener * listener){ mEventListener=listener; }
 		CWindowEventListener * getEventListener()const
 		{
 			return mEventListener;

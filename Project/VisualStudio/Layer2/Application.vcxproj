@@ -18,44 +18,10 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\..\Code\Layer2\Include\UISystem\EventManager.h" />
-    <ClInclude Include="..\..\..\Code\Layer2\Include\UISystem\IElementImp.h" />
-    <ClInclude Include="..\..\..\Code\Layer2\Include\UISystem\IEventSceneImp.h" />
-    <ClInclude Include="..\..\..\Code\Layer2\Include\UISystem\IGraphicSceneImp.h" />
-    <ClInclude Include="..\..\..\Code\Layer2\Include\UISystem\IGraphicWindowImp.h" />
-    <ClInclude Include="..\..\..\Code\Layer2\Include\UISystem\IEventWindowImp.h" />
-    <ClInclude Include="..\..\..\Code\Layer2\Include\UISystem\ISystemImp.h" />
-    <ClInclude Include="..\..\..\Code\Layer2\Interface\UISystem\IUIElement.h" />
-    <ClInclude Include="..\..\..\Code\Layer2\Interface\UISystem\IUIEnum.h" />
-    <ClInclude Include="..\..\..\Code\Layer2\Interface\UISystem\IUIEventScene.h" />
-    <ClInclude Include="..\..\..\Code\Layer2\Interface\UISystem\IUIEventWindow.h" />
-    <ClInclude Include="..\..\..\Code\Layer2\Interface\UISystem\IUIEvent.h" />
-    <ClInclude Include="..\..\..\Code\Layer2\Interface\UISystem\IUIGraphicScene.h" />
-    <ClInclude Include="..\..\..\Code\Layer2\Interface\UISystem\IUIGraphicWindow.h" />
-    <ClInclude Include="..\..\..\Code\Layer2\Interface\UISystem\IUISystem.h" />
-    <ClInclude Include="..\..\..\Code\Layer2\Interface\UISystem\IUISystemInterface.h" />
-    <ClInclude Include="..\..\..\Code\Layer2\Source\UISystem\Precompiler.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\..\Code\Layer2\Source\UISystem\EventManager.cpp" />
-    <ClCompile Include="..\..\..\Code\Layer2\Source\UISystem\IElementImp.cpp" />
-    <ClCompile Include="..\..\..\Code\Layer2\Source\UISystem\IEventSceneImp.cpp" />
-    <ClCompile Include="..\..\..\Code\Layer2\Source\UISystem\IEventWindowImp.cpp" />
-    <ClCompile Include="..\..\..\Code\Layer2\Source\UISystem\IGraphicSceneImp.cpp" />
-    <ClCompile Include="..\..\..\Code\Layer2\Source\UISystem\IGraphicWindowImp.cpp" />
-    <ClCompile Include="..\..\..\Code\Layer2\Source\UISystem\ISystemImp.cpp" />
-    <ClCompile Include="..\..\..\Code\Layer2\Source\UISystem\Precompiler.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-    </ClCompile>
-  </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{BFC5FA51-9ACC-4611-BC5D-8054C6D6EFAC}</ProjectGuid>
+    <ProjectGuid>{F6ACEF2B-3735-490A-8C34-13DC3C4CC22F}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>Project</RootNamespace>
+    <RootNamespace>Layer2</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -122,8 +88,8 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -133,8 +99,8 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -142,6 +108,24 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\Code\Layer2\Include\Application\Application.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Interface\Application\IApplication.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Interface\Application\IApplicationInterface.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Source\Application\Precompiler.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\Code\Layer2\Source\Application\Application.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer2\Source\Application\Precompiler.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

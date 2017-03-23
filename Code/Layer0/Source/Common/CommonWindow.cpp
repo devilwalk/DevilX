@@ -83,31 +83,37 @@ Void NSDevilX::CWindow::setSize(const CUInt2 & size)
 							window->getEventListener()->onCharEvent(window,CUTF8Char(wParam));
 							break;
 						case WM_LBUTTONDOWN:
-							window->getEventListener()->onButtonEvent(window,CWindowEventListener::EButtonType_Left,CWindowEventListener::EButtonEventType_ButtonDown,CUInt2(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)));
+							window->getEventListener()->onMouseButtonEvent(window,CWindowEventListener::EButtonType_Left,CWindowEventListener::EButtonEventType_ButtonDown,CUInt2(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)));
 							break;
 						case WM_LBUTTONUP:
-							window->getEventListener()->onButtonEvent(window,CWindowEventListener::EButtonType_Left,CWindowEventListener::EButtonEventType_ButtonUp,CUInt2(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)));
+							window->getEventListener()->onMouseButtonEvent(window,CWindowEventListener::EButtonType_Left,CWindowEventListener::EButtonEventType_ButtonUp,CUInt2(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)));
 							break;
 						case WM_LBUTTONDBLCLK:
-							window->getEventListener()->onButtonEvent(window,CWindowEventListener::EButtonType_Left,CWindowEventListener::EButtonEventType_ButtonDoubleClick,CUInt2(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)));
+							window->getEventListener()->onMouseButtonEvent(window,CWindowEventListener::EButtonType_Left,CWindowEventListener::EButtonEventType_ButtonDoubleClick,CUInt2(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)));
 							break;
 						case WM_RBUTTONDOWN:
-							window->getEventListener()->onButtonEvent(window,CWindowEventListener::EButtonType_Right,CWindowEventListener::EButtonEventType_ButtonDown,CUInt2(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)));
+							window->getEventListener()->onMouseButtonEvent(window,CWindowEventListener::EButtonType_Right,CWindowEventListener::EButtonEventType_ButtonDown,CUInt2(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)));
 							break;
 						case WM_RBUTTONUP:
-							window->getEventListener()->onButtonEvent(window,CWindowEventListener::EButtonType_Right,CWindowEventListener::EButtonEventType_ButtonUp,CUInt2(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)));
+							window->getEventListener()->onMouseButtonEvent(window,CWindowEventListener::EButtonType_Right,CWindowEventListener::EButtonEventType_ButtonUp,CUInt2(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)));
 							break;
 						case WM_RBUTTONDBLCLK:
-							window->getEventListener()->onButtonEvent(window,CWindowEventListener::EButtonType_Right,CWindowEventListener::EButtonEventType_ButtonDoubleClick,CUInt2(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)));
+							window->getEventListener()->onMouseButtonEvent(window,CWindowEventListener::EButtonType_Right,CWindowEventListener::EButtonEventType_ButtonDoubleClick,CUInt2(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)));
 							break;
 						case WM_MBUTTONDOWN:
-							window->getEventListener()->onButtonEvent(window,CWindowEventListener::EButtonType_Middle,CWindowEventListener::EButtonEventType_ButtonDown,CUInt2(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)));
+							window->getEventListener()->onMouseButtonEvent(window,CWindowEventListener::EButtonType_Middle,CWindowEventListener::EButtonEventType_ButtonDown,CUInt2(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)));
 							break;
 						case WM_MBUTTONUP:
-							window->getEventListener()->onButtonEvent(window,CWindowEventListener::EButtonType_Middle,CWindowEventListener::EButtonEventType_ButtonUp,CUInt2(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)));
+							window->getEventListener()->onMouseButtonEvent(window,CWindowEventListener::EButtonType_Middle,CWindowEventListener::EButtonEventType_ButtonUp,CUInt2(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)));
 							break;
 						case WM_MBUTTONDBLCLK:
-							window->getEventListener()->onButtonEvent(window,CWindowEventListener::EButtonType_Middle,CWindowEventListener::EButtonEventType_ButtonDoubleClick,CUInt2(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)));
+							window->getEventListener()->onMouseButtonEvent(window,CWindowEventListener::EButtonType_Middle,CWindowEventListener::EButtonEventType_ButtonDoubleClick,CUInt2(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)));
+							break;
+						case WM_MOUSEMOVE:
+							window->getEventListener()->onMouseMoveEvent(window,CUInt2(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)));
+							break;
+						case WM_MOUSEWHEEL:
+							window->getEventListener()->onMouseWheelEvent(window,GET_WHEEL_DELTA_WPARAM(wParam));
 							break;
 						}
 					}

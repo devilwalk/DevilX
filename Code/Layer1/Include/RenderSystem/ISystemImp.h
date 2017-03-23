@@ -36,7 +36,7 @@ namespace NSDevilX
 			UInt32 mFrameIndex;
 			Float mFrameTimeInSecond;
 			IResourceManagerImp * mResourceManager;
-			TResourcePtrMap<VoidPtr,IWindowImp> mWindows;
+			TResourcePtrMap<CWindow*,IWindowImp> mWindows;
 			TNamedResourcePtrMap<IRenderableSurfaceImp> mRenderableSurfaces;
 			TNamedResourcePtrMap<ISceneImp> mScenes;
 		public:
@@ -58,9 +58,9 @@ namespace NSDevilX
 			virtual Void shutdown() override;
 			virtual IResourceManager * queryInterface_IResourceManager() const override;
 			virtual Void update() override;
-			virtual IWindow * createWindow(VoidPtr windowHandle) override;
+			virtual IWindow * createWindow(CWindow * window) override;
 			virtual Void destroyWindow(IWindow * window) override;
-			virtual IWindow * getWindow(VoidPtr windowHandle) const override;
+			virtual IWindow * getWindow(CWindow * window) const override;
 			virtual IRenderableSurface * createRenderableSurface(const String & name) override;
 			virtual Void destroyRenderableSurface(IRenderableSurface * surface) override;
 			virtual IRenderableSurface * getRenderableSurface(const String & name) const override;

@@ -32,8 +32,10 @@ namespace NSDevilX
 				{
 					return mSwapChain;
 				}
+				virtual Void prepare() override;
 				virtual Void render() override;
 			protected:
+				Void _resize();
 				// Inherited via TInterfaceObject
 				virtual Void onMessage(IWindowImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 			};

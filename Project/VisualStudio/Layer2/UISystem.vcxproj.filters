@@ -69,9 +69,6 @@
     <ClInclude Include="..\..\..\Code\Layer2\Include\UISystem\IGraphicWindowImp.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer2\Interface\UISystem\IUIGraphicMaterial.h">
-      <Filter>Interface Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Layer2\Source\UISystem\Precompiler.cpp">

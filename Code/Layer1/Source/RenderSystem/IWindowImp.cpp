@@ -2,8 +2,8 @@
 using namespace NSDevilX;
 using namespace NSRenderSystem;
 
-NSDevilX::NSRenderSystem::IWindowImp::IWindowImp(VoidPtr handle)
-	:mHandle(handle)
+NSDevilX::NSRenderSystem::IWindowImp::IWindowImp(CWindow * window)
+	:mWindow(window)
 {}
 
 NSDevilX::NSRenderSystem::IWindowImp::~IWindowImp()
@@ -14,27 +14,7 @@ IRenderTarget * NSDevilX::NSRenderSystem::IWindowImp::queryInterface_IRenderTarg
 	return const_cast<IWindowImp*>(this);
 }
 
-UInt32 NSDevilX::NSRenderSystem::IWindowImp::getWidth() const
+CWindow * NSDevilX::NSRenderSystem::IWindowImp::getWindow() const
 {
-#if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
-	RECT rc;
-	::GetClientRect(static_cast<HWND>(getHandle()),&rc);
-	return rc.right-rc.left;
-#elif DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_X
-#endif
-}
-
-UInt32 NSDevilX::NSRenderSystem::IWindowImp::getHeight() const
-{
-#if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
-	RECT rc;
-	::GetClientRect(static_cast<HWND>(getHandle()),&rc);
-	return rc.bottom-rc.top;
-#elif DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_X
-#endif
-}
-
-Void NSDevilX::NSRenderSystem::IWindowImp::resize()
-{
-	notify(EMessage_Resize);
+	return mWindow;
 }

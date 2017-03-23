@@ -23,7 +23,7 @@ namespace NSDevilX
 				{
 					return mDepthStencil->getInternal();
 				}
-				Void prepare();
+				virtual Void prepare();
 				virtual Void render();
 			};
 		}

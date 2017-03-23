@@ -15,9 +15,9 @@ namespace NSDevilX
 			virtual Void shutdown()=0;
 			virtual IResourceManager * queryInterface_IResourceManager()const=0;
 			virtual Void update()=0;
-			virtual IWindow * createWindow(VoidPtr windowHandle)=0;
+			virtual IWindow * createWindow(CWindow * window)=0;
 			virtual Void destroyWindow(IWindow * window)=0;
-			virtual IWindow * getWindow(VoidPtr windowHandle)const=0;
+			virtual IWindow * getWindow(CWindow * window)const=0;
 			virtual IRenderableSurface * createRenderableSurface(const String & name)=0;
 			virtual Void destroyRenderableSurface(IRenderableSurface * surface)=0;
 			virtual IRenderableSurface * getRenderableSurface(const String & name)const=0;
