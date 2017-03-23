@@ -48,7 +48,7 @@ namespace NSDevilX
 				delete mUp;
 				delete mRight;
 			}
-			Boolean setPosition(DirectX::FXMVECTOR position)
+			Boolean setPosition(const CFloat2 & position)
 			{
 				if(position!=getPosition())
 				{
@@ -82,7 +82,7 @@ namespace NSDevilX
 			{
 				return mRotation;
 			}
-			Boolean setScale(DirectX::FXMVECTOR scale)
+			Boolean setScale(const CFloat2 & scale)
 			{
 				if(scale!=getScale())
 				{
@@ -354,11 +354,11 @@ namespace NSDevilX
 	public:
 		CTransform2DNode();
 		virtual ~CTransform2DNode();
-		Void setPosition(DirectX::FXMVECTOR position);
+		Void setPosition(const CFloat2 & position);
 		const CFloat2 & getPosition()const;
 		Void setRotation(const CRadian & rotation);
 		const CRadian & getRotation()const;
-		Void setScale(DirectX::FXMVECTOR scale);
+		Void setScale(const CFloat2 & scale);
 		const CFloat2 & getScale()const;
 		const CFloat2 & getUp();
 		const CFloat2 & getRight();
@@ -420,7 +420,7 @@ namespace NSDevilX
 				delete mUp;
 				delete mRight;
 			}
-			Boolean setPosition(DirectX::FXMVECTOR position)
+			Boolean setPosition(const CFloat3 & position)
 			{
 				if(position!=getPosition())
 				{
@@ -437,7 +437,7 @@ namespace NSDevilX
 			{
 				return mPosition?*mPosition:CFloat3::sZero;
 			}
-			Boolean setOrientation(DirectX::FXMVECTOR orientation)
+			Boolean setOrientation(const CFloat4 & orientation)
 			{
 				auto nor_orientation=DirectX::XMQuaternionNormalize(orientation);
 				if(nor_orientation!=getOrientation())
@@ -455,7 +455,7 @@ namespace NSDevilX
 			{
 				return mOrientation?*mOrientation:CFloat4::sIdentityQuaternion;
 			}
-			Boolean setScale(DirectX::FXMVECTOR scale)
+			Boolean setScale(const CFloat3 & scale)
 			{
 				if(scale!=getScale())
 				{
@@ -763,13 +763,13 @@ namespace NSDevilX
 	public:
 		CTransform3DNode();
 		virtual ~CTransform3DNode();
-		Void setPosition(DirectX::FXMVECTOR position);
+		Void setPosition(const CFloat3 & position);
 		const CFloat3 & getPosition()const;
-		Void setOrientation(DirectX::FXMVECTOR orientation);
+		Void setOrientation(const CFloat4 & orientation);
 		const CFloat4 & getOrientation()const;
-		Void setScale(DirectX::FXMVECTOR scale);
+		Void setScale(const CFloat3 & scale);
 		const CFloat3 & getScale()const;
-		Void setDirection(DirectX::FXMVECTOR direction,DirectX::FXMVECTOR up);
+		Void setDirection(const CFloat3 & direction,const CFloat3 & up);
 		Void setRotation(const CDegree & yaw,const CDegree & roll,const CDegree & pitch);
 		const CFloat3 & getDirection();
 		const CFloat3 & getUp();

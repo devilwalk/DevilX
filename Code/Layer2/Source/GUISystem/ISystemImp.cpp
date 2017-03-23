@@ -14,37 +14,6 @@ NSDevilX::NSGUISystem::ISystemImp::~ISystemImp()
 {
 }
 
-Void NSDevilX::NSGUISystem::ISystemImp::setFontManager(CFontManager * manager)
-{
-	if(getFontManager()!=manager)
-	{
-		notify(EMessage_BeginFontManagerChange);
-		mFontManager=manager;
-		notify(EMessage_EndFontManagerChange);
-	}
-}
-
-CFontManager * NSDevilX::NSGUISystem::ISystemImp::getFontManager() const
-{
-	return mFontManager;
-}
-
-Void NSDevilX::NSGUISystem::ISystemImp::setFontName(const String & fontName)
-{
-	if(getFontName()!=fontName)
-	{
-		notify(EMessage_BeginFontNameChange);
-		mFontName=fontName;
-		notify(EMessage_EndFontNameChange);
-	}
-}
-
-const String & NSDevilX::NSGUISystem::ISystemImp::getFontName() const
-{
-	// TODO: 在此处插入 return 语句
-	return mFontName;
-}
-
 IScene * NSDevilX::NSGUISystem::ISystemImp::createScene(NSRenderSystem::IViewport * viewport)
 {
 	if(mScenes.has(viewport))
@@ -62,6 +31,11 @@ IScene * NSDevilX::NSGUISystem::ISystemImp::getScene(NSRenderSystem::IViewport *
 Void NSDevilX::NSGUISystem::ISystemImp::destroyScene(IScene * scene)
 {
 	return mScenes.destroy(scene->getRenderViewport());
+}
+
+Void NSDevilX::NSGUISystem::ISystemImp::update()
+{
+	notify(EMessage_Update);
 }
 
 Void NSDevilX::NSGUISystem::ISystemImp::shutdown()

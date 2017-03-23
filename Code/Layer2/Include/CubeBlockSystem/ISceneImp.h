@@ -21,9 +21,9 @@ namespace NSDevilX
 				return mRenderScene;
 			}
 			Void update();
-			virtual Void setBlockMT(DirectX::FXMVECTOR positionVec,IBlock * block) override;
+			virtual Void setBlockMT(const CInt3 & position,IBlock * block) override;
 			virtual Void setBlockMT(const CRange3I & range,IBlock * block) override;
-			virtual IBlock * getBlockMT(DirectX::FXMVECTOR positionVec) override;
+			virtual IBlock * getBlockMT(const CInt3 & position) override;
 		protected:
 			CArea * _createOrRetrieveAreaMT(decltype(mAreas[0][0][0]) & areas,DirectX::FXMVECTOR absPositionVec,DirectX::FXMVECTOR positionVec);
 			Void _setBlockToAreaMT(const CRange3I & range,IBlockImp * block);

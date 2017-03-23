@@ -42,13 +42,17 @@ Void NSDevilX::NSResourceSystem::IResourceImp::load(ILoadCallback * callback)
 		mLoadThreadSyncGroupID=ISystemImp::getSingleton().getIOPool()->nextSyncGroupID();
 		ISystemImp::getSingleton().getIOPool()->submitMT(IOFunction,this,mLoadThreadSyncGroupID);
 		ISystemImp::getSingleton().addListener(this,ISystemImp::EMessage_Update);
+		if(callback)
+			mLoadCallbacks.push_back(callback);
 		mLoadState=ELoadState_Loading;
 		break;
 	case ELoadState_Loading:
-		mLoadCallbacks.push_back(callback);
+		if(callback)
+			mLoadCallbacks.push_back(callback);
 		break;
 	case ELoadState_Loaded:
-		callback->onLoaded(this);
+		if(callback)
+			callback->onLoaded(this);
 		break;
 	}
 }

@@ -18,7 +18,6 @@ NSDevilX::NSInputSystem::NSDirectX::CSystem::CSystem()
 	mPhysicalDeviceManager=DEVILX_NEW CPhysicalDeviceManager;
 	mVirtualDeviceManager=DEVILX_NEW CVirtualDeviceManager;
 	ISystemImp::getSingleton().addListener(this,ISystemImp::EMessage_BeginDestruction,False);
-	ISystemImp::getSingleton().addListener(this,ISystemImp::EMessage_UpdateData,False);
 }
 
 NSDevilX::NSInputSystem::NSDirectX::CSystem::~CSystem()
@@ -34,9 +33,6 @@ void NSDevilX::NSInputSystem::NSDirectX::CSystem::onMessage(ISystemImp * notifie
 	{
 	case ISystemImp::EMessage_BeginDestruction:
 		DEVILX_DELETE(this);
-		break;
-	case ISystemImp::EMessage_UpdateData:
-		mVirtualDeviceManager->update();
 		break;
 	}
 }

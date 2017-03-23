@@ -56,7 +56,7 @@ namespace NSDevilX
 			DirectX::XMVECTOR delta_vec=point-mBoundingBox.Center;
 			if(DirectX::XMVector3Equal(delta_vec,DirectX::XMVectorZero()))
 				return -1;
-			DirectX::XMVECTOR test_value=delta_vec>=DirectX::XMVectorZero();
+			DirectX::XMVECTOR test_value=DirectX::XMVectorGreaterOrEqual(delta_vec,DirectX::XMVectorZero());
 			unsigned short child_array_index[3];
 			child_array_index[0]=DirectX::XMVectorGetIntX(test_value)?0:1;
 			child_array_index[1]=DirectX::XMVectorGetIntY(test_value)?0:1;

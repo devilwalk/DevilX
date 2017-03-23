@@ -7,7 +7,7 @@ NSDevilX::CTransform2DNode::CTransform2DNode()
 NSDevilX::CTransform2DNode::~CTransform2DNode()
 {}
 
-Void NSDevilX::CTransform2DNode::setPosition(DirectX::FXMVECTOR position)
+Void NSDevilX::CTransform2DNode::setPosition(const CFloat2 & position)
 {
 	if(mLocal.setPosition(position))
 	{
@@ -33,7 +33,7 @@ const CRadian & NSDevilX::CTransform2DNode::getRotation() const
 	return mLocal.getRotation();
 }
 
-Void NSDevilX::CTransform2DNode::setScale(DirectX::FXMVECTOR scale)
+Void NSDevilX::CTransform2DNode::setScale(const CFloat2 & scale)
 {
 	if(mLocal.setScale(scale))
 	{
@@ -131,7 +131,7 @@ NSDevilX::CTransform3DNode::~CTransform3DNode()
 {
 }
 
-Void NSDevilX::CTransform3DNode::setPosition(DirectX::FXMVECTOR position)
+Void NSDevilX::CTransform3DNode::setPosition(const CFloat3 & position)
 {
 	if(mLocal.setPosition(position))
 	{
@@ -144,7 +144,7 @@ const CFloat3 & NSDevilX::CTransform3DNode::getPosition() const
 	return mLocal.getPosition();
 }
 
-Void NSDevilX::CTransform3DNode::setOrientation(DirectX::FXMVECTOR orientation)
+Void NSDevilX::CTransform3DNode::setOrientation(const CFloat4 & orientation)
 {
 	if(mLocal.setOrientation(orientation))
 	{
@@ -157,7 +157,7 @@ const CFloat4 & NSDevilX::CTransform3DNode::getOrientation() const
 	return mLocal.getOrientation();
 }
 
-Void NSDevilX::CTransform3DNode::setScale(DirectX::FXMVECTOR scale)
+Void NSDevilX::CTransform3DNode::setScale(const CFloat3 & scale)
 {
 	if(mLocal.setScale(scale))
 	{
@@ -170,7 +170,7 @@ const CFloat3 & NSDevilX::CTransform3DNode::getScale() const
 	return mLocal.getScale();
 }
 
-Void NSDevilX::CTransform3DNode::setDirection(DirectX::FXMVECTOR direction,DirectX::FXMVECTOR up)
+Void NSDevilX::CTransform3DNode::setDirection(const CFloat3 & direction,const CFloat3 & up)
 {
 	DirectX::XMVECTOR right_vec=DirectX::XMVector3Cross(up,direction);
 	DirectX::XMVECTOR new_up_vec=DirectX::XMVector3Cross(direction,right_vec);

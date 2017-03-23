@@ -2,28 +2,22 @@
 using namespace NSDevilX;
 using namespace NSGUISystem;
 
-NSDevilX::NSGUISystem::IControlImp::IControlImp(const String & name,IWindowImp * parentWindow)
-	:mName(name)
-	,mParentWindow(parentWindow)
+NSDevilX::NSGUISystem::IControlImp::IControlImp(CControl * control,IWindowImp * parentWindow)
+	:mParentWindow(parentWindow)
+	,mControl(control)
 {
-	mLayer=NSUISystem::getSystem()->createLayer(name);
 }
 
 NSDevilX::NSGUISystem::IControlImp::~IControlImp()
 {
-	for(auto window:mGraphicWindows)
-		static_cast<ISceneImp*>(getParentWindow()->getScene())->getGraphicScene()->destroyWindow(window);
-	NSUISystem::getSystem()->destroyLayer(mLayer);
-}
-
-Void NSDevilX::NSGUISystem::IControlImp::attachGraphicWindow(NSUISystem::IGraphicWindow * window)
-{
-	mGraphicWindows.push_back(window);
+	notify(EMessage_BeginDestruction);
+	DEVILX_DELETE(getControl());
+	notify(EMessage_EndDestruction);
 }
 
 NSUISystem::IElement * NSDevilX::NSGUISystem::IControlImp::queryInterface_IElement() const
 {
-	return mLayer;
+	return getControl()->getLayer();
 }
 
 IWindow * NSDevilX::NSGUISystem::IControlImp::getParentWindow() const

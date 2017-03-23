@@ -10,14 +10,6 @@ NSDevilX::NSInputSystem::NSDirectX::CVirtualDeviceManager::CVirtualDeviceManager
 NSDevilX::NSInputSystem::NSDirectX::CVirtualDeviceManager::~CVirtualDeviceManager()
 {}
 
-Void NSDevilX::NSInputSystem::NSDirectX::CVirtualDeviceManager::update()
-{
-	for(const auto & dev_pair:mDevices)
-	{
-		dev_pair.second->update();
-	}
-}
-
 void NSDevilX::NSInputSystem::NSDirectX::CVirtualDeviceManager::onMessage(IVirtualDeviceManagerImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
 {
 	switch(message)

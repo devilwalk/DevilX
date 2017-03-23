@@ -30,7 +30,7 @@ namespace NSDevilX
 			};
 		protected:
 			static NSRenderSystem::IGeometry * sGeometry;
-			const CSInt3 mPosition;
+			const CInt3 mPosition;
 			ISceneImp * const mScene;
 			TMapMT<IBlockImp*,TListMT<CRange3I*>*> mBlocks;
 			NSRenderSystem::IEntity * mEntity;
@@ -39,9 +39,9 @@ namespace NSDevilX
 			std::atomic_bool mNeedFillRenderable;
 			std::atomic_bool mNeedUpdateRenderable;
 		public:
-			CArea(DirectX::FXMVECTOR positionVec,ISceneImp * scene);
+			CArea(const CInt3 & position,ISceneImp * scene);
 			~CArea();
-			const CSInt3 & getPosition()const
+			const CInt3 & getPosition()const
 			{
 				return mPosition;
 			}
@@ -53,9 +53,9 @@ namespace NSDevilX
 			{
 				return mEntity;
 			}
-			Void setBlockMT(DirectX::FXMVECTOR positionVec,IBlockImp * block);
+			Void setBlockMT(const CInt3 & position,IBlockImp * block);
 			Void setBlockMT(const CRange3I & range,IBlockImp * block);
-			IBlockImp * getBlockMT(DirectX::FXMVECTOR positionVec);
+			IBlockImp * getBlockMT(const CInt3 & position);
 			Void update(Bool & needNextProcess);
 		protected:
 			static Boolean _fillRenderableThreadFunction(VoidPtr parameter);

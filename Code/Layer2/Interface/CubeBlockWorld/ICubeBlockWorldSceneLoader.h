@@ -9,11 +9,11 @@ namespace NSDevilX
 			virtual ~ISceneLoader(){}
 		public:
 			virtual const String & getName()const=0;
-			virtual Void setChunkPosition(DirectX::FXMVECTOR positionVec)=0;
-			virtual Void setBlockPosition(DirectX::FXMVECTOR positionVec)=0;
-			virtual const CSInt3 & getChunkPosition()const=0;
-			virtual Void setChunkRange(const CSInt3 & range)=0;
-			virtual const CSInt3 & getChunkRange()const=0;
+			virtual Void setChunkPosition(const CInt3 & position)=0;
+			virtual Void setBlockPosition(const CInt3 & position)=0;
+			virtual const CInt3 & getChunkPosition()const=0;
+			virtual Void setChunkRange(const CInt3 & range)=0;
+			virtual const CInt3 & getChunkRange()const=0;
 		};
 	}
 }

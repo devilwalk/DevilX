@@ -15,9 +15,7 @@ namespace NSDevilX
 			enum EMessage
 			{
 				EMessage_BeginDestruction,
-				EMessage_EndDestruction,
-				EMessage_UpdateData,
-				EMessage_UpdateState
+				EMessage_EndDestruction
 			};
 		protected:
 			IPhysicalDeviceManagerImp * mPhysicalDeviceManager;
@@ -31,10 +29,6 @@ namespace NSDevilX
 			virtual Void update() override;
 			virtual IPhysicalDeviceManager * getPhysicalDeviceManager() const override;
 			virtual IVirtualDeviceManager * getVirtualDeviceManager() const override;
-			virtual Void registerEvent(IEnum::EMouseEventType type,IEventListener<IEnum::EMouseEventType>* listener) override;
-			virtual Void registerEvent(IEnum::EKeyboardEventType type,IEventListener<IEnum::EKeyboardEventType>* listener) override;
-			virtual Void unregisterEvent(IEnum::EMouseEventType type,IEventListener<IEnum::EMouseEventType>* listener) override;
-			virtual Void unregisterEvent(IEnum::EKeyboardEventType type,IEventListener<IEnum::EKeyboardEventType>* listener) override;
 		};
 	}
 }

@@ -15,8 +15,8 @@ namespace NSDevilX
 			~CSimpleTerrainGeneratorInstance();
 
 			// Inherited via ITerrainGeneratorInstance
-			virtual NSCubeBlockSystem::IBlock * generateBlock(DirectX::XMVECTOR positionVec) override;
-			virtual Boolean generateChunk(DirectX::XMVECTOR positionVec) override;
+			virtual NSCubeBlockSystem::IBlock * generateBlock(const CInt3 & position) override;
+			virtual Boolean generateChunk(const CInt3 & position) override;
 		};
 		class CSimpleTerrainGenertor
 			:public ITerrainGenerator

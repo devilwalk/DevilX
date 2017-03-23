@@ -19,11 +19,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\Button.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\Control.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\IButtonImp.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\IControlImp.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\ISceneImp.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\IStaticTextImp.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\ISystemImp.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\IWindowImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\StaticText.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIButton.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIControl.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIScene.h" />
@@ -34,12 +38,21 @@
     <ClInclude Include="..\..\..\Code\Layer2\Source\GUISystem\Precompiler.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\Button.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\Control.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\IButtonImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\IControlImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\ISceneImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\IStaticTextImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\ISystemImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\IWindowImp.cpp" />
-    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\Precompiler.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\Precompiler.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\StaticText.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{0EAE0DBF-8E60-4363-A680-460B5E1CD4EB}</ProjectGuid>
@@ -99,8 +112,6 @@
   <PropertyGroup />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -112,8 +123,6 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -126,8 +135,6 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -143,8 +150,6 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>

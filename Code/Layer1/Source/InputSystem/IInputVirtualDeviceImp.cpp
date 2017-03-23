@@ -1,22 +1,18 @@
 #include "Precompiler.h"
 using namespace NSDevilX;
 using namespace NSInputSystem;
-NSDevilX::NSInputSystem::IVirtualDeviceImp::IVirtualDeviceImp(const String & name,IPhysicalDeviceImp * physicalDevice)
+NSDevilX::NSInputSystem::IVirtualDeviceImp::IVirtualDeviceImp(const String & name,IPhysicalDeviceImp * physicalDevice,CWindow * window)
 	:mName(name)
 	,mPhysicalDevice(physicalDevice)
+	,mWindow(window)
 {}
 
 NSDevilX::NSInputSystem::IVirtualDeviceImp::~IVirtualDeviceImp()
 {}
 
-IMouse * NSDevilX::NSInputSystem::IVirtualDeviceImp::queryInterface_IMouse() const
+Void NSDevilX::NSInputSystem::IVirtualDeviceImp::update()
 {
-	return nullptr;
-}
-
-IKeyboard * NSDevilX::NSInputSystem::IVirtualDeviceImp::queryInterface_IKeyboard() const
-{
-	return nullptr;
+	notify(EMessage_UpdateData);
 }
 
 const String & NSDevilX::NSInputSystem::IVirtualDeviceImp::getName() const
@@ -28,4 +24,9 @@ const String & NSDevilX::NSInputSystem::IVirtualDeviceImp::getName() const
 IPhysicalDevice * NSDevilX::NSInputSystem::IVirtualDeviceImp::getPhysicalDevice() const
 {
 	return mPhysicalDevice;
+}
+
+CWindow * NSDevilX::NSInputSystem::IVirtualDeviceImp::getWindow() const
+{
+	return mWindow;
 }

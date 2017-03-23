@@ -5,12 +5,12 @@ using namespace NSGUISystem;
 NSDevilX::NSGUISystem::IStaticTextImp::IStaticTextImp(const String & name,IWindowImp * window)
 	:mControl(nullptr)
 {
-	mControl=DEVILX_NEW IControlImp(name,window);
+	mControl=DEVILX_NEW IControlImp(DEVILX_NEW CStaticText(name,static_cast<IControlImp*>(window->queryInterface_IControl())->getControl()),window);
+	mControl->addListener(this,IControlImp::EMessage_BeginDestruction);
 }
 
 NSDevilX::NSGUISystem::IStaticTextImp::~IStaticTextImp()
 {
-	DEVILX_DELETE(mControl);
 }
 
 IControl * NSDevilX::NSGUISystem::IStaticTextImp::queryInterface_IControl() const
@@ -18,27 +18,44 @@ IControl * NSDevilX::NSGUISystem::IStaticTextImp::queryInterface_IControl() cons
 	return mControl;
 }
 
-Void NSDevilX::NSGUISystem::IStaticTextImp::setText(const WString & string,const CColour & colour)
+Void NSDevilX::NSGUISystem::IStaticTextImp::setFontResource(NSResourceSystem::IResource * resource)
 {
-	mText=string;
-	mTextColour=colour;
+	static_cast<CStaticText*>(mControl->getControl())->setFontResource(resource);
 }
 
-Void NSDevilX::NSGUISystem::IStaticTextImp::_updateGraphicWindows()
+NSResourceSystem::IResource * NSDevilX::NSGUISystem::IStaticTextImp::getFontResource() const
 {
-	const auto word_width=1.0f/getText().length();
-	TVector<CSInt2> pixel_starts;
-	pixel_starts.resize(getText().length());
-	TVector<CSInt2> pixel_ends;
-	pixel_ends.resize(getText().length());
-	for(size_t i=0;i<getText().length();++i)
+	return static_cast<CStaticText*>(mControl->getControl())->getFontResource();
+}
+
+Void NSDevilX::NSGUISystem::IStaticTextImp::setText(const CUTF8String & text)
+{
+	static_cast<CStaticText*>(mControl->getControl())->setText(text);
+}
+
+const CUTF8String & NSDevilX::NSGUISystem::IStaticTextImp::getText() const
+{
+	// TODO: 在此处插入 return 语句
+	return static_cast<CStaticText*>(mControl->getControl())->getText();
+}
+
+Void NSDevilX::NSGUISystem::IStaticTextImp::setTextColour(const CColour & colour)
+{
+	static_cast<CStaticText*>(mControl->getControl())->setTextColour(colour);
+}
+
+const CColour & NSDevilX::NSGUISystem::IStaticTextImp::getTextColour() const
+{
+	// TODO: 在此处插入 return 语句
+	return static_cast<CStaticText*>(mControl->getControl())->getTextColour();
+}
+
+Void NSDevilX::NSGUISystem::IStaticTextImp::onMessage(IControlImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
+{
+	switch(message)
 	{
-		auto Image=ISystemImp::getSingleton().getFontManager()->getImage(ISystemImp::getSingleton().getFontName(),getText()[i],&pixel_starts[i],&pixel_ends[i]);
-		auto window=static_cast<ISceneImp*>(queryInterface_IControl()->getParentWindow()->getScene())->getGraphicScene()->createWindow(queryInterface_IControl()->queryInterface_IElement()->getName()+"/"+CStringConverter::toString(i));
-		window->setColour(mTextColour);
-		//window->setTexture(CApp::getSingleton().getGame()->getFontManager()->getRenderTexture(),pixel_starts[i],pixel_ends[i]);
-		window->queryInterface_IElement()->setPosition(CFloat2(word_width,0.0f)*static_cast<Float>(i));
-		window->queryInterface_IElement()->setSize(CFloat2(word_width,1.0f));
-		mControl->attachGraphicWindow(window);
-	}
+	case IControlImp::EMessage_BeginDestruction:
+		DEVILX_DELETE(this);
+		break;
+	};
 }

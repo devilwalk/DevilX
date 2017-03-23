@@ -51,6 +51,18 @@ namespace NSDevilX
 	inline DirectX::XMVECTOR XM_CALLCONV operator *(DirectX::FXMVECTOR leftValue,const specialNamespace::XM##type0##x & rightValue) \
 	{ \
 		return leftValue*specialNamespace::XMLoad##type1##x(&rightValue); \
+	} \
+	inline DirectX::XMVECTOR operator /(const specialNamespace::XM##type0##x & leftValue,const specialNamespace::XM##type0##x & rightValue) \
+	{ \
+		return specialNamespace::XMLoad##type1##x(&leftValue)/specialNamespace::XMLoad##type1##x(&rightValue); \
+	} \
+	inline DirectX::XMVECTOR XM_CALLCONV operator /(const specialNamespace::XM##type0##x & leftValue,DirectX::FXMVECTOR rightValue) \
+	{ \
+		return specialNamespace::XMLoad##type1##x(&leftValue)/rightValue; \
+	} \
+	inline DirectX::XMVECTOR XM_CALLCONV operator /(DirectX::FXMVECTOR leftValue,const specialNamespace::XM##type0##x & rightValue) \
+	{ \
+		return leftValue/specialNamespace::XMLoad##type1##x(&rightValue); \
 	}
 #define BEGIN_VECTOR_CLASS(specialNamespace,type0,type1,x) \
 	VECTOR_OPERATOR_FUNC(specialNamespace,type0,type1,x,==,Equal) \
@@ -66,17 +78,22 @@ namespace NSDevilX
 	public: \
 		static const C##type1##x sZero; \
 		static const C##type1##x sOne; \
-		C##type1##x() \
-		{ } \
+		using specialNamespace::XM##type0##x::XM##type0##x; \
+		using specialNamespace::XM##type0##x::operator=; \
 		C##type1##x(const specialNamespace::XM##type0##x & cpy) \
 			:specialNamespace::XM##type0##x(cpy) \
-		{ } \
-		C##type1##x(const Float * value) \
-			:specialNamespace::XM##type0##x(value) \
 		{ } \
 		C##type1##x(DirectX::FXMVECTOR cpy) \
 		{ \
 			*this=cpy; \
+		} \
+		C##type1##x(const DirectX::XMINT##x & value) \
+		{ \
+			*this=value; \
+		} \
+		C##type1##x(const DirectX::XMUINT##x & value) \
+		{ \
+			*this=value; \
 		} \
 		operator DirectX::XMVECTOR()const \
 		{ \
@@ -86,16 +103,23 @@ namespace NSDevilX
 		{ \
 			specialNamespace::XMStore##type1##x(this,src); \
 			return *this; \
+		} \
+		const C##type1##x & operator=(const DirectX::XMINT##x & value) \
+		{ \
+			*this=DirectX::XMConvertVectorIntToFloat(DirectX::XMLoadSInt##x(&value),0); \
+			return *this; \
+		} \
+		const C##type1##x & operator=(const DirectX::XMUINT##x & value) \
+		{\
+			*this=DirectX::XMConvertVectorUIntToFloat(DirectX::XMLoadUInt##x(&value),0); \
+			return *this; \
 		}
 #define END_CLASS };
 	BEGIN_VECTOR_CLASS(DirectX,FLOAT,Float,2)
 	static const CFloat2 sUnitX;
 	static const CFloat2 sUnitY;
-	CFloat2(Float value)
+	CFloat2(Float value=0.0f)
 		:DirectX::XMFLOAT2(value,value)
-	{}
-	CFloat2(Float x,Float y)
-		:DirectX::XMFLOAT2(x,y)
 	{}
 	Void normalize()
 	{
@@ -106,12 +130,8 @@ namespace NSDevilX
 	static const CFloat3 sUnitX;
 	static const CFloat3 sUnitY;
 	static const CFloat3 sUnitZ;
-	CFloat3(Float value)
+	CFloat3(Float value=0.0f)
 		:DirectX::XMFLOAT3(value,value,value)
-	{
-	}
-	CFloat3(Float x,Float y,Float z)
-		:DirectX::XMFLOAT3(x,y,z)
 	{
 	}
 	Void normalize()
@@ -121,12 +141,8 @@ namespace NSDevilX
 	END_CLASS
 	BEGIN_VECTOR_CLASS(DirectX,FLOAT,Float,4)
 	static const CFloat4 sIdentityQuaternion;
-	CFloat4(Float value)
+	CFloat4(Float value=0.0f)
 		:DirectX::XMFLOAT4(value,value,value,value)
-	{
-	}
-	CFloat4(Float x,Float y,Float z,Float w)
-		:DirectX::XMFLOAT4(x,y,z,w)
 	{
 	}
 	CFloat4(const DirectX::XMFLOAT3 & vec3,Float w)
@@ -139,7 +155,7 @@ namespace NSDevilX
 	}
 	END_CLASS
 	BEGIN_VECTOR_CLASS(DirectX::PackedVector,HALF,Half,2)
-	CHalf2(Float value)
+	CHalf2(Float value=0.0f)
 		:DirectX::PackedVector::XMHALF2(value,value)
 	{}
 	CHalf2(Float x,Float y)
@@ -153,7 +169,7 @@ namespace NSDevilX
 	{}
 	END_CLASS
 	BEGIN_VECTOR_CLASS(DirectX::PackedVector,HALF,Half,4)
-	CHalf4(Float value)
+	CHalf4(Float value=0.0f)
 		:DirectX::PackedVector::XMHALF4(value,value,value,value)
 	{
 	}

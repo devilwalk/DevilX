@@ -12,7 +12,7 @@ Void NSDevilX::CFontManager::reigsterFont(const String & fontName,const String &
 	mFonts.add(fontName,DEVILX_NEW CFileStream(fontFileName));
 }
 
-CFontImage * NSDevilX::CFontManager::getImage(const String & fontName,WChar ch,OUT CSInt2 * pixelStart,OUT CSInt2 * pixelEnd,const CSInt2 & fontSize)
+CFontImage * NSDevilX::CFontManager::getImage(const String & fontName,WChar ch,OUT CUInt2 * pixelStart,OUT CUInt2 * pixelEnd,const CUInt2 & fontSize)
 {
 	auto src=mFonts.get(fontName);
 	if(!src)

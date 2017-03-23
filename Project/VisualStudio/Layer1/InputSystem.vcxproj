@@ -34,6 +34,8 @@
     <ClInclude Include="..\..\..\Code\Layer1\Interface\InputSystem\IInputSystemInterface.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\InputSystem\IInputVirtualDevice.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\InputSystem\IInputVirtualDeviceManager.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Interface\InputSystem\IKeyboard.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Interface\InputSystem\IMouse.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Source\InputSystem\Precompiler.h" />
   </ItemGroup>
   <ItemGroup>

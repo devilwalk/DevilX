@@ -4,41 +4,59 @@ namespace NSDevilX
 {
 	namespace NSInputSystem
 	{
+		struct SMouseFrameDataImp
+			:public IMouseFrameData
+			,public TBaseObject<SMouseFrameDataImp>
+		{
+			enum EType
+			{
+				EType_Unknown,
+				EType_AxisOffsetX,
+				EType_AxisOffsetY,
+				EType_AxisOffsetZ,
+				EType_ButtonState_Left,
+				EType_ButtonState_Right,
+				EType_ButtonState_Middle
+			};
+			EType mType;
+			Int32 mValue;
+			SMouseFrameDataImp();
+			~SMouseFrameDataImp();
+			// Í¨¹ý IMouseFrameData ¼Ì³Ð
+			virtual Int32 getAxisXOffset() const override;
+			virtual Int32 getAxisYOffset() const override;
+			virtual Int32 getWheelOffset() const override;
+			virtual IEnum::EButtonState getButtonState(IEnum::EMouseButtonType type) const override;
+		};
 		class IMouseImp
 			:public IMouse
 			,public IVirtualDeviceImp
 			,public TBaseObject<IMouseImp>
-			,public CMessageNotifier
 		{
 		public:
-			enum EMessage
-			{
-				EMessage_Move,
-				EMessage_WheelMove,
-				EMessage_ButtonPress,
-				EMessage_ButtonRelease
-			};
 			typedef std::array<IEnum::EButtonState,IEnum::EMouseButtonType_Last+1> ButtonStateList;
 		protected:
-			CSInt2 mOffset;
-			CSInt2 mPosition;
-			Int32 mWheelOffset;
-			Int32 mWheelPosition;
+			CInt3 mOffset;
+			CInt3 mPosition;
 			ButtonStateList mButtonStateList;
+			IMouseListener * mListener;
+			TVector<SMouseFrameDataImp*> mFrameDatas;
 		public:
-			IMouseImp(const String & name,IPhysicalDeviceImp * physicalDevice);
+			IMouseImp(const String & name,IPhysicalDeviceImp * physicalDevice,CWindow * window);
 			virtual ~IMouseImp();
-			Void setOffset(Int32 x,Int32 y);
-			Void setPosition(Int32 x,Int32 y);
-			Void setWheelOffset(Int32 offset);
-			void changeButtonState(IEnum::EMouseButtonType type,IEnum::EButtonState state);
+			Void addFrameData(SMouseFrameDataImp * data);
+			virtual Void update() override;
 			// Inherited via IMouse
-			virtual const CSInt2 & getOffset() const override;
-			virtual const CSInt2 & getPosition() const override;
+			virtual IVirtualDevice * queryInterface_IVirtualDevice() const override;
+			virtual const CInt2 & getOffset() const override;
+			virtual const CInt2 & getPosition() const override;
 			virtual Int32 getWheelOffset() const override;
 			virtual Int32 getWheelPosition() const override;
 			virtual IEnum::EButtonState getButtonState(IEnum::EMouseButtonType type) const override;
-			virtual IMouse * queryInterface_IMouse() const override;
+			virtual UInt32 getFrameDataCount() const override;
+			virtual IMouseFrameData * getFrameData(UInt32 index) const override;
+			virtual Void setListener(IMouseListener * listener) override;
+			virtual IMouseListener * getListener() const override;
 		};
 	}
 }

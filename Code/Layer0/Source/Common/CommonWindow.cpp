@@ -3,8 +3,9 @@ using namespace NSDevilX;
 
 NSDevilX::CWindow::CWindow()
 	:mHandle(nullptr)
-	,mPosition(CSInt2::sZero)
-	,mSize(CSInt2::sZero)
+	,mPosition(CInt2::sZero)
+	,mSize(CUInt2::sZero)
+	,mEventListener(nullptr)
 {
 
 }
@@ -17,9 +18,9 @@ NSDevilX::CWindow::~CWindow()
 	}
 }
 
-Void NSDevilX::CWindow::setPosition(const CSInt2 & position)
+Void NSDevilX::CWindow::setPosition(const CInt2 & position)
 {
-	if(position!=mPosition)
+	if(position!=getPosition())
 	{
 		mPosition=position;
 		if(getHandle())
@@ -31,12 +32,12 @@ Void NSDevilX::CWindow::setPosition(const CSInt2 & position)
 	}
 }
 
-Void NSDevilX::CWindow::setSize(const CSInt2 & size)
+Void NSDevilX::CWindow::setSize(const CUInt2 & size)
 {
 	if(size!=getSize())
 	{
 		mSize=size;
-		if(getSize()>CSInt2::sZero)
+		if(getSize()>CUInt2::sZero)
 		{
 			if(getHandle())
 			{
@@ -58,13 +59,65 @@ Void NSDevilX::CWindow::setSize(const CSInt2 & size)
 				wnd_class.hInstance=GetModuleHandle(nullptr);
 				wnd_class.lpfnWndProc=[](HWND wnd,UINT msg,WPARAM wParam,LPARAM lParam)
 				{
+					static std::map<HWND,CWindow*> windows;
+					CWindow * window=nullptr;
+					switch(msg)
+					{
+					case WM_CREATE:
+						windows[wnd]=static_cast<CWindow*>(reinterpret_cast<LPCREATESTRUCT>(lParam)->lpCreateParams);
+						break;
+					default:
+					{
+						auto iter=windows.find(wnd);
+						if(windows.end()!=iter)
+						{
+							window=iter->second;
+						}
+					}
+					}
+					if(window)
+					{
+						switch(msg)
+						{
+						case WM_IME_CHAR:
+							window->getEventListener()->onCharEvent(window,CUTF8Char(wParam));
+							break;
+						case WM_LBUTTONDOWN:
+							window->getEventListener()->onButtonEvent(window,CWindowEventListener::EButtonType_Left,CWindowEventListener::EButtonEventType_ButtonDown,CUInt2(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)));
+							break;
+						case WM_LBUTTONUP:
+							window->getEventListener()->onButtonEvent(window,CWindowEventListener::EButtonType_Left,CWindowEventListener::EButtonEventType_ButtonUp,CUInt2(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)));
+							break;
+						case WM_LBUTTONDBLCLK:
+							window->getEventListener()->onButtonEvent(window,CWindowEventListener::EButtonType_Left,CWindowEventListener::EButtonEventType_ButtonDoubleClick,CUInt2(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)));
+							break;
+						case WM_RBUTTONDOWN:
+							window->getEventListener()->onButtonEvent(window,CWindowEventListener::EButtonType_Right,CWindowEventListener::EButtonEventType_ButtonDown,CUInt2(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)));
+							break;
+						case WM_RBUTTONUP:
+							window->getEventListener()->onButtonEvent(window,CWindowEventListener::EButtonType_Right,CWindowEventListener::EButtonEventType_ButtonUp,CUInt2(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)));
+							break;
+						case WM_RBUTTONDBLCLK:
+							window->getEventListener()->onButtonEvent(window,CWindowEventListener::EButtonType_Right,CWindowEventListener::EButtonEventType_ButtonDoubleClick,CUInt2(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)));
+							break;
+						case WM_MBUTTONDOWN:
+							window->getEventListener()->onButtonEvent(window,CWindowEventListener::EButtonType_Middle,CWindowEventListener::EButtonEventType_ButtonDown,CUInt2(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)));
+							break;
+						case WM_MBUTTONUP:
+							window->getEventListener()->onButtonEvent(window,CWindowEventListener::EButtonType_Middle,CWindowEventListener::EButtonEventType_ButtonUp,CUInt2(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)));
+							break;
+						case WM_MBUTTONDBLCLK:
+							window->getEventListener()->onButtonEvent(window,CWindowEventListener::EButtonType_Middle,CWindowEventListener::EButtonEventType_ButtonDoubleClick,CUInt2(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)));
+							break;
+						}
+					}
 					return DefWindowProc(wnd,msg,wParam,lParam);
 				};
 				wnd_class.lpszClassName=_T("WindowDef");
 				wnd_class.lpszMenuName=nullptr;
 				wnd_class.style=CS_HREDRAW|CS_VREDRAW;
 				RegisterClassEx(&wnd_class);
-				mHandle=CreateWindowEx(0,wnd_class.lpszClassName,_T("WindowDef"),WS_POPUP,getPosition().x,getPosition().y,getSize().x,getSize().y,nullptr,nullptr,wnd_class.hInstance,nullptr);
+				mHandle=CreateWindowEx(0,wnd_class.lpszClassName,_T("WindowDef"),WS_POPUP,getPosition().x,getPosition().y,getSize().x,getSize().y,nullptr,nullptr,wnd_class.hInstance,this);
 				ShowWindow(static_cast<HWND>(getHandle()),SW_NORMAL);
 				UpdateWindow(static_cast<HWND>(getHandle()));
 #endif
@@ -91,11 +144,11 @@ VoidPtr NSDevilX::CDesktop::getHandle() const
 #endif
 }
 
-CSInt2 NSDevilX::CDesktop::getSize()
+CUInt2 NSDevilX::CDesktop::getSize()
 {
 #if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
 	RECT rc;
 	GetClientRect(static_cast<HWND>(getHandle()),&rc);
-	return CSInt2(rc.right-rc.left,rc.bottom-rc.top);
+	return CUInt2(rc.right-rc.left,rc.bottom-rc.top);
 #endif
 }

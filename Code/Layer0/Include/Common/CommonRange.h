@@ -108,16 +108,16 @@ namespace NSDevilX
 		:public TBaseObject<CRange3I>
 	{
 	protected:
-		CSInt3 mMin;
-		CSInt3 mMax;
+		CInt3 mMin;
+		CInt3 mMax;
 	public:
 		CRange3I()
 			:mMin(1,1,1)
 			,mMax(0,0,0)
 		{}
-		CRange3I(DirectX::FXMVECTOR minPositionVec,DirectX::FXMVECTOR maxPositionVec)
-			:mMin(minPositionVec)
-			,mMax(maxPositionVec)
+		CRange3I(const CInt3 & minPosition,const CInt3 & maxPosition)
+			:mMin(minPosition)
+			,mMax(maxPosition)
 		{
 		}
 		~CRange3I()
@@ -138,19 +138,19 @@ namespace NSDevilX
 		{
 			return getMax().z>=getMin().z;
 		}
-		Void setMin(DirectX::FXMVECTOR vec)
+		Void setMin(const CInt3 & vec)
 		{
 			mMin=vec;
 		}
-		const CSInt3 & getMin()const
+		const CInt3 & getMin()const
 		{
 			return mMin;
 		}
-		Void setMax(DirectX::FXMVECTOR vec)
+		Void setMax(const CInt3 & vec)
 		{
 			mMax=vec;
 		}
-		const CSInt3 & getMax()const
+		const CInt3 & getMax()const
 		{
 			return mMax;
 		}
@@ -161,14 +161,14 @@ namespace NSDevilX
 			const DirectX::XMVECTOR src_max_vec=getMax();
 			const DirectX::XMVECTOR dst_min_vec=range.getMin();
 			const DirectX::XMVECTOR dst_max_vec=range.getMax();
-			const DirectX::XMVECTOR one_vec=CSInt3::sOne;
-			const CSInt3 src_size=src_max_vec-src_min_vec+one_vec;
+			const DirectX::XMVECTOR one_vec=CInt3::sOne;
+			const CInt3 src_size=src_max_vec-src_min_vec+one_vec;
 			const auto src_volume=src_size.x*src_size.y*src_size.z;
-			const CSInt3 dst_size=dst_max_vec-dst_min_vec+one_vec;
+			const CInt3 dst_size=dst_max_vec-dst_min_vec+one_vec;
 			const auto dst_volume=dst_size.x*dst_size.y*dst_size.z;
 			const auto new_min=DirectX::XMVectorMin(src_min_vec,dst_min_vec);
 			const auto new_max=DirectX::XMVectorMax(src_max_vec,dst_max_vec);
-			const CSInt3 new_size=new_max-new_min+one_vec;
+			const CInt3 new_size=new_max-new_min+one_vec;
 			const auto new_volume=new_size.x*new_size.y*new_size.z;
 			if(new_volume==src_volume+dst_volume)
 			{
@@ -179,10 +179,10 @@ namespace NSDevilX
 			else
 				return false;
 		}
-		Boolean contains(DirectX::FXMVECTOR blockPositionVec)const
+		Boolean contains(const CInt3 & blockPosition)const
 		{
 			assert(isValidate());
-			return (getMin()<=blockPositionVec)&&(getMax()>=blockPositionVec);
+			return (getMin()<=blockPosition)&&(getMax()>=blockPosition);
 		}
 		Boolean contains(const CRange3I & range)const
 		{
@@ -228,32 +228,32 @@ namespace NSDevilX
 			//split by min x
 			if(erasedRange.getMin().x>srcRange.getMin().x)
 			{
-				newRanges.push_back(DEVILX_NEW CRange3I(srcRange.getMin(),CSInt3(erasedRange.getMin().x-1,srcRange.getMax().y,srcRange.getMax().z)));
+				newRanges.push_back(DEVILX_NEW CRange3I(srcRange.getMin(),CInt3(erasedRange.getMin().x-1,srcRange.getMax().y,srcRange.getMax().z)));
 			}
 			//split by max x
 			if(erasedRange.getMax().x<srcRange.getMax().x)
 			{
-				newRanges.push_back(DEVILX_NEW CRange3I(CSInt3(erasedRange.getMax().x+1,srcRange.getMin().y,srcRange.getMin().z),srcRange.getMax()));
+				newRanges.push_back(DEVILX_NEW CRange3I(CInt3(erasedRange.getMax().x+1,srcRange.getMin().y,srcRange.getMin().z),srcRange.getMax()));
 			}
 			//split by min y
 			if(erasedRange.getMin().y>srcRange.getMin().y)
 			{
-				newRanges.push_back(DEVILX_NEW CRange3I(CSInt3(erasedRange.getMin().x,srcRange.getMin().y,srcRange.getMin().z),CSInt3(erasedRange.getMax().x,erasedRange.getMin().y-1,srcRange.getMax().z)));
+				newRanges.push_back(DEVILX_NEW CRange3I(CInt3(erasedRange.getMin().x,srcRange.getMin().y,srcRange.getMin().z),CInt3(erasedRange.getMax().x,erasedRange.getMin().y-1,srcRange.getMax().z)));
 			}
 			//split by max y
 			if(erasedRange.getMax().y<srcRange.getMax().y)
 			{
-				newRanges.push_back(DEVILX_NEW CRange3I(CSInt3(erasedRange.getMin().x,erasedRange.getMax().y+1,srcRange.getMin().z),CSInt3(erasedRange.getMax().x,srcRange.getMax().y,srcRange.getMax().z)));
+				newRanges.push_back(DEVILX_NEW CRange3I(CInt3(erasedRange.getMin().x,erasedRange.getMax().y+1,srcRange.getMin().z),CInt3(erasedRange.getMax().x,srcRange.getMax().y,srcRange.getMax().z)));
 			}
 			//split by min z
 			if(erasedRange.getMin().z>srcRange.getMin().z)
 			{
-				newRanges.push_back(DEVILX_NEW CRange3I(CSInt3(erasedRange.getMin().x,erasedRange.getMin().y,srcRange.getMin().z),CSInt3(erasedRange.getMax().x,erasedRange.getMax().y,erasedRange.getMin().z-1)));
+				newRanges.push_back(DEVILX_NEW CRange3I(CInt3(erasedRange.getMin().x,erasedRange.getMin().y,srcRange.getMin().z),CInt3(erasedRange.getMax().x,erasedRange.getMax().y,erasedRange.getMin().z-1)));
 			}
 			//split by max z
 			if(erasedRange.getMax().z<srcRange.getMax().z)
 			{
-				newRanges.push_back(DEVILX_NEW CRange3I(CSInt3(erasedRange.getMin().x,erasedRange.getMin().y,erasedRange.getMax().z+1),CSInt3(erasedRange.getMax().x,erasedRange.getMax().y,srcRange.getMax().z)));
+				newRanges.push_back(DEVILX_NEW CRange3I(CInt3(erasedRange.getMin().x,erasedRange.getMin().y,erasedRange.getMax().z+1),CInt3(erasedRange.getMax().x,erasedRange.getMax().y,srcRange.getMax().z)));
 			}
 		}
 	};

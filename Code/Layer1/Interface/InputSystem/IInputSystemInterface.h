@@ -5,3 +5,5 @@
 #include "IInputSystem.h"
 #include "IInputVirtualDevice.h"
 #include "IInputVirtualDeviceManager.h"
+#include "IKeyboard.h"
+#include "IMouse.h"

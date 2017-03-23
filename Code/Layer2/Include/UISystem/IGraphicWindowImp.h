@@ -14,17 +14,17 @@ namespace NSDevilX
 			IGraphicSceneImp * const mScene;
 			IElementImp * mElement;
 			NSRenderSystem::IOverlayElement * mRenderOverlayElement;
-			CSInt2 mPixelStart,mPixelEnd;
+			CUInt2 mPixelStart,mPixelEnd;
 		public:
 			IGraphicWindowImp(const String & name,IGraphicSceneImp * scene);
 			~IGraphicWindowImp();
 			// Í¨¹ý IImageWindow ¼Ì³Ð
 			virtual IElement * queryInterface_IElement() const override;
 			virtual IGraphicScene * getScene() const override;
-			virtual Void setTexture(NSRenderSystem::ITexture * texture,const CSInt2 & pixelStart,const CSInt2 & pixelEnd) override;
+			virtual Void setTexture(NSRenderSystem::ITexture * texture,const CUInt2 & pixelStart,const CUInt2 & pixelEnd) override;
 			virtual NSRenderSystem::ITexture * getTexture() const override;
-			virtual const CSInt2 & getPixelStart() const override;
-			virtual const CSInt2 & getPixelEnd() const override;
+			virtual const CUInt2 & getPixelStart() const override;
+			virtual const CUInt2 & getPixelEnd() const override;
 			virtual Void setColour(const CColour & colour) override;
 			virtual const CColour & getColour() const override;
 

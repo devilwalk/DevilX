@@ -50,13 +50,13 @@ namespace NSDevilX
 			for(int i=0;i<6;++i)
 				mPlaneList.push_back(planes[i]);
 		}
-		DirectX::ContainmentType contains(DirectX::FXMVECTOR point3D)const
+		DirectX::ContainmentType contains(const CFloat3 & point)const
 		{
 			DirectX::ContainmentType ret=DirectX::CONTAINS;
 			for(size_t i=0,count=mPlaneList.size();i<count;++i)
 			{
 				const CPlane & plane=mPlaneList[i];
-				DirectX::ContainmentType ct=PlaneTestPoint3D(plane,point3D);
+				DirectX::ContainmentType ct=PlaneTestPoint3D(plane,point);
 				switch(ct)
 				{
 				case DirectX::DISJOINT:

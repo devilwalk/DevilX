@@ -14,15 +14,15 @@ NSDevilX::CTransform2DFrame::~CTransform2DFrame()
 	DEVILX_DELETE(mScale);
 }
 
-Void NSDevilX::CTransform2DFrame::setPosition(DirectX::FXMVECTOR positionVec)
+Void NSDevilX::CTransform2DFrame::setPosition(const CFloat2 & position)
 {
 	if(!mPosition)
 	{
-		mPosition=DEVILX_NEW CFloat2Frame(positionVec);
+		mPosition=DEVILX_NEW CFloat2Frame(position);
 		mPosition->addListener(this,EMessage_BeginValueChange);
 		mPosition->addListener(this,EMessage_EndValueChange);
 	}
-	mPosition->setValue(positionVec);
+	mPosition->setValue(position);
 }
 
 Void NSDevilX::CTransform2DFrame::setRotation(Float angle)
@@ -36,15 +36,15 @@ Void NSDevilX::CTransform2DFrame::setRotation(Float angle)
 	mRotation->setValue(angle);
 }
 
-Void NSDevilX::CTransform2DFrame::setScale(DirectX::FXMVECTOR scaleVec)
+Void NSDevilX::CTransform2DFrame::setScale(const CFloat2 & scale)
 {
 	if(!mScale)
 	{
-		mScale=DEVILX_NEW CFloat2Frame(scaleVec);
+		mScale=DEVILX_NEW CFloat2Frame(scale);
 		mScale->addListener(this,EMessage_BeginValueChange);
 		mScale->addListener(this,EMessage_EndValueChange);
 	}
-	mScale->setValue(scaleVec);
+	mScale->setValue(scale);
 }
 
 Void NSDevilX::CTransform2DFrame::onMessage(CFrameBase * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
@@ -71,37 +71,37 @@ NSDevilX::CTransform3DFrame::~CTransform3DFrame()
 	DEVILX_DELETE(mScale);
 }
 
-Void NSDevilX::CTransform3DFrame::setPosition(DirectX::FXMVECTOR positionVec)
+Void NSDevilX::CTransform3DFrame::setPosition(const CFloat3 & position)
 {
 	if(!mPosition)
 	{
-		mPosition=DEVILX_NEW CFloat3Frame(positionVec);
+		mPosition=DEVILX_NEW CFloat3Frame(position);
 		mPosition->addListener(this,EMessage_BeginValueChange);
 		mPosition->addListener(this,EMessage_EndValueChange);
 	}
-	mPosition->setValue(positionVec);
+	mPosition->setValue(position);
 }
 
-Void NSDevilX::CTransform3DFrame::setRotation(DirectX::FXMVECTOR rotationVec)
+Void NSDevilX::CTransform3DFrame::setRotation(const CFloat4 & rotation)
 {
 	if(!mRotation)
 	{
-		mRotation=DEVILX_NEW CFloat4Frame(rotationVec);
+		mRotation=DEVILX_NEW CFloat4Frame(rotation);
 		mRotation->addListener(this,EMessage_BeginValueChange);
 		mRotation->addListener(this,EMessage_EndValueChange);
 	}
-	mRotation->setValue(rotationVec);
+	mRotation->setValue(rotation);
 }
 
-Void NSDevilX::CTransform3DFrame::setScale(DirectX::FXMVECTOR scaleVec)
+Void NSDevilX::CTransform3DFrame::setScale(const CFloat3 & scale)
 {
 	if(!mScale)
 	{
-		mScale=DEVILX_NEW CFloat3Frame(scaleVec);
+		mScale=DEVILX_NEW CFloat3Frame(scale);
 		mScale->addListener(this,EMessage_BeginValueChange);
 		mScale->addListener(this,EMessage_EndValueChange);
 	}
-	mScale->setValue(scaleVec);
+	mScale->setValue(scale);
 }
 
 Void NSDevilX::CTransform3DFrame::onMessage(CFrameBase * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)

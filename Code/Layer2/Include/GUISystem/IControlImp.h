@@ -1,4 +1,5 @@
 #pragma once
+#include "Control.h"
 namespace NSDevilX
 {
 	namespace NSGUISystem
@@ -7,16 +8,24 @@ namespace NSDevilX
 		class IControlImp
 			:public IControl
 			,public TBaseObject<IControlImp>
+			,public CMessageNotifier
 		{
-		protected:
-			const String mName;
-			IWindowImp * const mParentWindow;
-			NSUISystem::IElement * mLayer;
-			TVector<NSUISystem::IGraphicWindow*> mGraphicWindows;
 		public:
-			IControlImp(const String & name,IWindowImp * parentWindow);
+			enum EMessage
+			{
+				EMessage_BeginDestruction,
+				EMessage_EndDestruction
+			};
+		protected:
+			IWindowImp * const mParentWindow;
+			CControl * const mControl;
+		public:
+			IControlImp(CControl * control,IWindowImp * parentWindow);
 			~IControlImp();
-			Void attachGraphicWindow(NSUISystem::IGraphicWindow * window);
+			CControl * getControl()const
+			{
+				return mControl;
+			}
 			// Í¨¹ý IControl ¼Ì³Ð
 			virtual NSUISystem::IElement * queryInterface_IElement() const override;
 			virtual IWindow * getParentWindow() const override;

@@ -11,7 +11,7 @@ namespace NSDevilX
 			virtual ~ISceneManager(){}
 		public: 
 			virtual ITerrainGeneratorInstance * getTerrainGenerator()const=0;
-			virtual const CSInt3 & getChunkSize()const=0;
+			virtual const CUInt3 & getChunkSize()const=0;
 			virtual NSCubeBlockSystem::IScene * getScene()const=0;
 			virtual ISceneLoader * createLoader(const String & name)=0;
 			virtual ISceneLoader * getLoader(const String & name)const=0;

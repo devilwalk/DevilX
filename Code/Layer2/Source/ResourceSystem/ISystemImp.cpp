@@ -59,16 +59,18 @@ CImage * NSDevilX::NSResourceSystem::ISystemImp::getImage(ILoadedResource * reso
 	return ret;
 }
 
-CFontImage * NSDevilX::NSResourceSystem::ISystemImp::getFontImage(ILoadedResource * resource,const CUTF8Char & c,CFloat2 * pixelStart,CFloat2 pixelEnd)
+CFontImage * NSDevilX::NSResourceSystem::ISystemImp::getFontImage(ILoadedResource * resource,const CUTF8Char & c,CUInt2 * pixelStart,CUInt2 * pixelEnd)
 {
 	CFontImage * ret=nullptr;
 	if(static_cast<IResourceImp*>(resource)->hasUserData("CFontImage"))
 	{
 		ret=static_cast<IResourceImp*>(resource)->getUserData("CFontImage").get<CFontImage*>();
+		ret->getPixelRange(static_cast<WChar>(c),pixelStart,pixelEnd);
 	}
 	else
 	{
-		mFontManager->getImage()
+		ret=mFontManager->getImage(static_cast<IResourceImp*>(resource)->getFileName(),static_cast<WChar>(c),pixelStart,pixelEnd);
+		static_cast<IResourceImp*>(resource)->setUserData("CFontImage",ret);
 	}
 	return ret;
 }
@@ -98,6 +100,26 @@ NSRenderSystem::ITexture * NSDevilX::NSResourceSystem::ISystemImp::getRenderText
 		static_cast<IResourceImp*>(resource)->setUserData("NSRenderSystem::ITexture",ret);
 	}
 	return ret;
+}
+
+NSRenderSystem::ITexture * NSDevilX::NSResourceSystem::ISystemImp::getRenderTexture(ILoadedResource * resource,const CUTF8Char & c,CUInt2 * pixelStart,CUInt2 * pixelEnd)
+{
+	NSRenderSystem::ITexture * ret=nullptr;
+	if(static_cast<IResourceImp*>(resource)->hasUserData("NSRenderSystem::ITexture"))
+	{
+		ret=static_cast<IResourceImp*>(resource)->getUserData("NSRenderSystem::ITexture").get<NSRenderSystem::ITexture*>();
+	}
+	else
+	{
+		auto img=getFontImage(resource,c,pixelStart,pixelEnd);
+		ret=NSRenderSystem::getSystem()->queryInterface_IResourceManager()->createTexture("FontTexture/"+reinterpret_cast<SizeT>(img),NSRenderSystem::IEnum::ETextureType_2D);
+		ret->queryInterface_ITexture2DWritable()->setArraySize(1);
+		ret->queryInterface_ITexture2DWritable()->setFormat(NSRenderSystem::IEnum::ETexture2DFormat_A8);
+		ret->queryInterface_ITexture2DWritable()->setMipmapCount();
+		ret->queryInterface_ITexture2DWritable()->setSize(img->getSize().x,img->getSize().y);
+		ret->queryInterface_ITexture2DWritable()->setPixels(img->getPixels());
+		static_cast<IResourceImp*>(resource)->setUserData("NSRenderSystem::ITexture",ret);
+	}
 }
 
 NSRenderSystem::IGeometry * NSDevilX::NSResourceSystem::ISystemImp::getRenderGeometry(ILoadedResource * resource)

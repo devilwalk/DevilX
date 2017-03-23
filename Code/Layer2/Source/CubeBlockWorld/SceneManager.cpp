@@ -1,12 +1,12 @@
 #include "Precompiler.h"
 using namespace NSDevilX;
 using namespace NSCubeBlockWorld;
-const CSInt3 NSDevilX::NSCubeBlockWorld::CSceneManager::sChunkSize(32);
+const CUInt3 NSDevilX::NSCubeBlockWorld::CSceneManager::sChunkSize(32);
 NSDevilX::NSCubeBlockWorld::CSceneManager::CSceneManager(const String & name,ITerrainGenerator * generator,NSRenderSystem::IScene * renderScene)
 	:mName(name)
 	,mRenderScene(renderScene)
 	,mBlockScene(nullptr)
-	,mRange(CSInt3(INT_MIN),CSInt3(INT_MAX))
+	,mRange(CInt3(INT_MIN),CInt3(INT_MAX))
 {
 	mTerrainGeneratorInstance=generator->createInstance(this);
 	mBlockScene=NSCubeBlockSystem::getSystem()->createScene(mRenderScene);
@@ -32,15 +32,15 @@ Void NSDevilX::NSCubeBlockWorld::CSceneManager::loadChunkMT(DirectX::FXMVECTOR p
 	{
 		if(!getTerrainGenerator()->generateChunk(positionVec))
 		{
-			CSInt3 start=DirectX::XMVectorMin(positionVec*chunk_size_vec,getRange().getMax());
-			CSInt3 end=DirectX::XMVectorMax(start+chunk_size_vec-CSInt3::sOne,getRange().getMin());
+			CInt3 start=DirectX::XMVectorMin(positionVec*chunk_size_vec,getRange().getMax());
+			CInt3 end=DirectX::XMVectorMax(start+chunk_size_vec-CInt3::sOne,getRange().getMin());
 			for(auto x=start.x;x<=end.x;++x)
 			{
 				for(auto y=start.y;y<=end.y;++y)
 				{
 					for(auto z=start.z;z<=end.z;++z)
 					{
-						DirectX::XMVECTOR block_pos_vec=CSInt3(x,y,z);
+						DirectX::XMVECTOR block_pos_vec=CInt3(x,y,z);
 						auto block=getTerrainGenerator()->generateBlock(block_pos_vec);
 						if(block)
 							getScene()->setBlockMT(block_pos_vec,block);
@@ -63,8 +63,8 @@ Void NSDevilX::NSCubeBlockWorld::CSceneManager::unloadChunkMT(DirectX::FXMVECTOR
 	--loaded_count;
 	if(0==loaded_count)
 	{
-		CSInt3 start=DirectX::XMVectorMin(positionVec*chunk_size_vec,getRange().getMax());
-		CSInt3 end=DirectX::XMVectorMax(start+chunk_size_vec-CSInt3::sOne,getRange().getMin());
+		CInt3 start=DirectX::XMVectorMin(positionVec*chunk_size_vec,getRange().getMax());
+		CInt3 end=DirectX::XMVectorMax(start+chunk_size_vec-CInt3::sOne,getRange().getMin());
 		getScene()->setBlockMT(CRange3I(start,end),nullptr);
 	}
 	loaded->endWrite();
@@ -75,7 +75,7 @@ ITerrainGeneratorInstance * NSDevilX::NSCubeBlockWorld::CSceneManager::getTerrai
 	return mTerrainGeneratorInstance;
 }
 
-const CSInt3 & NSDevilX::NSCubeBlockWorld::CSceneManager::getChunkSize() const
+const CUInt3 & NSDevilX::NSCubeBlockWorld::CSceneManager::getChunkSize() const
 {
 	// TODO: insert return statement here
 	return sChunkSize;
@@ -119,15 +119,15 @@ const CRange3I & NSDevilX::NSCubeBlockWorld::CSceneManager::getRange() const
 
 TSharedReadData<Int32>* NSDevilX::NSCubeBlockWorld::CSceneManager::_getChunkLoaded(DirectX::FXMVECTOR positionVec)
 {
-	const CSInt3 chunk_pos(positionVec);
+	const CInt3 chunk_pos(positionVec);
 	const DirectX::XMVECTOR block_pos_vec=positionVec*getChunkSize();
 	if(!getRange().contains(block_pos_vec))
 		return nullptr;
 	const DirectX::XMVECTOR chunk_size_vec=getChunkSize();
-	const DirectX::XMVECTOR value_offset_vec=CSInt3((chunk_pos.x<0)?-1:0,(chunk_pos.y<0)?-1:0,(chunk_pos.z<0)?-1:0);
-	const CSInt3 value_offset(value_offset_vec);
+	const DirectX::XMVECTOR value_offset_vec=CInt3((chunk_pos.x<0)?-1:0,(chunk_pos.y<0)?-1:0,(chunk_pos.z<0)?-1:0);
+	const CInt3 value_offset(value_offset_vec);
 	const DirectX::XMVECTOR chunk_pos_abs_vec=DirectX::XMVectorAbs(positionVec);
-	const CSInt3 chunk_pos_abs(chunk_pos_abs_vec);
+	const CInt3 chunk_pos_abs(chunk_pos_abs_vec);
 	auto & chunk_loaded_xyz=mChunkLoadeds[value_offset.x+1][value_offset.y+1][value_offset.z+1];
 	chunk_loaded_xyz.lockRead();
 	Boolean need_resize=chunk_loaded_xyz.size()<=static_cast<UInt32>(chunk_pos_abs.x);

@@ -3,6 +3,7 @@
 #include "CommonFileStream.h"
 #include "CommonFontImage.h"
 #include "CommonResourceContainer.h"
+#include "CommonVectorI.h"
 namespace NSDevilX
 {
 	class CFontManager
@@ -15,6 +16,6 @@ namespace NSDevilX
 		CFontManager();
 		~CFontManager();
 		Void reigsterFont(const String & fontName,const String & fontFileName);
-		CFontImage * getImage(const String & fontName,WChar ch,OUT CSInt2 * pixelStart,OUT CSInt2 * pixelEnd,const CSInt2 & fontSize=CSInt2(32));
+		CFontImage * getImage(const String & fontName,WChar ch,OUT CUInt2 * pixelStart,OUT CUInt2 * pixelEnd,const CUInt2 & fontSize=CUInt2(32));
 	};
 }

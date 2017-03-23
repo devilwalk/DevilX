@@ -4,7 +4,7 @@
 #if DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_WINDOWS
 #include <vld.h>
 #endif
-//#define _XM_NO_INTRINSICS_
+#define _XM_NO_INTRINSICS_
 #endif
 #include "DirectXMath/DirectXMath.h"
 #include "DirectXMath/DirectXPackedVector.h"

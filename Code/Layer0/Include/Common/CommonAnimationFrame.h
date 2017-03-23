@@ -64,17 +64,17 @@ namespace NSDevilX
 	protected:
 		TValueType mValue;
 	public:
-		TVectorFrame(DirectX::FXMVECTOR valueVec)
-			:mValue(valueVec)
+		TVectorFrame(const TValueType & value)
+			:mValue(value)
 		{}
 		virtual ~TVectorFrame()
 		{}
-		Void setValue(DirectX::FXMVECTOR valueVec)
+		Void setValue(const TValueType & value)
 		{
-			if(valueVec!=getValue())
+			if(value!=getValue())
 			{
 				notify(EMessage_BeginValueChange);
-				mValue=valueVec;
+				mValue=value;
 				notify(EMessage_EndValueChange);
 			}
 		}
@@ -86,9 +86,9 @@ namespace NSDevilX
 	typedef TVectorFrame<CFloat2> CFloat2Frame;
 	typedef TVectorFrame<CFloat3> CFloat3Frame;
 	typedef TVectorFrame<CFloat4> CFloat4Frame;
-	typedef TVectorFrame<CSInt2> CInt2Frame;
-	typedef TVectorFrame<CSInt3> CInt3Frame;
-	typedef TVectorFrame<CSInt4> CInt4Frame;
+	typedef TVectorFrame<CInt2> CInt2Frame;
+	typedef TVectorFrame<CInt3> CInt3Frame;
+	typedef TVectorFrame<CInt4> CInt4Frame;
 	class CTransform2DFrame
 		:public TBaseObject<CTransform2DFrame>
 		,public CFrameBase
@@ -101,7 +101,7 @@ namespace NSDevilX
 	public:
 		CTransform2DFrame();
 		virtual ~CTransform2DFrame();
-		Void setPosition(DirectX::FXMVECTOR positionVec);
+		Void setPosition(const CFloat2 & position);
 		const CFloat2 & getPosition()const
 		{
 			if(mPosition)
@@ -114,7 +114,7 @@ namespace NSDevilX
 		{
 			return mRotation->getValue();
 		}
-		Void setScale(DirectX::FXMVECTOR scaleVec);
+		Void setScale(const CFloat2 & scaleVec);
 		const CFloat2 & getScale()const
 		{
 			if(mScale)
@@ -136,7 +136,7 @@ namespace NSDevilX
 	public:
 		CTransform3DFrame();
 		virtual ~CTransform3DFrame();
-		Void setPosition(DirectX::FXMVECTOR positionVec);
+		Void setPosition(const CFloat3 & position);
 		const CFloat3 & getPosition()const
 		{
 			if(mPosition)
@@ -144,12 +144,12 @@ namespace NSDevilX
 			else
 				return CFloat3::sZero;
 		}
-		Void setRotation(DirectX::FXMVECTOR rotationVec);
+		Void setRotation(const CFloat4 & rotation);
 		const CFloat4 & getRotation()const
 		{
 			return mRotation->getValue();
 		}
-		Void setScale(DirectX::FXMVECTOR scaleVec);
+		Void setScale(const CFloat3 & scale);
 		const CFloat3 & getScale()const
 		{
 			if(mScale)

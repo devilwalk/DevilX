@@ -24,8 +24,7 @@ Void NSDevilX::NSInputSystem::ISystemImp::shutdown()
 
 Void NSDevilX::NSInputSystem::ISystemImp::update()
 {
-	notify(EMessage_UpdateData);
-	notify(EMessage_UpdateState);
+	static_cast<IVirtualDeviceManagerImp*>(getVirtualDeviceManager())->update();
 }
 
 IPhysicalDeviceManager * NSDevilX::NSInputSystem::ISystemImp::getPhysicalDeviceManager() const
@@ -36,20 +35,4 @@ IPhysicalDeviceManager * NSDevilX::NSInputSystem::ISystemImp::getPhysicalDeviceM
 IVirtualDeviceManager * NSDevilX::NSInputSystem::ISystemImp::getVirtualDeviceManager() const
 {
 	return mVirtualDeviceManager;
-}
-
-Void NSDevilX::NSInputSystem::ISystemImp::registerEvent(IEnum::EMouseEventType type,IEventListener<IEnum::EMouseEventType>* listener)
-{
-}
-
-Void NSDevilX::NSInputSystem::ISystemImp::registerEvent(IEnum::EKeyboardEventType type,IEventListener<IEnum::EKeyboardEventType>* listener)
-{
-}
-
-Void NSDevilX::NSInputSystem::ISystemImp::unregisterEvent(IEnum::EMouseEventType type,IEventListener<IEnum::EMouseEventType>* listener)
-{
-}
-
-Void NSDevilX::NSInputSystem::ISystemImp::unregisterEvent(IEnum::EKeyboardEventType type,IEventListener<IEnum::EKeyboardEventType>* listener)
-{
 }

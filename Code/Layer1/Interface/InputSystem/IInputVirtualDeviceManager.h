@@ -1,5 +1,6 @@
 #pragma once
-#include "IInputVirtualDevice.h"
+#include "IMouse.h"
+#include "IKeyboard.h"
 namespace NSDevilX
 {
 	namespace NSInputSystem
@@ -9,7 +10,8 @@ namespace NSDevilX
 		protected:
 			virtual ~IVirtualDeviceManager(){}
 		public:
-			virtual IVirtualDevice * createDevice(const String & name,IPhysicalDevice * device)=0;
+			virtual IMouse * createMouse(const String & name,IPhysicalDevice * device,CWindow * window=nullptr)=0;
+			virtual IKeyboard * createKeyboard(const String & name,IPhysicalDevice * device,CWindow * window=nullptr)=0;
 			virtual Void destroyDevice(IVirtualDevice * device)=0;
 			virtual IVirtualDevice * getDevice(const String & name)const=0;
 		};

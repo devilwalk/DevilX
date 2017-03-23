@@ -9,7 +9,7 @@ namespace NSDevilX
 			,public TBaseObject<CSceneManager>
 		{
 		public:
-			static const CSInt3 sChunkSize;
+			static const CUInt3 sChunkSize;
 		protected:
 			const String mName;
 			NSRenderSystem::IScene * const mRenderScene;
@@ -26,7 +26,7 @@ namespace NSDevilX
 			Void unloadChunkMT(DirectX::FXMVECTOR positionVec);
 			// Inherited via ISceneManager
 			virtual ITerrainGeneratorInstance * getTerrainGenerator() const override;
-			virtual const CSInt3 & getChunkSize() const override;
+			virtual const CUInt3 & getChunkSize() const override;
 			virtual NSCubeBlockSystem::IScene * getScene() const override;
 			virtual ISceneLoader * createLoader(const String & name) override;
 			virtual ISceneLoader * getLoader(const String & name) const override;

@@ -1,12 +1,41 @@
 #include "Precompiler.h"
 using namespace NSDevilX;
 using namespace NSInputSystem;
-NSDevilX::NSInputSystem::IMouseImp::IMouseImp(const String & name,IPhysicalDeviceImp * physicalDevice)
-	:IVirtualDeviceImp(name,physicalDevice)
-	,mOffset(0,0)
-	,mPosition(0,0)
-	,mWheelOffset(0)
-	,mWheelPosition(0)
+
+NSDevilX::NSInputSystem::SMouseFrameDataImp::SMouseFrameDataImp()
+	:mType(EType_Unknown)
+	,mValue(0)
+{
+}
+
+NSDevilX::NSInputSystem::SMouseFrameDataImp::~SMouseFrameDataImp()
+{}
+
+Int32 NSDevilX::NSInputSystem::SMouseFrameDataImp::getAxisXOffset() const
+{
+	// TODO: 在此处插入 return 语句
+	return (EType_AxisOffsetX==mType)?mValue:0;
+}
+
+Int32 NSDevilX::NSInputSystem::SMouseFrameDataImp::getAxisYOffset() const
+{
+	// TODO: 在此处插入 return 语句
+	return (EType_AxisOffsetY==mType)?mValue:0;
+}
+
+Int32 NSDevilX::NSInputSystem::SMouseFrameDataImp::getWheelOffset() const
+{
+	return (EType_AxisOffsetZ==mType)?mValue:0;
+}
+
+IEnum::EButtonState NSDevilX::NSInputSystem::SMouseFrameDataImp::getButtonState(IEnum::EMouseButtonType type) const
+{
+	return (type==mType-EType_ButtonState_Left)?*reinterpret_cast<const IEnum::EButtonState*>(&mValue):IEnum::EButtonState_Released;
+}
+
+NSDevilX::NSInputSystem::IMouseImp::IMouseImp(const String & name,IPhysicalDeviceImp * physicalDevice,CWindow * window)
+	:IVirtualDeviceImp(name,physicalDevice,window)
+	,mListener(nullptr)
 {
 	memset(&mButtonStateList[0],0,mButtonStateList.size()*sizeof(IEnum::EButtonState));
 }
@@ -14,71 +43,56 @@ NSDevilX::NSInputSystem::IMouseImp::IMouseImp(const String & name,IPhysicalDevic
 NSDevilX::NSInputSystem::IMouseImp::~IMouseImp()
 {}
 
-Void NSDevilX::NSInputSystem::IMouseImp::setOffset(Int32 x,Int32 y)
+Void NSDevilX::NSInputSystem::IMouseImp::addFrameData(SMouseFrameDataImp * data)
 {
-	if((x!=mOffset.x)||(y!=mOffset.y))
+	mFrameDatas.push_back(data);
+	if(data->mType>=SMouseFrameDataImp::EType_ButtonState_Left)
+		mButtonStateList[data->mType-SMouseFrameDataImp::EType_ButtonState_Left]=*reinterpret_cast<const IEnum::EButtonState*>(&data->mValue);
+	else
 	{
-		mOffset.x=x;
-		mOffset.y=y;
-		notify(EMessage_Move);
+		mOffset[data->mType]+=data->mValue;
+		mPosition[data->mType]+=data->mValue;
 	}
 }
 
-Void NSDevilX::NSInputSystem::IMouseImp::setPosition(Int32 x,Int32 y)
+Void NSDevilX::NSInputSystem::IMouseImp::update()
 {
-	mPosition.x=x;
-	mPosition.y=y;
-}
-
-Void NSDevilX::NSInputSystem::IMouseImp::setWheelOffset(Int32 offset)
-{
-	if(offset!=mWheelOffset)
+	mFrameDatas.clear();
+	IVirtualDeviceImp::update();
+	if(getListener())
 	{
-		mWheelOffset=offset;
-		mWheelPosition+=mWheelOffset;
-		notify(EMessage_WheelMove);
-	}
-}
-
-void NSDevilX::NSInputSystem::IMouseImp::changeButtonState(IEnum::EMouseButtonType type,IEnum::EButtonState state)
-{
-	if(state!=mButtonStateList[type])
-	{
-		mButtonStateList[type]=state;
-		UInt32 msg=0;
-		switch(state)
+		for(auto data:mFrameDatas)
 		{
-		case IEnum::EButtonState_Pressed:
-			msg=EMessage_ButtonPress;
-			break;
-		case IEnum::EButtonState_Released:
-			msg=EMessage_ButtonRelease;
-			break;
+			getListener()->addFrameData(data);
 		}
-		notify(msg,&type);
 	}
 }
 
-const CSInt2 & NSDevilX::NSInputSystem::IMouseImp::getOffset() const
+IVirtualDevice * NSDevilX::NSInputSystem::IMouseImp::queryInterface_IVirtualDevice() const
 {
-	// TODO: insert return statement here
-	return mOffset;
+	return const_cast<IMouseImp*>(this);
 }
 
-const CSInt2 & NSDevilX::NSInputSystem::IMouseImp::getPosition() const
+const CInt2 & NSDevilX::NSInputSystem::IMouseImp::getOffset() const
 {
 	// TODO: insert return statement here
-	return mPosition;
+	return mOffset.xy();
+}
+
+const CInt2 & NSDevilX::NSInputSystem::IMouseImp::getPosition() const
+{
+	// TODO: insert return statement here
+	return mPosition.xy();
 }
 
 Int32 NSDevilX::NSInputSystem::IMouseImp::getWheelOffset() const
 {
-	return mWheelOffset;
+	return mOffset.z;
 }
 
 Int32 NSDevilX::NSInputSystem::IMouseImp::getWheelPosition() const
 {
-	return mWheelPosition;
+	return mPosition.z;
 }
 
 IEnum::EButtonState NSDevilX::NSInputSystem::IMouseImp::getButtonState(IEnum::EMouseButtonType type) const
@@ -86,7 +100,22 @@ IEnum::EButtonState NSDevilX::NSInputSystem::IMouseImp::getButtonState(IEnum::EM
 	return mButtonStateList[type];
 }
 
-IMouse * NSDevilX::NSInputSystem::IMouseImp::queryInterface_IMouse() const
+UInt32 NSDevilX::NSInputSystem::IMouseImp::getFrameDataCount() const
 {
-	return const_cast<IMouseImp*>(this);
+	return static_cast<UInt32>(mFrameDatas.size());
+}
+
+IMouseFrameData * NSDevilX::NSInputSystem::IMouseImp::getFrameData(UInt32 index) const
+{
+	return mFrameDatas[index];
+}
+
+Void NSDevilX::NSInputSystem::IMouseImp::setListener(IMouseListener * listener)
+{
+	mListener=listener;
+}
+
+IMouseListener * NSDevilX::NSInputSystem::IMouseImp::getListener() const
+{
+	return mListener;
 }

@@ -5,18 +5,18 @@ namespace NSDevilX
 	namespace NSGUISystem
 	{
 		class IWindowImp;
-		class IStaticTextImp
-			:public IStaticText
-			,public TBaseObject<IStaticTextImp>
+		class IButtonImp
+			:public IButton
+			,public TBaseObject<IButtonImp>
 			,public TMessageReceiver<IControlImp>
 		{
 		protected:
 			IControlImp * mControl;
 		public:
-			IStaticTextImp(const String & name,IWindowImp * window);
-			~IStaticTextImp();
+			IButtonImp(const String & name,IWindowImp * window);
+			~IButtonImp();
 
-			// 通过 IStaticText 继承
+			// 通过 IButton 继承
 			virtual IControl * queryInterface_IControl() const override;
 			virtual Void setFontResource(NSResourceSystem::IResource * resource) override;
 			virtual NSResourceSystem::IResource * getFontResource() const override;
@@ -24,6 +24,10 @@ namespace NSDevilX
 			virtual const CUTF8String & getText() const override;
 			virtual Void setTextColour(const CColour & colour) override;
 			virtual const CColour & getTextColour() const override;
+			virtual Void setBackground(NSResourceSystem::IResource * resource) override;
+			virtual NSResourceSystem::IResource * getBackground() const override;
+			virtual Void setEventCallback(IButtonEventCallback * callback) override;
+			virtual IButtonEventCallback * getEventCallback() const override;
 
 			// 通过 TMessageReceiver 继承
 			virtual Void onMessage(IControlImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;

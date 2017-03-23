@@ -9,8 +9,9 @@ namespace NSDevilX
 			,public TBaseObject<IWindowImp>
 		{
 		protected:
-			ISceneImp * const mScene;
 			IControlImp * mControl;
+			ISceneImp * const mScene;
+			TNamedResourcePtrMap<IControlImp> mControls;
 		public:
 			IWindowImp(const String & name,ISceneImp * scene);
 			~IWindowImp();
@@ -20,6 +21,7 @@ namespace NSDevilX
 			virtual IScene * getScene() const override;
 			virtual IStaticText * createStaticText(const String & name) override;
 			virtual IButton * createButton(const String & name) override;
+			virtual Void destroyControl(IControl * control) override;
 		};
 	}
 }

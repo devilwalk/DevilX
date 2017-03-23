@@ -11,11 +11,11 @@ NSDevilX::NSFightChess::CFontManager::CFontManager()
 	font_file=CDirectory::getSystemFontsDirectory()+"/Fonts/simsun.ttc";
 #endif
 	CFileStream font_file_stream(font_file);
-	mImg=DEVILX_NEW CFontImage(&font_file_stream,CSInt2(2048),CSInt2(sFontSize));
+	mImg=DEVILX_NEW CFontImage(&font_file_stream,CUInt2(2048),CUInt2(sFontSize));
 	mPixels.resize(mImg->getSize().x,mImg->getSize().y);
 	mRenderTexture=NSRenderSystem::getSystem()->queryInterface_IResourceManager()->createTexture("Font",NSRenderSystem::IEnum::ETextureType_2D);
 	mRenderTexture->queryInterface_ITexture2DWritable()->setArraySize(1);
-	mRenderTexture->queryInterface_ITexture2DWritable()->setFormat(NSRenderSystem::IEnum::ETexture2DFormat_R8G8B8A8);
+	mRenderTexture->queryInterface_ITexture2DWritable()->setFormat(NSRenderSystem::IEnum::ETexture2DFormat_A8);
 	mRenderTexture->queryInterface_ITexture2DWritable()->setMipmapCount();
 	mRenderTexture->queryInterface_ITexture2DWritable()->setSize(mImg->getSize().x,mImg->getSize().y);
 	mRenderTexture->queryInterface_ITexture2DWritable()->setPixels(&mPixels[0],0,0);
@@ -26,9 +26,9 @@ NSDevilX::NSFightChess::CFontManager::~CFontManager()
 	DEVILX_DELETE(mImg);
 }
 
-Void NSDevilX::NSFightChess::CFontManager::getPixelRange(WChar ch,CSInt2 * pixelStart,CSInt2 * pixelEnd)
+Void NSDevilX::NSFightChess::CFontManager::getPixelRange(WChar ch,CUInt2 * pixelStart,CUInt2 * pixelEnd)
 {
-	CSInt2 start,end;
+	CUInt2 start,end;
 	mImg->getPixelRange(ch,&start,&end);
 	if(mImg->isDirty())
 	{

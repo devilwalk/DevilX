@@ -7,6 +7,7 @@ namespace NSDevilX
 	protected:
 		TVector<CUTF8Char> mString;
 	public:
+		CUTF8String(){}
 		CUTF8String(const String & text);
 		CUTF8String(const WString & text);
 		operator WString()const;

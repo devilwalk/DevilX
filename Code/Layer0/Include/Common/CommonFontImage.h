@@ -3,27 +3,28 @@
 #include "CommonType.h"
 #include "CommonSTL.h"
 #include "CommonDataStream.h"
+#include "CommonVectorI.h"
 namespace NSDevilX
 {
 	class CFontImage
 		:public TBaseObject<CFontImage>
 	{
 	protected:
-		const CSInt2 mSize;
-		const CSInt2 mFontSize;
+		const CUInt2 mSize;
+		const CUInt2 mFontSize;
 		FT_Library mFTLibrary;
 		FT_Face mFTFace;
 		TVector<UInt8> mPixels;
-		TMap<WChar,std::pair<CSInt2,CSInt2> > mCharPixelRanges;
+		TMap<WChar,std::pair<CUInt2,CUInt2> > mCharPixelRanges;
 		Bool mDirty;
 	public:
-		CFontImage(CDataStream * source,const CSInt2 & size=CSInt2(2048),const CSInt2 & fontSize=CSInt2(32));
+		CFontImage(CDataStream * source,const CUInt2 & size=CUInt2(2048),const CUInt2 & fontSize=CUInt2(32));
 		~CFontImage();
-		const CSInt2 & getSize()const
+		const CUInt2 & getSize()const
 		{
 			return mSize;
 		}
-		const CSInt2 & getFontSize()const
+		const CUInt2 & getFontSize()const
 		{
 			return mFontSize;
 		}
@@ -39,6 +40,6 @@ namespace NSDevilX
 		{
 			return False!=mDirty;
 		}
-		Void getPixelRange(WChar ch,CSInt2 * pixelStart,CSInt2 * pixelEnd,Bool dirtyIfCreate=True);
+		Void getPixelRange(WChar ch,CUInt2 * pixelStart,CUInt2 * pixelEnd,Bool dirtyIfCreate=True);
 	};
 }

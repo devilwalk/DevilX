@@ -69,6 +69,7 @@ namespace NSDevilX
 			enum ETexture2DFormat
 			{
 				ETexture2DFormat_R8G8B8A8,
+				ETexture2DFormat_A8,
 				ETexture2DFormat_BC1,
 				ETexture2DFormat_BC2,
 				ETexture2DFormat_BC3

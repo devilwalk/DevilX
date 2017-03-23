@@ -2,8 +2,27 @@
 using namespace NSDevilX;
 using namespace NSInputSystem;
 
-NSDevilX::NSInputSystem::IKeyboardImp::IKeyboardImp(const String & name,IPhysicalDeviceImp * physicalDevice)
-	:IVirtualDeviceImp(name,physicalDevice)
+NSDevilX::NSInputSystem::SKeyboardFrameDataImp::SKeyboardFrameDataImp()
+	:mState(IEnum::EButtonState_Released)
+{
+}
+
+NSDevilX::NSInputSystem::SKeyboardFrameDataImp::~SKeyboardFrameDataImp()
+{}
+
+IEnum::EKeyType NSDevilX::NSInputSystem::SKeyboardFrameDataImp::getKey() const
+{
+	return mKey;
+}
+
+IEnum::EButtonState NSDevilX::NSInputSystem::SKeyboardFrameDataImp::getButtonState() const
+{
+	return mState;
+}
+
+NSDevilX::NSInputSystem::IKeyboardImp::IKeyboardImp(const String & name,IPhysicalDeviceImp * physicalDevice,CWindow * window)
+	:IVirtualDeviceImp(name,physicalDevice,window)
+	,mListener(nullptr)
 {
 	memset(&mKeyStateList[0],0,mKeyStateList.size()*sizeof(IEnum::EButtonState));
 }
@@ -11,23 +30,28 @@ NSDevilX::NSInputSystem::IKeyboardImp::IKeyboardImp(const String & name,IPhysica
 NSDevilX::NSInputSystem::IKeyboardImp::~IKeyboardImp()
 {}
 
-void NSDevilX::NSInputSystem::IKeyboardImp::changeButtonState(IEnum::EKeyType type,IEnum::EButtonState state)
+Void NSDevilX::NSInputSystem::IKeyboardImp::addFrameData(SKeyboardFrameDataImp * data)
 {
-	if(state!=mKeyStateList[type])
+	mFrameDatas.push_back(data);
+	mKeyStateList[data->getKey()]=data->getButtonState();
+}
+
+Void NSDevilX::NSInputSystem::IKeyboardImp::update()
+{
+	mFrameDatas.clear();
+	IVirtualDeviceImp::update();
+	if(getListener())
 	{
-		mKeyStateList[type]=state;
-		UInt32 msg=0;
-		switch(state)
+		for(auto data:mFrameDatas)
 		{
-		case IEnum::EButtonState_Pressed:
-			msg=EMessage_KeyPress;
-			break;
-		case IEnum::EButtonState_Released:
-			msg=EMessage_KeyRelease;
-			break;
+			getListener()->addFrameData(data);
 		}
-		notify(msg,&type);
 	}
+}
+
+IVirtualDevice * NSDevilX::NSInputSystem::IKeyboardImp::queryInterface_IVirtualDevice() const
+{
+	return const_cast<IKeyboardImp*>(this);
 }
 
 IEnum::EButtonState NSDevilX::NSInputSystem::IKeyboardImp::getButtonState(IEnum::EKeyType type) const
@@ -35,7 +59,22 @@ IEnum::EButtonState NSDevilX::NSInputSystem::IKeyboardImp::getButtonState(IEnum:
 	return mKeyStateList[type];
 }
 
-IKeyboard * NSDevilX::NSInputSystem::IKeyboardImp::queryInterface_IKeyboard() const
+UInt32 NSDevilX::NSInputSystem::IKeyboardImp::getFrameDataCount() const
 {
-	return const_cast<IKeyboardImp*>(this);
+	return static_cast<UInt32>(mFrameDatas.size());
+}
+
+IKeyboardFrameData * NSDevilX::NSInputSystem::IKeyboardImp::getFrameData(UInt32 index) const
+{
+	return mFrameDatas[index];
+}
+
+Void NSDevilX::NSInputSystem::IKeyboardImp::setListener(IKeyboardListener * listener)
+{
+	mListener=listener;
+}
+
+IKeyboardListener * NSDevilX::NSInputSystem::IKeyboardImp::getListener() const
+{
+	return mListener;
 }

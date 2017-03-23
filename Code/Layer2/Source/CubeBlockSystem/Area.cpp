@@ -47,8 +47,8 @@ Void NSDevilX::NSCubeBlockSystem::CArea::SRenderable::onMessage(IRenderMaterialI
 }
 
 NSRenderSystem::IGeometry * NSDevilX::NSCubeBlockSystem::CArea::sGeometry=nullptr;
-NSDevilX::NSCubeBlockSystem::CArea::CArea(DirectX::FXMVECTOR positionVec,ISceneImp * scene)
-	:mPosition(positionVec)
+NSDevilX::NSCubeBlockSystem::CArea::CArea(const CInt3 & position,ISceneImp * scene)
+	:mPosition(position)
 	,mScene(scene)
 	,mEntity(nullptr)
 	,mVisibleArea(nullptr)
@@ -71,10 +71,10 @@ NSDevilX::NSCubeBlockSystem::CArea::~CArea()
 	mScene->getRenderScene()->destroyEntity(mEntity);
 }
 
-Void NSDevilX::NSCubeBlockSystem::CArea::setBlockMT(DirectX::FXMVECTOR positionVec,IBlockImp * block)
+Void NSDevilX::NSCubeBlockSystem::CArea::setBlockMT(const CInt3 & position,IBlockImp * block)
 {
-	assert(positionVec>=CSInt3::sZero);
-	assert(positionVec<CSInt3(sBlockSize));
+	assert(position>=CInt3::sZero);
+	assert(position<CInt3(sBlockSize));
 	if(block)
 	{
 		auto ranges=_getRangesMT(block);
@@ -83,7 +83,7 @@ Void NSDevilX::NSCubeBlockSystem::CArea::setBlockMT(DirectX::FXMVECTOR positionV
 		for(auto iter=ranges->begin(),end=ranges->end();end!=iter;++iter)
 		{
 			auto test=*iter;
-			if(test->contains(positionVec))
+			if(test->contains(position))
 			{
 				need_merge=false;
 				break;
@@ -91,7 +91,7 @@ Void NSDevilX::NSCubeBlockSystem::CArea::setBlockMT(DirectX::FXMVECTOR positionV
 		}
 		if(need_merge)
 		{
-			CRange3I merge_range(positionVec,positionVec);
+			CRange3I merge_range(position,position);
 			do
 			{
 				need_merge=false;
@@ -127,7 +127,7 @@ Void NSDevilX::NSCubeBlockSystem::CArea::setBlockMT(DirectX::FXMVECTOR positionV
 			for(auto iter=ranges->begin(),end=ranges->end();end!=iter;++iter)
 			{
 				auto range=*iter;
-				if(range->contains(positionVec))
+				if(range->contains(position))
 				{
 					dst_range=range;
 					dst_ranges=ranges;
@@ -143,7 +143,7 @@ Void NSDevilX::NSCubeBlockSystem::CArea::setBlockMT(DirectX::FXMVECTOR positionV
 		if(dst_range)
 		{
 			TList<CRange3I*> new_ranges;
-			CRange3I::eraseRange(*dst_range,CRange3I(positionVec,positionVec),new_ranges);
+			CRange3I::eraseRange(*dst_range,CRange3I(position,position),new_ranges);
 			dst_ranges->lockWrite();
 			dst_ranges->insert(dst_ranges->end(),new_ranges.begin(),new_ranges.end());
 			mNeedFillRenderable=true;
@@ -154,8 +154,8 @@ Void NSDevilX::NSCubeBlockSystem::CArea::setBlockMT(DirectX::FXMVECTOR positionV
 
 Void NSDevilX::NSCubeBlockSystem::CArea::setBlockMT(const CRange3I & range,IBlockImp * block)
 {
-	assert(range.getMin()>=CSInt3::sZero);
-	assert(range.getMax()<CSInt3(sBlockSize));
+	assert(range.getMin()>=CInt3::sZero);
+	assert(range.getMax()<CInt3(sBlockSize));
 	if(block)
 	{
 		auto ranges=_getRangesMT(block);
@@ -207,7 +207,7 @@ Void NSDevilX::NSCubeBlockSystem::CArea::setBlockMT(const CRange3I & range,IBloc
 			for(auto iter=ranges->begin(),end=ranges->end();end!=iter;)
 			{
 				auto test=*iter;
-				CRange3I intersect(CSInt3::sZero,CSInt3::sZero);
+				CRange3I intersect(CInt3::sZero,CInt3::sZero);
 				CRange3I::createIntersection(*test,range,intersect);
 				if(intersect.getMax()>=intersect.getMin())
 				{
@@ -228,7 +228,7 @@ Void NSDevilX::NSCubeBlockSystem::CArea::setBlockMT(const CRange3I & range,IBloc
 			auto const & ranges_value=ranges_pair.second;
 			for(auto dst_range:ranges_value)
 			{
-				CRange3I intersect(CSInt3::sZero,CSInt3::sZero);
+				CRange3I intersect(CInt3::sZero,CInt3::sZero);
 				CRange3I::createIntersection(*dst_range,range,intersect);
 				TList<CRange3I*> new_ranges;
 				CRange3I::eraseRange(*dst_range,intersect,new_ranges);
@@ -241,7 +241,7 @@ Void NSDevilX::NSCubeBlockSystem::CArea::setBlockMT(const CRange3I & range,IBloc
 	}
 }
 
-IBlockImp * NSDevilX::NSCubeBlockSystem::CArea::getBlockMT(DirectX::FXMVECTOR positionVec)
+IBlockImp * NSDevilX::NSCubeBlockSystem::CArea::getBlockMT(const CInt3 & position)
 {
 	IBlockImp * ret=nullptr;
 	mBlocks.lockRead();
@@ -251,7 +251,7 @@ IBlockImp * NSDevilX::NSCubeBlockSystem::CArea::getBlockMT(DirectX::FXMVECTOR po
 		ranges->lockRead();
 		for(auto range:*ranges)
 		{
-			if(range->contains(positionVec))
+			if(range->contains(position))
 			{
 				ret=block_pair.first;
 				break;
@@ -360,7 +360,7 @@ Boolean NSDevilX::NSCubeBlockSystem::CArea::_fillRenderableThreadFunction(VoidPt
 				{
 					auto y=range->getMax().y;
 					//²âÊÔtopÊÇ·ñÕÚµ²
-					DirectX::XMVECTOR block_pos=CSInt3(x,y+1,z);
+					DirectX::XMVECTOR block_pos=CInt3(x,y+1,z);
 					if(y==sBlockSize-1)
 					{
 						//if(nullptr!=area->getScene()->getBlockMT(area->_getPositionInScene(block_pos)))
@@ -385,7 +385,7 @@ Boolean NSDevilX::NSCubeBlockSystem::CArea::_fillRenderableThreadFunction(VoidPt
 				{
 					auto y=range->getMin().y;
 					//²âÊÔbottomÊÇ·ñÕÚµ²
-					DirectX::XMVECTOR block_pos=CSInt3(x,y-1,z);
+					DirectX::XMVECTOR block_pos=CInt3(x,y-1,z);
 					if(y==0)
 					{
 						//if(nullptr!=area->getScene()->getBlockMT(area->_getPositionInScene(block_pos)))
@@ -410,7 +410,7 @@ Boolean NSDevilX::NSCubeBlockSystem::CArea::_fillRenderableThreadFunction(VoidPt
 				{
 					auto x=range->getMin().x;
 					//²âÊÔleftÊÇ·ñÕÚµ²
-					DirectX::XMVECTOR block_pos=CSInt3(x-1,y,z);
+					DirectX::XMVECTOR block_pos=CInt3(x-1,y,z);
 					if(x==0)
 					{
 						//if(nullptr!=area->getScene()->getBlockMT(area->_getPositionInScene(block_pos)))
@@ -434,7 +434,7 @@ Boolean NSDevilX::NSCubeBlockSystem::CArea::_fillRenderableThreadFunction(VoidPt
 				for(auto z=range->getMin().z;z<=range->getMax().z;++z)
 				{
 					auto x=range->getMax().x;
-					DirectX::XMVECTOR block_pos=CSInt3(x+1,y,z);
+					DirectX::XMVECTOR block_pos=CInt3(x+1,y,z);
 					if(x==sBlockSize-1)
 					{
 						//if(nullptr!=area->getScene()->getBlockMT(area->_getPositionInScene(block_pos)))
@@ -458,7 +458,7 @@ Boolean NSDevilX::NSCubeBlockSystem::CArea::_fillRenderableThreadFunction(VoidPt
 				for(auto y=range->getMin().y;y<=range->getMax().y;++y)
 				{
 					auto z=range->getMin().z;
-					DirectX::XMVECTOR block_pos=CSInt3(x,y,z-1);
+					DirectX::XMVECTOR block_pos=CInt3(x,y,z-1);
 					if(z==0)
 					{
 						//if(nullptr!=area->getScene()->getBlockMT(area->_getPositionInScene(block_pos)))
@@ -482,7 +482,7 @@ Boolean NSDevilX::NSCubeBlockSystem::CArea::_fillRenderableThreadFunction(VoidPt
 				for(auto y=range->getMin().y;y<=range->getMax().y;++y)
 				{
 					auto z=range->getMax().z;
-					DirectX::XMVECTOR block_pos=CSInt3(x,y,z+1);
+					DirectX::XMVECTOR block_pos=CInt3(x,y,z+1);
 					if(z==sBlockSize-1)
 					{
 						//if(nullptr!=area->getScene()->getBlockMT(area->_getPositionInScene(block_pos)))
@@ -628,5 +628,5 @@ decltype(CArea::mBlocks)::value_type::second_type NSDevilX::NSCubeBlockSystem::C
 
 DirectX::XMVECTOR NSDevilX::NSCubeBlockSystem::CArea::_getPositionInScene(DirectX::FXMVECTOR position) const
 {
-	return getPosition()*CSInt3(sBlockSize)+position;
+	return getPosition()*sBlockSize+position;
 }

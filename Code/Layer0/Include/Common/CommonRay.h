@@ -11,12 +11,12 @@ namespace NSDevilX
 		CFloat3 mDirection;
 	public:
 		CRay(){}
-		CRay(DirectX::FXMVECTOR origin,DirectX::FXMVECTOR direction)
+		CRay(const CFloat3 & origin,const CFloat3 & direction)
 		{
 			setParameter(origin,direction);
 		}
 		~CRay(){}
-		Void setParameter(DirectX::FXMVECTOR origin,DirectX::FXMVECTOR direction)
+		Void setParameter(const CFloat3 & origin,const CFloat3 & direction)
 		{
 			mOrigin=origin;
 			mDirection=direction;

@@ -9,16 +9,16 @@ NSDevilX::NSCubeBlockWorld::CSimpleTerrainGeneratorInstance::CSimpleTerrainGener
 NSDevilX::NSCubeBlockWorld::CSimpleTerrainGeneratorInstance::~CSimpleTerrainGeneratorInstance()
 {}
 
-NSCubeBlockSystem::IBlock * NSDevilX::NSCubeBlockWorld::CSimpleTerrainGeneratorInstance::generateBlock(DirectX::XMVECTOR positionVec)
+NSCubeBlockSystem::IBlock * NSDevilX::NSCubeBlockWorld::CSimpleTerrainGeneratorInstance::generateBlock(const CInt3 & position)
 {
 	return CModule::getSingleton().getSystem()->getBlock("Simple");
 }
 
-Boolean NSDevilX::NSCubeBlockWorld::CSimpleTerrainGeneratorInstance::generateChunk(DirectX::XMVECTOR positionVec)
+Boolean NSDevilX::NSCubeBlockWorld::CSimpleTerrainGeneratorInstance::generateChunk(const CInt3 & position)
 {
 	const DirectX::XMVECTOR chunk_size_vec=mSceneManager->getChunkSize();
-	CSInt3 start=DirectX::XMVectorMax(positionVec*chunk_size_vec,mSceneManager->getRange().getMin());
-	CSInt3 end=DirectX::XMVectorMin(start+chunk_size_vec-CSInt3::sOne,mSceneManager->getRange().getMax());
+	CInt3 start=DirectX::XMVectorMax(position*chunk_size_vec,mSceneManager->getRange().getMin());
+	CInt3 end=DirectX::XMVectorMin(start+chunk_size_vec-CInt3::sOne,mSceneManager->getRange().getMax());
 	mSceneManager->getScene()->setBlockMT(CRange3I(start,end),CModule::getSingleton().getSystem()->getBlock("Simple"));
 	return true;
 }

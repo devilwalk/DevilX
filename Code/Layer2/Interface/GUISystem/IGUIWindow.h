@@ -16,7 +16,7 @@ namespace NSDevilX
 			virtual IScene * getScene()const=0;
 			virtual IStaticText * createStaticText(const String & name)=0;
 			virtual IButton * createButton(const String & name)=0;
-			virtual Void destroyControl(IControl * control);
+			virtual Void destroyControl(IControl * control)=0;
 		};
 	}
 }

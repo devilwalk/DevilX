@@ -57,6 +57,18 @@
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\IStaticTextImp.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\IButtonImp.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\Control.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\StaticText.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\Button.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\Precompiler.cpp">
@@ -75,6 +87,18 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\IStaticTextImp.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\IButtonImp.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\Control.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\StaticText.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\Button.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

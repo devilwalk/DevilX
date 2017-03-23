@@ -32,8 +32,9 @@ namespace NSDevilX
 			virtual IResource * getResource(const String & name) const override;
 			virtual Void destroyResource(IResource * res) override;
 			virtual CImage * getImage(ILoadedResource * resource) override;
-			virtual CFontImage * getFontImage(ILoadedResource * resource,const CUTF8Char & c,CFloat2 * pixelStart,CFloat2 pixelEnd) override;
+			virtual CFontImage * getFontImage(ILoadedResource * resource,const CUTF8Char & c,CUInt2 * pixelStart,CUInt2 * pixelEnd) override;
 			virtual NSRenderSystem::ITexture * getRenderTexture(ILoadedResource * resource) override;
+			virtual NSRenderSystem::ITexture * getRenderTexture(ILoadedResource * resource,const CUTF8Char & c,CUInt2 * pixelStart,CUInt2 * pixelEnd) override;
 			virtual NSRenderSystem::IGeometry * getRenderGeometry(ILoadedResource * resource) override;
 		};
 	}

@@ -82,6 +82,9 @@ namespace NSDevilX
 				case IEnum::ETexture2DFormat_R8G8B8A8:
 					bpp=4;
 					break;
+				case IEnum::ETexture2DFormat_A8:
+					bpp=1;
+					break;
 				}
 				auto next_width=width;
 				auto next_height=height;

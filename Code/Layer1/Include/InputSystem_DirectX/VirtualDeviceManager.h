@@ -17,7 +17,6 @@ namespace NSDevilX
 			public:
 				CVirtualDeviceManager();
 				~CVirtualDeviceManager();
-				Void update();
 				// Inherited via TMessageReceiver
 				virtual void onMessage(IVirtualDeviceManagerImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 			protected:

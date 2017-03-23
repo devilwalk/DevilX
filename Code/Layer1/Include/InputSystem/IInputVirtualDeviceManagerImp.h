@@ -24,11 +24,14 @@ namespace NSDevilX
 		public:
 			IVirtualDeviceManagerImp();
 			virtual ~IVirtualDeviceManagerImp();
-
+			Void update();
 			// Inherited via IVirtualDeviceManager
-			virtual IVirtualDevice * createDevice(const String & name,IPhysicalDevice * device) override;
+			virtual IMouse * createMouse(const String & name,IPhysicalDevice * device,CWindow * window) override;
+			virtual IKeyboard * createKeyboard(const String & name,IPhysicalDevice * device,CWindow * window) override;
 			virtual Void destroyDevice(IVirtualDevice * device) override;
 			virtual IVirtualDevice * getDevice(const String & name) const override;
+		protected:
+			IVirtualDeviceImp * _createDevice(const String & name,IPhysicalDevice * device,CWindow * window);
 		};
 	}
 }
