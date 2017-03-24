@@ -11,6 +11,7 @@ namespace NSDevilX
 			CControl * const mParent;
 			NSUISystem::IElement * mLayer;
 			TVector<NSUISystem::IGraphicWindow*> mGraphicWindows;
+			NSUISystem::IEventWindow * mEventWindow;
 		public:
 			CControl(const String & name,NSUISystem::IGraphicScene * graphicScene,NSUISystem::IEventScene * eventScene);
 			CControl(const String & name,CControl * parent=nullptr);
@@ -32,8 +33,10 @@ namespace NSDevilX
 				return mLayer;
 			}
 		protected:
-			Void _attachGraphicWindow(NSUISystem::IGraphicWindow * window);
+			Void _attachWindow(NSUISystem::IGraphicWindow * window);
+			Void _attachWindow(NSUISystem::IEventWindow * window);
 			Void _destroyGraphicWindows();
+			Void _destroyEventWindow();
 		};
 	}
 }

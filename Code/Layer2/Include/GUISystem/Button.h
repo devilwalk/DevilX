@@ -8,7 +8,13 @@ namespace NSDevilX
 		class CButton
 			:public CControl
 			,public TBaseObject<CButton>
+			,public NSUISystem::IEventListener
 		{
+		public:
+			struct SEventListener
+			{
+			public:
+			};
 		protected:
 			CStaticText * mTextControl;
 			NSResourceSystem::IResource * mBackgroundResource;

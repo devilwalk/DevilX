@@ -32,10 +32,25 @@ namespace NSDevilX
 	protected:
 		virtual ~CWindowEventListener(){}
 	public:
-		virtual Void onCharEvent(CWindow * window,const CUTF8Char & ch){}
-		virtual Void onMouseButtonEvent(CWindow * window,EMouseButtonType buttonType,EMouseButtonEventType eventType,const CUInt2 & position){}
-		virtual Void onMouseMoveEvent(CWindow * window,const CUInt2 & position){}
-		virtual Void onMouseWheelEvent(CWindow * window,Int32 offset){}
+		virtual Void onCharEvent(CWindow * window,const CUTF8Char & ch)=0;
+		virtual Void onMouseButtonEvent(CWindow * window,EMouseButtonType buttonType,EMouseButtonEventType eventType,const CUInt2 & position)=0;
+		virtual Void onMouseMoveEvent(CWindow * window,const CUInt2 & position)=0;
+		virtual Void onMouseWheelEvent(CWindow * window,Int32 offset)=0;
+	};
+	class CDefaultWindowEventListener
+		:public CWindowEventListener
+	{
+	public:
+		virtual ~CDefaultWindowEventListener(){}
+	public:
+		virtual Void onCharEvent(CWindow * window,const CUTF8Char & ch) override
+		{}
+		virtual Void onMouseButtonEvent(CWindow * window,EMouseButtonType buttonType,EMouseButtonEventType eventType,const CUInt2 & position) override
+		{}
+		virtual Void onMouseMoveEvent(CWindow * window,const CUInt2 & position) override
+		{}
+		virtual Void onMouseWheelEvent(CWindow * window,Int32 offset) override
+		{}
 	};
 	class CWindow
 		:public TBaseObject<CWindow>
@@ -44,7 +59,7 @@ namespace NSDevilX
 		VoidPtr mHandle;
 		CInt2 mPosition;
 		CUInt2 mSize;
-		CWindowEventListener * mEventListener;
+		TSet<CWindowEventListener*> mEventListeners;
 	public:
 		CWindow();
 		~CWindow();
@@ -62,10 +77,13 @@ namespace NSDevilX
 		{
 			return mSize;
 		}
-		Void setEventListener(CWindowEventListener * listener){ mEventListener=listener; }
-		CWindowEventListener * getEventListener()const
+		Void registerEventListener(CWindowEventListener * listener)
 		{
-			return mEventListener;
+			mEventListeners.insert(listener);
+		}
+		Void unregisterEventListener(CWindowEventListener * listener)
+		{
+			mEventListeners.erase(listener);
 		}
 	};
 }

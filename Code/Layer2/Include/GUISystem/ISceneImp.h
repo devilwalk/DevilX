@@ -6,10 +6,26 @@ namespace NSDevilX
 		class ISceneImp
 			:public IScene
 			,public TBaseObject<ISceneImp>
+			,public CDefaultWindowEventListener
 		{
+		public:
+			struct SEvent
+				:public NSUISystem::IEvent
+				,public TBaseObject<SEvent>
+			{
+				NSUISystem::IElement * mLayer;
+				SEvent();
+				~SEvent();
+				// 通过 IEvent 继承
+				virtual NSUISystem::IElement * queryInterface_IElement() const override;
+				virtual UInt32 getType() const override;
+			};
 		protected:
 			NSUISystem::IGraphicScene * mGraphicScene;
+			NSUISystem::IEventScene * mEventScene;
+			IWindowImp * mActiveWindow;
 			TNamedResourcePtrMap<IWindowImp> mWindows;
+			TList<IWindowImp*> mOrderedWindows;
 		public:
 			ISceneImp(NSRenderSystem::IViewport * viewport);
 			~ISceneImp();
@@ -17,11 +33,19 @@ namespace NSDevilX
 			{
 				return mGraphicScene;
 			}
+			NSUISystem::IEventScene * getEventScene()const
+			{
+				return mEventScene;
+			}
+			Void setActiveWindow(IWindowImp * window);
 			// 通过 IScene 继承
 			virtual NSRenderSystem::IViewport * getRenderViewport() const override;
 			virtual IWindow * createWindow(const String & name) override;
 			virtual IWindow * getWindow(const String & name) const override;
 			virtual Void destroyWindow(IWindow * window) override;
+		protected:
+			Void _updateWindowsOrder();
+			virtual Void onMouseButtonEvent(CWindow * window,EMouseButtonType buttonType,EMouseButtonEventType eventType,const CUInt2 & position) override;
 		};
 	}
 }

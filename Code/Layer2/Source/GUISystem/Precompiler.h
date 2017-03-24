@@ -5,6 +5,7 @@
 #include "IGUISystemInterface.h"
 #include "Button.h"
 #include "Control.h"
+#include "Event.h"
 #include "IButtonImp.h"
 #include "IControlImp.h"
 #include "ISceneImp.h"

@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Code\Layer2\Include\UISystem\EventManager.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\UISystem\IElementImp.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\UISystem\IEventSceneImp.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\UISystem\IGraphicSceneImp.h" />
@@ -38,7 +37,6 @@
     <ClInclude Include="..\..\..\Code\Layer2\Source\UISystem\Precompiler.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Code\Layer2\Source\UISystem\EventManager.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\UISystem\IElementImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\UISystem\IEventSceneImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\UISystem\IEventWindowImp.cpp" />

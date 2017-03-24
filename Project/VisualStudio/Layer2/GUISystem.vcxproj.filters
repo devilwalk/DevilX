@@ -69,6 +69,9 @@
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\Button.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\Event.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\Precompiler.cpp">
@@ -99,6 +102,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\Button.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\Event.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

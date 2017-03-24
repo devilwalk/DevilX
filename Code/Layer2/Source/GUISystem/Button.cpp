@@ -10,8 +10,14 @@ NSDevilX::NSGUISystem::CButton::CButton(const String & name,CControl * parent)
 	auto background=getGraphicScene()->createWindow(name+"/Background");
 	background->queryInterface_IElement()->setPosition(CFloat2::sZero);
 	background->queryInterface_IElement()->setSize(CFloat2::sOne);
-	attachGraphicWindow(background);
+	_attachWindow(background);
 	mTextControl=DEVILX_NEW CStaticText(name+"/TextControl",this);
+
+	auto event_window=getEventScene()->createWindow(name);
+	event_window->queryInterface_IElement()->setPosition(CFloat2::sZero);
+	event_window->queryInterface_IElement()->setSize(CFloat2::sOne);
+	event_window->registerListener(this,1);
+	_attachWindow(event_window);
 }
 
 NSDevilX::NSGUISystem::CButton::~CButton()

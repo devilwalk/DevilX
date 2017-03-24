@@ -1,7 +1,6 @@
 #include "Common.h"
 #include "RenderSystem/IRenderSystemInterface.h"
 #include "IUISystemInterface.h"
-#include "EventManager.h"
 #include "IElementImp.h"
 #include "IEventSceneImp.h"
 #include "IEventWindowImp.h"

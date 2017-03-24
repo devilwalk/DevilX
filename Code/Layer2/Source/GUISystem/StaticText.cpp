@@ -91,7 +91,7 @@ Void NSDevilX::NSGUISystem::CStaticText::_updateGraphicWindows()
 		window->setTexture(tex,pixel_starts[i],pixel_ends[i]);
 		window->queryInterface_IElement()->setPosition(CFloat2(word_width,0.0f)*static_cast<Float>(i));
 		window->queryInterface_IElement()->setSize(CFloat2(word_width,1.0f));
-		_attachGraphicWindow(window);
+		_attachWindow(window);
 	}
 }
 

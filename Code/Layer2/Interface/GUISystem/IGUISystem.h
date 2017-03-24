@@ -9,6 +9,7 @@ namespace NSDevilX
 		protected:
 			virtual ~ISystem(){}
 		public:
+			virtual Void initialize(CWindow * window)=0;
 			virtual IScene * createScene(NSRenderSystem::IViewport * viewport)=0;
 			virtual IScene * getScene(NSRenderSystem::IViewport * viewport)const=0;
 			virtual Void destroyScene(IScene * scene)=0;

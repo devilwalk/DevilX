@@ -8,10 +8,17 @@ ISystem * NSDevilX::NSGUISystem::getSystem()
 }
 
 NSDevilX::NSGUISystem::ISystemImp::ISystemImp()
+	:mWindow(nullptr)
 {}
 
 NSDevilX::NSGUISystem::ISystemImp::~ISystemImp()
 {
+}
+
+Void NSDevilX::NSGUISystem::ISystemImp::initialize(CWindow * window)
+{
+	assert(!getWindow());
+	mWindow=window;
 }
 
 IScene * NSDevilX::NSGUISystem::ISystemImp::createScene(NSRenderSystem::IViewport * viewport)

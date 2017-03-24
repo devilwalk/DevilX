@@ -6,6 +6,7 @@ NSDevilX::NSUISystem::IEventWindowImp::IEventWindowImp(const String & name)
 	:mElement(nullptr)
 {
 	mElement=DEVILX_NEW IElementImp(name);
+	mElement->setUserPointer(0,this);
 }
 
 NSDevilX::NSUISystem::IEventWindowImp::~IEventWindowImp()

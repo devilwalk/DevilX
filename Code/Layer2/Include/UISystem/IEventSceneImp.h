@@ -1,6 +1,5 @@
 #pragma once
 #include "IEventWindowImp.h"
-#include "EventManager.h"
 namespace NSDevilX
 {
 	namespace NSUISystem
@@ -8,11 +7,12 @@ namespace NSDevilX
 		class IEventSceneImp
 			:public IEventScene
 			,public TBaseObject<IEventSceneImp>
+			,public TMessageReceiver<IElementImp>
 		{
 		protected:
 			const String mName;
-			CEventManager * mManager;
 			TNamedResourcePtrMap<IEventWindowImp> mWindows;
+			TMap<Int32,TSet<IEventWindowImp*> > mOrderedWindows;
 		public:
 			IEventSceneImp(const String & name);
 			~IEventSceneImp();
@@ -22,7 +22,10 @@ namespace NSDevilX
 			virtual IEventWindow * createWindow(const String & name) override;
 			virtual IEventWindow * getWindow(const String & name) const override;
 			virtual Void destroyWindow(IEventWindow * window) override;
-			virtual Void route(IEvent * eve) override;
+			virtual Void route(IEvent * e) override;
+
+			// Í¨¹ý TMessageReceiver ¼Ì³Ð
+			virtual Void onMessage(IElementImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 		};
 	}
 }

@@ -15,9 +15,32 @@ NSDevilX::NSGUISystem::IControlImp::~IControlImp()
 	notify(EMessage_EndDestruction);
 }
 
-NSUISystem::IElement * NSDevilX::NSGUISystem::IControlImp::queryInterface_IElement() const
+const String & NSDevilX::NSGUISystem::IControlImp::getName() const
 {
-	return getControl()->getLayer();
+	// TODO: 在此处插入 return 语句
+	return getControl()->getLayer()->getName();
+}
+
+Void NSDevilX::NSGUISystem::IControlImp::setPosition(const CFloat2 & position)
+{
+	getControl()->getLayer()->setPosition(position);
+}
+
+const CFloat2 & NSDevilX::NSGUISystem::IControlImp::getPosition() const
+{
+	// TODO: 在此处插入 return 语句
+	return getControl()->getLayer()->getPosition();
+}
+
+Void NSDevilX::NSGUISystem::IControlImp::setSize(const CFloat2 & size)
+{
+	getControl()->getLayer()->setSize(size);
+}
+
+const CFloat2 & NSDevilX::NSGUISystem::IControlImp::getSize() const
+{
+	// TODO: 在此处插入 return 语句
+	return getControl()->getLayer()->getSize();
 }
 
 IWindow * NSDevilX::NSGUISystem::IControlImp::getParentWindow() const

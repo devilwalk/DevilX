@@ -8,6 +8,7 @@ namespace NSDevilX
 			,public TBaseObject<IElementImp>
 			,public CMessageNotifier
 			,public TMessageReceiver<IElementImp>
+			,public CUserDataContainer
 		{
 		public:
 			enum EMessage

@@ -27,7 +27,11 @@ namespace NSDevilX
 				return mControl;
 			}
 			// Í¨¹ý IControl ¼Ì³Ð
-			virtual NSUISystem::IElement * queryInterface_IElement() const override;
+			virtual const String & getName() const override;
+			virtual Void setPosition(const CFloat2 & position) override;
+			virtual const CFloat2 & getPosition() const override;
+			virtual Void setSize(const CFloat2 & size) override;
+			virtual const CFloat2 & getSize() const override;
 			virtual IWindow * getParentWindow() const override;
 		};
 	}

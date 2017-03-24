@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\Button.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\Control.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\Event.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\IButtonImp.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\IControlImp.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\ISceneImp.h" />
@@ -40,6 +41,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\Button.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\Control.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\Event.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\IButtonImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\IControlImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\ISceneImp.cpp" />

@@ -79,8 +79,8 @@ Void NSDevilX::CWindow::setSize(const CUInt2 & size)
 					{
 						switch(msg)
 						{
-						case WM_IME_CHAR:
-							window->getEventListener()->onCharEvent(window,CUTF8Char(wParam));
+						case WM_CHAR:
+							window->getEventListener()->onCharEvent(window,CUTF8Char(static_cast<Int32>(wParam)));
 							break;
 						case WM_LBUTTONDOWN:
 							window->getEventListener()->onMouseButtonEvent(window,CWindowEventListener::EButtonType_Left,CWindowEventListener::EButtonEventType_ButtonDown,CUInt2(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)));

@@ -49,10 +49,11 @@ namespace NSDevilX
 			assert(mAnys2);
 			return mAnys2->get(key);
 		}
-		VoidPtr getUserPointer(Pointers::size_type index)const
+		template<typename T>
+		T * getUserPointer(Pointers::size_type index)const
 		{
 			assert(mPointers);
-			return (*mPointers)[index];
+			return static_cast<T*>((*mPointers)[index]);
 		}
 		Boolean hasUserData(const String & name)const
 		{
