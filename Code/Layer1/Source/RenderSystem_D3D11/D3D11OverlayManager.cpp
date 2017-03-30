@@ -79,7 +79,7 @@ Void NSDevilX::NSRenderSystem::NSD3D11::COverlayManager::onMessage(IOverlayEleme
 
 Void NSDevilX::NSRenderSystem::NSD3D11::COverlayManager::onMessage(ITextureUnitStateImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
 {
-	auto element=static_cast<IOverlayElementImp*>(notifier->getUserPointer(0));
+	auto element=notifier->getUserPointer<IOverlayElementImp>(0);
 	auto renderable=_getRenderable(element);
 	switch(message)
 	{

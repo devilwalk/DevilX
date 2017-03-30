@@ -22,11 +22,11 @@ namespace NSDevilX
 		VECTOR_OPERATOR_FUNC(!=,NotEqualInt,3,INT,Int32,SInt)
 		VECTOR_OPERATOR_FUNC(>,Greater,3,INT,Int32,SInt)
 		VECTOR_OPERATOR_FUNC(<,Less,3,INT,Int32,SInt)
-		VECTOR_OPERATOR_FUNC(>=,GreaterOrEqual,3,INT,Int32,SInt)
-		VECTOR_OPERATOR_FUNC(<=,LessOrEqual,3,INT,Int32,SInt)
-		VECTOR_OPERATOR_FUNC(==,EqualInt,4,INT,Int32,SInt)
-		VECTOR_OPERATOR_FUNC(!=,NotEqualInt,4,INT,Int32,SInt)
-		VECTOR_OPERATOR_FUNC(>,Greater,4,INT,Int32,SInt)
+VECTOR_OPERATOR_FUNC(>=,GreaterOrEqual,3,INT,Int32,SInt)
+VECTOR_OPERATOR_FUNC(<=,LessOrEqual,3,INT,Int32,SInt)
+VECTOR_OPERATOR_FUNC(==,EqualInt,4,INT,Int32,SInt)
+VECTOR_OPERATOR_FUNC(!=,NotEqualInt,4,INT,Int32,SInt)
+VECTOR_OPERATOR_FUNC(>,Greater,4,INT,Int32,SInt)
 VECTOR_OPERATOR_FUNC(<,Less,4,INT,Int32,SInt)
 	VECTOR_OPERATOR_FUNC(>=,GreaterOrEqual,4,INT,Int32,SInt)
 	VECTOR_OPERATOR_FUNC(<=,LessOrEqual,4,INT,Int32,SInt)
@@ -121,7 +121,8 @@ VECTOR_OPERATOR_FUNC(<,Less,4,INT,Int32,SInt)
 		} \
 		const C##type0##x & operator=(type0##32 value) \
 		{ \
-			type0##32 temp_value[x]={value}; \
+			type0##32 temp_value[x]; \
+			for(auto & v:temp_value)v=value; \
 			*this=DirectX::XM##type1##x(temp_value); \
 			return *this; \
 		} \

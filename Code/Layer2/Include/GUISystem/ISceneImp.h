@@ -13,8 +13,13 @@ namespace NSDevilX
 				:public NSUISystem::IEvent
 				,public TBaseObject<SEvent>
 			{
+				enum EType
+				{
+					EType_WindowActive
+				};
+				const EType mType;
 				NSUISystem::IElement * mLayer;
-				SEvent();
+				SEvent(EType type);
 				~SEvent();
 				// 通过 IEvent 继承
 				virtual NSUISystem::IElement * queryInterface_IElement() const override;
@@ -37,6 +42,7 @@ namespace NSDevilX
 			{
 				return mEventScene;
 			}
+			Void update();
 			Void setActiveWindow(IWindowImp * window);
 			// 通过 IScene 继承
 			virtual NSRenderSystem::IViewport * getRenderViewport() const override;

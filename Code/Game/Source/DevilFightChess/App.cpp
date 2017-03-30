@@ -9,9 +9,10 @@ NSDevilX::NSFightChess::CApp::CApp()
 {
 	CDesktop desktop;
 	mWindow=DEVILX_NEW CWindow();
-	mWindow->setSize(desktop.getSize()*0.6);
+	mWindow->setSize(desktop.getSize()*0.6f);
 	mWindow->setPosition((desktop.getSize()-mWindow->getSize())/2);
-	mRenderWindow=NSRenderSystem::getSystem()->createWindow(mWindow->getHandle());
+	NSGUISystem::getSystem()->initialize(mWindow);
+	mRenderWindow=NSRenderSystem::getSystem()->createWindow(mWindow);
 	mGame=DEVILX_NEW CGame();
 
 	mGame->initialize();
@@ -20,7 +21,9 @@ NSDevilX::NSFightChess::CApp::CApp()
 NSDevilX::NSFightChess::CApp::~CApp()
 {
 	NSNetworkSystem::getSystem()->shutdown();
+	NSGUISystem::getSystem()->shutdown();
 	NSRenderSystem::getSystem()->shutdown();
+	NSResourceSystem::getSystem()->shutdown();
 	DEVILX_DELETE(mGame);
 	DEVILX_DELETE(mWindow);
 }
@@ -37,6 +40,8 @@ Void NSDevilX::NSFightChess::CApp::run()
 			DispatchMessage(&msg);
 		}
 		mGame->update();
+		NSGUISystem::getSystem()->update();
+		NSResourceSystem::getSystem()->update();
 		NSRenderSystem::getSystem()->update();
 		NSNetworkSystem::getSystem()->update();
 	}

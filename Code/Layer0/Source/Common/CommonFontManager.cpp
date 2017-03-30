@@ -5,14 +5,16 @@ NSDevilX::CFontManager::CFontManager()
 {}
 
 NSDevilX::CFontManager::~CFontManager()
-{}
-
-Void NSDevilX::CFontManager::reigsterFont(const String & fontName,const String & fontFileName)
 {
-	mFonts.add(fontName,DEVILX_NEW CFileStream(fontFileName));
+	mFonts.clear();
 }
 
-CFontImage * NSDevilX::CFontManager::getImage(const String & fontName,WChar ch,OUT CUInt2 * pixelStart,OUT CUInt2 * pixelEnd,const CUInt2 & fontSize)
+Void NSDevilX::CFontManager::reigsterFont(const String & fontName,const CMemoryStream * dataStream)
+{
+	mFonts.add(fontName,dataStream);
+}
+
+CFontImage * NSDevilX::CFontManager::getImage(const String & fontName,const CUTF8Char & ch,OUT CUInt2 * pixelStart,OUT CUInt2 * pixelEnd,const CUInt2 & fontSize)
 {
 	auto src=mFonts.get(fontName);
 	if(!src)

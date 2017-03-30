@@ -38,10 +38,10 @@ namespace NSDevilX
 	public:
 		CDataStream();
 		virtual ~CDataStream();
-		virtual CDataStreamReader * createReader()=0;
-		virtual Void destroyReader(CDataStreamReader * reader)=0;
-		virtual CDataStreamWriter * createWriter()=0;
-		virtual Void destroyWrite(CDataStreamWriter * writer)=0;
+		virtual CDataStreamReader * createReader()const=0;
+		virtual Void destroyReader(CDataStreamReader * reader)const=0;
+		virtual CDataStreamWriter * createWriter()const=0;
+		virtual Void destroyWrite(CDataStreamWriter * writer)const=0;
 		virtual void clear();
 		virtual UInt32 getSize()const=0;
 	};

@@ -207,11 +207,11 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::prepare()
 			continue;
 		CLightTask * task=nullptr;
 		if(mLightTaskPool.empty())
-			task=DEVILX_NEW CLightTask(static_cast<CLight*>(light->getUserPointer(0)),mViewport);
+			task=DEVILX_NEW CLightTask(light->getUserPointer<CLight>(0),mViewport);
 		else
 		{
 			task=mLightTaskPool.back();
-			task->setLight(static_cast<CLight*>(light->getUserPointer(0)));
+			task->setLight(light->getUserPointer<CLight>(0));
 			mLightTaskPool.pop_back();
 		}
 		mTasks.push_back(task);
@@ -221,11 +221,11 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::prepare()
 	{
 		CLightTask * task=nullptr;
 		if(mLightTaskPool.empty())
-			task=DEVILX_NEW CLightTask(static_cast<CLight*>(light->getUserPointer(0)),mViewport);
+			task=DEVILX_NEW CLightTask(light->getUserPointer<CLight>(0),mViewport);
 		else
 		{
 			task=mLightTaskPool.back();
-			task->setLight(static_cast<CLight*>(light->getUserPointer(0)));
+			task->setLight(light->getUserPointer<CLight>(0));
 			mLightTaskPool.pop_back();
 		}
 		//提高线程利用率
@@ -260,7 +260,7 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::CAmbientTask::p
 	{
 		for(UInt32 i=0;i<object->getRenderableCount();++i)
 		{
-			auto renderable=static_cast<CEntityRenderableImp*>(static_cast<IEntityRenderableImp*>(object->getRenderable(i))->getUserPointer(0));
+			auto renderable=static_cast<IEntityRenderableImp*>(object->getRenderable(i))->getUserPointer<CEntityRenderableImp>(0);
 			if(renderable->getInterfaceImp()->getTransparentEnable())
 				transparent_renderables.push_back(renderable);
 			else
@@ -353,7 +353,7 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::CLightTask::pro
 		{
 			for(UInt32 i=0;i<object->getRenderableCount();++i)
 			{
-				auto renderable=static_cast<CEntityRenderableImp*>(static_cast<IEntityRenderableImp*>(object->getRenderable(i))->getUserPointer(0));
+				auto renderable=static_cast<IEntityRenderableImp*>(object->getRenderable(i))->getUserPointer<CEntityRenderableImp>(0);
 				if(renderable->getInterfaceImp()->getLightEnable())
 				{
 					renderable->renderForward(mLight,operation);
@@ -412,7 +412,7 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::CLightTask::pre
 	{
 		for(UInt32 i=0;i<object->getRenderableCount();++i)
 		{
-			auto renderable=static_cast<CEntityRenderableImp*>(static_cast<IEntityRenderableImp*>(object->getRenderable(i))->getUserPointer(0));
+			auto renderable=static_cast<IEntityRenderableImp*>(object->getRenderable(i))->getUserPointer<CEntityRenderableImp>(0);
 			if(renderable->getInterfaceImp()->getLightEnable())
 			{
 				renderable->renderForward(mLight,operation);

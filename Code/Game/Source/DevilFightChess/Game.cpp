@@ -6,7 +6,7 @@ NSDevilX::NSFightChess::CGame::CGame()
 	:mViewport(nullptr)
 	,mServerManager(nullptr)
 	,mFontManager(nullptr)
-	,mUIManager(nullptr)
+	,mGUIScene(nullptr)
 {
 	mViewport=CApp::getSingleton().getRenderWindow()->queryInterface_IRenderTarget()->createViewport("Main");
 	registerModule(DEVILX_NEW CRegister);
@@ -17,14 +17,14 @@ NSDevilX::NSFightChess::CGame::~CGame()
 {
 	DEVILX_DELETE(mServerManager);
 	DEVILX_DELETE(mFontManager);
-	DEVILX_DELETE(mUIManager);
+	NSGUISystem::getSystem()->destroyScene(getGUIScene());
 }
 
 Void NSDevilX::NSFightChess::CGame::initialize()
 {
 	mServerManager=DEVILX_NEW CServerManager;
 	mFontManager=DEVILX_NEW CFontManager;
-	mUIManager=DEVILX_NEW CUIManager;
+	mGUIScene=NSGUISystem::getSystem()->createScene(getViewport());
 
 	startModule("Login");
 }

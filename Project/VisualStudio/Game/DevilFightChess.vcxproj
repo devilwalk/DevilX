@@ -188,7 +188,6 @@
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Game.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Grid.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Scene.h" />
-    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\UIManager.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\UIScript.h" />
     <ClInclude Include="..\..\..\Code\Game\Source\DevilFightChess\Precompiler.h" />
   </ItemGroup>
@@ -211,7 +210,6 @@
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Scene.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\ServerManager.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Terrain.cpp" />
-    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\UIManager.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\UIScript.cpp" />
   </ItemGroup>
   <ItemGroup>

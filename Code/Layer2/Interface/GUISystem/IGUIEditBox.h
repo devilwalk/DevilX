@@ -1,27 +1,25 @@
 #pragma once
-#include "IGUIControl.h"
 namespace NSDevilX
 {
 	namespace NSGUISystem
 	{
-		class IButtonEventCallback
+		class IEditBoxEventCallback
 		{
 		public:
 			enum EEvent
 			{
-				EEvent_Press,
-				EEvent_Release,
-				EEvent_Click
+				EEvent_TextChange
 			};
 		protected:
-			virtual ~IButtonEventCallback(){}
+			virtual ~IEditBoxEventCallback()
+			{}
 		public:
 			virtual Void onEvent(EEvent events)=0;
 		};
-		class IButton
+		class IEditBox
 		{
 		protected:
-			virtual ~IButton(){}
+			virtual ~IEditBox(){}
 		public:
 			virtual IControl * queryInterface_IControl()const=0;
 			virtual Void setFontResource(NSResourceSystem::IResource * resource)=0;
@@ -32,8 +30,8 @@ namespace NSDevilX
 			virtual const CColour & getTextColour()const=0;
 			virtual Void setBackground(NSResourceSystem::IResource * resource)=0;
 			virtual NSResourceSystem::IResource * getBackground()const=0;
-			virtual Void setEventCallback(IButtonEventCallback * callback)=0;
-			virtual IButtonEventCallback * getEventCallback()const=0;
+			virtual Void setEventCallback(IEditBoxEventCallback * callback)=0;
+			virtual IEditBoxEventCallback * getEventCallback()const=0;
 		};
 	}
 }

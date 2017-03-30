@@ -1,30 +1,29 @@
 #pragma once
-#include "Control.h"
 #include "StaticText.h"
+#include "Caret.h"
 namespace NSDevilX
 {
 	namespace NSGUISystem
 	{
-		class CButton
+		class CEditBox
 			:public CControl
-			,public TBaseObject<CButton>
+			,public TBaseObject<CEditBox>
 			,public CDefaultWindowEventListener
 			,public CMessageNotifier
 		{
 		public:
 			enum EMessage
 			{
-				EMessage_Press,
-				EMessage_Release,
-				EMessage_Click
+				EMessage_BeginTextChange,
+				EMessage_EndTextChange
 			};
 		protected:
 			CStaticText * mTextControl;
+			CCaret * mCaret;
 			NSResourceSystem::IResource * mBackgroundResource;
-			Bool mPressed;
 		public:
-			CButton(const String & name,CControl * parent);
-			~CButton();
+			CEditBox(const String & name,CControl * parent);
+			~CEditBox();
 			CStaticText * getTextControl()const
 			{
 				return mTextControl;
@@ -32,7 +31,7 @@ namespace NSDevilX
 			Void setBackground(NSResourceSystem::IResource * resource);
 			NSResourceSystem::IResource * getBackground()const;
 			virtual Void setFocus(Bool focus) override;
-			virtual Void onMouseButtonEvent(CWindow * window,EMouseButtonType buttonType,EMouseButtonEventType eventType,const CUInt2 & position) override;
+			virtual Void onCharEvent(CWindow * window,const CUTF16Char & ch) override;
 		};
 	}
 }

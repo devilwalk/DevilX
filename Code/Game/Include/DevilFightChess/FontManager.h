@@ -6,20 +6,15 @@ namespace NSDevilX
 		class CFontManager
 			:public TBaseObject<CFontManager>
 		{
-		public:
-			static const UInt8 sFontSize;
 		protected:
-			CFontImage * mImg;
-			NSRenderSystem::ITexture * mRenderTexture;
-			TVector<RGBA> mPixels;
+			NSResourceSystem::IResource * mFontResource;
 		public:
 			CFontManager();
 			~CFontManager();
-			NSRenderSystem::ITexture * getRenderTexture()const
+			NSResourceSystem::IResource * getFontResource()const
 			{
-				return mRenderTexture;
+				return mFontResource;
 			}
-			Void getPixelRange(WChar ch,CSInt2 * pixelStart,CSInt2 * pixelEnd);
 		};
 	}
 }

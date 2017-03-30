@@ -2,10 +2,11 @@
 using namespace NSDevilX;
 using namespace NSGUISystem;
 
-NSDevilX::NSGUISystem::ISceneImp::SEvent::SEvent()
-	:mLayer(nullptr)
+NSDevilX::NSGUISystem::ISceneImp::SEvent::SEvent(EType type)
+	:mType(type)
+	,mLayer(nullptr)
 {
-	mLayer=NSUISystem::getSystem()->createLayer("Scene/Focus");
+	mLayer=NSUISystem::getSystem()->createLayer("Scene/Focus/"+CStringConverter::toString(this));
 }
 
 NSDevilX::NSGUISystem::ISceneImp::SEvent::~SEvent()
@@ -20,7 +21,7 @@ NSUISystem::IElement * NSDevilX::NSGUISystem::ISceneImp::SEvent::queryInterface_
 
 UInt32 NSDevilX::NSGUISystem::ISceneImp::SEvent::getType() const
 {
-	return -1;
+	return mType;
 }
 
 NSDevilX::NSGUISystem::ISceneImp::ISceneImp(NSRenderSystem::IViewport * viewport)
@@ -30,24 +31,36 @@ NSDevilX::NSGUISystem::ISceneImp::ISceneImp(NSRenderSystem::IViewport * viewport
 {
 	mGraphicScene=NSUISystem::getSystem()->createGraphicScene(viewport);
 	mEventScene=NSUISystem::getSystem()->createEventScene(CStringConverter::toString(viewport));
+	ISystemImp::getSingleton().getWindow()->registerEventListener(this);
 }
 
 NSDevilX::NSGUISystem::ISceneImp::~ISceneImp()
 {
 	NSUISystem::getSystem()->destroyGraphicScene(getGraphicScene());
 	NSUISystem::getSystem()->destroyEventScene(getEventScene());
+	ISystemImp::getSingleton().getWindow()->unregisterEventListener(this);
+}
+
+Void NSDevilX::NSGUISystem::ISceneImp::update()
+{
+	if(mActiveWindow)
+		mActiveWindow->update();
 }
 
 Void NSDevilX::NSGUISystem::ISceneImp::setActiveWindow(IWindowImp * window)
 {
 	if(window!=mActiveWindow)
 	{
-		mActiveWindow->setActive(False);
-		mOrderedWindows.remove(mActiveWindow);
+		if(mActiveWindow)
+		{
+			mOrderedWindows.remove(mActiveWindow);
+		}
 		mActiveWindow=window;
-		mActiveWindow->setActive(True);
-		mOrderedWindows.push_back(mActiveWindow);
-		_updateWindowsOrder();
+		if(mActiveWindow)
+		{
+			mOrderedWindows.push_back(mActiveWindow);
+			_updateWindowsOrder();
+		}
 	}
 }
 
@@ -89,8 +102,11 @@ Void NSDevilX::NSGUISystem::ISceneImp::_updateWindowsOrder()
 
 Void NSDevilX::NSGUISystem::ISceneImp::onMouseButtonEvent(CWindow * window,EMouseButtonType buttonType,EMouseButtonEventType eventType,const CUInt2 & position)
 {
-	SEvent e;
-	e.queryInterface_IElement()->setPosition(position/window->getSize());
-	e.queryInterface_IElement()->setSize(CInt2::sOne/window->getSize());
-	getEventScene()->route(&e);
+	if(EMouseButtonEventType_Up==eventType)
+	{
+		SEvent e(SEvent::EType_WindowActive);
+		e.queryInterface_IElement()->setPosition(position/window->getSize());
+		e.queryInterface_IElement()->setSize(CInt2::sOne/window->getSize());
+		getEventScene()->route(&e);
+	}
 }

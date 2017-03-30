@@ -2,67 +2,54 @@
 using namespace NSDevilX;
 using namespace NSGUISystem;
 
-NSDevilX::NSGUISystem::CButton::CButton(const String & name,CControl * parent)
+NSDevilX::NSGUISystem::CEditBox::CEditBox(const String & name,CControl * parent)
 	:CControl(name,parent)
 	,mTextControl(nullptr)
+	,mCaret(nullptr)
 	,mBackgroundResource(nullptr)
-	,mPressed(False)
 {
 	auto background=getGraphicScene()->createWindow(name+"/Background");
 	background->queryInterface_IElement()->setPosition(CFloat2::sZero);
 	background->queryInterface_IElement()->setSize(CFloat2::sOne);
-	background->setColour(CFloatRGBA::sBlue);
+	background->setColour(CFloatRGBA::sWhite);
 	_attachWindow(background);
 	mTextControl=DEVILX_NEW CStaticText(name+"/TextControl",this);
-
+	mCaret=DEVILX_NEW CCaret(name+"/Caret",this);
+	mCaret->getLayer()->setPosition(CFloat2::sZero);
+	mCaret->getLayer()->setSize(CFloat2(0.01f,1.0f));
 	auto event_window=getEventScene()->createWindow(name);
 	event_window->queryInterface_IElement()->setPosition(CFloat2::sZero);
 	event_window->queryInterface_IElement()->setSize(CFloat2::sOne);
 	_attachWindow(event_window);
 }
 
-NSDevilX::NSGUISystem::CButton::~CButton()
+NSDevilX::NSGUISystem::CEditBox::~CEditBox()
 {
 	DEVILX_DELETE(getTextControl());
+	DEVILX_DELETE(mCaret);
 }
 
-Void NSDevilX::NSGUISystem::CButton::setBackground(NSResourceSystem::IResource * resource)
+Void NSDevilX::NSGUISystem::CEditBox::setBackground(NSResourceSystem::IResource * resource)
 {
 	mBackgroundResource=resource;
 }
 
-NSResourceSystem::IResource * NSDevilX::NSGUISystem::CButton::getBackground() const
+NSResourceSystem::IResource * NSDevilX::NSGUISystem::CEditBox::getBackground() const
 {
 	return mBackgroundResource;
 }
 
-Void NSDevilX::NSGUISystem::CButton::setFocus(Bool focus)
+Void NSDevilX::NSGUISystem::CEditBox::setFocus(Bool focus)
 {
-	mPressed=False;
 	if(focus)
 		ISystemImp::getSingleton().getWindow()->registerEventListener(this);
 	else
 		ISystemImp::getSingleton().getWindow()->unregisterEventListener(this);
 }
 
-Void NSDevilX::NSGUISystem::CButton::onMouseButtonEvent(CWindow * window,EMouseButtonType buttonType,EMouseButtonEventType eventType,const CUInt2 & position)
+Void NSDevilX::NSGUISystem::CEditBox::onCharEvent(CWindow * window,const CUTF16Char & ch)
 {
-	if(EMouseButtonType_Left==buttonType)
-	{
-		switch(eventType)
-		{
-		case EMouseButtonEventType_Down:
-			mPressed=True;
-			notify(EMessage_Press);
-			break;
-		case EMouseButtonEventType_Up:
-			notify(EMessage_Release);
-			if(mPressed)
-			{
-				mPressed=False;
-				notify(EMessage_Click);
-			}
-			break;
-		}
-	}
+	notify(EMessage_BeginTextChange);
+	getTextControl()->setText(getTextControl()->getText()+CUTF8Char(ch));
+	notify(EMessage_EndTextChange);
 }

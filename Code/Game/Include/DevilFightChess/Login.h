@@ -6,17 +6,12 @@ namespace NSDevilX
 	{
 		class CLoginPage
 			:public TBaseObject<CLoginPage>
-			,public NSUISystem::IEventListener
 		{
 		protected:
-			NSUISystem::IEventScene * mEventScene;
-			TVector<CUIControl*> mControl;
+			NSGUISystem::IWindow * mGUIWindow;
 		public:
 			CLoginPage();
 			~CLoginPage();
-
-			// Í¨¹ý IEventListener ¼Ì³Ð
-			virtual Void onEvent(NSUISystem::IEvent * e) override;
 		};
 		class CLogin
 			:public CModule

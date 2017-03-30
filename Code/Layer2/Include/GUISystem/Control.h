@@ -8,13 +8,13 @@ namespace NSDevilX
 		protected:
 			NSUISystem::IGraphicScene * const mGraphicScene;
 			NSUISystem::IEventScene * const mEventScene;
-			CControl * const mParent;
+			CControl * mParent;
 			NSUISystem::IElement * mLayer;
 			TVector<NSUISystem::IGraphicWindow*> mGraphicWindows;
 			NSUISystem::IEventWindow * mEventWindow;
 		public:
 			CControl(const String & name,NSUISystem::IGraphicScene * graphicScene,NSUISystem::IEventScene * eventScene);
-			CControl(const String & name,CControl * parent=nullptr);
+			CControl(const String & name,CControl * parent);
 			virtual ~CControl();
 			NSUISystem::IGraphicScene * getGraphicScene()const
 			{
@@ -24,6 +24,7 @@ namespace NSDevilX
 			{
 				return mEventScene;
 			}
+			Void setParent(CControl * control);
 			CControl * getParent()const
 			{
 				return mParent;
@@ -32,6 +33,11 @@ namespace NSDevilX
 			{
 				return mLayer;
 			}
+			NSUISystem::IEventWindow * getEventWindow()const
+			{
+				return mEventWindow;
+			}
+			virtual Void setFocus(Bool focus){}
 		protected:
 			Void _attachWindow(NSUISystem::IGraphicWindow * window);
 			Void _attachWindow(NSUISystem::IEventWindow * window);

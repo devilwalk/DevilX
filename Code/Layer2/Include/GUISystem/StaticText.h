@@ -32,7 +32,7 @@ namespace NSDevilX
 			Void setTextColour(const CColour & colour);
 			const CColour & getTextColour() const;
 		protected:
-			Void _updateGraphicWindows();
+			Boolean _updateGraphicWindows();
 			virtual Void _preProcessDirtyFlagAdd(UInt32 flagIndex) override;
 			virtual Void _postProcessDirtyFlagRemove(UInt32 flagIndex) override;
 			// Í¨¹ý TMessageReceiver ¼Ì³Ð

@@ -19,20 +19,20 @@ namespace NSDevilX
 	public:
 		enum EMouseButtonType
 		{
-			EButtonType_Left,
-			EButtonType_Right,
-			EButtonType_Middle,
+			EMouseButtonType_Left,
+			EMouseButtonType_Right,
+			EMouseButtonType_Middle,
 		};
 		enum EMouseButtonEventType
 		{
-			EButtonEventType_ButtonUp,
-			EButtonEventType_ButtonDown,
-			EButtonEventType_ButtonDoubleClick
+			EMouseButtonEventType_Up,
+			EMouseButtonEventType_Down,
+			EMouseButtonEventType_DoubleClick
 		};
 	protected:
 		virtual ~CWindowEventListener(){}
 	public:
-		virtual Void onCharEvent(CWindow * window,const CUTF8Char & ch)=0;
+		virtual Void onCharEvent(CWindow * window,const CUTF16Char & ch)=0;
 		virtual Void onMouseButtonEvent(CWindow * window,EMouseButtonType buttonType,EMouseButtonEventType eventType,const CUInt2 & position)=0;
 		virtual Void onMouseMoveEvent(CWindow * window,const CUInt2 & position)=0;
 		virtual Void onMouseWheelEvent(CWindow * window,Int32 offset)=0;
@@ -43,7 +43,7 @@ namespace NSDevilX
 	public:
 		virtual ~CDefaultWindowEventListener(){}
 	public:
-		virtual Void onCharEvent(CWindow * window,const CUTF8Char & ch) override
+		virtual Void onCharEvent(CWindow * window,const CUTF16Char & ch) override
 		{}
 		virtual Void onMouseButtonEvent(CWindow * window,EMouseButtonType buttonType,EMouseButtonEventType eventType,const CUInt2 & position) override
 		{}
@@ -77,6 +77,7 @@ namespace NSDevilX
 		{
 			return mSize;
 		}
+		CInt2 getCursorPosition()const;
 		Void registerEventListener(CWindowEventListener * listener)
 		{
 			mEventListeners.insert(listener);

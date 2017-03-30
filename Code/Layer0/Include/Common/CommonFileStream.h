@@ -51,9 +51,9 @@ namespace NSDevilX
 
 		// Inherited via CDataStream
 		virtual UInt32 getSize() const override;
-		virtual CDataStreamReader * createReader() override;
-		virtual Void destroyReader(CDataStreamReader * reader) override;
-		virtual CDataStreamWriter * createWriter() override;
-		virtual Void destroyWrite(CDataStreamWriter * writer) override;
+		virtual CDataStreamReader * createReader() const override;
+		virtual Void destroyReader(CDataStreamReader * reader) const override;
+		virtual CDataStreamWriter * createWriter() const override;
+		virtual Void destroyWrite(CDataStreamWriter * writer) const override;
 	};
 }

@@ -15,8 +15,9 @@ namespace NSDevilX
 		static SizeT getSystemTime();
 		CTimer();
 		~CTimer();
-		SizeT getInMillisecond();
-		Void updateCurrentTime();
-		Void updateLastTime();
+		SizeT getInMillisecond(Bool updateLastTime=True);
+	protected:
+		Void _updateCurrentTime();
+		Void _updateLastTime();
 	};
 }

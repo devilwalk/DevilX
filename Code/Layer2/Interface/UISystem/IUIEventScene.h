@@ -14,7 +14,7 @@ namespace NSDevilX
 			virtual IEventWindow * createWindow(const String & name)=0;
 			virtual IEventWindow * getWindow(const String & name)const=0;
 			virtual Void destroyWindow(IEventWindow * window)=0;
-			virtual Void route(IEvent * eve)=0;
+			virtual Boolean route(IEvent * eve)=0;
 		};
 	}
 }

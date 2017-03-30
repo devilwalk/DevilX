@@ -5,6 +5,7 @@ using namespace NSGUISystem;
 NSDevilX::NSGUISystem::IControlImp::IControlImp(CControl * control,IWindowImp * parentWindow)
 	:mParentWindow(parentWindow)
 	,mControl(control)
+	,mParentControl(nullptr)
 {
 }
 
@@ -41,6 +42,20 @@ const CFloat2 & NSDevilX::NSGUISystem::IControlImp::getSize() const
 {
 	// TODO: 在此处插入 return 语句
 	return getControl()->getLayer()->getSize();
+}
+
+Void NSDevilX::NSGUISystem::IControlImp::setParent(IControl * control)
+{
+	if(control!=getParent())
+	{
+		mParentControl=static_cast<IControlImp*>(control);
+		getControl()->setParent(mParentControl->getControl());
+	}
+}
+
+IControl * NSDevilX::NSGUISystem::IControlImp::getParent() const
+{
+	return mParentControl;
 }
 
 IWindow * NSDevilX::NSGUISystem::IControlImp::getParentWindow() const

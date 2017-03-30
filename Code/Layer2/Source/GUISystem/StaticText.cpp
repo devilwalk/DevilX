@@ -28,7 +28,7 @@ NSResourceSystem::IResource * NSDevilX::NSGUISystem::CStaticText::getFontResourc
 
 Void NSDevilX::NSGUISystem::CStaticText::setText(const CUTF8String & text)
 {
-	if(static_cast<const WString &>(getText())!=static_cast<const WString &>(text))
+	if(getText()!=text)
 	{
 		mText=text;
 		addDirtyFlag(EDirtyFlag_Text);
@@ -56,14 +56,14 @@ const CColour & NSDevilX::NSGUISystem::CStaticText::getTextColour() const
 	return mTextColour;
 }
 
-Void NSDevilX::NSGUISystem::CStaticText::_updateGraphicWindows()
+Boolean NSDevilX::NSGUISystem::CStaticText::_updateGraphicWindows()
 {
 	_destroyGraphicWindows();
 	if(!getFontResource())
-		return;
+		return false;
 	getFontResource()->load(nullptr);
 	if(!getFontResource()->isLoaded())
-		return;
+		return false;
 	struct SLoad
 		:public NSResourceSystem::ILoadCallback
 		,public TBaseObject<SLoad>
@@ -77,7 +77,7 @@ Void NSDevilX::NSGUISystem::CStaticText::_updateGraphicWindows()
 	SLoad load_call_back;
 	getFontResource()->load(&load_call_back);
 
-	const WString text=getText();
+	const auto & text=getText();
 	const auto word_width=1.0f/text.length();
 	TVector<CUInt2> pixel_starts;
 	pixel_starts.resize(text.length());
@@ -93,6 +93,14 @@ Void NSDevilX::NSGUISystem::CStaticText::_updateGraphicWindows()
 		window->queryInterface_IElement()->setSize(CFloat2(word_width,1.0f));
 		_attachWindow(window);
 	}
+#ifdef DEVILX_DEBUG
+	auto debug_window=getGraphicScene()->createWindow(getLayer()->getName()+"/debug");
+	debug_window->setColour(CFloatRGBA::sRed);
+	debug_window->queryInterface_IElement()->setPosition(CFloat2::sZero);
+	debug_window->queryInterface_IElement()->setSize(CFloat2::sOne);
+	_attachWindow(debug_window);
+#endif
+	return true;
 }
 
 Void NSDevilX::NSGUISystem::CStaticText::_preProcessDirtyFlagAdd(UInt32 flagIndex)
@@ -120,10 +128,12 @@ Void NSDevilX::NSGUISystem::CStaticText::onMessage(ISystemImp * notifier,UInt32 
 			||hasDirtyFlag(EDirtyFlag_Text)
 			)
 		{
-			_updateGraphicWindows();
-			removeDirtyFlag(EDirtyFlag_FontResource);
-			removeDirtyFlag(EDirtyFlag_Text);
-			removeDirtyFlag(EDirtyFlag_TextColour);
+			if(_updateGraphicWindows())
+			{
+				removeDirtyFlag(EDirtyFlag_FontResource);
+				removeDirtyFlag(EDirtyFlag_Text);
+				removeDirtyFlag(EDirtyFlag_TextColour);
+			}
 		}
 		else if(hasDirtyFlag(EDirtyFlag_TextColour))
 		{

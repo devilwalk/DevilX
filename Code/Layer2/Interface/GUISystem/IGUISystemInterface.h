@@ -1,6 +1,9 @@
 #pragma once
+#include "UISystem/IUISystemInterface.h"
 #include "ResourceSystem/IResourceSystemInterface.h"
 #include "IGUIControl.h"
+#include "IGUIEditBox.h"
+#include "IGUIImageBox.h"
 #include "IGUIScene.h"
 #include "IGUIStaticText.h"
 #include "IGUISystem.h"

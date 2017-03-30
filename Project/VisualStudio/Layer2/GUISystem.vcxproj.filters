@@ -69,7 +69,25 @@
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\Button.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\Event.h">
+    <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIImageBox.h">
+      <Filter>Interface Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIEditBox.h">
+      <Filter>Interface Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\EditBox.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\IEditBoxImp.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\ImageBox.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\IImageBoxImp.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\Caret.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -104,7 +122,19 @@
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\Button.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\Event.cpp">
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\EditBox.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\ImageBox.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\IEditBoxImp.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\IImageBoxImp.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\Caret.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

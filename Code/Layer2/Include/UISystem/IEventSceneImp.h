@@ -22,7 +22,7 @@ namespace NSDevilX
 			virtual IEventWindow * createWindow(const String & name) override;
 			virtual IEventWindow * getWindow(const String & name) const override;
 			virtual Void destroyWindow(IEventWindow * window) override;
-			virtual Void route(IEvent * e) override;
+			virtual Boolean route(IEvent * e) override;
 
 			// Í¨¹ý TMessageReceiver ¼Ì³Ð
 			virtual Void onMessage(IElementImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;

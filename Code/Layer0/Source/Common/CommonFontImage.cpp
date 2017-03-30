@@ -1,7 +1,7 @@
 #include "Precompiler.h"
 using namespace NSDevilX;
 
-NSDevilX::CFontImage::CFontImage(CDataStream * source,const CUInt2 & size,const CUInt2 & fontSize)
+NSDevilX::CFontImage::CFontImage(const CMemoryStream * source,const CUInt2 & size,const CUInt2 & fontSize)
 	:mSize(size)
 	,mFontSize(fontSize)
 	,mFTLibrary(nullptr)
@@ -9,12 +9,7 @@ NSDevilX::CFontImage::CFontImage(CDataStream * source,const CUInt2 & size,const 
 	,mDirty(False)
 {
 	FT_Init_FreeType(&mFTLibrary);
-	TVector<Byte> mem_src;
-	mem_src.resize(source->getSize());
-	auto reader=source->createReader();
-	reader->process(source->getSize(),&mem_src[0]);
-	source->destroyReader(reader);
-	FT_New_Memory_Face(mFTLibrary,&mem_src[0],static_cast<FT_Long>(mem_src.size()),0,&mFTFace);
+	FT_New_Memory_Face(mFTLibrary,&source->getData()[0],source->getSize(),0,&mFTFace);
 	FT_Set_Pixel_Sizes(mFTFace,getFontSize().x,getFontSize().y);
 	mPixels.resize(getSize().x*getSize().y);
 }
@@ -31,7 +26,7 @@ NSDevilX::CFontImage::~CFontImage()
 	}
 }
 
-Void NSDevilX::CFontImage::getPixelRange(WChar ch,CUInt2 * pixelStart,CUInt2 * pixelEnd,Bool dirtyIfCreate)
+Void NSDevilX::CFontImage::getPixelRange(const CUTF8Char & ch,CUInt2 * pixelStart,CUInt2 * pixelEnd,Bool dirtyIfCreate)
 {
 	if(mCharPixelRanges.has(ch))
 	{

@@ -28,6 +28,7 @@ namespace NSDevilX
 
 			// Í¨¹ý ISystem ¼Ì³Ð
 			virtual Void update() override;
+			virtual Void shutdown() override;
 			virtual IResource * createResource(const String & name,const String & fileName) override;
 			virtual IResource * getResource(const String & name) const override;
 			virtual Void destroyResource(IResource * res) override;

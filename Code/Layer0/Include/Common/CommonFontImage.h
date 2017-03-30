@@ -2,8 +2,9 @@
 #include "CommonMemoryAllocatorObjectTemplate.h"
 #include "CommonType.h"
 #include "CommonSTL.h"
-#include "CommonDataStream.h"
+#include "CommonMemoryStream.h"
 #include "CommonVectorI.h"
+#include "CommonUTFChar.h"
 namespace NSDevilX
 {
 	class CFontImage
@@ -15,10 +16,10 @@ namespace NSDevilX
 		FT_Library mFTLibrary;
 		FT_Face mFTFace;
 		TVector<UInt8> mPixels;
-		TMap<WChar,std::pair<CUInt2,CUInt2> > mCharPixelRanges;
+		TMap<CUTF8Char,std::pair<CUInt2,CUInt2> > mCharPixelRanges;
 		Bool mDirty;
 	public:
-		CFontImage(CDataStream * source,const CUInt2 & size=CUInt2(2048),const CUInt2 & fontSize=CUInt2(32));
+		CFontImage(const CMemoryStream * source,const CUInt2 & size=CUInt2(2048),const CUInt2 & fontSize=CUInt2(32));
 		~CFontImage();
 		const CUInt2 & getSize()const
 		{
@@ -40,6 +41,6 @@ namespace NSDevilX
 		{
 			return False!=mDirty;
 		}
-		Void getPixelRange(WChar ch,CUInt2 * pixelStart,CUInt2 * pixelEnd,Bool dirtyIfCreate=True);
+		Void getPixelRange(const CUTF8Char & ch,CUInt2 * pixelStart,CUInt2 * pixelEnd,Bool dirtyIfCreate=True);
 	};
 }

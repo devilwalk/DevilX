@@ -9,48 +9,79 @@ NSDevilX::NSFightChess::CUIScript::CUIScript()
 NSDevilX::NSFightChess::CUIScript::~CUIScript()
 {}
 
-TVector<CUIControl*> NSDevilX::NSFightChess::CUIScript::process(const String & scriptFile)
+Boolean NSDevilX::NSFightChess::CUIScript::process(const String & scriptFile,NSGUISystem::IWindow * guiWindow)
 {
-	TVector<CUIControl*> ret;
 	TiXmlDocument doc;
 	doc.LoadFile(scriptFile.c_str());
 	auto element=doc.FirstChildElement();
-	_processElement(element,ret);
-	return ret;
+	_processElement(element,guiWindow);
+	return true;
 }
 
-Void NSDevilX::NSFightChess::CUIScript::_processElement(TiXmlElement * element,TVector<CUIControl*> & ret,CUIControl * parent)
+Void NSDevilX::NSFightChess::CUIScript::_processElement(TiXmlElement * element,NSGUISystem::IWindow * guiWindow,NSGUISystem::IControl * parent)
 {
-	CUIControl * control=nullptr;
-	if(String("Control")==element->Value())
+	NSGUISystem::IControl * control=parent;
+	if(String("Window")==element->Value())
 	{
-		auto window=CApp::getSingleton().getGame()->getUIManager()->getGraphicScene()->createWindow(_getAttribute("Name",element).get<String>());
-		window->queryInterface_IElement()->setPosition(CFloat2::sZero);
-		window->queryInterface_IElement()->setSize(CFloat2::sOne);
-		control=CApp::getSingleton().getGame()->getUIManager()->createControl(_getAttribute("Name",element).get<String>(),_getAttribute("Position",element).get<CFloat2>(),_getAttribute("Size",element).get<CFloat2>(),parent);
-		control->addGraphicWindow(window);
-		ret.push_back(control);
+		guiWindow->queryInterface_IControl()->setPosition(_getAttribute("Position",element).get<CFloat2>());
+		guiWindow->queryInterface_IControl()->setSize(_getAttribute("Size",element).get<CFloat2>());
+	}
+	else if(String("ImageBox")==element->Value())
+	{
+		auto ctl=guiWindow->createImageBox(_getAttribute("Name",element).get<String>());
+		if(element->Attribute("Background"))
+			ctl->setBackground(NSResourceSystem::getSystem()->createResource(_getAttribute("Background",element).get<String>(),_getAttribute("Background",element).get<String>()));
+		ctl->queryInterface_IControl()->setPosition(_getAttribute("Position",element).get<CFloat2>());
+		ctl->queryInterface_IControl()->setSize(_getAttribute("Size",element).get<CFloat2>());
+		control=ctl->queryInterface_IControl();
 	}
 	else if(String("StaticText")==element->Value())
 	{
-		control=CApp::getSingleton().getGame()->getUIManager()->createStaticText(_getAttribute("Name",element).get<String>(),_getAttribute("Text",element).get<WString>(),_getAttribute("Position",element).get<CFloat2>(),_getAttribute("Size",element).get<CFloat2>(),_getAttribute("Colour",element).get<CColour>(),parent);
-		ret.push_back(control);
+		auto ctl=guiWindow->createStaticText(_getAttribute("Name",element).get<String>());
+		ctl->setFontResource(CApp::getSingleton().getGame()->getFontManager()->getFontResource());
+		ctl->setText(_getAttribute("Text",element).get<CUTF8String>());
+		ctl->setTextColour(_getAttribute("Colour",element).get<CColour>());
+		ctl->queryInterface_IControl()->setPosition(_getAttribute("Position",element).get<CFloat2>());
+		ctl->queryInterface_IControl()->setSize(_getAttribute("Size",element).get<CFloat2>());
+		control=ctl->queryInterface_IControl();
 	}
-	else if(String("EditText")==element->Value())
+	else if(String("EditBox")==element->Value())
 	{
+		auto ctl=guiWindow->createEditBox(_getAttribute("Name",element).get<String>());
+		ctl->setFontResource(CApp::getSingleton().getGame()->getFontManager()->getFontResource());
+		if(element->Attribute("Text"))
+			ctl->setText(_getAttribute("Text",element).get<CUTF8String>());
+		ctl->setTextColour(_getAttribute("Colour",element).get<CColour>());
+		if(element->Attribute("Background"))
+			ctl->setBackground(NSResourceSystem::getSystem()->createResource(_getAttribute("Background",element).get<String>(),_getAttribute("Background",element).get<String>()));
+		ctl->queryInterface_IControl()->setPosition(_getAttribute("Position",element).get<CFloat2>());
+		ctl->queryInterface_IControl()->setSize(_getAttribute("Size",element).get<CFloat2>());
+		control=ctl->queryInterface_IControl();
 	}
 	else if(String("Button")==element->Value())
 	{
-
+		auto ctl=guiWindow->createButton(_getAttribute("Name",element).get<String>());
+		ctl->setFontResource(CApp::getSingleton().getGame()->getFontManager()->getFontResource());
+		if(element->Attribute("Text"))
+			ctl->setText(_getAttribute("Text",element).get<CUTF8String>());
+		if(element->Attribute("Colour"))
+			ctl->setTextColour(_getAttribute("Colour",element).get<CColour>());
+		if(element->Attribute("Background"))
+			ctl->setBackground(NSResourceSystem::getSystem()->createResource(_getAttribute("Background",element).get<String>(),_getAttribute("Background",element).get<String>()));
+		ctl->queryInterface_IControl()->setPosition(_getAttribute("Position",element).get<CFloat2>());
+		ctl->queryInterface_IControl()->setSize(_getAttribute("Size",element).get<CFloat2>());
+		control=ctl->queryInterface_IControl();
 	}
 	else
 	{
 		assert(0);
 	}
+	if(parent)
+		control->setParent(parent);
 	auto child=element->FirstChildElement();
 	while(child)
 	{
-		_processElement(child,ret,control);
+		_processElement(child,guiWindow,control);
 		child=child->NextSiblingElement();
 	}
 }
@@ -116,7 +147,7 @@ Boolean NSDevilX::NSFightChess::CUIScript::_processAttribute(const String & name
 	}
 	else if(name==String("Text"))
 	{
-		ret=CAny(static_cast<WString>(CUTF8String(CStringConverter::toWString(value))));
+		ret=CAny(CUTF8String(reinterpret_cast<ConstBytePtr>(&value[0]),value.size()));
 	}
 	else
 	{

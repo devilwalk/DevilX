@@ -73,22 +73,22 @@ UInt32 NSDevilX::CFileStream::getSize() const
 	return mSizeInBytes;
 }
 
-CDataStreamReader * NSDevilX::CFileStream::createReader()
+CDataStreamReader * NSDevilX::CFileStream::createReader() const
 {
-	return DEVILX_NEW CFileStreamReader(this);
+	return DEVILX_NEW CFileStreamReader(const_cast<CFileStream*>(this));
 }
 
-Void NSDevilX::CFileStream::destroyReader(CDataStreamReader * reader)
+Void NSDevilX::CFileStream::destroyReader(CDataStreamReader * reader) const
 {
 	DEVILX_DELETE(static_cast<CFileStreamReader*>(reader));
 }
 
-CDataStreamWriter * NSDevilX::CFileStream::createWriter()
+CDataStreamWriter * NSDevilX::CFileStream::createWriter() const
 {
-	return DEVILX_NEW CFileStreamWriter(this);
+	return DEVILX_NEW CFileStreamWriter(const_cast<CFileStream*>(this));
 }
 
-Void NSDevilX::CFileStream::destroyWrite(CDataStreamWriter * writer)
+Void NSDevilX::CFileStream::destroyWrite(CDataStreamWriter * writer) const
 {
 	DEVILX_DELETE(static_cast<CFileStreamWriter*>(writer));
 }

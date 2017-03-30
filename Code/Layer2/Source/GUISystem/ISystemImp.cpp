@@ -2,7 +2,7 @@
 using namespace NSDevilX;
 using namespace NSGUISystem;
 
-ISystem * NSDevilX::NSGUISystem::getSystem()
+NSDevilX::NSGUISystem::ISystem * NSDevilX::NSGUISystem::getSystem()
 {
 	return ISystemImp::getSingletonPtr();
 }
@@ -42,6 +42,10 @@ Void NSDevilX::NSGUISystem::ISystemImp::destroyScene(IScene * scene)
 
 Void NSDevilX::NSGUISystem::ISystemImp::update()
 {
+	for(auto const & pair:mScenes)
+	{
+		pair.second->update();
+	}
 	notify(EMessage_Update);
 }
 

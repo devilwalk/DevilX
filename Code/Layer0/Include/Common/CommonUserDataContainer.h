@@ -27,6 +27,10 @@ namespace NSDevilX
 			_createAny();
 			(*mAnys)[name]=userAny;
 		}
+		Void setUserData(ConstCharPtr name,const CAny & userAny)
+		{
+			setUserData(String(name),userAny);
+		}
 		Void setUserData(ConstVoidPtr key,const CAny & userAny)
 		{
 			_createAny2();
@@ -44,6 +48,10 @@ namespace NSDevilX
 			assert(mAnys);
 			return mAnys->get(name);
 		}
+		const CAny & getUserData(ConstCharPtr name)
+		{
+			return getUserData(String(name));
+		}
 		const CAny & getUserData(ConstVoidPtr key)const
 		{
 			assert(mAnys2);
@@ -59,6 +67,10 @@ namespace NSDevilX
 		{
 			return mAnys&&mAnys->has(name);
 		}
+		Boolean hasUserData(ConstCharPtr name)const
+		{
+			return hasUserData(String(name));
+		}
 		Boolean hasUserData(ConstVoidPtr key)const
 		{
 			return mAnys2&&mAnys2->has(key);
@@ -73,6 +85,10 @@ namespace NSDevilX
 			{
 				mAnys->erase(name);
 			}
+		}
+		Void removeUserData(ConstCharPtr name)
+		{
+			return removeUserData(String(name));
 		}
 		Void removeUserData(ConstVoidPtr key)
 		{

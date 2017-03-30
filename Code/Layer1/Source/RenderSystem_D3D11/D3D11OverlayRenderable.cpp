@@ -71,6 +71,11 @@ Void NSDevilX::NSRenderSystem::NSD3D11::COverlayRenderable::addElement(IOverlayE
 	element->addListener(static_cast<TMessageReceiver<IOverlayElementImp>*>(this),IOverlayElementImp::EMessage_EndSizeChange);
 	element->addListener(static_cast<TMessageReceiver<IOverlayElementImp>*>(this),IOverlayElementImp::EMessage_EndUVTransformChange);
 	element->addListener(static_cast<TMessageReceiver<IOverlayElementImp>*>(this),IOverlayElementImp::EMessage_EndColourUnitStateCreate);
+	if(static_cast<const IOverlayElementImp*>(element)->getColourUnitState())
+	{
+		static_cast<const IOverlayElementImp*>(element)->getColourUnitState()->addListener(static_cast<TMessageReceiver<IColourUnitStateImp>*>(this),IColourUnitStateImp::EMessage_EndEnableChange);
+		static_cast<const IOverlayElementImp*>(element)->getColourUnitState()->addListener(static_cast<TMessageReceiver<IColourUnitStateImp>*>(this),IColourUnitStateImp::EMessage_EndValueChange);
+	}
 }
 
 Void NSDevilX::NSRenderSystem::NSD3D11::COverlayRenderable::removeElement(IOverlayElementImp * element)
@@ -87,6 +92,11 @@ Void NSDevilX::NSRenderSystem::NSD3D11::COverlayRenderable::removeElement(IOverl
 	element->removeListener(static_cast<TMessageReceiver<IOverlayElementImp>*>(this),IOverlayElementImp::EMessage_EndSizeChange);
 	element->removeListener(static_cast<TMessageReceiver<IOverlayElementImp>*>(this),IOverlayElementImp::EMessage_EndUVTransformChange);
 	element->removeListener(static_cast<TMessageReceiver<IOverlayElementImp>*>(this),IOverlayElementImp::EMessage_EndColourUnitStateCreate);
+	if(static_cast<const IOverlayElementImp*>(element)->getColourUnitState())
+	{
+		static_cast<const IOverlayElementImp*>(element)->getColourUnitState()->removeListener(static_cast<TMessageReceiver<IColourUnitStateImp>*>(this),IColourUnitStateImp::EMessage_EndEnableChange);
+		static_cast<const IOverlayElementImp*>(element)->getColourUnitState()->removeListener(static_cast<TMessageReceiver<IColourUnitStateImp>*>(this),IColourUnitStateImp::EMessage_EndValueChange);
+	}
 }
 
 Void NSDevilX::NSRenderSystem::NSD3D11::COverlayRenderable::onMessage(IOverlayElementImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
@@ -113,7 +123,7 @@ Void NSDevilX::NSRenderSystem::NSD3D11::COverlayRenderable::onMessage(IColourUni
 	{
 	case IColourUnitStateImp::EMessage_EndValueChange:
 	case IColourUnitStateImp::EMessage_EndEnableChange:
-		_updateElementDiffuse(static_cast<IOverlayElementImp*>(notifier->getUserPointer(0)));
+		_updateElementDiffuse(notifier->getUserPointer<IOverlayElementImp>(0));
 		break;
 	}
 }

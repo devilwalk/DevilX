@@ -14,6 +14,8 @@ namespace NSDevilX
 			virtual const CFloat2 & getPosition()const=0;
 			virtual Void setSize(const CFloat2 & size)=0;
 			virtual const CFloat2 & getSize()const=0;
+			virtual Void setParent(IControl * control)=0;
+			virtual IControl * getParent()const=0;
 			virtual IWindow * getParentWindow()const=0;
 		};
 	}

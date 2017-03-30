@@ -4,13 +4,18 @@ using namespace NSGUISystem;
 
 NSDevilX::NSGUISystem::IButtonImp::IButtonImp(const String & name,IWindowImp * window)
 	:mControl(nullptr)
+	,mEventCallback(nullptr)
 {
 	mControl=DEVILX_NEW IControlImp(DEVILX_NEW CButton(name,static_cast<IControlImp*>(window->queryInterface_IControl())->getControl()),window);
+	mControl->getControl()->getEventWindow()->registerListener(this,IWindowImp::SEvent::EType_ControlFocus);
+	mControl->addListener(static_cast<TMessageReceiver<IControlImp>*>(this),IControlImp::EMessage_BeginDestruction);
+	static_cast<CButton*>(mControl->getControl())->addListener(static_cast<TMessageReceiver<CButton>*>(this),CButton::EMessage_Click);
+	static_cast<CButton*>(mControl->getControl())->addListener(static_cast<TMessageReceiver<CButton>*>(this),CButton::EMessage_Press);
+	static_cast<CButton*>(mControl->getControl())->addListener(static_cast<TMessageReceiver<CButton>*>(this),CButton::EMessage_Release);
 }
 
 NSDevilX::NSGUISystem::IButtonImp::~IButtonImp()
 {
-	DEVILX_DELETE(mControl);
 }
 
 IControl * NSDevilX::NSGUISystem::IButtonImp::queryInterface_IControl() const
@@ -62,12 +67,12 @@ NSResourceSystem::IResource * NSDevilX::NSGUISystem::IButtonImp::getBackground()
 
 Void NSDevilX::NSGUISystem::IButtonImp::setEventCallback(IButtonEventCallback * callback)
 {
-	return Void();
+	mEventCallback=callback;
 }
 
 IButtonEventCallback * NSDevilX::NSGUISystem::IButtonImp::getEventCallback() const
 {
-	return nullptr;
+	return mEventCallback;
 }
 
 Void NSDevilX::NSGUISystem::IButtonImp::onMessage(IControlImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
@@ -76,6 +81,35 @@ Void NSDevilX::NSGUISystem::IButtonImp::onMessage(IControlImp * notifier,UInt32 
 	{
 	case IControlImp::EMessage_BeginDestruction:
 		DEVILX_DELETE(this);
+		break;
+	}
+}
+
+Void NSDevilX::NSGUISystem::IButtonImp::onMessage(CButton * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
+{
+	switch(message)
+	{
+	case CButton::EMessage_Press:
+		if(getEventCallback())
+			getEventCallback()->onEvent(IButtonEventCallback::EEvent_Press);
+		break;
+	case CButton::EMessage_Release:
+		if(getEventCallback())
+			getEventCallback()->onEvent(IButtonEventCallback::EEvent_Release);
+		break;
+	case CButton::EMessage_Click:
+		if(getEventCallback())
+			getEventCallback()->onEvent(IButtonEventCallback::EEvent_Click);
+		break;
+	}
+}
+
+Void NSDevilX::NSGUISystem::IButtonImp::onEvent(NSUISystem::IEvent * e)
+{
+	switch(e->getType())
+	{
+	case IWindowImp::SEvent::EType_ControlFocus:
+		static_cast<IWindowImp*>(queryInterface_IControl()->getParentWindow())->setFocusControl(static_cast<IControlImp*>(queryInterface_IControl()));
 		break;
 	}
 }

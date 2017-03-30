@@ -54,9 +54,6 @@
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Register.h">
       <Filter>Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\UIManager.h">
-      <Filter>Include</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\FontManager.h">
       <Filter>Include</Filter>
     </ClInclude>
@@ -102,9 +99,6 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Register.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\UIManager.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\FontManager.cpp">

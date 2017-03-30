@@ -1,25 +1,24 @@
 #pragma once
-#include "IControlImp.h"
 namespace NSDevilX
 {
 	namespace NSGUISystem
 	{
 		class IWindowImp;
-		class IButtonImp
-			:public IButton
-			,public TBaseObject<IButtonImp>
+		class IEditBoxImp
+			:public IEditBox
+			,public TBaseObject<IEditBoxImp>
 			,public TMessageReceiver<IControlImp>
 			,public NSUISystem::IEventListener
-			,public TMessageReceiver<CButton>
+			,public TMessageReceiver<CEditBox>
 		{
 		protected:
 			IControlImp * mControl;
-			IButtonEventCallback * mEventCallback;
+			IEditBoxEventCallback * mEventCallback;
 		public:
-			IButtonImp(const String & name,IWindowImp * window);
-			~IButtonImp();
+			IEditBoxImp(const String & name,IWindowImp * window);
+			~IEditBoxImp();
 
-			// 通过 IButton 继承
+			// 通过 IEdit 继承
 			virtual IControl * queryInterface_IControl() const override;
 			virtual Void setFontResource(NSResourceSystem::IResource * resource) override;
 			virtual NSResourceSystem::IResource * getFontResource() const override;
@@ -29,12 +28,12 @@ namespace NSDevilX
 			virtual const CColour & getTextColour() const override;
 			virtual Void setBackground(NSResourceSystem::IResource * resource) override;
 			virtual NSResourceSystem::IResource * getBackground() const override;
-			virtual Void setEventCallback(IButtonEventCallback * callback) override;
-			virtual IButtonEventCallback * getEventCallback() const override;
+			virtual Void setEventCallback(IEditBoxEventCallback * callback) override;
+			virtual IEditBoxEventCallback * getEventCallback() const override;
 
 			// 通过 TMessageReceiver 继承
 			virtual Void onMessage(IControlImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
-			virtual Void onMessage(CButton * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
+			virtual Void onMessage(CEditBox * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 
 			// 通过 IEventListener 继承
 			virtual Void onEvent(NSUISystem::IEvent * e) override;

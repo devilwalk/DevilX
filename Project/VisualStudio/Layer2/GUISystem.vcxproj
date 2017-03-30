@@ -20,10 +20,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\Button.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\Caret.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\Control.h" />
-    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\Event.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\EditBox.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\IButtonImp.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\IControlImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\IEditBoxImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\IImageBoxImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\ImageBox.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\ISceneImp.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\IStaticTextImp.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\ISystemImp.h" />
@@ -31,6 +35,8 @@
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\StaticText.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIButton.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIControl.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIEditBox.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIImageBox.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIScene.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIStaticText.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUISystem.h" />
@@ -40,10 +46,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\Button.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\Caret.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\Control.cpp" />
-    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\Event.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\EditBox.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\IButtonImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\IControlImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\IEditBoxImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\IImageBoxImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\ImageBox.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\ISceneImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\IStaticTextImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\ISystemImp.cpp" />

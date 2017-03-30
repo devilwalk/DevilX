@@ -30,6 +30,12 @@ NSDevilX::NSGUISystem::CControl::~CControl()
 	NSUISystem::getSystem()->destroyLayer(mLayer);
 }
 
+Void NSDevilX::NSGUISystem::CControl::setParent(CControl * control)
+{
+	mParent=control;
+	getLayer()->setParent(getParent()->getLayer());
+}
+
 Void NSDevilX::NSGUISystem::CControl::_attachWindow(NSUISystem::IGraphicWindow * window)
 {
 	window->queryInterface_IElement()->setParent(getLayer());
@@ -52,6 +58,9 @@ Void NSDevilX::NSGUISystem::CControl::_destroyGraphicWindows()
 
 Void NSDevilX::NSGUISystem::CControl::_destroyEventWindow()
 {
-	getEventScene()->destroyWindow(mEventWindow);
-	mEventWindow=nullptr;
+	if(getEventWindow())
+	{
+		getEventScene()->destroyWindow(getEventWindow());
+		mEventWindow=nullptr;
+	}
 }

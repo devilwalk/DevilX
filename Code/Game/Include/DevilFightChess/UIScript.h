@@ -1,5 +1,4 @@
 #pragma once
-#include "UIManager.h"
 namespace NSDevilX
 {
 	namespace NSFightChess
@@ -10,9 +9,9 @@ namespace NSDevilX
 		public:
 			CUIScript();
 			~CUIScript();
-			TVector<CUIControl*> process(const String & scriptFile);
+			Boolean process(const String & scriptFile,NSGUISystem::IWindow * guiWindow);
 		protected:
-			Void _processElement(TiXmlElement * element,TVector<CUIControl*> & ret,CUIControl * parent=nullptr);
+			Void _processElement(TiXmlElement * element,NSGUISystem::IWindow * guiWindow,NSGUISystem::IControl * parent=nullptr);
 			CAny _getAttribute(const String & name,TiXmlElement * element)const;
 			Boolean _processAttribute(TiXmlAttribute * attribute,CAny & ret)const;
 			Boolean _processAttribute(const String & name,const String & value,CAny & ret)const;

@@ -29,8 +29,11 @@ NSDevilX::CTimer::CTimer()
 NSDevilX::CTimer::~CTimer()
 {}
 
-SizeT NSDevilX::CTimer::getInMillisecond()
+SizeT NSDevilX::CTimer::getInMillisecond(Bool updateLastTime)
 {
+	if(updateLastTime)
+		_updateLastTime();
+	_updateCurrentTime();
 #if DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_WINDOWS
 	return static_cast<SizeT>(static_cast<double>(mCurrentTime-mLastTime)/mFrequency*1000.0);
 #elif DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_LINUX
@@ -38,7 +41,7 @@ SizeT NSDevilX::CTimer::getInMillisecond()
 #endif
 }
 
-Void NSDevilX::CTimer::updateCurrentTime()
+Void NSDevilX::CTimer::_updateCurrentTime()
 {
 #if DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_WINDOWS
 	LARGE_INTEGER current_counter;
@@ -49,7 +52,7 @@ Void NSDevilX::CTimer::updateCurrentTime()
 #endif
 }
 
-Void NSDevilX::CTimer::updateLastTime()
+Void NSDevilX::CTimer::_updateLastTime()
 {
 	mLastTime=mCurrentTime;
 }

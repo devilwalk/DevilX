@@ -10,11 +10,8 @@ namespace NSDevilX
 			auto const & file_name=res->getFileName();
 			CFileStream stream(file_name);
 			auto reader=stream.createReader();
-			TVector<Byte> buf;
-			buf.resize(stream.getSize());
-			reader->process(stream.getSize(),&buf[0]);
-			stream.destroyReader(reader);
-			res->setBufferMT(buf);
+			res->setDataStreamMT(DEVILX_NEW CMemoryStream(&stream));
+			return true;
 		}
 	}
 }

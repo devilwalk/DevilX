@@ -1,7 +1,7 @@
 #include "Precompiler.h"
 using namespace NSDevilX;
 using namespace NSResourceSystem;
-ISystem * NSDevilX::NSResourceSystem::getSystem()
+NSDevilX::NSResourceSystem::ISystem * NSDevilX::NSResourceSystem::getSystem()
 {
 	return ISystemImp::getSingletonPtr();
 }
@@ -23,6 +23,11 @@ NSDevilX::NSResourceSystem::ISystemImp::~ISystemImp()
 Void NSDevilX::NSResourceSystem::ISystemImp::update()
 {
 	notify(EMessage_Update);
+}
+
+Void NSDevilX::NSResourceSystem::ISystemImp::shutdown()
+{
+	DEVILX_DELETE(this);
 }
 
 IResource * NSDevilX::NSResourceSystem::ISystemImp::createResource(const String & name,const String & fileName)
@@ -65,11 +70,16 @@ CFontImage * NSDevilX::NSResourceSystem::ISystemImp::getFontImage(ILoadedResourc
 	if(static_cast<IResourceImp*>(resource)->hasUserData("CFontImage"))
 	{
 		ret=static_cast<IResourceImp*>(resource)->getUserData("CFontImage").get<CFontImage*>();
-		ret->getPixelRange(static_cast<WChar>(c),pixelStart,pixelEnd);
+		ret->getPixelRange(c,pixelStart,pixelEnd);
 	}
 	else
 	{
-		ret=mFontManager->getImage(static_cast<IResourceImp*>(resource)->getFileName(),static_cast<WChar>(c),pixelStart,pixelEnd);
+		ret=mFontManager->getImage(static_cast<IResourceImp*>(resource)->getName(),c,pixelStart,pixelEnd);
+		if(!ret)
+		{
+			mFontManager->reigsterFont(static_cast<IResourceImp*>(resource)->getName(),static_cast<IResourceImp*>(resource)->getBuffer());
+			ret=mFontManager->getImage(static_cast<IResourceImp*>(resource)->getName(),c,pixelStart,pixelEnd);
+		}
 		static_cast<IResourceImp*>(resource)->setUserData("CFontImage",ret);
 	}
 	return ret;
@@ -112,14 +122,15 @@ NSRenderSystem::ITexture * NSDevilX::NSResourceSystem::ISystemImp::getRenderText
 	else
 	{
 		auto img=getFontImage(resource,c,pixelStart,pixelEnd);
-		ret=NSRenderSystem::getSystem()->queryInterface_IResourceManager()->createTexture("FontTexture/"+reinterpret_cast<SizeT>(img),NSRenderSystem::IEnum::ETextureType_2D);
+		ret=NSRenderSystem::getSystem()->queryInterface_IResourceManager()->createTexture("FontTexture/"+CStringConverter::toString(img),NSRenderSystem::IEnum::ETextureType_2D);
 		ret->queryInterface_ITexture2DWritable()->setArraySize(1);
 		ret->queryInterface_ITexture2DWritable()->setFormat(NSRenderSystem::IEnum::ETexture2DFormat_A8);
 		ret->queryInterface_ITexture2DWritable()->setMipmapCount();
 		ret->queryInterface_ITexture2DWritable()->setSize(img->getSize().x,img->getSize().y);
-		ret->queryInterface_ITexture2DWritable()->setPixels(img->getPixels());
+		ret->queryInterface_ITexture2DWritable()->setPixels(img->getPixels(),0);
 		static_cast<IResourceImp*>(resource)->setUserData("NSRenderSystem::ITexture",ret);
 	}
+	return ret;
 }
 
 NSRenderSystem::IGeometry * NSDevilX::NSResourceSystem::ISystemImp::getRenderGeometry(ILoadedResource * resource)

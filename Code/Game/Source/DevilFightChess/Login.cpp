@@ -17,23 +17,16 @@ namespace NSDevilX
 }
 
 NSDevilX::NSFightChess::CLoginPage::CLoginPage()
-	:mEventScene(nullptr)
+	:mGUIWindow(nullptr)
 {
-	mEventScene=NSUISystem::getSystem()->createEventScene("LoginPage");
+	mGUIWindow=CApp::getSingleton().getGame()->getGUIScene()->createWindow("LoginPage");
 	CUIScript script;
-	mControl=script.process(CDirectory::getApplicationDirectory()+"/Resource/LoginPage.layout");
+	script.process(CDirectory::getApplicationDirectory()+"/Resource/LoginPage.layout",mGUIWindow);
 }
 
 NSDevilX::NSFightChess::CLoginPage::~CLoginPage()
 {
-	for(auto window:mControl)
-		CApp::getSingleton().getGame()->getUIManager()->destroyControl(window);
-	NSUISystem::getSystem()->destroyEventScene(mEventScene);
-}
-
-Void NSDevilX::NSFightChess::CLoginPage::onEvent(NSUISystem::IEvent * e)
-{
-	return Void();
+	CApp::getSingleton().getGame()->getGUIScene()->destroyWindow(mGUIWindow);
 }
 
 NSDevilX::NSFightChess::CLogin::CLogin()

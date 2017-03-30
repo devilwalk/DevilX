@@ -13,7 +13,7 @@ NSDevilX::NSResourceSystem::IResourceImp::~IResourceImp()
 {
 	if(-1!=mLoadThreadSyncGroupID)
 		ISystemImp::getSingleton().getIOPool()->waitMT(mLoadThreadSyncGroupID);
-	DEVILX_DELETE(mBuffer);
+	DEVILX_DELETE(getBuffer());
 }
 
 Void NSDevilX::NSResourceSystem::IResourceImp::setDataStreamMT(CMemoryStream * stream)

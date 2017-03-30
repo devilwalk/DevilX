@@ -10,6 +10,7 @@ namespace NSDevilX
 			virtual ~ISystem(){}
 		public:
 			virtual Void update()=0;
+			virtual Void shutdown()=0;
 			virtual IResource * createResource(const String & name,const String & fileName)=0;
 			virtual IResource * getResource(const String & name)const=0;
 			virtual Void destroyResource(IResource * res)=0;

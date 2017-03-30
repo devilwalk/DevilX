@@ -75,22 +75,22 @@ NSDevilX::CMemoryStream::CMemoryStream(CFileStream * stream)
 NSDevilX::CMemoryStream::~CMemoryStream()
 {}
 
-CDataStreamReader * NSDevilX::CMemoryStream::createReader()
+CDataStreamReader * NSDevilX::CMemoryStream::createReader() const
 {
-	return DEVILX_NEW CMemoryStreamReader(this);
+	return DEVILX_NEW CMemoryStreamReader(const_cast<CMemoryStream*>(this));
 }
 
-Void NSDevilX::CMemoryStream::destroyReader(CDataStreamReader * reader)
+Void NSDevilX::CMemoryStream::destroyReader(CDataStreamReader * reader) const
 {
 	DEVILX_DELETE(static_cast<CMemoryStreamReader*>(reader));
 }
 
-CDataStreamWriter * NSDevilX::CMemoryStream::createWriter()
+CDataStreamWriter * NSDevilX::CMemoryStream::createWriter() const
 {
-	return DEVILX_NEW CMemoryStreamWriter(this);
+	return DEVILX_NEW CMemoryStreamWriter(const_cast<CMemoryStream*>(this));
 }
 
-Void NSDevilX::CMemoryStream::destroyWrite(CDataStreamWriter * writer)
+Void NSDevilX::CMemoryStream::destroyWrite(CDataStreamWriter * writer) const
 {
 	DEVILX_DELETE(static_cast<CMemoryStreamWriter*>(writer));
 }
