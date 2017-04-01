@@ -1,29 +1,22 @@
 #include "Precompiler.h"
 using namespace NSDevilX;
 
-NSDevilX::CFontImage::CFontImage(const CMemoryStream * source,const CUInt2 & size,const CUInt2 & fontSize)
+NSDevilX::CFontImage::CFontImage(CFontFace * face,const CUInt2 & size)
 	:mSize(size)
-	,mFontSize(fontSize)
-	,mFTLibrary(nullptr)
-	,mFTFace(nullptr)
+	,mFontFace(face)
 	,mDirty(False)
 {
-	FT_Init_FreeType(&mFTLibrary);
-	FT_New_Memory_Face(mFTLibrary,&source->getData()[0],source->getSize(),0,&mFTFace);
-	FT_Set_Pixel_Sizes(mFTFace,getFontSize().x,getFontSize().y);
 	mPixels.resize(getSize().x*getSize().y);
+	for(char i='0';i<='9';++i)
+		getPixelRange(i,nullptr,nullptr,False);
+	for(char i='a';i<='z';++i)
+		getPixelRange(i,nullptr,nullptr,False);
+	for(char i='A';i<='Z';++i)
+		getPixelRange(i,nullptr,nullptr,False);
 }
 
 NSDevilX::CFontImage::~CFontImage()
 {
-	if(mFTFace)
-	{
-		FT_Done_Face(mFTFace);
-	}
-	if(mFTLibrary)
-	{
-		FT_Done_FreeType(mFTLibrary);
-	}
 }
 
 Void NSDevilX::CFontImage::getPixelRange(const CUTF8Char & ch,CUInt2 * pixelStart,CUInt2 * pixelEnd,Bool dirtyIfCreate)
@@ -38,33 +31,29 @@ Void NSDevilX::CFontImage::getPixelRange(const CUTF8Char & ch,CUInt2 * pixelStar
 	}
 	else
 	{
-		FT_Load_Glyph(mFTFace,FT_Get_Char_Index(mFTFace,ch),FT_LOAD_DEFAULT);
-		FT_Render_Glyph(mFTFace->glyph,FT_RENDER_MODE_NORMAL);
-		UInt32 pixel_start_u=(static_cast<UInt32>(mCharPixelRanges.size())%(getSize().x/getFontSize().x))*getFontSize().x;
-		UInt32 pixel_start_v=(static_cast<UInt32>(mCharPixelRanges.size())/(getSize().x/getFontSize().x))*getFontSize().y;
-		const UInt32 ret_pixel_start_u=pixel_start_u;
-		const UInt32 ret_pixel_start_v=pixel_start_v;
-		for(UInt32 v=0;v<getFontSize().y;++v)
+		auto bitmap=mFontFace->render(ch);
+		const UInt32 pixel_start_u=(static_cast<UInt32>(mCharPixelRanges.size())%(getSize().x/mFontFace->getFontPixelSize().x))*mFontFace->getFontPixelSize().x;
+		const UInt32 pixel_start_v=(static_cast<UInt32>(mCharPixelRanges.size())/(getSize().x/mFontFace->getFontPixelSize().x))*mFontFace->getFontPixelSize().y;
+		for(UInt32 v=0;v<mFontFace->getFontPixelSize().y;++v)
 		{
-			memset(&mPixels[(pixel_start_v+v)*getSize().x+pixel_start_u],0,getFontSize().x*sizeof(mPixels[0]));
+			memset(&mPixels[(pixel_start_v+v)*getSize().x+pixel_start_u],0,mFontFace->getFontPixelSize().x*sizeof(mPixels[0]));
 		}
-		pixel_start_u+=mFTFace->glyph->bitmap_left;
-		auto under_base_line_distance=getFontSize().y-mFTFace->size->metrics.ascender/64;
-		pixel_start_v+=getFontSize().y-1-(under_base_line_distance+mFTFace->glyph->bitmap_top);
-		for(UInt32 v=0;v<mFTFace->glyph->bitmap.rows;++v)
+		//align to left bottom
+		const UInt32 fill_pixel_start_v=pixel_start_v+(mFontFace->getFontPixelSize().y-bitmap.rows);
+		for(UInt32 v=0;v<bitmap.rows;++v)
 		{
-			for(UInt32 u=0;u<mFTFace->glyph->bitmap.width;++u)
+			for(UInt32 u=0;u<bitmap.width;++u)
 			{
-				auto font_img_pixel=mFTFace->glyph->bitmap.buffer[v*mFTFace->glyph->bitmap.width+u];
-				auto & pixel_ref=mPixels[(pixel_start_v+v)*getSize().x+pixel_start_u+u];
+				auto font_img_pixel=bitmap.buffer[v*bitmap.width+u];
+				auto & pixel_ref=mPixels[(fill_pixel_start_v+v)*getSize().x+pixel_start_u+u];
 				pixel_ref=font_img_pixel;
 			}
 		}
-		mCharPixelRanges[ch]=std::pair<CUInt2,CUInt2>(CUInt2(ret_pixel_start_u,ret_pixel_start_v),CUInt2(ret_pixel_start_u,ret_pixel_start_v)+getFontSize()-CUInt2::sOne);
+		mCharPixelRanges[ch]=std::pair<CUInt2,CUInt2>(CUInt2(pixel_start_u,pixel_start_v),CUInt2(pixel_start_u,pixel_start_v)+mFontFace->getFontPixelSize()-CUInt2::sOne);
 		if(pixelStart)
-			*pixelStart=CUInt2(ret_pixel_start_u,ret_pixel_start_v);
+			*pixelStart=CUInt2(pixel_start_u,pixel_start_v);
 		if(pixelEnd)
-			*pixelEnd=CUInt2(ret_pixel_start_u,ret_pixel_start_v)+getFontSize()-CUInt2::sOne;
+			*pixelEnd=CUInt2(pixel_start_u,pixel_start_v)+mFontFace->getFontPixelSize()-CUInt2::sOne;
 		mDirty=dirtyIfCreate;
 	}
 }

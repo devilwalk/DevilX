@@ -1,21 +1,32 @@
 #pragma once
-#include "CommonMemoryAllocatorObjectTemplate.h"
-#include "CommonFileStream.h"
+#include "CommonFontFace.h"
 #include "CommonFontImage.h"
 #include "CommonResourceContainer.h"
-#include "CommonVectorI.h"
 namespace NSDevilX
 {
 	class CFontManager
 		:public TBaseObject<CFontManager>
 	{
+	public:
+		struct SChar
+			:public TBaseObject<SChar>
+		{
+			CFontImage * mImage;
+			CUInt2 mPixelStart;
+			CUInt2 mPixelEnd;
+			FT_Glyph_Metrics mGlyphMetrics;
+			SChar()
+				:mImage(nullptr)
+			{}
+		};
 	protected:
 		TNamedResourcePtrMap<const CMemoryStream> mFonts;
+		TMap<const CMemoryStream*,TResourcePtrVector<CFontFace> > mFaces;
 		TMap<const CMemoryStream*,TResourcePtrVector<CFontImage> > mImages;
 	public:
 		CFontManager();
 		~CFontManager();
 		Void reigsterFont(const String & fontName,const CMemoryStream * dataStream);
-		CFontImage * getImage(const String & fontName,const CUTF8Char & ch,OUT CUInt2 * pixelStart,OUT CUInt2 * pixelEnd,const CUInt2 & fontSize=CUInt2(32));
+		SChar get(const String & fontName,const CUTF8Char & ch,const CUInt2 & fontPixelSize=CUInt2(32));
 	};
 }

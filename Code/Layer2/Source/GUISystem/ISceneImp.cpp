@@ -36,6 +36,7 @@ NSDevilX::NSGUISystem::ISceneImp::ISceneImp(NSRenderSystem::IViewport * viewport
 
 NSDevilX::NSGUISystem::ISceneImp::~ISceneImp()
 {
+	mWindows.destroyAll();
 	NSUISystem::getSystem()->destroyGraphicScene(getGraphicScene());
 	NSUISystem::getSystem()->destroyEventScene(getEventScene());
 	ISystemImp::getSingleton().getWindow()->unregisterEventListener(this);

@@ -4,14 +4,13 @@ namespace NSDevilX
 {
 	template<class TUTFChar>
 	class TUTFString
+		:public TVector<TUTFChar>
 	{
-	protected:
-		TVector<TUTFChar> mString;
 	public:
+		using TVector<TUTFChar>::TVector;
+		using TVector<TUTFChar>::operator[];
+		using TVector<TUTFChar>::operator=;
 		TUTFString(){}
-		TUTFString(const TUTFString & src)
-			:mString(src.mString)
-		{}
 		TUTFString(ConstVoidPtr utfCharBuffer,SizeT sizeInBytes)
 		{
 			const auto src_addr=reinterpret_cast<SizeT>(utfCharBuffer);
@@ -19,7 +18,7 @@ namespace NSDevilX
 			while(sizeInBytes>dst_addr-src_addr)
 			{
 				TUTFChar ch(reinterpret_cast<ConstVoidPtr>(dst_addr));
-				mString.push_back(ch);
+				push_back(ch);
 				dst_addr+=ch.getBuffer().size();
 			}
 			assert(sizeInBytes==dst_addr-src_addr);
@@ -27,71 +26,47 @@ namespace NSDevilX
 		TUTFString(const String & ansiiText)
 		{
 			for(auto c:ansiiText)
-				mString.push_back(c);
-		}
-		Boolean operator==(const TUTFString & test)const
-		{
-			return mString==test.mString;
-		}
-		Boolean operator!=(const TUTFString & test)const
-		{
-			return mString!=test.mString;
-		}
-		const TUTFChar & operator[](SizeT index)const
-		{
-			return mString[index];
-		}
-		TUTFChar & operator[](SizeT index)
-		{
-			return mString[index];
+				push_back(c);
 		}
 		TUTFString operator +(const TUTFChar & ch)const
 		{
 			auto ret=*this;
-			ret.mString.push_back(ch);
+			push_back(ch);
 			return ret;
 		}
 		TUTFString operator +(const TUTFString & text)const
 		{
 			auto ret=*this;
-			ret.mString.insert(ret.mString.end(),text.mString.begin(),text.mString.end());
+			insert(ret.mString.end(),text.mString.begin(),text.mString.end());
+			return ret;
+		}
+		TUTFString operator -(SizeT count)const
+		{
+			auto ret=*this;
+			while(count--)
+				pop_back();
 			return ret;
 		}
 		TUTFString & operator +=(const TUTFChar & ch)
 		{
-			mString.push_back(ch);
+			push_back(ch);
 			return *this;
 		}
 		TUTFString & operator +=(const TUTFString & text)
 		{
-			mString.insert(mString.end(),text.mString.begin(),text.mString.end());
+			insert(end(),text.begin(),text.end());
 			return *this;
 		}
-		typename TVector<TUTFChar>::iterator begin()
+		TUTFString & operator -=(SizeT count)const
 		{
-			return mString.begin();
-		}
-		typename TVector<TUTFChar>::iterator end()
-		{
-			return mString.end();
-		}
-		typename TVector<TUTFChar>::const_iterator cbegin()const
-		{
-			return mString.cbegin();
-		}
-		typename TVector<TUTFChar>::const_iterator cend()const
-		{
-			return mString.cend();
-		}
-		SizeT length()const
-		{
-			return mString.size();
+			while(count--)
+				pop_back();
+			return *this;
 		}
 	};
 	class CUTF16String;
 	class CUTF8String
-		:public TBaseObject<CUTF8String>
-		,public TUTFString<CUTF8Char>
+		:public TUTFString<CUTF8Char>
 	{
 	public:
 		CUTF8String(){};
@@ -107,8 +82,7 @@ namespace NSDevilX
 		operator CUTF16String()const;
 	};
 	class CUTF16String
-		:public TBaseObject<CUTF16String>
-		,public TUTFString<CUTF16Char>
+		:public TUTFString<CUTF16Char>
 	{
 	public:
 		CUTF16String(){}

@@ -56,6 +56,35 @@ const CColour & NSDevilX::NSGUISystem::CStaticText::getTextColour() const
 	return mTextColour;
 }
 
+Boolean NSDevilX::NSGUISystem::CStaticText::getPosition(UInt32 charIndex,CFloat2 * position) const
+{
+	if((getText().size()<charIndex)
+		||hasDirtyFlag(EDirtyFlag_Text))
+		return false;
+	else
+	{
+		if(position)
+		{
+			TVector<CFloat2> positions;
+			Float last_char_right;
+			_calculateTextParameters(&positions,&last_char_right);
+			if(getText().size()==charIndex)
+				*position=CFloat2(last_char_right,0.0f);
+			else
+				*position=positions[charIndex];
+		}
+		return true;
+	}
+}
+
+Boolean NSDevilX::NSGUISystem::CStaticText::getPositions(TVector<CFloat2>* positions,Float * lastCharRight) const
+{
+	if(hasDirtyFlag(EDirtyFlag_Text))
+		return false;
+	_calculateTextParameters(positions,lastCharRight);
+	return true;
+}
+
 Boolean NSDevilX::NSGUISystem::CStaticText::_updateGraphicWindows()
 {
 	_destroyGraphicWindows();
@@ -64,6 +93,32 @@ Boolean NSDevilX::NSGUISystem::CStaticText::_updateGraphicWindows()
 	getFontResource()->load(nullptr);
 	if(!getFontResource()->isLoaded())
 		return false;
+	TVector<CFloat2> positions;
+	auto loaded_resource=_calculateTextParameters(&positions);
+	const auto word_width=1.0f/getText().size();
+	for(size_t i=0;i<getText().size();++i)
+	{
+		auto char_info=NSResourceSystem::getSystem()->getChar(loaded_resource,getText()[i]);
+		auto tex=NSResourceSystem::getSystem()->getRenderTexture(loaded_resource,getText()[i]);
+		auto window=getGraphicScene()->createWindow(getLayer()->getName()+"/"+CStringConverter::toString(i));
+		window->setColour(mTextColour);
+		window->setTexture(tex,char_info.mPixelStart,char_info.mPixelEnd);
+		window->queryInterface_IElement()->setPosition(positions[i]);
+		window->queryInterface_IElement()->setSize(CFloat2(word_width,1.0f));
+		_attachWindow(window);
+	}
+//#ifdef DEVILX_DEBUG
+//	auto debug_window=getGraphicScene()->createWindow(getLayer()->getName()+"/debug");
+//	debug_window->setColour(CFloatRGBA::sRed);
+//	debug_window->queryInterface_IElement()->setPosition(CFloat2::sZero);
+//	debug_window->queryInterface_IElement()->setSize(CFloat2::sOne);
+//	_attachWindow(debug_window);
+//#endif
+	return true;
+}
+
+NSResourceSystem::ILoadedResource * NSDevilX::NSGUISystem::CStaticText::_calculateTextParameters(TVector<CFloat2> * positions,Float * lastCharRight)const
+{
 	struct SLoad
 		:public NSResourceSystem::ILoadCallback
 		,public TBaseObject<SLoad>
@@ -76,31 +131,30 @@ Boolean NSDevilX::NSGUISystem::CStaticText::_updateGraphicWindows()
 	};
 	SLoad load_call_back;
 	getFontResource()->load(&load_call_back);
-
-	const auto & text=getText();
-	const auto word_width=1.0f/text.length();
-	TVector<CUInt2> pixel_starts;
-	pixel_starts.resize(text.length());
-	TVector<CUInt2> pixel_ends;
-	pixel_ends.resize(text.length());
-	for(size_t i=0;i<text.length();++i)
+	if(positions||lastCharRight)
 	{
-		auto tex=NSResourceSystem::getSystem()->getRenderTexture(load_call_back.mLoadedResource,text[i],&pixel_starts[i],&pixel_ends[i]);
-		auto window=getGraphicScene()->createWindow(getLayer()->getName()+"/"+CStringConverter::toString(i));
-		window->setColour(mTextColour);
-		window->setTexture(tex,pixel_starts[i],pixel_ends[i]);
-		window->queryInterface_IElement()->setPosition(CFloat2(word_width,0.0f)*static_cast<Float>(i));
-		window->queryInterface_IElement()->setSize(CFloat2(word_width,1.0f));
-		_attachWindow(window);
+		const auto & text=getText();
+		Float base_line_in_pixel=0;
+		for(size_t i=0;i<text.size();++i)
+		{
+			auto char_info=NSResourceSystem::getSystem()->getChar(load_call_back.mLoadedResource,text[i]);
+			base_line_in_pixel=std::max<Float>(base_line_in_pixel,static_cast<Float>(char_info.mGlyphMetrics.height-char_info.mGlyphMetrics.horiBearingY)/char_info.mImage->getFontFace()->getFontPixelSize().y);
+		}
+		Float x_offset=0;
+		for(size_t i=0;i<text.size();++i)
+		{
+			auto char_info=NSResourceSystem::getSystem()->getChar(load_call_back.mLoadedResource,text[i]);
+			if(positions)
+			{
+				auto x=x_offset+static_cast<Float>(char_info.mGlyphMetrics.horiBearingX)/char_info.mImage->getFontFace()->getFontPixelSize().x/text.size();
+				positions->push_back(CFloat2(x,-base_line_in_pixel+static_cast<Float>(char_info.mGlyphMetrics.height-char_info.mGlyphMetrics.horiBearingY)/char_info.mImage->getFontFace()->getFontPixelSize().y));
+			}
+			x_offset+=static_cast<Float>(char_info.mGlyphMetrics.horiAdvance)/char_info.mImage->getFontFace()->getFontPixelSize().x/text.size();
+		}
+		if(lastCharRight)
+			*lastCharRight=x_offset;
 	}
-#ifdef DEVILX_DEBUG
-	auto debug_window=getGraphicScene()->createWindow(getLayer()->getName()+"/debug");
-	debug_window->setColour(CFloatRGBA::sRed);
-	debug_window->queryInterface_IElement()->setPosition(CFloat2::sZero);
-	debug_window->queryInterface_IElement()->setSize(CFloat2::sOne);
-	_attachWindow(debug_window);
-#endif
-	return true;
+	return load_call_back.mLoadedResource;
 }
 
 Void NSDevilX::NSGUISystem::CStaticText::_preProcessDirtyFlagAdd(UInt32 flagIndex)

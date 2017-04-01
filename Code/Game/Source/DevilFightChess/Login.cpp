@@ -21,12 +21,32 @@ NSDevilX::NSFightChess::CLoginPage::CLoginPage()
 {
 	mGUIWindow=CApp::getSingleton().getGame()->getGUIScene()->createWindow("LoginPage");
 	CUIScript script;
-	script.process(CDirectory::getApplicationDirectory()+"/Resource/LoginPage.layout",mGUIWindow);
+	script.process(CDirectory::getApplicationDirectory()+"/Resource/LoginPage.layout",mGUIWindow,this,this);
 }
 
 NSDevilX::NSFightChess::CLoginPage::~CLoginPage()
 {
 	CApp::getSingleton().getGame()->getGUIScene()->destroyWindow(mGUIWindow);
+}
+
+Void NSDevilX::NSFightChess::CLoginPage::onEvent(NSGUISystem::IButton * control,IButtonEventCallback::EEvent events)
+{
+	if(control->queryInterface_IControl()->getName()=="LoginPage/Close")
+	{
+		switch(events)
+		{
+		case IButtonEventCallback::EEvent::EEvent_Click:
+#if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
+			PostMessage(static_cast<HWND>(CApp::getSingleton().getWindow()->getHandle()),WM_QUIT,0,0);
+#endif
+			break;
+		}
+	}
+}
+
+Void NSDevilX::NSFightChess::CLoginPage::onEvent(NSGUISystem::IEditBox * control,IEditBoxEventCallback::EEvent events)
+{
+	return Void();
 }
 
 NSDevilX::NSFightChess::CLogin::CLogin()

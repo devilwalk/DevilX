@@ -3,6 +3,7 @@ namespace NSDevilX
 {
 	namespace NSGUISystem
 	{
+		class IEditBox;
 		class IEditBoxEventCallback
 		{
 		public:
@@ -14,7 +15,7 @@ namespace NSDevilX
 			virtual ~IEditBoxEventCallback()
 			{}
 		public:
-			virtual Void onEvent(EEvent events)=0;
+			virtual Void onEvent(IEditBox * control,EEvent events)=0;
 		};
 		class IEditBox
 		{

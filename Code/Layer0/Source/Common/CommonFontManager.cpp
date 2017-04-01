@@ -14,26 +14,50 @@ Void NSDevilX::CFontManager::reigsterFont(const String & fontName,const CMemoryS
 	mFonts.add(fontName,dataStream);
 }
 
-CFontImage * NSDevilX::CFontManager::getImage(const String & fontName,const CUTF8Char & ch,OUT CUInt2 * pixelStart,OUT CUInt2 * pixelEnd,const CUInt2 & fontSize)
+NSDevilX::CFontManager::SChar NSDevilX::CFontManager::get(const String & fontName,const CUTF8Char & ch,const CUInt2 & fontPixelSize)
 {
+	SChar ret;
 	auto src=mFonts.get(fontName);
 	if(!src)
-		return nullptr;
-	CFontImage * ret=nullptr;
-	auto & imgs=mImages[src];
-	for(auto img:imgs)
+		return ret;
+	CFontFace * face=nullptr;
+	auto & faces=mFaces[src];
+	for(auto test:faces)
 	{
-		if(img->getFontSize()==fontSize)
+		if(test->getFontPixelSize()==fontPixelSize)
 		{
-			ret=img;
+			face=test;
 			break;
 		}
 	}
-	if(!ret)
+	if(!face)
 	{
-		ret=DEVILX_NEW CFontImage(src,2048,fontSize);
-		imgs.push_back(ret);
+		face=DEVILX_NEW CFontFace(src,fontPixelSize);
+		faces.push_back(face);
 	}
-	ret->getPixelRange(ch,pixelStart,pixelEnd);
+	ret.mGlyphMetrics=face->getGlyphMetrics(ch);
+	ret.mGlyphMetrics.height/=64;
+	ret.mGlyphMetrics.horiAdvance/=64;
+	ret.mGlyphMetrics.horiBearingX/=64;
+	ret.mGlyphMetrics.horiBearingY/=64;
+	ret.mGlyphMetrics.vertAdvance/=64;
+	ret.mGlyphMetrics.vertBearingX/=64;
+	ret.mGlyphMetrics.vertBearingY/=64;
+	ret.mGlyphMetrics.width/=64;
+	auto & imgs=mImages[src];
+	for(auto img:imgs)
+	{
+		if(img->getFontFace()==face)
+		{
+			ret.mImage=img;
+			break;
+		}
+	}
+	if(!ret.mImage)
+	{
+		ret.mImage=DEVILX_NEW CFontImage(face,2048);
+		imgs.push_back(ret.mImage);
+	}
+	ret.mImage->getPixelRange(ch,&ret.mPixelStart,&ret.mPixelEnd);
 	return ret;
 }

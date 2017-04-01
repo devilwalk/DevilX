@@ -36,6 +36,7 @@
     <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIButton.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIControl.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIEditBox.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIEnum.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIImageBox.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIScene.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIStaticText.h" />

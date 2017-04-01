@@ -64,24 +64,19 @@ CImage * NSDevilX::NSResourceSystem::ISystemImp::getImage(ILoadedResource * reso
 	return ret;
 }
 
-CFontImage * NSDevilX::NSResourceSystem::ISystemImp::getFontImage(ILoadedResource * resource,const CUTF8Char & c,CUInt2 * pixelStart,CUInt2 * pixelEnd)
+CFontManager::SChar NSDevilX::NSResourceSystem::ISystemImp::getChar(ILoadedResource * resource,const CUTF8Char & c)
 {
-	CFontImage * ret=nullptr;
-	if(static_cast<IResourceImp*>(resource)->hasUserData("CFontImage"))
+	CFontManager::SChar ret;
+	if(!static_cast<IResourceImp*>(resource)->hasUserData("CFontImage"))
 	{
-		ret=static_cast<IResourceImp*>(resource)->getUserData("CFontImage").get<CFontImage*>();
-		ret->getPixelRange(c,pixelStart,pixelEnd);
-	}
-	else
-	{
-		ret=mFontManager->getImage(static_cast<IResourceImp*>(resource)->getName(),c,pixelStart,pixelEnd);
-		if(!ret)
+		ret=mFontManager->get(static_cast<IResourceImp*>(resource)->getName(),c);
+		if(!ret.mImage)
 		{
 			mFontManager->reigsterFont(static_cast<IResourceImp*>(resource)->getName(),static_cast<IResourceImp*>(resource)->getBuffer());
-			ret=mFontManager->getImage(static_cast<IResourceImp*>(resource)->getName(),c,pixelStart,pixelEnd);
 		}
-		static_cast<IResourceImp*>(resource)->setUserData("CFontImage",ret);
+		static_cast<IResourceImp*>(resource)->setUserData("CFontImage",ret.mImage);
 	}
+	ret=mFontManager->get(static_cast<IResourceImp*>(resource)->getName(),c);
 	return ret;
 }
 
@@ -112,8 +107,9 @@ NSRenderSystem::ITexture * NSDevilX::NSResourceSystem::ISystemImp::getRenderText
 	return ret;
 }
 
-NSRenderSystem::ITexture * NSDevilX::NSResourceSystem::ISystemImp::getRenderTexture(ILoadedResource * resource,const CUTF8Char & c,CUInt2 * pixelStart,CUInt2 * pixelEnd)
+NSRenderSystem::ITexture * NSDevilX::NSResourceSystem::ISystemImp::getRenderTexture(ILoadedResource * resource,const CUTF8Char & c)
 {
+	auto char_info=getChar(resource,c);
 	NSRenderSystem::ITexture * ret=nullptr;
 	if(static_cast<IResourceImp*>(resource)->hasUserData("NSRenderSystem::ITexture"))
 	{
@@ -121,14 +117,18 @@ NSRenderSystem::ITexture * NSDevilX::NSResourceSystem::ISystemImp::getRenderText
 	}
 	else
 	{
-		auto img=getFontImage(resource,c,pixelStart,pixelEnd);
-		ret=NSRenderSystem::getSystem()->queryInterface_IResourceManager()->createTexture("FontTexture/"+CStringConverter::toString(img),NSRenderSystem::IEnum::ETextureType_2D);
+		ret=NSRenderSystem::getSystem()->queryInterface_IResourceManager()->createTexture("FontTexture/"+CStringConverter::toString(char_info.mImage),NSRenderSystem::IEnum::ETextureType_2D);
 		ret->queryInterface_ITexture2DWritable()->setArraySize(1);
 		ret->queryInterface_ITexture2DWritable()->setFormat(NSRenderSystem::IEnum::ETexture2DFormat_A8);
 		ret->queryInterface_ITexture2DWritable()->setMipmapCount();
-		ret->queryInterface_ITexture2DWritable()->setSize(img->getSize().x,img->getSize().y);
-		ret->queryInterface_ITexture2DWritable()->setPixels(img->getPixels(),0);
+		ret->queryInterface_ITexture2DWritable()->setSize(char_info.mImage->getSize().x,char_info.mImage->getSize().y);
+		ret->queryInterface_ITexture2DWritable()->setPixels(char_info.mImage->getPixels(),0);
 		static_cast<IResourceImp*>(resource)->setUserData("NSRenderSystem::ITexture",ret);
+	}
+	if(char_info.mImage->isDirty())
+	{
+		ret->queryInterface_ITexture2DWritable()->updatePixels(0,0);
+		char_info.mImage->setDirty(False);
 	}
 	return ret;
 }

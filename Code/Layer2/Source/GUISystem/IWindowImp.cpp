@@ -41,6 +41,7 @@ NSDevilX::NSGUISystem::IWindowImp::IWindowImp(const String & name,ISceneImp * sc
 
 NSDevilX::NSGUISystem::IWindowImp::~IWindowImp()
 {
+	mControls.destroyAll();
 	static_cast<ISceneImp*>(getScene())->getEventScene()->destroyWindow(mEventWindow);
 	DEVILX_DELETE(mControl);
 	NSUISystem::getSystem()->destroyEventScene(mEventScene);

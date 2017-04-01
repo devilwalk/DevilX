@@ -22,6 +22,8 @@ namespace NSDevilX
 						return DXGI_FORMAT_BC2_UNORM;
 					case IEnum::ETexture2DFormat_BC3:
 						return DXGI_FORMAT_BC3_UNORM;
+					default:
+						assert(0);
 					}
 					return DXGI_FORMAT_UNKNOWN;
 				}
@@ -31,6 +33,8 @@ namespace NSDevilX
 					{
 					case IEnum::ERenderableSurfaceFormat_R8G8B8A8:
 						return DXGI_FORMAT_R8G8B8A8_UNORM;
+					default:
+						assert(0);
 					}
 					return DXGI_FORMAT_UNKNOWN;
 				}
@@ -40,6 +44,10 @@ namespace NSDevilX
 					{
 					case DXGI_FORMAT_R8G8B8A8_UNORM:
 						return 4*width;
+					case DXGI_FORMAT_A8_UNORM:
+						return width;
+					default:
+						assert(0);
 					}
 					return 0;
 				}

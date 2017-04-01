@@ -89,7 +89,7 @@ Void NSDevilX::NSGUISystem::IEditBoxImp::onMessage(CEditBox * notifier,UInt32 me
 	{
 	case CEditBox::EMessage_EndTextChange:
 		if(getEventCallback())
-			getEventCallback()->onEvent(IEditBoxEventCallback::EEvent_TextChange);
+			getEventCallback()->onEvent(this,IEditBoxEventCallback::EEvent_TextChange);
 		break;
 	}
 }

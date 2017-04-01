@@ -47,8 +47,8 @@ namespace NSDevilX
 			virtual Void setOrder(Int32 order) override;
 			virtual Int32 getOrder() const override;
 			virtual Int32 getDerivedOrder() const override;
-			virtual CFloat2 convertSize(const CFloat2 & relativeSize) const override;
-			virtual CFloat2 convertPosition(const CFloat2 & relativePosition) const override;
+			virtual CFloat2 convertSize(const CFloat2 & size,ECoord fromCoord,ECoord toCoord) const override;
+			virtual CFloat2 convertPosition(const CFloat2 & position,ECoord fromCoord,ECoord toCoord) const override;
 		protected:
 			Void _updateDerivedPosition();
 			Void _updateDerivedSize();

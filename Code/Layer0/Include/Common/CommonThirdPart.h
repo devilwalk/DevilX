@@ -23,4 +23,5 @@
 #pragma warning(pop)
 #include "FreeType/ft2build.h"
 #include "FreeType/freetype/freetype.h"
+#include FT_GLYPH_H
 #include "Lua/lua.hpp"

@@ -5,11 +5,13 @@ namespace NSDevilX
 {
 	namespace NSGUISystem
 	{
+		class ISystemImp;
 		class CEditBox
 			:public CControl
 			,public TBaseObject<CEditBox>
 			,public CDefaultWindowEventListener
 			,public CMessageNotifier
+			,public TMessageReceiver<ISystemImp>
 		{
 		public:
 			enum EMessage
@@ -21,6 +23,7 @@ namespace NSDevilX
 			CStaticText * mTextControl;
 			CCaret * mCaret;
 			NSResourceSystem::IResource * mBackgroundResource;
+			UInt32 mCaretPosition;
 		public:
 			CEditBox(const String & name,CControl * parent);
 			~CEditBox();
@@ -31,7 +34,11 @@ namespace NSDevilX
 			Void setBackground(NSResourceSystem::IResource * resource);
 			NSResourceSystem::IResource * getBackground()const;
 			virtual Void setFocus(Bool focus) override;
+			virtual Void onMouseButtonEvent(CWindow * window,EMouseButtonType buttonType,EMouseButtonEventType eventType,const CUInt2 & position) override;
 			virtual Void onCharEvent(CWindow * window,const CUTF16Char & ch) override;
+
+			// Í¨¹ý TMessageReceiver ¼Ì³Ð
+			virtual Void onMessage(ISystemImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 		};
 	}
 }

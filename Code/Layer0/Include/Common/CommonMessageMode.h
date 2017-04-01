@@ -26,7 +26,7 @@ namespace NSDevilX
 		UInt32 getMessage()const;
 		CMessageNotifier * getNotifier()const;
 		Void addListener(CMessageListener * listener,Bool checkRepeat=True);
-		Void removeListener(CMessageListener * listener);
+		Void removeListener(CMessageListener * listener,Bool removeSource=True);
 		Void notify(VoidPtr data);
 		Void onListenerDestruction(CMessageListener * listener);
 	protected:

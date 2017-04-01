@@ -46,9 +46,26 @@ Void CMessageSource::addListener(CMessageListener * listener,Bool checkRepeat)
 	_getCurrentListenerList().push_back(listener);
 	listener->addSource(this);
 }
-Void CMessageSource::removeListener(CMessageListener * listener)
+Void CMessageSource::removeListener(CMessageListener * listener,Bool removeSource)
 {
-	_getCurrentListenerList().remove(listener);
+	if(mNotifing)
+	{
+		if(mNotifing==listener)
+		{
+			_getNextListenerList().pop_back();
+		}
+		else
+		{
+			if(!_getCurrentListenerList().remove(listener))
+			{
+				_getNextListenerList().remove(listener);
+			}
+		}
+	}
+	else
+		_getCurrentListenerList().remove(listener);
+	if(removeSource)
+		listener->removeSource(this);
 }
 Void CMessageSource::notify(VoidPtr data)
 {
@@ -65,17 +82,7 @@ Void CMessageSource::notify(VoidPtr data)
 }
 Void CMessageSource::onListenerDestruction(CMessageListener * listener)
 {
-	if(mNotifing==listener)
-	{
-		_getNextListenerList().pop_back();
-	}
-	else
-	{
-		if(!_getCurrentListenerList().remove(listener))
-		{
-			_getNextListenerList().remove(listener);
-		}
-	}
+	removeListener(listener,False);
 }
 CMessageSource::ListenerList & NSDevilX::CMessageSource::_getCurrentListenerList()
 {

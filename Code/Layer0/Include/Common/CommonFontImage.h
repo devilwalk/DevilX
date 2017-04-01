@@ -1,33 +1,26 @@
 #pragma once
-#include "CommonMemoryAllocatorObjectTemplate.h"
-#include "CommonType.h"
-#include "CommonSTL.h"
-#include "CommonMemoryStream.h"
-#include "CommonVectorI.h"
-#include "CommonUTFChar.h"
+#include "CommonFontFace.h"
 namespace NSDevilX
 {
 	class CFontImage
 		:public TBaseObject<CFontImage>
 	{
 	protected:
+		CFontFace * mFontFace;
 		const CUInt2 mSize;
-		const CUInt2 mFontSize;
-		FT_Library mFTLibrary;
-		FT_Face mFTFace;
 		TVector<UInt8> mPixels;
 		TMap<CUTF8Char,std::pair<CUInt2,CUInt2> > mCharPixelRanges;
 		Bool mDirty;
 	public:
-		CFontImage(const CMemoryStream * source,const CUInt2 & size=CUInt2(2048),const CUInt2 & fontSize=CUInt2(32));
+		CFontImage(CFontFace * face,const CUInt2 & size=CUInt2(2048));
 		~CFontImage();
+		const CFontFace * getFontFace()const
+		{
+			return mFontFace;
+		}
 		const CUInt2 & getSize()const
 		{
 			return mSize;
-		}
-		const CUInt2 & getFontSize()const
-		{
-			return mFontSize;
 		}
 		const UInt8 * getPixels()const
 		{

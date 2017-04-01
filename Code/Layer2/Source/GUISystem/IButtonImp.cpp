@@ -91,15 +91,15 @@ Void NSDevilX::NSGUISystem::IButtonImp::onMessage(CButton * notifier,UInt32 mess
 	{
 	case CButton::EMessage_Press:
 		if(getEventCallback())
-			getEventCallback()->onEvent(IButtonEventCallback::EEvent_Press);
+			getEventCallback()->onEvent(this,IButtonEventCallback::EEvent_Press);
 		break;
 	case CButton::EMessage_Release:
 		if(getEventCallback())
-			getEventCallback()->onEvent(IButtonEventCallback::EEvent_Release);
+			getEventCallback()->onEvent(this,IButtonEventCallback::EEvent_Release);
 		break;
 	case CButton::EMessage_Click:
 		if(getEventCallback())
-			getEventCallback()->onEvent(IButtonEventCallback::EEvent_Click);
+			getEventCallback()->onEvent(this,IButtonEventCallback::EEvent_Click);
 		break;
 	}
 }

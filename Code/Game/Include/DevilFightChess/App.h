@@ -15,6 +15,10 @@ namespace NSDevilX
 		public:
 			CApp();
 			~CApp();
+			CWindow * getWindow()const
+			{
+				return mWindow;
+			}
 			CGame * getGame()const
 			{
 				return mGame;

@@ -5,6 +5,12 @@ namespace NSDevilX
 	{
 		class IElement
 		{
+		public:
+			enum ECoord
+			{
+				ECoord_Local,
+				ECoord_Parent
+			};
 		protected:
 			virtual ~IElement(){}
 		public:
@@ -20,8 +26,8 @@ namespace NSDevilX
 			virtual Void setOrder(Int32 order)=0;
 			virtual Int32 getOrder()const=0;
 			virtual Int32 getDerivedOrder()const=0;
-			virtual CFloat2 convertSize(const CFloat2 & relativeSize)const=0;
-			virtual CFloat2 convertPosition(const CFloat2 & relativePosition)const=0;
+			virtual CFloat2 convertSize(const CFloat2 & size,ECoord fromCoord,ECoord toCoord)const=0;
+			virtual CFloat2 convertPosition(const CFloat2 & position,ECoord fromCoord,ECoord toCoord)const=0;
 		};
 	}
 }

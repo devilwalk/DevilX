@@ -6,12 +6,20 @@ namespace NSDevilX
 	{
 		class CLoginPage
 			:public TBaseObject<CLoginPage>
+			,public NSGUISystem::IButtonEventCallback
+			,public NSGUISystem::IEditBoxEventCallback
 		{
 		protected:
 			NSGUISystem::IWindow * mGUIWindow;
 		public:
 			CLoginPage();
 			~CLoginPage();
+
+			// 通过 IButtonEventCallback 继承
+			virtual Void onEvent(NSGUISystem::IButton * control,NSGUISystem::IButtonEventCallback::EEvent events) override;
+
+			// 通过 IEditBoxEventCallback 继承
+			virtual Void onEvent(NSGUISystem::IEditBox * control,NSGUISystem::IEditBoxEventCallback::EEvent events) override;
 		};
 		class CLogin
 			:public CModule

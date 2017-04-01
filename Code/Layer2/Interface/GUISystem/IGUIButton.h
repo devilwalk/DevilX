@@ -4,6 +4,7 @@ namespace NSDevilX
 {
 	namespace NSGUISystem
 	{
+		class IButton;
 		class IButtonEventCallback
 		{
 		public:
@@ -16,7 +17,7 @@ namespace NSDevilX
 		protected:
 			virtual ~IButtonEventCallback(){}
 		public:
-			virtual Void onEvent(EEvent events)=0;
+			virtual Void onEvent(IButton * control,EEvent events)=0;
 		};
 		class IButton
 		{

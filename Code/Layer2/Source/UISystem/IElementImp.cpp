@@ -114,14 +114,50 @@ Int32 NSDevilX::NSUISystem::IElementImp::getDerivedOrder() const
 	return mDerivedOrder;
 }
 
-CFloat2 NSDevilX::NSUISystem::IElementImp::convertSize(const CFloat2 & relativeSize) const
+CFloat2 NSDevilX::NSUISystem::IElementImp::convertSize(const CFloat2 & size,ECoord fromCoord,ECoord toCoord) const
 {
-	return relativeSize*getSize();
+	if(fromCoord==toCoord)
+		return size;
+	else
+	{
+		if((ECoord_Local==fromCoord)
+			&&(ECoord_Parent==toCoord)
+			)
+		{
+			return size*getSize();
+		}
+		else if((ECoord_Parent==fromCoord)
+			&&(ECoord_Local==toCoord)
+			)
+		{
+			return size/getSize();
+		}
+	}
+	assert(0);
+	return CFloat2::sZero;
 }
 
-CFloat2 NSDevilX::NSUISystem::IElementImp::convertPosition(const CFloat2 & relativePosition) const
+CFloat2 NSDevilX::NSUISystem::IElementImp::convertPosition(const CFloat2 & position,ECoord fromCoord,ECoord toCoord) const
 {
-	return relativePosition*getSize()+getPosition();
+	if(fromCoord==toCoord)
+		return position;
+	else
+	{
+		if((ECoord_Local==fromCoord)
+			&&(ECoord_Parent==toCoord)
+			)
+		{
+			return position*getSize()+getPosition();
+		}
+		else if((ECoord_Parent==fromCoord)
+			&&(ECoord_Local==toCoord)
+			)
+		{
+			return (position-getPosition())/getSize();
+		}
+	}
+	assert(0);
+	return CFloat2::sZero;
 }
 
 Void NSDevilX::NSUISystem::IElementImp::_updateDerivedPosition()

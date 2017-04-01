@@ -31,8 +31,11 @@ namespace NSDevilX
 			const CUTF8String & getText() const;
 			Void setTextColour(const CColour & colour);
 			const CColour & getTextColour() const;
+			Boolean getPosition(UInt32 charIndex,CFloat2 * position)const;
+			Boolean getPositions(TVector<CFloat2> * positions,Float * lastCharRight=nullptr)const;
 		protected:
 			Boolean _updateGraphicWindows();
+			NSResourceSystem::ILoadedResource * _calculateTextParameters(TVector<CFloat2> * positions,Float * lastCharRight=nullptr)const;
 			virtual Void _preProcessDirtyFlagAdd(UInt32 flagIndex) override;
 			virtual Void _postProcessDirtyFlagRemove(UInt32 flagIndex) override;
 			// Í¨¹ý TMessageReceiver ¼Ì³Ð

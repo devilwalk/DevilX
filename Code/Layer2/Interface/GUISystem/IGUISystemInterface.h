@@ -3,6 +3,7 @@
 #include "ResourceSystem/IResourceSystemInterface.h"
 #include "IGUIControl.h"
 #include "IGUIEditBox.h"
+#include "IGUIEnum.h"
 #include "IGUIImageBox.h"
 #include "IGUIScene.h"
 #include "IGUIStaticText.h"
