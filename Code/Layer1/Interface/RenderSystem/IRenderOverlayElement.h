@@ -15,13 +15,12 @@ namespace NSDevilX
 			virtual const CFloat2 & getPosition()const=0;
 			virtual Void setSize(const CFloat2 & size)=0;
 			virtual const CFloat2 & getSize()const=0;
+			virtual Void setUVs(const CFloat2 & uv0,const CFloat2 & uv1,const CFloat2 & uv2,const CFloat2 & uv3)=0;
+			virtual const CFloat2 * getUVs()const=0;
 			virtual Void setOrder(Int32 order)=0;
 			virtual Int32 getOrder()const=0;
 			virtual IColourUnitState * getColourUnitState()=0;
 			virtual ITextureUnitState * getTextureUnitState()=0;
-			virtual Void setUVTransform(const CFloat2 & offset,const CFloat2 & scale)=0;
-			virtual const CFloat2 & getUVOffset()const=0;
-			virtual const CFloat2 & getUVScale()const=0;
 		};
 	}
 }

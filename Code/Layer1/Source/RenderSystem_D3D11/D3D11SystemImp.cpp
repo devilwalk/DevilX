@@ -207,6 +207,7 @@ NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::~CSystemImp()
 	mGeometrys.destroyAll();
 	mVertexBuffers.destroyAll();
 	mIndexBuffers.destroyAll();
+	mTexture2Ds.destroyAll();
 	getDebug()->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 	getDebug()->Release();
 #endif

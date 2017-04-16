@@ -11,6 +11,7 @@ NSDevilX::NSRenderSystem::NSD3D11::COverlayMaterial::COverlayMaterial(CTexture *
 	_updateRasterizerState();
 	_updateBlendState();
 	_updateDepthStencilState();
+	_updateSamplerState();
 }
 
 NSDevilX::NSRenderSystem::NSD3D11::COverlayMaterial::~COverlayMaterial()
@@ -136,4 +137,16 @@ Void NSDevilX::NSRenderSystem::NSD3D11::COverlayMaterial::_updateDepthStencilSta
 	desc.DepthWriteMask=D3D11_DEPTH_WRITE_MASK_ZERO;
 	desc.DepthFunc=D3D11_COMPARISON_ALWAYS;
 	mDepthState=CSystemImp::getSingleton().getDepthStencilState(desc);
+}
+
+Void NSDevilX::NSRenderSystem::NSD3D11::COverlayMaterial::_updateSamplerState()
+{
+	mPSSamplerStates.clear();
+	D3D11_SAMPLER_DESC desc=CSystemImp::getSingleton().getDefaultSamplerStateDescription();
+	desc.MaxLOD=0;
+	desc.MinLOD=0;
+	desc.AddressU=D3D11_TEXTURE_ADDRESS_CLAMP;
+	desc.AddressV=D3D11_TEXTURE_ADDRESS_CLAMP;
+	desc.Filter=D3D11_FILTER_MIN_MAG_LINEAR_MIP_POINT;
+	mPSSamplerStates.push_back(CSystemImp::getSingleton().getSamplerState(desc));
 }

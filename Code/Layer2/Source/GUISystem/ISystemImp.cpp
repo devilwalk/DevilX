@@ -51,5 +51,6 @@ Void NSDevilX::NSGUISystem::ISystemImp::update()
 
 Void NSDevilX::NSGUISystem::ISystemImp::shutdown()
 {
+	NSUISystem::getSystem()->shutdown();
 	DEVILX_DELETE(this);
 }

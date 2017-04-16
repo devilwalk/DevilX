@@ -19,8 +19,8 @@ namespace NSDevilX
 				EMessage_EndSizeChange,
 				EMessage_BeginOrderChange,
 				EMessage_EndOrderChange,
-				EMessage_BeginUVTransformChange,
-				EMessage_EndUVTransformChange,
+				EMessage_BeginUVChange,
+				EMessage_EndUVChange,
 				EMessage_BeginColourUnitStateCreate,
 				EMessage_EndColourUnitStateCreate,
 				EMessage_BeginTextureUnitStateCreate,
@@ -30,11 +30,10 @@ namespace NSDevilX
 			const String mName;
 			CFloat2 mPosition;
 			CFloat2 mSize;
+			CFloat2 mUVs[4];
 			Int32 mOrder;
 			IColourUnitStateImp * mColourUnitState;
 			ITextureUnitStateImp * mTextureUnitState;
-			CFloat2 mUVOffset;
-			CFloat2 mUVScale;
 		public:
 			IOverlayElementImp(const String & name);
 			~IOverlayElementImp();
@@ -52,13 +51,12 @@ namespace NSDevilX
 			virtual const CFloat2 & getPosition() const override;
 			virtual Void setSize(const CFloat2 & size) override;
 			virtual const CFloat2 & getSize() const override;
+			virtual Void setUVs(const CFloat2 & uv0,const CFloat2 & uv1,const CFloat2 & uv2,const CFloat2 & uv3) override;
+			virtual const CFloat2 * getUVs() const override;
 			virtual Void setOrder(Int32 order) override;
 			virtual Int32 getOrder() const override;
 			virtual IColourUnitState * getColourUnitState() override;
 			virtual ITextureUnitState * getTextureUnitState() override;
-			virtual Void setUVTransform(const CFloat2 & offset,const CFloat2 & scale) override;
-			virtual const CFloat2 & getUVOffset() const override;
-			virtual const CFloat2 & getUVScale() const override;
 		};
 	}
 }

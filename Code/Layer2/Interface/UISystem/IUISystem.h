@@ -11,6 +11,7 @@ namespace NSDevilX
 		protected:
 			virtual ~ISystem(){}
 		public:
+			virtual Void shutdown()=0;
 			virtual IEventScene * createEventScene(const String & name)=0;
 			virtual IEventScene * getEventScene(const String & name)const=0;
 			virtual Void destroyEventScene(IEventScene * window)=0;

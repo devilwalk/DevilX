@@ -9,12 +9,19 @@ NSDevilX::NSRenderSystem::IOverlayElementImp::IOverlayElementImp(const String & 
 	,mOrder(0)
 	,mColourUnitState(nullptr)
 	,mTextureUnitState(nullptr)
-	,mUVOffset(CFloat2::sZero)
-	,mUVScale(CFloat2::sOne)
 {}
 
 NSDevilX::NSRenderSystem::IOverlayElementImp::~IOverlayElementImp()
-{}
+{
+	if(static_cast<const IOverlayElementImp*>(this)->getColourUnitState())
+	{
+		DEVILX_DELETE(static_cast<const IOverlayElementImp*>(this)->getColourUnitState());
+	}
+	if(static_cast<const IOverlayElementImp*>(this)->getTextureUnitState())
+	{
+		DEVILX_DELETE(static_cast<const IOverlayElementImp*>(this)->getTextureUnitState());
+	}
+}
 
 const String & NSDevilX::NSRenderSystem::IOverlayElementImp::getName() const
 {
@@ -54,6 +61,28 @@ const CFloat2 & NSDevilX::NSRenderSystem::IOverlayElementImp::getSize() const
 	return mSize;
 }
 
+Void NSDevilX::NSRenderSystem::IOverlayElementImp::setUVs(const CFloat2 & uv0,const CFloat2 & uv1,const CFloat2 & uv2,const CFloat2 & uv3)
+{
+	if((getUVs()[0]!=uv0)
+		||(getUVs()[1]!=uv1)
+		||(getUVs()[2]!=uv2)
+		||(getUVs()[3]!=uv3)
+		)
+	{
+		notify(EMessage_BeginUVChange);
+		mUVs[0]=uv0;
+		mUVs[1]=uv1;
+		mUVs[2]=uv2;
+		mUVs[3]=uv3;
+		notify(EMessage_EndUVChange);
+	}
+}
+
+const CFloat2 * NSDevilX::NSRenderSystem::IOverlayElementImp::getUVs() const
+{
+	return mUVs;
+}
+
 Void NSDevilX::NSRenderSystem::IOverlayElementImp::setOrder(Int32 order)
 {
 	if(order!=getOrder())
@@ -91,27 +120,4 @@ ITextureUnitState * NSDevilX::NSRenderSystem::IOverlayElementImp::getTextureUnit
 		notify(EMessage_EndTextureUnitStateCreate,mTextureUnitState);
 	}
 	return mTextureUnitState;
-}
-
-Void NSDevilX::NSRenderSystem::IOverlayElementImp::setUVTransform(const CFloat2 & offset,const CFloat2 & scale)
-{
-	if((offset!=getUVOffset())||(scale!=getUVScale()))
-	{
-		notify(EMessage_BeginUVTransformChange);
-		mUVOffset=offset;
-		mUVScale=scale;
-		notify(EMessage_EndUVTransformChange);
-	}
-}
-
-const CFloat2 & NSDevilX::NSRenderSystem::IOverlayElementImp::getUVOffset() const
-{
-	// TODO: 在此处插入 return 语句
-	return mUVOffset;
-}
-
-const CFloat2 & NSDevilX::NSRenderSystem::IOverlayElementImp::getUVScale() const
-{
-	// TODO: 在此处插入 return 语句
-	return mUVScale;
 }

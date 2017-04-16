@@ -19,6 +19,7 @@ namespace NSDevilX
 			~ISystemImp();
 
 			// Í¨¹ý ISystem ¼Ì³Ð
+			virtual Void shutdown() override;
 			virtual IEventScene * createEventScene(const String & name) override;
 			virtual IEventScene * getEventScene(const String & name) const override;
 			virtual Void destroyEventScene(IEventScene * scene) override;

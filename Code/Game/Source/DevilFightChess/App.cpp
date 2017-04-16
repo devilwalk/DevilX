@@ -20,11 +20,11 @@ NSDevilX::NSFightChess::CApp::CApp()
 
 NSDevilX::NSFightChess::CApp::~CApp()
 {
+	DEVILX_DELETE(mGame);
 	NSNetworkSystem::getSystem()->shutdown();
 	NSGUISystem::getSystem()->shutdown();
 	NSRenderSystem::getSystem()->shutdown();
 	NSResourceSystem::getSystem()->shutdown();
-	DEVILX_DELETE(mGame);
 	DEVILX_DELETE(mWindow);
 }
 

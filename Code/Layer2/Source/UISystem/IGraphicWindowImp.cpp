@@ -33,12 +33,12 @@ IGraphicScene * NSDevilX::NSUISystem::IGraphicWindowImp::getScene() const
 Void NSDevilX::NSUISystem::IGraphicWindowImp::setTexture(NSRenderSystem::ITexture * texture,const CUInt2 & pixelStart,const CUInt2 & pixelEnd)
 {
 	mRenderOverlayElement->getTextureUnitState()->setTexture(texture);
-	mPixelStart=pixelStart;
-	mPixelEnd=pixelEnd;
+	auto pixel_start=mPixelStart=pixelStart;
+	auto pixel_end=mPixelEnd=pixelEnd;
 	auto pixel_length=getPixelEnd()-getPixelStart()+CUInt2::sOne;
-	auto uv_offset=getPixelStart()/CFloat2(static_cast<Float>(texture->queryInterface_ITexture2DReadable()->getWidth()),static_cast<Float>(texture->queryInterface_ITexture2DReadable()->getHeight()));
-	auto uv_scale=pixel_length/CFloat2(static_cast<Float>(texture->queryInterface_ITexture2DReadable()->getWidth()),static_cast<Float>(texture->queryInterface_ITexture2DReadable()->getHeight()));
-	mRenderOverlayElement->setUVTransform(uv_offset,uv_scale);
+	CFloat2 uv_start=(getPixelStart()+0.5f)/CFloat2(static_cast<Float>(texture->queryInterface_ITexture2DReadable()->getWidth()),static_cast<Float>(texture->queryInterface_ITexture2DReadable()->getHeight()));
+	CFloat2 uv_end=(getPixelEnd()+0.5f)/CFloat2(static_cast<Float>(texture->queryInterface_ITexture2DReadable()->getWidth()),static_cast<Float>(texture->queryInterface_ITexture2DReadable()->getHeight()));
+	mRenderOverlayElement->setUVs(uv_start,CFloat2(uv_end.x,uv_start.y),CFloat2(uv_start.x,uv_end.y),uv_end);
 }
 
 NSRenderSystem::ITexture * NSDevilX::NSUISystem::IGraphicWindowImp::getTexture() const

@@ -19,6 +19,7 @@ namespace NSDevilX
 				Void _updateRasterizerState();
 				Void _updateBlendState();
 				Void _updateDepthStencilState();
+				Void _updateSamplerState();
 			};
 		}
 	}

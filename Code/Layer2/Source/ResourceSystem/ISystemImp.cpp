@@ -120,7 +120,7 @@ NSRenderSystem::ITexture * NSDevilX::NSResourceSystem::ISystemImp::getRenderText
 		ret=NSRenderSystem::getSystem()->queryInterface_IResourceManager()->createTexture("FontTexture/"+CStringConverter::toString(char_info.mImage),NSRenderSystem::IEnum::ETextureType_2D);
 		ret->queryInterface_ITexture2DWritable()->setArraySize(1);
 		ret->queryInterface_ITexture2DWritable()->setFormat(NSRenderSystem::IEnum::ETexture2DFormat_A8);
-		ret->queryInterface_ITexture2DWritable()->setMipmapCount();
+		ret->queryInterface_ITexture2DWritable()->setMipmapCount(0);
 		ret->queryInterface_ITexture2DWritable()->setSize(char_info.mImage->getSize().x,char_info.mImage->getSize().y);
 		ret->queryInterface_ITexture2DWritable()->setPixels(char_info.mImage->getPixels(),0);
 		static_cast<IResourceImp*>(resource)->setUserData("NSRenderSystem::ITexture",ret);

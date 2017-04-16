@@ -15,6 +15,11 @@ NSDevilX::NSUISystem::ISystemImp::~ISystemImp()
 {
 }
 
+Void NSDevilX::NSUISystem::ISystemImp::shutdown()
+{
+	DEVILX_DELETE(this);
+}
+
 IEventScene * NSDevilX::NSUISystem::ISystemImp::createEventScene(const String & name)
 {
 	if(mEventScenes.has(name))

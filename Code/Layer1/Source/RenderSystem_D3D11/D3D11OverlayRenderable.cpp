@@ -69,7 +69,7 @@ Void NSDevilX::NSRenderSystem::NSD3D11::COverlayRenderable::addElement(IOverlayE
 	_updateElementDiffuse(element);
 	element->addListener(static_cast<TMessageReceiver<IOverlayElementImp>*>(this),IOverlayElementImp::EMessage_EndPositionChange);
 	element->addListener(static_cast<TMessageReceiver<IOverlayElementImp>*>(this),IOverlayElementImp::EMessage_EndSizeChange);
-	element->addListener(static_cast<TMessageReceiver<IOverlayElementImp>*>(this),IOverlayElementImp::EMessage_EndUVTransformChange);
+	element->addListener(static_cast<TMessageReceiver<IOverlayElementImp>*>(this),IOverlayElementImp::EMessage_EndUVChange);
 	element->addListener(static_cast<TMessageReceiver<IOverlayElementImp>*>(this),IOverlayElementImp::EMessage_EndColourUnitStateCreate);
 	if(static_cast<const IOverlayElementImp*>(element)->getColourUnitState())
 	{
@@ -90,7 +90,7 @@ Void NSDevilX::NSRenderSystem::NSD3D11::COverlayRenderable::removeElement(IOverl
 	mRectangles.erase(element);
 	element->removeListener(static_cast<TMessageReceiver<IOverlayElementImp>*>(this),IOverlayElementImp::EMessage_EndPositionChange);
 	element->removeListener(static_cast<TMessageReceiver<IOverlayElementImp>*>(this),IOverlayElementImp::EMessage_EndSizeChange);
-	element->removeListener(static_cast<TMessageReceiver<IOverlayElementImp>*>(this),IOverlayElementImp::EMessage_EndUVTransformChange);
+	element->removeListener(static_cast<TMessageReceiver<IOverlayElementImp>*>(this),IOverlayElementImp::EMessage_EndUVChange);
 	element->removeListener(static_cast<TMessageReceiver<IOverlayElementImp>*>(this),IOverlayElementImp::EMessage_EndColourUnitStateCreate);
 	if(static_cast<const IOverlayElementImp*>(element)->getColourUnitState())
 	{
@@ -107,7 +107,7 @@ Void NSDevilX::NSRenderSystem::NSD3D11::COverlayRenderable::onMessage(IOverlayEl
 	case IOverlayElementImp::EMessage_EndSizeChange:
 		_updateElementPosition(notifier);
 	break;
-	case IOverlayElementImp::EMessage_EndUVTransformChange:
+	case IOverlayElementImp::EMessage_EndUVChange:
 		_updateElementTextureCoord(notifier);
 		break;
 	case IOverlayElementImp::EMessage_EndColourUnitStateCreate:
@@ -143,10 +143,10 @@ Void NSDevilX::NSRenderSystem::NSD3D11::COverlayRenderable::_updateElementPositi
 Void NSDevilX::NSRenderSystem::NSD3D11::COverlayRenderable::_updateElementTextureCoord(IOverlayElementImp * element)
 {
 	const auto vertex_start=mRectangles.get(element);
-	mUVs[vertex_start]=element->getUVOffset();
-	mUVs[vertex_start+1]=element->getUVOffset()+CFloat2(element->getUVScale().x,0.0f);
-	mUVs[vertex_start+2]=element->getUVOffset()+CFloat2(0.0f,element->getUVScale().x);
-	mUVs[vertex_start+3]=element->getUVOffset()+element->getUVScale();
+	mUVs[vertex_start]=element->getUVs()[0];
+	mUVs[vertex_start+1]=element->getUVs()[1];
+	mUVs[vertex_start+2]=element->getUVs()[2];
+	mUVs[vertex_start+3]=element->getUVs()[3];
 	mGeometry->getInterfaceImp()->getVertexBuffer()->updateTextureCoords(vertex_start,4);
 }
 
