@@ -31,7 +31,7 @@ NSDevilX::NSFightChess::CLoginPage::~CLoginPage()
 
 Void NSDevilX::NSFightChess::CLoginPage::onEvent(NSGUISystem::IButton * control,IButtonEventCallback::EEvent events)
 {
-	if(control->queryInterface_IControl()->getName()=="LoginPage/Close")
+	if(control->queryInterface_IControl()->getName()=="LoginPage/Button_Close")
 	{
 		switch(events)
 		{
@@ -39,6 +39,16 @@ Void NSDevilX::NSFightChess::CLoginPage::onEvent(NSGUISystem::IButton * control,
 #if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
 			PostMessage(static_cast<HWND>(CApp::getSingleton().getWindow()->getHandle()),WM_QUIT,0,0);
 #endif
+			break;
+		}
+	}
+	else if(control->queryInterface_IControl()->getName()=="LoginPage/Button_Register")
+	{
+		switch(events)
+		{
+		case IButtonEventCallback::EEvent::EEvent_Click:
+			CApp::getSingleton().getGame()->stopModule("Login");
+			CApp::getSingleton().getGame()->startModule("Register");
 			break;
 		}
 	}
@@ -56,7 +66,9 @@ NSDevilX::NSFightChess::CLogin::CLogin()
 {}
 
 NSDevilX::NSFightChess::CLogin::~CLogin()
-{}
+{
+	DEVILX_DELETE(mPage);
+}
 
 Void NSDevilX::NSFightChess::CLogin::doneMT(CServer::EReturnCode code)
 {

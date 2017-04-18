@@ -14,7 +14,6 @@ NSDevilX::NSRenderSystem::NSD3D11::CRenderTarget::~CRenderTarget()
 {
 	for(auto i=0;i<8;++i)
 		setRTView(i,nullptr);
-	setDSView(nullptr);
 }
 
 Void NSDevilX::NSRenderSystem::NSD3D11::CRenderTarget::getSize(UInt32 & width,UInt32 & height)
@@ -43,13 +42,9 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CRenderTarget::setRTView(UInt32 index,ID
 		mRenderTargets[index]->AddRef();
 }
 
-Void NSDevilX::NSRenderSystem::NSD3D11::CRenderTarget::setDSView(ID3D11DepthStencilView * view)
+Void NSDevilX::NSRenderSystem::NSD3D11::CRenderTarget::setDepthStencil(CDepthStencil * ds)
 {
-	if(mDepthStencil)
-		mDepthStencil->Release();
-	mDepthStencil=view;
-	if(mDepthStencil)
-		mDepthStencil->AddRef();
+	mDepthStencil=ds;
 }
 
 Void NSDevilX::NSRenderSystem::NSD3D11::CRenderTarget::clearMT(UInt32 index,ID3D11DeviceContext1 * context,const CColour & colour)
@@ -61,12 +56,12 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CRenderTarget::clearMT(UInt32 index,ID3D
 Void NSDevilX::NSRenderSystem::NSD3D11::CRenderTarget::clearMT(ID3D11DeviceContext1 * context,Float depth,Int32 stencil)
 {
 	UINT clear_flag=(depth>=0.0f?D3D11_CLEAR_DEPTH:0)|(stencil>=0?D3D11_CLEAR_STENCIL:0);
-	context->ClearDepthStencilView(mDepthStencil,clear_flag,depth,static_cast<UInt8>(stencil));
+	context->ClearDepthStencilView(mDepthStencil->getInternal(),clear_flag,depth,static_cast<UInt8>(stencil));
 }
 
 Void NSDevilX::NSRenderSystem::NSD3D11::CRenderTarget::setupMT(ID3D11DeviceContext1 * context)
 {
-	context->OMSetRenderTargets(8,mRenderTargets,mDepthStencil);
+	context->OMSetRenderTargets(8,mRenderTargets,mDepthStencil->getInternal());
 }
 
 Void NSDevilX::NSRenderSystem::NSD3D11::CRenderTarget::_updateConstantBuffer(Byte * buffer)

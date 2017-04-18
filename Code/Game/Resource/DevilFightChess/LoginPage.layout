@@ -1,7 +1,7 @@
 <Window Name="LoginPage/Window" Position="0.25,0.25" Size="0.5,0.5">
   <ImageBox Name="LoginPage/Background" Position="0,0" Size="1,1">
     <StaticText Name="LoginPage/StaticText_Title" Position="0.4,0" Size="0.2,0.1" Text="用户登录" Colour="0,0,0,1"/>
-    <Button Name="LoginPage/Close" Position="0.9,0" Size="0.1,0.1"/>
+    <Button Name="LoginPage/Button_Close" Position="0.9,0" Size="0.1,0.1"/>
     <StaticText Name="LoginPage/StaticText_Username" Position="0.25,0.25" Size="0.2,0.05" Text="用户名:" Colour="0,0,0,1"/>
     <EditBox Name="LoginPage/Edit_Username" Position="0.45,0.25" Size="0.4,0.05" Colour="0.5,0.5,0.5,1"/>
     <StaticText Name="LoginPage/StaticText_Password" Position="0.25,0.5" Size="0.2,0.05" Text="密码:" Colour="0,0,0,1"/>

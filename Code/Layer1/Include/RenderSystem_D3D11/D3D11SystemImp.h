@@ -58,13 +58,13 @@ namespace NSDevilX
 				};
 				D3D_FEATURE_LEVEL mSupport;
 				CClearViewportShader * mClearViewportShader;
-				TVector<SInputLayout*> mInputLayouts;
-				TVector<CDepthStencil*> mDepthStencils;
+				TResourcePtrVector<SInputLayout> mInputLayouts;
+				TMap<UInt32,TResourcePtrVector<CDepthStencil> > mDepthStencils;
 				TResourcePtrMap<ID3DBlob*,CShader> mShaders;
-				TVector<ID3D11RasterizerState1*> mRasterizerStates;
-				TVector<ID3D11BlendState1*> mBlendStates;
-				TVector<ID3D11DepthStencilState*> mDepthStencilStates;
-				TVector<ID3D11SamplerState*> mSamplerStates;
+				TCOMResourcePtrVector<ID3D11RasterizerState1> mRasterizerStates;
+				TCOMResourcePtrVector<ID3D11BlendState1> mBlendStates;
+				TCOMResourcePtrVector<ID3D11DepthStencilState> mDepthStencilStates;
+				TCOMResourcePtrVector<ID3D11SamplerState> mSamplerStates;
 				TResourcePtrMap<IWindowImp*const,CWindowImp> mWindows;
 				TResourcePtrMap<IRenderableSurfaceImp*const,CRenderableSurfaceImp> mRenderableSurfaces;
 				TResourcePtrMap<ISceneImp*const,CScene> mScenes;
@@ -130,7 +130,7 @@ namespace NSDevilX
 				{
 					return mDefinitionShader4_1;
 				}
-				CDepthStencil * getFreeDepthStencil();
+				CDepthStencil * getFreeDepthStencil(UInt32 width,UInt32 height);
 				ID3D11InputLayout * getInputLayout(const D3D11_INPUT_ELEMENT_DESC * descs,UINT numElements);
 				ID3D11RasterizerState1 * getRasterizerState(const D3D11_RASTERIZER_DESC1 & desc);
 				ID3D11BlendState1 * getBlendState(const D3D11_BLEND_DESC1 & desc);

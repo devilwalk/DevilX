@@ -126,8 +126,8 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CClearViewportTask::process()
 				context->ClearRenderTargetView(mViewport->getRenderTarget()->getRTView(i),reinterpret_cast<ConstFloatPtr>(static_cast<CFloat4*>(&mClearColour[i])));
 		}
 		UINT clear_flag=(mClearDepth>=0.0f?D3D11_CLEAR_DEPTH:0)|(mClearStencil>=0?D3D11_CLEAR_STENCIL:0);
-		if(mViewport->getRenderTarget()->getDSView())
-			context->ClearDepthStencilView(mViewport->getRenderTarget()->getDSView(),clear_flag,mClearDepth,static_cast<UInt8>(mClearStencil));
+		if(mViewport->getRenderTarget()->getDepthStencil())
+			context->ClearDepthStencilView(mViewport->getRenderTarget()->getDepthStencil()->getInternal(),clear_flag,mClearDepth,static_cast<UInt8>(mClearStencil));
 	}
 	else
 	{

@@ -3,29 +3,10 @@ using namespace NSDevilX;
 using namespace NSRenderSystem;
 using namespace NSD3D11;
 
-NSDevilX::NSRenderSystem::NSD3D11::CDepthStencil::CDepthStencil()
+NSDevilX::NSRenderSystem::NSD3D11::CDepthStencil::CDepthStencil(UInt32 width,UInt32 height)
 	:mTextureResource(nullptr)
-	,mLocked(False)
-{}
-
-NSDevilX::NSRenderSystem::NSD3D11::CDepthStencil::~CDepthStencil()
+	,mLocked(0)
 {
-	if(mTextureResource)
-		mTextureResource->Release();
-}
-
-Void NSDevilX::NSRenderSystem::NSD3D11::CDepthStencil::reserve(UInt32 width,UInt32 height)
-{
-	if(mTextureResource)
-	{
-		/*D3D11_TEXTURE2D_DESC desc;
-		mTextureResource->GetDesc(&desc);
-		if((desc.Width>=width)&&(desc.Height>=height))
-			return;*/
-		mTextureResource->Release();
-		mTextureResource=nullptr;
-		setInternal(nullptr);
-	}
 	D3D11_TEXTURE2D_DESC desc;
 	desc.ArraySize=1;
 	desc.BindFlags=D3D11_BIND_DEPTH_STENCIL;
@@ -42,4 +23,10 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CDepthStencil::reserve(UInt32 width,UInt
 	decltype(getInternal()) temp_internal=nullptr;
 	CSystemImp::getSingleton().getDevice()->CreateDepthStencilView(mTextureResource,nullptr,&temp_internal);
 	setInternal(temp_internal);
+}
+
+NSDevilX::NSRenderSystem::NSD3D11::CDepthStencil::~CDepthStencil()
+{
+	if(mTextureResource)
+		mTextureResource->Release();
 }

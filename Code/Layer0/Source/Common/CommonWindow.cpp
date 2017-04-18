@@ -76,56 +76,58 @@ Void NSDevilX::CWindow::setSize(const CUInt2 & size)
 					}
 					if(window)
 					{
+						TVector<CWindowEventListener*> listeners;
+						listeners.insert(listeners.end(),window->mEventListeners.begin(),window->mEventListeners.end());
 						switch(msg)
 						{
 						case WM_IME_COMPOSITION:
 							break;
 						case WM_CHAR:
-							for(auto listener:window->mEventListeners)
+							for(auto listener:listeners)
 								listener->onCharEvent(window,CUTF16Char(&wParam));
 							break;
 						case WM_LBUTTONDOWN:
-							for(auto listener:window->mEventListeners)
+							for(auto listener:listeners)
 								listener->onMouseButtonEvent(window,CWindowEventListener::EMouseButtonType_Left,CWindowEventListener::EMouseButtonEventType_Down,CUInt2(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)));
 							break;
 						case WM_LBUTTONUP:
-							for(auto listener:window->mEventListeners)
+							for(auto listener:listeners)
 								listener->onMouseButtonEvent(window,CWindowEventListener::EMouseButtonType_Left,CWindowEventListener::EMouseButtonEventType_Up,CUInt2(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)));
 							break;
 						case WM_LBUTTONDBLCLK:
-							for(auto listener:window->mEventListeners)
+							for(auto listener:listeners)
 								listener->onMouseButtonEvent(window,CWindowEventListener::EMouseButtonType_Left,CWindowEventListener::EMouseButtonEventType_DoubleClick,CUInt2(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)));
 							break;
 						case WM_RBUTTONDOWN:
-							for(auto listener:window->mEventListeners)
+							for(auto listener:listeners)
 								listener->onMouseButtonEvent(window,CWindowEventListener::EMouseButtonType_Right,CWindowEventListener::EMouseButtonEventType_Down,CUInt2(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)));
 							break;
 						case WM_RBUTTONUP:
-							for(auto listener:window->mEventListeners)
+							for(auto listener:listeners)
 								listener->onMouseButtonEvent(window,CWindowEventListener::EMouseButtonType_Right,CWindowEventListener::EMouseButtonEventType_Up,CUInt2(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)));
 							break;
 						case WM_RBUTTONDBLCLK:
-							for(auto listener:window->mEventListeners)
+							for(auto listener:listeners)
 								listener->onMouseButtonEvent(window,CWindowEventListener::EMouseButtonType_Right,CWindowEventListener::EMouseButtonEventType_DoubleClick,CUInt2(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)));
 							break;
 						case WM_MBUTTONDOWN:
-							for(auto listener:window->mEventListeners)
+							for(auto listener:listeners)
 								listener->onMouseButtonEvent(window,CWindowEventListener::EMouseButtonType_Middle,CWindowEventListener::EMouseButtonEventType_Down,CUInt2(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)));
 							break;
 						case WM_MBUTTONUP:
-							for(auto listener:window->mEventListeners)
+							for(auto listener:listeners)
 								listener->onMouseButtonEvent(window,CWindowEventListener::EMouseButtonType_Middle,CWindowEventListener::EMouseButtonEventType_Up,CUInt2(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)));
 							break;
 						case WM_MBUTTONDBLCLK:
-							for(auto listener:window->mEventListeners)
+							for(auto listener:listeners)
 								listener->onMouseButtonEvent(window,CWindowEventListener::EMouseButtonType_Middle,CWindowEventListener::EMouseButtonEventType_DoubleClick,CUInt2(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)));
 							break;
 						case WM_MOUSEMOVE:
-							for(auto listener:window->mEventListeners)
+							for(auto listener:listeners)
 								listener->onMouseMoveEvent(window,CUInt2(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam)));
 							break;
 						case WM_MOUSEWHEEL:
-							for(auto listener:window->mEventListeners)
+							for(auto listener:listeners)
 								listener->onMouseWheelEvent(window,GET_WHEEL_DELTA_WPARAM(wParam));
 							break;
 						}

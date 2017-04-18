@@ -54,6 +54,31 @@ namespace NSDevilX
 			this->clear();
 		}
 	};
+	template<class ContainerT>
+	class TCOMResourcePtrContainer
+		:public ContainerT
+	{
+	public:
+		using ContainerT::ContainerT;
+		using ContainerT::operator=;
+		virtual ~TCOMResourcePtrContainer()
+		{
+			destroyAll();
+		}
+		Void destroy(typename ContainerT::value_type value)
+		{
+			this->remove(value);
+			value->Release();
+		}
+		Void destroyAll()
+		{
+			for(auto res:*this)
+			{
+				res->Release();
+			}
+			this->clear();
+		}
+	};
 	template<class ValueT>
 	class TResourcePtrVector
 		:public TResourcePtrContainer<TVector<ValueT*> >
@@ -62,6 +87,16 @@ namespace NSDevilX
 		using TResourcePtrContainer<TVector<ValueT*> >::TResourcePtrContainer;
 		using TResourcePtrContainer<TVector<ValueT*> >::operator=;
 		virtual ~TResourcePtrVector(){}
+	};
+	template<class ValueT>
+	class TCOMResourcePtrVector
+		:public TCOMResourcePtrContainer<TVector<ValueT*> >
+	{
+	public:
+		using TCOMResourcePtrContainer<TVector<ValueT*> >::TCOMResourcePtrContainer;
+		using TCOMResourcePtrContainer<TVector<ValueT*> >::operator=;
+		virtual ~TCOMResourcePtrVector()
+		{}
 	};
 	template<class ValueT>
 	class TResourcePtrVectorMT

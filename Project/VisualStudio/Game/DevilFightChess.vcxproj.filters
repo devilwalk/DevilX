@@ -115,5 +115,8 @@
     <None Include="..\..\..\Code\Game\Resource\DevilFightChess\LoginPage.layout">
       <Filter>Resource</Filter>
     </None>
+    <None Include="..\..\..\Code\Game\Resource\DevilFightChess\RegisterPage.layout">
+      <Filter>Resource</Filter>
+    </None>
   </ItemGroup>
 </Project>

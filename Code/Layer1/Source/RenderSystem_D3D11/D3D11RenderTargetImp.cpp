@@ -6,10 +6,8 @@ using namespace NSD3D11;
 NSDevilX::NSRenderSystem::NSD3D11::CRenderTargetImp::CRenderTargetImp(ID3D11RenderTargetView * rt)
 	:mDepthStencil(nullptr)
 {
-	mDepthStencil=CSystemImp::getSingleton().getFreeDepthStencil();
 	setInternal(DEVILX_NEW CRenderTarget());
 	getInternal()->setRTView(0,rt);
-	getInternal()->setDSView(mDepthStencil->getInternal());
 }
 
 NSDevilX::NSRenderSystem::NSD3D11::CRenderTargetImp::~CRenderTargetImp()

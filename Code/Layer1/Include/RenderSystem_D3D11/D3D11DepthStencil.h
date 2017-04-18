@@ -12,22 +12,21 @@ namespace NSDevilX
 			{
 			protected:
 				ID3D11Texture2D * mTextureResource;
-				Bool mLocked;
+				UInt32 mLocked;
 			public:
-				CDepthStencil();
+				CDepthStencil(UInt32 width,UInt32 height);
 				~CDepthStencil();
-				Void reserve(UInt32 width,UInt32 height);
 				Void lock()
 				{
-					mLocked=True;
+					++mLocked;
 				}
 				Void unlock()
 				{
-					mLocked=False;
+					--mLocked;
 				}
 				Bool getLocked()const
 				{
-					return mLocked;
+					return mLocked>0;
 				}
 			};
 		}

@@ -1,4 +1,5 @@
 #pragma once
+#include "D3D11DepthStencil.h"
 namespace NSDevilX
 {
 	namespace NSRenderSystem
@@ -11,7 +12,7 @@ namespace NSDevilX
 			{
 			protected:
 				ID3D11RenderTargetView * mRenderTargets[8];
-				ID3D11DepthStencilView * mDepthStencil;
+				CDepthStencil * mDepthStencil;
 			public:
 				CRenderTarget();
 				~CRenderTarget();
@@ -21,8 +22,8 @@ namespace NSDevilX
 				{
 					return mRenderTargets[index];
 				}
-				Void setDSView(ID3D11DepthStencilView * view);
-				ID3D11DepthStencilView * getDSView()const
+				Void setDepthStencil(CDepthStencil * ds);
+				CDepthStencil * getDepthStencil()const
 				{
 					return mDepthStencil;
 				}

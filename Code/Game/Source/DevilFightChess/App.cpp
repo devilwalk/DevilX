@@ -39,11 +39,14 @@ Void NSDevilX::NSFightChess::CApp::run()
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
-		mGame->update();
-		NSGUISystem::getSystem()->update();
-		NSResourceSystem::getSystem()->update();
-		NSRenderSystem::getSystem()->update();
-		NSNetworkSystem::getSystem()->update();
+		else
+		{
+			mGame->update();
+			NSGUISystem::getSystem()->update();
+			NSResourceSystem::getSystem()->update();
+			NSRenderSystem::getSystem()->update();
+			NSNetworkSystem::getSystem()->update();
+		}
 	}
 #endif
 	DEVILX_DELETE(this);

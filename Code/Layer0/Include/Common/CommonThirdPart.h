@@ -10,11 +10,13 @@
 #include "DirectXMath/DirectXPackedVector.h"
 #include "DirectXMath/DirectXColors.h"
 #include "DirectXMath/DirectXCollision.h"
+#define __TBB_SOURCE_DIRECTLY_INCLUDED 1
 #include "TBB/tbb/tbb_allocator.h"
 #include "TBB/tbb/scalable_allocator.h"
 #include "TBB/tbb/reader_writer_lock.h"
 #include "TBB/tbb/concurrent_queue.h"
 #include "TBB/tbb/concurrent_vector.h"
+#undef __TBB_SOURCE_DIRECTLY_INCLUDED
 #include "TinyXML/tinyxml.h"
 #pragma warning(push)
 #pragma warning(disable:4819)

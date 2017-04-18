@@ -16,13 +16,58 @@ namespace NSDevilX
 	}
 }
 
+NSDevilX::NSFightChess::CRegisterPage::CRegisterPage()
+	:mGUIWindow(nullptr)
+{
+	mGUIWindow=CApp::getSingleton().getGame()->getGUIScene()->createWindow("RegisterPage");
+	CUIScript script;
+	script.process(CDirectory::getApplicationDirectory()+"/Resource/RegisterPage.layout",mGUIWindow,this,this);
+}
+
+NSDevilX::NSFightChess::CRegisterPage::~CRegisterPage()
+{
+	CApp::getSingleton().getGame()->getGUIScene()->destroyWindow(mGUIWindow);
+}
+
+Void NSDevilX::NSFightChess::CRegisterPage::onEvent(NSGUISystem::IButton * control,IButtonEventCallback::EEvent events)
+{
+	if(control->queryInterface_IControl()->getName()=="RegisterPage/Button_Cancel")
+	{
+		switch(events)
+		{
+		case IButtonEventCallback::EEvent::EEvent_Click:
+			CApp::getSingleton().getGame()->stopModule("Register");
+			CApp::getSingleton().getGame()->startModule("Login");
+			break;
+		}
+	}
+	else if(control->queryInterface_IControl()->getName()=="RegisterPage/Button_Register")
+	{
+		switch(events)
+		{
+		case IButtonEventCallback::EEvent::EEvent_Click:
+			CApp::getSingleton().getGame()->stopModule("Register");
+			CApp::getSingleton().getGame()->startModule("Login");
+			break;
+		}
+	}
+}
+
+Void NSDevilX::NSFightChess::CRegisterPage::onEvent(NSGUISystem::IEditBox * control,IEditBoxEventCallback::EEvent events)
+{
+	return Void();
+}
+
 NSDevilX::NSFightChess::CRegister::CRegister()
 	:CModule("Register")
+	,mPage(nullptr)
 	,mReturnCode(-1)
 {}
 
 NSDevilX::NSFightChess::CRegister::~CRegister()
-{}
+{
+	DEVILX_DELETE(mPage);
+}
 
 Void NSDevilX::NSFightChess::CRegister::doneMT(CServer::EReturnCode code)
 {
@@ -31,7 +76,8 @@ Void NSDevilX::NSFightChess::CRegister::doneMT(CServer::EReturnCode code)
 
 Void NSDevilX::NSFightChess::CRegister::start()
 {
-	CApp::getSingleton().getGame()->getServerManager()->localUserRegister("Default","123",NSInternal::registerCallback,this);
+	//CApp::getSingleton().getGame()->getServerManager()->localUserRegister("Default","123",NSInternal::registerCallback,this);
+	mPage=DEVILX_NEW CRegisterPage;
 }
 
 Void NSDevilX::NSFightChess::CRegister::update()
@@ -49,5 +95,6 @@ Void NSDevilX::NSFightChess::CRegister::update()
 
 Void NSDevilX::NSFightChess::CRegister::stop()
 {
-	return Void();
+	DEVILX_DELETE(mPage);
+	mPage=nullptr;
 }

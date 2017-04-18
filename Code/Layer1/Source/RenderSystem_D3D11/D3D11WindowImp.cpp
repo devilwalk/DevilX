@@ -29,8 +29,8 @@ NSDevilX::NSRenderSystem::NSD3D11::CWindowImp::CWindowImp(IWindowImp * interface
 	CComPtr<ID3D11RenderTargetView> temp_internal;
 	CSystemImp::getSingleton().getDevice()->CreateRenderTargetView(mRenderTargetResource,nullptr,&temp_internal);
 	getInternal()->setRTView(0,temp_internal);
-	mDepthStencil->reserve(desc.BufferDesc.Width,desc.BufferDesc.Height);
-	getInternal()->setDSView(mDepthStencil->getInternal());
+	mDepthStencil=CSystemImp::getSingleton().getFreeDepthStencil(desc.BufferDesc.Width,desc.BufferDesc.Height);
+	getInternal()->setDepthStencil(mDepthStencil);
 	getInterfaceImp()->addListener(static_cast<TMessageReceiver<IWindowImp>*>(this),IWindowImp::EMessage_EndViewportCreate);
 	getInterfaceImp()->addListener(static_cast<TMessageReceiver<IWindowImp>*>(this),IWindowImp::EMessage_BeginViewportDestroy);
 }
@@ -73,8 +73,8 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CWindowImp::_resize()
 	getInternal()->setRTView(0,rt);
 	DXGI_SWAP_CHAIN_DESC desc;
 	getSwapChain()->GetDesc(&desc);
-	mDepthStencil->reserve(desc.BufferDesc.Width,desc.BufferDesc.Height);
-	getInternal()->setDSView(mDepthStencil->getInternal());
+	mDepthStencil=CSystemImp::getSingleton().getFreeDepthStencil(desc.BufferDesc.Width,desc.BufferDesc.Height);
+	getInternal()->setDepthStencil(mDepthStencil);
 	getInternal()->needUpdate();
 	notify(EMessage_EndResize);
 }

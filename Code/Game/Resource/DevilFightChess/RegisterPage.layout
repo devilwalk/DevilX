@@ -1,0 +1,13 @@
+<Window Name="RegisterPage/Window" Position="0.25,0.25" Size="0.5,0.5">
+  <ImageBox Name="RegisterPage/Background" Position="0,0" Size="1,1">
+    <StaticText Name="RegisterPage/StaticText_Title" Position="0.4,0" Size="0.2,0.1" Text="用户注册" Colour="0,0,0,1"/>
+    <StaticText Name="RegisterPage/StaticText_Username" Position="0.25,0.25" Size="0.2,0.05" Text="用户名:" Colour="0,0,0,1"/>
+    <EditBox Name="RegisterPage/Edit_Username" Position="0.45,0.25" Size="0.4,0.05" Colour="0.5,0.5,0.5,1"/>
+    <StaticText Name="RegisterPage/StaticText_Password" Position="0.25,0.3" Size="0.2,0.05" Text="密码:" Colour="0,0,0,1"/>
+    <EditBox Name="RegisterPage/Edit_Password" Position="0.45,0.3" Size="0.4,0.05" Colour="0.5,0.5,0.5,1"/>
+    <StaticText Name="RegisterPage/StaticText_ConfirmPassword" Position="0.25,0.35" Size="0.2,0.05" Text="确认密码:" Colour="0,0,0,1"/>
+    <EditBox Name="RegisterPage/Edit_ConfirmPassword" Position="0.45,0.35" Size="0.4,0.05" Colour="0.5,0.5,0.5,1"/>
+    <Button Name="RegisterPage/Button_OK" Position="0.25,0.8" Size="0.2,0.05" Text="注册" Colour="0,0,0,1"/>
+    <Button Name="RegisterPage/Button_Cancel" Position="0.55,0.8" Size="0.2,0.05" Text="取消" Colour="0,0,0,1"/>
+  </ImageBox>
+</Window>

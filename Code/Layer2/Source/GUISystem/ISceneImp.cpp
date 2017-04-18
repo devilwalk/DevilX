@@ -88,6 +88,9 @@ IWindow * NSDevilX::NSGUISystem::ISceneImp::getWindow(const String & name) const
 
 Void NSDevilX::NSGUISystem::ISceneImp::destroyWindow(IWindow * window)
 {
+	if(mActiveWindow==window)
+		setActiveWindow(nullptr);
+	mOrderedWindows.remove(static_cast<IWindowImp*>(window));
 	mWindows.destroy(window->queryInterface_IControl()->getName());
 }
 

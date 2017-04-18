@@ -170,37 +170,17 @@ NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::~CSystemImp()
 	case D3D_FEATURE_LEVEL_11_0:
 	case D3D_FEATURE_LEVEL_11_1:mShaderModelType=CEnum::EShaderModelType_5;DEVILX_DELETE(mDefinitionShader5);break;
 	}
-	for(auto depth_stencil:mDepthStencils)
-		DEVILX_DELETE(depth_stencil);
 	DEVILX_DELETE(mShaderCodeManager);
 	DEVILX_DELETE(mConstantBufferDescriptionManager);
 	DEVILX_DELETE(mClearViewportShader);
 	DEVILX_DELETE(mOverlayMaterialManager);
-	for(auto state:mRasterizerStates)
-	{
-		state->Release();
-	}
-	for(auto state:mBlendStates)
-	{
-		state->Release();
-	}
-	for(auto state:mDepthStencilStates)
-	{
-		state->Release();
-	}
-	for(auto state:mSamplerStates)
-	{
-		state->Release();
-	}
-	for(auto inputlayout:mInputLayouts)
-		DEVILX_DELETE(inputlayout);
-	auto ref_count=mImmediateContext->Release();
-	assert(0==ref_count);
-	ref_count=mFactory->Release();
-	assert(0==ref_count);
-	mInstanceByInternals.clear();
-	mInstanceByCOMInternals.clear();
 #ifdef DEVILX_DEBUG
+	mRasterizerStates.destroyAll();
+	mBlendStates.destroyAll();
+	mDepthStencilStates.destroyAll();
+	mSamplerStates.destroyAll();
+	mInputLayouts.destroyAll();
+	mDepthStencils.clear();
 	mShaders.destroyAll();
 	mWindows.destroyAll();
 	mScenes.destroyAll();
@@ -211,27 +191,35 @@ NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::~CSystemImp()
 	getDebug()->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 	getDebug()->Release();
 #endif
+	auto ref_count=mImmediateContext->Release();
+	assert(0==ref_count);
+	ref_count=mFactory->Release();
+	assert(0==ref_count);
 	ref_count=mDevice->Release();
 	assert(0==ref_count);
+	mInstanceByInternals.clear();
+	mInstanceByCOMInternals.clear();
 }
 
-CDepthStencil * NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::getFreeDepthStencil()
+CDepthStencil * NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::getFreeDepthStencil(UInt32 width,UInt32 height)
 {
-	CDepthStencil * ret=nullptr;
-	for(auto ds:mDepthStencils)
+	auto key=(width<<16)|height;
+	auto & depths=mDepthStencils[key];
+	CDepthStencil * depth=nullptr;
+	for(auto ds:depths)
 	{
 		if(!ds->getLocked())
 		{
-			ret=ds;
+			depth=ds;
 			break;
 		}
 	}
-	if(!ret)
+	if(!depth)
 	{
-		ret=DEVILX_NEW CDepthStencil();
-		mDepthStencils.push_back(ret);
+		depth=DEVILX_NEW CDepthStencil(width,height);
+		depths.push_back(depth);
 	}
-	return ret;
+	return depth;
 }
 
 ID3D11InputLayout * NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::getInputLayout(const D3D11_INPUT_ELEMENT_DESC * descs,UINT numElements)
