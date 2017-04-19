@@ -14,6 +14,7 @@ NSDevilX::NSGUISystem::CButton::CButton(const String & name,CControl * parent)
 	background->setColour(CFloatRGBA::sBlue);
 	_attachWindow(background);
 	mTextControl=DEVILX_NEW CStaticText(name+"/TextControl",this);
+	mTextControl->getLayer()->setSize(CFloat2::sOne);
 
 	auto event_window=getEventScene()->createWindow(name);
 	event_window->queryInterface_IElement()->setPosition(CFloat2::sZero);
