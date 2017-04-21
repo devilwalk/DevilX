@@ -2,8 +2,9 @@
 using namespace NSDevilX;
 using namespace NSGUISystem;
 
-NSDevilX::NSGUISystem::IControlImp::IControlImp(CControl * control,IWindowImp * parentWindow)
-	:mParentWindow(parentWindow)
+NSDevilX::NSGUISystem::IControlImp::IControlImp(EType type,CControl * control,IWindowImp * parentWindow)
+	:mType(type)
+	,mParentWindow(parentWindow)
 	,mControl(control)
 	,mParentControl(nullptr)
 {

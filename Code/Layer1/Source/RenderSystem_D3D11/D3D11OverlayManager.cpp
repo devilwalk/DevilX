@@ -23,8 +23,8 @@ Void NSDevilX::NSRenderSystem::NSD3D11::COverlayManager::render()
 	{
 		for(auto renderable:renderables.second)
 		{
-			renderable->render(ro);
-			ro.process();
+			if(renderable->render(ro))
+				ro.process();
 		}
 	}
 }

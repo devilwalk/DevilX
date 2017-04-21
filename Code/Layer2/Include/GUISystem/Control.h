@@ -44,5 +44,12 @@ namespace NSDevilX
 			Void _destroyGraphicWindows();
 			Void _destroyEventWindow();
 		};
+		class CContainer
+			:public CControl
+			,public TBaseObject<CContainer>
+		{
+		public:
+			using CControl::CControl;
+		};
 	}
 }

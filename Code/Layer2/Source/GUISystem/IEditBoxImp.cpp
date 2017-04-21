@@ -4,16 +4,20 @@ using namespace NSGUISystem;
 
 NSDevilX::NSGUISystem::IEditBoxImp::IEditBoxImp(const String & name,IWindowImp * window)
 	:mControl(nullptr)
+	,mTextProperty(nullptr)
 	,mEventCallback(nullptr)
 {
-	mControl=DEVILX_NEW IControlImp(DEVILX_NEW CEditBox(name,static_cast<IControlImp*>(window->queryInterface_IControl())->getControl()),window);
-	mControl->getControl()->getEventWindow()->registerListener(this,IWindowImp::SEvent::EType_ControlFocus);
+	mControl=DEVILX_NEW IControlImp(IControlImp::EType_EditBox,DEVILX_NEW CEditBox(name,static_cast<IControlImp*>(window->queryInterface_IControl())->getControl()),window);
+	mControl->setUserPointer(0,this);
+	mControl->getControl()->getEventWindow()->registerListener(this,CEvent::EType_MouseMove);
 	mControl->addListener(static_cast<TMessageReceiver<IControlImp>*>(this),IControlImp::EMessage_BeginDestruction);
+	mTextProperty=DEVILX_NEW ITextPropertyImp(static_cast<CStaticText*>(mControl->getControl())->getTextProperty());
 	static_cast<CEditBox*>(mControl->getControl())->addListener(static_cast<TMessageReceiver<CEditBox>*>(this),CEditBox::EMessage_EndTextChange);
 }
 
 NSDevilX::NSGUISystem::IEditBoxImp::~IEditBoxImp()
 {
+	DEVILX_DELETE(mTextProperty);
 }
 
 IControl * NSDevilX::NSGUISystem::IEditBoxImp::queryInterface_IControl() const
@@ -21,14 +25,9 @@ IControl * NSDevilX::NSGUISystem::IEditBoxImp::queryInterface_IControl() const
 	return mControl;
 }
 
-Void NSDevilX::NSGUISystem::IEditBoxImp::setFontResource(NSResourceSystem::IResource * resource)
+ITextProperty * NSDevilX::NSGUISystem::IEditBoxImp::getTextProperty() const
 {
-	static_cast<CEditBox*>(mControl->getControl())->getTextControl()->setFontResource(resource);
-}
-
-NSResourceSystem::IResource * NSDevilX::NSGUISystem::IEditBoxImp::getFontResource() const
-{
-	return static_cast<CEditBox*>(mControl->getControl())->getTextControl()->getFontResource();
+	return mTextProperty;
 }
 
 Void NSDevilX::NSGUISystem::IEditBoxImp::setText(const CUTF8String & text)
@@ -40,17 +39,6 @@ const CUTF8String & NSDevilX::NSGUISystem::IEditBoxImp::getText() const
 {
 	// TODO: 在此处插入 return 语句
 	return static_cast<CEditBox*>(mControl->getControl())->getTextControl()->getText();
-}
-
-Void NSDevilX::NSGUISystem::IEditBoxImp::setTextColour(const CColour & colour)
-{
-	static_cast<CEditBox*>(mControl->getControl())->getTextControl()->setTextColour(colour);
-}
-
-const CColour & NSDevilX::NSGUISystem::IEditBoxImp::getTextColour() const
-{
-	// TODO: 在此处插入 return 语句
-	return static_cast<CEditBox*>(mControl->getControl())->getTextControl()->getTextColour();
 }
 
 Void NSDevilX::NSGUISystem::IEditBoxImp::setBackground(NSResourceSystem::IResource * resource)
@@ -98,7 +86,7 @@ Void NSDevilX::NSGUISystem::IEditBoxImp::onEvent(NSUISystem::IEvent * e)
 {
 	switch(e->getType())
 	{
-	case IWindowImp::SEvent::EType_ControlFocus:
+	case CEvent::EType_MouseMove:
 		static_cast<IWindowImp*>(queryInterface_IControl()->getParentWindow())->setFocusControl(static_cast<IControlImp*>(queryInterface_IControl()));
 		break;
 	}

@@ -1,5 +1,6 @@
 #pragma once
 #include "Control.h"
+#include "TextProperty.h"
 namespace NSDevilX
 {
 	namespace NSGUISystem
@@ -10,27 +11,29 @@ namespace NSDevilX
 			,public TBaseObject<CStaticText>
 			,public TMessageReceiver<ISystemImp>
 			,public CDirtyFlagContainer
+			,public TMessageReceiver<CTextProperty>
 		{
 		public:
 			enum EDirtyFlag
 			{
-				EDirtyFlag_FontResource,
-				EDirtyFlag_Text,
-				EDirtyFlag_TextColour
+				EDirtyFlag_Property,
+				EDirtyFlag_Text
 			};
 		protected:
-			NSResourceSystem::IResource * mFontResource;
+			CTextProperty * mTextProperty;
 			CUTF8String mText;
-			CFloatRGBA mTextColour;
 		public:
 			CStaticText(const String & name,CControl * parent);
 			~CStaticText();
-			Void setFontResource(NSResourceSystem::IResource * resource);
-			NSResourceSystem::IResource * getFontResource() const;
+			CTextProperty * getTextProperty()const
+			{
+				return mTextProperty;
+			}
 			Void setText(const CUTF8String & text);
-			const CUTF8String & getText() const;
-			Void setTextColour(const CColour & colour);
-			const CColour & getTextColour() const;
+			const CUTF8String & getText() const
+			{
+				return mText;
+			}
 			Boolean getPosition(UInt32 charIndex,CFloat2 * position)const;
 			Boolean getPositions(TVector<CFloat2> * positions,Float * lastCharRight=nullptr)const;
 		protected:
@@ -40,6 +43,7 @@ namespace NSDevilX
 			virtual Void _postProcessDirtyFlagRemove(UInt32 flagIndex) override;
 			// Í¨¹ý TMessageReceiver ¼Ì³Ð
 			virtual Void onMessage(ISystemImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
+			virtual Void onMessage(CTextProperty * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 		};
 	}
 }

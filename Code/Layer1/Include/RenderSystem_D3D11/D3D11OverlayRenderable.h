@@ -31,7 +31,7 @@ namespace NSDevilX
 				{
 					return mMaterial;
 				}
-				Void render(CRenderOperation & ro);
+				Boolean render(CRenderOperation & ro);
 				Void addElement(IOverlayElementImp * element);
 				Void removeElement(IOverlayElementImp * element);
 				// Í¨¹ý TMessageReceiver ¼Ì³Ð

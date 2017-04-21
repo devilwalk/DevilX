@@ -16,8 +16,9 @@ namespace NSDevilX
 	}
 }
 
-NSDevilX::NSFightChess::CRegisterPage::CRegisterPage()
-	:mGUIWindow(nullptr)
+NSDevilX::NSFightChess::CRegisterPage::CRegisterPage(CRegister * reg)
+	:mRegister(reg)
+	,mGUIWindow(nullptr)
 {
 	mGUIWindow=CApp::getSingleton().getGame()->getGUIScene()->createWindow("RegisterPage");
 	CUIScript script;
@@ -41,14 +42,21 @@ Void NSDevilX::NSFightChess::CRegisterPage::onEvent(NSGUISystem::IButton * contr
 			break;
 		}
 	}
-	else if(control->queryInterface_IControl()->getName()=="RegisterPage/Button_Register")
+	else if(control->queryInterface_IControl()->getName()=="RegisterPage/Button_OK")
 	{
 		switch(events)
 		{
 		case IButtonEventCallback::EEvent::EEvent_Click:
-			CApp::getSingleton().getGame()->stopModule("Register");
-			CApp::getSingleton().getGame()->startModule("Login");
-			break;
+		{
+			auto password_buf=mGUIWindow->getEditBox("RegisterPage/Edit_Password")->getText().toBytes();
+			auto confirm_password_buf=mGUIWindow->getEditBox("RegisterPage/Edit_ConfirmPassword")->getText().toBytes();
+			if(password_buf==confirm_password_buf)
+			{
+				auto username_buf=mGUIWindow->getEditBox("RegisterPage/Edit_Username")->getText().toBytes();
+				CApp::getSingleton().getGame()->getServerManager()->localUserRegister(String(reinterpret_cast<Char*>(&username_buf[0]),username_buf.size()),String(reinterpret_cast<Char*>(&password_buf[0]),password_buf.size()),NSInternal::registerCallback,mRegister);
+			}
+		}
+		break;
 		}
 	}
 }
@@ -76,8 +84,7 @@ Void NSDevilX::NSFightChess::CRegister::doneMT(CServer::EReturnCode code)
 
 Void NSDevilX::NSFightChess::CRegister::start()
 {
-	//CApp::getSingleton().getGame()->getServerManager()->localUserRegister("Default","123",NSInternal::registerCallback,this);
-	mPage=DEVILX_NEW CRegisterPage;
+	mPage=DEVILX_NEW CRegisterPage(this);
 }
 
 Void NSDevilX::NSFightChess::CRegister::update()
@@ -97,4 +104,5 @@ Void NSDevilX::NSFightChess::CRegister::stop()
 {
 	DEVILX_DELETE(mPage);
 	mPage=nullptr;
+	mReturnCode.write(-1);
 }

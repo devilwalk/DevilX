@@ -93,6 +93,30 @@
     <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIEnum.h">
       <Filter>Interface Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIPageBar.h">
+      <Filter>Interface Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\IPageBarImp.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\PageBarItem.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\PageBar.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\Event.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUITextProperty.h">
+      <Filter>Interface Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\ITextPropertyImp.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\TextProperty.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\Precompiler.cpp">
@@ -138,6 +162,21 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\Caret.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\IPageBarImp.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\PageBarItem.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\PageBar.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\ITextPropertyImp.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\TextProperty.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

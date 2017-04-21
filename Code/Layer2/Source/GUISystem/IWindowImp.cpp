@@ -2,28 +2,6 @@
 using namespace NSDevilX;
 using namespace NSGUISystem;
 
-NSDevilX::NSGUISystem::IWindowImp::SEvent::SEvent(EType type)
-	:mType(type)
-	,mLayer(nullptr)
-{
-	mLayer=NSUISystem::getSystem()->createLayer("Window/ControlFocus/"+CStringConverter::toString(this));
-}
-
-NSDevilX::NSGUISystem::IWindowImp::SEvent::~SEvent()
-{
-	NSUISystem::getSystem()->destroyLayer(queryInterface_IElement());
-}
-
-NSUISystem::IElement * NSDevilX::NSGUISystem::IWindowImp::SEvent::queryInterface_IElement() const
-{
-	return mLayer;
-}
-
-UInt32 NSDevilX::NSGUISystem::IWindowImp::SEvent::getType() const
-{
-	return mType;
-}
-
 NSDevilX::NSGUISystem::IWindowImp::IWindowImp(const String & name,ISceneImp * scene)
 	:mControl(nullptr)
 	,mScene(scene)
@@ -32,7 +10,8 @@ NSDevilX::NSGUISystem::IWindowImp::IWindowImp(const String & name,ISceneImp * sc
 	,mFocusControl(nullptr)
 {
 	mEventScene=NSUISystem::getSystem()->createEventScene(CStringConverter::toString(getScene()->getRenderViewport())+"/"+name);
-	mControl=DEVILX_NEW IControlImp(DEVILX_NEW CControl(name,static_cast<ISceneImp*>(getScene())->getGraphicScene(),mEventScene),nullptr);
+	mControl=DEVILX_NEW IControlImp(IControlImp::EType_Container,DEVILX_NEW CContainer(name,static_cast<ISceneImp*>(getScene())->getGraphicScene(),mEventScene),nullptr);
+	mControl->setUserPointer(0,this);
 	mEventWindow=static_cast<ISceneImp*>(getScene())->getEventScene()->createWindow(name);
 	mEventWindow->queryInterface_IElement()->setParent(mControl->getControl()->getLayer());
 	mEventWindow->queryInterface_IElement()->setSize(CFloat2::sOne);
@@ -50,7 +29,7 @@ NSDevilX::NSGUISystem::IWindowImp::~IWindowImp()
 
 Void NSDevilX::NSGUISystem::IWindowImp::update()
 {
-	SEvent e(SEvent::EType_ControlFocus);
+	CEvent e(CEvent::EType_MouseMove);
 	e.queryInterface_IElement()->setPosition(ISystemImp::getSingleton().getWindow()->getCursorPosition()/ISystemImp::getSingleton().getWindow()->getSize());
 	e.queryInterface_IElement()->setSize(CInt2::sOne/ISystemImp::getSingleton().getWindow()->getSize());
 	if(!mEventScene->route(&e))
@@ -122,4 +101,40 @@ Void NSDevilX::NSGUISystem::IWindowImp::onEvent(NSUISystem::IEvent * e)
 		static_cast<ISceneImp*>(getScene())->setActiveWindow(this);
 		break;
 	}
+}
+
+IImageBox * NSDevilX::NSGUISystem::IWindowImp::getImageBox(const String & name) const
+{
+	auto control=mControls.get(name);
+	if(control&&(control->getType()==IControlImp::EType_ImageBox))
+		return control->getUserPointer<IImageBoxImp>(0);
+	else
+		return nullptr;
+}
+
+IStaticText * NSDevilX::NSGUISystem::IWindowImp::getStaticText(const String & name) const
+{
+	auto control=mControls.get(name);
+	if(control&&(control->getType()==IControlImp::EType_StaticText))
+		return control->getUserPointer<IStaticTextImp>(0);
+	else
+		return nullptr;
+}
+
+IButton * NSDevilX::NSGUISystem::IWindowImp::getButton(const String & name) const
+{
+	auto control=mControls.get(name);
+	if(control&&(control->getType()==IControlImp::EType_Button))
+		return control->getUserPointer<IButtonImp>(0);
+	else
+		return nullptr;
+}
+
+IEditBox * NSDevilX::NSGUISystem::IWindowImp::getEditBox(const String & name) const
+{
+	auto control=mControls.get(name);
+	if(control&&(control->getType()==IControlImp::EType_EditBox))
+		return control->getUserPointer<IEditBoxImp>(0);
+	else
+		return nullptr;
 }

@@ -4,11 +4,14 @@ using namespace NSGUISystem;
 
 NSDevilX::NSGUISystem::IButtonImp::IButtonImp(const String & name,IWindowImp * window)
 	:mControl(nullptr)
+	,mTextProperty(nullptr)
 	,mEventCallback(nullptr)
 {
-	mControl=DEVILX_NEW IControlImp(DEVILX_NEW CButton(name,static_cast<IControlImp*>(window->queryInterface_IControl())->getControl()),window);
-	mControl->getControl()->getEventWindow()->registerListener(this,IWindowImp::SEvent::EType_ControlFocus);
+	mControl=DEVILX_NEW IControlImp(IControlImp::EType_Button,DEVILX_NEW CButton(name,static_cast<IControlImp*>(window->queryInterface_IControl())->getControl()),window);
+	mControl->setUserPointer(0,this);
+	mControl->getControl()->getEventWindow()->registerListener(this,CEvent::EType_MouseMove);
 	mControl->addListener(static_cast<TMessageReceiver<IControlImp>*>(this),IControlImp::EMessage_BeginDestruction);
+	mTextProperty=DEVILX_NEW ITextPropertyImp(static_cast<CStaticText*>(mControl->getControl())->getTextProperty());
 	static_cast<CButton*>(mControl->getControl())->addListener(static_cast<TMessageReceiver<CButton>*>(this),CButton::EMessage_Click);
 	static_cast<CButton*>(mControl->getControl())->addListener(static_cast<TMessageReceiver<CButton>*>(this),CButton::EMessage_Press);
 	static_cast<CButton*>(mControl->getControl())->addListener(static_cast<TMessageReceiver<CButton>*>(this),CButton::EMessage_Release);
@@ -16,6 +19,7 @@ NSDevilX::NSGUISystem::IButtonImp::IButtonImp(const String & name,IWindowImp * w
 
 NSDevilX::NSGUISystem::IButtonImp::~IButtonImp()
 {
+	DEVILX_DELETE(mTextProperty);
 }
 
 IControl * NSDevilX::NSGUISystem::IButtonImp::queryInterface_IControl() const
@@ -23,14 +27,9 @@ IControl * NSDevilX::NSGUISystem::IButtonImp::queryInterface_IControl() const
 	return mControl;
 }
 
-Void NSDevilX::NSGUISystem::IButtonImp::setFontResource(NSResourceSystem::IResource * resource)
+ITextProperty * NSDevilX::NSGUISystem::IButtonImp::getTextProperty() const
 {
-	static_cast<CButton*>(mControl->getControl())->getTextControl()->setFontResource(resource);
-}
-
-NSResourceSystem::IResource * NSDevilX::NSGUISystem::IButtonImp::getFontResource() const
-{
-	return static_cast<CButton*>(mControl->getControl())->getTextControl()->getFontResource();
+	return mTextProperty;
 }
 
 Void NSDevilX::NSGUISystem::IButtonImp::setText(const CUTF8String & text)
@@ -42,17 +41,6 @@ const CUTF8String & NSDevilX::NSGUISystem::IButtonImp::getText() const
 {
 	// TODO: 在此处插入 return 语句
 	return static_cast<CButton*>(mControl->getControl())->getTextControl()->getText();
-}
-
-Void NSDevilX::NSGUISystem::IButtonImp::setTextColour(const CColour & colour)
-{
-	static_cast<CButton*>(mControl->getControl())->getTextControl()->setTextColour(colour);
-}
-
-const CColour & NSDevilX::NSGUISystem::IButtonImp::getTextColour() const
-{
-	// TODO: 在此处插入 return 语句
-	return static_cast<CButton*>(mControl->getControl())->getTextControl()->getTextColour();
 }
 
 Void NSDevilX::NSGUISystem::IButtonImp::setBackground(NSResourceSystem::IResource * resource)
@@ -108,7 +96,7 @@ Void NSDevilX::NSGUISystem::IButtonImp::onEvent(NSUISystem::IEvent * e)
 {
 	switch(e->getType())
 	{
-	case IWindowImp::SEvent::EType_ControlFocus:
+	case CEvent::EType_MouseMove:
 		static_cast<IWindowImp*>(queryInterface_IControl()->getParentWindow())->setFocusControl(static_cast<IControlImp*>(queryInterface_IControl()));
 		break;
 	}

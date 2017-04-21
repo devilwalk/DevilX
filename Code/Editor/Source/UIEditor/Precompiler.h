@@ -1,3 +1,7 @@
 #include "Common.h"
-#include "InputSystem/IInputSystemInterface.h"
+#include "RenderSystem/IRenderSystemInterface.h"
+#include "GUISystem/IGUISystemInterface.h"
 #include "App.h"
+#include "CodeArea.h"
+#include "MainFrame.h"
+#include "VisualArea.h"

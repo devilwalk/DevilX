@@ -16,7 +16,7 @@ NSDevilX::NSGUISystem::CEditBox::CEditBox(const String & name,CControl * parent)
 	_attachWindow(background);
 	mTextControl=DEVILX_NEW CStaticText(name+"/TextControl",this);
 	getTextControl()->getLayer()->setPosition(CFloat2::sZero);
-	mTextControl->setTextColour(CFloatRGBA::sBlack);
+	mTextControl->getTextProperty()->setColour(CFloatRGBA::sBlack);
 	mCaret=DEVILX_NEW CCaret(name+"/Caret",this);
 	mCaret->getLayer()->setPosition(CFloat2::sZero);
 	mCaret->getLayer()->setSize(CFloat2(0.01f,1.0f));

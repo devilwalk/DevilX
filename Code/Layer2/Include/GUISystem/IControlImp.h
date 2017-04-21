@@ -9,20 +9,35 @@ namespace NSDevilX
 			:public IControl
 			,public TBaseObject<IControlImp>
 			,public CMessageNotifier
+			,public CUserDataContainer
 		{
 		public:
+			enum EType
+			{
+				EType_Container,
+				EType_StaticText,
+				EType_Button,
+				EType_ImageBox,
+				EType_EditBox,
+				EType_PageBar
+			};
 			enum EMessage
 			{
 				EMessage_BeginDestruction,
 				EMessage_EndDestruction
 			};
 		protected:
+			EType const mType;
 			IWindowImp * const mParentWindow;
 			CControl * const mControl;
 			IControlImp * mParentControl;
 		public:
-			IControlImp(CControl * control,IWindowImp * parentWindow);
+			IControlImp(EType type,CControl * control,IWindowImp * parentWindow);
 			~IControlImp();
+			EType getType()const
+			{
+				return mType;
+			}
 			CControl * getControl()const
 			{
 				return mControl;

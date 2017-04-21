@@ -5,12 +5,16 @@ using namespace NSGUISystem;
 NSDevilX::NSGUISystem::IStaticTextImp::IStaticTextImp(const String & name,IWindowImp * window)
 	:mControl(nullptr)
 {
-	mControl=DEVILX_NEW IControlImp(DEVILX_NEW CStaticText(name,static_cast<IControlImp*>(window->queryInterface_IControl())->getControl()),window);
+	mControl=DEVILX_NEW IControlImp(IControlImp::EType_StaticText,DEVILX_NEW CStaticText(name,static_cast<IControlImp*>(window->queryInterface_IControl())->getControl()),window);
+	mControl->setUserPointer(0,this);
 	mControl->addListener(this,IControlImp::EMessage_BeginDestruction);
+
+	mTextProperty=DEVILX_NEW ITextPropertyImp(static_cast<CStaticText*>(mControl->getControl())->getTextProperty());
 }
 
 NSDevilX::NSGUISystem::IStaticTextImp::~IStaticTextImp()
 {
+	DEVILX_DELETE(mTextProperty);
 }
 
 IControl * NSDevilX::NSGUISystem::IStaticTextImp::queryInterface_IControl() const
@@ -18,14 +22,9 @@ IControl * NSDevilX::NSGUISystem::IStaticTextImp::queryInterface_IControl() cons
 	return mControl;
 }
 
-Void NSDevilX::NSGUISystem::IStaticTextImp::setFontResource(NSResourceSystem::IResource * resource)
+ITextProperty * NSDevilX::NSGUISystem::IStaticTextImp::getTextProperty() const
 {
-	static_cast<CStaticText*>(mControl->getControl())->setFontResource(resource);
-}
-
-NSResourceSystem::IResource * NSDevilX::NSGUISystem::IStaticTextImp::getFontResource() const
-{
-	return static_cast<CStaticText*>(mControl->getControl())->getFontResource();
+	return mTextProperty;
 }
 
 Void NSDevilX::NSGUISystem::IStaticTextImp::setText(const CUTF8String & text)
@@ -37,17 +36,6 @@ const CUTF8String & NSDevilX::NSGUISystem::IStaticTextImp::getText() const
 {
 	// TODO: 在此处插入 return 语句
 	return static_cast<CStaticText*>(mControl->getControl())->getText();
-}
-
-Void NSDevilX::NSGUISystem::IStaticTextImp::setTextColour(const CColour & colour)
-{
-	static_cast<CStaticText*>(mControl->getControl())->setTextColour(colour);
-}
-
-const CColour & NSDevilX::NSGUISystem::IStaticTextImp::getTextColour() const
-{
-	// TODO: 在此处插入 return 语句
-	return static_cast<CStaticText*>(mControl->getControl())->getTextColour();
 }
 
 Void NSDevilX::NSGUISystem::IStaticTextImp::onMessage(IControlImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)

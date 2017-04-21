@@ -63,6 +63,15 @@ namespace NSDevilX
 				pop_back();
 			return *this;
 		}
+		TVector<Byte> toBytes()const
+		{
+			TVector<Byte> ret;
+			for(auto const & ch:*this)
+			{
+				ret.insert(ret.end(),ch.getBuffer().begin(),ch.getBuffer().end());
+			}
+			return ret;
+		}
 	};
 	class CUTF16String;
 	class CUTF8String

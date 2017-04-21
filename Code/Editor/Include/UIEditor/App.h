@@ -9,8 +9,7 @@ namespace NSDevilX
 		{
 		protected:
 			CWindow * mWindow;
-			NSInputSystem::IVirtualDevice * mMouse;
-			NSInputSystem::IVirtualDevice * mKeyboard;
+			NSRenderSystem::IWindow * mRenderWindow;
 		public:
 			CApp();
 			~CApp();

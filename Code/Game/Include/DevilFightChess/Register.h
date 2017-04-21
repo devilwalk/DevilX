@@ -4,15 +4,17 @@ namespace NSDevilX
 {
 	namespace NSFightChess
 	{
+		class CRegister;
 		class CRegisterPage
 			:public TBaseObject<CRegisterPage>
 			,public NSGUISystem::IButtonEventCallback
 			,public NSGUISystem::IEditBoxEventCallback
 		{
 		protected:
+			CRegister * const mRegister;
 			NSGUISystem::IWindow * mGUIWindow;
 		public:
-			CRegisterPage();
+			CRegisterPage(CRegister * reg);
 			~CRegisterPage();
 
 			// Í¨¹ý IButtonEventCallback ¼Ì³Ð

@@ -23,25 +23,33 @@
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\Caret.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\Control.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\EditBox.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\Event.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\IButtonImp.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\IControlImp.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\IEditBoxImp.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\IImageBoxImp.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\ImageBox.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\IPageBarImp.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\ISceneImp.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\IStaticTextImp.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\ISystemImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\ITextPropertyImp.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\IWindowImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\PageBar.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\PageBarItem.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\StaticText.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\TextProperty.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIButton.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIControl.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIEditBox.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIEnum.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIImageBox.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIPageBar.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIScene.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIStaticText.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUISystem.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUISystemInterface.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUITextProperty.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIWindow.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Source\GUISystem\Precompiler.h" />
   </ItemGroup>
@@ -55,10 +63,14 @@
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\IEditBoxImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\IImageBoxImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\ImageBox.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\IPageBarImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\ISceneImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\IStaticTextImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\ISystemImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\ITextPropertyImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\IWindowImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\PageBar.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\PageBarItem.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\Precompiler.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -66,6 +78,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\StaticText.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\TextProperty.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{0EAE0DBF-8E60-4363-A680-460B5E1CD4EB}</ProjectGuid>

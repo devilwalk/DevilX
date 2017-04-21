@@ -34,7 +34,7 @@
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)..\..\Bin\$(Configuration)\$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
-      <AdditionalDependencies>Common.lib;InputSystem.lib;InputSystem_DirectX.lib;PhysicalSystem.lib;PhysicalSystem_Bullet.lib;RenderSystem.lib;NetworkSystem.lib;NetworkSystem_WindowsSocket.lib;Ungrouped.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Common.lib;InputSystem.lib;InputSystem_DirectX.lib;PhysicalSystem.lib;PhysicalSystem_Bullet.lib;RenderSystem.lib;NetworkSystem.lib;NetworkSystem_WindowsSocket.lib;Ungrouped.lib;UISystem.lib;GUISystem.lib;ResourceSystem.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Lib>
       <AdditionalLibraryDirectories>$(OutDir);C:\Program Files (x86)\Visual Leak Detector\lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>

@@ -70,6 +70,20 @@ namespace NSDevilX
 	public:
 		using std::list<T,TAllocator<T> >::list;
 		using std::list<T,TAllocator<T> >::operator=;
+		const T & operator[](SizeT index)const
+		{
+			auto iter=this->begin();
+			while(index--)
+				++iter;
+			return *iter;
+		}
+		T & operator[](SizeT index)
+		{
+			auto iter=this->begin();
+			while(index--)
+				++iter;
+			return *iter;
+		}
 		typename std::list<T,TAllocator<T> >::const_iterator find(T const & t)const
 		{
 			return std::find(this->begin(),this->end(),t);

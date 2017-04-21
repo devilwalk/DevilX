@@ -73,18 +73,10 @@
     <Import Project="Editor_Release.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LinkIncremental>true</LinkIncremental>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LinkIncremental>false</LinkIncremental>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LinkIncremental>false</LinkIncremental>
-  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PrecompiledHeader>
@@ -151,16 +143,22 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\Editor\Include\UIEditor\App.h" />
+    <ClInclude Include="..\..\..\Code\Editor\Include\UIEditor\CodeArea.h" />
+    <ClInclude Include="..\..\..\Code\Editor\Include\UIEditor\MainFrame.h" />
+    <ClInclude Include="..\..\..\Code\Editor\Include\UIEditor\VisualArea.h" />
     <ClInclude Include="..\..\..\Code\Editor\Source\UIEditor\Precompiler.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Editor\Source\UIEditor\App.cpp" />
+    <ClCompile Include="..\..\..\Code\Editor\Source\UIEditor\CodeArea.cpp" />
+    <ClCompile Include="..\..\..\Code\Editor\Source\UIEditor\MainFrame.cpp" />
     <ClCompile Include="..\..\..\Code\Editor\Source\UIEditor\Precompiler.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="..\..\..\Code\Editor\Source\UIEditor\VisualArea.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\Code\Editor\Resource\UIEditor\Main.layout" />

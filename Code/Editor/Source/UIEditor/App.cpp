@@ -4,24 +4,19 @@ using namespace NSUIEditor;
 
 NSDevilX::NSUIEditor::CApp::CApp()
 	:mWindow(nullptr)
-	,mMouse(nullptr)
-	,mKeyboard(nullptr)
 {
+	CDesktop desktop;
 	mWindow=DEVILX_NEW CWindow();
-	getWindow()->setSize(CSInt2(800,600));
-	for(UInt32 i=0;i<NSInputSystem::getSystem()->getPhysicalDeviceManager()->getDeviceCount();++i)
-	{
-		auto dev=NSInputSystem::getSystem()->getPhysicalDeviceManager()->getDevice(i);
-		if((!mMouse)&&(NSInputSystem::IEnum::EPhysicalDeviceType_Mouse==dev->getType()))
-			mMouse=NSInputSystem::getSystem()->getVirtualDeviceManager()->createDevice("EditorMouse",dev);
-		if((!mKeyboard)&&(NSInputSystem::IEnum::EPhysicalDeviceType_Keyboard==dev->getType()))
-			mKeyboard=NSInputSystem::getSystem()->getVirtualDeviceManager()->createDevice("EditorKeyboard",dev);
-	}
+	mWindow->setSize(desktop.getSize()*0.6f);
+	mWindow->setPosition((desktop.getSize()-mWindow->getSize())/2);
+	NSGUISystem::getSystem()->initialize(mWindow);
+	mRenderWindow=NSRenderSystem::getSystem()->createWindow(mWindow);
 }
 
 NSDevilX::NSUIEditor::CApp::~CApp()
 {
-	NSInputSystem::getSystem()->shutdown();
+	NSGUISystem::getSystem()->shutdown();
+	NSRenderSystem::getSystem()->shutdown();
 	DEVILX_DELETE(mWindow);
 }
 
@@ -35,6 +30,10 @@ Void NSDevilX::NSUIEditor::CApp::run()
 		{
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
+		}
+		else
+		{
+			NSRenderSystem::getSystem()->update();
 		}
 	}
 #endif

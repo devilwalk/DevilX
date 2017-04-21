@@ -16,8 +16,10 @@ NSDevilX::NSRenderSystem::NSD3D11::COverlayRenderable::~COverlayRenderable()
 	ISystemImp::getSingleton().queryInterface_IResourceManager()->destroyGeometry(mGeometry->getInterfaceImp());
 }
 
-Void NSDevilX::NSRenderSystem::NSD3D11::COverlayRenderable::render(CRenderOperation & ro)
+Boolean NSDevilX::NSRenderSystem::NSD3D11::COverlayRenderable::render(CRenderOperation & ro)
 {
+	if(mRectangles.empty())
+		return false;
 	ro.mGeometry=mGeometry;
 	ro.mIndexBufferOffset=0;
 	ro.mIndexCount=mGeometry->getInterfaceImp()->getIndexBuffer()->getCount();
@@ -25,6 +27,7 @@ Void NSDevilX::NSRenderSystem::NSD3D11::COverlayRenderable::render(CRenderOperat
 	ro.mVertexBufferOffset=0;
 	ro.mVertexCount=mGeometry->getInterfaceImp()->getVertexBuffer()->getCount();
 	ro.mPass=mMaterial;
+	return true;
 }
 
 Void NSDevilX::NSRenderSystem::NSD3D11::COverlayRenderable::addElement(IOverlayElementImp * element)

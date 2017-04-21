@@ -6,11 +6,17 @@ namespace NSDevilX
 		class IEnum
 		{
 		public:
-			enum ETextAlignMode
+			enum ETextRowAlignMode
 			{
-				ETextAlignMode_Left,
-				ETextAlignMode_Center,
-				ETextAlignMode_Right
+				ETextRowAlignMode_Left,
+				ETextRowAlignMode_Center,
+				ETextRowAlignMode_Right
+			};
+			enum ETextColumeAlignMode
+			{
+				ETextColumeAlignMode_Top,
+				ETextColumeAlignMode_Center,
+				ETextColumeAlignMode_Bottom
 			};
 		};
 	}

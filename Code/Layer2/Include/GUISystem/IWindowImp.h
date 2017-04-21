@@ -9,23 +9,6 @@ namespace NSDevilX
 			,public TBaseObject<IWindowImp>
 			,public NSUISystem::IEventListener
 		{
-		public:
-			struct SEvent
-				:public NSUISystem::IEvent
-				,public TBaseObject<SEvent>
-			{
-				enum EType
-				{
-					EType_ControlFocus
-				};
-				const EType mType;
-				NSUISystem::IElement * mLayer;
-				SEvent(EType type);
-				~SEvent();
-				// 通过 IEvent 继承
-				virtual NSUISystem::IElement * queryInterface_IElement() const override;
-				virtual UInt32 getType() const override;
-			};
 		protected:
 			NSUISystem::IEventWindow * mEventWindow;
 			NSUISystem::IEventScene * mEventScene;
@@ -49,6 +32,12 @@ namespace NSDevilX
 
 			// 通过 IEventListener 继承
 			virtual Void onEvent(NSUISystem::IEvent * e) override;
+
+			// 通过 IWindow 继承
+			virtual IImageBox * getImageBox(const String & name) const override;
+			virtual IStaticText * getStaticText(const String & name) const override;
+			virtual IButton * getButton(const String & name) const override;
+			virtual IEditBox * getEditBox(const String & name) const override;
 		};
 	}
 }
