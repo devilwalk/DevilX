@@ -6,10 +6,20 @@ NSDevilX::NSGUISystem::CTextProperty::CTextProperty()
 	:mFontResource(nullptr)
 	,mRowAlignMode(IEnum::ETextRowAlignMode_Center)
 	,mColumeAlignMode(IEnum::ETextColumeAlignMode_Center)
+	,mFontSize(CFloat2::sOne)
 {}
 
 NSDevilX::NSGUISystem::CTextProperty::~CTextProperty()
 {}
+
+Void NSDevilX::NSGUISystem::CTextProperty::copyFrom(const CTextProperty * prop)
+{
+	setFontResource(prop->getFontResource());
+	setFontSize(prop->getFontSize());
+	setColour(prop->getColour());
+	setRowAlignMode(prop->getRowAlignMode());
+	setColumeAlignMode(prop->getColumeAlignMode());
+}
 
 Void NSDevilX::NSGUISystem::CTextProperty::setFontResource(NSResourceSystem::IResource * resource)
 {
@@ -22,7 +32,7 @@ Void NSDevilX::NSGUISystem::CTextProperty::setFontResource(NSResourceSystem::IRe
 
 Void NSDevilX::NSGUISystem::CTextProperty::setFontSize(const CFloat2 & size)
 {
-	assert(DirectX::XMVector2ClampLength(size,0.0f,1.0f)==size);
+	assert(CFloat2(DirectX::XMVectorSaturate(size))==size);
 	if(size!=getFontSize())
 	{
 		mFontSize=size;

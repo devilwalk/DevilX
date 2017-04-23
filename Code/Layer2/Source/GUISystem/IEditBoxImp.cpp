@@ -11,7 +11,7 @@ NSDevilX::NSGUISystem::IEditBoxImp::IEditBoxImp(const String & name,IWindowImp *
 	mControl->setUserPointer(0,this);
 	mControl->getControl()->getEventWindow()->registerListener(this,CEvent::EType_MouseMove);
 	mControl->addListener(static_cast<TMessageReceiver<IControlImp>*>(this),IControlImp::EMessage_BeginDestruction);
-	mTextProperty=DEVILX_NEW ITextPropertyImp(static_cast<CStaticText*>(mControl->getControl())->getTextProperty());
+	mTextProperty=DEVILX_NEW ITextPropertyImp(static_cast<CEditBox*>(mControl->getControl())->getTextControl()->getTextProperty());
 	static_cast<CEditBox*>(mControl->getControl())->addListener(static_cast<TMessageReceiver<CEditBox>*>(this),CEditBox::EMessage_EndTextChange);
 }
 

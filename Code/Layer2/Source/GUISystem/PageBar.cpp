@@ -4,7 +4,7 @@ using namespace NSGUISystem;
 
 NSDevilX::NSGUISystem::CPageBar::CPageBar(const String & name,CControl * parent)
 	:CControl(name,parent)
-	,mFontResource(nullptr)
+	,mTextProperty(nullptr)
 	,mNextItemName(0)
 	,mFocus(nullptr)
 {
@@ -18,25 +18,14 @@ NSDevilX::NSGUISystem::CPageBar::CPageBar(const String & name,CControl * parent)
 	event_window->queryInterface_IElement()->setPosition(CFloat2::sZero);
 	event_window->queryInterface_IElement()->setSize(CFloat2::sOne);
 	_attachWindow(event_window);
+
+	mTextProperty=DEVILX_NEW CTextProperty;
+	getTextProperty()->addListener(this,CTextProperty::EMessage_AddDirtyFlag);
 }
 
 NSDevilX::NSGUISystem::CPageBar::~CPageBar()
 {
-}
-
-Void NSDevilX::NSGUISystem::CPageBar::setFontResource(NSResourceSystem::IResource * resource)
-{
-	if(getFontResource()!=resource)
-	{
-		mFontResource=resource;
-		for(auto item:mItems)
-			item->getTextControl()->getTextProperty()->setFontResource(resource);
-	}
-}
-
-NSResourceSystem::IResource * NSDevilX::NSGUISystem::CPageBar::getFontResource() const
-{
-	return mFontResource;
+	DEVILX_DELETE(getTextProperty());
 }
 
 Void NSDevilX::NSGUISystem::CPageBar::setFocus(CPageBarItem * item)
@@ -55,7 +44,7 @@ Void NSDevilX::NSGUISystem::CPageBar::setFocus(CPageBarItem * item)
 Void NSDevilX::NSGUISystem::CPageBar::addItem(const CUTF8String & text)
 {
 	auto item=DEVILX_NEW CPageBarItem(this->getLayer()->getName()+"/"+CStringConverter::toString(mNextItemName++),this);
-	item->getTextControl()->getTextProperty()->setFontResource(getFontResource());
+	item->getTextControl()->getTextProperty()->copyFrom(getTextProperty());
 	item->getTextControl()->setText(text);
 	mItems.push_back(item);
 	setFocus(item);
@@ -83,5 +72,18 @@ Void NSDevilX::NSGUISystem::CPageBar::_updateItems()
 	UInt32 length=0;
 	for(auto item:mItems)
 	{
+	}
+}
+
+Void NSDevilX::NSGUISystem::CPageBar::onMessage(CTextProperty * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
+{
+	switch(message)
+	{
+	case CTextProperty::EMessage_AddDirtyFlag:
+		for(auto item:mItems)
+		{
+			item->getTextControl()->getTextProperty()->copyFrom(getTextProperty());
+		}
+		break;
 	}
 }

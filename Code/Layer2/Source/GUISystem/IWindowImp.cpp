@@ -138,3 +138,19 @@ IEditBox * NSDevilX::NSGUISystem::IWindowImp::getEditBox(const String & name) co
 	else
 		return nullptr;
 }
+
+IPageBar * NSDevilX::NSGUISystem::IWindowImp::createPageBar(const String & name)
+{
+	auto ret=DEVILX_NEW IPageBarImp(name,this);
+	mControls.add(name,static_cast<IControlImp*>(ret->queryInterface_IControl()));
+	return ret;
+}
+
+IPageBar * NSDevilX::NSGUISystem::IWindowImp::getPageBar(const String & name) const
+{
+	auto control=mControls.get(name);
+	if(control&&(control->getType()==IControlImp::EType_PageBar))
+		return control->getUserPointer<IPageBarImp>(0);
+	else
+		return nullptr;
+}

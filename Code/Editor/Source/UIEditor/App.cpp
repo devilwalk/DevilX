@@ -4,6 +4,8 @@ using namespace NSUIEditor;
 
 NSDevilX::NSUIEditor::CApp::CApp()
 	:mWindow(nullptr)
+	,mRenderWindow(nullptr)
+	,mMainFrame(nullptr)
 {
 	CDesktop desktop;
 	mWindow=DEVILX_NEW CWindow();
@@ -15,6 +17,7 @@ NSDevilX::NSUIEditor::CApp::CApp()
 
 NSDevilX::NSUIEditor::CApp::~CApp()
 {
+	DEVILX_DELETE(getMainFrame());
 	NSGUISystem::getSystem()->shutdown();
 	NSRenderSystem::getSystem()->shutdown();
 	DEVILX_DELETE(mWindow);

@@ -20,6 +20,8 @@ Void NSDevilX::NSGUISystem::CStaticText::setText(const CUTF8String & text)
 	if(getText()!=text)
 	{
 		mText=text;
+		if(!text.empty())
+			getTextProperty()->setFontSize(CFloat2(1.0f/text.size(),1.0f));
 		addDirtyFlag(EDirtyFlag_Text);
 	}
 }
@@ -119,7 +121,10 @@ NSResourceSystem::ILoadedResource * NSDevilX::NSGUISystem::CStaticText::_calcula
 			}
 		}
 		if(!row_indices.empty())
+		{
+			row_widths.push_back(row_width);
 			text_indices.push_back(row_indices);
+		}
 		text_indices.resize(std::min<SizeT>(text_indices.size(),max_row_count));
 		CFloat2 offset=CFloat2::sZero;
 		for(size_t row=0;row<text_indices.size();++row)

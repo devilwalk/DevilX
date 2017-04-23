@@ -15,6 +15,7 @@ NSDevilX::NSFightChess::CGame::CGame()
 
 NSDevilX::NSFightChess::CGame::~CGame()
 {
+	mModules.destroyAll();
 	DEVILX_DELETE(mServerManager);
 	DEVILX_DELETE(mFontManager);
 	NSGUISystem::getSystem()->destroyScene(getGUIScene());

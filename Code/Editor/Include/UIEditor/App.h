@@ -1,4 +1,5 @@
 #pragma once
+#include "MainFrame.h"
 namespace NSDevilX
 {
 	namespace NSUIEditor
@@ -8,11 +9,13 @@ namespace NSDevilX
 			,public TSingletonEx<CApp>
 		{
 		protected:
+			CMainFrame * mMainFrame;
 			CWindow * mWindow;
 			NSRenderSystem::IWindow * mRenderWindow;
 		public:
 			CApp();
 			~CApp();
+			CMainFrame * getMainFrame()const{ return mMainFrame; }
 			CWindow * getWindow()const
 			{
 				return mWindow;

@@ -38,9 +38,9 @@ Void NSDevilX::NSFightChess::CUIScript::_processElement(TiXmlElement * element,N
 	else if(String("StaticText")==element->Value())
 	{
 		auto ctl=guiWindow->createStaticText(_getAttribute("Name",element).get<String>());
-		ctl->setFontResource(CApp::getSingleton().getGame()->getFontManager()->getFontResource());
+		ctl->getTextProperty()->setFontResource(CApp::getSingleton().getGame()->getFontManager()->getFontResource());
 		ctl->setText(_getAttribute("Text",element).get<CUTF8String>());
-		ctl->setTextColour(_getAttribute("Colour",element).get<CColour>());
+		ctl->getTextProperty()->setColour(_getAttribute("Colour",element).get<CColour>());
 		ctl->queryInterface_IControl()->setPosition(_getAttribute("Position",element).get<CFloat2>());
 		ctl->queryInterface_IControl()->setSize(_getAttribute("Size",element).get<CFloat2>());
 		control=ctl->queryInterface_IControl();
@@ -48,10 +48,10 @@ Void NSDevilX::NSFightChess::CUIScript::_processElement(TiXmlElement * element,N
 	else if(String("EditBox")==element->Value())
 	{
 		auto ctl=guiWindow->createEditBox(_getAttribute("Name",element).get<String>());
-		ctl->setFontResource(CApp::getSingleton().getGame()->getFontManager()->getFontResource());
+		ctl->getTextProperty()->setFontResource(CApp::getSingleton().getGame()->getFontManager()->getFontResource());
 		if(element->Attribute("Text"))
 			ctl->setText(_getAttribute("Text",element).get<CUTF8String>());
-		ctl->setTextColour(_getAttribute("Colour",element).get<CColour>());
+		ctl->getTextProperty()->setColour(_getAttribute("Colour",element).get<CColour>());
 		if(element->Attribute("Background"))
 			ctl->setBackground(NSResourceSystem::getSystem()->createResource(_getAttribute("Background",element).get<String>(),_getAttribute("Background",element).get<String>()));
 		ctl->queryInterface_IControl()->setPosition(_getAttribute("Position",element).get<CFloat2>());
@@ -62,11 +62,11 @@ Void NSDevilX::NSFightChess::CUIScript::_processElement(TiXmlElement * element,N
 	else if(String("Button")==element->Value())
 	{
 		auto ctl=guiWindow->createButton(_getAttribute("Name",element).get<String>());
-		ctl->setFontResource(CApp::getSingleton().getGame()->getFontManager()->getFontResource());
+		ctl->getTextProperty()->setFontResource(CApp::getSingleton().getGame()->getFontManager()->getFontResource());
 		if(element->Attribute("Text"))
 			ctl->setText(_getAttribute("Text",element).get<CUTF8String>());
 		if(element->Attribute("Colour"))
-			ctl->setTextColour(_getAttribute("Colour",element).get<CColour>());
+			ctl->getTextProperty()->setColour(_getAttribute("Colour",element).get<CColour>());
 		if(element->Attribute("Background"))
 			ctl->setBackground(NSResourceSystem::getSystem()->createResource(_getAttribute("Background",element).get<String>(),_getAttribute("Background",element).get<String>()));
 		ctl->queryInterface_IControl()->setPosition(_getAttribute("Position",element).get<CFloat2>());

@@ -5,6 +5,7 @@ namespace NSDevilX
 {
 	namespace NSGUISystem
 	{
+		class IWindowImp;
 		class IPageBarImp
 			:public IPageBar
 			,public TBaseObject<IPageBarImp>

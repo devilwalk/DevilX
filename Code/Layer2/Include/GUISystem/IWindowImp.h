@@ -38,6 +38,10 @@ namespace NSDevilX
 			virtual IStaticText * getStaticText(const String & name) const override;
 			virtual IButton * getButton(const String & name) const override;
 			virtual IEditBox * getEditBox(const String & name) const override;
+
+			// Í¨¹ý IWindow ¼Ì³Ð
+			virtual IPageBar * createPageBar(const String & name) override;
+			virtual IPageBar * getPageBar(const String & name) const override;
 		};
 	}
 }

@@ -27,6 +27,7 @@ namespace NSDevilX
 		public:
 			CTextProperty();
 			~CTextProperty();
+			Void copyFrom(const CTextProperty * prop);
 			Void setFontResource(NSResourceSystem::IResource * resource);
 			NSResourceSystem::IResource * getFontResource() const
 			{

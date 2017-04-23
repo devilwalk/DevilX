@@ -3,6 +3,7 @@
 #include "IGUIStaticText.h"
 #include "IGUIButton.h"
 #include "IGUIEditBox.h"
+#include "IGUIPageBar.h"
 namespace NSDevilX
 {
 	namespace NSGUISystem
@@ -23,6 +24,8 @@ namespace NSDevilX
 			virtual IButton * getButton(const String & name)const=0;
 			virtual IEditBox * createEditBox(const String & name)=0;
 			virtual IEditBox * getEditBox(const String & name)const=0;
+			virtual IPageBar * createPageBar(const String & name)=0;
+			virtual IPageBar * getPageBar(const String & name)const=0;
 			virtual Void destroyControl(IControl * control)=0;
 		};
 	}
