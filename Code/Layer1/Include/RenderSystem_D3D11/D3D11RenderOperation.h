@@ -21,6 +21,7 @@ namespace NSDevilX
 				UINT mVertexCount;
 				D3D11_PRIMITIVE_TOPOLOGY mPrimitiveTopology;
 				TVector<CConstantBuffer*> mConstantBuffers;
+				TVector<D3D11_RECT> mScissorRects;
 				CRenderOperation(ID3D11DeviceContext1 * context);
 				~CRenderOperation();
 				Void process();

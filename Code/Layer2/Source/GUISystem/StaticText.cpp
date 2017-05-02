@@ -20,8 +20,8 @@ Void NSDevilX::NSGUISystem::CStaticText::setText(const CUTF8String & text)
 	if(getText()!=text)
 	{
 		mText=text;
-		if(!text.empty())
-			getTextProperty()->setFontSize(CFloat2(1.0f/text.size(),1.0f));
+		if(!getText().empty())
+			getTextProperty()->setFontSize(CFloat2(1.0f/getText().size(),1.0f));
 		addDirtyFlag(EDirtyFlag_Text);
 	}
 }

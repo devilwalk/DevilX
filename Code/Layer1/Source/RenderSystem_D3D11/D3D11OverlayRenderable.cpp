@@ -3,8 +3,9 @@ using namespace NSDevilX;
 using namespace NSRenderSystem;
 using namespace NSD3D11;
 
-NSDevilX::NSRenderSystem::NSD3D11::COverlayRenderable::COverlayRenderable(COverlayMaterial * material,COverlayManager * manager)
+NSDevilX::NSRenderSystem::NSD3D11::COverlayRenderable::COverlayRenderable(COverlayMaterial * material,const CFloat2 & scissorRectPosition,const CFloat2 & scissorRectSize,COverlayManager * manager)
 	:mMaterial(material)
+	,mScissorRectParameter(scissorRectPosition,scissorRectSize)
 	,mManager(manager)
 	,mGeometry(nullptr)
 {
@@ -27,6 +28,14 @@ Boolean NSDevilX::NSRenderSystem::NSD3D11::COverlayRenderable::render(CRenderOpe
 	ro.mVertexBufferOffset=0;
 	ro.mVertexCount=mGeometry->getInterfaceImp()->getVertexBuffer()->getCount();
 	ro.mPass=mMaterial;
+	D3D11_TEXTURE2D_DESC desc;
+	mManager->getViewport()->getRenderTarget()->getRenderTargetResource()->GetDesc(&desc);
+	D3D11_RECT scissor_rect;
+	scissor_rect.left=static_cast<LONG>(getScissorRectPosition().x*desc.Width);
+	scissor_rect.top=static_cast<LONG>(getScissorRectPosition().y*desc.Height);
+	scissor_rect.right=static_cast<LONG>((getScissorRectPosition().x+getScissorRectSize().x)*desc.Width);
+	scissor_rect.bottom=static_cast<LONG>((getScissorRectPosition().y+getScissorRectSize().y)*desc.Height);
+	ro.mScissorRects.push_back(scissor_rect);
 	return true;
 }
 

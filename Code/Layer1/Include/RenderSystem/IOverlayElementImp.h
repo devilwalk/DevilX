@@ -21,6 +21,8 @@ namespace NSDevilX
 				EMessage_EndOrderChange,
 				EMessage_BeginUVChange,
 				EMessage_EndUVChange,
+				EMessage_BeginScissorRectChange,
+				EMessage_EndScissorRectChange,
 				EMessage_BeginColourUnitStateCreate,
 				EMessage_EndColourUnitStateCreate,
 				EMessage_BeginTextureUnitStateCreate,
@@ -31,6 +33,8 @@ namespace NSDevilX
 			CFloat2 mPosition;
 			CFloat2 mSize;
 			CFloat2 mUVs[4];
+			CFloat2 mScissorRectPosition;
+			CFloat2 mScissorRectSize;
 			Int32 mOrder;
 			IColourUnitStateImp * mColourUnitState;
 			ITextureUnitStateImp * mTextureUnitState;
@@ -55,6 +59,9 @@ namespace NSDevilX
 			virtual const CFloat2 * getUVs() const override;
 			virtual Void setOrder(Int32 order) override;
 			virtual Int32 getOrder() const override;
+			virtual Void SetScissorRect(const CFloat2 & position,const CFloat2 & size) override;
+			virtual const CFloat2 & getScissorRectPosition() const override;
+			virtual const CFloat2 & getScissorRectSize() const override;
 			virtual IColourUnitState * getColourUnitState() override;
 			virtual ITextureUnitState * getTextureUnitState() override;
 		};

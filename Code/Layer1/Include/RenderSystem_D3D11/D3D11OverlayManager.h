@@ -19,6 +19,10 @@ namespace NSDevilX
 			public:
 				COverlayManager(CViewportImp * viewport);
 				~COverlayManager();
+				CViewportImp * getViewport()const
+				{
+					return mViewport;
+				}
 				Void render();
 				// Í¨¹ý TMessageReceiver ¼Ì³Ð
 				virtual Void onMessage(IViewportImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;

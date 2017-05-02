@@ -12,7 +12,8 @@ NSDevilX::NSRenderSystem::NSD3D11::CRenderOperation::CRenderOperation(ID3D11Devi
 	,mIndexBufferOffset(0)
 	,mVertexCount(0)
 	,mVertexBufferOffset(0)
-{}
+{
+}
 
 NSDevilX::NSRenderSystem::NSD3D11::CRenderOperation::~CRenderOperation()
 {}
@@ -76,6 +77,8 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CRenderOperation::process()
 	if(!mPass->getPSSamplerStates().empty())
 		mContext->PSSetSamplers(0,static_cast<UInt32>(mPass->getPSSamplerStates().size()),&mPass->getPSSamplerStates()[0]);
 	mContext->RSSetState(mPass->getRasterizerState());
+	if(!mScissorRects.empty())
+		mContext->RSSetScissorRects(static_cast<UInt32>(mScissorRects.size()),&mScissorRects[0]);
 	mContext->OMSetBlendState(mPass->getBlendState(),reinterpret_cast<const Float*>(&CFloat4::sOne),0xffffffff);
 	mContext->OMSetDepthStencilState(mPass->getDepthStencilState(),0);
 	if(mIndexCount)

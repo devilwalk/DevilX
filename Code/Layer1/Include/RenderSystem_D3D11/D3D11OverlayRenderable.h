@@ -16,6 +16,7 @@ namespace NSDevilX
 			{
 			protected:
 				COverlayMaterial * const mMaterial;
+				const CFloat4 mScissorRectParameter;
 				COverlayManager * const mManager;
 				CGeometry * mGeometry;
 				TVector<CFloat3> mPositions;
@@ -25,11 +26,23 @@ namespace NSDevilX
 				TList<UInt32> mFrees;
 				TMap<IOverlayElementImp*,UInt32> mRectangles;
 			public:
-				COverlayRenderable(COverlayMaterial * material,COverlayManager * manager);
+				COverlayRenderable(COverlayMaterial * material,const CFloat2 & scissorRectPosition,const CFloat2 & scissorRectSize,COverlayManager * manager);
 				~COverlayRenderable();
 				COverlayMaterial * getMaterial()const
 				{
 					return mMaterial;
+				}
+				const CFloat4 & getScissorRectParameter()const
+				{
+					return mScissorRectParameter;
+				}
+				const CFloat2 & getScissorRectPosition()const
+				{
+					return *reinterpret_cast<const CFloat2*>(&mScissorRectParameter);
+				}
+				const CFloat2 & getScissorRectSize()const
+				{
+					return *reinterpret_cast<const CFloat2*>(&mScissorRectParameter.z);
 				}
 				Boolean render(CRenderOperation & ro);
 				Void addElement(IOverlayElementImp * element);

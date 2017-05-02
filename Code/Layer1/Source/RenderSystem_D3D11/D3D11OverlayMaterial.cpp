@@ -119,6 +119,7 @@ Void NSDevilX::NSRenderSystem::NSD3D11::COverlayMaterial::_updateRasterizerState
 {
 	D3D11_RASTERIZER_DESC1 desc=CSystemImp::getSingleton().getDefaultRasterizerStateDescription();
 	desc.CullMode=D3D11_CULL_NONE;
+	desc.ScissorEnable=TRUE;
 	mRasterizerState=CSystemImp::getSingleton().getRasterizerState(desc);
 }
 

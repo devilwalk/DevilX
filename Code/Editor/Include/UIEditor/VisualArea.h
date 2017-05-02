@@ -7,7 +7,10 @@ namespace NSDevilX
 			:public TBaseObject<CVisualArea>
 		{
 		protected:
+			NSGUISystem::IWindow * mWindow;
 		public:
+			CVisualArea();
+			~CVisualArea();
 		};
 	}
 }

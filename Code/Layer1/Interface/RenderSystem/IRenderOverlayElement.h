@@ -19,6 +19,9 @@ namespace NSDevilX
 			virtual const CFloat2 * getUVs()const=0;
 			virtual Void setOrder(Int32 order)=0;
 			virtual Int32 getOrder()const=0;
+			virtual Void SetScissorRect(const CFloat2 & position,const CFloat2 & size)=0;
+			virtual const CFloat2 & getScissorRectPosition()const=0;
+			virtual const CFloat2 & getScissorRectSize()const=0;
 			virtual IColourUnitState * getColourUnitState()=0;
 			virtual ITextureUnitState * getTextureUnitState()=0;
 		};

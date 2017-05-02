@@ -149,6 +149,9 @@ namespace NSDevilX
 		:DirectX::XMFLOAT4(vec3.x,vec3.y,vec3.z,w)
 	{
 	}
+	CFloat4(const DirectX::XMFLOAT2 & xy,const DirectX::XMFLOAT2 & zw)
+		:DirectX::XMFLOAT4(xy.x,xy.y,zw.x,zw.y)
+	{}
 	Void normalize()
 	{
 		*this=DirectX::XMVector4Normalize(*this);

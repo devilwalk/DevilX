@@ -9,6 +9,8 @@ NSDevilX::NSRenderSystem::IOverlayElementImp::IOverlayElementImp(const String & 
 	,mOrder(0)
 	,mColourUnitState(nullptr)
 	,mTextureUnitState(nullptr)
+	,mScissorRectPosition(CFloat2::sZero)
+	,mScissorRectSize(CFloat2::sOne)
 {}
 
 NSDevilX::NSRenderSystem::IOverlayElementImp::~IOverlayElementImp()
@@ -96,6 +98,30 @@ Void NSDevilX::NSRenderSystem::IOverlayElementImp::setOrder(Int32 order)
 Int32 NSDevilX::NSRenderSystem::IOverlayElementImp::getOrder() const
 {
 	return mOrder;
+}
+
+Void NSDevilX::NSRenderSystem::IOverlayElementImp::SetScissorRect(const CFloat2 & position,const CFloat2 & size)
+{
+	if((position!=getScissorRectPosition())
+		||(size!=getScissorRectSize()))
+	{
+		notify(EMessage_BeginScissorRectChange);
+		mScissorRectPosition=position;
+		mScissorRectSize=size;
+		notify(EMessage_EndScissorRectChange);
+	}
+}
+
+const CFloat2 & NSDevilX::NSRenderSystem::IOverlayElementImp::getScissorRectPosition() const
+{
+	// TODO: 在此处插入 return 语句
+	return mScissorRectPosition;
+}
+
+const CFloat2 & NSDevilX::NSRenderSystem::IOverlayElementImp::getScissorRectSize() const
+{
+	// TODO: 在此处插入 return 语句
+	return mScissorRectSize;
 }
 
 IColourUnitState * NSDevilX::NSRenderSystem::IOverlayElementImp::getColourUnitState()
