@@ -42,6 +42,10 @@ namespace NSDevilX
 			{
 				return mControl;
 			}
+			Void setPrepareFocus(Bool focus)
+			{
+				mControl->setPrepareFocus(focus);
+			}
 			Void setFocus(Bool focus)
 			{
 				mControl->setFocus(focus);

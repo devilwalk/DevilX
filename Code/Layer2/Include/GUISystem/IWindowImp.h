@@ -12,14 +12,21 @@ namespace NSDevilX
 		protected:
 			NSUISystem::IEventWindow * mEventWindow;
 			NSUISystem::IEventScene * mEventScene;
+			Bool mIsModule;
 			IControlImp * mControl;
+			IControlImp * mPrepareFocusControl;
 			IControlImp * mFocusControl;
 			ISceneImp * const mScene;
 			TNamedResourcePtrMap<IControlImp> mControls;
 		public:
-			IWindowImp(const String & name,ISceneImp * scene);
+			IWindowImp(const String & name,ISceneImp * scene,Bool isModule);
 			~IWindowImp();
+			Bool isModule()const
+			{
+				return mIsModule;
+			}
 			Void update();
+			Void setPrepareFocusControl(IControlImp * control);
 			Void setFocusControl(IControlImp * control);
 			// Í¨¹ý IWindow ¼Ì³Ð
 			virtual IControl * queryInterface_IControl() const override;

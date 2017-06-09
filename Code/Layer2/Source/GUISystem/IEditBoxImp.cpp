@@ -12,6 +12,7 @@ NSDevilX::NSGUISystem::IEditBoxImp::IEditBoxImp(const String & name,IWindowImp *
 	mControl->getControl()->getEventWindow()->registerListener(this,CEvent::EType_MouseMove);
 	mControl->addListener(static_cast<TMessageReceiver<IControlImp>*>(this),IControlImp::EMessage_BeginDestruction);
 	mTextProperty=DEVILX_NEW ITextPropertyImp(static_cast<CEditBox*>(mControl->getControl())->getTextControl()->getTextProperty());
+	static_cast<CEditBox*>(mControl->getControl())->addListener(static_cast<TMessageReceiver<CEditBox>*>(this),CEditBox::EMessage_SetFocus);
 	static_cast<CEditBox*>(mControl->getControl())->addListener(static_cast<TMessageReceiver<CEditBox>*>(this),CEditBox::EMessage_EndTextChange);
 }
 
@@ -75,6 +76,9 @@ Void NSDevilX::NSGUISystem::IEditBoxImp::onMessage(CEditBox * notifier,UInt32 me
 {
 	switch(message)
 	{
+	case CEditBox::EMessage_SetFocus:
+		static_cast<IWindowImp*>(queryInterface_IControl()->getParentWindow())->setFocusControl(static_cast<IControlImp*>(queryInterface_IControl()));
+		break;
 	case CEditBox::EMessage_EndTextChange:
 		if(getEventCallback())
 			getEventCallback()->onEvent(this,IEditBoxEventCallback::EEvent_TextChange);
@@ -87,7 +91,7 @@ Void NSDevilX::NSGUISystem::IEditBoxImp::onEvent(NSUISystem::IEvent * e)
 	switch(e->getType())
 	{
 	case CEvent::EType_MouseMove:
-		static_cast<IWindowImp*>(queryInterface_IControl()->getParentWindow())->setFocusControl(static_cast<IControlImp*>(queryInterface_IControl()));
+		static_cast<IWindowImp*>(queryInterface_IControl()->getParentWindow())->setPrepareFocusControl(static_cast<IControlImp*>(queryInterface_IControl()));
 		break;
 	}
 }

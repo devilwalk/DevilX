@@ -1,21 +1,20 @@
 #pragma once
-#include "Module.h"
 namespace NSDevilX
 {
 	namespace NSFightChess
 	{
-		class CLogin;
-		class CLoginPage
-			:public TBaseObject<CLoginPage>
+		class CBigWorld;
+		class CBigWorldPage
+			:public TBaseObject<CBigWorldPage>
 			,public NSGUISystem::IButtonEventCallback
 			,public NSGUISystem::IEditBoxEventCallback
 		{
 		protected:
-			CLogin * const mLogin;
+			CBigWorld * const mBigWorld;
 			NSGUISystem::IWindow * mGUIWindow;
 		public:
-			CLoginPage(CLogin * login);
-			~CLoginPage();
+			CBigWorldPage(CBigWorld * bigWorld);
+			~CBigWorldPage();
 
 			// 通过 IButtonEventCallback 继承
 			virtual Void onEvent(NSGUISystem::IButton * control,NSGUISystem::IButtonEventCallback::EEvent events) override;
@@ -23,19 +22,17 @@ namespace NSDevilX
 			// 通过 IEditBoxEventCallback 继承
 			virtual Void onEvent(NSGUISystem::IEditBox * control,NSGUISystem::IEditBoxEventCallback::EEvent events) override;
 		};
-		class CLogin
-			:public CModule
-			,public TBaseObject<CLogin>
+		class CBigWorld
+			:public TBaseObject<CBigWorld>
+			,public CModule
 		{
-		public:
 		protected:
-			CLoginPage * mPage;
+			CBigWorldPage * mPage;
 			TSharedReadData<Int32> mReturnCode;
 		public:
-			CLogin();
-			~CLogin();
-			Void login(const String & username,const String & password);
-			Void doneMT(CServer::EReturnCode code);
+			CBigWorld();
+			~CBigWorld();
+
 			// 通过 CModule 继承
 			virtual Void start() override;
 			virtual Void update() override;

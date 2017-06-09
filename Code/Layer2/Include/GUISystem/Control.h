@@ -37,6 +37,7 @@ namespace NSDevilX
 			{
 				return mEventWindow;
 			}
+			virtual Void setPrepareFocus(Bool focus){}
 			virtual Void setFocus(Bool focus){}
 		protected:
 			Void _attachWindow(NSUISystem::IGraphicWindow * window);

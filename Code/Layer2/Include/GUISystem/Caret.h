@@ -17,6 +17,10 @@ namespace NSDevilX
 			CCaret(const String & name,CControl * parent);
 			~CCaret();
 			Void setEnable(Bool enable);
+			Bool isEnable()const
+			{
+				return mEnable;
+			}
 			// Í¨¹ý TMessageReceiver ¼Ì³Ð
 			virtual Void onMessage(ISystemImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 		protected:

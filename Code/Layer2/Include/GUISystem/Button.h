@@ -31,7 +31,7 @@ namespace NSDevilX
 			}
 			Void setBackground(NSResourceSystem::IResource * resource);
 			NSResourceSystem::IResource * getBackground()const;
-			virtual Void setFocus(Bool focus) override;
+			virtual Void setPrepareFocus(Bool focus) override;
 			virtual Void onMouseButtonEvent(CWindow * window,EMouseButtonType buttonType,EMouseButtonEventType eventType,const CUInt2 & position) override;
 		};
 	}

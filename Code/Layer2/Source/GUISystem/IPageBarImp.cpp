@@ -76,7 +76,7 @@ Void NSDevilX::NSGUISystem::IPageBarImp::onEvent(NSUISystem::IEvent * e)
 	switch(e->getType())
 	{
 	case CEvent::EType_MouseMove:
-		static_cast<IWindowImp*>(queryInterface_IControl()->getParentWindow())->setFocusControl(static_cast<IControlImp*>(queryInterface_IControl()));
+		static_cast<IWindowImp*>(queryInterface_IControl()->getParentWindow())->setPrepareFocusControl(static_cast<IControlImp*>(queryInterface_IControl()));
 		break;
 	}
 }

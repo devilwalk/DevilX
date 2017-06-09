@@ -20,7 +20,7 @@ namespace NSDevilX
 			{
 				return mTextControl;
 			}
-			virtual Void setFocus(Bool focus) override;
+			virtual Void setPrepareFocus(Bool focus) override;
 
 			// Í¨¹ý IEventListener ¼Ì³Ð
 			virtual Void onEvent(NSUISystem::IEvent * e) override;

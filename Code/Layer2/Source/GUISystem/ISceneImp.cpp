@@ -50,16 +50,29 @@ Void NSDevilX::NSGUISystem::ISceneImp::update()
 
 Void NSDevilX::NSGUISystem::ISceneImp::setActiveWindow(IWindowImp * window)
 {
+	if(mActiveWindow&&mActiveWindow->isModule()&&(!window->isModule()))
+		return;
 	if(window!=mActiveWindow)
 	{
 		if(mActiveWindow)
 		{
-			mOrderedWindows.remove(mActiveWindow);
+			mActiveWindow->setPrepareFocusControl(nullptr);
+			mActiveWindow->setFocusControl(nullptr);
+		}
+		if(window)
+		{
+			if(window->isModule())
+				mOrderedModuleWindows.remove(window);
+			else
+				mOrderedWindows.remove(window);
 		}
 		mActiveWindow=window;
-		if(mActiveWindow)
+		if(window)
 		{
-			mOrderedWindows.push_back(mActiveWindow);
+			if(window->isModule())
+				mOrderedModuleWindows.push_back(window);
+			else
+				mOrderedWindows.push_back(window);
 			_updateWindowsOrder();
 		}
 	}
@@ -70,14 +83,18 @@ NSRenderSystem::IViewport * NSDevilX::NSGUISystem::ISceneImp::getRenderViewport(
 	return getGraphicScene()->getRenderViewport();
 }
 
-IWindow * NSDevilX::NSGUISystem::ISceneImp::createWindow(const String & name)
+IWindow * NSDevilX::NSGUISystem::ISceneImp::createWindow(const String & name,Bool isModule)
 {
 	if(mWindows.has(name))
 		return nullptr;
-	auto window=DEVILX_NEW IWindowImp(name,this);
-	static_cast<IControlImp*>(window->queryInterface_IControl())->getControl()->getLayer()->setOrder(static_cast<Int32>(mOrderedWindows.size()));
+	auto window=DEVILX_NEW IWindowImp(name,this,isModule);
+	static_cast<IControlImp*>(window->queryInterface_IControl())->getControl()->getLayer()->setOrder(isModule?static_cast<Int32>(static_cast<UInt16>(-1)+mOrderedModuleWindows.size()):static_cast<Int32>(mOrderedWindows.size()));
 	mWindows.add(name,window);
-	mOrderedWindows.push_back(window);
+	if(isModule)
+		mOrderedModuleWindows.push_back(window);
+	else
+		mOrderedWindows.push_back(window);
+	setActiveWindow(window);
 	return window;
 }
 
@@ -89,14 +106,25 @@ IWindow * NSDevilX::NSGUISystem::ISceneImp::getWindow(const String & name) const
 Void NSDevilX::NSGUISystem::ISceneImp::destroyWindow(IWindow * window)
 {
 	if(mActiveWindow==window)
-		setActiveWindow(nullptr);
-	mOrderedWindows.remove(static_cast<IWindowImp*>(window));
+	{
+		if(mActiveWindow->isModule())
+			mOrderedModuleWindows.remove(mActiveWindow);
+		else
+			mOrderedWindows.remove(mActiveWindow);
+		mActiveWindow=nullptr;
+	}
 	mWindows.destroy(window->queryInterface_IControl()->getName());
 }
 
 Void NSDevilX::NSGUISystem::ISceneImp::_updateWindowsOrder()
 {
-	Int32 order=0;
+	Int32 order=static_cast<UInt16>(-1);
+	for(auto window:mOrderedModuleWindows)
+	{
+		static_cast<IControlImp*>(window->queryInterface_IControl())->getControl()->getLayer()->setOrder(order);
+		++order;
+	}
+	order=0;
 	for(auto window:mOrderedWindows)
 	{
 		static_cast<IControlImp*>(window->queryInterface_IControl())->getControl()->getLayer()->setOrder(order);

@@ -2,11 +2,13 @@
 using namespace NSDevilX;
 using namespace NSGUISystem;
 
-NSDevilX::NSGUISystem::IWindowImp::IWindowImp(const String & name,ISceneImp * scene)
+NSDevilX::NSGUISystem::IWindowImp::IWindowImp(const String & name,ISceneImp * scene,Bool isModule)
 	:mControl(nullptr)
 	,mScene(scene)
+	,mIsModule(isModule)
 	,mEventScene(nullptr)
 	,mEventWindow(nullptr)
+	,mPrepareFocusControl(nullptr)
 	,mFocusControl(nullptr)
 {
 	mEventScene=NSUISystem::getSystem()->createEventScene(CStringConverter::toString(getScene()->getRenderViewport())+"/"+name);
@@ -20,6 +22,7 @@ NSDevilX::NSGUISystem::IWindowImp::IWindowImp(const String & name,ISceneImp * sc
 
 NSDevilX::NSGUISystem::IWindowImp::~IWindowImp()
 {
+	setPrepareFocusControl(nullptr);
 	setFocusControl(nullptr);
 	mControls.destroyAll();
 	static_cast<ISceneImp*>(getScene())->getEventScene()->destroyWindow(mEventWindow);
@@ -34,7 +37,19 @@ Void NSDevilX::NSGUISystem::IWindowImp::update()
 	e.queryInterface_IElement()->setSize(CInt2::sOne/ISystemImp::getSingleton().getWindow()->getSize());
 	if(!mEventScene->route(&e))
 	{
-		setFocusControl(nullptr);
+		setPrepareFocusControl(nullptr);
+	}
+}
+
+Void NSDevilX::NSGUISystem::IWindowImp::setPrepareFocusControl(IControlImp * control)
+{
+	if(control!=mPrepareFocusControl)
+	{
+		if(mPrepareFocusControl)
+			mPrepareFocusControl->setPrepareFocus(False);
+		mPrepareFocusControl=control;
+		if(mPrepareFocusControl)
+			mPrepareFocusControl->setPrepareFocus(True);
 	}
 }
 

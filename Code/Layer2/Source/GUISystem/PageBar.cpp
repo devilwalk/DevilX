@@ -28,15 +28,15 @@ NSDevilX::NSGUISystem::CPageBar::~CPageBar()
 	DEVILX_DELETE(getTextProperty());
 }
 
-Void NSDevilX::NSGUISystem::CPageBar::setFocus(CPageBarItem * item)
+Void NSDevilX::NSGUISystem::CPageBar::setPrepareFocusControl(CPageBarItem * item)
 {
 	if(item!=mFocus)
 	{
 		if(mFocus)
-			mFocus->setFocus(False);
+			mFocus->setPrepareFocus(False);
 		mFocus=item;
 		if(mFocus)
-			mFocus->setFocus(True);
+			mFocus->setPrepareFocus(True);
 		_updateItems();
 	}
 }
@@ -47,7 +47,7 @@ Void NSDevilX::NSGUISystem::CPageBar::addItem(const CUTF8String & text)
 	item->getTextControl()->getTextProperty()->copyFrom(getTextProperty());
 	item->getTextControl()->setText(text);
 	mItems.push_back(item);
-	setFocus(item);
+	setPrepareFocusControl(item);
 }
 
 const CUTF8String & NSDevilX::NSGUISystem::CPageBar::getItem(UInt32 index) const

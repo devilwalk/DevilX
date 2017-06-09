@@ -37,7 +37,7 @@ NSResourceSystem::IResource * NSDevilX::NSGUISystem::CButton::getBackground() co
 	return mBackgroundResource;
 }
 
-Void NSDevilX::NSGUISystem::CButton::setFocus(Bool focus)
+Void NSDevilX::NSGUISystem::CButton::setPrepareFocus(Bool focus)
 {
 	mPressed=False;
 	if(focus)

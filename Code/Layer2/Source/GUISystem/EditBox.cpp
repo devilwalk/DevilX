@@ -8,6 +8,7 @@ NSDevilX::NSGUISystem::CEditBox::CEditBox(const String & name,CControl * parent)
 	,mCaret(nullptr)
 	,mBackgroundResource(nullptr)
 	,mCaretPosition(0)
+	,mPrepareFocus(False)
 {
 	auto background=getGraphicScene()->createWindow(name+"/Background");
 	background->queryInterface_IElement()->setPosition(CFloat2::sZero);
@@ -42,25 +43,28 @@ NSResourceSystem::IResource * NSDevilX::NSGUISystem::CEditBox::getBackground() c
 	return mBackgroundResource;
 }
 
+Void NSDevilX::NSGUISystem::CEditBox::setPrepareFocus(Bool focus)
+{
+	auto pre_value=mPrepareFocus||mCaret->isEnable();
+	mPrepareFocus=focus;
+	_updateListener(pre_value);
+}
+
 Void NSDevilX::NSGUISystem::CEditBox::setFocus(Bool focus)
 {
+	auto pre_value=mPrepareFocus||mCaret->isEnable();
 	mCaret->setEnable(focus);
-	if(focus)
-	{
-		ISystemImp::getSingleton().getWindow()->registerEventListener(this);
-		ISystemImp::getSingleton().addListener(this,ISystemImp::EMessage_Update);
-	}
-	else
-	{
-		ISystemImp::getSingleton().getWindow()->unregisterEventListener(this);
-		ISystemImp::getSingleton().removeListener(this,ISystemImp::EMessage_Update);
-	}
+	_updateListener(pre_value);
 }
 
 Void NSDevilX::NSGUISystem::CEditBox::onMouseButtonEvent(CWindow * window,EMouseButtonType buttonType,EMouseButtonEventType eventType,const CUInt2 & position)
 {
+	if(False==mPrepareFocus)
+		return;
 	if((EMouseButtonType_Left==buttonType)&&(EMouseButtonEventType_Up==eventType))
 	{
+		if(!mCaret->isEnable())
+			notify(EMessage_SetFocus);
 		TVector<CFloat2> char_positions;
 		Float last_char_right;
 		if(getTextControl()->getPositions(&char_positions,&last_char_right))
@@ -93,6 +97,8 @@ Void NSDevilX::NSGUISystem::CEditBox::onMouseButtonEvent(CWindow * window,EMouse
 
 Void NSDevilX::NSGUISystem::CEditBox::onCharEvent(CWindow * window,const CUTF16Char & ch)
 {
+	if(False==mCaret->isEnable())
+		return;
 	notify(EMessage_BeginTextChange);
 	if(ch=='\b')
 	{
@@ -131,5 +137,23 @@ Void NSDevilX::NSGUISystem::CEditBox::onMessage(ISystemImp * notifier,UInt32 mes
 		}
 	}
 	break;
+	}
+}
+
+Void NSDevilX::NSGUISystem::CEditBox::_updateListener(Bool preValue)
+{
+	Bool focus=mPrepareFocus||mCaret->isEnable();
+	if(preValue!=focus)
+	{
+		if(focus)
+		{
+			ISystemImp::getSingleton().getWindow()->registerEventListener(this);
+			ISystemImp::getSingleton().addListener(this,ISystemImp::EMessage_Update);
+		}
+		else
+		{
+			ISystemImp::getSingleton().getWindow()->unregisterEventListener(this);
+			ISystemImp::getSingleton().removeListener(this,ISystemImp::EMessage_Update);
+		}
 	}
 }

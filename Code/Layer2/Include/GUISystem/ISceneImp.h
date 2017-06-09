@@ -31,6 +31,7 @@ namespace NSDevilX
 			IWindowImp * mActiveWindow;
 			TNamedResourcePtrMap<IWindowImp> mWindows;
 			TList<IWindowImp*> mOrderedWindows;
+			TList<IWindowImp*> mOrderedModuleWindows;
 		public:
 			ISceneImp(NSRenderSystem::IViewport * viewport);
 			~ISceneImp();
@@ -46,7 +47,7 @@ namespace NSDevilX
 			Void setActiveWindow(IWindowImp * window);
 			// Í¨¹ý IScene ¼Ì³Ð
 			virtual NSRenderSystem::IViewport * getRenderViewport() const override;
-			virtual IWindow * createWindow(const String & name) override;
+			virtual IWindow * createWindow(const String & name,Bool isModule) override;
 			virtual IWindow * getWindow(const String & name) const override;
 			virtual Void destroyWindow(IWindow * window) override;
 		protected:

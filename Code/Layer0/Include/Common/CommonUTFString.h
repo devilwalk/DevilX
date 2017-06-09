@@ -72,8 +72,16 @@ namespace NSDevilX
 			}
 			return ret;
 		}
+		String toString()const
+		{
+			String ret;
+			for(auto const & ch:*this)
+			{
+				ret.insert(ret.end(),ch.getBuffer().begin(),ch.getBuffer().end());
+			}
+			return ret;
+		}
 	};
-	class CUTF16String;
 	class CUTF8String
 		:public TUTFString<CUTF8Char>
 	{
@@ -88,7 +96,8 @@ namespace NSDevilX
 		CUTF8String(const String & ansiiText)
 			:TUTFString<CUTF8Char>(ansiiText)
 		{}
-		operator CUTF16String()const;
+		CUTF8String(const TUTFString<CUTF16Char> & src);
+		operator TUTFString<CUTF16Char>()const;
 	};
 	class CUTF16String
 		:public TUTFString<CUTF16Char>

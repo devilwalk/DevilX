@@ -1,9 +1,17 @@
 #include "Precompiler.h"
 using namespace NSDevilX;
 
-NSDevilX::CUTF8String::operator CUTF16String() const
+NSDevilX::CUTF8String::CUTF8String(const TUTFString<CUTF16Char> & src)
 {
-	CUTF16String ret;
+	for(const auto & c:src)
+	{
+		(*this)+=CUTF8Char(static_cast<Int32>(c));
+	}
+}
+
+NSDevilX::CUTF8String::operator TUTFString<CUTF16Char>() const
+{
+	TUTFString<CUTF16Char> ret;
 	for(auto const & c:*this)
 	{
 		ret+=CUTF16Char(c);

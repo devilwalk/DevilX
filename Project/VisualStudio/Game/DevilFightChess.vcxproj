@@ -22,32 +22,32 @@
     <ProjectGuid>{EE51A87B-CEDB-4263-A524-C40E8B3802EA}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Game</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -105,7 +105,8 @@
     </Link>
     <PostBuildEvent />
     <PreBuildEvent>
-      <Command>copy $(ProjectDir)..\..\..\Code\Game\Resource\$(ProjectName)\* $(OutDir)Resource\</Command>
+      <Command>mkdir $(OutDir)Resource
+copy $(ProjectDir)..\..\..\Code\Game\Resource\$(ProjectName)\* $(OutDir)Resource\</Command>
     </PreBuildEvent>
     <CustomBuildStep />
     <CustomBuildStep>
@@ -142,7 +143,8 @@
     </Link>
     <PostBuildEvent />
     <PreBuildEvent>
-      <Command>copy $(ProjectDir)..\..\..\Code\Game\Resource\$(ProjectName)\* $(OutDir)Resource\</Command>
+      <Command>mkdir $(OutDir)Resource
+copy $(ProjectDir)..\..\..\Code\Game\Resource\$(ProjectName)\* $(OutDir)Resource\</Command>
     </PreBuildEvent>
     <CustomBuildStep />
     <CustomBuildStep>
@@ -174,7 +176,9 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Actor.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\App.h" />
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\BigWorld.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\FontManager.h" />
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MessageBox.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Register.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\LocalServer.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Login.h" />
@@ -194,12 +198,14 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Actor.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\App.cpp" />
+    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\BigWorld.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\FontManager.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Game.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Geometry.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Grid.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\LocalServer.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Login.cpp" />
+    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MessageBox.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Precompiler.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -213,7 +219,9 @@
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\UIScript.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\Code\Game\Resource\DevilFightChess\BigWorld.layout" />
     <None Include="..\..\..\Code\Game\Resource\DevilFightChess\LoginPage.layout" />
+    <None Include="..\..\..\Code\Game\Resource\DevilFightChess\MessageBox.layout" />
     <None Include="..\..\..\Code\Game\Resource\DevilFightChess\RegisterPage.layout" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -20,7 +20,7 @@ namespace NSDevilX
 			CPageBar(const String & name,CControl * parent);
 			~CPageBar();
 			CTextProperty * getTextProperty()const{ return mTextProperty; }
-			Void setFocus(CPageBarItem * item);
+			Void setPrepareFocusControl(CPageBarItem * item);
 			Void addItem(const CUTF8String & text);
 			const CUTF8String & getItem(UInt32 index)const;
 			Void removeItem(UInt32 index);

@@ -16,8 +16,9 @@ namespace NSDevilX
 	}
 }
 
-NSDevilX::NSFightChess::CLoginPage::CLoginPage()
-	:mGUIWindow(nullptr)
+NSDevilX::NSFightChess::CLoginPage::CLoginPage(CLogin * login)
+	:mLogin(login)
+	,mGUIWindow(nullptr)
 {
 	mGUIWindow=CApp::getSingleton().getGame()->getGUIScene()->createWindow("LoginPage");
 	CUIScript script;
@@ -52,6 +53,15 @@ Void NSDevilX::NSFightChess::CLoginPage::onEvent(NSGUISystem::IButton * control,
 			break;
 		}
 	}
+	else if(control->queryInterface_IControl()->getName()=="LoginPage/Button_OK")
+	{
+		switch(events)
+		{
+		case IButtonEventCallback::EEvent::EEvent_Click:
+			mLogin->login(mGUIWindow->getEditBox("LoginPage/Edit_Username")->getText().toString(),mGUIWindow->getEditBox("LoginPage/Edit_Password")->getText().toString());
+			break;
+		}
+	}
 }
 
 Void NSDevilX::NSFightChess::CLoginPage::onEvent(NSGUISystem::IEditBox * control,IEditBoxEventCallback::EEvent events)
@@ -70,6 +80,11 @@ NSDevilX::NSFightChess::CLogin::~CLogin()
 	DEVILX_DELETE(mPage);
 }
 
+Void NSDevilX::NSFightChess::CLogin::login(const String & username,const String & password)
+{
+	CApp::getSingleton().getGame()->getServerManager()->localUserLogin(username,password,NSInternal::loginCallback,this);
+}
+
 Void NSDevilX::NSFightChess::CLogin::doneMT(CServer::EReturnCode code)
 {
 	mReturnCode.write(code);
@@ -77,22 +92,23 @@ Void NSDevilX::NSFightChess::CLogin::doneMT(CServer::EReturnCode code)
 
 Void NSDevilX::NSFightChess::CLogin::start()
 {
-	//CApp::getSingleton().getGame()->getServerManager()->localUserLogin("Default","123",NSInternal::loginCallback,this);
-	mPage=DEVILX_NEW CLoginPage;
+	mPage=DEVILX_NEW CLoginPage(this);
 }
 
 Void NSDevilX::NSFightChess::CLogin::update()
 {
 	auto return_code=mReturnCode.beginRead();
 	mReturnCode.endRead();
+	if(-1!=return_code)
+		mReturnCode.write(-1);
 	switch(return_code)
 	{
 	case CServer::EReturnCode_InvalidateUserName:
-		CApp::getSingleton().getGame()->stopModule(getName());
-		CApp::getSingleton().getGame()->startModule("Register");
+		CApp::getSingleton().getGame()->messageBox(CUTF8String(CUTF16String(L"用户名或密码错误",sizeof(L"用户名或密码错误"))));
 		break;
 	case CServer::EReturnCode_Success:
 		CApp::getSingleton().getGame()->stopModule(getName());
+		CApp::getSingleton().getGame()->startModule("BigWorld");
 		break;
 	}
 }

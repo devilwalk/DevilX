@@ -66,6 +66,12 @@
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\UIScript.h">
       <Filter>Include</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MessageBox.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\BigWorld.h">
+      <Filter>Include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\App.cpp">
@@ -110,12 +116,24 @@
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\UIScript.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MessageBox.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\BigWorld.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\Code\Game\Resource\DevilFightChess\LoginPage.layout">
       <Filter>Resource</Filter>
     </None>
     <None Include="..\..\..\Code\Game\Resource\DevilFightChess\RegisterPage.layout">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="..\..\..\Code\Game\Resource\DevilFightChess\MessageBox.layout">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="..\..\..\Code\Game\Resource\DevilFightChess\BigWorld.layout">
       <Filter>Resource</Filter>
     </None>
   </ItemGroup>

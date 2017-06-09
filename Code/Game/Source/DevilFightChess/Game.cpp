@@ -11,6 +11,7 @@ NSDevilX::NSFightChess::CGame::CGame()
 	mViewport=CApp::getSingleton().getRenderWindow()->queryInterface_IRenderTarget()->createViewport("Main");
 	registerModule(DEVILX_NEW CRegister);
 	registerModule(DEVILX_NEW CLogin);
+	registerModule(DEVILX_NEW CBigWorld);
 }
 
 NSDevilX::NSFightChess::CGame::~CGame()
@@ -56,4 +57,9 @@ Void NSDevilX::NSFightChess::CGame::update()
 		modules.push_back(module);
 	for(auto module:modules)
 		module->update();
+}
+
+Void NSDevilX::NSFightChess::CGame::messageBox(const CUTF8String & msg)
+{
+	DEVILX_NEW CMessageBox(msg);
 }

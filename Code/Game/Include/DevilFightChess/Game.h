@@ -40,6 +40,7 @@ namespace NSDevilX
 			Void startModule(const String & moduleName);
 			Void stopModule(const String & moduleName);
 			Void update();
+			Void messageBox(const CUTF8String & msg);
 		};
 	}
 }

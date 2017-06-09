@@ -48,12 +48,12 @@ Void NSDevilX::NSFightChess::CRegisterPage::onEvent(NSGUISystem::IButton * contr
 		{
 		case IButtonEventCallback::EEvent::EEvent_Click:
 		{
-			auto password_buf=mGUIWindow->getEditBox("RegisterPage/Edit_Password")->getText().toBytes();
-			auto confirm_password_buf=mGUIWindow->getEditBox("RegisterPage/Edit_ConfirmPassword")->getText().toBytes();
+			auto password_buf=mGUIWindow->getEditBox("RegisterPage/Edit_Password")->getText().toString();
+			auto confirm_password_buf=mGUIWindow->getEditBox("RegisterPage/Edit_ConfirmPassword")->getText().toString();
 			if(password_buf==confirm_password_buf)
 			{
-				auto username_buf=mGUIWindow->getEditBox("RegisterPage/Edit_Username")->getText().toBytes();
-				CApp::getSingleton().getGame()->getServerManager()->localUserRegister(String(reinterpret_cast<Char*>(&username_buf[0]),username_buf.size()),String(reinterpret_cast<Char*>(&password_buf[0]),password_buf.size()),NSInternal::registerCallback,mRegister);
+				auto username_buf=mGUIWindow->getEditBox("RegisterPage/Edit_Username")->getText().toString();
+				CApp::getSingleton().getGame()->getServerManager()->localUserRegister(username_buf,password_buf,NSInternal::registerCallback,mRegister);
 			}
 		}
 		break;

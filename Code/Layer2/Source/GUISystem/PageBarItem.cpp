@@ -25,7 +25,7 @@ NSDevilX::NSGUISystem::CPageBarItem::~CPageBarItem()
 	DEVILX_DELETE(getTextControl());
 }
 
-Void NSDevilX::NSGUISystem::CPageBarItem::setFocus(Bool focus)
+Void NSDevilX::NSGUISystem::CPageBarItem::setPrepareFocus(Bool focus)
 {
 	if(focus)
 		ISystemImp::getSingleton().getWindow()->registerEventListener(this);
@@ -38,7 +38,7 @@ Void NSDevilX::NSGUISystem::CPageBarItem::onEvent(NSUISystem::IEvent * e)
 	switch(e->getType())
 	{
 	case CEvent::EType_MouseMove:
-		static_cast<CPageBar*>(getParent())->setFocus(this);
+		static_cast<CPageBar*>(getParent())->setPrepareFocusControl(this);
 		break;
 	}
 }
