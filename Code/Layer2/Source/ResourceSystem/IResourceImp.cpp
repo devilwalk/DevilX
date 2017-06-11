@@ -33,7 +33,7 @@ const String & NSDevilX::NSResourceSystem::IResourceImp::getFileName() const
 	return mFile;
 }
 
-Void NSDevilX::NSResourceSystem::IResourceImp::load(ILoadCallback * callback)
+Void NSDevilX::NSResourceSystem::IResourceImp::load(ILoadCallback * callback,Bool sync)
 {
 	_updateLoadState();
 	switch(mLoadState)
@@ -41,7 +41,8 @@ Void NSDevilX::NSResourceSystem::IResourceImp::load(ILoadCallback * callback)
 	case ELoadState_Unload:
 		mLoadThreadSyncGroupID=ISystemImp::getSingleton().getIOPool()->nextSyncGroupID();
 		ISystemImp::getSingleton().getIOPool()->submitMT(IOFunction,this,mLoadThreadSyncGroupID);
-		ISystemImp::getSingleton().addListener(this,ISystemImp::EMessage_Update);
+		if(False==sync)
+			ISystemImp::getSingleton().addListener(this,ISystemImp::EMessage_Update);
 		if(callback)
 			mLoadCallbacks.push_back(callback);
 		mLoadState=ELoadState_Loading;
@@ -55,9 +56,23 @@ Void NSDevilX::NSResourceSystem::IResourceImp::load(ILoadCallback * callback)
 			callback->onLoaded(this);
 		break;
 	}
+	if(sync)
+	{
+		if(!isLoaded())
+		{
+			Sleep(10);
+			load(nullptr,True);
+		}
+		else
+		{
+			for(auto callback:mLoadCallbacks)
+				callback->onLoaded(this);
+			mLoadCallbacks.clear();
+		}
+	}
 }
 
-Bool NSDevilX::NSResourceSystem::IResourceImp::isLoaded() const
+Boolean NSDevilX::NSResourceSystem::IResourceImp::isLoaded() const
 {
 	return mLoadState==ELoadState_Loaded;
 }

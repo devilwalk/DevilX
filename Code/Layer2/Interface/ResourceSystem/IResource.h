@@ -25,8 +25,8 @@ namespace NSDevilX
 		public:
 			virtual const String & getName()const=0;
 			virtual const String & getFileName()const=0;
-			virtual Void load(ILoadCallback * callback)=0;
-			virtual Bool isLoaded()const=0;
+			virtual Void load(ILoadCallback * callback,Bool sync)=0;
+			virtual Boolean isLoaded()const=0;
 		};
 	}
 }

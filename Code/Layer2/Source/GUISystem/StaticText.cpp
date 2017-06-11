@@ -37,7 +37,9 @@ Boolean NSDevilX::NSGUISystem::CStaticText::getPosition(UInt32 charIndex,CFloat2
 		{
 			TVector<CFloat2> positions;
 			Float last_char_right;
-			_calculateTextParameters(&positions,&last_char_right);
+			auto loaded_resource=_calculateTextParameters(&positions,&last_char_right);
+			if(nullptr==loaded_resource)
+				return false;
 			if(getText().size()==charIndex)
 				*position=CFloat2(last_char_right,0.0f);
 			else
@@ -51,20 +53,19 @@ Boolean NSDevilX::NSGUISystem::CStaticText::getPositions(TVector<CFloat2>* posit
 {
 	if(hasDirtyFlag(EDirtyFlag_Text))
 		return false;
-	_calculateTextParameters(positions,lastCharRight);
+	auto loaded_resource=_calculateTextParameters(positions,lastCharRight);
+	if(nullptr==loaded_resource)
+		return false;
 	return true;
 }
 
 Boolean NSDevilX::NSGUISystem::CStaticText::_updateGraphicWindows()
 {
 	_destroyGraphicWindows();
-	if(!getTextProperty()->getFontResource())
-		return false;
-	getTextProperty()->getFontResource()->load(nullptr);
-	if(!getTextProperty()->getFontResource()->isLoaded())
-		return false;
 	TVector<CFloat2> positions;
 	auto loaded_resource=_calculateTextParameters(&positions);
+	if(nullptr==loaded_resource)
+		return false;
 	for(size_t i=0;i<getText().size();++i)
 	{
 		auto char_info=NSResourceSystem::getSystem()->getChar(loaded_resource,getText()[i]);
@@ -81,6 +82,8 @@ Boolean NSDevilX::NSGUISystem::CStaticText::_updateGraphicWindows()
 
 NSResourceSystem::ILoadedResource * NSDevilX::NSGUISystem::CStaticText::_calculateTextParameters(TVector<CFloat2> * positions,Float * lastCharRight)const
 {
+	if(!getTextProperty()->getFontResource())
+		return nullptr;
 	struct SLoad
 		:public NSResourceSystem::ILoadCallback
 		,public TBaseObject<SLoad>
@@ -92,7 +95,7 @@ NSResourceSystem::ILoadedResource * NSDevilX::NSGUISystem::CStaticText::_calcula
 		}
 	};
 	SLoad load_call_back;
-	getTextProperty()->getFontResource()->load(&load_call_back);
+	getTextProperty()->getFontResource()->load(&load_call_back,True);
 	if(positions||lastCharRight)
 	{
 		const auto & text=getText();

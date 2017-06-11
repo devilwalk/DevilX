@@ -36,8 +36,8 @@ namespace NSDevilX
 			// 通过 IResource 继承
 			virtual const String & getName() const override;
 			virtual const String & getFileName() const override;
-			virtual Void load(ILoadCallback * callback) override;
-			virtual Bool isLoaded() const override;
+			virtual Void load(ILoadCallback * callback,Bool sync) override;
+			virtual Boolean isLoaded() const override;
 
 			// 通过 ILoadedResource 继承
 			virtual IResource * queryInterface_IResource() const override;
