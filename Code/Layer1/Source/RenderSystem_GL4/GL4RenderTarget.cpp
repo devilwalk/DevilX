@@ -36,17 +36,19 @@ Void NSDevilX::NSRenderSystem::NSGL4::CRenderTarget::getSize(GLsizei & width,GLs
 Void NSDevilX::NSRenderSystem::NSGL4::CRenderTarget::setRT(UInt32 index,GLuint texture)
 {
 	mRenderTargets[index]=texture;
-	glNamedFramebufferTexture(mFrameBuffer,GL_COLOR_ATTACHMENT0+index,texture,0);
+	glNamedFramebufferTexture(getFrameBuffer(),GL_COLOR_ATTACHMENT0+index,texture,0);
 }
 
 Void NSDevilX::NSRenderSystem::NSGL4::CRenderTarget::setDS(GLuint texture)
 {
 	mDepthStencil=texture;
-	glNamedFramebufferTexture(GL_FRAMEBUFFER,GL_DEPTH_STENCIL_ATTACHMENT,texture,0);
+	glNamedFramebufferTexture(getFrameBuffer(),GL_DEPTH_STENCIL_ATTACHMENT,texture,0);
 }
 
 Void NSDevilX::NSRenderSystem::NSGL4::CRenderTarget::clear(UInt32 index,const CColour & colour)
 {
+	if(0==mRenderTargets[index])
+		return;
 	GLint fmt=0;
 	glGetTextureLevelParameteriv(mRenderTargets[index],0,GL_TEXTURE_INTERNAL_FORMAT,&fmt);
 
@@ -56,8 +58,8 @@ Void NSDevilX::NSRenderSystem::NSGL4::CRenderTarget::clear(UInt32 index,const CC
 	case GL_RGBA32F:
 	case GL_RGBA8:
 	{
-		GLfloat clear_value[]={colour.x,colour.y,colour.z,colour.w};
-		glClearNamedFramebufferfv(mFrameBuffer,GL_COLOR,GL_DRAW_BUFFER0+index,clear_value);
+		GLfloat clear_value[]={colour.r(),colour.g(),colour.b(),colour.a()};
+		glClearNamedFramebufferfv(getFrameBuffer(),GL_COLOR,GL_DRAW_BUFFER0+index,clear_value);
 	}
 	break;
 	}
@@ -66,20 +68,20 @@ Void NSDevilX::NSRenderSystem::NSGL4::CRenderTarget::clear(UInt32 index,const CC
 Void NSDevilX::NSRenderSystem::NSGL4::CRenderTarget::clear(Float depth,Int32 stencil)
 {
 	if((depth>=0)&&(stencil>=0))
-		glClearNamedFramebufferfi(mFrameBuffer,GL_DEPTH_STENCIL,0,depth,stencil);
+		glClearNamedFramebufferfi(getFrameBuffer(),GL_DEPTH_STENCIL,0,depth,stencil);
 	else if(depth>=0)
 	{
-		glClearNamedFramebufferfv(mFrameBuffer,GL_DEPTH,0,&depth);
+		glClearNamedFramebufferfv(getFrameBuffer(),GL_DEPTH,0,&depth);
 	}
 	else if(stencil>=0)
 	{
-		glClearNamedFramebufferiv(mFrameBuffer,GL_STENCIL,0,&stencil);
+		glClearNamedFramebufferiv(getFrameBuffer(),GL_STENCIL,0,&stencil);
 	}
 }
 
 Void NSDevilX::NSRenderSystem::NSGL4::CRenderTarget::setup()
 {
-	glBindFramebuffer(GL_FRAMEBUFFER,mFrameBuffer);
+	glBindFramebuffer(GL_FRAMEBUFFER,getFrameBuffer());
 }
 
 Void NSDevilX::NSRenderSystem::NSGL4::CRenderTarget::_updateConstantBuffer(Byte * buffer)

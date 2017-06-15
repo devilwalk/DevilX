@@ -1,7 +1,7 @@
 #pragma once
 #include "D3D11BaseObject.h"
 #include "D3D11EntityRenderableImp.h"
-#include "D3D11Transformer.h"
+#include "D3D11TransformerImp.h"
 namespace NSDevilX
 {
 	namespace NSRenderSystem
@@ -16,7 +16,7 @@ namespace NSDevilX
 			{
 			protected:
 				CScene * const mScene;
-				CTransformer * mTransformer;
+				CTransformerImp * mTransformer;
 				TResourcePtrMap<IEntityRenderableImp*const,CEntityRenderableImp> mRenderables;
 			public:
 				CEntityImp(IEntityImp * interfaceImp);
@@ -25,7 +25,7 @@ namespace NSDevilX
 				{
 					return mScene;
 				}
-				CTransformer * getTransformer()const
+				CTransformerImp * getTransformer()const
 				{
 					return mTransformer;
 				}

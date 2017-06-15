@@ -187,6 +187,7 @@ copy $(ProjectDir)..\..\..\Code\Game\Resource\$(ProjectName)\* $(OutDir)Resource
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\CreateRoom.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Server.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\ServerManager.h" />
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\SinglePlayer.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Terrain.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Buff.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Game.h" />
@@ -215,6 +216,7 @@ copy $(ProjectDir)..\..\..\Code\Game\Resource\$(ProjectName)\* $(OutDir)Resource
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Register.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Scene.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\ServerManager.cpp" />
+    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\SinglePlayer.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Terrain.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\UIScript.cpp" />
   </ItemGroup>

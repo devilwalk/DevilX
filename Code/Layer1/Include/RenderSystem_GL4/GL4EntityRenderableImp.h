@@ -1,30 +1,32 @@
 #pragma once
+#include "GL4BaseObject.h"
 #include "GL4Geometry.h"
-#include "GL4Material.h"
-#include "GL4RenderOperation.h"
+#include "GL4EntityMaterial.h"
 namespace NSDevilX
 {
 	namespace NSRenderSystem
 	{
 		namespace NSGL4
 		{
-			class CRenderableObject;
-			class CRenderable
-				:public TInterfaceObject<IRenderableImp>
-				,public TBaseObject<CRenderable>
+			class CEntityImp;
+			class CLight;
+			class CRenderOperation;
+			class CEntityRenderableImp
+				:public TInterfaceObject<IEntityRenderableImp>
+				,public TBaseObject<CEntityRenderableImp>
 				,public TMessageReceiver<IGeometryUsageImp>
 			{
 			protected:
-				CRenderableObject * const mRenderableObject;
+				CEntityImp * const mEntity;
 				CGeometry * mGeometry;
-				CMaterial * mMaterial;
+				CEntityMaterial * mMaterial;
 				GLenum mPrimitiveTopology;
 			public:
-				CRenderable(IRenderableImp * interfaceImp,CRenderableObject * obj);
-				~CRenderable();
-				CRenderableObject * getObject()const
+				CEntityRenderableImp(IEntityRenderableImp * interfaceImp,CEntityImp * obj);
+				~CEntityRenderableImp();
+				CEntityImp * getEntity()const
 				{
-					return mRenderableObject;
+					return mEntity;
 				}
 				CGeometry * getGeometry()const
 				{
@@ -32,7 +34,7 @@ namespace NSDevilX
 				}
 				Void renderForward(CLight * light,CRenderOperation & operation);
 				// Í¨¹ý TInterfaceObject ¼Ì³Ð
-				virtual Void onMessage(IRenderableImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
+				virtual Void onMessage(IEntityRenderableImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 
 				// Inherited via TMessageReceiver
 				virtual Void onMessage(IGeometryUsageImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;

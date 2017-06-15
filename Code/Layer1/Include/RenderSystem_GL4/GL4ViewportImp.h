@@ -2,6 +2,7 @@
 #include "GL4RenderTask.h"
 #include "GL4Viewport.h"
 #include "GL4Camera.h"
+#include "GL4OverlayManager.h"
 namespace NSDevilX
 {
 	namespace NSRenderSystem
@@ -26,6 +27,7 @@ namespace NSDevilX
 				CRenderTargetImp * const mRenderTarget;
 				CCamera * mCamera;
 				CRenderTask * mTask;
+				COverlayManager * mOverlayManager;
 			public:
 				CViewportImp(IViewportImp * interfaceImp);
 				~CViewportImp();

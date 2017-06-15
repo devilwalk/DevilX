@@ -1,4 +1,5 @@
 #pragma once
+#include "GL4Resource.h"
 namespace NSDevilX
 {
 	namespace NSRenderSystem
@@ -6,7 +7,15 @@ namespace NSDevilX
 		namespace NSGL4
 		{
 			class CTexture
+				:public CResource
+				,public CDirtyFlagContainer
 			{
+			public:
+				enum EDirtyFlag
+				{
+					EDirtyFlag_Resource,
+					EDirtyFlag_Content
+				};
 			protected:
 				GLuint mInternal;
 			protected:
@@ -20,9 +29,10 @@ namespace NSDevilX
 			class CTexture2D
 				:public TInterfaceObject<ITexture2DImp>
 				,public TBaseObject<CTexture2D>
-				,public TMessageReceiver<CSystemImp>
 				,public CTexture
 			{
+			protected:
+				TSet<UInt32> mDirtyContentSubTextureKeys;
 			public:
 				CTexture2D(ITexture2DImp * interfaceImp);
 				~CTexture2D();
@@ -33,6 +43,8 @@ namespace NSDevilX
 				Void _update();
 				Boolean _recreateInternal();
 				Boolean _updatePixels();
+				Void _updateFromMemorySources(ITexture2DImp::SSubTexture * subTexture);
+				Void _updateFromRenderableSources(ITexture2DImp::SSubTexture * subTexture);
 			};
 		}
 	}

@@ -3,31 +3,31 @@ using namespace NSDevilX;
 using namespace NSRenderSystem;
 using namespace NSGL4;
 
-NSDevilX::NSRenderSystem::NSGL4::CRenderable::CRenderable(IRenderableImp * interfaceImp,CRenderableObject * obj)
-	:TInterfaceObject<IRenderableImp>(interfaceImp)
-	,mRenderableObject(obj)
+NSDevilX::NSRenderSystem::NSGL4::CEntityRenderableImp::CEntityRenderableImp(IEntityRenderableImp * interfaceImp,CEntityImp * obj)
+	:TInterfaceObject<IEntityRenderableImp>(interfaceImp)
+	,mEntity(obj)
 	,mGeometry(nullptr)
 	,mMaterial(nullptr)
 	,mPrimitiveTopology(GL_TRIANGLES)
 {
-	mMaterial=DEVILX_NEW CMaterial(this);
+	mMaterial=DEVILX_NEW CEntityMaterial(this);
 	_updatePrimitiveTopology();
 	getInterfaceImp()->setUserPointer(0,this);
-	getInterfaceImp()->addListener(static_cast<TInterfaceObject<IRenderableImp>*>(this),IRenderableImp::EMessage_EndGeometryChange);
+	getInterfaceImp()->addListener(static_cast<TInterfaceObject<IEntityRenderableImp>*>(this),IEntityRenderableImp::EMessage_EndGeometryChange);
 	static_cast<IGeometryUsageImp*>(getInterfaceImp()->queryInterface_IGeometryUsage())->addListener(static_cast<TMessageReceiver<IGeometryUsageImp>*>(this),IGeometryUsageImp::EMessage_EndOperationTypeChange);
 }
 
-NSDevilX::NSRenderSystem::NSGL4::CRenderable::~CRenderable()
+NSDevilX::NSRenderSystem::NSGL4::CEntityRenderableImp::~CEntityRenderableImp()
 {
 	DEVILX_DELETE(mMaterial);
 }
 
-Void NSDevilX::NSRenderSystem::NSGL4::CRenderable::renderForward(CLight * light,CRenderOperation & operation)
+Void NSDevilX::NSRenderSystem::NSGL4::CEntityRenderableImp::renderForward(CLight * light,CRenderOperation & operation)
 {
-	if(getObject()->getScene()->getConstantBufferMT())
-		operation.mConstantBuffers.push_back(getObject()->getScene()->getConstantBufferMT());
-	if(getObject()->getTransformer()->getConstantBufferMT())
-		operation.mConstantBuffers.push_back(getObject()->getTransformer()->getConstantBufferMT());
+	if(getEntity()->getScene()->getConstantBufferMT())
+		operation.mConstantBuffers.push_back(getEntity()->getScene()->getConstantBufferMT());
+	if(getEntity()->getTransformer()->getConstantBufferMT())
+		operation.mConstantBuffers.push_back(getEntity()->getTransformer()->getConstantBufferMT());
 	if(mMaterial->getConstantBufferMT())
 		operation.mConstantBuffers.push_back(mMaterial->getConstantBufferMT());
 	if(light)
@@ -51,7 +51,7 @@ Void NSDevilX::NSRenderSystem::NSGL4::CRenderable::renderForward(CLight * light,
 	{
 		operation.mPass=mMaterial->getTechnique(CEnum::ETechniqueType_Forward)->getPasses()[CEnum::EForwardPassType_Ambient];
 	}
-	operation.mGeometry=mGeometry;
+	operation.mVertexArrayObject=static_cast<CEntityPass*>(operation.mPass)->getVertexArrayObject();
 	operation.mIndexCount=getInterfaceImp()->queryInterface_IGeometryUsage()->getIndexCount();
 	operation.mIndexBufferOffset=getInterfaceImp()->queryInterface_IGeometryUsage()->getIndexBufferOffset();
 	operation.mPrimitiveTopology=mPrimitiveTopology;
@@ -59,17 +59,17 @@ Void NSDevilX::NSRenderSystem::NSGL4::CRenderable::renderForward(CLight * light,
 	operation.mVertexBufferOffset=getInterfaceImp()->queryInterface_IGeometryUsage()->getVertexBufferOffset();
 }
 
-Void NSDevilX::NSRenderSystem::NSGL4::CRenderable::onMessage(IRenderableImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
+Void NSDevilX::NSRenderSystem::NSGL4::CEntityRenderableImp::onMessage(IEntityRenderableImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
 {
 	switch(message)
 	{
-	case IRenderableImp::EMessage_EndGeometryChange:
+	case IEntityRenderableImp::EMessage_EndGeometryChange:
 		mGeometry=CSystemImp::getSingleton().getGeometry(static_cast<IGeometryImp*>(getInterfaceImp()->getGeometry()));
 		break;
 	}
 }
 
-Void NSDevilX::NSRenderSystem::NSGL4::CRenderable::onMessage(IGeometryUsageImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
+Void NSDevilX::NSRenderSystem::NSGL4::CEntityRenderableImp::onMessage(IGeometryUsageImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
 {
 	switch(message)
 	{
@@ -79,7 +79,7 @@ Void NSDevilX::NSRenderSystem::NSGL4::CRenderable::onMessage(IGeometryUsageImp *
 	}
 }
 
-Void NSDevilX::NSRenderSystem::NSGL4::CRenderable::_updatePrimitiveTopology()
+Void NSDevilX::NSRenderSystem::NSGL4::CEntityRenderableImp::_updatePrimitiveTopology()
 {
 	switch(getInterfaceImp()->queryInterface_IGeometryUsage()->getOperationType())
 	{

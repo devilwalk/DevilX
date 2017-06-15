@@ -16,11 +16,24 @@ GLuint NSDevilX::NSRenderSystem::NSGL4::CShaderManager::registerVertexShader(con
 	String final_code=macro_string+code;
 	GLuint ret=0;
 	ret=glCreateShader(GL_VERTEX_SHADER);
-	const GLchar * code_str=&final_code[0];
-	glShaderSource(ret,1,&code_str,nullptr);
-	glCompileShader(ret);
 	if(ret)
 	{
+		const GLchar * code_str=&final_code[0];
+		glShaderSource(ret,1,&code_str,nullptr);
+		glCompileShader(ret);
+		GLint compiler_status=GL_FALSE;
+		glGetShaderiv(ret,GL_COMPILE_STATUS,&compiler_status);
+		if(GL_TRUE!=compiler_status)
+		{
+			String shader_log;
+			shader_log.resize(1024);
+			glGetShaderInfoLog(ret,1024,nullptr,&shader_log[0]);
+#ifdef DEVILX_DEBUG
+#if DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_WINDOWS
+			OutputDebugStringA((key+" log:"+shader_log+"\r\n").c_str());
+#endif
+#endif
+		}
 		mShaders.add(key,ret);
 	}
 	return ret;
@@ -34,11 +47,24 @@ GLuint NSDevilX::NSRenderSystem::NSGL4::CShaderManager::registerPixelShader(cons
 	String final_code=macro_string+code;
 	GLuint ret=0;
 	ret=glCreateShader(GL_FRAGMENT_SHADER);
-	const GLchar * code_str=&final_code[0];
-	glShaderSource(ret,1,&code_str,nullptr);
-	glCompileShader(ret);
 	if(ret)
 	{
+		const GLchar * code_str=&final_code[0];
+		glShaderSource(ret,1,&code_str,nullptr);
+		glCompileShader(ret);
+		GLint compiler_status=GL_FALSE;
+		glGetShaderiv(ret,GL_COMPILE_STATUS,&compiler_status);
+		if(GL_TRUE!=compiler_status)
+		{
+			String shader_log;
+			shader_log.resize(1024);
+			glGetShaderInfoLog(ret,1024,nullptr,&shader_log[0]);
+#ifdef DEVILX_DEBUG
+#if DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_WINDOWS
+			OutputDebugStringA((key+" log:"+shader_log+"\r\n").c_str());
+#endif
+#endif
+		}
 		mShaders.add(key,ret);
 	}
 	return ret;

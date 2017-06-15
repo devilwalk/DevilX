@@ -6,7 +6,7 @@ using namespace NSGL4;
 NSDevilX::NSRenderSystem::NSGL4::CLight::CLight(ILightImp * interfaceImp)
 	:TInterfaceObject<ILightImp>(interfaceImp)
 	,CConstantBufferContainer((interfaceImp->getType()==IEnum::ELightType_Directional)?"cbDirectionLight":((interfaceImp->getType()==IEnum::ELightType_Point)?"cbPointLight":"cbSpotLight"))
-	,mScene(CSystemImp::getSingleton().getScene(static_cast<ISceneElementImp*>(interfaceImp->queryInterface_ISceneElement())->getScene()))
+	,mScene(CSystemImp::getSingleton().getScene(static_cast<ISceneImp*>(static_cast<ISceneElementImp*>(interfaceImp->queryInterface_ISceneElement())->getScene())))
 {
 	getInterfaceImp()->setUserPointer(0,this);
 }
@@ -25,9 +25,19 @@ Void NSDevilX::NSRenderSystem::NSGL4::CLight::_updateConstantBuffer(Byte * buffe
 	case IEnum::ELightType_Directional:
 	{
 		auto offset=mConstantBuffer->getDescription()->getConstantDesc("gDirectionLightDiffuseColour").mOffsetInBytes;
-		memcpy(&buffer[offset],&getInterfaceImp()->getColour(),sizeof(CFloat3));
+		if(const_cast<const ILightImp*>(getInterfaceImp())->getColourUnitState(IEnum::ELightColourUnitStateType_Diffuse)
+			&&const_cast<const ILightImp*>(getInterfaceImp())->getColourUnitState(IEnum::ELightColourUnitStateType_Diffuse)->getEnable()
+			)
+			memcpy(&buffer[offset],&const_cast<const ILightImp*>(getInterfaceImp())->getColourUnitState(IEnum::ELightColourUnitStateType_Diffuse)->getValue(),sizeof(CFloatRGB));
+		else
+			memcpy(&buffer[offset],&CFloatRGB::sBlack,sizeof(CFloatRGB));
 		offset=mConstantBuffer->getDescription()->getConstantDesc("gDirectionLightSpecularColour").mOffsetInBytes;
-		memcpy(&buffer[offset],&CFloat3::sOne,sizeof(CFloat3));
+		if(const_cast<const ILightImp*>(getInterfaceImp())->getColourUnitState(IEnum::ELightColourUnitStateType_Specular)
+			&&const_cast<const ILightImp*>(getInterfaceImp())->getColourUnitState(IEnum::ELightColourUnitStateType_Specular)->getEnable()
+			)
+			memcpy(&buffer[offset],&const_cast<const ILightImp*>(getInterfaceImp())->getColourUnitState(IEnum::ELightColourUnitStateType_Specular)->getValue(),sizeof(CFloatRGB));
+		else
+			memcpy(&buffer[offset],&CFloatRGB::sBlack,sizeof(CFloatRGB));
 		offset=mConstantBuffer->getDescription()->getConstantDesc("gDirectionLightDirection").mOffsetInBytes;
 		memcpy(&buffer[offset],&static_cast<IDirectionLightPropertyImp*>(getInterfaceImp()->queryInterface_IDirectionLightProperty())->getDirectionMT(),sizeof(CFloat3));
 	}
@@ -35,9 +45,19 @@ Void NSDevilX::NSRenderSystem::NSGL4::CLight::_updateConstantBuffer(Byte * buffe
 	case IEnum::ELightType_Point:
 	{
 		auto offset=mConstantBuffer->getDescription()->getConstantDesc("gPointLightDiffuseColour").mOffsetInBytes;
-		memcpy(&buffer[offset],&getInterfaceImp()->getColour(),sizeof(CFloat3));
+		if(const_cast<const ILightImp*>(getInterfaceImp())->getColourUnitState(IEnum::ELightColourUnitStateType_Diffuse)
+			&&const_cast<const ILightImp*>(getInterfaceImp())->getColourUnitState(IEnum::ELightColourUnitStateType_Diffuse)->getEnable()
+			)
+			memcpy(&buffer[offset],&const_cast<const ILightImp*>(getInterfaceImp())->getColourUnitState(IEnum::ELightColourUnitStateType_Diffuse)->getValue(),sizeof(CFloatRGB));
+		else
+			memcpy(&buffer[offset],&CFloatRGB::sBlack,sizeof(CFloatRGB));
 		offset=mConstantBuffer->getDescription()->getConstantDesc("gPointLightSpecularColour").mOffsetInBytes;
-		memcpy(&buffer[offset],&CFloat3::sOne,sizeof(CFloat3));
+		if(const_cast<const ILightImp*>(getInterfaceImp())->getColourUnitState(IEnum::ELightColourUnitStateType_Specular)
+			&&const_cast<const ILightImp*>(getInterfaceImp())->getColourUnitState(IEnum::ELightColourUnitStateType_Specular)->getEnable()
+			)
+			memcpy(&buffer[offset],&const_cast<const ILightImp*>(getInterfaceImp())->getColourUnitState(IEnum::ELightColourUnitStateType_Specular)->getValue(),sizeof(CFloatRGB));
+		else
+			memcpy(&buffer[offset],&CFloatRGB::sBlack,sizeof(CFloatRGB));
 		offset=mConstantBuffer->getDescription()->getConstantDesc("gPointLightPosition").mOffsetInBytes;
 		memcpy(&buffer[offset],&getInterfaceImp()->queryInterface_ISceneElement()->getTransformer()->getPosition(),sizeof(CFloat3));
 		offset=mConstantBuffer->getDescription()->getConstantDesc("gPointLightReciprocalRange").mOffsetInBytes;
@@ -49,9 +69,19 @@ Void NSDevilX::NSRenderSystem::NSGL4::CLight::_updateConstantBuffer(Byte * buffe
 	case IEnum::ELightType_Spot:
 	{
 		auto offset=mConstantBuffer->getDescription()->getConstantDesc("gSpotLightDiffuseColour").mOffsetInBytes;
-		memcpy(&buffer[offset],&getInterfaceImp()->getColour(),sizeof(CFloat3));
+		if(const_cast<const ILightImp*>(getInterfaceImp())->getColourUnitState(IEnum::ELightColourUnitStateType_Diffuse)
+			&&const_cast<const ILightImp*>(getInterfaceImp())->getColourUnitState(IEnum::ELightColourUnitStateType_Diffuse)->getEnable()
+			)
+			memcpy(&buffer[offset],&const_cast<const ILightImp*>(getInterfaceImp())->getColourUnitState(IEnum::ELightColourUnitStateType_Diffuse)->getValue(),sizeof(CFloatRGB));
+		else
+			memcpy(&buffer[offset],&CFloatRGB::sBlack,sizeof(CFloatRGB));
 		offset=mConstantBuffer->getDescription()->getConstantDesc("gSpotLightSpecularColour").mOffsetInBytes;
-		memcpy(&buffer[offset],&CFloat3::sOne,sizeof(CFloat3));
+		if(const_cast<const ILightImp*>(getInterfaceImp())->getColourUnitState(IEnum::ELightColourUnitStateType_Specular)
+			&&const_cast<const ILightImp*>(getInterfaceImp())->getColourUnitState(IEnum::ELightColourUnitStateType_Specular)->getEnable()
+			)
+			memcpy(&buffer[offset],&const_cast<const ILightImp*>(getInterfaceImp())->getColourUnitState(IEnum::ELightColourUnitStateType_Specular)->getValue(),sizeof(CFloatRGB));
+		else
+			memcpy(&buffer[offset],&CFloatRGB::sBlack,sizeof(CFloatRGB));
 		offset=mConstantBuffer->getDescription()->getConstantDesc("gSpotLightPosition").mOffsetInBytes;
 		memcpy(&buffer[offset],&getInterfaceImp()->queryInterface_ISceneElement()->getTransformer()->getPosition(),sizeof(CFloat3));
 		offset=mConstantBuffer->getDescription()->getConstantDesc("gSpotLightDirection").mOffsetInBytes;

@@ -21,5 +21,6 @@
 #include "Scene.h"
 #include "Server.h"
 #include "ServerManager.h"
+#include "SinglePlayer.h"
 #include "Terrain.h"
 #include "UIScript.h"

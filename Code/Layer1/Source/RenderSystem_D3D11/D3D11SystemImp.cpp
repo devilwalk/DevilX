@@ -408,11 +408,11 @@ CPixelShader * NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::getPixelShader(ID3
 	return dynamic_cast<CPixelShader*>(ret);
 }
 
-CTransformer * NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::createTransformer(ITransformerImp * interfaceImp)
+CTransformerImp * NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::createTransformer(ITransformerImp * interfaceImp)
 {
 	if(getTransformer(interfaceImp))
 		return nullptr;
-	auto ret=DEVILX_NEW CTransformer(interfaceImp);
+	auto ret=DEVILX_NEW CTransformerImp(interfaceImp);
 	mTransformers[interfaceImp]=ret;
 	return ret;
 }

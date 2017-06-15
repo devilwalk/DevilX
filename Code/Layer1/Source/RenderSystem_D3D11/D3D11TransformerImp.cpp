@@ -3,7 +3,7 @@ using namespace NSDevilX;
 using namespace NSRenderSystem;
 using namespace NSD3D11;
 
-NSDevilX::NSRenderSystem::NSD3D11::CTransformer::CTransformer(ITransformerImp * interfaceImp)
+NSDevilX::NSRenderSystem::NSD3D11::CTransformerImp::CTransformerImp(ITransformerImp * interfaceImp)
 	:TInterfaceObject<ITransformerImp>(interfaceImp)
 	,CConstantBufferContainer("cbObjectTransform")
 {
@@ -13,10 +13,10 @@ NSDevilX::NSRenderSystem::NSD3D11::CTransformer::CTransformer(ITransformerImp * 
 	getInterfaceImp()->addListener(this,ITransformerImp::EMessage_EndScaleChange);
 }
 
-NSDevilX::NSRenderSystem::NSD3D11::CTransformer::~CTransformer()
+NSDevilX::NSRenderSystem::NSD3D11::CTransformerImp::~CTransformerImp()
 {}
 
-Void NSDevilX::NSRenderSystem::NSD3D11::CTransformer::onMessage(ITransformerImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
+Void NSDevilX::NSRenderSystem::NSD3D11::CTransformerImp::onMessage(ITransformerImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
 {
 	switch(message)
 	{
@@ -31,7 +31,7 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CTransformer::onMessage(ITransformerImp 
 	}
 }
 
-Void NSDevilX::NSRenderSystem::NSD3D11::CTransformer::_updateConstantBuffer(Byte * buffer)
+Void NSDevilX::NSRenderSystem::NSD3D11::CTransformerImp::_updateConstantBuffer(Byte * buffer)
 {
 	auto offset=mConstantBuffer->getDescription()->getConstantDesc("gWorldMatrix").StartOffset;
 	memcpy(&buffer[offset],&getInterfaceImp()->getTransformMT(),sizeof(CMatrix4F));

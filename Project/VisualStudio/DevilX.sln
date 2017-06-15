@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Common", "Layer0\Common.vcxproj", "{F0D5FFC1-43A4-4786-8A8A-7A4935E48C4E}"
 EndProject
@@ -118,6 +118,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HLSL4_1", "HLSL4_1", "{8223
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GLSL4_5", "GLSL4_5", "{C75FD1DB-FD2F-4699-B0AA-C63EB059384F}"
 	ProjectSection(SolutionItems) = preProject
+		..\..\Code\Layer1\Source\Shader\GLSL4_5\cbLight.glsl = ..\..\Code\Layer1\Source\Shader\GLSL4_5\cbLight.glsl
+		..\..\Code\Layer1\Source\Shader\GLSL4_5\cbObject.glsl = ..\..\Code\Layer1\Source\Shader\GLSL4_5\cbObject.glsl
+		..\..\Code\Layer1\Source\Shader\GLSL4_5\cbShadow.glsl = ..\..\Code\Layer1\Source\Shader\GLSL4_5\cbShadow.glsl
 		..\..\Code\Layer1\Source\Shader\GLSL4_5\ClearViewportPixel.glsl = ..\..\Code\Layer1\Source\Shader\GLSL4_5\ClearViewportPixel.glsl
 		..\..\Code\Layer1\Source\Shader\GLSL4_5\ClearViewportVertex.glsl = ..\..\Code\Layer1\Source\Shader\GLSL4_5\ClearViewportVertex.glsl
 		..\..\Code\Layer1\Source\Shader\GLSL4_5\ConstantBuffer.glsl = ..\..\Code\Layer1\Source\Shader\GLSL4_5\ConstantBuffer.glsl
@@ -128,6 +131,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GLSL4_5", "GLSL4_5", "{C75F
 		..\..\Code\Layer1\Source\Shader\GLSL4_5\ForwardShaderPixel.glsl = ..\..\Code\Layer1\Source\Shader\GLSL4_5\ForwardShaderPixel.glsl
 		..\..\Code\Layer1\Source\Shader\GLSL4_5\ForwardShaderVertex.glsl = ..\..\Code\Layer1\Source\Shader\GLSL4_5\ForwardShaderVertex.glsl
 		..\..\Code\Layer1\Source\Shader\GLSL4_5\Function.glsl = ..\..\Code\Layer1\Source\Shader\GLSL4_5\Function.glsl
+		..\..\Code\Layer1\Source\Shader\GLSL4_5\FunctionEx.glsl = ..\..\Code\Layer1\Source\Shader\GLSL4_5\FunctionEx.glsl
+		..\..\Code\Layer1\Source\Shader\GLSL4_5\OverlayShaderPixel.glsl = ..\..\Code\Layer1\Source\Shader\GLSL4_5\OverlayShaderPixel.glsl
+		..\..\Code\Layer1\Source\Shader\GLSL4_5\OverlayShaderVertex.glsl = ..\..\Code\Layer1\Source\Shader\GLSL4_5\OverlayShaderVertex.glsl
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Game", "Game", "{023BFBB4-8272-4044-A31A-D2C42EC113FC}"
@@ -159,6 +165,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DevilFightChess", "Game\Dev
 		{A5D07179-735C-4F57-9FC8-E15C75BD3159} = {A5D07179-735C-4F57-9FC8-E15C75BD3159}
 		{1AC3D07C-53AB-4C61-A591-0167C6841852} = {1AC3D07C-53AB-4C61-A591-0167C6841852}
 		{C99760A5-D753-49AE-9CB0-2DB2AC24F53D} = {C99760A5-D753-49AE-9CB0-2DB2AC24F53D}
+		{FA3765A8-A738-4B63-B4D1-7BC74FBF2441} = {FA3765A8-A738-4B63-B4D1-7BC74FBF2441}
 		{6370D2B2-ABDA-4A54-BCCB-9FB75368E79C} = {6370D2B2-ABDA-4A54-BCCB-9FB75368E79C}
 		{0EAE0DBF-8E60-4363-A680-460B5E1CD4EB} = {0EAE0DBF-8E60-4363-A680-460B5E1CD4EB}
 		{F0D5FFC1-43A4-4786-8A8A-7A4935E48C4E} = {F0D5FFC1-43A4-4786-8A8A-7A4935E48C4E}

@@ -8,23 +8,26 @@ namespace NSDevilX
 			class CUtility
 			{
 			public:
-				static GLint getInternalFormat(IEnum::ETextureFormat format)
+				struct SScissorRect
+					:public TBaseObject<SScissorRect>
+				{
+					GLint mLeft;
+					GLint mTop;
+					GLsizei mWidth;
+					GLsizei mHeight;
+				};
+				static GLint getInternalFormat(IEnum::ETexture2DFormat format)
 				{
 					switch(format)
 					{
-					case IEnum::ETextureFormat_R8G8B8A8:
-					case IEnum::ETextureFormat_Environment:
+					case IEnum::ETexture2DFormat_R8G8B8A8:
 						return GL_RGBA8;
-					case IEnum::ETextureFormat_BC1:
+					case IEnum::ETexture2DFormat_BC1:
 						return GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
-					case IEnum::ETextureFormat_BC2:
+					case IEnum::ETexture2DFormat_BC2:
 						return GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;
-					case IEnum::ETextureFormat_BC3:
+					case IEnum::ETexture2DFormat_BC3:
 						return GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
-					case IEnum::ETextureFormat_Font:
-						return GL_ALPHA8;
-					case IEnum::ETextureFormat_Shadow:
-						return GL_DEPTH_STENCIL;
 					}
 					return GL_RGBA;
 				}

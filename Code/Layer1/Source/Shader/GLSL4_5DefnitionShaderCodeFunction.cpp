@@ -4,7 +4,251 @@ using namespace NSRenderSystem;
 using namespace NSGLSL4_5;
 NSDevilX::NSRenderSystem::NSGLSL4_5::CDefinitionShader::CDefinitionShader()
 {
-ClearViewportPixel="cbuffer cbClearViewport\r\n\
+cbLight="#version 450\r\n\
+#define float2 vec2\r\n\
+#define float3 vec3\r\n\
+#define float4 vec4\r\n\
+#define int2 ivec2\r\n\
+#define int3 ivec3\r\n\
+#define int4 ivec4\r\n\
+#define uint2 int2\r\n\
+#define uint3 int3\r\n\
+#define uint4 int4\r\n\
+#define float2x2 mat2\r\n\
+#define float2x3 mat2x3\r\n\
+#define float2x4 mat2x4\r\n\
+#define float3x2 mat3x2\r\n\
+#define float3x3 mat3\r\n\
+#define float3x4 mat3x4\r\n\
+#define float4x2 mat4x2\r\n\
+#define float4x3 mat4x3\r\n\
+#define float4x4 mat4\r\n\
+#define cbuffer layout(shared) uniform\r\n\
+cbuffer cbDirectionLight\r\n\
+{\r\n\
+    float3 gDirectionLightDiffuseColour;\r\n\
+    float3 gDirectionLightSpecularColour;\r\n\
+    float3 gDirectionLightDirection;\r\n\
+};\r\n\
+cbuffer cbPointLight\r\n\
+{\r\n\
+    float3 gPointLightDiffuseColour;\r\n\
+    float3 gPointLightSpecularColour;\r\n\
+    float3 gPointLightPosition;\r\n\
+    float gPointLightReciprocalRange;\r\n\
+    float gPointLightStartFallOffDistance;\r\n\
+};\r\n\
+cbuffer cbSpotLight\r\n\
+{\r\n\
+    float3 gSpotLightDiffuseColour;\r\n\
+    float3 gSpotLightSpecularColour;\r\n\
+    float3 gSpotLightDirection;\r\n\
+    float3 gSpotLightPosition;\r\n\
+    float gSpotLightReciprocalRange;\r\n\
+    float gSpotLightStartFallOffDistance;\r\n\
+    float gSpotLightCosInnerCornerHalfAngle;\r\n\
+    float gSpotLightReciprocalDeltaCosHalfAngle;\r\n\
+};\r\n\
+";
+cbObject="#version 450\r\n\
+#define float2 vec2\r\n\
+#define float3 vec3\r\n\
+#define float4 vec4\r\n\
+#define int2 ivec2\r\n\
+#define int3 ivec3\r\n\
+#define int4 ivec4\r\n\
+#define uint2 int2\r\n\
+#define uint3 int3\r\n\
+#define uint4 int4\r\n\
+#define float2x2 mat2\r\n\
+#define float2x3 mat2x3\r\n\
+#define float2x4 mat2x4\r\n\
+#define float3x2 mat3x2\r\n\
+#define float3x3 mat3\r\n\
+#define float3x4 mat3x4\r\n\
+#define float4x2 mat4x2\r\n\
+#define float4x3 mat4x3\r\n\
+#define float4x4 mat4\r\n\
+#define cbuffer layout(shared) uniform\r\n\
+cbuffer cbObjectTransform\r\n\
+{\r\n\
+    float4x4 gWorldMatrix;\r\n\
+};\r\n\
+cbuffer cbObjectMaterial\r\n\
+{\r\n\
+    float3 gMainColour;\r\n\
+    float gAlpha;\r\n\
+    float3 gSpecularColour;\r\n\
+    float gSpecularPower;\r\n\
+    float3 gEmissiveColour;\r\n\
+    float gAlphaTestValue;\r\n\
+};";
+cbShadow="#version 450\r\n\
+#define float2 vec2\r\n\
+#define float3 vec3\r\n\
+#define float4 vec4\r\n\
+#define int2 ivec2\r\n\
+#define int3 ivec3\r\n\
+#define int4 ivec4\r\n\
+#define uint2 int2\r\n\
+#define uint3 int3\r\n\
+#define uint4 int4\r\n\
+#define float2x2 mat2\r\n\
+#define float2x3 mat2x3\r\n\
+#define float2x4 mat2x4\r\n\
+#define float3x2 mat3x2\r\n\
+#define float3x3 mat3\r\n\
+#define float3x4 mat3x4\r\n\
+#define float4x2 mat4x2\r\n\
+#define float4x3 mat4x3\r\n\
+#define float4x4 mat4\r\n\
+#define cbuffer layout(shared) uniform\r\n\
+cbuffer cbShadowMap0\r\n\
+{\r\n\
+    float4x4 gShadowMap0ViewProjectionMatrix;\r\n\
+    float gShadowMap0FarDistance;\r\n\
+    float gShadowMap0InverseFarDistance;\r\n\
+};\r\n\
+cbuffer cbShadowMap1\r\n\
+{\r\n\
+    float4x4 gShadowMap1ViewProjectionMatrix;\r\n\
+    float gShadowMap1FarDistance;\r\n\
+    float gShadowMap1InverseFarDistance;\r\n\
+};\r\n\
+cbuffer cbShadowMap2\r\n\
+{\r\n\
+    float4x4 gShadowMap2ViewProjectionMatrix;\r\n\
+    float gShadowMap2FarDistance;\r\n\
+    float gShadowMap2InverseFarDistance;\r\n\
+};\r\n\
+cbuffer cbShadowMap3\r\n\
+{\r\n\
+    float4x4 gShadowMap3ViewProjectionMatrix;\r\n\
+    float gShadowMap3FarDistance;\r\n\
+    float gShadowMap3InverseFarDistance;\r\n\
+};\r\n\
+";
+ClearViewportPixel="#version 450\r\n\
+#define float2 vec2\r\n\
+#define float3 vec3\r\n\
+#define float4 vec4\r\n\
+#define int2 ivec2\r\n\
+#define int3 ivec3\r\n\
+#define int4 ivec4\r\n\
+#define uint2 int2\r\n\
+#define uint3 int3\r\n\
+#define uint4 int4\r\n\
+#define float2x2 mat2\r\n\
+#define float2x3 mat2x3\r\n\
+#define float2x4 mat2x4\r\n\
+#define float3x2 mat3x2\r\n\
+#define float3x3 mat3\r\n\
+#define float3x4 mat3x4\r\n\
+#define float4x2 mat4x2\r\n\
+#define float4x3 mat4x3\r\n\
+#define float4x4 mat4\r\n\
+#define cbuffer layout(shared) uniform\r\n\
+float2 mul(float2 v,float2x2 m){return v*m;}\r\n\
+float3 mul(float2 v,float3x2 m){return v*m;}\r\n\
+float4 mul(float2 v,float4x2 m){return v*m;}\r\n\
+float2 mul(float3 v,float2x3 m){return v*m;}\r\n\
+float3 mul(float3 v,float3x3 m){return v*m;}\r\n\
+float4 mul(float3 v,float4x3 m){return v*m;}\r\n\
+float2 mul(float4 v,float2x4 m){return v*m;}\r\n\
+float3 mul(float4 v,float3x4 m){return v*m;}\r\n\
+float4 mul(float4 v,float4x4 m){return v*m;}\r\n\
+float2 mul(float2x2 m,float2 v){return m*v;}\r\n\
+float2 mul(float3x2 m,float3 v){return m*v;}\r\n\
+float2 mul(float4x2 m,float4 v){return m*v;}\r\n\
+float3 mul(float2x3 m,float2 v){return m*v;}\r\n\
+float3 mul(float3x3 m,float3 v){return m*v;}\r\n\
+float3 mul(float4x3 m,float4 v){return m*v;}\r\n\
+float4 mul(float2x4 m,float2 v){return m*v;}\r\n\
+float4 mul(float3x4 m,float3 v){return m*v;}\r\n\
+float4 mul(float4x4 m,float4 v){return m*v;}\r\n\
+float2x2 mul(float2x2 m0,float2x2 m1){return m0*m1;}\r\n\
+float3x3 mul(float3x3 m0,float3x3 m1){return m0*m1;}\r\n\
+float4x4 mul(float4x4 m0,float4x4 m1){return m0*m1;}\r\n\
+float saturate(float v){return clamp(v,0.0,1.0);}\r\n\
+float2 saturate(float2 v){return clamp(v,float2(0.0),float2(1.0));}\r\n\
+float3 saturate(float3 v){return clamp(v,float3(0.0),float3(1.0));}\r\n\
+float4 saturate(float4 v){return clamp(v,float4(0.0),float4(1.0));}\r\n\
+float getMaxComponment(float2 v)\r\n\
+{\r\n\
+	return max(v.x, v.y);\r\n\
+}\r\n\
+float getMaxComponment(float3 v)\r\n\
+{\r\n\
+	return max(v.x, getMaxComponment(v.yz));\r\n\
+}\r\n\
+float getMaxComponment(float4 v)\r\n\
+{\r\n\
+	return max(v.x, getMaxComponment(v.yzw));\r\n\
+}\r\n\
+float getMinComponment(float2 v)\r\n\
+{\r\n\
+	return min(v.x, v.y);\r\n\
+}\r\n\
+float getMinComponment(float3 v)\r\n\
+{\r\n\
+	return min(v.x, getMinComponment(v.yz));\r\n\
+}\r\n\
+float getMinComponment(float4 v)\r\n\
+{\r\n\
+	return min(v.x, getMinComponment(v.yzw));\r\n\
+}\r\n\
+float3 getCameraPosition(float4x4 viewMatrix)\r\n\
+{\r\n\
+	return -viewMatrix[3].xyz;\r\n\
+}\r\n\
+float3 getCameraDirection(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=float3x3(viewMatrix);\r\n\
+	return rot[2];\r\n\
+}\r\n\
+float3 getCameraUp(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=float3x3(viewMatrix);\r\n\
+	return rot[1];\r\n\
+}\r\n\
+float3 getCameraRight(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=float3x3(viewMatrix);\r\n\
+	return rot[0];\r\n\
+}\r\n\
+float calcDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
+{\r\n\
+	return saturate(dot(vertexToLightDirection,worldNormal));\r\n\
+}\r\n\
+float calcSpecularFactor(float3 vertexToLightDirection,float3 worldNormal,float3 worldPosition,float3 cameraPosition)\r\n\
+{\r\n\
+	float3 half_vector=normalize(normalize(cameraPosition-worldPosition)+vertexToLightDirection);\r\n\
+	float specular_factor=saturate(dot(half_vector,worldNormal));\r\n\
+	return specular_factor;\r\n\
+}\r\n\
+//return 1意味着无衰减，return 0意味着完全衰减\r\n\
+float calcFalloffFactor(float current, float begin, float reciprocalRange)\r\n\
+{\r\n\
+    return 1.0 - pow(saturate((current - begin) * reciprocalRange), 2);\r\n\
+}\r\n\
+float3 encodeNormal(float3 normal)\r\n\
+{\r\n\
+	return normal / getMaxComponment(normal);\r\n\
+}\r\n\
+float2 getQuadPosition(int vertexID)\r\n\
+{\r\n\
+    float2 ret;\r\n\
+    if(0==vertexID)\r\n\
+        ret = float2(-1.0, 1.0);\r\n\
+    else if(1==vertexID)\r\n\
+        ret = float2(1.0, 1.0);\r\n\
+    else if(2==vertexID)\r\n\
+        ret = float2(-1.0, -1.0);\r\n\
+    else\r\n\
+        ret = float2(1.0, -1.0);\r\n\
+    return ret;\r\n\
+}\r\n\
+cbuffer cbClearViewport\r\n\
 {\r\n\
     float4 gClearColour0;\r\n\
     float4 gClearColour1;\r\n\
@@ -55,98 +299,6 @@ ClearViewportVertex="#version 450\r\n\
 #define float4x3 mat4x3\r\n\
 #define float4x4 mat4\r\n\
 #define cbuffer layout(shared) uniform\r\n\
-cbuffer cbSystem\r\n\
-{\r\n\
-    float gFrameTimeInSeconds;\r\n\
-    float gInverseFrameTimeInSeconds;\r\n\
-};\r\n\
-cbuffer cbRenderTarget\r\n\
-{\r\n\
-    float2 gRenderTargetSizeInPixel;\r\n\
-    float2 gInverseRenderTargetSizeInPixel;\r\n\
-};\r\n\
-cbuffer cbViewport\r\n\
-{\r\n\
-    float2 gViewportSizeInPixel;\r\n\
-    float2 gInverseViewportSizeInPixel;\r\n\
-};\r\n\
-cbuffer cbCamera\r\n\
-{\r\n\
-    float4x4 gViewMatrix;\r\n\
-    float4x4 gInverseViewMatrix;\r\n\
-    float4x4 gProjectionMatrix;\r\n\
-    float4x4 gInverseProjectionMatrix;\r\n\
-    float4x4 gViewProjectionMatrix;\r\n\
-    float4x4 gInverseViewProjectionMatrix;\r\n\
-    float gFarDistance;\r\n\
-    float gInverseFarDistance;\r\n\
-};\r\n\
-cbuffer cbShadowMap0\r\n\
-{\r\n\
-    float4x4 gShadowMap0ViewProjectionMatrix;\r\n\
-    float gShadowMap0FarDistance;\r\n\
-    float gShadowMap0InverseFarDistance;\r\n\
-};\r\n\
-cbuffer cbShadowMap1\r\n\
-{\r\n\
-    float4x4 gShadowMap1ViewProjectionMatrix;\r\n\
-    float gShadowMap1FarDistance;\r\n\
-    float gShadowMap1InverseFarDistance;\r\n\
-};\r\n\
-cbuffer cbShadowMap2\r\n\
-{\r\n\
-    float4x4 gShadowMap2ViewProjectionMatrix;\r\n\
-    float gShadowMap2FarDistance;\r\n\
-    float gShadowMap2InverseFarDistance;\r\n\
-};\r\n\
-cbuffer cbShadowMap3\r\n\
-{\r\n\
-    float4x4 gShadowMap3ViewProjectionMatrix;\r\n\
-    float gShadowMap3FarDistance;\r\n\
-    float gShadowMap3InverseFarDistance;\r\n\
-};\r\n\
-cbuffer cbDirectionLight\r\n\
-{\r\n\
-    float3 gDirectionLightDiffuseColour;\r\n\
-    float3 gDirectionLightSpecularColour;\r\n\
-    float3 gDirectionLightDirection;\r\n\
-};\r\n\
-cbuffer cbPointLight\r\n\
-{\r\n\
-    float3 gPointLightDiffuseColour;\r\n\
-    float3 gPointLightSpecularColour;\r\n\
-    float3 gPointLightPosition;\r\n\
-    float gPointLightReciprocalRange;\r\n\
-    float gPointLightStartFallOffDistance;\r\n\
-};\r\n\
-cbuffer cbSpotLight\r\n\
-{\r\n\
-    float3 gSpotLightDiffuseColour;\r\n\
-    float3 gSpotLightSpecularColour;\r\n\
-    float3 gSpotLightDirection;\r\n\
-    float3 gSpotLightPosition;\r\n\
-    float gSpotLightReciprocalRange;\r\n\
-    float gSpotLightStartFallOffDistance;\r\n\
-    float gSpotLightCosInnerCornerHalfAngle;\r\n\
-    float gSpotLightReciprocalDeltaCosHalfAngle;\r\n\
-};\r\n\
-cbuffer cbScene\r\n\
-{\r\n\
-    float3 gAmbientColour;\r\n\
-};\r\n\
-cbuffer cbObjectTransform\r\n\
-{\r\n\
-    float4x4 gWorldMatrix;\r\n\
-};\r\n\
-cbuffer cbObjectMaterial\r\n\
-{\r\n\
-    float3 gMainColour;\r\n\
-    float gAlpha;\r\n\
-    float3 gSpecularColour;\r\n\
-    float gSpecularPower;\r\n\
-    float3 gEmissiveColour;\r\n\
-    float gAlphaTestValue;\r\n\
-};\r\n\
 float2 mul(float2 v,float2x2 m){return v*m;}\r\n\
 float3 mul(float2 v,float3x2 m){return v*m;}\r\n\
 float4 mul(float2 v,float4x2 m){return v*m;}\r\n\
@@ -168,6 +320,10 @@ float4 mul(float4x4 m,float4 v){return m*v;}\r\n\
 float2x2 mul(float2x2 m0,float2x2 m1){return m0*m1;}\r\n\
 float3x3 mul(float3x3 m0,float3x3 m1){return m0*m1;}\r\n\
 float4x4 mul(float4x4 m0,float4x4 m1){return m0*m1;}\r\n\
+float saturate(float v){return clamp(v,0.0,1.0);}\r\n\
+float2 saturate(float2 v){return clamp(v,float2(0.0),float2(1.0));}\r\n\
+float3 saturate(float3 v){return clamp(v,float3(0.0),float3(1.0));}\r\n\
+float4 saturate(float4 v){return clamp(v,float4(0.0),float4(1.0));}\r\n\
 float getMaxComponment(float2 v)\r\n\
 {\r\n\
 	return max(v.x, v.y);\r\n\
@@ -196,36 +352,20 @@ float3 getCameraPosition(float4x4 viewMatrix)\r\n\
 {\r\n\
 	return -viewMatrix[3].xyz;\r\n\
 }\r\n\
-float3 getCameraPosition()\r\n\
-{\r\n\
-	return getCameraPosition(gViewMatrix);\r\n\
-}\r\n\
 float3 getCameraDirection(float4x4 viewMatrix)\r\n\
 {\r\n\
 	float3x3 rot=float3x3(viewMatrix);\r\n\
 	return rot[2];\r\n\
-}\r\n\
-float3 getCameraDirection()\r\n\
-{\r\n\
-	return getCameraDirection(gViewMatrix);\r\n\
 }\r\n\
 float3 getCameraUp(float4x4 viewMatrix)\r\n\
 {\r\n\
 	float3x3 rot=float3x3(viewMatrix);\r\n\
 	return rot[1];\r\n\
 }\r\n\
-float3 getCameraUp()\r\n\
-{\r\n\
-	return getCameraUp(gViewMatrix);\r\n\
-}\r\n\
 float3 getCameraRight(float4x4 viewMatrix)\r\n\
 {\r\n\
 	float3x3 rot=float3x3(viewMatrix);\r\n\
 	return rot[0];\r\n\
-}\r\n\
-float3 getCameraRight()\r\n\
-{\r\n\
-	return getCameraRight(gViewMatrix);\r\n\
 }\r\n\
 float calcDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
 {\r\n\
@@ -261,15 +401,15 @@ float2 getQuadPosition(int vertexID)\r\n\
 }\r\n\
 cbuffer cbClearViewport\r\n\
 {\r\n\
-    float4 gClearColour0 : packoffset(c0);\r\n\
-    float4 gClearColour1 : packoffset(c1);\r\n\
-    float4 gClearColour2 : packoffset(c2);\r\n\
-    float4 gClearColour3 : packoffset(c3);\r\n\
-    float4 gClearColour4 : packoffset(c4);\r\n\
-    float4 gClearColour5 : packoffset(c5);\r\n\
-    float4 gClearColour6 : packoffset(c6);\r\n\
-    float4 gClearColour7 : packoffset(c7);\r\n\
-    float gClearDepth : packoffset(c8);\r\n\
+    float4 gClearColour0;\r\n\
+    float4 gClearColour1;\r\n\
+    float4 gClearColour2;\r\n\
+    float4 gClearColour3;\r\n\
+    float4 gClearColour4;\r\n\
+    float4 gClearColour5;\r\n\
+    float4 gClearColour6;\r\n\
+    float4 gClearColour7;\r\n\
+    float gClearDepth;\r\n\
 };\r\n\
 void main()\r\n\
 {\r\n\
@@ -323,71 +463,9 @@ cbuffer cbCamera\r\n\
     float gFarDistance;\r\n\
     float gInverseFarDistance;\r\n\
 };\r\n\
-cbuffer cbShadowMap0\r\n\
-{\r\n\
-    float4x4 gShadowMap0ViewProjectionMatrix;\r\n\
-    float gShadowMap0FarDistance;\r\n\
-    float gShadowMap0InverseFarDistance;\r\n\
-};\r\n\
-cbuffer cbShadowMap1\r\n\
-{\r\n\
-    float4x4 gShadowMap1ViewProjectionMatrix;\r\n\
-    float gShadowMap1FarDistance;\r\n\
-    float gShadowMap1InverseFarDistance;\r\n\
-};\r\n\
-cbuffer cbShadowMap2\r\n\
-{\r\n\
-    float4x4 gShadowMap2ViewProjectionMatrix;\r\n\
-    float gShadowMap2FarDistance;\r\n\
-    float gShadowMap2InverseFarDistance;\r\n\
-};\r\n\
-cbuffer cbShadowMap3\r\n\
-{\r\n\
-    float4x4 gShadowMap3ViewProjectionMatrix;\r\n\
-    float gShadowMap3FarDistance;\r\n\
-    float gShadowMap3InverseFarDistance;\r\n\
-};\r\n\
-cbuffer cbDirectionLight\r\n\
-{\r\n\
-    float3 gDirectionLightDiffuseColour;\r\n\
-    float3 gDirectionLightSpecularColour;\r\n\
-    float3 gDirectionLightDirection;\r\n\
-};\r\n\
-cbuffer cbPointLight\r\n\
-{\r\n\
-    float3 gPointLightDiffuseColour;\r\n\
-    float3 gPointLightSpecularColour;\r\n\
-    float3 gPointLightPosition;\r\n\
-    float gPointLightReciprocalRange;\r\n\
-    float gPointLightStartFallOffDistance;\r\n\
-};\r\n\
-cbuffer cbSpotLight\r\n\
-{\r\n\
-    float3 gSpotLightDiffuseColour;\r\n\
-    float3 gSpotLightSpecularColour;\r\n\
-    float3 gSpotLightDirection;\r\n\
-    float3 gSpotLightPosition;\r\n\
-    float gSpotLightReciprocalRange;\r\n\
-    float gSpotLightStartFallOffDistance;\r\n\
-    float gSpotLightCosInnerCornerHalfAngle;\r\n\
-    float gSpotLightReciprocalDeltaCosHalfAngle;\r\n\
-};\r\n\
 cbuffer cbScene\r\n\
 {\r\n\
     float3 gAmbientColour;\r\n\
-};\r\n\
-cbuffer cbObjectTransform\r\n\
-{\r\n\
-    float4x4 gWorldMatrix;\r\n\
-};\r\n\
-cbuffer cbObjectMaterial\r\n\
-{\r\n\
-    float3 gMainColour;\r\n\
-    float gAlpha;\r\n\
-    float3 gSpecularColour;\r\n\
-    float gSpecularPower;\r\n\
-    float3 gEmissiveColour;\r\n\
-    float gAlphaTestValue;\r\n\
 };";
 DeferredLightingGBufferShader="#version 450\r\n\
 #define float2 vec2\r\n\
@@ -409,98 +487,6 @@ DeferredLightingGBufferShader="#version 450\r\n\
 #define float4x3 mat4x3\r\n\
 #define float4x4 mat4\r\n\
 #define cbuffer layout(shared) uniform\r\n\
-cbuffer cbSystem\r\n\
-{\r\n\
-    float gFrameTimeInSeconds;\r\n\
-    float gInverseFrameTimeInSeconds;\r\n\
-};\r\n\
-cbuffer cbRenderTarget\r\n\
-{\r\n\
-    float2 gRenderTargetSizeInPixel;\r\n\
-    float2 gInverseRenderTargetSizeInPixel;\r\n\
-};\r\n\
-cbuffer cbViewport\r\n\
-{\r\n\
-    float2 gViewportSizeInPixel;\r\n\
-    float2 gInverseViewportSizeInPixel;\r\n\
-};\r\n\
-cbuffer cbCamera\r\n\
-{\r\n\
-    float4x4 gViewMatrix;\r\n\
-    float4x4 gInverseViewMatrix;\r\n\
-    float4x4 gProjectionMatrix;\r\n\
-    float4x4 gInverseProjectionMatrix;\r\n\
-    float4x4 gViewProjectionMatrix;\r\n\
-    float4x4 gInverseViewProjectionMatrix;\r\n\
-    float gFarDistance;\r\n\
-    float gInverseFarDistance;\r\n\
-};\r\n\
-cbuffer cbShadowMap0\r\n\
-{\r\n\
-    float4x4 gShadowMap0ViewProjectionMatrix;\r\n\
-    float gShadowMap0FarDistance;\r\n\
-    float gShadowMap0InverseFarDistance;\r\n\
-};\r\n\
-cbuffer cbShadowMap1\r\n\
-{\r\n\
-    float4x4 gShadowMap1ViewProjectionMatrix;\r\n\
-    float gShadowMap1FarDistance;\r\n\
-    float gShadowMap1InverseFarDistance;\r\n\
-};\r\n\
-cbuffer cbShadowMap2\r\n\
-{\r\n\
-    float4x4 gShadowMap2ViewProjectionMatrix;\r\n\
-    float gShadowMap2FarDistance;\r\n\
-    float gShadowMap2InverseFarDistance;\r\n\
-};\r\n\
-cbuffer cbShadowMap3\r\n\
-{\r\n\
-    float4x4 gShadowMap3ViewProjectionMatrix;\r\n\
-    float gShadowMap3FarDistance;\r\n\
-    float gShadowMap3InverseFarDistance;\r\n\
-};\r\n\
-cbuffer cbDirectionLight\r\n\
-{\r\n\
-    float3 gDirectionLightDiffuseColour;\r\n\
-    float3 gDirectionLightSpecularColour;\r\n\
-    float3 gDirectionLightDirection;\r\n\
-};\r\n\
-cbuffer cbPointLight\r\n\
-{\r\n\
-    float3 gPointLightDiffuseColour;\r\n\
-    float3 gPointLightSpecularColour;\r\n\
-    float3 gPointLightPosition;\r\n\
-    float gPointLightReciprocalRange;\r\n\
-    float gPointLightStartFallOffDistance;\r\n\
-};\r\n\
-cbuffer cbSpotLight\r\n\
-{\r\n\
-    float3 gSpotLightDiffuseColour;\r\n\
-    float3 gSpotLightSpecularColour;\r\n\
-    float3 gSpotLightDirection;\r\n\
-    float3 gSpotLightPosition;\r\n\
-    float gSpotLightReciprocalRange;\r\n\
-    float gSpotLightStartFallOffDistance;\r\n\
-    float gSpotLightCosInnerCornerHalfAngle;\r\n\
-    float gSpotLightReciprocalDeltaCosHalfAngle;\r\n\
-};\r\n\
-cbuffer cbScene\r\n\
-{\r\n\
-    float3 gAmbientColour;\r\n\
-};\r\n\
-cbuffer cbObjectTransform\r\n\
-{\r\n\
-    float4x4 gWorldMatrix;\r\n\
-};\r\n\
-cbuffer cbObjectMaterial\r\n\
-{\r\n\
-    float3 gMainColour;\r\n\
-    float gAlpha;\r\n\
-    float3 gSpecularColour;\r\n\
-    float gSpecularPower;\r\n\
-    float3 gEmissiveColour;\r\n\
-    float gAlphaTestValue;\r\n\
-};\r\n\
 float2 mul(float2 v,float2x2 m){return v*m;}\r\n\
 float3 mul(float2 v,float3x2 m){return v*m;}\r\n\
 float4 mul(float2 v,float4x2 m){return v*m;}\r\n\
@@ -522,6 +508,10 @@ float4 mul(float4x4 m,float4 v){return m*v;}\r\n\
 float2x2 mul(float2x2 m0,float2x2 m1){return m0*m1;}\r\n\
 float3x3 mul(float3x3 m0,float3x3 m1){return m0*m1;}\r\n\
 float4x4 mul(float4x4 m0,float4x4 m1){return m0*m1;}\r\n\
+float saturate(float v){return clamp(v,0.0,1.0);}\r\n\
+float2 saturate(float2 v){return clamp(v,float2(0.0),float2(1.0));}\r\n\
+float3 saturate(float3 v){return clamp(v,float3(0.0),float3(1.0));}\r\n\
+float4 saturate(float4 v){return clamp(v,float4(0.0),float4(1.0));}\r\n\
 float getMaxComponment(float2 v)\r\n\
 {\r\n\
 	return max(v.x, v.y);\r\n\
@@ -550,36 +540,20 @@ float3 getCameraPosition(float4x4 viewMatrix)\r\n\
 {\r\n\
 	return -viewMatrix[3].xyz;\r\n\
 }\r\n\
-float3 getCameraPosition()\r\n\
-{\r\n\
-	return getCameraPosition(gViewMatrix);\r\n\
-}\r\n\
 float3 getCameraDirection(float4x4 viewMatrix)\r\n\
 {\r\n\
 	float3x3 rot=float3x3(viewMatrix);\r\n\
 	return rot[2];\r\n\
-}\r\n\
-float3 getCameraDirection()\r\n\
-{\r\n\
-	return getCameraDirection(gViewMatrix);\r\n\
 }\r\n\
 float3 getCameraUp(float4x4 viewMatrix)\r\n\
 {\r\n\
 	float3x3 rot=float3x3(viewMatrix);\r\n\
 	return rot[1];\r\n\
 }\r\n\
-float3 getCameraUp()\r\n\
-{\r\n\
-	return getCameraUp(gViewMatrix);\r\n\
-}\r\n\
 float3 getCameraRight(float4x4 viewMatrix)\r\n\
 {\r\n\
 	float3x3 rot=float3x3(viewMatrix);\r\n\
 	return rot[0];\r\n\
-}\r\n\
-float3 getCameraRight()\r\n\
-{\r\n\
-	return getCameraRight(gViewMatrix);\r\n\
 }\r\n\
 float calcDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
 {\r\n\
@@ -718,98 +692,6 @@ DeferredShadingGBufferShader="#version 450\r\n\
 #define float4x3 mat4x3\r\n\
 #define float4x4 mat4\r\n\
 #define cbuffer layout(shared) uniform\r\n\
-cbuffer cbSystem\r\n\
-{\r\n\
-    float gFrameTimeInSeconds;\r\n\
-    float gInverseFrameTimeInSeconds;\r\n\
-};\r\n\
-cbuffer cbRenderTarget\r\n\
-{\r\n\
-    float2 gRenderTargetSizeInPixel;\r\n\
-    float2 gInverseRenderTargetSizeInPixel;\r\n\
-};\r\n\
-cbuffer cbViewport\r\n\
-{\r\n\
-    float2 gViewportSizeInPixel;\r\n\
-    float2 gInverseViewportSizeInPixel;\r\n\
-};\r\n\
-cbuffer cbCamera\r\n\
-{\r\n\
-    float4x4 gViewMatrix;\r\n\
-    float4x4 gInverseViewMatrix;\r\n\
-    float4x4 gProjectionMatrix;\r\n\
-    float4x4 gInverseProjectionMatrix;\r\n\
-    float4x4 gViewProjectionMatrix;\r\n\
-    float4x4 gInverseViewProjectionMatrix;\r\n\
-    float gFarDistance;\r\n\
-    float gInverseFarDistance;\r\n\
-};\r\n\
-cbuffer cbShadowMap0\r\n\
-{\r\n\
-    float4x4 gShadowMap0ViewProjectionMatrix;\r\n\
-    float gShadowMap0FarDistance;\r\n\
-    float gShadowMap0InverseFarDistance;\r\n\
-};\r\n\
-cbuffer cbShadowMap1\r\n\
-{\r\n\
-    float4x4 gShadowMap1ViewProjectionMatrix;\r\n\
-    float gShadowMap1FarDistance;\r\n\
-    float gShadowMap1InverseFarDistance;\r\n\
-};\r\n\
-cbuffer cbShadowMap2\r\n\
-{\r\n\
-    float4x4 gShadowMap2ViewProjectionMatrix;\r\n\
-    float gShadowMap2FarDistance;\r\n\
-    float gShadowMap2InverseFarDistance;\r\n\
-};\r\n\
-cbuffer cbShadowMap3\r\n\
-{\r\n\
-    float4x4 gShadowMap3ViewProjectionMatrix;\r\n\
-    float gShadowMap3FarDistance;\r\n\
-    float gShadowMap3InverseFarDistance;\r\n\
-};\r\n\
-cbuffer cbDirectionLight\r\n\
-{\r\n\
-    float3 gDirectionLightDiffuseColour;\r\n\
-    float3 gDirectionLightSpecularColour;\r\n\
-    float3 gDirectionLightDirection;\r\n\
-};\r\n\
-cbuffer cbPointLight\r\n\
-{\r\n\
-    float3 gPointLightDiffuseColour;\r\n\
-    float3 gPointLightSpecularColour;\r\n\
-    float3 gPointLightPosition;\r\n\
-    float gPointLightReciprocalRange;\r\n\
-    float gPointLightStartFallOffDistance;\r\n\
-};\r\n\
-cbuffer cbSpotLight\r\n\
-{\r\n\
-    float3 gSpotLightDiffuseColour;\r\n\
-    float3 gSpotLightSpecularColour;\r\n\
-    float3 gSpotLightDirection;\r\n\
-    float3 gSpotLightPosition;\r\n\
-    float gSpotLightReciprocalRange;\r\n\
-    float gSpotLightStartFallOffDistance;\r\n\
-    float gSpotLightCosInnerCornerHalfAngle;\r\n\
-    float gSpotLightReciprocalDeltaCosHalfAngle;\r\n\
-};\r\n\
-cbuffer cbScene\r\n\
-{\r\n\
-    float3 gAmbientColour;\r\n\
-};\r\n\
-cbuffer cbObjectTransform\r\n\
-{\r\n\
-    float4x4 gWorldMatrix;\r\n\
-};\r\n\
-cbuffer cbObjectMaterial\r\n\
-{\r\n\
-    float3 gMainColour;\r\n\
-    float gAlpha;\r\n\
-    float3 gSpecularColour;\r\n\
-    float gSpecularPower;\r\n\
-    float3 gEmissiveColour;\r\n\
-    float gAlphaTestValue;\r\n\
-};\r\n\
 float2 mul(float2 v,float2x2 m){return v*m;}\r\n\
 float3 mul(float2 v,float3x2 m){return v*m;}\r\n\
 float4 mul(float2 v,float4x2 m){return v*m;}\r\n\
@@ -831,6 +713,10 @@ float4 mul(float4x4 m,float4 v){return m*v;}\r\n\
 float2x2 mul(float2x2 m0,float2x2 m1){return m0*m1;}\r\n\
 float3x3 mul(float3x3 m0,float3x3 m1){return m0*m1;}\r\n\
 float4x4 mul(float4x4 m0,float4x4 m1){return m0*m1;}\r\n\
+float saturate(float v){return clamp(v,0.0,1.0);}\r\n\
+float2 saturate(float2 v){return clamp(v,float2(0.0),float2(1.0));}\r\n\
+float3 saturate(float3 v){return clamp(v,float3(0.0),float3(1.0));}\r\n\
+float4 saturate(float4 v){return clamp(v,float4(0.0),float4(1.0));}\r\n\
 float getMaxComponment(float2 v)\r\n\
 {\r\n\
 	return max(v.x, v.y);\r\n\
@@ -859,36 +745,20 @@ float3 getCameraPosition(float4x4 viewMatrix)\r\n\
 {\r\n\
 	return -viewMatrix[3].xyz;\r\n\
 }\r\n\
-float3 getCameraPosition()\r\n\
-{\r\n\
-	return getCameraPosition(gViewMatrix);\r\n\
-}\r\n\
 float3 getCameraDirection(float4x4 viewMatrix)\r\n\
 {\r\n\
 	float3x3 rot=float3x3(viewMatrix);\r\n\
 	return rot[2];\r\n\
-}\r\n\
-float3 getCameraDirection()\r\n\
-{\r\n\
-	return getCameraDirection(gViewMatrix);\r\n\
 }\r\n\
 float3 getCameraUp(float4x4 viewMatrix)\r\n\
 {\r\n\
 	float3x3 rot=float3x3(viewMatrix);\r\n\
 	return rot[1];\r\n\
 }\r\n\
-float3 getCameraUp()\r\n\
-{\r\n\
-	return getCameraUp(gViewMatrix);\r\n\
-}\r\n\
 float3 getCameraRight(float4x4 viewMatrix)\r\n\
 {\r\n\
 	float3x3 rot=float3x3(viewMatrix);\r\n\
 	return rot[0];\r\n\
-}\r\n\
-float3 getCameraRight()\r\n\
-{\r\n\
-	return getCameraRight(gViewMatrix);\r\n\
 }\r\n\
 float calcDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
 {\r\n\
@@ -1057,98 +927,6 @@ ForwardShaderCommon="#version 450\r\n\
 #define float4x3 mat4x3\r\n\
 #define float4x4 mat4\r\n\
 #define cbuffer layout(shared) uniform\r\n\
-cbuffer cbSystem\r\n\
-{\r\n\
-    float gFrameTimeInSeconds;\r\n\
-    float gInverseFrameTimeInSeconds;\r\n\
-};\r\n\
-cbuffer cbRenderTarget\r\n\
-{\r\n\
-    float2 gRenderTargetSizeInPixel;\r\n\
-    float2 gInverseRenderTargetSizeInPixel;\r\n\
-};\r\n\
-cbuffer cbViewport\r\n\
-{\r\n\
-    float2 gViewportSizeInPixel;\r\n\
-    float2 gInverseViewportSizeInPixel;\r\n\
-};\r\n\
-cbuffer cbCamera\r\n\
-{\r\n\
-    float4x4 gViewMatrix;\r\n\
-    float4x4 gInverseViewMatrix;\r\n\
-    float4x4 gProjectionMatrix;\r\n\
-    float4x4 gInverseProjectionMatrix;\r\n\
-    float4x4 gViewProjectionMatrix;\r\n\
-    float4x4 gInverseViewProjectionMatrix;\r\n\
-    float gFarDistance;\r\n\
-    float gInverseFarDistance;\r\n\
-};\r\n\
-cbuffer cbShadowMap0\r\n\
-{\r\n\
-    float4x4 gShadowMap0ViewProjectionMatrix;\r\n\
-    float gShadowMap0FarDistance;\r\n\
-    float gShadowMap0InverseFarDistance;\r\n\
-};\r\n\
-cbuffer cbShadowMap1\r\n\
-{\r\n\
-    float4x4 gShadowMap1ViewProjectionMatrix;\r\n\
-    float gShadowMap1FarDistance;\r\n\
-    float gShadowMap1InverseFarDistance;\r\n\
-};\r\n\
-cbuffer cbShadowMap2\r\n\
-{\r\n\
-    float4x4 gShadowMap2ViewProjectionMatrix;\r\n\
-    float gShadowMap2FarDistance;\r\n\
-    float gShadowMap2InverseFarDistance;\r\n\
-};\r\n\
-cbuffer cbShadowMap3\r\n\
-{\r\n\
-    float4x4 gShadowMap3ViewProjectionMatrix;\r\n\
-    float gShadowMap3FarDistance;\r\n\
-    float gShadowMap3InverseFarDistance;\r\n\
-};\r\n\
-cbuffer cbDirectionLight\r\n\
-{\r\n\
-    float3 gDirectionLightDiffuseColour;\r\n\
-    float3 gDirectionLightSpecularColour;\r\n\
-    float3 gDirectionLightDirection;\r\n\
-};\r\n\
-cbuffer cbPointLight\r\n\
-{\r\n\
-    float3 gPointLightDiffuseColour;\r\n\
-    float3 gPointLightSpecularColour;\r\n\
-    float3 gPointLightPosition;\r\n\
-    float gPointLightReciprocalRange;\r\n\
-    float gPointLightStartFallOffDistance;\r\n\
-};\r\n\
-cbuffer cbSpotLight\r\n\
-{\r\n\
-    float3 gSpotLightDiffuseColour;\r\n\
-    float3 gSpotLightSpecularColour;\r\n\
-    float3 gSpotLightDirection;\r\n\
-    float3 gSpotLightPosition;\r\n\
-    float gSpotLightReciprocalRange;\r\n\
-    float gSpotLightStartFallOffDistance;\r\n\
-    float gSpotLightCosInnerCornerHalfAngle;\r\n\
-    float gSpotLightReciprocalDeltaCosHalfAngle;\r\n\
-};\r\n\
-cbuffer cbScene\r\n\
-{\r\n\
-    float3 gAmbientColour;\r\n\
-};\r\n\
-cbuffer cbObjectTransform\r\n\
-{\r\n\
-    float4x4 gWorldMatrix;\r\n\
-};\r\n\
-cbuffer cbObjectMaterial\r\n\
-{\r\n\
-    float3 gMainColour;\r\n\
-    float gAlpha;\r\n\
-    float3 gSpecularColour;\r\n\
-    float gSpecularPower;\r\n\
-    float3 gEmissiveColour;\r\n\
-    float gAlphaTestValue;\r\n\
-};\r\n\
 float2 mul(float2 v,float2x2 m){return v*m;}\r\n\
 float3 mul(float2 v,float3x2 m){return v*m;}\r\n\
 float4 mul(float2 v,float4x2 m){return v*m;}\r\n\
@@ -1170,6 +948,10 @@ float4 mul(float4x4 m,float4 v){return m*v;}\r\n\
 float2x2 mul(float2x2 m0,float2x2 m1){return m0*m1;}\r\n\
 float3x3 mul(float3x3 m0,float3x3 m1){return m0*m1;}\r\n\
 float4x4 mul(float4x4 m0,float4x4 m1){return m0*m1;}\r\n\
+float saturate(float v){return clamp(v,0.0,1.0);}\r\n\
+float2 saturate(float2 v){return clamp(v,float2(0.0),float2(1.0));}\r\n\
+float3 saturate(float3 v){return clamp(v,float3(0.0),float3(1.0));}\r\n\
+float4 saturate(float4 v){return clamp(v,float4(0.0),float4(1.0));}\r\n\
 float getMaxComponment(float2 v)\r\n\
 {\r\n\
 	return max(v.x, v.y);\r\n\
@@ -1198,36 +980,20 @@ float3 getCameraPosition(float4x4 viewMatrix)\r\n\
 {\r\n\
 	return -viewMatrix[3].xyz;\r\n\
 }\r\n\
-float3 getCameraPosition()\r\n\
-{\r\n\
-	return getCameraPosition(gViewMatrix);\r\n\
-}\r\n\
 float3 getCameraDirection(float4x4 viewMatrix)\r\n\
 {\r\n\
 	float3x3 rot=float3x3(viewMatrix);\r\n\
 	return rot[2];\r\n\
-}\r\n\
-float3 getCameraDirection()\r\n\
-{\r\n\
-	return getCameraDirection(gViewMatrix);\r\n\
 }\r\n\
 float3 getCameraUp(float4x4 viewMatrix)\r\n\
 {\r\n\
 	float3x3 rot=float3x3(viewMatrix);\r\n\
 	return rot[1];\r\n\
 }\r\n\
-float3 getCameraUp()\r\n\
-{\r\n\
-	return getCameraUp(gViewMatrix);\r\n\
-}\r\n\
 float3 getCameraRight(float4x4 viewMatrix)\r\n\
 {\r\n\
 	float3x3 rot=float3x3(viewMatrix);\r\n\
 	return rot[0];\r\n\
-}\r\n\
-float3 getCameraRight()\r\n\
-{\r\n\
-	return getCameraRight(gViewMatrix);\r\n\
 }\r\n\
 float calcDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
 {\r\n\
@@ -1296,98 +1062,6 @@ ForwardShaderPixel="#version 450\r\n\
 #define float4x3 mat4x3\r\n\
 #define float4x4 mat4\r\n\
 #define cbuffer layout(shared) uniform\r\n\
-cbuffer cbSystem\r\n\
-{\r\n\
-    float gFrameTimeInSeconds;\r\n\
-    float gInverseFrameTimeInSeconds;\r\n\
-};\r\n\
-cbuffer cbRenderTarget\r\n\
-{\r\n\
-    float2 gRenderTargetSizeInPixel;\r\n\
-    float2 gInverseRenderTargetSizeInPixel;\r\n\
-};\r\n\
-cbuffer cbViewport\r\n\
-{\r\n\
-    float2 gViewportSizeInPixel;\r\n\
-    float2 gInverseViewportSizeInPixel;\r\n\
-};\r\n\
-cbuffer cbCamera\r\n\
-{\r\n\
-    float4x4 gViewMatrix;\r\n\
-    float4x4 gInverseViewMatrix;\r\n\
-    float4x4 gProjectionMatrix;\r\n\
-    float4x4 gInverseProjectionMatrix;\r\n\
-    float4x4 gViewProjectionMatrix;\r\n\
-    float4x4 gInverseViewProjectionMatrix;\r\n\
-    float gFarDistance;\r\n\
-    float gInverseFarDistance;\r\n\
-};\r\n\
-cbuffer cbShadowMap0\r\n\
-{\r\n\
-    float4x4 gShadowMap0ViewProjectionMatrix;\r\n\
-    float gShadowMap0FarDistance;\r\n\
-    float gShadowMap0InverseFarDistance;\r\n\
-};\r\n\
-cbuffer cbShadowMap1\r\n\
-{\r\n\
-    float4x4 gShadowMap1ViewProjectionMatrix;\r\n\
-    float gShadowMap1FarDistance;\r\n\
-    float gShadowMap1InverseFarDistance;\r\n\
-};\r\n\
-cbuffer cbShadowMap2\r\n\
-{\r\n\
-    float4x4 gShadowMap2ViewProjectionMatrix;\r\n\
-    float gShadowMap2FarDistance;\r\n\
-    float gShadowMap2InverseFarDistance;\r\n\
-};\r\n\
-cbuffer cbShadowMap3\r\n\
-{\r\n\
-    float4x4 gShadowMap3ViewProjectionMatrix;\r\n\
-    float gShadowMap3FarDistance;\r\n\
-    float gShadowMap3InverseFarDistance;\r\n\
-};\r\n\
-cbuffer cbDirectionLight\r\n\
-{\r\n\
-    float3 gDirectionLightDiffuseColour;\r\n\
-    float3 gDirectionLightSpecularColour;\r\n\
-    float3 gDirectionLightDirection;\r\n\
-};\r\n\
-cbuffer cbPointLight\r\n\
-{\r\n\
-    float3 gPointLightDiffuseColour;\r\n\
-    float3 gPointLightSpecularColour;\r\n\
-    float3 gPointLightPosition;\r\n\
-    float gPointLightReciprocalRange;\r\n\
-    float gPointLightStartFallOffDistance;\r\n\
-};\r\n\
-cbuffer cbSpotLight\r\n\
-{\r\n\
-    float3 gSpotLightDiffuseColour;\r\n\
-    float3 gSpotLightSpecularColour;\r\n\
-    float3 gSpotLightDirection;\r\n\
-    float3 gSpotLightPosition;\r\n\
-    float gSpotLightReciprocalRange;\r\n\
-    float gSpotLightStartFallOffDistance;\r\n\
-    float gSpotLightCosInnerCornerHalfAngle;\r\n\
-    float gSpotLightReciprocalDeltaCosHalfAngle;\r\n\
-};\r\n\
-cbuffer cbScene\r\n\
-{\r\n\
-    float3 gAmbientColour;\r\n\
-};\r\n\
-cbuffer cbObjectTransform\r\n\
-{\r\n\
-    float4x4 gWorldMatrix;\r\n\
-};\r\n\
-cbuffer cbObjectMaterial\r\n\
-{\r\n\
-    float3 gMainColour;\r\n\
-    float gAlpha;\r\n\
-    float3 gSpecularColour;\r\n\
-    float gSpecularPower;\r\n\
-    float3 gEmissiveColour;\r\n\
-    float gAlphaTestValue;\r\n\
-};\r\n\
 float2 mul(float2 v,float2x2 m){return v*m;}\r\n\
 float3 mul(float2 v,float3x2 m){return v*m;}\r\n\
 float4 mul(float2 v,float4x2 m){return v*m;}\r\n\
@@ -1409,6 +1083,10 @@ float4 mul(float4x4 m,float4 v){return m*v;}\r\n\
 float2x2 mul(float2x2 m0,float2x2 m1){return m0*m1;}\r\n\
 float3x3 mul(float3x3 m0,float3x3 m1){return m0*m1;}\r\n\
 float4x4 mul(float4x4 m0,float4x4 m1){return m0*m1;}\r\n\
+float saturate(float v){return clamp(v,0.0,1.0);}\r\n\
+float2 saturate(float2 v){return clamp(v,float2(0.0),float2(1.0));}\r\n\
+float3 saturate(float3 v){return clamp(v,float3(0.0),float3(1.0));}\r\n\
+float4 saturate(float4 v){return clamp(v,float4(0.0),float4(1.0));}\r\n\
 float getMaxComponment(float2 v)\r\n\
 {\r\n\
 	return max(v.x, v.y);\r\n\
@@ -1437,36 +1115,20 @@ float3 getCameraPosition(float4x4 viewMatrix)\r\n\
 {\r\n\
 	return -viewMatrix[3].xyz;\r\n\
 }\r\n\
-float3 getCameraPosition()\r\n\
-{\r\n\
-	return getCameraPosition(gViewMatrix);\r\n\
-}\r\n\
 float3 getCameraDirection(float4x4 viewMatrix)\r\n\
 {\r\n\
 	float3x3 rot=float3x3(viewMatrix);\r\n\
 	return rot[2];\r\n\
-}\r\n\
-float3 getCameraDirection()\r\n\
-{\r\n\
-	return getCameraDirection(gViewMatrix);\r\n\
 }\r\n\
 float3 getCameraUp(float4x4 viewMatrix)\r\n\
 {\r\n\
 	float3x3 rot=float3x3(viewMatrix);\r\n\
 	return rot[1];\r\n\
 }\r\n\
-float3 getCameraUp()\r\n\
-{\r\n\
-	return getCameraUp(gViewMatrix);\r\n\
-}\r\n\
 float3 getCameraRight(float4x4 viewMatrix)\r\n\
 {\r\n\
 	float3x3 rot=float3x3(viewMatrix);\r\n\
 	return rot[0];\r\n\
-}\r\n\
-float3 getCameraRight()\r\n\
-{\r\n\
-	return getCameraRight(gViewMatrix);\r\n\
 }\r\n\
 float calcDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
 {\r\n\
@@ -1652,98 +1314,6 @@ ForwardShaderVertex="#version 450\r\n\
 #define float4x3 mat4x3\r\n\
 #define float4x4 mat4\r\n\
 #define cbuffer layout(shared) uniform\r\n\
-cbuffer cbSystem\r\n\
-{\r\n\
-    float gFrameTimeInSeconds;\r\n\
-    float gInverseFrameTimeInSeconds;\r\n\
-};\r\n\
-cbuffer cbRenderTarget\r\n\
-{\r\n\
-    float2 gRenderTargetSizeInPixel;\r\n\
-    float2 gInverseRenderTargetSizeInPixel;\r\n\
-};\r\n\
-cbuffer cbViewport\r\n\
-{\r\n\
-    float2 gViewportSizeInPixel;\r\n\
-    float2 gInverseViewportSizeInPixel;\r\n\
-};\r\n\
-cbuffer cbCamera\r\n\
-{\r\n\
-    float4x4 gViewMatrix;\r\n\
-    float4x4 gInverseViewMatrix;\r\n\
-    float4x4 gProjectionMatrix;\r\n\
-    float4x4 gInverseProjectionMatrix;\r\n\
-    float4x4 gViewProjectionMatrix;\r\n\
-    float4x4 gInverseViewProjectionMatrix;\r\n\
-    float gFarDistance;\r\n\
-    float gInverseFarDistance;\r\n\
-};\r\n\
-cbuffer cbShadowMap0\r\n\
-{\r\n\
-    float4x4 gShadowMap0ViewProjectionMatrix;\r\n\
-    float gShadowMap0FarDistance;\r\n\
-    float gShadowMap0InverseFarDistance;\r\n\
-};\r\n\
-cbuffer cbShadowMap1\r\n\
-{\r\n\
-    float4x4 gShadowMap1ViewProjectionMatrix;\r\n\
-    float gShadowMap1FarDistance;\r\n\
-    float gShadowMap1InverseFarDistance;\r\n\
-};\r\n\
-cbuffer cbShadowMap2\r\n\
-{\r\n\
-    float4x4 gShadowMap2ViewProjectionMatrix;\r\n\
-    float gShadowMap2FarDistance;\r\n\
-    float gShadowMap2InverseFarDistance;\r\n\
-};\r\n\
-cbuffer cbShadowMap3\r\n\
-{\r\n\
-    float4x4 gShadowMap3ViewProjectionMatrix;\r\n\
-    float gShadowMap3FarDistance;\r\n\
-    float gShadowMap3InverseFarDistance;\r\n\
-};\r\n\
-cbuffer cbDirectionLight\r\n\
-{\r\n\
-    float3 gDirectionLightDiffuseColour;\r\n\
-    float3 gDirectionLightSpecularColour;\r\n\
-    float3 gDirectionLightDirection;\r\n\
-};\r\n\
-cbuffer cbPointLight\r\n\
-{\r\n\
-    float3 gPointLightDiffuseColour;\r\n\
-    float3 gPointLightSpecularColour;\r\n\
-    float3 gPointLightPosition;\r\n\
-    float gPointLightReciprocalRange;\r\n\
-    float gPointLightStartFallOffDistance;\r\n\
-};\r\n\
-cbuffer cbSpotLight\r\n\
-{\r\n\
-    float3 gSpotLightDiffuseColour;\r\n\
-    float3 gSpotLightSpecularColour;\r\n\
-    float3 gSpotLightDirection;\r\n\
-    float3 gSpotLightPosition;\r\n\
-    float gSpotLightReciprocalRange;\r\n\
-    float gSpotLightStartFallOffDistance;\r\n\
-    float gSpotLightCosInnerCornerHalfAngle;\r\n\
-    float gSpotLightReciprocalDeltaCosHalfAngle;\r\n\
-};\r\n\
-cbuffer cbScene\r\n\
-{\r\n\
-    float3 gAmbientColour;\r\n\
-};\r\n\
-cbuffer cbObjectTransform\r\n\
-{\r\n\
-    float4x4 gWorldMatrix;\r\n\
-};\r\n\
-cbuffer cbObjectMaterial\r\n\
-{\r\n\
-    float3 gMainColour;\r\n\
-    float gAlpha;\r\n\
-    float3 gSpecularColour;\r\n\
-    float gSpecularPower;\r\n\
-    float3 gEmissiveColour;\r\n\
-    float gAlphaTestValue;\r\n\
-};\r\n\
 float2 mul(float2 v,float2x2 m){return v*m;}\r\n\
 float3 mul(float2 v,float3x2 m){return v*m;}\r\n\
 float4 mul(float2 v,float4x2 m){return v*m;}\r\n\
@@ -1765,6 +1335,10 @@ float4 mul(float4x4 m,float4 v){return m*v;}\r\n\
 float2x2 mul(float2x2 m0,float2x2 m1){return m0*m1;}\r\n\
 float3x3 mul(float3x3 m0,float3x3 m1){return m0*m1;}\r\n\
 float4x4 mul(float4x4 m0,float4x4 m1){return m0*m1;}\r\n\
+float saturate(float v){return clamp(v,0.0,1.0);}\r\n\
+float2 saturate(float2 v){return clamp(v,float2(0.0),float2(1.0));}\r\n\
+float3 saturate(float3 v){return clamp(v,float3(0.0),float3(1.0));}\r\n\
+float4 saturate(float4 v){return clamp(v,float4(0.0),float4(1.0));}\r\n\
 float getMaxComponment(float2 v)\r\n\
 {\r\n\
 	return max(v.x, v.y);\r\n\
@@ -1793,36 +1367,20 @@ float3 getCameraPosition(float4x4 viewMatrix)\r\n\
 {\r\n\
 	return -viewMatrix[3].xyz;\r\n\
 }\r\n\
-float3 getCameraPosition()\r\n\
-{\r\n\
-	return getCameraPosition(gViewMatrix);\r\n\
-}\r\n\
 float3 getCameraDirection(float4x4 viewMatrix)\r\n\
 {\r\n\
 	float3x3 rot=float3x3(viewMatrix);\r\n\
 	return rot[2];\r\n\
-}\r\n\
-float3 getCameraDirection()\r\n\
-{\r\n\
-	return getCameraDirection(gViewMatrix);\r\n\
 }\r\n\
 float3 getCameraUp(float4x4 viewMatrix)\r\n\
 {\r\n\
 	float3x3 rot=float3x3(viewMatrix);\r\n\
 	return rot[1];\r\n\
 }\r\n\
-float3 getCameraUp()\r\n\
-{\r\n\
-	return getCameraUp(gViewMatrix);\r\n\
-}\r\n\
 float3 getCameraRight(float4x4 viewMatrix)\r\n\
 {\r\n\
 	float3x3 rot=float3x3(viewMatrix);\r\n\
 	return rot[0];\r\n\
-}\r\n\
-float3 getCameraRight()\r\n\
-{\r\n\
-	return getCameraRight(gViewMatrix);\r\n\
 }\r\n\
 float calcDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
 {\r\n\
@@ -1932,98 +1490,6 @@ Function="#version 450\r\n\
 #define float4x3 mat4x3\r\n\
 #define float4x4 mat4\r\n\
 #define cbuffer layout(shared) uniform\r\n\
-cbuffer cbSystem\r\n\
-{\r\n\
-    float gFrameTimeInSeconds;\r\n\
-    float gInverseFrameTimeInSeconds;\r\n\
-};\r\n\
-cbuffer cbRenderTarget\r\n\
-{\r\n\
-    float2 gRenderTargetSizeInPixel;\r\n\
-    float2 gInverseRenderTargetSizeInPixel;\r\n\
-};\r\n\
-cbuffer cbViewport\r\n\
-{\r\n\
-    float2 gViewportSizeInPixel;\r\n\
-    float2 gInverseViewportSizeInPixel;\r\n\
-};\r\n\
-cbuffer cbCamera\r\n\
-{\r\n\
-    float4x4 gViewMatrix;\r\n\
-    float4x4 gInverseViewMatrix;\r\n\
-    float4x4 gProjectionMatrix;\r\n\
-    float4x4 gInverseProjectionMatrix;\r\n\
-    float4x4 gViewProjectionMatrix;\r\n\
-    float4x4 gInverseViewProjectionMatrix;\r\n\
-    float gFarDistance;\r\n\
-    float gInverseFarDistance;\r\n\
-};\r\n\
-cbuffer cbShadowMap0\r\n\
-{\r\n\
-    float4x4 gShadowMap0ViewProjectionMatrix;\r\n\
-    float gShadowMap0FarDistance;\r\n\
-    float gShadowMap0InverseFarDistance;\r\n\
-};\r\n\
-cbuffer cbShadowMap1\r\n\
-{\r\n\
-    float4x4 gShadowMap1ViewProjectionMatrix;\r\n\
-    float gShadowMap1FarDistance;\r\n\
-    float gShadowMap1InverseFarDistance;\r\n\
-};\r\n\
-cbuffer cbShadowMap2\r\n\
-{\r\n\
-    float4x4 gShadowMap2ViewProjectionMatrix;\r\n\
-    float gShadowMap2FarDistance;\r\n\
-    float gShadowMap2InverseFarDistance;\r\n\
-};\r\n\
-cbuffer cbShadowMap3\r\n\
-{\r\n\
-    float4x4 gShadowMap3ViewProjectionMatrix;\r\n\
-    float gShadowMap3FarDistance;\r\n\
-    float gShadowMap3InverseFarDistance;\r\n\
-};\r\n\
-cbuffer cbDirectionLight\r\n\
-{\r\n\
-    float3 gDirectionLightDiffuseColour;\r\n\
-    float3 gDirectionLightSpecularColour;\r\n\
-    float3 gDirectionLightDirection;\r\n\
-};\r\n\
-cbuffer cbPointLight\r\n\
-{\r\n\
-    float3 gPointLightDiffuseColour;\r\n\
-    float3 gPointLightSpecularColour;\r\n\
-    float3 gPointLightPosition;\r\n\
-    float gPointLightReciprocalRange;\r\n\
-    float gPointLightStartFallOffDistance;\r\n\
-};\r\n\
-cbuffer cbSpotLight\r\n\
-{\r\n\
-    float3 gSpotLightDiffuseColour;\r\n\
-    float3 gSpotLightSpecularColour;\r\n\
-    float3 gSpotLightDirection;\r\n\
-    float3 gSpotLightPosition;\r\n\
-    float gSpotLightReciprocalRange;\r\n\
-    float gSpotLightStartFallOffDistance;\r\n\
-    float gSpotLightCosInnerCornerHalfAngle;\r\n\
-    float gSpotLightReciprocalDeltaCosHalfAngle;\r\n\
-};\r\n\
-cbuffer cbScene\r\n\
-{\r\n\
-    float3 gAmbientColour;\r\n\
-};\r\n\
-cbuffer cbObjectTransform\r\n\
-{\r\n\
-    float4x4 gWorldMatrix;\r\n\
-};\r\n\
-cbuffer cbObjectMaterial\r\n\
-{\r\n\
-    float3 gMainColour;\r\n\
-    float gAlpha;\r\n\
-    float3 gSpecularColour;\r\n\
-    float gSpecularPower;\r\n\
-    float3 gEmissiveColour;\r\n\
-    float gAlphaTestValue;\r\n\
-};\r\n\
 float2 mul(float2 v,float2x2 m){return v*m;}\r\n\
 float3 mul(float2 v,float3x2 m){return v*m;}\r\n\
 float4 mul(float2 v,float4x2 m){return v*m;}\r\n\
@@ -2045,6 +1511,10 @@ float4 mul(float4x4 m,float4 v){return m*v;}\r\n\
 float2x2 mul(float2x2 m0,float2x2 m1){return m0*m1;}\r\n\
 float3x3 mul(float3x3 m0,float3x3 m1){return m0*m1;}\r\n\
 float4x4 mul(float4x4 m0,float4x4 m1){return m0*m1;}\r\n\
+float saturate(float v){return clamp(v,0.0,1.0);}\r\n\
+float2 saturate(float2 v){return clamp(v,float2(0.0),float2(1.0));}\r\n\
+float3 saturate(float3 v){return clamp(v,float3(0.0),float3(1.0));}\r\n\
+float4 saturate(float4 v){return clamp(v,float4(0.0),float4(1.0));}\r\n\
 float getMaxComponment(float2 v)\r\n\
 {\r\n\
 	return max(v.x, v.y);\r\n\
@@ -2073,36 +1543,20 @@ float3 getCameraPosition(float4x4 viewMatrix)\r\n\
 {\r\n\
 	return -viewMatrix[3].xyz;\r\n\
 }\r\n\
-float3 getCameraPosition()\r\n\
-{\r\n\
-	return getCameraPosition(gViewMatrix);\r\n\
-}\r\n\
 float3 getCameraDirection(float4x4 viewMatrix)\r\n\
 {\r\n\
 	float3x3 rot=float3x3(viewMatrix);\r\n\
 	return rot[2];\r\n\
-}\r\n\
-float3 getCameraDirection()\r\n\
-{\r\n\
-	return getCameraDirection(gViewMatrix);\r\n\
 }\r\n\
 float3 getCameraUp(float4x4 viewMatrix)\r\n\
 {\r\n\
 	float3x3 rot=float3x3(viewMatrix);\r\n\
 	return rot[1];\r\n\
 }\r\n\
-float3 getCameraUp()\r\n\
-{\r\n\
-	return getCameraUp(gViewMatrix);\r\n\
-}\r\n\
 float3 getCameraRight(float4x4 viewMatrix)\r\n\
 {\r\n\
 	float3x3 rot=float3x3(viewMatrix);\r\n\
 	return rot[0];\r\n\
-}\r\n\
-float3 getCameraRight()\r\n\
-{\r\n\
-	return getCameraRight(gViewMatrix);\r\n\
 }\r\n\
 float calcDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
 {\r\n\
@@ -2136,4 +1590,415 @@ float2 getQuadPosition(int vertexID)\r\n\
         ret = float2(1.0, -1.0);\r\n\
     return ret;\r\n\
 }";
+FunctionEx="#version 450\r\n\
+#define float2 vec2\r\n\
+#define float3 vec3\r\n\
+#define float4 vec4\r\n\
+#define int2 ivec2\r\n\
+#define int3 ivec3\r\n\
+#define int4 ivec4\r\n\
+#define uint2 int2\r\n\
+#define uint3 int3\r\n\
+#define uint4 int4\r\n\
+#define float2x2 mat2\r\n\
+#define float2x3 mat2x3\r\n\
+#define float2x4 mat2x4\r\n\
+#define float3x2 mat3x2\r\n\
+#define float3x3 mat3\r\n\
+#define float3x4 mat3x4\r\n\
+#define float4x2 mat4x2\r\n\
+#define float4x3 mat4x3\r\n\
+#define float4x4 mat4\r\n\
+#define cbuffer layout(shared) uniform\r\n\
+float2 mul(float2 v,float2x2 m){return v*m;}\r\n\
+float3 mul(float2 v,float3x2 m){return v*m;}\r\n\
+float4 mul(float2 v,float4x2 m){return v*m;}\r\n\
+float2 mul(float3 v,float2x3 m){return v*m;}\r\n\
+float3 mul(float3 v,float3x3 m){return v*m;}\r\n\
+float4 mul(float3 v,float4x3 m){return v*m;}\r\n\
+float2 mul(float4 v,float2x4 m){return v*m;}\r\n\
+float3 mul(float4 v,float3x4 m){return v*m;}\r\n\
+float4 mul(float4 v,float4x4 m){return v*m;}\r\n\
+float2 mul(float2x2 m,float2 v){return m*v;}\r\n\
+float2 mul(float3x2 m,float3 v){return m*v;}\r\n\
+float2 mul(float4x2 m,float4 v){return m*v;}\r\n\
+float3 mul(float2x3 m,float2 v){return m*v;}\r\n\
+float3 mul(float3x3 m,float3 v){return m*v;}\r\n\
+float3 mul(float4x3 m,float4 v){return m*v;}\r\n\
+float4 mul(float2x4 m,float2 v){return m*v;}\r\n\
+float4 mul(float3x4 m,float3 v){return m*v;}\r\n\
+float4 mul(float4x4 m,float4 v){return m*v;}\r\n\
+float2x2 mul(float2x2 m0,float2x2 m1){return m0*m1;}\r\n\
+float3x3 mul(float3x3 m0,float3x3 m1){return m0*m1;}\r\n\
+float4x4 mul(float4x4 m0,float4x4 m1){return m0*m1;}\r\n\
+float saturate(float v){return clamp(v,0.0,1.0);}\r\n\
+float2 saturate(float2 v){return clamp(v,float2(0.0),float2(1.0));}\r\n\
+float3 saturate(float3 v){return clamp(v,float3(0.0),float3(1.0));}\r\n\
+float4 saturate(float4 v){return clamp(v,float4(0.0),float4(1.0));}\r\n\
+float getMaxComponment(float2 v)\r\n\
+{\r\n\
+	return max(v.x, v.y);\r\n\
+}\r\n\
+float getMaxComponment(float3 v)\r\n\
+{\r\n\
+	return max(v.x, getMaxComponment(v.yz));\r\n\
+}\r\n\
+float getMaxComponment(float4 v)\r\n\
+{\r\n\
+	return max(v.x, getMaxComponment(v.yzw));\r\n\
+}\r\n\
+float getMinComponment(float2 v)\r\n\
+{\r\n\
+	return min(v.x, v.y);\r\n\
+}\r\n\
+float getMinComponment(float3 v)\r\n\
+{\r\n\
+	return min(v.x, getMinComponment(v.yz));\r\n\
+}\r\n\
+float getMinComponment(float4 v)\r\n\
+{\r\n\
+	return min(v.x, getMinComponment(v.yzw));\r\n\
+}\r\n\
+float3 getCameraPosition(float4x4 viewMatrix)\r\n\
+{\r\n\
+	return -viewMatrix[3].xyz;\r\n\
+}\r\n\
+float3 getCameraDirection(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=float3x3(viewMatrix);\r\n\
+	return rot[2];\r\n\
+}\r\n\
+float3 getCameraUp(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=float3x3(viewMatrix);\r\n\
+	return rot[1];\r\n\
+}\r\n\
+float3 getCameraRight(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=float3x3(viewMatrix);\r\n\
+	return rot[0];\r\n\
+}\r\n\
+float calcDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
+{\r\n\
+	return saturate(dot(vertexToLightDirection,worldNormal));\r\n\
+}\r\n\
+float calcSpecularFactor(float3 vertexToLightDirection,float3 worldNormal,float3 worldPosition,float3 cameraPosition)\r\n\
+{\r\n\
+	float3 half_vector=normalize(normalize(cameraPosition-worldPosition)+vertexToLightDirection);\r\n\
+	float specular_factor=saturate(dot(half_vector,worldNormal));\r\n\
+	return specular_factor;\r\n\
+}\r\n\
+//return 1意味着无衰减，return 0意味着完全衰减\r\n\
+float calcFalloffFactor(float current, float begin, float reciprocalRange)\r\n\
+{\r\n\
+    return 1.0 - pow(saturate((current - begin) * reciprocalRange), 2);\r\n\
+}\r\n\
+float3 encodeNormal(float3 normal)\r\n\
+{\r\n\
+	return normal / getMaxComponment(normal);\r\n\
+}\r\n\
+float2 getQuadPosition(int vertexID)\r\n\
+{\r\n\
+    float2 ret;\r\n\
+    if(0==vertexID)\r\n\
+        ret = float2(-1.0, 1.0);\r\n\
+    else if(1==vertexID)\r\n\
+        ret = float2(1.0, 1.0);\r\n\
+    else if(2==vertexID)\r\n\
+        ret = float2(-1.0, -1.0);\r\n\
+    else\r\n\
+        ret = float2(1.0, -1.0);\r\n\
+    return ret;\r\n\
+}\r\n\
+float3 getCameraPosition()\r\n\
+{\r\n\
+	return getCameraPosition(gViewMatrix);\r\n\
+}\r\n\
+float3 getCameraDirection()\r\n\
+{\r\n\
+	return getCameraDirection(gViewMatrix);\r\n\
+}\r\n\
+float3 getCameraUp()\r\n\
+{\r\n\
+	return getCameraUp(gViewMatrix);\r\n\
+}\r\n\
+float3 getCameraRight()\r\n\
+{\r\n\
+	return getCameraRight(gViewMatrix);\r\n\
+}\r\n\
+";
+OverlayShaderPixel="#version 450\r\n\
+#define float2 vec2\r\n\
+#define float3 vec3\r\n\
+#define float4 vec4\r\n\
+#define int2 ivec2\r\n\
+#define int3 ivec3\r\n\
+#define int4 ivec4\r\n\
+#define uint2 int2\r\n\
+#define uint3 int3\r\n\
+#define uint4 int4\r\n\
+#define float2x2 mat2\r\n\
+#define float2x3 mat2x3\r\n\
+#define float2x4 mat2x4\r\n\
+#define float3x2 mat3x2\r\n\
+#define float3x3 mat3\r\n\
+#define float3x4 mat3x4\r\n\
+#define float4x2 mat4x2\r\n\
+#define float4x3 mat4x3\r\n\
+#define float4x4 mat4\r\n\
+#define cbuffer layout(shared) uniform\r\n\
+float2 mul(float2 v,float2x2 m){return v*m;}\r\n\
+float3 mul(float2 v,float3x2 m){return v*m;}\r\n\
+float4 mul(float2 v,float4x2 m){return v*m;}\r\n\
+float2 mul(float3 v,float2x3 m){return v*m;}\r\n\
+float3 mul(float3 v,float3x3 m){return v*m;}\r\n\
+float4 mul(float3 v,float4x3 m){return v*m;}\r\n\
+float2 mul(float4 v,float2x4 m){return v*m;}\r\n\
+float3 mul(float4 v,float3x4 m){return v*m;}\r\n\
+float4 mul(float4 v,float4x4 m){return v*m;}\r\n\
+float2 mul(float2x2 m,float2 v){return m*v;}\r\n\
+float2 mul(float3x2 m,float3 v){return m*v;}\r\n\
+float2 mul(float4x2 m,float4 v){return m*v;}\r\n\
+float3 mul(float2x3 m,float2 v){return m*v;}\r\n\
+float3 mul(float3x3 m,float3 v){return m*v;}\r\n\
+float3 mul(float4x3 m,float4 v){return m*v;}\r\n\
+float4 mul(float2x4 m,float2 v){return m*v;}\r\n\
+float4 mul(float3x4 m,float3 v){return m*v;}\r\n\
+float4 mul(float4x4 m,float4 v){return m*v;}\r\n\
+float2x2 mul(float2x2 m0,float2x2 m1){return m0*m1;}\r\n\
+float3x3 mul(float3x3 m0,float3x3 m1){return m0*m1;}\r\n\
+float4x4 mul(float4x4 m0,float4x4 m1){return m0*m1;}\r\n\
+float saturate(float v){return clamp(v,0.0,1.0);}\r\n\
+float2 saturate(float2 v){return clamp(v,float2(0.0),float2(1.0));}\r\n\
+float3 saturate(float3 v){return clamp(v,float3(0.0),float3(1.0));}\r\n\
+float4 saturate(float4 v){return clamp(v,float4(0.0),float4(1.0));}\r\n\
+float getMaxComponment(float2 v)\r\n\
+{\r\n\
+	return max(v.x, v.y);\r\n\
+}\r\n\
+float getMaxComponment(float3 v)\r\n\
+{\r\n\
+	return max(v.x, getMaxComponment(v.yz));\r\n\
+}\r\n\
+float getMaxComponment(float4 v)\r\n\
+{\r\n\
+	return max(v.x, getMaxComponment(v.yzw));\r\n\
+}\r\n\
+float getMinComponment(float2 v)\r\n\
+{\r\n\
+	return min(v.x, v.y);\r\n\
+}\r\n\
+float getMinComponment(float3 v)\r\n\
+{\r\n\
+	return min(v.x, getMinComponment(v.yz));\r\n\
+}\r\n\
+float getMinComponment(float4 v)\r\n\
+{\r\n\
+	return min(v.x, getMinComponment(v.yzw));\r\n\
+}\r\n\
+float3 getCameraPosition(float4x4 viewMatrix)\r\n\
+{\r\n\
+	return -viewMatrix[3].xyz;\r\n\
+}\r\n\
+float3 getCameraDirection(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=float3x3(viewMatrix);\r\n\
+	return rot[2];\r\n\
+}\r\n\
+float3 getCameraUp(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=float3x3(viewMatrix);\r\n\
+	return rot[1];\r\n\
+}\r\n\
+float3 getCameraRight(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=float3x3(viewMatrix);\r\n\
+	return rot[0];\r\n\
+}\r\n\
+float calcDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
+{\r\n\
+	return saturate(dot(vertexToLightDirection,worldNormal));\r\n\
+}\r\n\
+float calcSpecularFactor(float3 vertexToLightDirection,float3 worldNormal,float3 worldPosition,float3 cameraPosition)\r\n\
+{\r\n\
+	float3 half_vector=normalize(normalize(cameraPosition-worldPosition)+vertexToLightDirection);\r\n\
+	float specular_factor=saturate(dot(half_vector,worldNormal));\r\n\
+	return specular_factor;\r\n\
+}\r\n\
+//return 1意味着无衰减，return 0意味着完全衰减\r\n\
+float calcFalloffFactor(float current, float begin, float reciprocalRange)\r\n\
+{\r\n\
+    return 1.0 - pow(saturate((current - begin) * reciprocalRange), 2);\r\n\
+}\r\n\
+float3 encodeNormal(float3 normal)\r\n\
+{\r\n\
+	return normal / getMaxComponment(normal);\r\n\
+}\r\n\
+float2 getQuadPosition(int vertexID)\r\n\
+{\r\n\
+    float2 ret;\r\n\
+    if(0==vertexID)\r\n\
+        ret = float2(-1.0, 1.0);\r\n\
+    else if(1==vertexID)\r\n\
+        ret = float2(1.0, 1.0);\r\n\
+    else if(2==vertexID)\r\n\
+        ret = float2(-1.0, -1.0);\r\n\
+    else\r\n\
+        ret = float2(1.0, -1.0);\r\n\
+    return ret;\r\n\
+}\r\n\
+#ifndef USE_DIFFUSE_TEXTURE\r\n\
+#define USE_DIFFUSE_TEXTURE 0\r\n\
+#endif\r\n\
+in float4 gPositionPS;\r\n\
+in float2 gMainUVPS;\r\n\
+in float4 gDiffusePS;\r\n\
+uniform sampler2D gDiffuseTexture;\r\n\
+out float4 gFragColour;\r\n\
+void main()\r\n\
+{\r\n\
+    float3 colour_emissive = gDiffusePS.rgb;\r\n\
+    float alpha = gDiffusePS.a;\r\n\
+#if USE_DIFFUSE_TEXTURE\r\n\
+	float4 diffuse_texture_sampler = texture2D(gDiffuseTexture, gMainUVPS);\r\n\
+	float3 diffuse_texture_colour = diffuse_texture_sampler.rgb;\r\n\
+	float diffuse_texture_alpha = diffuse_texture_sampler.a;\r\n\
+	alpha *= diffuse_texture_alpha;\r\n\
+	colour_emissive *= diffuse_texture_colour;\r\n\
+#endif\r\n\
+    gFragColour.rgb = colour_emissive;\r\n\
+    gFragColour.a = alpha;\r\n\
+}";
+OverlayShaderVertex="#version 450\r\n\
+#define float2 vec2\r\n\
+#define float3 vec3\r\n\
+#define float4 vec4\r\n\
+#define int2 ivec2\r\n\
+#define int3 ivec3\r\n\
+#define int4 ivec4\r\n\
+#define uint2 int2\r\n\
+#define uint3 int3\r\n\
+#define uint4 int4\r\n\
+#define float2x2 mat2\r\n\
+#define float2x3 mat2x3\r\n\
+#define float2x4 mat2x4\r\n\
+#define float3x2 mat3x2\r\n\
+#define float3x3 mat3\r\n\
+#define float3x4 mat3x4\r\n\
+#define float4x2 mat4x2\r\n\
+#define float4x3 mat4x3\r\n\
+#define float4x4 mat4\r\n\
+#define cbuffer layout(shared) uniform\r\n\
+float2 mul(float2 v,float2x2 m){return v*m;}\r\n\
+float3 mul(float2 v,float3x2 m){return v*m;}\r\n\
+float4 mul(float2 v,float4x2 m){return v*m;}\r\n\
+float2 mul(float3 v,float2x3 m){return v*m;}\r\n\
+float3 mul(float3 v,float3x3 m){return v*m;}\r\n\
+float4 mul(float3 v,float4x3 m){return v*m;}\r\n\
+float2 mul(float4 v,float2x4 m){return v*m;}\r\n\
+float3 mul(float4 v,float3x4 m){return v*m;}\r\n\
+float4 mul(float4 v,float4x4 m){return v*m;}\r\n\
+float2 mul(float2x2 m,float2 v){return m*v;}\r\n\
+float2 mul(float3x2 m,float3 v){return m*v;}\r\n\
+float2 mul(float4x2 m,float4 v){return m*v;}\r\n\
+float3 mul(float2x3 m,float2 v){return m*v;}\r\n\
+float3 mul(float3x3 m,float3 v){return m*v;}\r\n\
+float3 mul(float4x3 m,float4 v){return m*v;}\r\n\
+float4 mul(float2x4 m,float2 v){return m*v;}\r\n\
+float4 mul(float3x4 m,float3 v){return m*v;}\r\n\
+float4 mul(float4x4 m,float4 v){return m*v;}\r\n\
+float2x2 mul(float2x2 m0,float2x2 m1){return m0*m1;}\r\n\
+float3x3 mul(float3x3 m0,float3x3 m1){return m0*m1;}\r\n\
+float4x4 mul(float4x4 m0,float4x4 m1){return m0*m1;}\r\n\
+float saturate(float v){return clamp(v,0.0,1.0);}\r\n\
+float2 saturate(float2 v){return clamp(v,float2(0.0),float2(1.0));}\r\n\
+float3 saturate(float3 v){return clamp(v,float3(0.0),float3(1.0));}\r\n\
+float4 saturate(float4 v){return clamp(v,float4(0.0),float4(1.0));}\r\n\
+float getMaxComponment(float2 v)\r\n\
+{\r\n\
+	return max(v.x, v.y);\r\n\
+}\r\n\
+float getMaxComponment(float3 v)\r\n\
+{\r\n\
+	return max(v.x, getMaxComponment(v.yz));\r\n\
+}\r\n\
+float getMaxComponment(float4 v)\r\n\
+{\r\n\
+	return max(v.x, getMaxComponment(v.yzw));\r\n\
+}\r\n\
+float getMinComponment(float2 v)\r\n\
+{\r\n\
+	return min(v.x, v.y);\r\n\
+}\r\n\
+float getMinComponment(float3 v)\r\n\
+{\r\n\
+	return min(v.x, getMinComponment(v.yz));\r\n\
+}\r\n\
+float getMinComponment(float4 v)\r\n\
+{\r\n\
+	return min(v.x, getMinComponment(v.yzw));\r\n\
+}\r\n\
+float3 getCameraPosition(float4x4 viewMatrix)\r\n\
+{\r\n\
+	return -viewMatrix[3].xyz;\r\n\
+}\r\n\
+float3 getCameraDirection(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=float3x3(viewMatrix);\r\n\
+	return rot[2];\r\n\
+}\r\n\
+float3 getCameraUp(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=float3x3(viewMatrix);\r\n\
+	return rot[1];\r\n\
+}\r\n\
+float3 getCameraRight(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=float3x3(viewMatrix);\r\n\
+	return rot[0];\r\n\
+}\r\n\
+float calcDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
+{\r\n\
+	return saturate(dot(vertexToLightDirection,worldNormal));\r\n\
+}\r\n\
+float calcSpecularFactor(float3 vertexToLightDirection,float3 worldNormal,float3 worldPosition,float3 cameraPosition)\r\n\
+{\r\n\
+	float3 half_vector=normalize(normalize(cameraPosition-worldPosition)+vertexToLightDirection);\r\n\
+	float specular_factor=saturate(dot(half_vector,worldNormal));\r\n\
+	return specular_factor;\r\n\
+}\r\n\
+//return 1意味着无衰减，return 0意味着完全衰减\r\n\
+float calcFalloffFactor(float current, float begin, float reciprocalRange)\r\n\
+{\r\n\
+    return 1.0 - pow(saturate((current - begin) * reciprocalRange), 2);\r\n\
+}\r\n\
+float3 encodeNormal(float3 normal)\r\n\
+{\r\n\
+	return normal / getMaxComponment(normal);\r\n\
+}\r\n\
+float2 getQuadPosition(int vertexID)\r\n\
+{\r\n\
+    float2 ret;\r\n\
+    if(0==vertexID)\r\n\
+        ret = float2(-1.0, 1.0);\r\n\
+    else if(1==vertexID)\r\n\
+        ret = float2(1.0, 1.0);\r\n\
+    else if(2==vertexID)\r\n\
+        ret = float2(-1.0, -1.0);\r\n\
+    else\r\n\
+        ret = float2(1.0, -1.0);\r\n\
+    return ret;\r\n\
+}\r\n\
+in float3 gPositionVS;\r\n\
+in float2 gMainUVVS;\r\n\
+in float4 gDiffuseVS;\r\n\
+out float2 gMainUVPS;\r\n\
+out float4 gDiffusePS;\r\n\
+void main()\r\n\
+{\r\n\
+    gl_Position = float4(gPositionVS, 1.0);\r\n\
+	gMainUVPS = gMainUVVS;\r\n\
+	gDiffusePS = gDiffuseVS;\r\n\
+}\r\n\
+";
 }

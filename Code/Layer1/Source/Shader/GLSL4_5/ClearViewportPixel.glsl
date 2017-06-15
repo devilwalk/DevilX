@@ -1,3 +1,4 @@
+#include "Function.glsl"
 cbuffer cbClearViewport
 {
     float4 gClearColour0;

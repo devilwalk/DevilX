@@ -1,4 +1,5 @@
 #pragma once
+#include "GL4Enum.h"
 namespace NSDevilX
 {
 	namespace NSRenderSystem
@@ -10,7 +11,13 @@ namespace NSDevilX
 				:public TInterfaceObject<IVertexBufferImp>
 				,public TBaseObject<CVertexBufferImp>
 				,public TMessageReceiver<CSystemImp>
+				,public CMessageNotifier
 			{
+			public:
+				enum EMessage
+				{
+					EMessage_BufferCreate
+				};
 			protected:
 				GLuint mBuffers[CEnum::EVertexBufferType_Count];
 			public:

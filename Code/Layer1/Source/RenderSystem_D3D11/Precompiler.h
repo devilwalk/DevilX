@@ -48,7 +48,7 @@
 #include "D3D11SkyImp.h"
 #include "D3D11SystemImp.h"
 #include "D3D11Texture.h"
-#include "D3D11Transformer.h"
+#include "D3D11TransformerImp.h"
 #include "D3D11VertexBufferImp.h"
 #include "D3D11Viewport.h"
 #include "D3D11ViewportImp.h"

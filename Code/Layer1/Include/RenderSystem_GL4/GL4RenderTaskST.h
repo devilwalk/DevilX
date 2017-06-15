@@ -30,7 +30,7 @@ namespace NSDevilX
 				,public CConstantBufferContainer
 			{
 			protected:
-				CColour mClearColour[8];
+				CFloatRGBA mClearColour[8];
 				Float mClearDepth;
 				Int32 mClearStencil;
 			public:

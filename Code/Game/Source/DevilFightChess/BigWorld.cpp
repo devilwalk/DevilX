@@ -29,6 +29,16 @@ Void NSDevilX::NSFightChess::CBigWorldPage::onEvent(NSGUISystem::IButton * contr
 			break;
 		}
 	}
+	else if(control->queryInterface_IControl()->getName()=="BigWorld/Button_Return")
+	{
+		switch(events)
+		{
+		case IButtonEventCallback::EEvent::EEvent_Click:
+			CApp::getSingleton().getGame()->stopModule("BigWorld");
+			CApp::getSingleton().getGame()->startModule("Login");
+			break;
+		}
+	}
 	else if(control->queryInterface_IControl()->getName()=="BigWorld/Button_SinglePlayer")
 	{
 		switch(events)
@@ -68,6 +78,8 @@ Void NSDevilX::NSFightChess::CBigWorld::update()
 
 Void NSDevilX::NSFightChess::CBigWorld::stop()
 {
+	CModule::stop();
 	DEVILX_DELETE(mPage);
 	mPage=nullptr;
+	mReturnCode.write(-1);
 }

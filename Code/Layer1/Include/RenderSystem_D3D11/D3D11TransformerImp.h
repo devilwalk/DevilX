@@ -7,15 +7,15 @@ namespace NSDevilX
 	{
 		namespace NSD3D11
 		{
-			class CTransformer
+			class CTransformerImp
 				:public TInterfaceObject<ITransformerImp>
-				,public TBaseObject<CTransformer>
+				,public TBaseObject<CTransformerImp>
 				,public CConstantBufferContainer
 			{
 			protected:
 			public:
-				CTransformer(ITransformerImp * interfaceImp);
-				~CTransformer();
+				CTransformerImp(ITransformerImp * interfaceImp);
+				~CTransformerImp();
 
 				// Inherited via TInterfaceObject
 				virtual Void onMessage(ITransformerImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;

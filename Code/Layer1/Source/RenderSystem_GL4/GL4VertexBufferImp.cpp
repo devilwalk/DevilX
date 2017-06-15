@@ -123,13 +123,14 @@ Bool NSDevilX::NSRenderSystem::NSGL4::CVertexBufferImp::_update(CEnum::EVertexBu
 		glGenBuffers(1,&buf);
 		if(GL_INVALID_VALUE!=buf)
 		{
-			glNamedBufferStorage(buf,CUtility::getStride(type)*getInterfaceImp()->getCount(),data_ptr,GL_DYNAMIC_STORAGE_BIT);
+			glNamedBufferData(buf,CUtility::getStride(type)*getInterfaceImp()->getCount(),data_ptr,GL_STATIC_DRAW);
 		}
 		else
 		{
 			buf=0;
 		}
 		mBuffers[type]=buf;
+		notify(EMessage_BufferCreate,&type);
 	}
 	else
 	{

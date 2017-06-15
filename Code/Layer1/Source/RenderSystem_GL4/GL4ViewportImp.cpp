@@ -8,7 +8,9 @@ NSDevilX::NSRenderSystem::NSGL4::CViewportImp::CViewportImp(IViewportImp * inter
 	,mRenderTarget(CSystemImp::getSingleton().getWindow(static_cast<IWindowImp*>(interfaceImp->getRenderTarget())))
 	,mCamera(nullptr)
 	,mTask(nullptr)
+	,mOverlayManager(nullptr)
 {
+	mOverlayManager=DEVILX_NEW COverlayManager(this);
 	setInternal(DEVILX_NEW CViewport(getRenderTarget()->getInternal()));
 	_updateInternal();
 	_updateRenderTask();
@@ -27,6 +29,7 @@ NSDevilX::NSRenderSystem::NSGL4::CViewportImp::CViewportImp(IViewportImp * inter
 
 NSDevilX::NSRenderSystem::NSGL4::CViewportImp::~CViewportImp()
 {
+	DEVILX_DELETE(mOverlayManager);
 	DEVILX_DELETE(mTask);
 	DEVILX_DELETE(getInternal());
 }
@@ -40,6 +43,7 @@ Void NSDevilX::NSRenderSystem::NSGL4::CViewportImp::prepare()
 Void NSDevilX::NSRenderSystem::NSGL4::CViewportImp::render()
 {
 	mTask->process();
+	mOverlayManager->render();
 }
 
 Void NSDevilX::NSRenderSystem::NSGL4::CViewportImp::onMessage(IViewportImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
@@ -61,7 +65,7 @@ Void NSDevilX::NSRenderSystem::NSGL4::CViewportImp::onMessage(IViewportImp * not
 		}
 		break;
 	case IViewportImp::EMessage_EndCameraChange:
-		mCamera=getInterfaceImp()->getCamera()?CSystemImp::getSingleton().getScene(static_cast<ISceneElementImp*>(getInterfaceImp()->getCamera()->queryInterface_ISceneElement())->getScene())->getCamera(static_cast<ICameraImp*>(getInterfaceImp()->getCamera())):nullptr;
+		mCamera=getInterfaceImp()->getCamera()?CSystemImp::getSingleton().getScene(static_cast<ISceneImp*>(static_cast<ISceneElementImp*>(getInterfaceImp()->getCamera()->queryInterface_ISceneElement())->getScene()))->getCamera(static_cast<ICameraImp*>(getInterfaceImp()->getCamera())):nullptr;
 		getInternal()->setCamera(mCamera);
 		break;
 	}

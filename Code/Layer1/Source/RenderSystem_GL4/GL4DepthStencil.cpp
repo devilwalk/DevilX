@@ -18,13 +18,9 @@ Void NSDevilX::NSRenderSystem::NSGL4::CDepthStencil::reserve(UInt32 width,UInt32
 {
 	if(getInternal())
 	{
-		/*D3D11_TEXTURE2D_DESC desc;
-		mTextureResource->GetDesc(&desc);
-		if((desc.Width>=width)&&(desc.Height>=height))
-			return;*/
 		glDeleteTextures(1,&mInternal);
 		mInternal=0;
 	}
 	glGenTextures(1,&mInternal);
-	glTextureStorage2D(getInternal(),1,GL_DEPTH24_STENCIL8,width,height);
+	glTextureImage2DEXT(getInternal(),GL_TEXTURE_2D,1,GL_DEPTH_STENCIL,width,height,0,GL_DEPTH_STENCIL,GL_UNSIGNED_BYTE,nullptr);
 }

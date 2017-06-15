@@ -7,8 +7,8 @@ NSDevilX::NSRenderSystem::NSGL4::CScene::CScene(ISceneImp * interfaceImp)
 	:TInterfaceObject<ISceneImp>(interfaceImp)
 	,CConstantBufferContainer("cbScene")
 {
-	getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISceneImp>*>(this),ISceneImp::EMessage_EndRenderableObjectCreate);
-	getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISceneImp>*>(this),ISceneImp::EMessage_BeginRenderableObjectDestroy);
+	getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISceneImp>*>(this),ISceneImp::EMessage_EndEntityCreate);
+	getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISceneImp>*>(this),ISceneImp::EMessage_BeginEntityDestroy);
 	getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISceneImp>*>(this),ISceneImp::EMessage_EndCameraCreate);
 	getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISceneImp>*>(this),ISceneImp::EMessage_BeginCameraDestroy);
 	getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISceneImp>*>(this),ISceneImp::EMessage_EndLightCreate);
@@ -24,14 +24,14 @@ Void NSDevilX::NSRenderSystem::NSGL4::CScene::onMessage(ISceneImp * notifier,UIn
 {
 	switch(message)
 	{
-	case ISceneImp::EMessage_EndRenderableObjectCreate:
+	case ISceneImp::EMessage_EndEntityCreate:
 	{
-		auto obj=DEVILX_NEW CRenderableObject(static_cast<IRenderableObjectImp*>(data));
-		mRenderableObjects[static_cast<IRenderableObjectImp*>(data)]=obj;
+		auto obj=DEVILX_NEW CEntityImp(static_cast<IEntityImp*>(data));
+		mEntities[static_cast<IEntityImp*>(data)]=obj;
 	}
 	break;
-	case ISceneImp::EMessage_BeginRenderableObjectDestroy:
-		mRenderableObjects.destroy(static_cast<IRenderableObjectImp*>(data));
+	case ISceneImp::EMessage_BeginEntityDestroy:
+		mEntities.destroy(static_cast<IEntityImp*>(data));
 		break;
 	case ISceneImp::EMessage_EndCameraCreate:
 	{
@@ -59,6 +59,6 @@ Void NSDevilX::NSRenderSystem::NSGL4::CScene::onMessage(ISceneImp * notifier,UIn
 
 Void NSDevilX::NSRenderSystem::NSGL4::CScene::_updateConstantBuffer(Byte * buffer)
 {
-	auto offset=mConstantBuffer->getDescription()->getConstantDesc("gAmbientColour").StartOffset;
+	auto offset=mConstantBuffer->getDescription()->getConstantDesc("gAmbientColour").mOffsetInBytes;
 	memcpy(&buffer[offset],&getInterfaceImp()->getAmbientColour(),sizeof(CFloat3));
 }

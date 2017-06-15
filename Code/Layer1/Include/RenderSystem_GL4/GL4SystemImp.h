@@ -5,11 +5,14 @@
 #include "GL4ConstantBufferContainer.h"
 #include "GL4DepthStencil.h"
 #include "GL4RenderTargetImp.h"
+#include "GL4WindowImp.h"
 #include "GL4Scene.h"
 #include "GL4VertexBufferImp.h"
 #include "GL4IndexBufferImp.h"
 #include "GL4Texture.h"
 #include "GL4TransformerImp.h"
+#include "GL4ClearViewportProgram.h"
+#include "GL4OverlayMaterialManager.h"
 namespace NSDevilX
 {
 	namespace NSRenderSystem
@@ -32,19 +35,24 @@ namespace NSDevilX
 				};
 			protected:
 				CThreadPool * mRenderTaskThreadPool;
+#if DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_WINDOWS
+				HWND mWindow;
+#endif
 				HGLRC mContext;
 				CShaderManager * mShaderManager;
 				NSGLSL4_5::CDefinitionShader * mDefinitionShader;
 				CConstantBufferDescriptionManager * mConstantBufferDescriptionManager;
+				CClearViewportProgram * mClearViewportProgram;
+				COverlayMaterialManager * mOverlayMaterialManager;
 				TVector<CDepthStencil*> mDepthStencils;
-				TResourcePtrContainer<IWindowImp*const,CWindowImp> mWindows;
-				TResourcePtrContainer<ISceneImp*const,CScene> mScenes;
-				TResourcePtrContainer<IVertexBufferImp*const,CVertexBufferImp> mVertexBuffers;
-				TResourcePtrContainer<IIndexBufferImp*const,CIndexBufferImp> mIndexBuffers;
-				TResourcePtrContainer<IGeometryImp*const,CGeometry> mGeometrys;
-				TResourcePtrContainer<ITexture2DImp*const,CTexture2D> mTexture2Ds;
-				TResourcePtrContainer<ITransformerImp*const,CTransformerImp> mTransformers;
-				TResourcePtrContainer<ConstVoidPtr,Void> mInstanceByInternals;
+				TResourcePtrMap<IWindowImp*const,CWindowImp> mWindows;
+				TResourcePtrMap<ISceneImp*const,CScene> mScenes;
+				TResourcePtrMap<IVertexBufferImp*const,CVertexBufferImp> mVertexBuffers;
+				TResourcePtrMap<IIndexBufferImp*const,CIndexBufferImp> mIndexBuffers;
+				TResourcePtrMap<IGeometryImp*const,CGeometry> mGeometrys;
+				TResourcePtrMap<ITexture2DImp*const,CTexture2D> mTexture2Ds;
+				TResourcePtrMap<ITransformerImp*const,CTransformerImp> mTransformers;
+				TResourcePtrMap<ConstVoidPtr,Void> mInstanceByInternals;
 			public:
 				CSystemImp();
 				~CSystemImp();
@@ -69,6 +77,14 @@ namespace NSDevilX
 					return mConstantBufferDescriptionManager;
 				}
 				CDepthStencil * getFreeDepthStencil();
+				CProgram * getClearViewportProgram()const
+				{
+					return mClearViewportProgram->getProgram();
+				}
+				COverlayMaterialManager * getOverlayMaterialManager()const
+				{
+					return mOverlayMaterialManager;
+				}
 				CWindowImp * getWindow(IWindowImp * interfaceImp)const
 				{
 					return mWindows.get(interfaceImp);

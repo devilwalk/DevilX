@@ -102,6 +102,7 @@ Void NSDevilX::NSFightChess::CRegister::update()
 
 Void NSDevilX::NSFightChess::CRegister::stop()
 {
+	CModule::stop();
 	DEVILX_DELETE(mPage);
 	mPage=nullptr;
 	mReturnCode.write(-1);

@@ -12,14 +12,15 @@ namespace NSDevilX
 				:public TBaseObject<CRenderOperation>
 			{
 			public:
-				CGeometry * mGeometry;
 				CPass * mPass;
+				GLint mVertexArrayObject;
 				GLint mIndexBufferOffset;
 				GLuint mIndexCount;
 				GLint mVertexBufferOffset;
 				GLuint mVertexCount;
 				GLenum mPrimitiveTopology;
 				TVector<CConstantBuffer*> mConstantBuffers;
+				TVector<CUtility::SScissorRect> mScissorRects;
 				CRenderOperation();
 				~CRenderOperation();
 				Void process();

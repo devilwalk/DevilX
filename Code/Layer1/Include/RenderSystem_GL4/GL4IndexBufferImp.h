@@ -10,7 +10,13 @@ namespace NSDevilX
 				:public TInterfaceObject<IIndexBufferImp>
 				,public TBaseObject<CIndexBufferImp>
 				,public TMessageReceiver<CSystemImp>
+				,public CMessageNotifier
 			{
+			public:
+				enum EMessage
+				{
+					EMessage_BufferCreate
+				};
 			protected:
 				GLuint mBuffer;
 			public:

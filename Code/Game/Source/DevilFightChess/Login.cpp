@@ -115,6 +115,8 @@ Void NSDevilX::NSFightChess::CLogin::update()
 
 Void NSDevilX::NSFightChess::CLogin::stop()
 {
+	CModule::stop();
 	DEVILX_DELETE(mPage);
 	mPage=nullptr;
+	mReturnCode.write(-1);
 }

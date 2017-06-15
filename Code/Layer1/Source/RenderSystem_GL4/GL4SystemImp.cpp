@@ -12,10 +12,15 @@ ISystem * NSDevilX::NSRenderSystem::getSystem()
 NSDevilX::NSRenderSystem::NSGL4::CSystemImp::CSystemImp()
 	:CConstantBufferContainer("cbSystem")
 	,mRenderTaskThreadPool(nullptr)
+#if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
+	,mWindow(nullptr)
+#endif
 	,mContext(nullptr)
 	,mShaderManager(nullptr)
 	,mDefinitionShader(nullptr)
 	,mConstantBufferDescriptionManager(nullptr)
+	,mClearViewportProgram(nullptr)
+	,mOverlayMaterialManager(nullptr)
 {
 	DEVILX_NEW ISystemImp();
 	mRenderTaskThreadPool=DEVILX_NEW CThreadPool(4);
@@ -34,9 +39,9 @@ NSDevilX::NSRenderSystem::NSGL4::CSystemImp::CSystemImp()
 	wnd_class.lpszMenuName=nullptr;
 	wnd_class.style=CS_HREDRAW|CS_VREDRAW;
 	RegisterClassEx(&wnd_class);
-	auto wnd=CreateWindowEx(0,wnd_class.lpszClassName,_T("Temp"),WS_POPUP,0,0,1,1,nullptr,nullptr,wnd_class.hInstance,nullptr);
-	ShowWindow(wnd,SW_NORMAL);
-	UpdateWindow(wnd);
+	mWindow=CreateWindowEx(0,wnd_class.lpszClassName,_T("Temp"),WS_POPUP,0,0,1,1,nullptr,nullptr,wnd_class.hInstance,nullptr);
+	ShowWindow(mWindow,SW_NORMAL);
+	UpdateWindow(mWindow);
 	PIXELFORMATDESCRIPTOR pfd=
 	{
 		sizeof(PIXELFORMATDESCRIPTOR),
@@ -56,7 +61,7 @@ NSDevilX::NSRenderSystem::NSGL4::CSystemImp::CSystemImp()
 		0,
 		0, 0, 0
 	};
-	auto dc=GetDC(wnd);
+	auto dc=GetDC(mWindow);
 	auto fmt=ChoosePixelFormat(dc,&pfd);
 	SetPixelFormat(dc,fmt,&pfd);
 	auto context=wglCreateContext(dc);
@@ -64,6 +69,22 @@ NSDevilX::NSRenderSystem::NSGL4::CSystemImp::CSystemImp()
 	glewInit();
 	wglMakeCurrent(nullptr,nullptr);
 	wglDeleteContext(context);
+	const Int32 attrib_list[]=
+	{
+		WGL_DRAW_TO_WINDOW_ARB,GL_TRUE,
+		WGL_SUPPORT_OPENGL_ARB,GL_TRUE,
+		WGL_DOUBLE_BUFFER_ARB,GL_TRUE,
+		WGL_ACCELERATION_ARB,WGL_FULL_ACCELERATION_ARB,
+		WGL_PIXEL_TYPE_ARB,WGL_TYPE_RGBA_ARB,
+		WGL_COLOR_BITS_ARB,32,
+		WGL_DEPTH_BITS_ARB,24,
+		WGL_STENCIL_BITS_ARB,8,
+		0,        //End
+	};
+	Int32 pixel_format=0;
+	UInt32 num_formats=0;
+	wglChoosePixelFormatARB(dc,attrib_list,nullptr,1,&pixel_format,&num_formats);
+	SetPixelFormat(dc,pixel_format,&PIXELFORMATDESCRIPTOR());
 	Int32 attrs[]=
 	{
 		WGL_CONTEXT_MAJOR_VERSION_ARB,4,
@@ -75,13 +96,22 @@ NSDevilX::NSRenderSystem::NSGL4::CSystemImp::CSystemImp()
 		0
 	};
 	mContext=wglCreateContextAttribsARB(dc,nullptr,attrs);
-	DestroyWindow(wnd);
-	UnregisterClass(wnd_class.lpszClassName,wnd_class.hInstance);
+	wglMakeCurrent(dc,getContext());
 #elif DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_X
+#endif
+#ifdef DEVILX_DEBUG
+	glEnable(GL_DEBUG_OUTPUT);
+	glDebugMessageCallback([](GLenum source,GLenum type,GLuint id,GLenum serverity,GLsizei length,const GLchar *message,const GLvoid *userParam)
+	{
+		OutputDebugStringA(message);
+		OutputDebugStringA("\r\n");
+	},nullptr);
 #endif
 	mShaderManager=DEVILX_NEW CShaderManager;
 	mDefinitionShader=DEVILX_NEW NSGLSL4_5::CDefinitionShader;
 	mConstantBufferDescriptionManager=DEVILX_NEW CConstantBufferDescriptionManager;
+	mOverlayMaterialManager=DEVILX_NEW COverlayMaterialManager();
+	mClearViewportProgram=DEVILX_NEW CClearViewportProgram;
 	ISystemImp::getSingleton().addListener(static_cast<TMessageReceiver<ISystemImp>*>(this),ISystemImp::EMessage_EndWindowCreate);
 	ISystemImp::getSingleton().addListener(static_cast<TMessageReceiver<ISystemImp>*>(this),ISystemImp::EMessage_BeginWindowDestroy);
 	ISystemImp::getSingleton().addListener(static_cast<TMessageReceiver<ISystemImp>*>(this),ISystemImp::EMessage_EndSceneCreate);
@@ -101,10 +131,14 @@ NSDevilX::NSRenderSystem::NSGL4::CSystemImp::CSystemImp()
 NSDevilX::NSRenderSystem::NSGL4::CSystemImp::~CSystemImp()
 {
 	DEVILX_DELETE(mRenderTaskThreadPool);
+	DEVILX_DELETE(mClearViewportProgram);
+	DEVILX_DELETE(mOverlayMaterialManager);
 	DEVILX_DELETE(mConstantBufferDescriptionManager);
 	DEVILX_DELETE(mDefinitionShader);
 	DEVILX_DELETE(mShaderManager);
+	wglMakeCurrent(nullptr,nullptr);
 	wglDeleteContext(getContext());
+	DestroyWindow(mWindow);
 }
 
 CDepthStencil * NSDevilX::NSRenderSystem::NSGL4::CSystemImp::getFreeDepthStencil()
@@ -123,6 +157,15 @@ CDepthStencil * NSDevilX::NSRenderSystem::NSGL4::CSystemImp::getFreeDepthStencil
 		ret=DEVILX_NEW CDepthStencil();
 		mDepthStencils.push_back(ret);
 	}
+	return ret;
+}
+
+CTransformerImp * NSDevilX::NSRenderSystem::NSGL4::CSystemImp::createTransformer(ITransformerImp * interfaceImp)
+{
+	if(getTransformer(interfaceImp))
+		return nullptr;
+	auto ret=DEVILX_NEW CTransformerImp(interfaceImp);
+	mTransformers[interfaceImp]=ret;
 	return ret;
 }
 

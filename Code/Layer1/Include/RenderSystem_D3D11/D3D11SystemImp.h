@@ -72,7 +72,7 @@ namespace NSDevilX
 				TResourcePtrMap<ITexture2DImp*const,CTexture2D> mTexture2Ds;
 				TResourcePtrMap<IVertexBufferImp*const,CVertexBufferImp> mVertexBuffers;
 				TResourcePtrMap<IIndexBufferImp*const,CIndexBufferImp> mIndexBuffers;
-				TResourcePtrMap<ITransformerImp*,CTransformer> mTransformers;
+				TResourcePtrMap<ITransformerImp*,CTransformerImp> mTransformers;
 				D3D11_RASTERIZER_DESC1 mDefaultRasterizerStateDesc;
 				D3D11_BLEND_DESC1 mDefaultBlendStateDesc;
 				D3D11_DEPTH_STENCIL_DESC mDefaultDepthStencilDesc;
@@ -182,8 +182,8 @@ namespace NSDevilX
 				{
 					return mIndexBuffers.get(interfaceImp);
 				}
-				CTransformer * createTransformer(ITransformerImp * interfaceImp);
-				CTransformer * getTransformer(ITransformerImp * interfaceImp)const
+				CTransformerImp * createTransformer(ITransformerImp * interfaceImp);
+				CTransformerImp * getTransformer(ITransformerImp * interfaceImp)const
 				{
 					return mTransformers.get(interfaceImp);
 				}

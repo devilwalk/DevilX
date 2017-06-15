@@ -1,4 +1,4 @@
-#include "ConstantBuffer.glsl"
+#include "Defines.glsl"
 float2 mul(float2 v,float2x2 m){return v*m;}
 float3 mul(float2 v,float3x2 m){return v*m;}
 float4 mul(float2 v,float4x2 m){return v*m;}
@@ -20,6 +20,10 @@ float4 mul(float4x4 m,float4 v){return m*v;}
 float2x2 mul(float2x2 m0,float2x2 m1){return m0*m1;}
 float3x3 mul(float3x3 m0,float3x3 m1){return m0*m1;}
 float4x4 mul(float4x4 m0,float4x4 m1){return m0*m1;}
+float saturate(float v){return clamp(v,0.0,1.0);}
+float2 saturate(float2 v){return clamp(v,float2(0.0),float2(1.0));}
+float3 saturate(float3 v){return clamp(v,float3(0.0),float3(1.0));}
+float4 saturate(float4 v){return clamp(v,float4(0.0),float4(1.0));}
 float getMaxComponment(float2 v)
 {
 	return max(v.x, v.y);
@@ -48,36 +52,20 @@ float3 getCameraPosition(float4x4 viewMatrix)
 {
 	return -viewMatrix[3].xyz;
 }
-float3 getCameraPosition()
-{
-	return getCameraPosition(gViewMatrix);
-}
 float3 getCameraDirection(float4x4 viewMatrix)
 {
 	float3x3 rot=float3x3(viewMatrix);
 	return rot[2];
-}
-float3 getCameraDirection()
-{
-	return getCameraDirection(gViewMatrix);
 }
 float3 getCameraUp(float4x4 viewMatrix)
 {
 	float3x3 rot=float3x3(viewMatrix);
 	return rot[1];
 }
-float3 getCameraUp()
-{
-	return getCameraUp(gViewMatrix);
-}
 float3 getCameraRight(float4x4 viewMatrix)
 {
 	float3x3 rot=float3x3(viewMatrix);
 	return rot[0];
-}
-float3 getCameraRight()
-{
-	return getCameraRight(gViewMatrix);
 }
 float calcDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)
 {

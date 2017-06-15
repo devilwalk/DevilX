@@ -36,7 +36,7 @@ Void NSDevilX::NSRenderSystem::NSGL4::CIndexBufferImp::_update()
 {
 	if(getInterfaceImp()->hasDirtyFlag(IIndexBufferImp::EDirtyFlag_Count))
 	{
-		if(!getBuffer())
+		if(getBuffer())
 		{
 			glDeleteBuffers(1,&mBuffer);
 			mBuffer=0;
@@ -53,13 +53,14 @@ Void NSDevilX::NSRenderSystem::NSGL4::CIndexBufferImp::_update()
 				glGenBuffers(1,&buf);
 				if(GL_INVALID_VALUE!=buf)
 				{
-					glNamedBufferStorage(buf,sizeof(UInt32)*getInterfaceImp()->getCount(),getInterfaceImp()->getIndices(),GL_DYNAMIC_STORAGE_BIT);
+					glNamedBufferData(buf,sizeof(UInt32)*getInterfaceImp()->getCount(),getInterfaceImp()->getIndices(),GL_STATIC_DRAW);
 				}
 				else
 				{
 					buf=0;
 				}
 				mBuffer=buf;
+				notify(EMessage_BufferCreate);
 			}
 			else
 			{

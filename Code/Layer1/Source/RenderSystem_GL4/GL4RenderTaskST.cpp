@@ -34,55 +34,54 @@ NSDevilX::NSRenderSystem::NSGL4::CClearViewportTask::~CClearViewportTask()
 
 Void NSDevilX::NSRenderSystem::NSGL4::CClearViewportTask::process()
 {
-	auto context=CSystemImp::getSingleton().getImmediateContext();
 	if(mViewport->isFullViewport())
 	{
-		for(auto i=0;i<8;++i)
+		for(UInt32 i=0;i<8;++i)
 		{
-			if((mClearColour[i]>=CFloat4::sZero)&&mViewport->getRenderTarget()->getRTView(i))
-				context->ClearRenderTargetView(mViewport->getRenderTarget()->getRTView(i),reinterpret_cast<ConstFloatPtr>(&mClearColour));
+			if(mClearColour[i]>=CFloat4::sZero)
+				mViewport->getRenderTarget()->clear(i,mClearColour[i]);
 		}
-		UINT clear_flag=(mClearDepth>=0.0f?D3D11_CLEAR_DEPTH:0)|(mClearStencil>=0?D3D11_CLEAR_STENCIL:0);
-		if(mViewport->getRenderTarget()->getDSView())
-			context->ClearDepthStencilView(mViewport->getRenderTarget()->getDSView(),clear_flag,mClearDepth,static_cast<UInt8>(mClearStencil));
+		mViewport->getRenderTarget()->clear(mClearDepth,mClearStencil);
 	}
 	else
 	{
-		mViewport->setupMT(context);
-		UInt32 flag=0;
-		for(auto i=0;i<8;++i)
+		mViewport->setup();
+		for(GLuint i=0;i<8;++i)
 		{
-			flag|=mClearColour[i]>=CFloat4::sZero?1:0;
+			Boolean write_colour=mClearColour[i]>=CFloat4::sZero;
+			glColorMaski(i,write_colour,write_colour,write_colour,write_colour);
 		}
-		flag|=mClearDepth>=0.0f?2:0;
-		flag|=mClearStencil>0.0f?4:0;
-		CClearViewportShader::EType type;
-		switch(flag)
+		glDepthFunc(GL_ALWAYS);
+		glDepthMask(mClearDepth>=0.0f);
+		if(mClearStencil>0.0f)
 		{
-		case 1:type=CClearViewportShader::EType_ColourOnly;break;
-		case 2:type=CClearViewportShader::EType_DepthOnly;break;
-		case 3:type=CClearViewportShader::EType_ColourAndDepth;break;
-		case 4:type=CClearViewportShader::EType_StencilOnly;break;
-		case 5:type=CClearViewportShader::EType_ColourAndStencil;break;
-		case 6:type=CClearViewportShader::EType_DepthAndStencil;break;
-		case 7:type=CClearViewportShader::EType_All;break;
-		default:
-			assert(0);
-			break;
+			glEnable(GL_STENCIL_TEST);
+			glStencilFunc(GL_ALWAYS,mClearStencil,0xff);
+			glStencilOp(GL_REPLACE,GL_REPLACE,GL_REPLACE);
 		}
-		context->OMSetDepthStencilState(CSystemImp::getSingleton().getClearViewportShader()->getDepthStencilState(type),static_cast<UINT>(mClearStencil));
-		context->OMSetBlendState(CSystemImp::getSingleton().getClearViewportShader()->getBlendState(type),reinterpret_cast<ConstFloatPtr>(&CFloat4::sOne),0xffffffff);
-		context->RSSetState(CSystemImp::getSingleton().getClearViewportShader()->getRasterizerState());
-		context->IASetInputLayout(nullptr);
-		context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-		context->VSSetShader(CSystemImp::getSingleton().getClearViewportShader()->getVertexShader()->getInternal(),nullptr,0);
+		else
+		{
+			glStencilMask(0);
+		}
+		glDisable(GL_CULL_FACE);
+		glUseProgram(CSystemImp::getSingleton().getClearViewportProgram()->getInternal());
 		auto cb=getConstantBufferMT();
 		cb->submit();
-		ID3D11Buffer * constant_buffer[]={cb->getInternal()};
-		context->VSSetConstantBuffers(0,1,constant_buffer);
-		context->PSSetShader(CSystemImp::getSingleton().getClearViewportShader()->getPixelShader()->getInternal(),nullptr,0);
-		context->PSSetConstantBuffers(0,1,constant_buffer);
-		context->Draw(4,0);
+		glBindBufferBase(GL_UNIFORM_BUFFER,0,cb->getInternal());
+		glUniformBlockBinding(CSystemImp::getSingleton().getClearViewportProgram()->getInternal(),CSystemImp::getSingleton().getClearViewportProgram()->getSlot(cb->getDescription()->getName()),0);
+		glDrawArrays(GL_TRIANGLE_STRIP,0,4);
+		glBindBuffer(GL_UNIFORM_BUFFER,0);
+		glUseProgram(0);
+		glEnable(GL_CULL_FACE);
+		glStencilMask(0xffffffff);
+		glStencilOp(GL_KEEP,GL_KEEP,GL_KEEP);
+		glDisable(GL_STENCIL_TEST);
+		glDepthMask(true);
+		glDepthFunc(GL_LEQUAL);
+		for(GLuint i=0;i<8;++i)
+		{
+			glColorMaski(i,true,true,true,true);
+		}
 	}
 }
 
@@ -90,10 +89,10 @@ Void NSDevilX::NSRenderSystem::NSGL4::CClearViewportTask::_updateConstantBuffer(
 {
 	for(auto i=0;i<8;++i)
 	{
-		auto offset=mConstantBuffer->getDescription()->getConstantDesc("gClearColour"+CStringConverter::toString(i)).StartOffset;
+		auto offset=mConstantBuffer->getDescription()->getConstantDesc("gClearColour"+CStringConverter::toString(i)).mOffsetInBytes;
 		memcpy(&buffer[offset],&mClearColour[i],sizeof(CColour));
 	}
-	auto offset=mConstantBuffer->getDescription()->getConstantDesc("gClearDepth").StartOffset;
+	auto offset=mConstantBuffer->getDescription()->getConstantDesc("gClearDepth").mOffsetInBytes;
 	memcpy(&buffer[offset],&mClearDepth,sizeof(Float));
 }
 
@@ -111,46 +110,6 @@ NSDevilX::NSRenderSystem::NSGL4::CRenderSceneForwardTask::~CRenderSceneForwardTa
 
 Void NSDevilX::NSRenderSystem::NSGL4::CRenderSceneForwardTask::process()
 {
-	auto context=CSystemImp::getSingleton().getImmediateContext();
-	mViewport->getCamera()->getInterfaceImp()->findVisibleObjectsMT();
-	mViewport->setupMT(context);
-	mTasks[0]->process();
-	while(mTasks.size()>1)
-	{
-		mLightTaskPool.push_back(static_cast<CLightTask*>(mTasks.back()));
-		mTasks.pop_back();
-	}
-	for(auto const & light_pair:static_cast<ISceneElementImp*>(mViewport->getCamera()->getInterfaceImp()->queryInterface_ISceneElement())->getScene()->getLights())
-	{
-		auto light=light_pair.second;
-		if(light->getType()!=IEnum::ELightType_Directional)
-			continue;
-		CLightTask * task=nullptr;
-		if(mLightTaskPool.empty())
-			task=DEVILX_NEW CLightTask(static_cast<CLight*>(light->getUserPointer(0)),mViewport);
-		else
-		{
-			task=mLightTaskPool.back();
-			task->setLight(static_cast<CLight*>(light->getUserPointer(0)));
-			mLightTaskPool.pop_back();
-		}
-		task->process();
-		mTasks.push_back(task);
-	}
-	for(auto light:mViewport->getCamera()->getInterfaceImp()->getVisibleLights())
-	{
-		CLightTask * task=nullptr;
-		if(mLightTaskPool.empty())
-			task=DEVILX_NEW CLightTask(static_cast<CLight*>(light->getUserPointer(0)),mViewport);
-		else
-		{
-			task=mLightTaskPool.back();
-			task->setLight(static_cast<CLight*>(light->getUserPointer(0)));
-			mLightTaskPool.pop_back();
-		}
-		task->process();
-		mTasks.push_back(task);
-	}
 }
 
 NSDevilX::NSRenderSystem::NSGL4::CRenderSceneForwardTask::CAmbientTask::CAmbientTask(CViewport * viewport)
@@ -163,86 +122,6 @@ NSDevilX::NSRenderSystem::NSGL4::CRenderSceneForwardTask::CAmbientTask::~CAmbien
 
 Void NSDevilX::NSRenderSystem::NSGL4::CRenderSceneForwardTask::CAmbientTask::process()
 {
-	TVector<CRenderable*> solid_renderables,transparent_renderables,sky_solid_renderables,sky_transparent_renderables;
-	for(auto object:mViewport->getCamera()->getInterfaceImp()->getVisibleRenderableObjects())
-	{
-		for(UInt32 i=0;i<object->getRenderableCount();++i)
-		{
-			auto renderable=static_cast<CRenderable*>(static_cast<IRenderableImp*>(object->getRenderable(i))->getUserPointer(0));
-			if(renderable->getInterfaceImp()->getSky())
-			{
-				if(renderable->getInterfaceImp()->queryInterface_IMaterial()->getTransparentEnable())
-					sky_transparent_renderables.push_back(renderable);
-				else
-					sky_solid_renderables.push_back(renderable);
-			}
-			else
-			{
-				if(renderable->getInterfaceImp()->queryInterface_IMaterial()->getTransparentEnable())
-					transparent_renderables.push_back(renderable);
-				else
-					solid_renderables.push_back(renderable);
-			}
-		}
-	}
-	TVector<CConstantBuffer*> common_constant_buffers;
-	if(auto cb=CSystemImp::getSingleton().getConstantBufferMT())
-	{
-		cb->submit();
-		common_constant_buffers.push_back(cb);
-	}
-	if(auto cb=getViewport()->getRenderTarget()->getConstantBufferMT())
-	{
-		cb->submit();
-		common_constant_buffers.push_back(cb);
-	}
-	if(auto cb=getViewport()->getConstantBufferMT())
-	{
-		cb->submit();
-		common_constant_buffers.push_back(cb);
-	}
-	if(auto cb=getViewport()->getCamera()->getConstantBufferMT())
-	{
-		cb->submit();
-		common_constant_buffers.push_back(cb);
-	}
-	CRenderOperation operation(CSystemImp::getSingleton().getImmediateContext());
-	for(auto renderable:solid_renderables)
-	{
-		renderable->renderForward(nullptr,operation);
-		for(auto cb:operation.mConstantBuffers)
-			cb->submit();
-		operation.mConstantBuffers.insert(operation.mConstantBuffers.end(),common_constant_buffers.begin(),common_constant_buffers.end());
-		operation.process();
-		operation.mConstantBuffers.clear();
-	}
-	for(auto renderable:sky_solid_renderables)
-	{
-		renderable->renderForward(nullptr,operation);
-		for(auto cb:operation.mConstantBuffers)
-			cb->submit();
-		operation.mConstantBuffers.insert(operation.mConstantBuffers.end(),common_constant_buffers.begin(),common_constant_buffers.end());
-		operation.process();
-		operation.mConstantBuffers.clear();
-	}
-	for(auto renderable:sky_transparent_renderables)
-	{
-		renderable->renderForward(nullptr,operation);
-		for(auto cb:operation.mConstantBuffers)
-			cb->submit();
-		operation.mConstantBuffers.insert(operation.mConstantBuffers.end(),common_constant_buffers.begin(),common_constant_buffers.end());
-		operation.process();
-		operation.mConstantBuffers.clear();
-	}
-	for(auto renderable:transparent_renderables)
-	{
-		renderable->renderForward(nullptr,operation);
-		for(auto cb:operation.mConstantBuffers)
-			cb->submit();
-		operation.mConstantBuffers.insert(operation.mConstantBuffers.end(),common_constant_buffers.begin(),common_constant_buffers.end());
-		operation.process();
-		operation.mConstantBuffers.clear();
-	}
 }
 
 NSDevilX::NSRenderSystem::NSGL4::CRenderSceneForwardTask::CLightTask::CLightTask(CLight * light,CViewport * viewport)
@@ -256,61 +135,6 @@ NSDevilX::NSRenderSystem::NSGL4::CRenderSceneForwardTask::CLightTask::~CLightTas
 
 Void NSDevilX::NSRenderSystem::NSGL4::CRenderSceneForwardTask::CLightTask::process()
 {
-	mLight->getInterfaceImp()->findVisibleObjectsMT();
-	TVector<CConstantBuffer*> common_constant_buffers;
-	if(auto cb=CSystemImp::getSingleton().getConstantBufferMT())
-	{
-		cb->submit();
-		common_constant_buffers.push_back(cb);
-	}
-	if(auto cb=getViewport()->getRenderTarget()->getConstantBufferMT())
-	{
-		cb->submit();
-		common_constant_buffers.push_back(cb);
-	}
-	if(auto cb=getViewport()->getConstantBufferMT())
-	{
-		cb->submit();
-		common_constant_buffers.push_back(cb);
-	}
-	if(auto cb=getViewport()->getCamera()->getConstantBufferMT())
-	{
-		cb->submit();
-		common_constant_buffers.push_back(cb);
-	}
-	CRenderOperation operation(CSystemImp::getSingleton().getImmediateContext());
-	if(mLight->getInterfaceImp()->getType()==IEnum::ELightType_Directional)
-	{
-		for(auto object:mViewport->getCamera()->getInterfaceImp()->getVisibleRenderableObjects())
-		{
-			for(UInt32 i=0;i<object->getRenderableCount();++i)
-			{
-				auto renderable=static_cast<CRenderable*>(static_cast<IRenderableImp*>(object->getRenderable(i))->getUserPointer(0));
-				renderable->renderForward(mLight,operation);
-				for(auto cb:operation.mConstantBuffers)
-					cb->submit();
-				operation.mConstantBuffers.insert(operation.mConstantBuffers.end(),common_constant_buffers.begin(),common_constant_buffers.end());
-				operation.process();
-				operation.mConstantBuffers.clear();
-			}
-		}
-	}
-	else
-	{
-		for(auto object:mLight->getInterfaceImp()->getVisibleRenderableObjects())
-		{
-			for(UInt32 i=0;i<object->getRenderableCount();++i)
-			{
-				auto renderable=static_cast<CRenderable*>(static_cast<IRenderableImp*>(object->getRenderable(i))->getUserPointer(0));
-				renderable->renderForward(mLight,operation);
-				for(auto cb:operation.mConstantBuffers)
-					cb->submit();
-				operation.mConstantBuffers.insert(operation.mConstantBuffers.end(),common_constant_buffers.begin(),common_constant_buffers.end());
-				operation.process();
-				operation.mConstantBuffers.clear();
-			}
-		}
-	}
 }
 
 NSDevilX::NSRenderSystem::NSGL4::CForwardRenderTask::CForwardRenderTask(CViewport * viewport)

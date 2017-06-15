@@ -1,5 +1,5 @@
 #pragma once
-#include "GL4RenderableObject.h"
+#include "GL4EntityImp.h"
 #include "GL4Camera.h"
 #include "GL4Light.h"
 #include "GL4ConstantBufferContainer.h"
@@ -14,15 +14,15 @@ namespace NSDevilX
 				,public CConstantBufferContainer
 			{
 			protected:
-				TResourcePtrContainer<IRenderableObjectImp*const,CRenderableObject> mRenderableObjects;
-				TResourcePtrContainer<ICameraImp*const,CCamera> mCameras;
-				TResourcePtrContainer<ILightImp*const,CLight> mLights;
+				TResourcePtrMap<IEntityImp*const,CEntityImp> mEntities;
+				TResourcePtrMap<ICameraImp*const,CCamera> mCameras;
+				TResourcePtrMap<ILightImp*const,CLight> mLights;
 			public:
 				CScene(ISceneImp * interfaceImp);
 				~CScene();
-				CRenderableObject * getRenderableObject(IRenderableObjectImp * interfaceImp)const
+				CEntityImp * getRenderableObject(IEntityImp * interfaceImp)const
 				{
-					return mRenderableObjects.get(interfaceImp);
+					return mEntities.get(interfaceImp);
 				}
 				CCamera * getCamera(ICameraImp * interfaceImp)const
 				{

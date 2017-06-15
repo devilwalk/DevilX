@@ -17,6 +17,10 @@ namespace NSDevilX
 			public:
 				CRenderTarget();
 				~CRenderTarget();
+				GLuint getFrameBuffer()const
+				{
+					return mFrameBuffer;
+				}
 				Void getSize(GLsizei & width,GLsizei & height);
 				Void setRT(UInt32 index,GLuint texture);
 				GLuint getRT(UInt32 index)const
