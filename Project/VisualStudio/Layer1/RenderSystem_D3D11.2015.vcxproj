@@ -1,0 +1,264 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{1477B068-C612-4CC2-934D-DEA4A27A5A41}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Project</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="Layer1_Debug.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="Layer1_Release.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="Layer1_Debug.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="Layer1_Release.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Layer1\Interface\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\Shader;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem_D3D11;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-Zm200 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+    <PreBuildEvent>
+      <Command>call $(OutDir)ShaderCodeGenerator.2015.exe</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Layer1\Interface\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\Shader;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem_D3D11;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-Zm200 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+    <PreBuildEvent>
+      <Command>call $(OutDir)ShaderCodeGenerator.2015.exe</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Layer1\Interface\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\Shader;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem_D3D11;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-Zm200 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+    <PreBuildEvent>
+      <Command>call $(OutDir)ShaderCodeGenerator.2015.exe</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Layer1\Interface\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\Shader;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem_D3D11;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-Zm200 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+    <PreBuildEvent>
+      <Command>call $(OutDir)ShaderCodeGenerator.2015.exe</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11BaseObject.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11Camera.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11ClearViewportShader.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11ConstantBuffer.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11ConstantBufferContainer.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11ConstantBufferDescription.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11ConstantBufferDescriptionManager.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11DepthStencil.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11Enum.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11ForwardPixelShaderGenerator.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11ForwardVertexShaderGenerator.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11Geometry.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11IndexBufferImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11Light.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11EntityMaterial.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11OverlayManager.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11OverlayMaterial.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11OverlayMaterialManager.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11OverlayRenderable.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11EntityPass.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11EntityRenderableImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11EntityImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11Pass.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11RenderOperation.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11RenderableSurfaceImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11RenderTarget.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11RenderTargetImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11RenderTask.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11RenderTaskMT.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11RenderTaskMTDS.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11RenderTaskST.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11Resource.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11Scene.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11Shader.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11ShaderCodeManager.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11SkyImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11SystemImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11EntityTechnique.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11Texture.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11TransformerImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11Utility.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11VertexBufferImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11Viewport.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11ViewportImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11WindowImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\Shader\HLSL4_1DefnitionShaderCodeFunction.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\Shader\HLSL5DefnitionShaderCodeFunction.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\Precompiler.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11Camera.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11ClearViewportShader.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11ConstantBuffer.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11ConstantBufferContainer.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11ConstantBufferDescription.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11ConstantBufferDescriptionManager.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11DepthStencil.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11ForwardPixelShaderGenerator.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11ForwardVertexShaderGenerator.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11Geometry.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11IndexBufferImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11Light.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11EntityMaterial.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11OverlayManager.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11OverlayMaterial.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11OverlayMaterialManager.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11OverlayRenderable.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11EntityPass.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11EntityRenderableImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11EntityImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11Pass.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11RenderOperation.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11RenderableSurfaceImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11RenderTarget.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11RenderTargetImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11RenderTaskMT.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11RenderTaskMTDS.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11RenderTaskST.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11Resource.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11Scene.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11Shader.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11ShaderCodeManager.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11SkyImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11SystemImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11EntityTechnique.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11Texture.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11TransformerImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11VertexBufferImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11Viewport.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11ViewportImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11WindowImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\Precompiler.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer1\Source\Shader\HLSL4_1DefnitionShaderCodeFunction.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\Shader\HLSL5DefnitionShaderCodeFunction.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

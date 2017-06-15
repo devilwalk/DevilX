@@ -1,0 +1,259 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{FA3765A8-A738-4B63-B4D1-7BC74FBF2441}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Project</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <ProjectName>RenderSystem_GL4</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="Layer1_Debug.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="Layer1_Release.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="Layer1_Debug.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="Layer1_Release.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Layer1\Interface\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\Shader;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem_GL4;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>opengl32.lib</AdditionalDependencies>
+    </Lib>
+    <PreBuildEvent>
+      <Command>call $(OutDir)ShaderCodeGenerator.2017.exe</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Layer1\Interface\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\Shader;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem_GL4;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>opengl32.lib</AdditionalDependencies>
+    </Lib>
+    <PreBuildEvent>
+      <Command>call $(OutDir)ShaderCodeGenerator.2017.exe</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Layer1\Interface\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\Shader;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem_GL4;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>opengl32.lib</AdditionalDependencies>
+    </Lib>
+    <PreBuildEvent>
+      <Command>call $(OutDir)ShaderCodeGenerator.2017.exe</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Layer1\Interface\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\Shader;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem_GL4;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>opengl32.lib</AdditionalDependencies>
+    </Lib>
+    <PreBuildEvent>
+      <Command>call $(OutDir)ShaderCodeGenerator.2017.exe</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4BaseObject.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4Camera.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4ClearViewportProgram.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4ConstantBuffer.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4ConstantBufferContainer.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4ConstantBufferDescription.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4ConstantBufferDescriptionManager.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4DepthStencil.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4EntityImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4EntityMaterial.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4EntityPass.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4EntityRenderableImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4EntityTechnique.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4Enum.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4ForwardPixelShaderGenerator.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4ForwardVertexShaderGenerator.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4Geometry.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4IndexBufferImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4Light.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4OverlayManager.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4OverlayMaterial.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4OverlayMaterialManager.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4OverlayRenderable.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4Pass.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4Program.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4RenderOperation.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4RenderTarget.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4RenderTargetImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4RenderTask.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4RenderTaskMT.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4RenderTaskST.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4Resource.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4Scene.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4ShaderManager.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4SystemImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4Texture.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4TransformerImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4Utility.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4VertexBufferImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4Viewport.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4ViewportImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4WindowImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\Shader\GLSL4_5DefnitionShaderCodeFunction.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\Precompiler.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4Camera.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4ClearViewportProgram.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4ConstantBuffer.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4ConstantBufferContainer.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4ConstantBufferDescription.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4ConstantBufferDescriptionManager.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4DepthStencil.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4EntityImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4EntityMaterial.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4EntityPass.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4EntityRenderableImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4EntityTechnique.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4ForwardPixelShaderGenerator.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4ForwardVertexShaderGenerator.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4Geometry.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4IndexBufferImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4Light.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4OverlayManager.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4OverlayMaterial.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4OverlayMaterialManager.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4OverlayRenderable.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4Pass.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4Program.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\Gl4RenderOperation.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4RenderTarget.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4RenderTargetImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4RenderTaskMT.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4RenderTaskST.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4Resource.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4Scene.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4ShaderManager.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4SystemImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4Texture.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4TransformerImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4VertexBufferImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4Viewport.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4ViewportImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4WindowImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\glew.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\Precompiler.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer1\Source\Shader\GLSL4_5DefnitionShaderCodeFunction.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
