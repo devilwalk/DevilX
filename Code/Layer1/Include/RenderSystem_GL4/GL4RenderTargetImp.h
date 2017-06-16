@@ -12,20 +12,10 @@ namespace NSDevilX
 				:public TInternalObject<CRenderTarget>
 			{
 			protected:
-				GLuint mRenderTargetResource;
-				CDepthStencil * mDepthStencil;
 				TResourcePtrMap<IViewportImp*const,CViewportImp> mViewports;
 			public:
 				CRenderTargetImp(GLuint rt);
 				virtual ~CRenderTargetImp();
-				decltype(mRenderTargetResource) getRenderTargetResource()const
-				{
-					return mRenderTargetResource;
-				}
-				GLuint getDepthStencil()const
-				{
-					return mDepthStencil->getInternal();
-				}
 				virtual Void prepare();
 				virtual Void render();
 			};

@@ -50,37 +50,58 @@ Void NSDevilX::NSRenderSystem::NSGL4::CClearViewportTask::process()
 		{
 			Boolean write_colour=mClearColour[i]>=CFloat4::sZero;
 			glColorMaski(i,write_colour,write_colour,write_colour,write_colour);
+			CUtility::checkGLError();
 		}
 		glDepthFunc(GL_ALWAYS);
+		CUtility::checkGLError();
 		glDepthMask(mClearDepth>=0.0f);
+		CUtility::checkGLError();
 		if(mClearStencil>0.0f)
 		{
 			glEnable(GL_STENCIL_TEST);
+			CUtility::checkGLError();
 			glStencilFunc(GL_ALWAYS,mClearStencil,0xff);
+			CUtility::checkGLError();
 			glStencilOp(GL_REPLACE,GL_REPLACE,GL_REPLACE);
+			CUtility::checkGLError();
 		}
 		else
 		{
 			glStencilMask(0);
+			CUtility::checkGLError();
 		}
 		glDisable(GL_CULL_FACE);
+		CUtility::checkGLError();
 		glUseProgram(CSystemImp::getSingleton().getClearViewportProgram()->getInternal());
+		CUtility::checkGLError();
 		auto cb=getConstantBufferMT();
 		cb->submit();
 		glBindBufferBase(GL_UNIFORM_BUFFER,0,cb->getInternal());
+		CUtility::checkGLError();
 		glUniformBlockBinding(CSystemImp::getSingleton().getClearViewportProgram()->getInternal(),CSystemImp::getSingleton().getClearViewportProgram()->getSlot(cb->getDescription()->getName()),0);
+		CUtility::checkGLError();
 		glDrawArrays(GL_TRIANGLE_STRIP,0,4);
+		CUtility::checkGLError();
 		glBindBuffer(GL_UNIFORM_BUFFER,0);
+		CUtility::checkGLError();
 		glUseProgram(0);
+		CUtility::checkGLError();
 		glEnable(GL_CULL_FACE);
+		CUtility::checkGLError();
 		glStencilMask(0xffffffff);
+		CUtility::checkGLError();
 		glStencilOp(GL_KEEP,GL_KEEP,GL_KEEP);
+		CUtility::checkGLError();
 		glDisable(GL_STENCIL_TEST);
+		CUtility::checkGLError();
 		glDepthMask(true);
+		CUtility::checkGLError();
 		glDepthFunc(GL_LEQUAL);
+		CUtility::checkGLError();
 		for(GLuint i=0;i<8;++i)
 		{
 			glColorMaski(i,true,true,true,true);
+			CUtility::checkGLError();
 		}
 	}
 }

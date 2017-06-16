@@ -10,17 +10,21 @@ NSDevilX::NSRenderSystem::NSGL4::CConstantBufferDescription::CConstantBufferDesc
 		block_name.resize(100);
 		GLsizei name_length;
 		glGetActiveUniformBlockName(program,index,100,&name_length,&block_name[0]);
+		CUtility::checkGLError();
 		mName=block_name.c_str();
 	}
 	{
 		GLint block_size_in_bytes;
 		glGetActiveUniformBlockiv(program,index,GL_UNIFORM_BLOCK_DATA_SIZE,&block_size_in_bytes);
+		CUtility::checkGLError();
 		mSizeInBytes=static_cast<UInt32>(block_size_in_bytes);
 		GLint block_uniform_count;
 		glGetActiveUniformBlockiv(program,index,GL_UNIFORM_BLOCK_ACTIVE_UNIFORMS,&block_uniform_count);
+		CUtility::checkGLError();
 		TVector<GLint> uniform_indices;
 		uniform_indices.resize(block_uniform_count);
 		glGetActiveUniformBlockiv(program,index,GL_UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES,&uniform_indices[0]);
+		CUtility::checkGLError();
 		for(GLint i=0;i<block_uniform_count;++i)
 		{
 			const auto uniform_index=static_cast<GLuint>(uniform_indices[i]);
@@ -28,10 +32,13 @@ NSDevilX::NSRenderSystem::NSGL4::CConstantBufferDescription::CConstantBufferDesc
 			constant_name.resize(100);
 			GLsizei name_length;
 			glGetActiveUniformName(program,uniform_index,static_cast<GLsizei>(constant_name.size()),&name_length,&constant_name[0]);
+			CUtility::checkGLError();
 			GLint uniform_offset=0;
 			glGetActiveUniformsiv(program,1,&uniform_index,GL_UNIFORM_OFFSET,&uniform_offset);
+			CUtility::checkGLError();
 			GLint uniform_type=0;
 			glGetActiveUniformsiv(program,1,&uniform_index,GL_UNIFORM_TYPE,&uniform_type);
+			CUtility::checkGLError();
 			SConstant constant;
 			constant.mName=constant_name.c_str();
 			constant.mOffsetInBytes=static_cast<decltype(constant.mOffsetInBytes)>(uniform_offset);

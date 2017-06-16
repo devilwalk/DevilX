@@ -16,7 +16,10 @@ NSDevilX::NSRenderSystem::NSGL4::CVertexBufferImp::~CVertexBufferImp()
 	for(auto buffer:mBuffers)
 	{
 		if(buffer)
+		{
 			glDeleteBuffers(1,&buffer);
+			CUtility::checkGLError();
+		}
 	}
 }
 
@@ -44,6 +47,7 @@ Void NSDevilX::NSRenderSystem::NSGL4::CVertexBufferImp::_update()
 			if(vb)
 			{
 				glDeleteBuffers(1,&vb);
+				CUtility::checkGLError();
 				vb=0;
 			}
 		}
@@ -121,9 +125,15 @@ Bool NSDevilX::NSRenderSystem::NSGL4::CVertexBufferImp::_update(CEnum::EVertexBu
 	{
 		GLuint buf=0;
 		glGenBuffers(1,&buf);
+		CUtility::checkGLError();
+		glBindBuffer(GL_ARRAY_BUFFER,buf);
+		CUtility::checkGLError();
+		glBindBuffer(GL_ARRAY_BUFFER,0);
+		CUtility::checkGLError();
 		if(GL_INVALID_VALUE!=buf)
 		{
 			glNamedBufferData(buf,CUtility::getStride(type)*getInterfaceImp()->getCount(),data_ptr,GL_STATIC_DRAW);
+			CUtility::checkGLError();
 		}
 		else
 		{
@@ -135,6 +145,7 @@ Bool NSDevilX::NSRenderSystem::NSGL4::CVertexBufferImp::_update(CEnum::EVertexBu
 	else
 	{
 		glNamedBufferSubData(getBuffers()[type],0,CUtility::getStride(type)*getInterfaceImp()->getCount(),data_ptr);
+		CUtility::checkGLError();
 	}
 	return True;
 }

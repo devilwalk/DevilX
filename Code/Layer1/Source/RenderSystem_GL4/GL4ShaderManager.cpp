@@ -5,7 +5,10 @@ NSDevilX::NSRenderSystem::NSGL4::CShaderManager::CShaderManager()
 NSDevilX::NSRenderSystem::NSGL4::CShaderManager::~CShaderManager()
 {
 	for(auto const & code_pair:mShaders)
+	{
 		glDeleteShader(code_pair.second);
+		CUtility::checkGLError();
+	}
 }
 
 GLuint NSDevilX::NSRenderSystem::NSGL4::CShaderManager::registerVertexShader(const String & key,const String & code,const MacroDefines & macros)
@@ -16,21 +19,27 @@ GLuint NSDevilX::NSRenderSystem::NSGL4::CShaderManager::registerVertexShader(con
 	String final_code=macro_string+code;
 	GLuint ret=0;
 	ret=glCreateShader(GL_VERTEX_SHADER);
+	CUtility::checkGLError();
 	if(ret)
 	{
 		const GLchar * code_str=&final_code[0];
 		glShaderSource(ret,1,&code_str,nullptr);
+		CUtility::checkGLError();
 		glCompileShader(ret);
+		CUtility::checkGLError();
 		GLint compiler_status=GL_FALSE;
 		glGetShaderiv(ret,GL_COMPILE_STATUS,&compiler_status);
+		CUtility::checkGLError();
 		if(GL_TRUE!=compiler_status)
 		{
 			String shader_log;
 			shader_log.resize(1024);
 			glGetShaderInfoLog(ret,1024,nullptr,&shader_log[0]);
+			CUtility::checkGLError();
 #ifdef DEVILX_DEBUG
 #if DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_WINDOWS
-			OutputDebugStringA((key+" log:"+shader_log+"\r\n").c_str());
+			OutputDebugStringA((key+" log:"+shader_log).c_str());
+			OutputDebugStringA("\r\n");
 #endif
 #endif
 		}
@@ -47,21 +56,27 @@ GLuint NSDevilX::NSRenderSystem::NSGL4::CShaderManager::registerPixelShader(cons
 	String final_code=macro_string+code;
 	GLuint ret=0;
 	ret=glCreateShader(GL_FRAGMENT_SHADER);
+	CUtility::checkGLError();
 	if(ret)
 	{
 		const GLchar * code_str=&final_code[0];
 		glShaderSource(ret,1,&code_str,nullptr);
+		CUtility::checkGLError();
 		glCompileShader(ret);
+		CUtility::checkGLError();
 		GLint compiler_status=GL_FALSE;
 		glGetShaderiv(ret,GL_COMPILE_STATUS,&compiler_status);
+		CUtility::checkGLError();
 		if(GL_TRUE!=compiler_status)
 		{
 			String shader_log;
 			shader_log.resize(1024);
 			glGetShaderInfoLog(ret,1024,nullptr,&shader_log[0]);
+			CUtility::checkGLError();
 #ifdef DEVILX_DEBUG
 #if DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_WINDOWS
-			OutputDebugStringA((key+" log:"+shader_log+"\r\n").c_str());
+			OutputDebugStringA((key+" log:"+shader_log).c_str());
+			OutputDebugStringA("\r\n");
 #endif
 #endif
 		}

@@ -14,6 +14,8 @@ namespace NSDevilX
 				GLuint mFrameBuffer;
 				GLuint mRenderTargets[8];
 				GLuint mDepthStencil;
+				GLsizei mWidth;
+				GLsizei mHeight;
 			public:
 				CRenderTarget();
 				~CRenderTarget();
@@ -21,13 +23,25 @@ namespace NSDevilX
 				{
 					return mFrameBuffer;
 				}
-				Void getSize(GLsizei & width,GLsizei & height);
+				Void setSize(GLsizei width,GLsizei height)
+				{
+					mWidth=width;
+					mHeight=height;
+				}
+				GLsizei getWidth()const
+				{
+					return mWidth;
+				}
+				GLsizei getHeight()const
+				{
+					return mHeight;
+				}
 				Void setRT(UInt32 index,GLuint texture);
 				GLuint getRT(UInt32 index)const
 				{
 					return mRenderTargets[index];
 				}
-				Void setDS(GLuint texture);
+				Void setDS(GLuint ds);
 				GLuint getDS()const
 				{
 					return mDepthStencil;
@@ -36,6 +50,7 @@ namespace NSDevilX
 				Void clear(Float depth,Int32 stencil);
 				Void setup();
 			protected:
+				Void _updateFrameBuffer();
 				virtual Void _updateConstantBuffer(Byte * buffer) override;
 			};
 		}

@@ -18,6 +18,7 @@ NSDevilX::NSRenderSystem::NSGL4::COverlayRenderable::COverlayRenderable(COverlay
 NSDevilX::NSRenderSystem::NSGL4::COverlayRenderable::~COverlayRenderable()
 {
 	glDeleteVertexArrays(1,&mVertexArrayObject);
+	CUtility::checkGLError();
 	ISystemImp::getSingleton().queryInterface_IResourceManager()->destroyGeometry(mGeometry->getInterfaceImp());
 }
 
@@ -32,14 +33,11 @@ Boolean NSDevilX::NSRenderSystem::NSGL4::COverlayRenderable::render(CRenderOpera
 	ro.mVertexBufferOffset=0;
 	ro.mVertexCount=mGeometry->getInterfaceImp()->getVertexBuffer()->getCount();
 	ro.mPass=mMaterial;
-	GLint rt_width,rt_height;
-	glGetTextureLevelParameteriv(mManager->getViewport()->getRenderTarget()->getRenderTargetResource(),0,GL_TEXTURE_WIDTH,&rt_width);
-	glGetTextureLevelParameteriv(mManager->getViewport()->getRenderTarget()->getRenderTargetResource(),0,GL_TEXTURE_HEIGHT,&rt_height);
 	CUtility::SScissorRect scissor_rect;
-	scissor_rect.mLeft=static_cast<GLint>(getScissorRectPosition().x*rt_width);
-	scissor_rect.mTop=static_cast<GLint>(getScissorRectPosition().y*rt_height);
-	scissor_rect.mWidth=rt_width;
-	scissor_rect.mHeight=rt_height;
+	scissor_rect.mLeft=static_cast<GLint>(getScissorRectPosition().x*mManager->getViewport()->getRenderTarget()->getInternal()->getWidth());
+	scissor_rect.mTop=static_cast<GLint>(getScissorRectPosition().y*mManager->getViewport()->getRenderTarget()->getInternal()->getHeight());
+	scissor_rect.mWidth=mManager->getViewport()->getRenderTarget()->getInternal()->getWidth();
+	scissor_rect.mHeight=mManager->getViewport()->getRenderTarget()->getInternal()->getHeight();
 	ro.mScissorRects.push_back(scissor_rect);
 	return true;
 }
@@ -211,18 +209,31 @@ Void NSDevilX::NSRenderSystem::NSGL4::COverlayRenderable::_updateElementDiffuse(
 Void NSDevilX::NSRenderSystem::NSGL4::COverlayRenderable::_updateVertexArrayObject()
 {
 	if(mVertexArrayObject)
+	{
 		glDeleteVertexArrays(1,&mVertexArrayObject);
+		CUtility::checkGLError();
+	}
 	glGenVertexArrays(1,&mVertexArrayObject);
+	CUtility::checkGLError();
+	glBindVertexArray(mVertexArrayObject);
+	CUtility::checkGLError();
+	glBindVertexArray(0);
+	CUtility::checkGLError();
 	for(int i=0;i<CEnum::EVertexBufferType_Count;++i)
 	{
 		const auto vb_type=getMaterial()->getProgram()->getInputSlot(i);
 		if(static_cast<UInt32>(-1)!=vb_type)
 		{
 			glVertexArrayVertexBuffer(mVertexArrayObject,i,mGeometry->getVertexBuffer()->getBuffers()[vb_type],0,CUtility::getStride(vb_type));
+			CUtility::checkGLError();
 			glVertexArrayAttribBinding(mVertexArrayObject,i,i);
+			CUtility::checkGLError();
 			glVertexArrayAttribFormat(mVertexArrayObject,i,CUtility::getComponmentCount(vb_type),CUtility::getFormat(vb_type),false,0);
+			CUtility::checkGLError();
 			glEnableVertexArrayAttrib(mVertexArrayObject,i);
+			CUtility::checkGLError();
 		}
 	}
 	glVertexArrayElementBuffer(mVertexArrayObject,mGeometry->getIndexBuffer()->getBuffer());
+	CUtility::checkGLError();
 }

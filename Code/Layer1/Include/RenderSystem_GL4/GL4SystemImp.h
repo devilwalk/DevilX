@@ -35,9 +35,6 @@ namespace NSDevilX
 				};
 			protected:
 				CThreadPool * mRenderTaskThreadPool;
-#if DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_WINDOWS
-				HWND mWindow;
-#endif
 				HGLRC mContext;
 				CShaderManager * mShaderManager;
 				NSGLSL4_5::CDefinitionShader * mDefinitionShader;

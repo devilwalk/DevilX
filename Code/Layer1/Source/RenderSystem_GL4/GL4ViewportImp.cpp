@@ -97,12 +97,10 @@ Boolean NSDevilX::NSRenderSystem::NSGL4::CViewportImp::_process(UInt32 flagIndex
 
 Void NSDevilX::NSRenderSystem::NSGL4::CViewportImp::_updateInternal()
 {
-	GLsizei width=0,height=0;
-	getRenderTarget()->getInternal()->getSize(width,height);
-	getInternal()->setX(static_cast<GLint>(getInterfaceImp()->getLeft()*width));
-	getInternal()->setY(static_cast<GLint>(getInterfaceImp()->getTop()*height));
-	getInternal()->setWidth(static_cast<GLsizei>(getInterfaceImp()->getWidth()*width));
-	getInternal()->setHeight(static_cast<GLsizei>(height*getInterfaceImp()->getHeight()));
+	getInternal()->setX(static_cast<GLint>(getInterfaceImp()->getLeft()*getRenderTarget()->getInternal()->getWidth()));
+	getInternal()->setY(static_cast<GLint>(getInterfaceImp()->getTop()*getRenderTarget()->getInternal()->getHeight()));
+	getInternal()->setWidth(static_cast<GLsizei>(getInterfaceImp()->getWidth()*getRenderTarget()->getInternal()->getWidth()));
+	getInternal()->setHeight(static_cast<GLsizei>(getRenderTarget()->getInternal()->getHeight()*getInterfaceImp()->getHeight()));
 	getInternal()->needUpdate();
 }
 

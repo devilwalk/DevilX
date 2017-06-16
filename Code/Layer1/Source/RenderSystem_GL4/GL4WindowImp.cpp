@@ -29,30 +29,27 @@ NSDevilX::NSRenderSystem::NSGL4::CWindowImp::CWindowImp(IWindowImp * interfaceIm
 	wglMakeCurrent(static_cast<HDC>(getDC()),CSystemImp::getSingleton().getContext());
 	RECT rc;
 	GetClientRect(static_cast<HWND>(getInterfaceImp()->getWindow()->getHandle()),&rc);
-	auto width=rc.right-rc.left;
-	auto height=rc.bottom-rc.top;
+	getInternal()->setSize(rc.right-rc.left,rc.bottom-rc.top);
 #elif DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_X
 #endif
-	glGenTextures(1,&mRenderTargetResource);
-	glTextureImage2DEXT(getRenderTargetResource(),GL_TEXTURE_2D,0,GL_RGBA8,width,height,0,GL_RGBA,GL_UNSIGNED_BYTE,nullptr);
-	getInternal()->setRT(0,getRenderTargetResource());
-	mDepthStencil->reserve(width,height);
-	getInternal()->setDS(mDepthStencil->getInternal());
 	getInternal()->needUpdate();
 	getInterfaceImp()->addListener(static_cast<TMessageReceiver<IWindowImp>*>(this),IWindowImp::EMessage_EndViewportCreate);
 	getInterfaceImp()->addListener(static_cast<TMessageReceiver<IWindowImp>*>(this),IWindowImp::EMessage_BeginViewportDestroy);
 }
 
 NSDevilX::NSRenderSystem::NSGL4::CWindowImp::~CWindowImp()
-{}
+{
+	ReleaseDC(static_cast<HWND>(getInterfaceImp()->getWindow()->getHandle()),static_cast<HDC>(getDC()));
+}
 
 Void NSDevilX::NSRenderSystem::NSGL4::CWindowImp::prepare()
 {
-	GLint width,height;
-	glGetTextureLevelParameteriv(getRenderTargetResource(),0,GL_TEXTURE_WIDTH,&width);
-	glGetTextureLevelParameteriv(getRenderTargetResource(),0,GL_TEXTURE_HEIGHT,&height);
-	if(getInterfaceImp()->getWindow()->getSize()!=CUInt2(width,height))
+	RECT rc;
+	GetClientRect(static_cast<HWND>(getInterfaceImp()->getWindow()->getHandle()),&rc);
+	auto new_size=CUInt2(rc.right-rc.left,rc.bottom-rc.top);
+	if(new_size!=CUInt2(getInternal()->getWidth(),getInternal()->getHeight()))
 	{
+		getInternal()->setSize(new_size.x,new_size.y);
 		_resize();
 	}
 	CRenderTargetImp::prepare();
@@ -74,20 +71,6 @@ Void NSDevilX::NSRenderSystem::NSGL4::CWindowImp::render()
 Void NSDevilX::NSRenderSystem::NSGL4::CWindowImp::_resize()
 {
 	notify(EMessage_BeginResize);
-	getInternal()->setRT(0,0);
-	glDeleteTextures(1,&mRenderTargetResource);
-	glGenTextures(1,&mRenderTargetResource);
-#if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
-	RECT rc;
-	GetClientRect(static_cast<HWND>(getInterfaceImp()->getWindow()->getHandle()),&rc);
-	auto width=rc.right-rc.left;
-	auto height=rc.bottom-rc.top;
-#elif DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_X
-#endif
-	glTextureImage2DEXT(getRenderTargetResource(),GL_TEXTURE_2D,0,GL_RGBA8,width,height,0,GL_RGBA,GL_UNSIGNED_BYTE,nullptr);
-	getInternal()->setRT(0,getRenderTargetResource());
-	mDepthStencil->reserve(width,height);
-	getInternal()->setDS(mDepthStencil->getInternal());
 	getInternal()->needUpdate();
 	notify(EMessage_EndResize);
 }

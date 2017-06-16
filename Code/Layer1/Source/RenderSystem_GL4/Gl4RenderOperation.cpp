@@ -19,18 +19,26 @@ NSDevilX::NSRenderSystem::NSGL4::CRenderOperation::~CRenderOperation()
 Void NSDevilX::NSRenderSystem::NSGL4::CRenderOperation::process()
 {
 	glBindVertexArray(mVertexArrayObject);
+	CUtility::checkGLError();
 	glUseProgram(mPass->getProgram()->getInternal());
+	CUtility::checkGLError();
 	for(UInt32 i=0;i<mConstantBuffers.size();++i)
 	{
 		mConstantBuffers[i]->submit();
 		glBindBufferBase(GL_UNIFORM_BUFFER,i,mConstantBuffers[i]->getInternal());
+		CUtility::checkGLError();
 		glUniformBlockBinding(CSystemImp::getSingleton().getClearViewportProgram()->getInternal(),CSystemImp::getSingleton().getClearViewportProgram()->getSlot(mConstantBuffers[i]->getDescription()->getName()),i);
+		CUtility::checkGLError();
 	}
 	if(mIndexCount)
 		glDrawElements(mPrimitiveTopology,mIndexCount,GL_UNSIGNED_INT,&mIndexBufferOffset);
 	else
 		glDrawArrays(mPrimitiveTopology,mVertexBufferOffset,mVertexCount);
+	CUtility::checkGLError();
 	glBindBuffer(GL_UNIFORM_BUFFER,0);
+	CUtility::checkGLError();
 	glUseProgram(0);
+	CUtility::checkGLError();
 	glBindVertexArray(0);
+	CUtility::checkGLError();
 }

@@ -16,6 +16,19 @@ namespace NSDevilX
 					GLsizei mWidth;
 					GLsizei mHeight;
 				};
+				static Void checkGLError()
+				{
+#ifdef DEVILX_DEBUG
+					auto err=glGetError();
+					if(GL_NO_ERROR!=err)
+					{
+#if DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_WINDOWS
+						OutputDebugStringA(reinterpret_cast<LPCSTR>(gluErrorString(err)));
+						OutputDebugStringA("\r\n");
+#endif
+					}
+#endif
+				}
 				static GLint getInternalFormat(IEnum::ETexture2DFormat format)
 				{
 					switch(format)

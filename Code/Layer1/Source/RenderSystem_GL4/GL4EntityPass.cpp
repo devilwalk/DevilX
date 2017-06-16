@@ -266,17 +266,25 @@ Void NSDevilX::NSRenderSystem::NSGL4::CEntityPass::_updateDepthStencilState()
 Void NSDevilX::NSRenderSystem::NSGL4::CEntityPass::_updateVertexArrayObject()
 {
 	if(mVertexArrayObject)
+	{
 		glDeleteVertexArrays(1,&mVertexArrayObject);
+		CUtility::checkGLError();
+	}
 	glGenVertexArrays(1,&mVertexArrayObject);
+	CUtility::checkGLError();
 	for(int i=0;i<CEnum::EVertexBufferType_Count;++i)
 	{
 		const auto vb_type=getProgram()->getInputSlot(i);
 		if(static_cast<UInt32>(-1)!=vb_type)
 		{
 			glVertexArrayVertexBuffer(mVertexArrayObject,i,getTechnique()->getMaterial()->getRenderable()->getGeometry()->getVertexBuffer()->getBuffers()[vb_type],0,CUtility::getStride(vb_type));
+			CUtility::checkGLError();
 			glVertexArrayAttribBinding(mVertexArrayObject,i,i);
+			CUtility::checkGLError();
 			glVertexArrayAttribFormat(mVertexArrayObject,i,CUtility::getComponmentCount(vb_type),CUtility::getFormat(vb_type),false,0);
+			CUtility::checkGLError();
 			glEnableVertexArrayAttrib(mVertexArrayObject,i);
+			CUtility::checkGLError();
 		}
 	}
 }

@@ -8,9 +8,13 @@ NSDevilX::NSRenderSystem::NSGL4::CProgram::CProgram(GLuint vertexShader,GLuint p
 {
 	memset(mInputSlots,-1,sizeof(mInputSlots));
 	mHandle=glCreateProgram();
+	CUtility::checkGLError();
 	glAttachShader(getInternal(),vertexShader);
+	CUtility::checkGLError();
 	glAttachShader(getInternal(),pixelShader);
+	CUtility::checkGLError();
 	glLinkProgram(getInternal());
+	CUtility::checkGLError();
 	GLint link_status=GL_FALSE;
 	glGetProgramiv(getInternal(),GL_LINK_STATUS,&link_status);
 	if(GL_TRUE!=link_status)
@@ -18,14 +22,17 @@ NSDevilX::NSRenderSystem::NSGL4::CProgram::CProgram(GLuint vertexShader,GLuint p
 		String shader_log;
 		shader_log.resize(1024);
 		glGetProgramInfoLog(getInternal(),1024,nullptr,&shader_log[0]);
+		CUtility::checkGLError();
 #ifdef DEVILX_DEBUG
 #if DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_WINDOWS
-		OutputDebugStringA(("program log:"+shader_log+"\r\n").c_str());
+		OutputDebugStringA(("program log:"+shader_log).c_str());
+		OutputDebugStringA("\r\n");
 #endif
 #endif
 	}
 	GLint num=0;
 	glGetProgramiv(getInternal(),GL_ACTIVE_ATTRIBUTES,&num);
+	CUtility::checkGLError();
 	for(GLint i=0;i<num;++i)
 	{
 		String input_name;
@@ -34,8 +41,10 @@ NSDevilX::NSRenderSystem::NSGL4::CProgram::CProgram(GLuint vertexShader,GLuint p
 		GLint size=0;
 		GLenum type=0;
 		glGetActiveAttrib(getInternal(),i,100,&name_length,&size,&type,&input_name[0]);
+		CUtility::checkGLError();
 		const String name=input_name.c_str();
 		const auto location=glGetProgramResourceLocation(getInternal(),GL_PROGRAM_INPUT,input_name.c_str());
+		CUtility::checkGLError();
 		if("gPositionVS"==name)
 		{
 			mInputSlots[location]=CEnum::EVertexBufferType_Position;
@@ -66,14 +75,17 @@ NSDevilX::NSRenderSystem::NSGL4::CProgram::CProgram(GLuint vertexShader,GLuint p
 		}
 	}
 	glGetProgramiv(getInternal(),GL_ACTIVE_UNIFORM_BLOCKS,&num);
+	CUtility::checkGLError();
 	for(GLint i=0;i<num;++i)
 	{
 		String cbuffer_name;
 		cbuffer_name.resize(100);
 		GLsizei name_length;
 		glGetActiveUniformBlockName(getInternal(),i,100,&name_length,&cbuffer_name[0]);
+		CUtility::checkGLError();
 		GLint bind_pos=0;
 		glGetActiveUniformBlockiv(getInternal(),i,GL_UNIFORM_BLOCK_BINDING,&bind_pos);
+		CUtility::checkGLError();
 		mResourceSlots[cbuffer_name.c_str()]=static_cast<UInt32>(bind_pos);
 		CSystemImp::getSingleton().getConstantBufferDescriptionManager()->registerDescription(getInternal(),i);
 	}
@@ -82,6 +94,7 @@ NSDevilX::NSRenderSystem::NSGL4::CProgram::CProgram(GLuint vertexShader,GLuint p
 NSDevilX::NSRenderSystem::NSGL4::CProgram::~CProgram()
 {
 	glDeleteProgram(getInternal());
+	CUtility::checkGLError();
 }
 
 UInt32 NSDevilX::NSRenderSystem::NSGL4::CProgram::getSlot(const String & name) const

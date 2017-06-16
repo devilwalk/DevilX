@@ -8,7 +8,13 @@ NSDevilX::NSRenderSystem::NSGL4::CConstantBuffer::CConstantBuffer(CConstantBuffe
 	,mInternal(0)
 {
 	glGenBuffers(1,&mInternal);
+	CUtility::checkGLError();
+	glBindBuffer(GL_UNIFORM_BUFFER,getInternal());
+	CUtility::checkGLError();
+	glBindBuffer(GL_UNIFORM_BUFFER,0);
+	CUtility::checkGLError();
 	glNamedBufferData(getInternal(),getDescription()->getSizeInBytes(),nullptr,GL_DYNAMIC_DRAW);
+	CUtility::checkGLError();
 	mCache.resize(getDescription()->getSizeInBytes());
 }
 
@@ -23,6 +29,7 @@ Void NSDevilX::NSRenderSystem::NSGL4::CConstantBuffer::submit()
 	if(is_update_ref)
 	{
 		glNamedBufferSubData(getInternal(),0,mCache.size(),&mCache[0]);
+		CUtility::checkGLError();
 		is_update_ref=False;
 	}
 	mNeedUpdate.endWrite();

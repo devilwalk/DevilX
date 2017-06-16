@@ -7,9 +7,10 @@ NSDevilX::NSRenderSystem::NSGL4::CRenderTarget::CRenderTarget()
 	:CConstantBufferContainer("cbRenderTarget")
 	,mFrameBuffer(0)
 	,mDepthStencil(0)
+	,mWidth(0)
+	,mHeight(0)
 {
 	memset(mRenderTargets,0,sizeof(mRenderTargets));
-	glGenFramebuffers(1,&mFrameBuffer);
 }
 
 NSDevilX::NSRenderSystem::NSGL4::CRenderTarget::~CRenderTarget()
@@ -17,80 +18,134 @@ NSDevilX::NSRenderSystem::NSGL4::CRenderTarget::~CRenderTarget()
 	for(auto i=0;i<8;++i)
 		setRT(i,0);
 	setDS(0);
-	glDeleteFramebuffers(1,&mFrameBuffer);
-}
-
-Void NSDevilX::NSRenderSystem::NSGL4::CRenderTarget::getSize(GLsizei & width,GLsizei & height)
-{
-	for(auto i=0;i<8;++i)
+	if(0!=getFrameBuffer())
 	{
-		if(mRenderTargets[i])
-		{
-			glGetTextureLevelParameteriv(mRenderTargets[i],0,GL_TEXTURE_WIDTH,&width);
-			glGetTextureLevelParameteriv(mRenderTargets[i],0,GL_TEXTURE_HEIGHT,&height);
-			break;
-		}
+		glDeleteFramebuffers(1,&mFrameBuffer);
+		CUtility::checkGLError();
 	}
 }
 
 Void NSDevilX::NSRenderSystem::NSGL4::CRenderTarget::setRT(UInt32 index,GLuint texture)
 {
 	mRenderTargets[index]=texture;
-	glNamedFramebufferTexture(getFrameBuffer(),GL_COLOR_ATTACHMENT0+index,texture,0);
+	_updateFrameBuffer();
+	if(0!=getFrameBuffer())
+	{
+		glNamedFramebufferTexture(getFrameBuffer(),GL_COLOR_ATTACHMENT0+index,texture,0);
+		CUtility::checkGLError();
+	}
 }
 
-Void NSDevilX::NSRenderSystem::NSGL4::CRenderTarget::setDS(GLuint texture)
+Void NSDevilX::NSRenderSystem::NSGL4::CRenderTarget::setDS(GLuint ds)
 {
-	mDepthStencil=texture;
-	glNamedFramebufferTexture(getFrameBuffer(),GL_DEPTH_STENCIL_ATTACHMENT,texture,0);
+	mDepthStencil=ds;
+	_updateFrameBuffer();
+	if(0!=getFrameBuffer())
+	{
+		glNamedFramebufferRenderbuffer(getFrameBuffer(),GL_DEPTH_STENCIL_ATTACHMENT,GL_RENDERBUFFER,mDepthStencil);
+		CUtility::checkGLError();
+	}
 }
 
 Void NSDevilX::NSRenderSystem::NSGL4::CRenderTarget::clear(UInt32 index,const CColour & colour)
 {
-	if(0==mRenderTargets[index])
-		return;
-	GLint fmt=0;
-	glGetTextureLevelParameteriv(mRenderTargets[index],0,GL_TEXTURE_INTERNAL_FORMAT,&fmt);
-
-	switch(fmt)
+	if(0==getFrameBuffer())
 	{
-	case GL_RGBA16F:
-	case GL_RGBA32F:
-	case GL_RGBA8:
-	{
-		GLfloat clear_value[]={colour.r(),colour.g(),colour.b(),colour.a()};
-		glClearNamedFramebufferfv(getFrameBuffer(),GL_COLOR,GL_DRAW_BUFFER0+index,clear_value);
+		if(0==index)
+		{
+			glClearColor(colour.r(),colour.g(),colour.b(),colour.a());
+			CUtility::checkGLError();
+			glClear(GL_COLOR_BUFFER_BIT);
+			CUtility::checkGLError();
+		}
 	}
-	break;
+	else
+	{
+		GLint fmt=0;
+		glGetTextureLevelParameteriv(mRenderTargets[index],0,GL_TEXTURE_INTERNAL_FORMAT,&fmt);
+		CUtility::checkGLError();
+		switch(fmt)
+		{
+		case GL_RGBA16F:
+		case GL_RGBA32F:
+		case GL_RGBA8:
+		{
+			GLfloat clear_value[]={colour.r(),colour.g(),colour.b(),colour.a()};
+			GLint cur_frame_buffer=0;
+			glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING,&cur_frame_buffer);
+			CUtility::checkGLError();
+			glBindFramebuffer(GL_FRAMEBUFFER,getFrameBuffer());
+			CUtility::checkGLError();
+			glClearBufferfv(GL_COLOR,index,clear_value);
+			CUtility::checkGLError();
+			glBindFramebuffer(GL_FRAMEBUFFER,cur_frame_buffer);
+			CUtility::checkGLError();
+		}
+		break;
+		}
 	}
 }
 
 Void NSDevilX::NSRenderSystem::NSGL4::CRenderTarget::clear(Float depth,Int32 stencil)
 {
-	if((depth>=0)&&(stencil>=0))
-		glClearNamedFramebufferfi(getFrameBuffer(),GL_DEPTH_STENCIL,0,depth,stencil);
-	else if(depth>=0)
+	GLint cur_frame_buffer=0;
+	glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING ,&cur_frame_buffer);
+	CUtility::checkGLError();
+	glBindFramebuffer(GL_FRAMEBUFFER,getFrameBuffer());
+	CUtility::checkGLError();
+	if(depth>=0)
 	{
-		glClearNamedFramebufferfv(getFrameBuffer(),GL_DEPTH,0,&depth);
+		glClearDepth(depth);
+		CUtility::checkGLError();
 	}
-	else if(stencil>=0)
+	if(stencil>=0)
 	{
-		glClearNamedFramebufferiv(getFrameBuffer(),GL_STENCIL,0,&stencil);
+		glClearStencil(stencil);
+		CUtility::checkGLError();
 	}
+	glClear(((depth>=0)?GL_DEPTH_BUFFER_BIT:0)|((stencil>=0)?GL_STENCIL_BUFFER_BIT:0));
+	CUtility::checkGLError();
+	glBindFramebuffer(GL_FRAMEBUFFER,cur_frame_buffer);
+	CUtility::checkGLError();
 }
 
 Void NSDevilX::NSRenderSystem::NSGL4::CRenderTarget::setup()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER,getFrameBuffer());
+	CUtility::checkGLError();
+}
+
+Void NSDevilX::NSRenderSystem::NSGL4::CRenderTarget::_updateFrameBuffer()
+{
+	Boolean is_default_fb=mDepthStencil==0;
+	for(auto i=0;i<8;++i)
+	{
+		is_default_fb&=mRenderTargets[i]==0;
+	}
+	if(is_default_fb)
+	{
+		if(0!=getFrameBuffer())
+		{
+			glDeleteFramebuffers(1,&mFrameBuffer);
+			CUtility::checkGLError();
+			mFrameBuffer=0;
+		}
+	}
+	else
+	{
+		glGenFramebuffers(1,&mFrameBuffer);
+		CUtility::checkGLError();
+		glBindFramebuffer(GL_FRAMEBUFFER,getFrameBuffer());
+		CUtility::checkGLError();
+		glBindFramebuffer(GL_FRAMEBUFFER,0);
+		CUtility::checkGLError();
+	}
 }
 
 Void NSDevilX::NSRenderSystem::NSGL4::CRenderTarget::_updateConstantBuffer(Byte * buffer)
 {
-	GLsizei width=0;
-	GLsizei height=0;
-	getSize(width,height);
 	auto offset=mConstantBuffer->getDescription()->getConstantDesc("gRenderTargetSizeInPixel").mOffsetInBytes;
-	memcpy(&buffer[offset],&CFloat2(static_cast<Float>(width),static_cast<Float>(height)),sizeof(CFloat2));
+	memcpy(&buffer[offset],&CFloat2(static_cast<Float>(getWidth()),static_cast<Float>(getHeight())),sizeof(CFloat2));
 	offset=mConstantBuffer->getDescription()->getConstantDesc("gInverseRenderTargetSizeInPixel").mOffsetInBytes;
-	memcpy(&buffer[offset],&CFloat2(1.0f/width,1.0f/height),sizeof(CFloat2));
+	memcpy(&buffer[offset],&CFloat2(1.0f/getWidth(),1.0f/getHeight()),sizeof(CFloat2));
 }

@@ -14,7 +14,10 @@ NSDevilX::NSRenderSystem::NSGL4::CIndexBufferImp::CIndexBufferImp(IIndexBufferIm
 NSDevilX::NSRenderSystem::NSGL4::CIndexBufferImp::~CIndexBufferImp()
 {
 	if(getBuffer())
+	{
 		glDeleteBuffers(1,&mBuffer);
+		CUtility::checkGLError();
+	}
 }
 
 Void NSDevilX::NSRenderSystem::NSGL4::CIndexBufferImp::onMessage(IIndexBufferImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
@@ -39,6 +42,7 @@ Void NSDevilX::NSRenderSystem::NSGL4::CIndexBufferImp::_update()
 		if(getBuffer())
 		{
 			glDeleteBuffers(1,&mBuffer);
+			CUtility::checkGLError();
 			mBuffer=0;
 		}
 		getInterfaceImp()->removeDirtyFlag(IIndexBufferImp::EDirtyFlag_Count);
@@ -51,9 +55,15 @@ Void NSDevilX::NSRenderSystem::NSGL4::CIndexBufferImp::_update()
 			{
 				GLuint buf=0;
 				glGenBuffers(1,&buf);
+				CUtility::checkGLError();
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,buf);
+				CUtility::checkGLError();
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
+				CUtility::checkGLError();
 				if(GL_INVALID_VALUE!=buf)
 				{
 					glNamedBufferData(buf,sizeof(UInt32)*getInterfaceImp()->getCount(),getInterfaceImp()->getIndices(),GL_STATIC_DRAW);
+					CUtility::checkGLError();
 				}
 				else
 				{
@@ -65,6 +75,7 @@ Void NSDevilX::NSRenderSystem::NSGL4::CIndexBufferImp::_update()
 			else
 			{
 				glNamedBufferSubData(getBuffer(),0,sizeof(UInt32)*getInterfaceImp()->getCount(),getInterfaceImp()->getIndices());
+				CUtility::checkGLError();
 			}
 			getInterfaceImp()->removeDirtyFlag(IIndexBufferImp::EDirtyFlag_Index);
 		}

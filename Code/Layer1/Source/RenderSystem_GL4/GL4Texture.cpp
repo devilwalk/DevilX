@@ -61,6 +61,7 @@ Void NSDevilX::NSRenderSystem::NSGL4::CTexture2D::_update()
 Boolean NSDevilX::NSRenderSystem::NSGL4::CTexture2D::_recreateInternal()
 {
 	glDeleteTextures(1,&mInternal);
+	CUtility::checkGLError();
 	mInternal=0;
 	if(getInterfaceImp()->getWidth()>0&&getInterfaceImp()->getHeight()>0)
 	{
@@ -90,7 +91,9 @@ Boolean NSDevilX::NSRenderSystem::NSGL4::CTexture2D::_recreateInternal()
 			level_count=getInterfaceImp()->getMipmapCount()+1;
 		}
 		glGenTextures(1,&mInternal);
-		glTextureStorage2D(GL_TEXTURE_2D,level_count,CUtility::getInternalFormat(getInterfaceImp()->getFormat()),getInterfaceImp()->getWidth(),getInterfaceImp()->getHeight());
+		CUtility::checkGLError();
+		glTextureImage2DEXT(getInternal(),GL_TEXTURE_2D,level_count,CUtility::getInternalFormat(getInterfaceImp()->getFormat()),getInterfaceImp()->getWidth(),getInterfaceImp()->getHeight(),0,GL_RGBA,GL_UNSIGNED_BYTE,nullptr);
+		CUtility::checkGLError();
 		return true;
 	}
 	else
@@ -129,10 +132,12 @@ Void NSDevilX::NSRenderSystem::NSGL4::CTexture2D::_updateFromMemorySources(IText
 	{
 		GLint texture_format=0;
 		glGetTextureParameteriv(getInternal(),GL_TEXTURE_IMMUTABLE_FORMAT,&texture_format);
+		CUtility::checkGLError();
 		switch(texture_format)
 		{
 		case GL_RGBA8:
 			glTextureSubImage2D(getInternal(),subTexture->mMipmapLevel,0,0,subTexture->mWidth,subTexture->mHeight,GL_RGBA8,GL_UNSIGNED_INT_8_8_8_8,subTexture->mMemoryPixels);
+			CUtility::checkGLError();
 			break;
 		case GL_COMPRESSED_RGBA_S3TC_DXT1_EXT:
 		case GL_COMPRESSED_RGBA_S3TC_DXT3_EXT:
@@ -140,7 +145,10 @@ Void NSDevilX::NSRenderSystem::NSGL4::CTexture2D::_updateFromMemorySources(IText
 			break;
 		}
 		if(getInterfaceImp()->isAutoMipmap())
+		{
 			glGenerateTextureMipmap(getInternal());
+			CUtility::checkGLError();
+		}
 	}
 }
 

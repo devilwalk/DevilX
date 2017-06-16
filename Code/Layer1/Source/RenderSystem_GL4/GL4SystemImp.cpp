@@ -12,9 +12,6 @@ ISystem * NSDevilX::NSRenderSystem::getSystem()
 NSDevilX::NSRenderSystem::NSGL4::CSystemImp::CSystemImp()
 	:CConstantBufferContainer("cbSystem")
 	,mRenderTaskThreadPool(nullptr)
-#if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
-	,mWindow(nullptr)
-#endif
 	,mContext(nullptr)
 	,mShaderManager(nullptr)
 	,mDefinitionShader(nullptr)
@@ -39,9 +36,9 @@ NSDevilX::NSRenderSystem::NSGL4::CSystemImp::CSystemImp()
 	wnd_class.lpszMenuName=nullptr;
 	wnd_class.style=CS_HREDRAW|CS_VREDRAW;
 	RegisterClassEx(&wnd_class);
-	mWindow=CreateWindowEx(0,wnd_class.lpszClassName,_T("Temp"),WS_POPUP,0,0,1,1,nullptr,nullptr,wnd_class.hInstance,nullptr);
-	ShowWindow(mWindow,SW_NORMAL);
-	UpdateWindow(mWindow);
+	auto wnd=CreateWindowEx(0,wnd_class.lpszClassName,_T("Temp"),WS_POPUP,0,0,800,600,nullptr,nullptr,wnd_class.hInstance,nullptr);
+	ShowWindow(wnd,SW_NORMAL);
+	UpdateWindow(wnd);
 	PIXELFORMATDESCRIPTOR pfd=
 	{
 		sizeof(PIXELFORMATDESCRIPTOR),
@@ -61,7 +58,7 @@ NSDevilX::NSRenderSystem::NSGL4::CSystemImp::CSystemImp()
 		0,
 		0, 0, 0
 	};
-	auto dc=GetDC(mWindow);
+	auto dc=GetDC(wnd);
 	auto fmt=ChoosePixelFormat(dc,&pfd);
 	SetPixelFormat(dc,fmt,&pfd);
 	auto context=wglCreateContext(dc);
@@ -97,15 +94,19 @@ NSDevilX::NSRenderSystem::NSGL4::CSystemImp::CSystemImp()
 	};
 	mContext=wglCreateContextAttribsARB(dc,nullptr,attrs);
 	wglMakeCurrent(dc,getContext());
+	ReleaseDC(wnd,dc);
+	DestroyWindow(wnd);
 #elif DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_X
 #endif
 #ifdef DEVILX_DEBUG
 	glEnable(GL_DEBUG_OUTPUT);
+	CUtility::checkGLError();
 	glDebugMessageCallback([](GLenum source,GLenum type,GLuint id,GLenum serverity,GLsizei length,const GLchar *message,const GLvoid *userParam)
 	{
 		OutputDebugStringA(message);
 		OutputDebugStringA("\r\n");
 	},nullptr);
+	CUtility::checkGLError();
 #endif
 	mShaderManager=DEVILX_NEW CShaderManager;
 	mDefinitionShader=DEVILX_NEW NSGLSL4_5::CDefinitionShader;
@@ -138,7 +139,6 @@ NSDevilX::NSRenderSystem::NSGL4::CSystemImp::~CSystemImp()
 	DEVILX_DELETE(mShaderManager);
 	wglMakeCurrent(nullptr,nullptr);
 	wglDeleteContext(getContext());
-	DestroyWindow(mWindow);
 }
 
 CDepthStencil * NSDevilX::NSRenderSystem::NSGL4::CSystemImp::getFreeDepthStencil()

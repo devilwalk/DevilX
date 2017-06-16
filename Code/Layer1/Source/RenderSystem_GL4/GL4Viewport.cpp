@@ -18,17 +18,15 @@ Void NSDevilX::NSRenderSystem::NSGL4::CViewport::setup()
 {
 	mRenderTarget->setup();
 	glViewport(getX(),getY(),getWidth(),getHeight());
+	CUtility::checkGLError();
 }
 
 Boolean NSDevilX::NSRenderSystem::NSGL4::CViewport::isFullViewport() const
 {
 	if(getX()||getY())
 		return false;
-	GLsizei width=0;
-	GLsizei height=0;
-	mRenderTarget->getSize(width,height);
-	if((getWidth()==width)
-		&&(getHeight()==height)
+	if((getWidth()==mRenderTarget->getWidth())
+		&&(getHeight()==mRenderTarget->getHeight())
 		)
 	{
 		return true;

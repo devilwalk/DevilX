@@ -11,16 +11,26 @@ NSDevilX::NSRenderSystem::NSGL4::CDepthStencil::CDepthStencil()
 NSDevilX::NSRenderSystem::NSGL4::CDepthStencil::~CDepthStencil()
 {
 	if(getInternal())
-		glDeleteTextures(1,&mInternal);
+	{
+		glDeleteRenderbuffers(1,&mInternal);
+		CUtility::checkGLError();
+	}
 }
 
 Void NSDevilX::NSRenderSystem::NSGL4::CDepthStencil::reserve(UInt32 width,UInt32 height)
 {
 	if(getInternal())
 	{
-		glDeleteTextures(1,&mInternal);
+		glDeleteRenderbuffers(1,&mInternal);
+		CUtility::checkGLError();
 		mInternal=0;
 	}
-	glGenTextures(1,&mInternal);
-	glTextureImage2DEXT(getInternal(),GL_TEXTURE_2D,1,GL_DEPTH_STENCIL,width,height,0,GL_DEPTH_STENCIL,GL_UNSIGNED_BYTE,nullptr);
+	glGenRenderbuffers(1,&mInternal);
+	CUtility::checkGLError();
+	glBindRenderbuffer(GL_RENDERBUFFER,getInternal());
+	CUtility::checkGLError();
+	glBindRenderbuffer(GL_RENDERBUFFER,0);
+	CUtility::checkGLError();
+	glNamedRenderbufferStorage(getInternal(),GL_DEPTH_STENCIL,width,height);
+	CUtility::checkGLError();
 }
