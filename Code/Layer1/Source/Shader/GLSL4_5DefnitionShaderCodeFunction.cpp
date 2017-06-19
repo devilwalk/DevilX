@@ -1850,11 +1850,12 @@ float2 getQuadPosition(int vertexID)\r\n\
 #ifndef USE_DIFFUSE_TEXTURE\r\n\
 #define USE_DIFFUSE_TEXTURE 0\r\n\
 #endif\r\n\
-in float4 gPositionPS;\r\n\
 in float2 gMainUVPS;\r\n\
 in float4 gDiffusePS;\r\n\
+#if USE_DIFFUSE_TEXTURE\r\n\
 uniform sampler2D gDiffuseTexture;\r\n\
-out float4 gFragColour;\r\n\
+#endif\r\n\
+layout(location=0) out float4 gFragColour;\r\n\
 void main()\r\n\
 {\r\n\
     float3 colour_emissive = gDiffusePS.rgb;\r\n\

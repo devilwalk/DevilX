@@ -2,11 +2,12 @@
 #ifndef USE_DIFFUSE_TEXTURE
 #define USE_DIFFUSE_TEXTURE 0
 #endif
-in float4 gPositionPS;
 in float2 gMainUVPS;
 in float4 gDiffusePS;
+#if USE_DIFFUSE_TEXTURE
 uniform sampler2D gDiffuseTexture;
-out float4 gFragColour;
+#endif
+layout(location=0) out float4 gFragColour;
 void main()
 {
     float3 colour_emissive = gDiffusePS.rgb;

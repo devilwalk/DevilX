@@ -45,12 +45,16 @@ Void NSDevilX::NSRenderSystem::NSGL4::COverlayMaterial::_updateRasterizerState()
 Void NSDevilX::NSRenderSystem::NSGL4::COverlayMaterial::_updateBlendState()
 {
 	mEnabledState.push_back(GL_BLEND);
-	mStateFunctions[glBlendFunc].push_back(GL_SRC_ALPHA);
-	mStateFunctions[glBlendFunc].push_back(GL_ONE_MINUS_SRC_ALPHA);
+	mStateFunctions[glBlendFunc][0].push_back(GL_SRC_ALPHA);
+	mStateFunctions[glBlendFunc][0].push_back(GL_ONE_MINUS_SRC_ALPHA);
+	mStateFunctions[glBlendFunc][1].push_back(GL_ONE);
+	mStateFunctions[glBlendFunc][1].push_back(GL_ZERO);
 }
 
 Void NSDevilX::NSRenderSystem::NSGL4::COverlayMaterial::_updateDepthStencilState()
 {
-	mStateFunctions[glDepthMask].push_back(false);
-	mStateFunctions[glDepthFunc].push_back(GL_ALWAYS);
+	mStateFunctions[glDepthMask][0].push_back(false);
+	mStateFunctions[glDepthMask][1].push_back(true);
+	mStateFunctions[glDepthFunc][0].push_back(GL_ALWAYS);
+	mStateFunctions[glDepthFunc][1].push_back(GL_LEQUAL);
 }

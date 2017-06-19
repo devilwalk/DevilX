@@ -213,9 +213,12 @@ Void NSDevilX::NSRenderSystem::NSGL4::CEntityPass::_updateBlendState()
 		if(mat_imp->getTransparentEnable())
 		{
 			mEnabledState.push_back(GL_BLEND);
-			mStateFunctions[glBlendFunci].push_back(0);
-			mStateFunctions[glBlendFunci].push_back(GL_SRC_ALPHA);
-			mStateFunctions[glBlendFunci].push_back(GL_ONE_MINUS_SRC_ALPHA);
+			mStateFunctions[glBlendFunci][0].push_back(0);
+			mStateFunctions[glBlendFunci][0].push_back(GL_SRC_ALPHA);
+			mStateFunctions[glBlendFunci][0].push_back(GL_ONE_MINUS_SRC_ALPHA);
+			mStateFunctions[glBlendFunci][1].push_back(0);
+			mStateFunctions[glBlendFunci][1].push_back(GL_ONE);
+			mStateFunctions[glBlendFunci][1].push_back(GL_ZERO);
 		}
 		else
 		{
@@ -225,9 +228,12 @@ Void NSDevilX::NSRenderSystem::NSGL4::CEntityPass::_updateBlendState()
 				break;
 			default:
 				mEnabledState.push_back(GL_BLEND);
-				mStateFunctions[glBlendFunci].push_back(0);
-				mStateFunctions[glBlendFunci].push_back(GL_ONE);
-				mStateFunctions[glBlendFunci].push_back(GL_ONE);
+				mStateFunctions[glBlendFunci][0].push_back(0);
+				mStateFunctions[glBlendFunci][0].push_back(GL_ONE);
+				mStateFunctions[glBlendFunci][0].push_back(GL_ONE);
+				mStateFunctions[glBlendFunci][1].push_back(0);
+				mStateFunctions[glBlendFunci][1].push_back(GL_ONE);
+				mStateFunctions[glBlendFunci][1].push_back(GL_ZERO);
 			}
 		}
 		break;
@@ -244,19 +250,24 @@ Void NSDevilX::NSRenderSystem::NSGL4::CEntityPass::_updateDepthStencilState()
 	case CEnum::ETechniqueType_Forward:
 		if(mat_imp->getTransparentEnable())
 		{
-			mStateFunctions[glDepthMask].push_back(false);
-			mStateFunctions[glDepthFunc].push_back(GL_LEQUAL);
+			mStateFunctions[glDepthMask][0].push_back(false);
+			mStateFunctions[glDepthMask][1].push_back(true);
+			mStateFunctions[glDepthFunc][0].push_back(GL_LEQUAL);
+			mStateFunctions[glDepthFunc][1].push_back(GL_LEQUAL);
 		}
 		else
 		{
 			switch(getForwardType())
 			{
 			case CEnum::EForwardPassType_Ambient:
-				mStateFunctions[glDepthFunc].push_back(GL_LEQUAL);
+				mStateFunctions[glDepthFunc][0].push_back(GL_LEQUAL);
+				mStateFunctions[glDepthFunc][1].push_back(GL_LEQUAL);
 				break;
 			default:
-				mStateFunctions[glDepthFunc].push_back(GL_EQUAL);
-				mStateFunctions[glDepthMask].push_back(false);
+				mStateFunctions[glDepthFunc][0].push_back(GL_EQUAL);
+				mStateFunctions[glDepthFunc][1].push_back(GL_EQUAL);
+				mStateFunctions[glDepthMask][0].push_back(false);
+				mStateFunctions[glDepthMask][0].push_back(true);
 			}
 		}
 		break;

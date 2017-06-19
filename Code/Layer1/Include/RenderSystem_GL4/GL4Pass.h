@@ -17,7 +17,7 @@ namespace NSDevilX
 				CProgram * mProgram;
 				TVector<GLint> mEnabledState;
 				TVector<GLint> mDisableState;
-				TMap<VoidPtr,TVector<GLint > > mStateFunctions;
+				TMap<VoidPtr,TVector<GLint>[2]> mStateFunctions;
 				TVector<CTexture*> mVSTextures;
 				TVector<CTexture*> mPSTextures;
 			public:
@@ -43,6 +43,15 @@ namespace NSDevilX
 				{
 					return mPSTextures;
 				}
+				decltype(mEnabledState) const & getEnabledState()const
+				{
+					return mEnabledState;
+				}
+				decltype(mDisableState) const & getDisableState()const
+				{
+					return mDisableState;
+				}
+				decltype(mStateFunctions) const & getStateFunctions()const{ return mStateFunctions; }
 			};
 		}
 	}

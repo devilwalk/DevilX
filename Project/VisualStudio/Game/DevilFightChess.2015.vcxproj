@@ -78,28 +78,28 @@
     </CustomBuildBeforeTargets>
     <CustomBuildAfterTargets>
     </CustomBuildAfterTargets>
-    <ExecutablePath>C:\Program Files %28x86%29\Windows Kits\10\bin\10.0.15063.0\x86;$(ExecutablePath)</ExecutablePath>
+    <ExecutablePath>$(WindowsSDK_ExecutablePath)\..\$(PlatformTarget);$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <CustomBuildBeforeTargets>
     </CustomBuildBeforeTargets>
     <CustomBuildAfterTargets>
     </CustomBuildAfterTargets>
-    <ExecutablePath>C:\Program Files %28x86%29\Windows Kits\10\bin\10.0.15063.0\x64;$(ExecutablePath)</ExecutablePath>
+    <ExecutablePath>$(WindowsSDK_ExecutablePath)\..\$(PlatformTarget);$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <CustomBuildBeforeTargets>
     </CustomBuildBeforeTargets>
     <CustomBuildAfterTargets>
     </CustomBuildAfterTargets>
-    <ExecutablePath>C:\Program Files %28x86%29\Windows Kits\10\bin\10.0.15063.0\x86;$(ExecutablePath)</ExecutablePath>
+    <ExecutablePath>$(WindowsSDK_ExecutablePath)\..\$(PlatformTarget);$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <CustomBuildBeforeTargets>
     </CustomBuildBeforeTargets>
     <CustomBuildAfterTargets>
     </CustomBuildAfterTargets>
-    <ExecutablePath>C:\Program Files %28x86%29\Windows Kits\10\bin\10.0.15063.0\x64;$(ExecutablePath)</ExecutablePath>
+    <ExecutablePath>$(WindowsSDK_ExecutablePath)\..\$(PlatformTarget);$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile />
