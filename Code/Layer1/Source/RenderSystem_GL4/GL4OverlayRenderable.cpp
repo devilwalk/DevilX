@@ -217,23 +217,28 @@ Void NSDevilX::NSRenderSystem::NSGL4::COverlayRenderable::_updateVertexArrayObje
 	CUtility::checkGLError();
 	glBindVertexArray(mVertexArrayObject);
 	CUtility::checkGLError();
-	glBindVertexArray(0);
-	CUtility::checkGLError();
 	for(int i=0;i<CEnum::EVertexBufferType_Count;++i)
 	{
 		const auto vb_type=getMaterial()->getProgram()->getInputSlot(i);
 		if(static_cast<UInt32>(-1)!=vb_type)
 		{
-			glVertexArrayVertexBuffer(mVertexArrayObject,i,mGeometry->getVertexBuffer()->getBuffers()[vb_type],0,CUtility::getStride(vb_type));
+			glBindBuffer(GL_ARRAY_BUFFER,mGeometry->getVertexBuffer()->getBuffers()[vb_type]);
 			CUtility::checkGLError();
-			glVertexArrayAttribBinding(mVertexArrayObject,i,i);
-			CUtility::checkGLError();
-			glVertexArrayAttribFormat(mVertexArrayObject,i,CUtility::getComponmentCount(vb_type),CUtility::getFormat(vb_type),false,0);
-			CUtility::checkGLError();
-			glEnableVertexArrayAttrib(mVertexArrayObject,i);
+			if(CEnum::EVertexBufferType_BlendIndex==vb_type)
+			{
+				glVertexAttribIPointer(i,CUtility::getComponmentSize(vb_type),CUtility::getFormat(vb_type),CUtility::getStride(vb_type),nullptr);
+			}
+			else
+			{
+				glVertexAttribPointer(i,CUtility::getComponmentSize(vb_type),CUtility::getFormat(vb_type),CUtility::needNormalized(vb_type),CUtility::getStride(vb_type),nullptr);
+				CUtility::checkGLError();
+			}
+			glEnableVertexAttribArray(i);
 			CUtility::checkGLError();
 		}
 	}
-	glVertexArrayElementBuffer(mVertexArrayObject,mGeometry->getIndexBuffer()->getBuffer());
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,mGeometry->getIndexBuffer()->getBuffer());
+	CUtility::checkGLError();
+	glBindVertexArray(0);
 	CUtility::checkGLError();
 }

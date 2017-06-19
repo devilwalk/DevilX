@@ -31,7 +31,7 @@ Void NSDevilX::NSRenderSystem::NSGL4::CRenderOperation::process()
 		CUtility::checkGLError();
 	}
 	if(mIndexCount)
-		glDrawElements(mPrimitiveTopology,mIndexCount,GL_UNSIGNED_INT,&mIndexBufferOffset);
+		glDrawElements(mPrimitiveTopology,mIndexCount,GL_UNSIGNED_INT,reinterpret_cast<VoidPtr>(mIndexBufferOffset));
 	else
 		glDrawArrays(mPrimitiveTopology,mVertexBufferOffset,mVertexCount);
 	CUtility::checkGLError();
