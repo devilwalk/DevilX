@@ -33,6 +33,8 @@ namespace NSDevilX
 				{
 					switch(format)
 					{
+					case IEnum::ETexture2DFormat_A8:
+						return GL_R8;
 					case IEnum::ETexture2DFormat_R8G8B8A8:
 						return GL_RGBA8;
 					case IEnum::ETexture2DFormat_BC1:
@@ -41,8 +43,10 @@ namespace NSDevilX
 						return GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;
 					case IEnum::ETexture2DFormat_BC3:
 						return GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
+					default:
+						assert(0);
 					}
-					return GL_RGBA;
+					return GL_RGBA8;
 				}
 				static UInt32 getRowPitch(GLint internalFormat,UInt32 width)
 				{

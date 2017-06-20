@@ -36,7 +36,7 @@ NSDevilX::NSRenderSystem::NSGL4::CSystemImp::CSystemImp()
 	wnd_class.lpszMenuName=nullptr;
 	wnd_class.style=CS_HREDRAW|CS_VREDRAW;
 	RegisterClassEx(&wnd_class);
-	auto wnd=CreateWindowEx(0,wnd_class.lpszClassName,_T("Temp"),WS_POPUP,0,0,800,600,nullptr,nullptr,wnd_class.hInstance,nullptr);
+	auto wnd=CreateWindowEx(0,wnd_class.lpszClassName,_T("Temp"),WS_POPUP,0,0,1,1,nullptr,nullptr,wnd_class.hInstance,nullptr);
 	ShowWindow(wnd,SW_NORMAL);
 	UpdateWindow(wnd);
 	PIXELFORMATDESCRIPTOR pfd=
@@ -227,8 +227,24 @@ Void NSDevilX::NSRenderSystem::NSGL4::CSystemImp::onMessage(IResourceManagerImp 
 		mGeometrys.destroy(static_cast<IGeometryImp*>(data));
 		break;
 	case IResourceManagerImp::EMessage_EndTextureCreate:
+		switch(static_cast<ITextureImp*>(data)->getType())
+		{
+		case IEnum::ETextureType_2D:
+			mTexture2Ds[static_cast<ITexture2DImp*>(static_cast<ITextureImp*>(data))]=DEVILX_NEW CTexture2D(static_cast<ITexture2DImp*>(static_cast<ITextureImp*>(data)));
+			break;
+		case IEnum::ETextureType_Cube:
+			break;
+		}
 		break;
 	case IResourceManagerImp::EMessage_BeginTextureDestroy:
+		switch(static_cast<ITextureImp*>(data)->getType())
+		{
+		case IEnum::ETextureType_2D:
+			mTexture2Ds.destroy(static_cast<ITexture2DImp*>(static_cast<ITextureImp*>(data)));
+			break;
+		case IEnum::ETextureType_Cube:
+			break;
+		}
 		break;
 	case IResourceManagerImp::EMessage_VertexBufferCreate:
 		mVertexBuffers[static_cast<IVertexBufferImp*>(data)]=DEVILX_NEW CVertexBufferImp(static_cast<IVertexBufferImp*>(data));

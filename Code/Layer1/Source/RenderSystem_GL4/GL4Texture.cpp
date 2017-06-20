@@ -60,9 +60,12 @@ Void NSDevilX::NSRenderSystem::NSGL4::CTexture2D::_update()
 
 Boolean NSDevilX::NSRenderSystem::NSGL4::CTexture2D::_recreateInternal()
 {
-	glDeleteTextures(1,&mInternal);
-	CUtility::checkGLError();
-	mInternal=0;
+	if(getInternal())
+	{
+		glDeleteTextures(1,&mInternal);
+		CUtility::checkGLError();
+		mInternal=0;
+	}
 	if(getInterfaceImp()->getWidth()>0&&getInterfaceImp()->getHeight()>0)
 	{
 		GLint level_count=0;
@@ -90,9 +93,9 @@ Boolean NSDevilX::NSRenderSystem::NSGL4::CTexture2D::_recreateInternal()
 		default:
 			level_count=getInterfaceImp()->getMipmapCount()+1;
 		}
-		glGenTextures(1,&mInternal);
+		glCreateTextures(GL_TEXTURE_2D,1,&mInternal);
 		CUtility::checkGLError();
-		glTextureImage2DEXT(getInternal(),GL_TEXTURE_2D,level_count,CUtility::getInternalFormat(getInterfaceImp()->getFormat()),getInterfaceImp()->getWidth(),getInterfaceImp()->getHeight(),0,GL_RGBA,GL_UNSIGNED_BYTE,nullptr);
+		glTextureStorage2D(getInternal(),level_count,CUtility::getInternalFormat(getInterfaceImp()->getFormat()),getInterfaceImp()->getWidth(),getInterfaceImp()->getHeight());
 		CUtility::checkGLError();
 		return true;
 	}
@@ -131,18 +134,24 @@ Void NSDevilX::NSRenderSystem::NSGL4::CTexture2D::_updateFromMemorySources(IText
 	if(subTexture->mMemoryPixels)
 	{
 		GLint texture_format=0;
-		glGetTextureParameteriv(getInternal(),GL_TEXTURE_IMMUTABLE_FORMAT,&texture_format);
+		glGetTextureLevelParameteriv(getInternal(),0,GL_TEXTURE_INTERNAL_FORMAT,&texture_format);
 		CUtility::checkGLError();
 		switch(texture_format)
 		{
+		case GL_R8:
+			glTextureSubImage2D(getInternal(),subTexture->mMipmapLevel,0,0,subTexture->mWidth,subTexture->mHeight,GL_RED,GL_UNSIGNED_BYTE,subTexture->mMemoryPixels);
+			CUtility::checkGLError();
+			break;
 		case GL_RGBA8:
-			glTextureSubImage2D(getInternal(),subTexture->mMipmapLevel,0,0,subTexture->mWidth,subTexture->mHeight,GL_RGBA8,GL_UNSIGNED_INT_8_8_8_8,subTexture->mMemoryPixels);
+			glTextureSubImage2D(getInternal(),subTexture->mMipmapLevel,0,0,subTexture->mWidth,subTexture->mHeight,GL_RGBA,GL_UNSIGNED_INT_8_8_8_8,subTexture->mMemoryPixels);
 			CUtility::checkGLError();
 			break;
 		case GL_COMPRESSED_RGBA_S3TC_DXT1_EXT:
 		case GL_COMPRESSED_RGBA_S3TC_DXT3_EXT:
 		case GL_COMPRESSED_RGBA_S3TC_DXT5_EXT:
 			break;
+		default:
+			assert(0);
 		}
 		if(getInterfaceImp()->isAutoMipmap())
 		{

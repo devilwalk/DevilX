@@ -28,10 +28,38 @@ Void NSDevilX::NSRenderSystem::NSGL4::COverlayMaterial::_updateShader()
 	}
 
 	code_key="Overlay_PixelShader";
+	if(!mPSTextures.empty())
+	{
+		if(static_cast<CTexture2D*>(mPSTextures[0])->getInterfaceImp()->getFormat()==IEnum::ETexture2DFormat_A8)
+		{
+			code_key+="/FontTexture";
+		}
+		else
+		{
+			code_key+="/DiffuseTexture";
+		}
+	}
 	auto pixel_shader=CSystemImp::getSingleton().getShaderManager()->getShader(code_key);
 	if(0==pixel_shader)
 	{
-		pixel_shader=CSystemImp::getSingleton().getShaderManager()->registerPixelShader(code_key,CSystemImp::getSingleton().getDefinitionShader()->OverlayShaderPixel,TVector<std::pair<String,String> >());
+		TVector<std::pair<String,String> > macros;
+		std::pair<String,String> def;
+		if(!mPSTextures.empty())
+		{
+			if(static_cast<CTexture2D*>(mPSTextures[0])->getInterfaceImp()->getFormat()==IEnum::ETexture2DFormat_A8)
+			{
+				def.first="USE_FONT_TEXTURE";
+				def.second="1";
+				macros.push_back(def);
+			}
+			else
+			{
+				def.first="USE_DIFFUSE_TEXTURE";
+				def.second="1";
+				macros.push_back(def);
+			}
+		}
+		pixel_shader=CSystemImp::getSingleton().getShaderManager()->registerPixelShader(code_key,CSystemImp::getSingleton().getDefinitionShader()->OverlayShaderPixel,macros);
 	}
 	mProgram=DEVILX_NEW CProgram(vertex_shader,pixel_shader);
 }
