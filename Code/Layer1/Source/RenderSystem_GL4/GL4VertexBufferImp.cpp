@@ -124,15 +124,11 @@ Bool NSDevilX::NSRenderSystem::NSGL4::CVertexBufferImp::_update(CEnum::EVertexBu
 	if(!getBuffers()[type])
 	{
 		GLuint buf=0;
-		glGenBuffers(1,&buf);
-		CUtility::checkGLError();
-		glBindBuffer(GL_ARRAY_BUFFER,buf);
-		CUtility::checkGLError();
-		glBindBuffer(GL_ARRAY_BUFFER,0);
+		glCreateBuffers(1,&buf);
 		CUtility::checkGLError();
 		if(GL_INVALID_VALUE!=buf)
 		{
-			glNamedBufferData(buf,CUtility::getStride(type)*getInterfaceImp()->getCount(),data_ptr,GL_STATIC_DRAW);
+			glNamedBufferStorage(buf,CUtility::getStride(type)*getInterfaceImp()->getCount(),data_ptr,GL_DYNAMIC_STORAGE_BIT);
 			CUtility::checkGLError();
 		}
 		else

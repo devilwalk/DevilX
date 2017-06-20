@@ -4,8 +4,7 @@ using namespace NSRenderSystem;
 using namespace NSGLSL4_5;
 NSDevilX::NSRenderSystem::NSGLSL4_5::CDefinitionShader::CDefinitionShader()
 {
-cbLight="#version 450\r\n\
-#define float2 vec2\r\n\
+cbLight="#define float2 vec2\r\n\
 #define float3 vec3\r\n\
 #define float4 vec4\r\n\
 #define int2 ivec2\r\n\
@@ -50,8 +49,7 @@ cbuffer cbSpotLight\r\n\
     float gSpotLightReciprocalDeltaCosHalfAngle;\r\n\
 };\r\n\
 ";
-cbObject="#version 450\r\n\
-#define float2 vec2\r\n\
+cbObject="#define float2 vec2\r\n\
 #define float3 vec3\r\n\
 #define float4 vec4\r\n\
 #define int2 ivec2\r\n\
@@ -83,8 +81,7 @@ cbuffer cbObjectMaterial\r\n\
     float3 gEmissiveColour;\r\n\
     float gAlphaTestValue;\r\n\
 };";
-cbShadow="#version 450\r\n\
-#define float2 vec2\r\n\
+cbShadow="#define float2 vec2\r\n\
 #define float3 vec3\r\n\
 #define float4 vec4\r\n\
 #define int2 ivec2\r\n\
@@ -128,8 +125,7 @@ cbuffer cbShadowMap3\r\n\
     float gShadowMap3InverseFarDistance;\r\n\
 };\r\n\
 ";
-ClearViewportPixel="#version 450\r\n\
-#define float2 vec2\r\n\
+ClearViewportPixel="#define float2 vec2\r\n\
 #define float3 vec3\r\n\
 #define float4 vec4\r\n\
 #define int2 ivec2\r\n\
@@ -279,8 +275,7 @@ void main()\r\n\
     outColour6 = gClearColour6;\r\n\
     outColour7 = gClearColour7;\r\n\
 }";
-ClearViewportVertex="#version 450\r\n\
-#define float2 vec2\r\n\
+ClearViewportVertex="#define float2 vec2\r\n\
 #define float3 vec3\r\n\
 #define float4 vec4\r\n\
 #define int2 ivec2\r\n\
@@ -417,8 +412,7 @@ void main()\r\n\
     gl_Position = float4(getQuadPosition(gl_VertexID), depth, 1.0);\r\n\
 }\r\n\
 ";
-ConstantBuffer="#version 450\r\n\
-#define float2 vec2\r\n\
+ConstantBuffer="#define float2 vec2\r\n\
 #define float3 vec3\r\n\
 #define float4 vec4\r\n\
 #define int2 ivec2\r\n\
@@ -467,8 +461,7 @@ cbuffer cbScene\r\n\
 {\r\n\
     float3 gAmbientColour;\r\n\
 };";
-DeferredLightingGBufferShader="#version 450\r\n\
-#define float2 vec2\r\n\
+DeferredLightingGBufferShader="#define float2 vec2\r\n\
 #define float3 vec3\r\n\
 #define float4 vec4\r\n\
 #define int2 ivec2\r\n\
@@ -672,8 +665,7 @@ SPixelShaderOutput psMain(SVertexShaderOutput input)\r\n\
 	output.mDepth = input.mPosition.w * gInverseFarDistance;\r\n\
 	return output;\r\n\
 }";
-DeferredShadingGBufferShader="#version 450\r\n\
-#define float2 vec2\r\n\
+DeferredShadingGBufferShader="#define float2 vec2\r\n\
 #define float3 vec3\r\n\
 #define float4 vec4\r\n\
 #define int2 ivec2\r\n\
@@ -887,8 +879,7 @@ SPixelShaderOutput psMain(SVertexShaderOutput input)\r\n\
 	output.mDepth = input.mPosition.w * gInverseFarDistance;\r\n\
 	return output;\r\n\
 }";
-Defines="#version 450\r\n\
-#define float2 vec2\r\n\
+Defines="#define float2 vec2\r\n\
 #define float3 vec3\r\n\
 #define float4 vec4\r\n\
 #define int2 ivec2\r\n\
@@ -907,8 +898,7 @@ Defines="#version 450\r\n\
 #define float4x3 mat4x3\r\n\
 #define float4x4 mat4\r\n\
 #define cbuffer layout(shared) uniform";
-ForwardShaderCommon="#version 450\r\n\
-#define float2 vec2\r\n\
+ForwardShaderCommon="#define float2 vec2\r\n\
 #define float3 vec3\r\n\
 #define float4 vec4\r\n\
 #define int2 ivec2\r\n\
@@ -1042,8 +1032,7 @@ float2 getQuadPosition(int vertexID)\r\n\
 #ifndef OUTPUT_DIFFUSE\r\n\
 #define OUTPU_DIFFUSE 0\r\n\
 #endif";
-ForwardShaderPixel="#version 450\r\n\
-#define float2 vec2\r\n\
+ForwardShaderPixel="#define float2 vec2\r\n\
 #define float3 vec3\r\n\
 #define float4 vec4\r\n\
 #define int2 ivec2\r\n\
@@ -1294,8 +1283,7 @@ void main()\r\n\
 #endif\r\n\
 	gFragColour.a = alpha;\r\n\
 }";
-ForwardShaderVertex="#version 450\r\n\
-#define float2 vec2\r\n\
+ForwardShaderVertex="#define float2 vec2\r\n\
 #define float3 vec3\r\n\
 #define float4 vec4\r\n\
 #define int2 ivec2\r\n\
@@ -1470,8 +1458,7 @@ void main()\r\n\
 #endif\r\n\
 }\r\n\
 ";
-Function="#version 450\r\n\
-#define float2 vec2\r\n\
+Function="#define float2 vec2\r\n\
 #define float3 vec3\r\n\
 #define float4 vec4\r\n\
 #define int2 ivec2\r\n\
@@ -1590,8 +1577,7 @@ float2 getQuadPosition(int vertexID)\r\n\
         ret = float2(1.0, -1.0);\r\n\
     return ret;\r\n\
 }";
-FunctionEx="#version 450\r\n\
-#define float2 vec2\r\n\
+FunctionEx="#define float2 vec2\r\n\
 #define float3 vec3\r\n\
 #define float4 vec4\r\n\
 #define int2 ivec2\r\n\
@@ -1727,8 +1713,7 @@ float3 getCameraRight()\r\n\
 	return getCameraRight(gViewMatrix);\r\n\
 }\r\n\
 ";
-OverlayShaderPixel="#version 450\r\n\
-#define float2 vec2\r\n\
+OverlayShaderPixel="#define float2 vec2\r\n\
 #define float3 vec3\r\n\
 #define float4 vec4\r\n\
 #define int2 ivec2\r\n\
@@ -1850,28 +1835,34 @@ float2 getQuadPosition(int vertexID)\r\n\
 #ifndef USE_DIFFUSE_TEXTURE\r\n\
 #define USE_DIFFUSE_TEXTURE 0\r\n\
 #endif\r\n\
+#ifndef USE_FONT_TEXTURE\r\n\
+#define USE_FONT_TEXTURE 0\r\n\
+#endif\r\n\
+in float4 gPositionPS;\r\n\
 in float2 gMainUVPS;\r\n\
 in float4 gDiffusePS;\r\n\
-#if USE_DIFFUSE_TEXTURE\r\n\
+#if USE_DIFFUSE_TEXTURE || USE_FONT_TEXTURE\r\n\
 uniform sampler2D gDiffuseTexture;\r\n\
 #endif\r\n\
-layout(location=0) out float4 gFragColour;\r\n\
+out float4 gFragColour;\r\n\
 void main()\r\n\
 {\r\n\
     float3 colour_emissive = gDiffusePS.rgb;\r\n\
     float alpha = gDiffusePS.a;\r\n\
 #if USE_DIFFUSE_TEXTURE\r\n\
-	float4 diffuse_texture_sampler = texture2D(gDiffuseTexture, gMainUVPS);\r\n\
+	float4 diffuse_texture_sampler =texture(gDiffuseTexture, gMainUVPS);\r\n\
 	float3 diffuse_texture_colour = diffuse_texture_sampler.rgb;\r\n\
 	float diffuse_texture_alpha = diffuse_texture_sampler.a;\r\n\
 	alpha *= diffuse_texture_alpha;\r\n\
 	colour_emissive *= diffuse_texture_colour;\r\n\
 #endif\r\n\
+#if USE_FONT_TEXTURE\r\n\
+	alpha*=texture(gDiffuseTexture,gMainUVPS).r;\r\n\
+#endif\r\n\
     gFragColour.rgb = colour_emissive;\r\n\
     gFragColour.a = alpha;\r\n\
 }";
-OverlayShaderVertex="#version 450\r\n\
-#define float2 vec2\r\n\
+OverlayShaderVertex="#define float2 vec2\r\n\
 #define float3 vec3\r\n\
 #define float4 vec4\r\n\
 #define int2 ivec2\r\n\

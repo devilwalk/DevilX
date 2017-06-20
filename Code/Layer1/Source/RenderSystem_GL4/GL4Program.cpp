@@ -89,6 +89,25 @@ NSDevilX::NSRenderSystem::NSGL4::CProgram::CProgram(GLuint vertexShader,GLuint p
 		mResourceSlots[cbuffer_name.c_str()]=static_cast<UInt32>(bind_pos);
 		CSystemImp::getSingleton().getConstantBufferDescriptionManager()->registerDescription(getInternal(),i);
 	}
+	glGetProgramiv(getInternal(),GL_ACTIVE_UNIFORMS,&num);
+	CUtility::checkGLError();
+	for(GLint i=0;i<num;++i)
+	{
+		String cbuffer_name;
+		cbuffer_name.resize(100);
+		GLsizei name_length;
+		GLint size;
+		GLenum type;
+		glGetActiveUniform(getInternal(),i,100,&name_length,&size,&type,&cbuffer_name[0]);
+		CUtility::checkGLError();
+		switch(type)
+		{
+		case GL_SAMPLER_2D:
+			GLint bind_pos=glGetUniformLocation(getInternal(),cbuffer_name.c_str());
+			CUtility::checkGLError();
+			mResourceSlots[cbuffer_name.c_str()]=static_cast<UInt32>(bind_pos);
+		}
+	}
 }
 
 NSDevilX::NSRenderSystem::NSGL4::CProgram::~CProgram()

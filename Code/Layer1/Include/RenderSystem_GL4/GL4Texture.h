@@ -21,6 +21,7 @@ namespace NSDevilX
 			protected:
 				CTexture(){}
 				virtual ~CTexture(){}
+			public:
 				decltype(mInternal) getInternal()const
 				{
 					return mInternal;

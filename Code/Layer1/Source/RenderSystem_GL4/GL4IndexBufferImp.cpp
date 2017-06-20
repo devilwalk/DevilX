@@ -54,15 +54,11 @@ Void NSDevilX::NSRenderSystem::NSGL4::CIndexBufferImp::_update()
 			if(!getBuffer())
 			{
 				GLuint buf=0;
-				glGenBuffers(1,&buf);
-				CUtility::checkGLError();
-				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,buf);
-				CUtility::checkGLError();
-				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
+				glCreateBuffers(1,&buf);
 				CUtility::checkGLError();
 				if(GL_INVALID_VALUE!=buf)
 				{
-					glNamedBufferData(buf,sizeof(UInt32)*getInterfaceImp()->getCount(),getInterfaceImp()->getIndices(),GL_STATIC_DRAW);
+					glNamedBufferStorage(buf,sizeof(UInt32)*getInterfaceImp()->getCount(),getInterfaceImp()->getIndices(),GL_DYNAMIC_STORAGE_BIT);
 					CUtility::checkGLError();
 				}
 				else
