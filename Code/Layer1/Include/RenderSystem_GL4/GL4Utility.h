@@ -113,6 +113,31 @@ namespace NSDevilX
 						return 0;
 					}
 				}
+				static GLint getComponmentSize(CEnum::EVertexBufferType type)
+				{
+					switch(type)
+					{
+					case CEnum::EVertexBufferType_Position:
+					case CEnum::EVertexBufferType_Normal:
+					case CEnum::EVertexBufferType_Tangent:
+						return 3;
+					case CEnum::EVertexBufferType_TextureCoord0:
+					case CEnum::EVertexBufferType_TextureCoord1:
+						return 2;
+					case CEnum::EVertexBufferType_BlendWeight:
+					case CEnum::EVertexBufferType_BlendIndex:
+						return 4;
+					case CEnum::EVertexBufferType_Diffuse:
+						return GL_BGRA;
+					default:
+						assert(0);
+						return 0;
+					}
+				}
+				static GLboolean needNormalized(CEnum::EVertexBufferType type)
+				{
+					return (CEnum::EVertexBufferType_Diffuse==type)?GL_TRUE:GL_FALSE;
+				}
 			};
 		}
 	}
