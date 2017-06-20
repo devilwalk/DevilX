@@ -39,6 +39,11 @@ Void NSDevilX::NSRenderSystem::NSGL4::CRenderOperation::process()
 		glUniformBlockBinding(mPass->getProgram()->getInternal(),mPass->getProgram()->getSlot(mConstantBuffers[i]->getDescription()->getName()),i);
 		CUtility::checkGLError();
 	}
+	for(UInt32 i=0;i<mPass->getPSTextures().size();++i)
+	{
+		glBindTextureUnit(i,mPass->getPSTextures()[i]->getInternal());
+		CUtility::checkGLError();
+	}
 	for(auto value:mPass->getEnabledState())
 	{
 		glEnable(value);
