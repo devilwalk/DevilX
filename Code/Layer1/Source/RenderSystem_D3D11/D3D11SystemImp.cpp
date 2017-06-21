@@ -174,7 +174,6 @@ NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::~CSystemImp()
 	DEVILX_DELETE(mConstantBufferDescriptionManager);
 	DEVILX_DELETE(mClearViewportShader);
 	DEVILX_DELETE(mOverlayMaterialManager);
-#ifdef DEVILX_DEBUG
 	mRasterizerStates.destroyAll();
 	mBlendStates.destroyAll();
 	mDepthStencilStates.destroyAll();
@@ -188,6 +187,10 @@ NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::~CSystemImp()
 	mVertexBuffers.destroyAll();
 	mIndexBuffers.destroyAll();
 	mTexture2Ds.destroyAll();
+	mTransformers.destroyAll();
+	DEVILX_DELETE(mConstantBuffer);
+	mConstantBuffer=nullptr;
+#ifdef DEVILX_DEBUG
 	getDebug()->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 	getDebug()->Release();
 #endif

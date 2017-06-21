@@ -44,6 +44,11 @@ Void NSDevilX::NSRenderSystem::NSGL4::CRenderOperation::process()
 		glBindTextureUnit(i,mPass->getPSTextures()[i]->getInternal());
 		CUtility::checkGLError();
 	}
+	for(UInt32 i=0;i<mPass->getPSTextures().size();++i)
+	{
+		glBindSampler(i,mPass->getPSSamplerStates()[0]->getInternal());
+		CUtility::checkGLError();
+	}
 	for(auto value:mPass->getEnabledState())
 	{
 		glEnable(value);
@@ -103,6 +108,16 @@ Void NSDevilX::NSRenderSystem::NSGL4::CRenderOperation::process()
 	for(auto value:mPass->getEnabledState())
 	{
 		glDisable(value);
+		CUtility::checkGLError();
+	}
+	for(UInt32 i=0;i<mPass->getPSTextures().size();++i)
+	{
+		glBindSampler(i,0);
+		CUtility::checkGLError();
+	}
+	for(UInt32 i=0;i<mPass->getPSTextures().size();++i)
+	{
+		glBindTextureUnit(i,0);
 		CUtility::checkGLError();
 	}
 	glBindBuffer(GL_UNIFORM_BUFFER,0);

@@ -187,6 +187,7 @@
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4RenderTaskMT.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4RenderTaskST.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4Resource.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4SamplerObject.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4Scene.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4ShaderManager.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4SystemImp.h" />
@@ -230,6 +231,7 @@
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4RenderTaskMT.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4RenderTaskST.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4Resource.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4SamplerObject.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4Scene.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4ShaderManager.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4SystemImp.cpp" />

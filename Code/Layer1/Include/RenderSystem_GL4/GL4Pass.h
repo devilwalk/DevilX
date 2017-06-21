@@ -2,6 +2,7 @@
 #include "GL4Enum.h"
 #include "GL4Program.h"
 #include "GL4Texture.h"
+#include "GL4SamplerObject.h"
 namespace NSDevilX
 {
 	namespace NSRenderSystem
@@ -20,6 +21,8 @@ namespace NSDevilX
 				TMap<VoidPtr,TVector<GLint>[2]> mStateFunctions;
 				TVector<CTexture*> mVSTextures;
 				TVector<CTexture*> mPSTextures;
+				TVector<CSamplerObject*> mVSSamplerStates;
+				TVector<CSamplerObject*> mPSSamplerStates;
 			public:
 				CPass();
 				~CPass();
@@ -51,7 +54,18 @@ namespace NSDevilX
 				{
 					return mDisableState;
 				}
-				decltype(mStateFunctions) const & getStateFunctions()const{ return mStateFunctions; }
+				decltype(mStateFunctions) const & getStateFunctions()const
+				{
+					return mStateFunctions;
+				}
+				decltype(mVSSamplerStates) const & getVSSamplerStates()const
+				{
+					return mVSSamplerStates;
+				}
+				decltype(mPSSamplerStates) const & getPSSamplerStates()const
+				{
+					return mPSSamplerStates;
+				}
 			};
 		}
 	}

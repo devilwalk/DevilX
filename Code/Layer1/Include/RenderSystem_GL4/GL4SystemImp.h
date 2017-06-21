@@ -13,6 +13,7 @@
 #include "GL4TransformerImp.h"
 #include "GL4ClearViewportProgram.h"
 #include "GL4OverlayMaterialManager.h"
+#include "GL4SamplerObject.h"
 namespace NSDevilX
 {
 	namespace NSRenderSystem
@@ -41,7 +42,8 @@ namespace NSDevilX
 				CConstantBufferDescriptionManager * mConstantBufferDescriptionManager;
 				CClearViewportProgram * mClearViewportProgram;
 				COverlayMaterialManager * mOverlayMaterialManager;
-				TVector<CDepthStencil*> mDepthStencils;
+				TResourcePtrVector<CDepthStencil> mDepthStencils;
+				TResourcePtrVector<CSamplerObject> mSamplerObjects;
 				TResourcePtrMap<IWindowImp*const,CWindowImp> mWindows;
 				TResourcePtrMap<ISceneImp*const,CScene> mScenes;
 				TResourcePtrMap<IVertexBufferImp*const,CVertexBufferImp> mVertexBuffers;
@@ -74,6 +76,8 @@ namespace NSDevilX
 					return mConstantBufferDescriptionManager;
 				}
 				CDepthStencil * getFreeDepthStencil();
+				CSamplerObject * getDefaultSamplerObject()const;
+				CSamplerObject * getSamplerObject(const SSamplerDescription & desc);
 				CProgram * getClearViewportProgram()const
 				{
 					return mClearViewportProgram->getProgram();

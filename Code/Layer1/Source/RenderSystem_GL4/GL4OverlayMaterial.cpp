@@ -11,6 +11,7 @@ NSDevilX::NSRenderSystem::NSGL4::COverlayMaterial::COverlayMaterial(CTexture * t
 	_updateRasterizerState();
 	_updateBlendState();
 	_updateDepthStencilState();
+	_updateSamplerState();
 }
 
 NSDevilX::NSRenderSystem::NSGL4::COverlayMaterial::~COverlayMaterial()
@@ -85,4 +86,17 @@ Void NSDevilX::NSRenderSystem::NSGL4::COverlayMaterial::_updateDepthStencilState
 	mStateFunctions[glDepthMask][1].push_back(true);
 	mStateFunctions[glDepthFunc][0].push_back(GL_ALWAYS);
 	mStateFunctions[glDepthFunc][1].push_back(GL_LEQUAL);
+}
+
+Void NSDevilX::NSRenderSystem::NSGL4::COverlayMaterial::_updateSamplerState()
+{
+	mPSSamplerStates.clear();
+	SSamplerDescription desc(CSystemImp::getSingleton().getDefaultSamplerObject()->getDesc());
+	desc.mStates.add(GL_TEXTURE_MAX_LOD,0);
+	desc.mStates.add(GL_TEXTURE_MIN_LOD,0);
+	desc.mStates.add(GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
+	desc.mStates.add(GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
+	desc.mStates.add(GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+	desc.mStates.add(GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+	mPSSamplerStates.push_back(CSystemImp::getSingleton().getSamplerObject(desc));
 }

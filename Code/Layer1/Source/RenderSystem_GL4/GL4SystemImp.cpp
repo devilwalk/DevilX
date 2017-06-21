@@ -108,6 +108,7 @@ NSDevilX::NSRenderSystem::NSGL4::CSystemImp::CSystemImp()
 	},nullptr);
 	CUtility::checkGLError();
 #endif
+	mSamplerObjects.push_back(DEVILX_NEW CSamplerObject(SSamplerDescription()));
 	mShaderManager=DEVILX_NEW CShaderManager;
 	mDefinitionShader=DEVILX_NEW NSGLSL4_5::CDefinitionShader;
 	mConstantBufferDescriptionManager=DEVILX_NEW CConstantBufferDescriptionManager;
@@ -137,8 +138,19 @@ NSDevilX::NSRenderSystem::NSGL4::CSystemImp::~CSystemImp()
 	DEVILX_DELETE(mConstantBufferDescriptionManager);
 	DEVILX_DELETE(mDefinitionShader);
 	DEVILX_DELETE(mShaderManager);
+	mSamplerObjects.destroyAll();
+	mDepthStencils.destroyAll();
+	mVertexBuffers.destroyAll();
+	mIndexBuffers.destroyAll();
+	mTexture2Ds.destroyAll();
+	mWindows.destroyAll();
+	mScenes.destroyAll();
+	mTransformers.destroyAll();
+	DEVILX_DELETE(mConstantBuffer);
+	mConstantBuffer=nullptr;
 	wglMakeCurrent(nullptr,nullptr);
 	wglDeleteContext(getContext());
+	mInstanceByInternals.clear();
 }
 
 CDepthStencil * NSDevilX::NSRenderSystem::NSGL4::CSystemImp::getFreeDepthStencil()
@@ -156,6 +168,30 @@ CDepthStencil * NSDevilX::NSRenderSystem::NSGL4::CSystemImp::getFreeDepthStencil
 	{
 		ret=DEVILX_NEW CDepthStencil();
 		mDepthStencils.push_back(ret);
+	}
+	return ret;
+}
+
+CSamplerObject * NSDevilX::NSRenderSystem::NSGL4::CSystemImp::getDefaultSamplerObject() const
+{
+	return mSamplerObjects[0];
+}
+
+CSamplerObject * NSDevilX::NSRenderSystem::NSGL4::CSystemImp::getSamplerObject(const SSamplerDescription & desc)
+{
+	CSamplerObject * ret=nullptr;
+	for(auto obj:mSamplerObjects)
+	{
+		if(obj->getDesc()==desc)
+		{
+			ret=obj;
+			break;
+		}
+	}
+	if(!ret)
+	{
+		ret=DEVILX_NEW CSamplerObject(desc);
+		mSamplerObjects.push_back(ret);
 	}
 	return ret;
 }

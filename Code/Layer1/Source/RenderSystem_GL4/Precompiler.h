@@ -43,6 +43,7 @@
 #include "GL4RenderTargetImp.h"
 #include "GL4RenderTask.h"
 #include "GL4Resource.h"
+#include "GL4SamplerObject.h"
 #include "GL4Scene.h"
 #include "GL4ShaderManager.h"
 #include "GL4SystemImp.h"

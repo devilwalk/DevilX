@@ -15,7 +15,9 @@ NSDevilX::NSRenderSystem::NSGL4::CConstantBuffer::CConstantBuffer(CConstantBuffe
 }
 
 NSDevilX::NSRenderSystem::NSGL4::CConstantBuffer::~CConstantBuffer()
-{}
+{
+	glDeleteBuffers(1,&mInternal);
+}
 
 Void NSDevilX::NSRenderSystem::NSGL4::CConstantBuffer::submit()
 {
