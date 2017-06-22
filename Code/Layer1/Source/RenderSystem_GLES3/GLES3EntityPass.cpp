@@ -1,9 +1,9 @@
 #include "Precompiler.h"
 using namespace NSDevilX;
 using namespace NSRenderSystem;
-using namespace NSGL4;
+using namespace NSGLES3;
 
-NSDevilX::NSRenderSystem::NSGL4::CEntityPass::CEntityPass(CEntityTechnique * technique)
+NSDevilX::NSRenderSystem::NSGLES3::CEntityPass::CEntityPass(CEntityTechnique * technique)
 	:mTechnique(technique)
 	,mForwardType(CEnum::EForwardPassType_Count)
 	,mVertexArrayObject(0)
@@ -31,7 +31,7 @@ NSDevilX::NSRenderSystem::NSGL4::CEntityPass::CEntityPass(CEntityTechnique * tec
 	_registerToIGeometryImp();
 }
 
-NSDevilX::NSRenderSystem::NSGL4::CEntityPass::CEntityPass(CEnum::EForwardPassType type,CEntityTechnique * technique)
+NSDevilX::NSRenderSystem::NSGLES3::CEntityPass::CEntityPass(CEnum::EForwardPassType type,CEntityTechnique * technique)
 	:mTechnique(technique)
 	,mForwardType(type)
 	,mVertexArrayObject(0)
@@ -51,10 +51,10 @@ NSDevilX::NSRenderSystem::NSGL4::CEntityPass::CEntityPass(CEnum::EForwardPassTyp
 	_registerToIGeometryImp();
 }
 
-NSDevilX::NSRenderSystem::NSGL4::CEntityPass::~CEntityPass()
+NSDevilX::NSRenderSystem::NSGLES3::CEntityPass::~CEntityPass()
 {}
 
-Void NSDevilX::NSRenderSystem::NSGL4::CEntityPass::onMessage(IEntityRenderableImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
+Void NSDevilX::NSRenderSystem::NSGLES3::CEntityPass::onMessage(IEntityRenderableImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
 {
 	switch(message)
 	{
@@ -83,7 +83,7 @@ Void NSDevilX::NSRenderSystem::NSGL4::CEntityPass::onMessage(IEntityRenderableIm
 	}
 }
 
-Void NSDevilX::NSRenderSystem::NSGL4::CEntityPass::onMessage(IGeometryImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
+Void NSDevilX::NSRenderSystem::NSGLES3::CEntityPass::onMessage(IGeometryImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
 {
 	switch(message)
 	{
@@ -93,7 +93,7 @@ Void NSDevilX::NSRenderSystem::NSGL4::CEntityPass::onMessage(IGeometryImp * noti
 	}
 }
 
-Void NSDevilX::NSRenderSystem::NSGL4::CEntityPass::onMessage(ITextureUnitStateImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
+Void NSDevilX::NSRenderSystem::NSGLES3::CEntityPass::onMessage(ITextureUnitStateImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
 {
 	switch(message)
 	{
@@ -103,7 +103,7 @@ Void NSDevilX::NSRenderSystem::NSGL4::CEntityPass::onMessage(ITextureUnitStateIm
 	}
 }
 
-Void NSDevilX::NSRenderSystem::NSGL4::CEntityPass::_updateShader()
+Void NSDevilX::NSRenderSystem::NSGLES3::CEntityPass::_updateShader()
 {
 	if(nullptr==getTechnique()->getMaterial()->getRenderable()->getInterfaceImp()->getGeometry())
 		return;
@@ -176,7 +176,7 @@ Void NSDevilX::NSRenderSystem::NSGL4::CEntityPass::_updateShader()
 	_updateVertexArrayObject();
 }
 
-Void NSDevilX::NSRenderSystem::NSGL4::CEntityPass::_updateTextures()
+Void NSDevilX::NSRenderSystem::NSGLES3::CEntityPass::_updateTextures()
 {
 	const auto * const mat_imp=getTechnique()->getMaterial()->getRenderable()->getInterfaceImp();
 	mVSTextures.clear();
@@ -199,10 +199,10 @@ Void NSDevilX::NSRenderSystem::NSGL4::CEntityPass::_updateTextures()
 	}
 }
 
-Void NSDevilX::NSRenderSystem::NSGL4::CEntityPass::_updateRasterizerState()
+Void NSDevilX::NSRenderSystem::NSGLES3::CEntityPass::_updateRasterizerState()
 {}
 
-Void NSDevilX::NSRenderSystem::NSGL4::CEntityPass::_updateBlendState()
+Void NSDevilX::NSRenderSystem::NSGLES3::CEntityPass::_updateBlendState()
 {
 	mEnabledState.remove(GL_BLEND);
 	mStateFunctions.erase(glBlendFunci);
@@ -240,7 +240,7 @@ Void NSDevilX::NSRenderSystem::NSGL4::CEntityPass::_updateBlendState()
 	}
 }
 
-Void NSDevilX::NSRenderSystem::NSGL4::CEntityPass::_updateDepthStencilState()
+Void NSDevilX::NSRenderSystem::NSGLES3::CEntityPass::_updateDepthStencilState()
 {
 	mStateFunctions.erase(glDepthMask);
 	mStateFunctions.erase(glDepthFunc);
@@ -274,7 +274,7 @@ Void NSDevilX::NSRenderSystem::NSGL4::CEntityPass::_updateDepthStencilState()
 	}
 }
 
-Void NSDevilX::NSRenderSystem::NSGL4::CEntityPass::_updateVertexArrayObject()
+Void NSDevilX::NSRenderSystem::NSGLES3::CEntityPass::_updateVertexArrayObject()
 {
 	if(mVertexArrayObject)
 	{
@@ -294,11 +294,11 @@ Void NSDevilX::NSRenderSystem::NSGL4::CEntityPass::_updateVertexArrayObject()
 			CUtility::checkGLError();
 			if(CEnum::EVertexBufferType_BlendIndex==vb_type)
 			{
-				glVertexAttribIPointer(i,CUtility::getComponmentCount(vb_type),CUtility::getFormat(vb_type),CUtility::getStride(vb_type),nullptr);
+				glVertexAttribIPointer(i,CUtility::getComponmentSize(vb_type),CUtility::getFormat(vb_type),CUtility::getStride(vb_type),nullptr);
 			}
 			else
 			{
-				glVertexAttribPointer(i,CUtility::getComponmentCount(vb_type),CUtility::getFormat(vb_type),CUtility::needNormalized(vb_type),CUtility::getStride(vb_type),nullptr);
+				glVertexAttribPointer(i,CUtility::getComponmentSize(vb_type),CUtility::getFormat(vb_type),CUtility::needNormalized(vb_type),CUtility::getStride(vb_type),nullptr);
 				CUtility::checkGLError();
 			}
 			glEnableVertexAttribArray(i);
@@ -311,7 +311,7 @@ Void NSDevilX::NSRenderSystem::NSGL4::CEntityPass::_updateVertexArrayObject()
 	CUtility::checkGLError();
 }
 
-Void NSDevilX::NSRenderSystem::NSGL4::CEntityPass::_registerToIGeometryImp()
+Void NSDevilX::NSRenderSystem::NSGLES3::CEntityPass::_registerToIGeometryImp()
 {
 	if(getTechnique()->getMaterial()->getRenderable()->getInterfaceImp()->getGeometry())
 	{
@@ -319,7 +319,7 @@ Void NSDevilX::NSRenderSystem::NSGL4::CEntityPass::_registerToIGeometryImp()
 	}
 }
 
-Void NSDevilX::NSRenderSystem::NSGL4::CEntityPass::_unregisterToIGeometryImp()
+Void NSDevilX::NSRenderSystem::NSGLES3::CEntityPass::_unregisterToIGeometryImp()
 {
 	if(getTechnique()->getMaterial()->getRenderable()->getInterfaceImp()->getGeometry())
 	{

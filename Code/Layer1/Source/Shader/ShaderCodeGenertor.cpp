@@ -187,5 +187,11 @@ void main()
 			generatorHead(files,"GLSL4_5");
 			generatorCpp(files,"GLSL4_5");
 		}
+		else if(dir.find("\\GLESSL3_2")!=std::string::npos)
+		{
+			auto files=findFiles(dir,"glsl");
+			generatorHead(files,"GLESSL3_2");
+			generatorCpp(files,"GLESSL3_2");
+		}
 	}
 }

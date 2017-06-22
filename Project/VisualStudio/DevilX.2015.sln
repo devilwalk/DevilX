@@ -127,6 +127,31 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UISystem.2015", "Layer2\UIS
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Ungrouped.2015", "Ungrouped\Ungrouped.2015.vcxproj", "{6F67BE02-CD38-4BDB-81AB-D629D2500402}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RenderSystem_GLES3.2015", "Layer1\RenderSystem_GLES3.2015.vcxproj", "{7E3A73F1-03D5-41E2-9EE8-59F18D5D31E0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3E626FA0-4D45-4526-96A1-84478DA28623} = {3E626FA0-4D45-4526-96A1-84478DA28623}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GLESSL3_2", "GLESSL3_2", "{4C7C9427-8F4B-4251-8C3A-F1AB0100AFE3}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\Code\Layer1\Source\Shader\GLESSL3_2\cbLight.glsl = ..\..\Code\Layer1\Source\Shader\GLESSL3_2\cbLight.glsl
+		..\..\Code\Layer1\Source\Shader\GLESSL3_2\cbObject.glsl = ..\..\Code\Layer1\Source\Shader\GLESSL3_2\cbObject.glsl
+		..\..\Code\Layer1\Source\Shader\GLESSL3_2\cbShadow.glsl = ..\..\Code\Layer1\Source\Shader\GLESSL3_2\cbShadow.glsl
+		..\..\Code\Layer1\Source\Shader\GLESSL3_2\ClearViewportPixel.glsl = ..\..\Code\Layer1\Source\Shader\GLESSL3_2\ClearViewportPixel.glsl
+		..\..\Code\Layer1\Source\Shader\GLESSL3_2\ClearViewportVertex.glsl = ..\..\Code\Layer1\Source\Shader\GLESSL3_2\ClearViewportVertex.glsl
+		..\..\Code\Layer1\Source\Shader\GLESSL3_2\ConstantBuffer.glsl = ..\..\Code\Layer1\Source\Shader\GLESSL3_2\ConstantBuffer.glsl
+		..\..\Code\Layer1\Source\Shader\GLESSL3_2\DeferredLightingGBufferShader.glsl = ..\..\Code\Layer1\Source\Shader\GLESSL3_2\DeferredLightingGBufferShader.glsl
+		..\..\Code\Layer1\Source\Shader\GLESSL3_2\DeferredShadingGBufferShader.glsl = ..\..\Code\Layer1\Source\Shader\GLESSL3_2\DeferredShadingGBufferShader.glsl
+		..\..\Code\Layer1\Source\Shader\GLESSL3_2\Defines.glsl = ..\..\Code\Layer1\Source\Shader\GLESSL3_2\Defines.glsl
+		..\..\Code\Layer1\Source\Shader\GLESSL3_2\ForwardShaderCommon.glsl = ..\..\Code\Layer1\Source\Shader\GLESSL3_2\ForwardShaderCommon.glsl
+		..\..\Code\Layer1\Source\Shader\GLESSL3_2\ForwardShaderPixel.glsl = ..\..\Code\Layer1\Source\Shader\GLESSL3_2\ForwardShaderPixel.glsl
+		..\..\Code\Layer1\Source\Shader\GLESSL3_2\ForwardShaderVertex.glsl = ..\..\Code\Layer1\Source\Shader\GLESSL3_2\ForwardShaderVertex.glsl
+		..\..\Code\Layer1\Source\Shader\GLESSL3_2\Function.glsl = ..\..\Code\Layer1\Source\Shader\GLESSL3_2\Function.glsl
+		..\..\Code\Layer1\Source\Shader\GLESSL3_2\FunctionEx.glsl = ..\..\Code\Layer1\Source\Shader\GLESSL3_2\FunctionEx.glsl
+		..\..\Code\Layer1\Source\Shader\GLESSL3_2\OverlayShaderPixel.glsl = ..\..\Code\Layer1\Source\Shader\GLESSL3_2\OverlayShaderPixel.glsl
+		..\..\Code\Layer1\Source\Shader\GLESSL3_2\OverlayShaderVertex.glsl = ..\..\Code\Layer1\Source\Shader\GLESSL3_2\OverlayShaderVertex.glsl
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -311,6 +336,14 @@ Global
 		{6F67BE02-CD38-4BDB-81AB-D629D2500402}.Release|x64.Build.0 = Release|x64
 		{6F67BE02-CD38-4BDB-81AB-D629D2500402}.Release|x86.ActiveCfg = Release|Win32
 		{6F67BE02-CD38-4BDB-81AB-D629D2500402}.Release|x86.Build.0 = Release|Win32
+		{7E3A73F1-03D5-41E2-9EE8-59F18D5D31E0}.Debug|x64.ActiveCfg = Debug|x64
+		{7E3A73F1-03D5-41E2-9EE8-59F18D5D31E0}.Debug|x64.Build.0 = Debug|x64
+		{7E3A73F1-03D5-41E2-9EE8-59F18D5D31E0}.Debug|x86.ActiveCfg = Debug|Win32
+		{7E3A73F1-03D5-41E2-9EE8-59F18D5D31E0}.Debug|x86.Build.0 = Debug|Win32
+		{7E3A73F1-03D5-41E2-9EE8-59F18D5D31E0}.Release|x64.ActiveCfg = Release|x64
+		{7E3A73F1-03D5-41E2-9EE8-59F18D5D31E0}.Release|x64.Build.0 = Release|x64
+		{7E3A73F1-03D5-41E2-9EE8-59F18D5D31E0}.Release|x86.ActiveCfg = Release|Win32
+		{7E3A73F1-03D5-41E2-9EE8-59F18D5D31E0}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -341,5 +374,7 @@ Global
 		{F43877F7-806A-49AF-AC38-72CFF8A43E22} = {1CFAFD2E-0DAA-4421-8054-33F66811C676}
 		{BFC5FA51-9ACC-4611-BC5D-8054C6D6EFAC} = {1CFAFD2E-0DAA-4421-8054-33F66811C676}
 		{6F67BE02-CD38-4BDB-81AB-D629D2500402} = {4DA610B1-0E58-4355-BE3A-3E5988CF2B11}
+		{7E3A73F1-03D5-41E2-9EE8-59F18D5D31E0} = {62445BEE-5766-42BF-9AB4-4307474B5D75}
+		{4C7C9427-8F4B-4251-8C3A-F1AB0100AFE3} = {5F075A03-B5A6-4BDB-8252-A7E64A979480}
 	EndGlobalSection
 EndGlobal

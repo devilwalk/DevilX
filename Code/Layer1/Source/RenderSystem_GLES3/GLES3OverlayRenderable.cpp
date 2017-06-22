@@ -1,9 +1,9 @@
 #include "Precompiler.h"
 using namespace NSDevilX;
 using namespace NSRenderSystem;
-using namespace NSGL4;
+using namespace NSGLES3;
 
-NSDevilX::NSRenderSystem::NSGL4::COverlayRenderable::COverlayRenderable(COverlayMaterial * material,const CFloat2 & scissorRectPosition,const CFloat2 & scissorRectSize,COverlayManager * manager)
+NSDevilX::NSRenderSystem::NSGLES3::COverlayRenderable::COverlayRenderable(COverlayMaterial * material,const CFloat2 & scissorRectPosition,const CFloat2 & scissorRectSize,COverlayManager * manager)
 	:mMaterial(material)
 	,mScissorRectParameter(scissorRectPosition,scissorRectSize)
 	,mManager(manager)
@@ -15,14 +15,14 @@ NSDevilX::NSRenderSystem::NSGL4::COverlayRenderable::COverlayRenderable(COverlay
 	mGeometry->getIndexBuffer()->addListener(static_cast<TMessageReceiver<CIndexBufferImp>*>(this),CIndexBufferImp::EMessage_BufferCreate);
 }
 
-NSDevilX::NSRenderSystem::NSGL4::COverlayRenderable::~COverlayRenderable()
+NSDevilX::NSRenderSystem::NSGLES3::COverlayRenderable::~COverlayRenderable()
 {
 	glDeleteVertexArrays(1,&mVertexArrayObject);
 	CUtility::checkGLError();
 	ISystemImp::getSingleton().queryInterface_IResourceManager()->destroyGeometry(mGeometry->getInterfaceImp());
 }
 
-Boolean NSDevilX::NSRenderSystem::NSGL4::COverlayRenderable::render(CRenderOperation & ro)
+Boolean NSDevilX::NSRenderSystem::NSGLES3::COverlayRenderable::render(CRenderOperation & ro)
 {
 	if(mRectangles.empty())
 		return false;
@@ -42,7 +42,7 @@ Boolean NSDevilX::NSRenderSystem::NSGL4::COverlayRenderable::render(CRenderOpera
 	return true;
 }
 
-Void NSDevilX::NSRenderSystem::NSGL4::COverlayRenderable::addElement(IOverlayElementImp * element)
+Void NSDevilX::NSRenderSystem::NSGLES3::COverlayRenderable::addElement(IOverlayElementImp * element)
 {
 	UInt32 index=-1;
 	if(mFrees.empty())
@@ -93,7 +93,7 @@ Void NSDevilX::NSRenderSystem::NSGL4::COverlayRenderable::addElement(IOverlayEle
 	}
 }
 
-Void NSDevilX::NSRenderSystem::NSGL4::COverlayRenderable::removeElement(IOverlayElementImp * element)
+Void NSDevilX::NSRenderSystem::NSGLES3::COverlayRenderable::removeElement(IOverlayElementImp * element)
 {
 	const auto vertex_start=mRectangles.get(element);
 	mPositions[vertex_start]=CFloat3(-1000.0f);
@@ -114,7 +114,7 @@ Void NSDevilX::NSRenderSystem::NSGL4::COverlayRenderable::removeElement(IOverlay
 	}
 }
 
-Void NSDevilX::NSRenderSystem::NSGL4::COverlayRenderable::onMessage(IOverlayElementImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
+Void NSDevilX::NSRenderSystem::NSGLES3::COverlayRenderable::onMessage(IOverlayElementImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
 {
 	switch(message)
 	{
@@ -132,7 +132,7 @@ Void NSDevilX::NSRenderSystem::NSGL4::COverlayRenderable::onMessage(IOverlayElem
 	}
 }
 
-Void NSDevilX::NSRenderSystem::NSGL4::COverlayRenderable::onMessage(IColourUnitStateImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
+Void NSDevilX::NSRenderSystem::NSGLES3::COverlayRenderable::onMessage(IColourUnitStateImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
 {
 	switch(message)
 	{
@@ -143,7 +143,7 @@ Void NSDevilX::NSRenderSystem::NSGL4::COverlayRenderable::onMessage(IColourUnitS
 	}
 }
 
-Void NSDevilX::NSRenderSystem::NSGL4::COverlayRenderable::onMessage(CVertexBufferImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
+Void NSDevilX::NSRenderSystem::NSGLES3::COverlayRenderable::onMessage(CVertexBufferImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
 {
 	switch(message)
 	{
@@ -153,7 +153,7 @@ Void NSDevilX::NSRenderSystem::NSGL4::COverlayRenderable::onMessage(CVertexBuffe
 	}
 }
 
-Void NSDevilX::NSRenderSystem::NSGL4::COverlayRenderable::onMessage(CIndexBufferImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
+Void NSDevilX::NSRenderSystem::NSGLES3::COverlayRenderable::onMessage(CIndexBufferImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
 {
 	switch(message)
 	{
@@ -163,7 +163,7 @@ Void NSDevilX::NSRenderSystem::NSGL4::COverlayRenderable::onMessage(CIndexBuffer
 	}
 }
 
-Void NSDevilX::NSRenderSystem::NSGL4::COverlayRenderable::_updateElementPosition(IOverlayElementImp * element)
+Void NSDevilX::NSRenderSystem::NSGLES3::COverlayRenderable::_updateElementPosition(IOverlayElementImp * element)
 {
 	const auto vertex_start=mRectangles.get(element);
 	CFloat2 rel_pos=element->getPosition()*CFloat2(2.0f,-2.0f)-CFloat2(1.0f,-1.0f);
@@ -175,7 +175,7 @@ Void NSDevilX::NSRenderSystem::NSGL4::COverlayRenderable::_updateElementPosition
 	mGeometry->getInterfaceImp()->getVertexBuffer()->updatePositions(vertex_start,4);
 }
 
-Void NSDevilX::NSRenderSystem::NSGL4::COverlayRenderable::_updateElementTextureCoord(IOverlayElementImp * element)
+Void NSDevilX::NSRenderSystem::NSGLES3::COverlayRenderable::_updateElementTextureCoord(IOverlayElementImp * element)
 {
 	const auto vertex_start=mRectangles.get(element);
 	mUVs[vertex_start]=element->getUVs()[0];
@@ -185,7 +185,7 @@ Void NSDevilX::NSRenderSystem::NSGL4::COverlayRenderable::_updateElementTextureC
 	mGeometry->getInterfaceImp()->getVertexBuffer()->updateTextureCoords(vertex_start,4);
 }
 
-Void NSDevilX::NSRenderSystem::NSGL4::COverlayRenderable::_updateElementDiffuse(IOverlayElementImp * element)
+Void NSDevilX::NSRenderSystem::NSGLES3::COverlayRenderable::_updateElementDiffuse(IOverlayElementImp * element)
 {
 	const auto vertex_start=mRectangles.get(element);
 	if(const_cast<const IOverlayElementImp*>(element)->getColourUnitState()
@@ -206,7 +206,7 @@ Void NSDevilX::NSRenderSystem::NSGL4::COverlayRenderable::_updateElementDiffuse(
 	mGeometry->getInterfaceImp()->getVertexBuffer()->updateDiffuses(vertex_start,4);
 }
 
-Void NSDevilX::NSRenderSystem::NSGL4::COverlayRenderable::_updateVertexArrayObject()
+Void NSDevilX::NSRenderSystem::NSGLES3::COverlayRenderable::_updateVertexArrayObject()
 {
 	if(mVertexArrayObject)
 	{

@@ -1,0 +1,239 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3Camera.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3ClearViewportProgram.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3ConstantBuffer.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3ConstantBufferContainer.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3ConstantBufferDescription.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3ConstantBufferDescriptionManager.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3DepthStencil.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3EntityImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3EntityMaterial.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3EntityPass.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3EntityRenderableImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3EntityTechnique.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3ForwardPixelShaderGenerator.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3ForwardVertexShaderGenerator.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3Geometry.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3IndexBufferImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3Light.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3OverlayManager.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3OverlayMaterial.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3OverlayMaterialManager.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3OverlayRenderable.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3Pass.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3Program.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GlES3RenderOperation.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3RenderTarget.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3RenderTargetImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3RenderTaskMT.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3RenderTaskST.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3Resource.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3SamplerObject.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3Scene.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3ShaderManager.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3SystemImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3Texture.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3TransformerImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3VertexBufferImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3Viewport.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3ViewportImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3WindowImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\Precompiler.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3BaseObject.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3Camera.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3ClearViewportProgram.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3ConstantBuffer.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3ConstantBufferContainer.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3ConstantBufferDescription.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3ConstantBufferDescriptionManager.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3DepthStencil.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3EntityImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3EntityMaterial.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3EntityPass.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3EntityRenderableImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3EntityTechnique.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3Enum.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3ForwardPixelShaderGenerator.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3ForwardVertexShaderGenerator.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3Geometry.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3IndexBufferImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3Light.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3OverlayManager.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3OverlayMaterial.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3OverlayMaterialManager.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3OverlayRenderable.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3Pass.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3Program.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3RenderOperation.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3RenderTarget.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3RenderTargetImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3RenderTask.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3RenderTaskMT.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3RenderTaskST.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3Resource.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3SamplerObject.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3Scene.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3ShaderManager.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3SystemImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3Texture.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3TransformerImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3Utility.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3VertexBufferImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3Viewport.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3ViewportImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3WindowImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\Precompiler.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{7E3A73F1-03D5-41E2-9EE8-59F18D5D31E0}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Layer1</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="Layer1_Debug.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="Layer1_Release.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="Layer1_Debug.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="Layer1_Release.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile />
+    <Link>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Layer1\Interface\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem_GLES3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Lib>
+      <AdditionalDependencies>libEGL.lib;libGLESv2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+    <PreBuildEvent>
+      <Command>call $(OutDir)ShaderCodeGenerator.2015.exe</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile />
+    <Link>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Layer1\Interface\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem_GLES3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Lib>
+      <AdditionalDependencies>libEGL.lib;libGLESv2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+    <PreBuildEvent>
+      <Command>call $(OutDir)ShaderCodeGenerator.2015.exe</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Layer1\Interface\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem_GLES3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>libEGL.lib;libGLESv2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+    <PreBuildEvent>
+      <Command>call $(OutDir)ShaderCodeGenerator.2015.exe</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Layer1\Interface\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem_GLES3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>libEGL.lib;libGLESv2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+    <PreBuildEvent>
+      <Command>call $(OutDir)ShaderCodeGenerator.2015.exe</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
