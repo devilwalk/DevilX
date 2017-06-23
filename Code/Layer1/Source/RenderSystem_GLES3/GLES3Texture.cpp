@@ -93,9 +93,13 @@ Boolean NSDevilX::NSRenderSystem::NSGLES3::CTexture2D::_recreateInternal()
 		default:
 			level_count=getInterfaceImp()->getMipmapCount()+1;
 		}
-		glCreateTextures(GL_TEXTURE_2D,1,&mInternal);
+		glGenTextures(1,&mInternal);
 		CUtility::checkGLError();
-		glTextureStorage2D(getInternal(),level_count,CUtility::getInternalFormat(getInterfaceImp()->getFormat()),getInterfaceImp()->getWidth(),getInterfaceImp()->getHeight());
+		glBindTexture(GL_TEXTURE_2D,getInternal());
+		CUtility::checkGLError();
+		glTexStorage2D(GL_TEXTURE_2D,level_count,CUtility::getInternalFormat(getInterfaceImp()->getFormat()),getInterfaceImp()->getWidth(),getInterfaceImp()->getHeight());
+		CUtility::checkGLError();
+		glBindTexture(GL_TEXTURE_2D,0);
 		CUtility::checkGLError();
 		return true;
 	}
@@ -133,31 +137,31 @@ Void NSDevilX::NSRenderSystem::NSGLES3::CTexture2D::_updateFromMemorySources(ITe
 {
 	if(subTexture->mMemoryPixels)
 	{
+		glBindTexture(GL_TEXTURE_2D,getInternal());
+		CUtility::checkGLError();
 		GLint texture_format=0;
-		glGetTextureLevelParameteriv(getInternal(),0,GL_TEXTURE_INTERNAL_FORMAT,&texture_format);
+		glGetTexLevelParameteriv(GL_TEXTURE_2D,0,GL_TEXTURE_INTERNAL_FORMAT,&texture_format);
 		CUtility::checkGLError();
 		switch(texture_format)
 		{
 		case GL_R8:
-			glTextureSubImage2D(getInternal(),subTexture->mMipmapLevel,0,0,subTexture->mWidth,subTexture->mHeight,GL_RED,GL_UNSIGNED_BYTE,subTexture->mMemoryPixels);
+			glTexSubImage2D(GL_TEXTURE_2D,subTexture->mMipmapLevel,0,0,subTexture->mWidth,subTexture->mHeight,GL_RED,GL_UNSIGNED_BYTE,subTexture->mMemoryPixels);
 			CUtility::checkGLError();
 			break;
 		case GL_RGBA8:
-			glTextureSubImage2D(getInternal(),subTexture->mMipmapLevel,0,0,subTexture->mWidth,subTexture->mHeight,GL_RGBA,GL_UNSIGNED_INT_8_8_8_8,subTexture->mMemoryPixels);
+			glTexSubImage2D(GL_TEXTURE_2D,subTexture->mMipmapLevel,0,0,subTexture->mWidth,subTexture->mHeight,GL_RGBA,GL_UNSIGNED_INT,subTexture->mMemoryPixels);
 			CUtility::checkGLError();
-			break;
-		case GL_COMPRESSED_RGBA_S3TC_DXT1_EXT:
-		case GL_COMPRESSED_RGBA_S3TC_DXT3_EXT:
-		case GL_COMPRESSED_RGBA_S3TC_DXT5_EXT:
 			break;
 		default:
 			assert(0);
 		}
 		if(getInterfaceImp()->isAutoMipmap())
 		{
-			glGenerateTextureMipmap(getInternal());
+			glGenerateMipmap(GL_TEXTURE_2D);
 			CUtility::checkGLError();
 		}
+		glBindTexture(GL_TEXTURE_2D,0);
+		CUtility::checkGLError();
 	}
 }
 

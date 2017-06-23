@@ -31,7 +31,11 @@ Void NSDevilX::NSRenderSystem::NSGLES3::CRenderTarget::setRT(UInt32 index,GLuint
 	_updateFrameBuffer();
 	if(0!=getFrameBuffer())
 	{
-		glNamedFramebufferTexture(getFrameBuffer(),GL_COLOR_ATTACHMENT0+index,texture,0);
+		glBindFramebuffer(GL_FRAMEBUFFER,getFrameBuffer());
+		CUtility::checkGLError();
+		glFramebufferTexture(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0+index,texture,0);
+		CUtility::checkGLError();
+		glBindFramebuffer(GL_FRAMEBUFFER,0);
 		CUtility::checkGLError();
 	}
 }
@@ -42,7 +46,11 @@ Void NSDevilX::NSRenderSystem::NSGLES3::CRenderTarget::setDS(GLuint ds)
 	_updateFrameBuffer();
 	if(0!=getFrameBuffer())
 	{
-		glNamedFramebufferRenderbuffer(getFrameBuffer(),GL_DEPTH_STENCIL_ATTACHMENT,GL_RENDERBUFFER,mDepthStencil);
+		glBindFramebuffer(GL_FRAMEBUFFER,getFrameBuffer());
+		CUtility::checkGLError();
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER,GL_DEPTH_STENCIL_ATTACHMENT,GL_RENDERBUFFER,mDepthStencil);
+		CUtility::checkGLError();
+		glBindFramebuffer(GL_FRAMEBUFFER,0);
 		CUtility::checkGLError();
 	}
 }
@@ -62,7 +70,11 @@ Void NSDevilX::NSRenderSystem::NSGLES3::CRenderTarget::clear(UInt32 index,const 
 	else
 	{
 		GLint fmt=0;
-		glGetTextureLevelParameteriv(mRenderTargets[index],0,GL_TEXTURE_INTERNAL_FORMAT,&fmt);
+		glBindTexture(GL_TEXTURE_2D,mRenderTargets[index]);
+		CUtility::checkGLError();
+		glGetTexLevelParameteriv(GL_TEXTURE_2D,0,GL_TEXTURE_INTERNAL_FORMAT,&fmt);
+		CUtility::checkGLError();
+		glBindTexture(GL_TEXTURE_2D,0);
 		CUtility::checkGLError();
 		switch(fmt)
 		{
@@ -95,7 +107,7 @@ Void NSDevilX::NSRenderSystem::NSGLES3::CRenderTarget::clear(Float depth,Int32 s
 	CUtility::checkGLError();
 	if(depth>=0)
 	{
-		glClearDepth(depth);
+		glClearDepthf(depth);
 		CUtility::checkGLError();
 	}
 	if(stencil>=0)

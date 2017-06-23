@@ -29,8 +29,8 @@ Void NSDevilX::NSRenderSystem::NSGLES3::CDepthStencil::reserve(UInt32 width,UInt
 	CUtility::checkGLError();
 	glBindRenderbuffer(GL_RENDERBUFFER,getInternal());
 	CUtility::checkGLError();
-	glBindRenderbuffer(GL_RENDERBUFFER,0);
+	glRenderbufferStorage(getInternal(),GL_DEPTH24_STENCIL8,width,height);
 	CUtility::checkGLError();
-	glNamedRenderbufferStorage(getInternal(),GL_DEPTH_STENCIL,width,height);
+	glBindRenderbuffer(GL_RENDERBUFFER,0);
 	CUtility::checkGLError();
 }

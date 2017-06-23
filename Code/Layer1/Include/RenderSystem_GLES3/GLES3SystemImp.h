@@ -36,7 +36,8 @@ namespace NSDevilX
 				};
 			protected:
 				CThreadPool * mRenderTaskThreadPool;
-				HGLRC mContext;
+				EGLDisplay mDisplay;
+				EGLContext mContext;
 				CShaderManager * mShaderManager;
 				NSGLESSL3_2::CDefinitionShader * mDefinitionShader;
 				CConstantBufferDescriptionManager * mConstantBufferDescriptionManager;

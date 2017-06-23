@@ -26,7 +26,7 @@ Void NSDevilX::NSRenderSystem::NSGLES3::COverlayManager::render()
 			if(renderable->render(ro))
 			{
 				ro.process();
-				ro.mScissorRects.clear();
+				ro.mScissorRect=nullptr;
 			}
 		}
 	}

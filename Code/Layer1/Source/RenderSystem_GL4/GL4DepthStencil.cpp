@@ -31,6 +31,6 @@ Void NSDevilX::NSRenderSystem::NSGL4::CDepthStencil::reserve(UInt32 width,UInt32
 	CUtility::checkGLError();
 	glBindRenderbuffer(GL_RENDERBUFFER,0);
 	CUtility::checkGLError();
-	glNamedRenderbufferStorage(getInternal(),GL_DEPTH_STENCIL,width,height);
+	glNamedRenderbufferStorage(getInternal(),GL_DEPTH24_STENCIL8,width,height);
 	CUtility::checkGLError();
 }

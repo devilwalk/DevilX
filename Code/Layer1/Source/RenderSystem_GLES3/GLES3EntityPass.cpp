@@ -294,11 +294,11 @@ Void NSDevilX::NSRenderSystem::NSGLES3::CEntityPass::_updateVertexArrayObject()
 			CUtility::checkGLError();
 			if(CEnum::EVertexBufferType_BlendIndex==vb_type)
 			{
-				glVertexAttribIPointer(i,CUtility::getComponmentSize(vb_type),CUtility::getFormat(vb_type),CUtility::getStride(vb_type),nullptr);
+				glVertexAttribIPointer(i,CUtility::getComponmentCount(vb_type),CUtility::getFormat(vb_type),CUtility::getStride(vb_type),nullptr);
 			}
 			else
 			{
-				glVertexAttribPointer(i,CUtility::getComponmentSize(vb_type),CUtility::getFormat(vb_type),CUtility::needNormalized(vb_type),CUtility::getStride(vb_type),nullptr);
+				glVertexAttribPointer(i,CUtility::getComponmentCount(vb_type),CUtility::getFormat(vb_type),CUtility::needNormalized(vb_type),CUtility::getStride(vb_type),nullptr);
 				CUtility::checkGLError();
 			}
 			glEnableVertexAttribArray(i);

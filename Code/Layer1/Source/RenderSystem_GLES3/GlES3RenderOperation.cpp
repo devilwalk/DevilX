@@ -18,15 +18,11 @@ NSDevilX::NSRenderSystem::NSGLES3::CRenderOperation::~CRenderOperation()
 
 Void NSDevilX::NSRenderSystem::NSGLES3::CRenderOperation::process()
 {
-	if(!mScissorRects.empty())
+	if(mScissorRect)
 	{
 		glEnable(GL_SCISSOR_TEST);
 		CUtility::checkGLError();
-	}
-	for(GLuint i=0;i<mScissorRects.size();++i)
-	{
-		auto const & rect=mScissorRects[i];
-		glScissorIndexed(i,rect.mLeft,rect.mTop,rect.mWidth,rect.mHeight);
+		glScissor(mScissorRect->mLeft,mScissorRect->mTop,mScissorRect->mWidth,mScissorRect->mHeight);
 		CUtility::checkGLError();
 	}
 	glUseProgram(mPass->getProgram()->getInternal());
@@ -41,9 +37,12 @@ Void NSDevilX::NSRenderSystem::NSGLES3::CRenderOperation::process()
 	}
 	for(UInt32 i=0;i<mPass->getPSTextures().size();++i)
 	{
-		glBindTextureUnit(i,mPass->getPSTextures()[i]->getInternal());
+		glActiveTexture(GL_TEXTURE0+i);
+		CUtility::checkGLError();
+		glBindTexture(GL_TEXTURE_2D,mPass->getPSTextures()[i]->getInternal());
 		CUtility::checkGLError();
 	}
+	CUtility::checkGLError();
 	for(UInt32 i=0;i<mPass->getPSTextures().size();++i)
 	{
 		glBindSampler(i,mPass->getPSSamplerStates()[0]->getInternal());
@@ -65,12 +64,12 @@ Void NSDevilX::NSRenderSystem::NSGLES3::CRenderOperation::process()
 		auto const & params=function_pair.second[0];
 		switch(params.size())
 		{
-		case 0:typedef Void *GLAPIENTRY f0();static_cast<f0*>(function)();break;
-		case 1:typedef Void *GLAPIENTRY f1(GLint);static_cast<f1*>(function)(params[0]);break;
-		case 2:typedef Void *GLAPIENTRY f2(GLint,GLint);static_cast<f2*>(function)(params[0],params[1]);break;
-		case 3:typedef Void *GLAPIENTRY f3(GLint,GLint,GLint);static_cast<f3*>(function)(params[0],params[1],params[2]);break;
-		case 4:typedef Void *GLAPIENTRY f4(GLint,GLint,GLint,GLint);static_cast<f4*>(function)(params[0],params[1],params[2],params[3]);break;
-		case 5:typedef Void *GLAPIENTRY f5(GLint,GLint,GLint,GLint,GLint);static_cast<f5*>(function)(params[0],params[1],params[2],params[3],params[4]);break;
+		case 0:typedef Void *GL_APIENTRY f0();static_cast<f0*>(function)();break;
+		case 1:typedef Void *GL_APIENTRY f1(GLint);static_cast<f1*>(function)(params[0]);break;
+		case 2:typedef Void *GL_APIENTRY f2(GLint,GLint);static_cast<f2*>(function)(params[0],params[1]);break;
+		case 3:typedef Void *GL_APIENTRY f3(GLint,GLint,GLint);static_cast<f3*>(function)(params[0],params[1],params[2]);break;
+		case 4:typedef Void *GL_APIENTRY f4(GLint,GLint,GLint,GLint);static_cast<f4*>(function)(params[0],params[1],params[2],params[3]);break;
+		case 5:typedef Void *GL_APIENTRY f5(GLint,GLint,GLint,GLint,GLint);static_cast<f5*>(function)(params[0],params[1],params[2],params[3],params[4]);break;
 		default:assert(0);
 		}
 		CUtility::checkGLError();
@@ -90,12 +89,12 @@ Void NSDevilX::NSRenderSystem::NSGLES3::CRenderOperation::process()
 		auto const & params=function_pair.second[1];
 		switch(params.size())
 		{
-		case 0:typedef Void *GLAPIENTRY f0();static_cast<f0*>(function)();break;
-		case 1:typedef Void *GLAPIENTRY f1(GLint);static_cast<f1*>(function)(params[0]);break;
-		case 2:typedef Void *GLAPIENTRY f2(GLint,GLint);static_cast<f2*>(function)(params[0],params[1]);break;
-		case 3:typedef Void *GLAPIENTRY f3(GLint,GLint,GLint);static_cast<f3*>(function)(params[0],params[1],params[2]);break;
-		case 4:typedef Void *GLAPIENTRY f4(GLint,GLint,GLint,GLint);static_cast<f4*>(function)(params[0],params[1],params[2],params[3]);break;
-		case 5:typedef Void *GLAPIENTRY f5(GLint,GLint,GLint,GLint,GLint);static_cast<f5*>(function)(params[0],params[1],params[2],params[3],params[4]);break;
+		case 0:typedef Void *GL_APIENTRY f0();static_cast<f0*>(function)();break;
+		case 1:typedef Void *GL_APIENTRY f1(GLint);static_cast<f1*>(function)(params[0]);break;
+		case 2:typedef Void *GL_APIENTRY f2(GLint,GLint);static_cast<f2*>(function)(params[0],params[1]);break;
+		case 3:typedef Void *GL_APIENTRY f3(GLint,GLint,GLint);static_cast<f3*>(function)(params[0],params[1],params[2]);break;
+		case 4:typedef Void *GL_APIENTRY f4(GLint,GLint,GLint,GLint);static_cast<f4*>(function)(params[0],params[1],params[2],params[3]);break;
+		case 5:typedef Void *GL_APIENTRY f5(GLint,GLint,GLint,GLint,GLint);static_cast<f5*>(function)(params[0],params[1],params[2],params[3],params[4]);break;
 		default:assert(0);
 		}
 		CUtility::checkGLError();
@@ -117,14 +116,18 @@ Void NSDevilX::NSRenderSystem::NSGLES3::CRenderOperation::process()
 	}
 	for(UInt32 i=0;i<mPass->getPSTextures().size();++i)
 	{
-		glBindTextureUnit(i,0);
+		glActiveTexture(GL_TEXTURE0+i);
+		CUtility::checkGLError();
+		glBindTexture(GL_TEXTURE_2D,0);
 		CUtility::checkGLError();
 	}
+	glActiveTexture(GL_TEXTURE0);
+	CUtility::checkGLError();
 	glBindBuffer(GL_UNIFORM_BUFFER,0);
 	CUtility::checkGLError();
 	glUseProgram(0);
 	CUtility::checkGLError();
-	if(!mScissorRects.empty())
+	if(mScissorRect)
 	{
 		glDisable(GL_SCISSOR_TEST);
 		CUtility::checkGLError();

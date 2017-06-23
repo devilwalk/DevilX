@@ -7,9 +7,13 @@ NSDevilX::NSRenderSystem::NSGLES3::CConstantBuffer::CConstantBuffer(CConstantBuf
 	:mDescription(description)
 	,mInternal(0)
 {
-	glCreateBuffers(1,&mInternal);
+	glGenBuffers(1,&mInternal);
 	CUtility::checkGLError();
-	glNamedBufferStorage(getInternal(),getDescription()->getSizeInBytes(),nullptr,GL_MAP_WRITE_BIT);
+	glBindBuffer(GL_UNIFORM_BUFFER,getInternal());
+	CUtility::checkGLError();
+	glBufferData(GL_UNIFORM_BUFFER,getDescription()->getSizeInBytes(),nullptr,GL_DYNAMIC_DRAW);
+	CUtility::checkGLError();
+	glBindBuffer(GL_UNIFORM_BUFFER,0);
 	CUtility::checkGLError();
 	mCache.resize(getDescription()->getSizeInBytes());
 }
@@ -26,10 +30,14 @@ Void NSDevilX::NSRenderSystem::NSGLES3::CConstantBuffer::submit()
 	auto & is_update_ref=mNeedUpdate.beginWrite();
 	if(is_update_ref)
 	{
-		auto dst=glMapNamedBuffer(getInternal(),GL_WRITE_ONLY);
+		glBindBuffer(GL_UNIFORM_BUFFER,getInternal());
+		CUtility::checkGLError();
+		auto dst=glMapBufferRange(GL_UNIFORM_BUFFER,0,mCache.size(),GL_MAP_WRITE_BIT|GL_MAP_INVALIDATE_BUFFER_BIT);
 		CUtility::checkGLError();
 		memcpy(dst,&mCache[0],mCache.size());
-		glUnmapNamedBuffer(getInternal());
+		glUnmapBuffer(GL_UNIFORM_BUFFER);
+		CUtility::checkGLError();
+		glBindBuffer(GL_UNIFORM_BUFFER,0);
 		CUtility::checkGLError();
 		is_update_ref=False;
 	}

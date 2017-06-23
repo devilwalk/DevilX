@@ -19,7 +19,9 @@ namespace NSDevilX
 					EMessage_EndResize
 				};
 			protected:
-				VoidPtr mDC;
+				EGLNativeDisplayType mDC;
+				EGLDisplay mDisplay;
+				EGLSurface mSurface;
 			public:
 				CWindowImp(IWindowImp * interfaceImp);
 				~CWindowImp();

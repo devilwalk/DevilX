@@ -124,11 +124,15 @@ Bool NSDevilX::NSRenderSystem::NSGLES3::CVertexBufferImp::_update(CEnum::EVertex
 	if(!getBuffers()[type])
 	{
 		GLuint buf=0;
-		glCreateBuffers(1,&buf);
+		glGenBuffers(1,&buf);
 		CUtility::checkGLError();
 		if(GL_INVALID_VALUE!=buf)
 		{
-			glNamedBufferStorage(buf,CUtility::getStride(type)*getInterfaceImp()->getCount(),data_ptr,GL_DYNAMIC_STORAGE_BIT);
+			glBindBuffer(GL_ARRAY_BUFFER,buf);
+			CUtility::checkGLError();
+			glBufferData(GL_ARRAY_BUFFER,CUtility::getStride(type)*getInterfaceImp()->getCount(),data_ptr,GL_STATIC_DRAW);
+			CUtility::checkGLError();
+			glBindBuffer(GL_ARRAY_BUFFER,0);
 			CUtility::checkGLError();
 		}
 		else
@@ -140,7 +144,11 @@ Bool NSDevilX::NSRenderSystem::NSGLES3::CVertexBufferImp::_update(CEnum::EVertex
 	}
 	else
 	{
-		glNamedBufferSubData(getBuffers()[type],0,CUtility::getStride(type)*getInterfaceImp()->getCount(),data_ptr);
+		glBindBuffer(GL_ARRAY_BUFFER,getBuffers()[type]);
+		CUtility::checkGLError();
+		glBufferSubData(GL_ARRAY_BUFFER,0,CUtility::getStride(type)*getInterfaceImp()->getCount(),data_ptr);
+		CUtility::checkGLError();
+		glBindBuffer(GL_ARRAY_BUFFER,0);
 		CUtility::checkGLError();
 	}
 	return True;

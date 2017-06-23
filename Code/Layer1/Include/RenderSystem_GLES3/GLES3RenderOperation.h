@@ -20,7 +20,7 @@ namespace NSDevilX
 				GLuint mVertexCount;
 				GLenum mPrimitiveTopology;
 				TVector<CConstantBuffer*> mConstantBuffers;
-				TVector<CUtility::SScissorRect> mScissorRects;
+				const CUtility::SScissorRect * mScissorRect;
 				CRenderOperation();
 				~CRenderOperation();
 				Void process();

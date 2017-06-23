@@ -28,6 +28,7 @@ namespace NSDevilX
 				TVector<UInt32> mIndices;
 				TList<UInt32> mFrees;
 				TMap<IOverlayElementImp*,UInt32> mRectangles;
+				CUtility::SScissorRect mScissorRect;
 			public:
 				COverlayRenderable(COverlayMaterial * material,const CFloat2 & scissorRectPosition,const CFloat2 & scissorRectSize,COverlayManager * manager);
 				~COverlayRenderable();

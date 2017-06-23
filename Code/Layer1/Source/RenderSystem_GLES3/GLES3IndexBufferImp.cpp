@@ -54,11 +54,15 @@ Void NSDevilX::NSRenderSystem::NSGLES3::CIndexBufferImp::_update()
 			if(!getBuffer())
 			{
 				GLuint buf=0;
-				glCreateBuffers(1,&buf);
+				glGenBuffers(1,&buf);
 				CUtility::checkGLError();
 				if(GL_INVALID_VALUE!=buf)
 				{
-					glNamedBufferStorage(buf,sizeof(UInt32)*getInterfaceImp()->getCount(),getInterfaceImp()->getIndices(),GL_DYNAMIC_STORAGE_BIT);
+					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,buf);
+					CUtility::checkGLError();
+					glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(UInt32)*getInterfaceImp()->getCount(),getInterfaceImp()->getIndices(),GL_STATIC_DRAW);
+					CUtility::checkGLError();
+					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
 					CUtility::checkGLError();
 				}
 				else
@@ -70,7 +74,11 @@ Void NSDevilX::NSRenderSystem::NSGLES3::CIndexBufferImp::_update()
 			}
 			else
 			{
-				glNamedBufferSubData(getBuffer(),0,sizeof(UInt32)*getInterfaceImp()->getCount(),getInterfaceImp()->getIndices());
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,getBuffer());
+				CUtility::checkGLError();
+				glBufferSubData(GL_ELEMENT_ARRAY_BUFFER,0,sizeof(UInt32)*getInterfaceImp()->getCount(),getInterfaceImp()->getIndices());
+				CUtility::checkGLError();
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
 				CUtility::checkGLError();
 			}
 			getInterfaceImp()->removeDirtyFlag(IIndexBufferImp::EDirtyFlag_Index);

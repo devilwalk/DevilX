@@ -33,12 +33,11 @@ Boolean NSDevilX::NSRenderSystem::NSGLES3::COverlayRenderable::render(CRenderOpe
 	ro.mVertexBufferOffset=0;
 	ro.mVertexCount=mGeometry->getInterfaceImp()->getVertexBuffer()->getCount();
 	ro.mPass=mMaterial;
-	CUtility::SScissorRect scissor_rect;
-	scissor_rect.mLeft=static_cast<GLint>(getScissorRectPosition().x*mManager->getViewport()->getRenderTarget()->getInternal()->getWidth());
-	scissor_rect.mTop=static_cast<GLint>(getScissorRectPosition().y*mManager->getViewport()->getRenderTarget()->getInternal()->getHeight());
-	scissor_rect.mWidth=mManager->getViewport()->getRenderTarget()->getInternal()->getWidth();
-	scissor_rect.mHeight=mManager->getViewport()->getRenderTarget()->getInternal()->getHeight();
-	ro.mScissorRects.push_back(scissor_rect);
+	mScissorRect.mLeft=static_cast<GLint>(getScissorRectPosition().x*mManager->getViewport()->getRenderTarget()->getInternal()->getWidth());
+	mScissorRect.mTop=static_cast<GLint>(getScissorRectPosition().y*mManager->getViewport()->getRenderTarget()->getInternal()->getHeight());
+	mScissorRect.mWidth=mManager->getViewport()->getRenderTarget()->getInternal()->getWidth();
+	mScissorRect.mHeight=mManager->getViewport()->getRenderTarget()->getInternal()->getHeight();
+	ro.mScissorRect=&mScissorRect;
 	return true;
 }
 

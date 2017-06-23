@@ -6,27 +6,32 @@ using namespace NSGLES3;
 NSDevilX::NSRenderSystem::NSGLES3::CWindowImp::CWindowImp(IWindowImp * interfaceImp)
 	:TInterfaceObject<IWindowImp>(interfaceImp)
 	,CRenderTargetImp(0)
-	,mDC(nullptr)
+	,mDC(EGL_DEFAULT_DISPLAY)
+	,mDisplay(EGL_NO_DISPLAY)
+	,mSurface(EGL_NO_SURFACE)
 {
 #if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
 	mDC=GetDC(static_cast<HWND>(getInterfaceImp()->getWindow()->getHandle()));
-	const Int32 attrib_list[]=
-	{
-		WGL_DRAW_TO_WINDOW_ARB,GL_TRUE,
-		WGL_SUPPORT_OPENGL_ARB,GL_TRUE,
-		WGL_DOUBLE_BUFFER_ARB,GL_TRUE,
-		WGL_ACCELERATION_ARB,WGL_FULL_ACCELERATION_ARB,
-		WGL_PIXEL_TYPE_ARB,WGL_TYPE_RGBA_ARB,
-		WGL_COLOR_BITS_ARB,32,
-		WGL_DEPTH_BITS_ARB,24,
-		WGL_STENCIL_BITS_ARB,8,
-		0,        //End
+#elif DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_X
+#endif
+	mDisplay=eglGetDisplay(getDC());
+	const EGLint config_attr[]={
+		EGL_RENDERABLE_TYPE,EGL_OPENGL_ES3_BIT,
+		EGL_SURFACE_TYPE,EGL_WINDOW_BIT,
+		EGL_RED_SIZE,8,
+		EGL_GREEN_SIZE,8,
+		EGL_BLUE_SIZE,8,
+		EGL_ALPHA_SIZE,8,
+		EGL_DEPTH_SIZE,24,
+		EGL_STENCIL_SIZE,8,
+		EGL_NONE
 	};
-	Int32 pixel_format=0;
-	UInt32 num_formats=0;
-	wglChoosePixelFormatARB(static_cast<HDC>(getDC()),attrib_list,nullptr,1,&pixel_format,&num_formats);
-	SetPixelFormat(static_cast<HDC>(getDC()),pixel_format,&PIXELFORMATDESCRIPTOR());
-	wglMakeCurrent(static_cast<HDC>(getDC()),CSystemImp::getSingleton().getContext());
+	EGLConfig config=0;
+	EGLint num_config=0;
+	eglChooseConfig(mDisplay,config_attr,&config,1,&num_config);
+	mSurface=eglCreateWindowSurface(mDisplay,config,static_cast<HWND>(getInterfaceImp()->getWindow()->getHandle()),nullptr);
+	eglMakeCurrent(mDisplay,mSurface,mSurface,CSystemImp::getSingleton().getContext());
+#if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
 	RECT rc;
 	GetClientRect(static_cast<HWND>(getInterfaceImp()->getWindow()->getHandle()),&rc);
 	getInternal()->setSize(rc.right-rc.left,rc.bottom-rc.top);
@@ -57,15 +62,9 @@ Void NSDevilX::NSRenderSystem::NSGLES3::CWindowImp::prepare()
 
 Void NSDevilX::NSRenderSystem::NSGLES3::CWindowImp::render()
 {
-#if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
-	wglMakeCurrent(static_cast<HDC>(getDC()),CSystemImp::getSingleton().getContext());
-#elif DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_X
-#endif
+	eglMakeCurrent(mDisplay,mSurface,mSurface,CSystemImp::getSingleton().getContext());
 	CRenderTargetImp::render();
-#if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
-	SwapBuffers(static_cast<HDC>(getDC()));
-#elif DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_X
-#endif
+	eglSwapBuffers(mDisplay,mSurface);
 }
 
 Void NSDevilX::NSRenderSystem::NSGLES3::CWindowImp::_resize()

@@ -173,7 +173,7 @@
       <SubSystem>Windows</SubSystem>
     </Link>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Layer1\Interface\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem_GLES3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Layer1\Interface\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\Shader;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem_GLES3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Lib>
       <AdditionalDependencies>libEGL.lib;libGLESv2.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -188,7 +188,7 @@
       <SubSystem>Windows</SubSystem>
     </Link>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Layer1\Interface\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem_GLES3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Layer1\Interface\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\Shader;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem_GLES3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Lib>
       <AdditionalDependencies>libEGL.lib;libGLESv2.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -201,7 +201,7 @@
     <ClCompile>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Layer1\Interface\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem_GLES3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Layer1\Interface\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\Shader;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem_GLES3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -219,7 +219,7 @@
     <ClCompile>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Layer1\Interface\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem_GLES3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Layer1\Interface\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\Shader;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem_GLES3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

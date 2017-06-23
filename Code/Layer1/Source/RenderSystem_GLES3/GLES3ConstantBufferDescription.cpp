@@ -30,14 +30,13 @@ NSDevilX::NSRenderSystem::NSGLES3::CConstantBufferDescription::CConstantBufferDe
 			const auto uniform_index=static_cast<GLuint>(uniform_indices[i]);
 			String constant_name;
 			constant_name.resize(100);
+			GLint uniform_size;
+			GLenum uniform_type;
 			GLsizei name_length;
-			glGetActiveUniformName(program,uniform_index,static_cast<GLsizei>(constant_name.size()),&name_length,&constant_name[0]);
+			glGetActiveUniform(program,uniform_index,static_cast<GLsizei>(constant_name.size()),&name_length,&uniform_size,&uniform_type,&constant_name[0]);
 			CUtility::checkGLError();
 			GLint uniform_offset=0;
 			glGetActiveUniformsiv(program,1,&uniform_index,GL_UNIFORM_OFFSET,&uniform_offset);
-			CUtility::checkGLError();
-			GLint uniform_type=0;
-			glGetActiveUniformsiv(program,1,&uniform_index,GL_UNIFORM_TYPE,&uniform_type);
 			CUtility::checkGLError();
 			SConstant constant;
 			constant.mName=constant_name.c_str();

@@ -39,65 +39,31 @@ NSDevilX::NSRenderSystem::NSGLES3::CSystemImp::CSystemImp()
 	auto wnd=CreateWindowEx(0,wnd_class.lpszClassName,_T("Temp"),WS_POPUP,0,0,1,1,nullptr,nullptr,wnd_class.hInstance,nullptr);
 	ShowWindow(wnd,SW_NORMAL);
 	UpdateWindow(wnd);
-	auto display=eglGetDisplay(EGL_DEFAULT_DISPLAY);
-	EGLint major=1,minor=5;
-	eglInitialize(display,&major,&minor);
-	PIXELFORMATDESCRIPTOR pfd=
-	{
-		sizeof(PIXELFORMATDESCRIPTOR),
-		1,
-		PFD_DRAW_TO_WINDOW|PFD_SUPPORT_OPENGL|PFD_DOUBLEBUFFER,    //Flags
-		PFD_TYPE_RGBA,            //The kind of framebuffer. RGBA or palette.
-		32,                        //Colordepth of the framebuffer.
-		0, 0, 0, 0, 0, 0,
-		0,
-		0,
-		0,
-		0, 0, 0, 0,
-		24,                        //Number of bits for the depthbuffer
-		8,                        //Number of bits for the stencilbuffer
-		0,                        //Number of Aux buffers in the framebuffer.
-		PFD_MAIN_PLANE,
-		0,
-		0, 0, 0
-	};
-	auto dc=GetDC(wnd);
-	auto fmt=ChoosePixelFormat(dc,&pfd);
-	SetPixelFormat(dc,fmt,&pfd);
-	auto context=wglCreateContext(dc);
-	wglMakeCurrent(dc,context);
-	glewInit();
-	wglMakeCurrent(nullptr,nullptr);
-	wglDeleteContext(context);
-	const Int32 attrib_list[]=
-	{
-		WGL_DRAW_TO_WINDOW_ARB,GL_TRUE,
-		WGL_SUPPORT_OPENGL_ARB,GL_TRUE,
-		WGL_DOUBLE_BUFFER_ARB,GL_TRUE,
-		WGL_ACCELERATION_ARB,WGL_FULL_ACCELERATION_ARB,
-		WGL_PIXEL_TYPE_ARB,WGL_TYPE_RGBA_ARB,
-		WGL_COLOR_BITS_ARB,32,
-		WGL_DEPTH_BITS_ARB,24,
-		WGL_STENCIL_BITS_ARB,8,
-		0,        //End
-	};
-	Int32 pixel_format=0;
-	UInt32 num_formats=0;
-	wglChoosePixelFormatARB(dc,attrib_list,nullptr,1,&pixel_format,&num_formats);
-	SetPixelFormat(dc,pixel_format,&PIXELFORMATDESCRIPTOR());
-	Int32 attrs[]=
-	{
-		WGL_CONTEXT_MAJOR_VERSION_ARB,4,
-		WGL_CONTEXT_MINOR_VERSION_ARB,5,
-		WGL_CONTEXT_PROFILE_MASK_ARB,WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
-#ifdef DEVILX_DEBUG
-		WGL_CONTEXT_FLAGS_ARB,WGL_CONTEXT_DEBUG_BIT_ARB,
+#elif DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_X
 #endif
-		0
+	mDisplay=eglGetDisplay(EGL_DEFAULT_DISPLAY);
+	EGLint major=1,minor=5;
+	eglInitialize(mDisplay,&major,&minor);
+	const EGLint config_attr[]={
+		EGL_RENDERABLE_TYPE,EGL_OPENGL_ES3_BIT,
+		EGL_SURFACE_TYPE,EGL_WINDOW_BIT,
+		EGL_RED_SIZE,8,
+		EGL_GREEN_SIZE,8,
+		EGL_BLUE_SIZE,8,
+		EGL_ALPHA_SIZE,8,
+		EGL_DEPTH_SIZE,24,
+		EGL_STENCIL_SIZE,8,
+		EGL_NONE
 	};
-	mContext=wglCreateContextAttribsARB(dc,nullptr,attrs);
-	wglMakeCurrent(dc,getContext());
-	ReleaseDC(wnd,dc);
+	EGLConfig config=0;
+	EGLint num_config=0;
+	eglChooseConfig(mDisplay,config_attr,&config,1,&num_config);
+	const EGLint context_attr[]={
+		EGL_CONTEXT_CLIENT_VERSION,3,
+		EGL_NONE
+	};
+	mContext=eglCreateContext(mDisplay,config,EGL_NO_CONTEXT,context_attr);
+#if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
 	DestroyWindow(wnd);
 #elif DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_X
 #endif
@@ -113,7 +79,7 @@ NSDevilX::NSRenderSystem::NSGLES3::CSystemImp::CSystemImp()
 #endif
 	mSamplerObjects.push_back(DEVILX_NEW CSamplerObject(SSamplerDescription()));
 	mShaderManager=DEVILX_NEW CShaderManager;
-	mDefinitionShader=DEVILX_NEW NSGLSL4_5::CDefinitionShader;
+	mDefinitionShader=DEVILX_NEW NSGLESSL3_2::CDefinitionShader;
 	mConstantBufferDescriptionManager=DEVILX_NEW CConstantBufferDescriptionManager;
 	mOverlayMaterialManager=DEVILX_NEW COverlayMaterialManager();
 	mClearViewportProgram=DEVILX_NEW CClearViewportProgram;
@@ -151,8 +117,8 @@ NSDevilX::NSRenderSystem::NSGLES3::CSystemImp::~CSystemImp()
 	mTransformers.destroyAll();
 	DEVILX_DELETE(mConstantBuffer);
 	mConstantBuffer=nullptr;
-	wglMakeCurrent(nullptr,nullptr);
-	wglDeleteContext(getContext());
+	eglMakeCurrent(mDisplay,EGL_NO_SURFACE,EGL_NO_SURFACE,EGL_NO_CONTEXT);
+	eglDestroyContext(mDisplay,getContext());
 	mInstanceByInternals.clear();
 }
 
