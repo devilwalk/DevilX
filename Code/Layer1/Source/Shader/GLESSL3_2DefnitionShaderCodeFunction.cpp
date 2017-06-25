@@ -4,7 +4,25 @@ using namespace NSRenderSystem;
 using namespace NSGLESSL3_2;
 NSDevilX::NSRenderSystem::NSGLESSL3_2::CDefinitionShader::CDefinitionShader()
 {
-cbLight="#include \"Defines.glsl\"\r\n\
+cbLight="#define float2 vec2\r\n\
+#define float3 vec3\r\n\
+#define float4 vec4\r\n\
+#define int2 ivec2\r\n\
+#define int3 ivec3\r\n\
+#define int4 ivec4\r\n\
+#define uint2 int2\r\n\
+#define uint3 int3\r\n\
+#define uint4 int4\r\n\
+#define float2x2 mat2\r\n\
+#define float2x3 mat2x3\r\n\
+#define float2x4 mat2x4\r\n\
+#define float3x2 mat3x2\r\n\
+#define float3x3 mat3\r\n\
+#define float3x4 mat3x4\r\n\
+#define float4x2 mat4x2\r\n\
+#define float4x3 mat4x3\r\n\
+#define float4x4 mat4\r\n\
+#define cbuffer layout(shared) uniform\r\n\
 cbuffer cbDirectionLight\r\n\
 {\r\n\
     float3 gDirectionLightDiffuseColour;\r\n\
@@ -31,7 +49,25 @@ cbuffer cbSpotLight\r\n\
     float gSpotLightReciprocalDeltaCosHalfAngle;\r\n\
 };\r\n\
 ";
-cbObject="#include \"Defines.glsl\"\r\n\
+cbObject="#define float2 vec2\r\n\
+#define float3 vec3\r\n\
+#define float4 vec4\r\n\
+#define int2 ivec2\r\n\
+#define int3 ivec3\r\n\
+#define int4 ivec4\r\n\
+#define uint2 int2\r\n\
+#define uint3 int3\r\n\
+#define uint4 int4\r\n\
+#define float2x2 mat2\r\n\
+#define float2x3 mat2x3\r\n\
+#define float2x4 mat2x4\r\n\
+#define float3x2 mat3x2\r\n\
+#define float3x3 mat3\r\n\
+#define float3x4 mat3x4\r\n\
+#define float4x2 mat4x2\r\n\
+#define float4x3 mat4x3\r\n\
+#define float4x4 mat4\r\n\
+#define cbuffer layout(shared) uniform\r\n\
 cbuffer cbObjectTransform\r\n\
 {\r\n\
     float4x4 gWorldMatrix;\r\n\
@@ -45,7 +81,25 @@ cbuffer cbObjectMaterial\r\n\
     float3 gEmissiveColour;\r\n\
     float gAlphaTestValue;\r\n\
 };";
-cbShadow="#include \"Defines.glsl\"\r\n\
+cbShadow="#define float2 vec2\r\n\
+#define float3 vec3\r\n\
+#define float4 vec4\r\n\
+#define int2 ivec2\r\n\
+#define int3 ivec3\r\n\
+#define int4 ivec4\r\n\
+#define uint2 int2\r\n\
+#define uint3 int3\r\n\
+#define uint4 int4\r\n\
+#define float2x2 mat2\r\n\
+#define float2x3 mat2x3\r\n\
+#define float2x4 mat2x4\r\n\
+#define float3x2 mat3x2\r\n\
+#define float3x3 mat3\r\n\
+#define float3x4 mat3x4\r\n\
+#define float4x2 mat4x2\r\n\
+#define float4x3 mat4x3\r\n\
+#define float4x4 mat4\r\n\
+#define cbuffer layout(shared) uniform\r\n\
 cbuffer cbShadowMap0\r\n\
 {\r\n\
     float4x4 gShadowMap0ViewProjectionMatrix;\r\n\
@@ -71,49 +125,271 @@ cbuffer cbShadowMap3\r\n\
     float gShadowMap3InverseFarDistance;\r\n\
 };\r\n\
 ";
-ClearViewportPixel="#include \"Function.glsl\"\r\n\
+ClearViewportPixel="#define float2 vec2\r\n\
+#define float3 vec3\r\n\
+#define float4 vec4\r\n\
+#define int2 ivec2\r\n\
+#define int3 ivec3\r\n\
+#define int4 ivec4\r\n\
+#define uint2 int2\r\n\
+#define uint3 int3\r\n\
+#define uint4 int4\r\n\
+#define float2x2 mat2\r\n\
+#define float2x3 mat2x3\r\n\
+#define float2x4 mat2x4\r\n\
+#define float3x2 mat3x2\r\n\
+#define float3x3 mat3\r\n\
+#define float3x4 mat3x4\r\n\
+#define float4x2 mat4x2\r\n\
+#define float4x3 mat4x3\r\n\
+#define float4x4 mat4\r\n\
+#define cbuffer layout(shared) uniform\r\n\
+float2 mul(float2 v,float2x2 m){return v*m;}\r\n\
+float3 mul(float2 v,float3x2 m){return v*m;}\r\n\
+float4 mul(float2 v,float4x2 m){return v*m;}\r\n\
+float2 mul(float3 v,float2x3 m){return v*m;}\r\n\
+float3 mul(float3 v,float3x3 m){return v*m;}\r\n\
+float4 mul(float3 v,float4x3 m){return v*m;}\r\n\
+float2 mul(float4 v,float2x4 m){return v*m;}\r\n\
+float3 mul(float4 v,float3x4 m){return v*m;}\r\n\
+float4 mul(float4 v,float4x4 m){return v*m;}\r\n\
+float2 mul(float2x2 m,float2 v){return m*v;}\r\n\
+float2 mul(float3x2 m,float3 v){return m*v;}\r\n\
+float2 mul(float4x2 m,float4 v){return m*v;}\r\n\
+float3 mul(float2x3 m,float2 v){return m*v;}\r\n\
+float3 mul(float3x3 m,float3 v){return m*v;}\r\n\
+float3 mul(float4x3 m,float4 v){return m*v;}\r\n\
+float4 mul(float2x4 m,float2 v){return m*v;}\r\n\
+float4 mul(float3x4 m,float3 v){return m*v;}\r\n\
+float4 mul(float4x4 m,float4 v){return m*v;}\r\n\
+float2x2 mul(float2x2 m0,float2x2 m1){return m0*m1;}\r\n\
+float3x3 mul(float3x3 m0,float3x3 m1){return m0*m1;}\r\n\
+float4x4 mul(float4x4 m0,float4x4 m1){return m0*m1;}\r\n\
+float saturate(float v){return clamp(v,0.0,1.0);}\r\n\
+float2 saturate(float2 v){return clamp(v,float2(0.0),float2(1.0));}\r\n\
+float3 saturate(float3 v){return clamp(v,float3(0.0),float3(1.0));}\r\n\
+float4 saturate(float4 v){return clamp(v,float4(0.0),float4(1.0));}\r\n\
+float getMaxComponment(float2 v)\r\n\
+{\r\n\
+	return max(v.x, v.y);\r\n\
+}\r\n\
+float getMaxComponment(float3 v)\r\n\
+{\r\n\
+	return max(v.x, getMaxComponment(v.yz));\r\n\
+}\r\n\
+float getMaxComponment(float4 v)\r\n\
+{\r\n\
+	return max(v.x, getMaxComponment(v.yzw));\r\n\
+}\r\n\
+float getMinComponment(float2 v)\r\n\
+{\r\n\
+	return min(v.x, v.y);\r\n\
+}\r\n\
+float getMinComponment(float3 v)\r\n\
+{\r\n\
+	return min(v.x, getMinComponment(v.yz));\r\n\
+}\r\n\
+float getMinComponment(float4 v)\r\n\
+{\r\n\
+	return min(v.x, getMinComponment(v.yzw));\r\n\
+}\r\n\
+float3 getCameraPosition(float4x4 viewMatrix)\r\n\
+{\r\n\
+	return -viewMatrix[3].xyz;\r\n\
+}\r\n\
+float3 getCameraDirection(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=float3x3(viewMatrix);\r\n\
+	return rot[2];\r\n\
+}\r\n\
+float3 getCameraUp(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=float3x3(viewMatrix);\r\n\
+	return rot[1];\r\n\
+}\r\n\
+float3 getCameraRight(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=float3x3(viewMatrix);\r\n\
+	return rot[0];\r\n\
+}\r\n\
+float calcDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
+{\r\n\
+	return saturate(dot(vertexToLightDirection,worldNormal));\r\n\
+}\r\n\
+float calcSpecularFactor(float3 vertexToLightDirection,float3 worldNormal,float3 worldPosition,float3 cameraPosition)\r\n\
+{\r\n\
+	float3 half_vector=normalize(normalize(cameraPosition-worldPosition)+vertexToLightDirection);\r\n\
+	float specular_factor=saturate(dot(half_vector,worldNormal));\r\n\
+	return specular_factor;\r\n\
+}\r\n\
+//return 1意味着无衰减，return 0意味着完全衰减\r\n\
+float calcFalloffFactor(float current, float begin, float reciprocalRange)\r\n\
+{\r\n\
+	float factor=saturate((current-begin)*reciprocalRange);\r\n\
+    return 1.0-factor*factor;\r\n\
+}\r\n\
+float3 encodeNormal(float3 normal)\r\n\
+{\r\n\
+	return normal / getMaxComponment(normal);\r\n\
+}\r\n\
+float2 getQuadPosition(int vertexID)\r\n\
+{\r\n\
+    float2 ret;\r\n\
+    if(0==vertexID)\r\n\
+        ret = float2(-1.0, 1.0);\r\n\
+    else if(1==vertexID)\r\n\
+        ret = float2(1.0, 1.0);\r\n\
+    else if(2==vertexID)\r\n\
+        ret = float2(-1.0, -1.0);\r\n\
+    else\r\n\
+        ret = float2(1.0, -1.0);\r\n\
+    return ret;\r\n\
+}\r\n\
 cbuffer cbClearViewport\r\n\
 {\r\n\
     float4 gClearColour0;\r\n\
     float4 gClearColour1;\r\n\
     float4 gClearColour2;\r\n\
     float4 gClearColour3;\r\n\
-    float4 gClearColour4;\r\n\
-    float4 gClearColour5;\r\n\
-    float4 gClearColour6;\r\n\
-    float4 gClearColour7;\r\n\
     float gClearDepth;\r\n\
 };\r\n\
 layout(location=0) out float4 outColour0;\r\n\
 layout(location=1) out float4 outColour1;\r\n\
 layout(location=2) out float4 outColour2;\r\n\
 layout(location=3) out float4 outColour3;\r\n\
-layout(location=4) out float4 outColour4;\r\n\
-layout(location=5) out float4 outColour5;\r\n\
-layout(location=6) out float4 outColour6;\r\n\
-layout(location=7) out float4 outColour7;\r\n\
 void main()\r\n\
 {\r\n\
     outColour0 = gClearColour0;\r\n\
     outColour1 = gClearColour1;\r\n\
     outColour2 = gClearColour2;\r\n\
     outColour3 = gClearColour3;\r\n\
-    outColour4 = gClearColour4;\r\n\
-    outColour5 = gClearColour5;\r\n\
-    outColour6 = gClearColour6;\r\n\
-    outColour7 = gClearColour7;\r\n\
 }";
-ClearViewportVertex="#include \"Function.glsl\"\r\n\
+ClearViewportVertex="#define float2 vec2\r\n\
+#define float3 vec3\r\n\
+#define float4 vec4\r\n\
+#define int2 ivec2\r\n\
+#define int3 ivec3\r\n\
+#define int4 ivec4\r\n\
+#define uint2 int2\r\n\
+#define uint3 int3\r\n\
+#define uint4 int4\r\n\
+#define float2x2 mat2\r\n\
+#define float2x3 mat2x3\r\n\
+#define float2x4 mat2x4\r\n\
+#define float3x2 mat3x2\r\n\
+#define float3x3 mat3\r\n\
+#define float3x4 mat3x4\r\n\
+#define float4x2 mat4x2\r\n\
+#define float4x3 mat4x3\r\n\
+#define float4x4 mat4\r\n\
+#define cbuffer layout(shared) uniform\r\n\
+float2 mul(float2 v,float2x2 m){return v*m;}\r\n\
+float3 mul(float2 v,float3x2 m){return v*m;}\r\n\
+float4 mul(float2 v,float4x2 m){return v*m;}\r\n\
+float2 mul(float3 v,float2x3 m){return v*m;}\r\n\
+float3 mul(float3 v,float3x3 m){return v*m;}\r\n\
+float4 mul(float3 v,float4x3 m){return v*m;}\r\n\
+float2 mul(float4 v,float2x4 m){return v*m;}\r\n\
+float3 mul(float4 v,float3x4 m){return v*m;}\r\n\
+float4 mul(float4 v,float4x4 m){return v*m;}\r\n\
+float2 mul(float2x2 m,float2 v){return m*v;}\r\n\
+float2 mul(float3x2 m,float3 v){return m*v;}\r\n\
+float2 mul(float4x2 m,float4 v){return m*v;}\r\n\
+float3 mul(float2x3 m,float2 v){return m*v;}\r\n\
+float3 mul(float3x3 m,float3 v){return m*v;}\r\n\
+float3 mul(float4x3 m,float4 v){return m*v;}\r\n\
+float4 mul(float2x4 m,float2 v){return m*v;}\r\n\
+float4 mul(float3x4 m,float3 v){return m*v;}\r\n\
+float4 mul(float4x4 m,float4 v){return m*v;}\r\n\
+float2x2 mul(float2x2 m0,float2x2 m1){return m0*m1;}\r\n\
+float3x3 mul(float3x3 m0,float3x3 m1){return m0*m1;}\r\n\
+float4x4 mul(float4x4 m0,float4x4 m1){return m0*m1;}\r\n\
+float saturate(float v){return clamp(v,0.0,1.0);}\r\n\
+float2 saturate(float2 v){return clamp(v,float2(0.0),float2(1.0));}\r\n\
+float3 saturate(float3 v){return clamp(v,float3(0.0),float3(1.0));}\r\n\
+float4 saturate(float4 v){return clamp(v,float4(0.0),float4(1.0));}\r\n\
+float getMaxComponment(float2 v)\r\n\
+{\r\n\
+	return max(v.x, v.y);\r\n\
+}\r\n\
+float getMaxComponment(float3 v)\r\n\
+{\r\n\
+	return max(v.x, getMaxComponment(v.yz));\r\n\
+}\r\n\
+float getMaxComponment(float4 v)\r\n\
+{\r\n\
+	return max(v.x, getMaxComponment(v.yzw));\r\n\
+}\r\n\
+float getMinComponment(float2 v)\r\n\
+{\r\n\
+	return min(v.x, v.y);\r\n\
+}\r\n\
+float getMinComponment(float3 v)\r\n\
+{\r\n\
+	return min(v.x, getMinComponment(v.yz));\r\n\
+}\r\n\
+float getMinComponment(float4 v)\r\n\
+{\r\n\
+	return min(v.x, getMinComponment(v.yzw));\r\n\
+}\r\n\
+float3 getCameraPosition(float4x4 viewMatrix)\r\n\
+{\r\n\
+	return -viewMatrix[3].xyz;\r\n\
+}\r\n\
+float3 getCameraDirection(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=float3x3(viewMatrix);\r\n\
+	return rot[2];\r\n\
+}\r\n\
+float3 getCameraUp(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=float3x3(viewMatrix);\r\n\
+	return rot[1];\r\n\
+}\r\n\
+float3 getCameraRight(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=float3x3(viewMatrix);\r\n\
+	return rot[0];\r\n\
+}\r\n\
+float calcDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
+{\r\n\
+	return saturate(dot(vertexToLightDirection,worldNormal));\r\n\
+}\r\n\
+float calcSpecularFactor(float3 vertexToLightDirection,float3 worldNormal,float3 worldPosition,float3 cameraPosition)\r\n\
+{\r\n\
+	float3 half_vector=normalize(normalize(cameraPosition-worldPosition)+vertexToLightDirection);\r\n\
+	float specular_factor=saturate(dot(half_vector,worldNormal));\r\n\
+	return specular_factor;\r\n\
+}\r\n\
+//return 1意味着无衰减，return 0意味着完全衰减\r\n\
+float calcFalloffFactor(float current, float begin, float reciprocalRange)\r\n\
+{\r\n\
+	float factor=saturate((current-begin)*reciprocalRange);\r\n\
+    return 1.0-factor*factor;\r\n\
+}\r\n\
+float3 encodeNormal(float3 normal)\r\n\
+{\r\n\
+	return normal / getMaxComponment(normal);\r\n\
+}\r\n\
+float2 getQuadPosition(int vertexID)\r\n\
+{\r\n\
+    float2 ret;\r\n\
+    if(0==vertexID)\r\n\
+        ret = float2(-1.0, 1.0);\r\n\
+    else if(1==vertexID)\r\n\
+        ret = float2(1.0, 1.0);\r\n\
+    else if(2==vertexID)\r\n\
+        ret = float2(-1.0, -1.0);\r\n\
+    else\r\n\
+        ret = float2(1.0, -1.0);\r\n\
+    return ret;\r\n\
+}\r\n\
 cbuffer cbClearViewport\r\n\
 {\r\n\
     float4 gClearColour0;\r\n\
     float4 gClearColour1;\r\n\
     float4 gClearColour2;\r\n\
     float4 gClearColour3;\r\n\
-    float4 gClearColour4;\r\n\
-    float4 gClearColour5;\r\n\
-    float4 gClearColour6;\r\n\
-    float4 gClearColour7;\r\n\
     float gClearDepth;\r\n\
 };\r\n\
 void main()\r\n\
@@ -122,7 +398,25 @@ void main()\r\n\
     gl_Position = float4(getQuadPosition(gl_VertexID), depth, 1.0);\r\n\
 }\r\n\
 ";
-ConstantBuffer="#include \"Defines.glsl\"\r\n\
+ConstantBuffer="#define float2 vec2\r\n\
+#define float3 vec3\r\n\
+#define float4 vec4\r\n\
+#define int2 ivec2\r\n\
+#define int3 ivec3\r\n\
+#define int4 ivec4\r\n\
+#define uint2 int2\r\n\
+#define uint3 int3\r\n\
+#define uint4 int4\r\n\
+#define float2x2 mat2\r\n\
+#define float2x3 mat2x3\r\n\
+#define float2x4 mat2x4\r\n\
+#define float3x2 mat3x2\r\n\
+#define float3x3 mat3\r\n\
+#define float3x4 mat3x4\r\n\
+#define float4x2 mat4x2\r\n\
+#define float4x3 mat4x3\r\n\
+#define float4x4 mat4\r\n\
+#define cbuffer layout(shared) uniform\r\n\
 cbuffer cbSystem\r\n\
 {\r\n\
     float gFrameTimeInSeconds;\r\n\
@@ -153,7 +447,126 @@ cbuffer cbScene\r\n\
 {\r\n\
     float3 gAmbientColour;\r\n\
 };";
-DeferredLightingGBufferShader="#include \"Function.glsl\"\r\n\
+DeferredLightingGBufferShader="#define float2 vec2\r\n\
+#define float3 vec3\r\n\
+#define float4 vec4\r\n\
+#define int2 ivec2\r\n\
+#define int3 ivec3\r\n\
+#define int4 ivec4\r\n\
+#define uint2 int2\r\n\
+#define uint3 int3\r\n\
+#define uint4 int4\r\n\
+#define float2x2 mat2\r\n\
+#define float2x3 mat2x3\r\n\
+#define float2x4 mat2x4\r\n\
+#define float3x2 mat3x2\r\n\
+#define float3x3 mat3\r\n\
+#define float3x4 mat3x4\r\n\
+#define float4x2 mat4x2\r\n\
+#define float4x3 mat4x3\r\n\
+#define float4x4 mat4\r\n\
+#define cbuffer layout(shared) uniform\r\n\
+float2 mul(float2 v,float2x2 m){return v*m;}\r\n\
+float3 mul(float2 v,float3x2 m){return v*m;}\r\n\
+float4 mul(float2 v,float4x2 m){return v*m;}\r\n\
+float2 mul(float3 v,float2x3 m){return v*m;}\r\n\
+float3 mul(float3 v,float3x3 m){return v*m;}\r\n\
+float4 mul(float3 v,float4x3 m){return v*m;}\r\n\
+float2 mul(float4 v,float2x4 m){return v*m;}\r\n\
+float3 mul(float4 v,float3x4 m){return v*m;}\r\n\
+float4 mul(float4 v,float4x4 m){return v*m;}\r\n\
+float2 mul(float2x2 m,float2 v){return m*v;}\r\n\
+float2 mul(float3x2 m,float3 v){return m*v;}\r\n\
+float2 mul(float4x2 m,float4 v){return m*v;}\r\n\
+float3 mul(float2x3 m,float2 v){return m*v;}\r\n\
+float3 mul(float3x3 m,float3 v){return m*v;}\r\n\
+float3 mul(float4x3 m,float4 v){return m*v;}\r\n\
+float4 mul(float2x4 m,float2 v){return m*v;}\r\n\
+float4 mul(float3x4 m,float3 v){return m*v;}\r\n\
+float4 mul(float4x4 m,float4 v){return m*v;}\r\n\
+float2x2 mul(float2x2 m0,float2x2 m1){return m0*m1;}\r\n\
+float3x3 mul(float3x3 m0,float3x3 m1){return m0*m1;}\r\n\
+float4x4 mul(float4x4 m0,float4x4 m1){return m0*m1;}\r\n\
+float saturate(float v){return clamp(v,0.0,1.0);}\r\n\
+float2 saturate(float2 v){return clamp(v,float2(0.0),float2(1.0));}\r\n\
+float3 saturate(float3 v){return clamp(v,float3(0.0),float3(1.0));}\r\n\
+float4 saturate(float4 v){return clamp(v,float4(0.0),float4(1.0));}\r\n\
+float getMaxComponment(float2 v)\r\n\
+{\r\n\
+	return max(v.x, v.y);\r\n\
+}\r\n\
+float getMaxComponment(float3 v)\r\n\
+{\r\n\
+	return max(v.x, getMaxComponment(v.yz));\r\n\
+}\r\n\
+float getMaxComponment(float4 v)\r\n\
+{\r\n\
+	return max(v.x, getMaxComponment(v.yzw));\r\n\
+}\r\n\
+float getMinComponment(float2 v)\r\n\
+{\r\n\
+	return min(v.x, v.y);\r\n\
+}\r\n\
+float getMinComponment(float3 v)\r\n\
+{\r\n\
+	return min(v.x, getMinComponment(v.yz));\r\n\
+}\r\n\
+float getMinComponment(float4 v)\r\n\
+{\r\n\
+	return min(v.x, getMinComponment(v.yzw));\r\n\
+}\r\n\
+float3 getCameraPosition(float4x4 viewMatrix)\r\n\
+{\r\n\
+	return -viewMatrix[3].xyz;\r\n\
+}\r\n\
+float3 getCameraDirection(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=float3x3(viewMatrix);\r\n\
+	return rot[2];\r\n\
+}\r\n\
+float3 getCameraUp(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=float3x3(viewMatrix);\r\n\
+	return rot[1];\r\n\
+}\r\n\
+float3 getCameraRight(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=float3x3(viewMatrix);\r\n\
+	return rot[0];\r\n\
+}\r\n\
+float calcDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
+{\r\n\
+	return saturate(dot(vertexToLightDirection,worldNormal));\r\n\
+}\r\n\
+float calcSpecularFactor(float3 vertexToLightDirection,float3 worldNormal,float3 worldPosition,float3 cameraPosition)\r\n\
+{\r\n\
+	float3 half_vector=normalize(normalize(cameraPosition-worldPosition)+vertexToLightDirection);\r\n\
+	float specular_factor=saturate(dot(half_vector,worldNormal));\r\n\
+	return specular_factor;\r\n\
+}\r\n\
+//return 1意味着无衰减，return 0意味着完全衰减\r\n\
+float calcFalloffFactor(float current, float begin, float reciprocalRange)\r\n\
+{\r\n\
+	float factor=saturate((current-begin)*reciprocalRange);\r\n\
+    return 1.0-factor*factor;\r\n\
+}\r\n\
+float3 encodeNormal(float3 normal)\r\n\
+{\r\n\
+	return normal / getMaxComponment(normal);\r\n\
+}\r\n\
+float2 getQuadPosition(int vertexID)\r\n\
+{\r\n\
+    float2 ret;\r\n\
+    if(0==vertexID)\r\n\
+        ret = float2(-1.0, 1.0);\r\n\
+    else if(1==vertexID)\r\n\
+        ret = float2(1.0, 1.0);\r\n\
+    else if(2==vertexID)\r\n\
+        ret = float2(-1.0, -1.0);\r\n\
+    else\r\n\
+        ret = float2(1.0, -1.0);\r\n\
+    return ret;\r\n\
+}\r\n\
 #ifndef OUTPUT_WORLD_TANGENT\r\n\
 #define OUTPUT_WORLD_TANGENT 0\r\n\
 #endif\r\n\
@@ -239,7 +652,126 @@ SPixelShaderOutput psMain(SVertexShaderOutput input)\r\n\
 	output.mDepth = input.mPosition.w * gInverseFarDistance;\r\n\
 	return output;\r\n\
 }";
-DeferredShadingGBufferShader="#include \"Function.glsl\"\r\n\
+DeferredShadingGBufferShader="#define float2 vec2\r\n\
+#define float3 vec3\r\n\
+#define float4 vec4\r\n\
+#define int2 ivec2\r\n\
+#define int3 ivec3\r\n\
+#define int4 ivec4\r\n\
+#define uint2 int2\r\n\
+#define uint3 int3\r\n\
+#define uint4 int4\r\n\
+#define float2x2 mat2\r\n\
+#define float2x3 mat2x3\r\n\
+#define float2x4 mat2x4\r\n\
+#define float3x2 mat3x2\r\n\
+#define float3x3 mat3\r\n\
+#define float3x4 mat3x4\r\n\
+#define float4x2 mat4x2\r\n\
+#define float4x3 mat4x3\r\n\
+#define float4x4 mat4\r\n\
+#define cbuffer layout(shared) uniform\r\n\
+float2 mul(float2 v,float2x2 m){return v*m;}\r\n\
+float3 mul(float2 v,float3x2 m){return v*m;}\r\n\
+float4 mul(float2 v,float4x2 m){return v*m;}\r\n\
+float2 mul(float3 v,float2x3 m){return v*m;}\r\n\
+float3 mul(float3 v,float3x3 m){return v*m;}\r\n\
+float4 mul(float3 v,float4x3 m){return v*m;}\r\n\
+float2 mul(float4 v,float2x4 m){return v*m;}\r\n\
+float3 mul(float4 v,float3x4 m){return v*m;}\r\n\
+float4 mul(float4 v,float4x4 m){return v*m;}\r\n\
+float2 mul(float2x2 m,float2 v){return m*v;}\r\n\
+float2 mul(float3x2 m,float3 v){return m*v;}\r\n\
+float2 mul(float4x2 m,float4 v){return m*v;}\r\n\
+float3 mul(float2x3 m,float2 v){return m*v;}\r\n\
+float3 mul(float3x3 m,float3 v){return m*v;}\r\n\
+float3 mul(float4x3 m,float4 v){return m*v;}\r\n\
+float4 mul(float2x4 m,float2 v){return m*v;}\r\n\
+float4 mul(float3x4 m,float3 v){return m*v;}\r\n\
+float4 mul(float4x4 m,float4 v){return m*v;}\r\n\
+float2x2 mul(float2x2 m0,float2x2 m1){return m0*m1;}\r\n\
+float3x3 mul(float3x3 m0,float3x3 m1){return m0*m1;}\r\n\
+float4x4 mul(float4x4 m0,float4x4 m1){return m0*m1;}\r\n\
+float saturate(float v){return clamp(v,0.0,1.0);}\r\n\
+float2 saturate(float2 v){return clamp(v,float2(0.0),float2(1.0));}\r\n\
+float3 saturate(float3 v){return clamp(v,float3(0.0),float3(1.0));}\r\n\
+float4 saturate(float4 v){return clamp(v,float4(0.0),float4(1.0));}\r\n\
+float getMaxComponment(float2 v)\r\n\
+{\r\n\
+	return max(v.x, v.y);\r\n\
+}\r\n\
+float getMaxComponment(float3 v)\r\n\
+{\r\n\
+	return max(v.x, getMaxComponment(v.yz));\r\n\
+}\r\n\
+float getMaxComponment(float4 v)\r\n\
+{\r\n\
+	return max(v.x, getMaxComponment(v.yzw));\r\n\
+}\r\n\
+float getMinComponment(float2 v)\r\n\
+{\r\n\
+	return min(v.x, v.y);\r\n\
+}\r\n\
+float getMinComponment(float3 v)\r\n\
+{\r\n\
+	return min(v.x, getMinComponment(v.yz));\r\n\
+}\r\n\
+float getMinComponment(float4 v)\r\n\
+{\r\n\
+	return min(v.x, getMinComponment(v.yzw));\r\n\
+}\r\n\
+float3 getCameraPosition(float4x4 viewMatrix)\r\n\
+{\r\n\
+	return -viewMatrix[3].xyz;\r\n\
+}\r\n\
+float3 getCameraDirection(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=float3x3(viewMatrix);\r\n\
+	return rot[2];\r\n\
+}\r\n\
+float3 getCameraUp(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=float3x3(viewMatrix);\r\n\
+	return rot[1];\r\n\
+}\r\n\
+float3 getCameraRight(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=float3x3(viewMatrix);\r\n\
+	return rot[0];\r\n\
+}\r\n\
+float calcDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
+{\r\n\
+	return saturate(dot(vertexToLightDirection,worldNormal));\r\n\
+}\r\n\
+float calcSpecularFactor(float3 vertexToLightDirection,float3 worldNormal,float3 worldPosition,float3 cameraPosition)\r\n\
+{\r\n\
+	float3 half_vector=normalize(normalize(cameraPosition-worldPosition)+vertexToLightDirection);\r\n\
+	float specular_factor=saturate(dot(half_vector,worldNormal));\r\n\
+	return specular_factor;\r\n\
+}\r\n\
+//return 1意味着无衰减，return 0意味着完全衰减\r\n\
+float calcFalloffFactor(float current, float begin, float reciprocalRange)\r\n\
+{\r\n\
+	float factor=saturate((current-begin)*reciprocalRange);\r\n\
+    return 1.0-factor*factor;\r\n\
+}\r\n\
+float3 encodeNormal(float3 normal)\r\n\
+{\r\n\
+	return normal / getMaxComponment(normal);\r\n\
+}\r\n\
+float2 getQuadPosition(int vertexID)\r\n\
+{\r\n\
+    float2 ret;\r\n\
+    if(0==vertexID)\r\n\
+        ret = float2(-1.0, 1.0);\r\n\
+    else if(1==vertexID)\r\n\
+        ret = float2(1.0, 1.0);\r\n\
+    else if(2==vertexID)\r\n\
+        ret = float2(-1.0, -1.0);\r\n\
+    else\r\n\
+        ret = float2(1.0, -1.0);\r\n\
+    return ret;\r\n\
+}\r\n\
 #ifndef OUTPUT_WORLD_TANGENT\r\n\
 #define OUTPUT_WORLD_TANGENT 0\r\n\
 #endif\r\n\
@@ -354,7 +886,126 @@ Defines="#define float2 vec2\r\n\
 #define float4x3 mat4x3\r\n\
 #define float4x4 mat4\r\n\
 #define cbuffer layout(shared) uniform";
-ForwardShaderCommon="#include \"Function.glsl\"\r\n\
+ForwardShaderCommon="#define float2 vec2\r\n\
+#define float3 vec3\r\n\
+#define float4 vec4\r\n\
+#define int2 ivec2\r\n\
+#define int3 ivec3\r\n\
+#define int4 ivec4\r\n\
+#define uint2 int2\r\n\
+#define uint3 int3\r\n\
+#define uint4 int4\r\n\
+#define float2x2 mat2\r\n\
+#define float2x3 mat2x3\r\n\
+#define float2x4 mat2x4\r\n\
+#define float3x2 mat3x2\r\n\
+#define float3x3 mat3\r\n\
+#define float3x4 mat3x4\r\n\
+#define float4x2 mat4x2\r\n\
+#define float4x3 mat4x3\r\n\
+#define float4x4 mat4\r\n\
+#define cbuffer layout(shared) uniform\r\n\
+float2 mul(float2 v,float2x2 m){return v*m;}\r\n\
+float3 mul(float2 v,float3x2 m){return v*m;}\r\n\
+float4 mul(float2 v,float4x2 m){return v*m;}\r\n\
+float2 mul(float3 v,float2x3 m){return v*m;}\r\n\
+float3 mul(float3 v,float3x3 m){return v*m;}\r\n\
+float4 mul(float3 v,float4x3 m){return v*m;}\r\n\
+float2 mul(float4 v,float2x4 m){return v*m;}\r\n\
+float3 mul(float4 v,float3x4 m){return v*m;}\r\n\
+float4 mul(float4 v,float4x4 m){return v*m;}\r\n\
+float2 mul(float2x2 m,float2 v){return m*v;}\r\n\
+float2 mul(float3x2 m,float3 v){return m*v;}\r\n\
+float2 mul(float4x2 m,float4 v){return m*v;}\r\n\
+float3 mul(float2x3 m,float2 v){return m*v;}\r\n\
+float3 mul(float3x3 m,float3 v){return m*v;}\r\n\
+float3 mul(float4x3 m,float4 v){return m*v;}\r\n\
+float4 mul(float2x4 m,float2 v){return m*v;}\r\n\
+float4 mul(float3x4 m,float3 v){return m*v;}\r\n\
+float4 mul(float4x4 m,float4 v){return m*v;}\r\n\
+float2x2 mul(float2x2 m0,float2x2 m1){return m0*m1;}\r\n\
+float3x3 mul(float3x3 m0,float3x3 m1){return m0*m1;}\r\n\
+float4x4 mul(float4x4 m0,float4x4 m1){return m0*m1;}\r\n\
+float saturate(float v){return clamp(v,0.0,1.0);}\r\n\
+float2 saturate(float2 v){return clamp(v,float2(0.0),float2(1.0));}\r\n\
+float3 saturate(float3 v){return clamp(v,float3(0.0),float3(1.0));}\r\n\
+float4 saturate(float4 v){return clamp(v,float4(0.0),float4(1.0));}\r\n\
+float getMaxComponment(float2 v)\r\n\
+{\r\n\
+	return max(v.x, v.y);\r\n\
+}\r\n\
+float getMaxComponment(float3 v)\r\n\
+{\r\n\
+	return max(v.x, getMaxComponment(v.yz));\r\n\
+}\r\n\
+float getMaxComponment(float4 v)\r\n\
+{\r\n\
+	return max(v.x, getMaxComponment(v.yzw));\r\n\
+}\r\n\
+float getMinComponment(float2 v)\r\n\
+{\r\n\
+	return min(v.x, v.y);\r\n\
+}\r\n\
+float getMinComponment(float3 v)\r\n\
+{\r\n\
+	return min(v.x, getMinComponment(v.yz));\r\n\
+}\r\n\
+float getMinComponment(float4 v)\r\n\
+{\r\n\
+	return min(v.x, getMinComponment(v.yzw));\r\n\
+}\r\n\
+float3 getCameraPosition(float4x4 viewMatrix)\r\n\
+{\r\n\
+	return -viewMatrix[3].xyz;\r\n\
+}\r\n\
+float3 getCameraDirection(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=float3x3(viewMatrix);\r\n\
+	return rot[2];\r\n\
+}\r\n\
+float3 getCameraUp(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=float3x3(viewMatrix);\r\n\
+	return rot[1];\r\n\
+}\r\n\
+float3 getCameraRight(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=float3x3(viewMatrix);\r\n\
+	return rot[0];\r\n\
+}\r\n\
+float calcDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
+{\r\n\
+	return saturate(dot(vertexToLightDirection,worldNormal));\r\n\
+}\r\n\
+float calcSpecularFactor(float3 vertexToLightDirection,float3 worldNormal,float3 worldPosition,float3 cameraPosition)\r\n\
+{\r\n\
+	float3 half_vector=normalize(normalize(cameraPosition-worldPosition)+vertexToLightDirection);\r\n\
+	float specular_factor=saturate(dot(half_vector,worldNormal));\r\n\
+	return specular_factor;\r\n\
+}\r\n\
+//return 1意味着无衰减，return 0意味着完全衰减\r\n\
+float calcFalloffFactor(float current, float begin, float reciprocalRange)\r\n\
+{\r\n\
+	float factor=saturate((current-begin)*reciprocalRange);\r\n\
+    return 1.0-factor*factor;\r\n\
+}\r\n\
+float3 encodeNormal(float3 normal)\r\n\
+{\r\n\
+	return normal / getMaxComponment(normal);\r\n\
+}\r\n\
+float2 getQuadPosition(int vertexID)\r\n\
+{\r\n\
+    float2 ret;\r\n\
+    if(0==vertexID)\r\n\
+        ret = float2(-1.0, 1.0);\r\n\
+    else if(1==vertexID)\r\n\
+        ret = float2(1.0, 1.0);\r\n\
+    else if(2==vertexID)\r\n\
+        ret = float2(-1.0, -1.0);\r\n\
+    else\r\n\
+        ret = float2(1.0, -1.0);\r\n\
+    return ret;\r\n\
+}\r\n\
 #ifndef OUTPUT_WORLD_POSITION\r\n\
 #define OUTPUT_WORLD_POSITION 0\r\n\
 #endif\r\n\
@@ -370,7 +1021,141 @@ ForwardShaderCommon="#include \"Function.glsl\"\r\n\
 #ifndef OUTPUT_DIFFUSE\r\n\
 #define OUTPU_DIFFUSE 0\r\n\
 #endif";
-ForwardShaderPixel="#include \"ForwardShaderCommon.glsl\"\r\n\
+ForwardShaderPixel="#define float2 vec2\r\n\
+#define float3 vec3\r\n\
+#define float4 vec4\r\n\
+#define int2 ivec2\r\n\
+#define int3 ivec3\r\n\
+#define int4 ivec4\r\n\
+#define uint2 int2\r\n\
+#define uint3 int3\r\n\
+#define uint4 int4\r\n\
+#define float2x2 mat2\r\n\
+#define float2x3 mat2x3\r\n\
+#define float2x4 mat2x4\r\n\
+#define float3x2 mat3x2\r\n\
+#define float3x3 mat3\r\n\
+#define float3x4 mat3x4\r\n\
+#define float4x2 mat4x2\r\n\
+#define float4x3 mat4x3\r\n\
+#define float4x4 mat4\r\n\
+#define cbuffer layout(shared) uniform\r\n\
+float2 mul(float2 v,float2x2 m){return v*m;}\r\n\
+float3 mul(float2 v,float3x2 m){return v*m;}\r\n\
+float4 mul(float2 v,float4x2 m){return v*m;}\r\n\
+float2 mul(float3 v,float2x3 m){return v*m;}\r\n\
+float3 mul(float3 v,float3x3 m){return v*m;}\r\n\
+float4 mul(float3 v,float4x3 m){return v*m;}\r\n\
+float2 mul(float4 v,float2x4 m){return v*m;}\r\n\
+float3 mul(float4 v,float3x4 m){return v*m;}\r\n\
+float4 mul(float4 v,float4x4 m){return v*m;}\r\n\
+float2 mul(float2x2 m,float2 v){return m*v;}\r\n\
+float2 mul(float3x2 m,float3 v){return m*v;}\r\n\
+float2 mul(float4x2 m,float4 v){return m*v;}\r\n\
+float3 mul(float2x3 m,float2 v){return m*v;}\r\n\
+float3 mul(float3x3 m,float3 v){return m*v;}\r\n\
+float3 mul(float4x3 m,float4 v){return m*v;}\r\n\
+float4 mul(float2x4 m,float2 v){return m*v;}\r\n\
+float4 mul(float3x4 m,float3 v){return m*v;}\r\n\
+float4 mul(float4x4 m,float4 v){return m*v;}\r\n\
+float2x2 mul(float2x2 m0,float2x2 m1){return m0*m1;}\r\n\
+float3x3 mul(float3x3 m0,float3x3 m1){return m0*m1;}\r\n\
+float4x4 mul(float4x4 m0,float4x4 m1){return m0*m1;}\r\n\
+float saturate(float v){return clamp(v,0.0,1.0);}\r\n\
+float2 saturate(float2 v){return clamp(v,float2(0.0),float2(1.0));}\r\n\
+float3 saturate(float3 v){return clamp(v,float3(0.0),float3(1.0));}\r\n\
+float4 saturate(float4 v){return clamp(v,float4(0.0),float4(1.0));}\r\n\
+float getMaxComponment(float2 v)\r\n\
+{\r\n\
+	return max(v.x, v.y);\r\n\
+}\r\n\
+float getMaxComponment(float3 v)\r\n\
+{\r\n\
+	return max(v.x, getMaxComponment(v.yz));\r\n\
+}\r\n\
+float getMaxComponment(float4 v)\r\n\
+{\r\n\
+	return max(v.x, getMaxComponment(v.yzw));\r\n\
+}\r\n\
+float getMinComponment(float2 v)\r\n\
+{\r\n\
+	return min(v.x, v.y);\r\n\
+}\r\n\
+float getMinComponment(float3 v)\r\n\
+{\r\n\
+	return min(v.x, getMinComponment(v.yz));\r\n\
+}\r\n\
+float getMinComponment(float4 v)\r\n\
+{\r\n\
+	return min(v.x, getMinComponment(v.yzw));\r\n\
+}\r\n\
+float3 getCameraPosition(float4x4 viewMatrix)\r\n\
+{\r\n\
+	return -viewMatrix[3].xyz;\r\n\
+}\r\n\
+float3 getCameraDirection(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=float3x3(viewMatrix);\r\n\
+	return rot[2];\r\n\
+}\r\n\
+float3 getCameraUp(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=float3x3(viewMatrix);\r\n\
+	return rot[1];\r\n\
+}\r\n\
+float3 getCameraRight(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=float3x3(viewMatrix);\r\n\
+	return rot[0];\r\n\
+}\r\n\
+float calcDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
+{\r\n\
+	return saturate(dot(vertexToLightDirection,worldNormal));\r\n\
+}\r\n\
+float calcSpecularFactor(float3 vertexToLightDirection,float3 worldNormal,float3 worldPosition,float3 cameraPosition)\r\n\
+{\r\n\
+	float3 half_vector=normalize(normalize(cameraPosition-worldPosition)+vertexToLightDirection);\r\n\
+	float specular_factor=saturate(dot(half_vector,worldNormal));\r\n\
+	return specular_factor;\r\n\
+}\r\n\
+//return 1意味着无衰减，return 0意味着完全衰减\r\n\
+float calcFalloffFactor(float current, float begin, float reciprocalRange)\r\n\
+{\r\n\
+	float factor=saturate((current-begin)*reciprocalRange);\r\n\
+    return 1.0-factor*factor;\r\n\
+}\r\n\
+float3 encodeNormal(float3 normal)\r\n\
+{\r\n\
+	return normal / getMaxComponment(normal);\r\n\
+}\r\n\
+float2 getQuadPosition(int vertexID)\r\n\
+{\r\n\
+    float2 ret;\r\n\
+    if(0==vertexID)\r\n\
+        ret = float2(-1.0, 1.0);\r\n\
+    else if(1==vertexID)\r\n\
+        ret = float2(1.0, 1.0);\r\n\
+    else if(2==vertexID)\r\n\
+        ret = float2(-1.0, -1.0);\r\n\
+    else\r\n\
+        ret = float2(1.0, -1.0);\r\n\
+    return ret;\r\n\
+}\r\n\
+#ifndef OUTPUT_WORLD_POSITION\r\n\
+#define OUTPUT_WORLD_POSITION 0\r\n\
+#endif\r\n\
+#ifndef OUTPUT_WORLD_NORMAL\r\n\
+#define OUTPUT_WORLD_NORMAL 0\r\n\
+#endif\r\n\
+#ifndef OUTPUT_WORLD_TANGENT\r\n\
+#define OUTPUT_WORLD_TANGENT 0\r\n\
+#endif\r\n\
+#ifndef OUTPUT_MAIN_UV\r\n\
+#define OUTPUT_MAIN_UV 0\r\n\
+#endif\r\n\
+#ifndef OUTPUT_DIFFUSE\r\n\
+#define OUTPU_DIFFUSE 0\r\n\
+#endif\r\n\
 #ifndef USE_LIGHTING\r\n\
 #define USE_LIGHTING 0\r\n\
 #endif\r\n\
@@ -488,49 +1273,25 @@ void main()\r\n\
 #endif\r\n\
 	gFragColour.a = alpha;\r\n\
 }";
-ForwardShaderVertex="#include \"ForwardShaderCommon.glsl\"\r\n\
-in float3 gPositionVS;\r\n\
-#if OUTPUT_WORLD_POSITION\r\n\
-out float3 gWorldPositionPS;\r\n\
-#endif\r\n\
-#if OUTPUT_WORLD_NORMAL\r\n\
-in float3 gNormalVS;\r\n\
-out float3 gWorldNormalPS;\r\n\
-#endif\r\n\
-#if OUTPUT_WORLD_TANGENT\r\n\
-in float3 gTangentVS;\r\n\
-out float3 gWorldTangentPS;\r\n\
-#endif\r\n\
-#if OUTPUT_MAIN_UV\r\n\
-in float2 gMainUVVS;\r\n\
-out float2 gMainUVPS;\r\n\
-#endif\r\n\
-#if OUTPUT_DIFFUSE\r\n\
-in float4 gDiffuseVS;\r\n\
-out float4 gDiffusePS;\r\n\
-#endif\r\n\
-void main()\r\n\
-{\r\n\
-    float4 world_position = mul(gWorldMatrix, float4(gPositionVS, 1.0));\r\n\
-    gl_Position = mul(gViewProjectionMatrix, world_position);\r\n\
-#if OUTPUT_WORLD_POSITION\r\n\
-	gWorldPositionPS = world_position.xyz;\r\n\
-#endif\r\n\
-#if OUTPUT_WORLD_NORMAL\r\n\
-	gWorldNormalPS = mul(float3x3(gWorldMatrix), gNormalVS);\r\n\
-#endif\r\n\
-#if OUTPUT_WORLD_TANGENT\r\n\
-	gWorldTangentPS = mul(float3x3(gWorldMatrix), gTangentVS);\r\n\
-#endif\r\n\
-#if OUTPUT_MAIN_UV\r\n\
-	gMainUVPS = gMainUVVS;\r\n\
-#endif\r\n\
-#if OUTPUT_DIFFUSE\r\n\
-	gDiffusePS = gDiffuseVS;\r\n\
-#endif\r\n\
-}\r\n\
-";
-Function="#include \"Defines.glsl\"\r\n\
+ForwardShaderVertex="#define float2 vec2\r\n\
+#define float3 vec3\r\n\
+#define float4 vec4\r\n\
+#define int2 ivec2\r\n\
+#define int3 ivec3\r\n\
+#define int4 ivec4\r\n\
+#define uint2 int2\r\n\
+#define uint3 int3\r\n\
+#define uint4 int4\r\n\
+#define float2x2 mat2\r\n\
+#define float2x3 mat2x3\r\n\
+#define float2x4 mat2x4\r\n\
+#define float3x2 mat3x2\r\n\
+#define float3x3 mat3\r\n\
+#define float3x4 mat3x4\r\n\
+#define float4x2 mat4x2\r\n\
+#define float4x3 mat4x3\r\n\
+#define float4x4 mat4\r\n\
+#define cbuffer layout(shared) uniform\r\n\
 float2 mul(float2 v,float2x2 m){return v*m;}\r\n\
 float3 mul(float2 v,float3x2 m){return v*m;}\r\n\
 float4 mul(float2 v,float4x2 m){return v*m;}\r\n\
@@ -612,7 +1373,184 @@ float calcSpecularFactor(float3 vertexToLightDirection,float3 worldNormal,float3
 //return 1意味着无衰减，return 0意味着完全衰减\r\n\
 float calcFalloffFactor(float current, float begin, float reciprocalRange)\r\n\
 {\r\n\
-    return 1.0 - pow(saturate((current - begin) * reciprocalRange), 2);\r\n\
+	float factor=saturate((current-begin)*reciprocalRange);\r\n\
+    return 1.0-factor*factor;\r\n\
+}\r\n\
+float3 encodeNormal(float3 normal)\r\n\
+{\r\n\
+	return normal / getMaxComponment(normal);\r\n\
+}\r\n\
+float2 getQuadPosition(int vertexID)\r\n\
+{\r\n\
+    float2 ret;\r\n\
+    if(0==vertexID)\r\n\
+        ret = float2(-1.0, 1.0);\r\n\
+    else if(1==vertexID)\r\n\
+        ret = float2(1.0, 1.0);\r\n\
+    else if(2==vertexID)\r\n\
+        ret = float2(-1.0, -1.0);\r\n\
+    else\r\n\
+        ret = float2(1.0, -1.0);\r\n\
+    return ret;\r\n\
+}\r\n\
+#ifndef OUTPUT_WORLD_POSITION\r\n\
+#define OUTPUT_WORLD_POSITION 0\r\n\
+#endif\r\n\
+#ifndef OUTPUT_WORLD_NORMAL\r\n\
+#define OUTPUT_WORLD_NORMAL 0\r\n\
+#endif\r\n\
+#ifndef OUTPUT_WORLD_TANGENT\r\n\
+#define OUTPUT_WORLD_TANGENT 0\r\n\
+#endif\r\n\
+#ifndef OUTPUT_MAIN_UV\r\n\
+#define OUTPUT_MAIN_UV 0\r\n\
+#endif\r\n\
+#ifndef OUTPUT_DIFFUSE\r\n\
+#define OUTPU_DIFFUSE 0\r\n\
+#endif\r\n\
+in float3 gPositionVS;\r\n\
+#if OUTPUT_WORLD_POSITION\r\n\
+out float3 gWorldPositionPS;\r\n\
+#endif\r\n\
+#if OUTPUT_WORLD_NORMAL\r\n\
+in float3 gNormalVS;\r\n\
+out float3 gWorldNormalPS;\r\n\
+#endif\r\n\
+#if OUTPUT_WORLD_TANGENT\r\n\
+in float3 gTangentVS;\r\n\
+out float3 gWorldTangentPS;\r\n\
+#endif\r\n\
+#if OUTPUT_MAIN_UV\r\n\
+in float2 gMainUVVS;\r\n\
+out float2 gMainUVPS;\r\n\
+#endif\r\n\
+#if OUTPUT_DIFFUSE\r\n\
+in float4 gDiffuseVS;\r\n\
+out float4 gDiffusePS;\r\n\
+#endif\r\n\
+void main()\r\n\
+{\r\n\
+    float4 world_position = mul(gWorldMatrix, float4(gPositionVS, 1.0));\r\n\
+    gl_Position = mul(gViewProjectionMatrix, world_position);\r\n\
+#if OUTPUT_WORLD_POSITION\r\n\
+	gWorldPositionPS = world_position.xyz;\r\n\
+#endif\r\n\
+#if OUTPUT_WORLD_NORMAL\r\n\
+	gWorldNormalPS = mul(float3x3(gWorldMatrix), gNormalVS);\r\n\
+#endif\r\n\
+#if OUTPUT_WORLD_TANGENT\r\n\
+	gWorldTangentPS = mul(float3x3(gWorldMatrix), gTangentVS);\r\n\
+#endif\r\n\
+#if OUTPUT_MAIN_UV\r\n\
+	gMainUVPS = gMainUVVS;\r\n\
+#endif\r\n\
+#if OUTPUT_DIFFUSE\r\n\
+	gDiffusePS = gDiffuseVS;\r\n\
+#endif\r\n\
+}\r\n\
+";
+Function="#define float2 vec2\r\n\
+#define float3 vec3\r\n\
+#define float4 vec4\r\n\
+#define int2 ivec2\r\n\
+#define int3 ivec3\r\n\
+#define int4 ivec4\r\n\
+#define uint2 int2\r\n\
+#define uint3 int3\r\n\
+#define uint4 int4\r\n\
+#define float2x2 mat2\r\n\
+#define float2x3 mat2x3\r\n\
+#define float2x4 mat2x4\r\n\
+#define float3x2 mat3x2\r\n\
+#define float3x3 mat3\r\n\
+#define float3x4 mat3x4\r\n\
+#define float4x2 mat4x2\r\n\
+#define float4x3 mat4x3\r\n\
+#define float4x4 mat4\r\n\
+#define cbuffer layout(shared) uniform\r\n\
+float2 mul(float2 v,float2x2 m){return v*m;}\r\n\
+float3 mul(float2 v,float3x2 m){return v*m;}\r\n\
+float4 mul(float2 v,float4x2 m){return v*m;}\r\n\
+float2 mul(float3 v,float2x3 m){return v*m;}\r\n\
+float3 mul(float3 v,float3x3 m){return v*m;}\r\n\
+float4 mul(float3 v,float4x3 m){return v*m;}\r\n\
+float2 mul(float4 v,float2x4 m){return v*m;}\r\n\
+float3 mul(float4 v,float3x4 m){return v*m;}\r\n\
+float4 mul(float4 v,float4x4 m){return v*m;}\r\n\
+float2 mul(float2x2 m,float2 v){return m*v;}\r\n\
+float2 mul(float3x2 m,float3 v){return m*v;}\r\n\
+float2 mul(float4x2 m,float4 v){return m*v;}\r\n\
+float3 mul(float2x3 m,float2 v){return m*v;}\r\n\
+float3 mul(float3x3 m,float3 v){return m*v;}\r\n\
+float3 mul(float4x3 m,float4 v){return m*v;}\r\n\
+float4 mul(float2x4 m,float2 v){return m*v;}\r\n\
+float4 mul(float3x4 m,float3 v){return m*v;}\r\n\
+float4 mul(float4x4 m,float4 v){return m*v;}\r\n\
+float2x2 mul(float2x2 m0,float2x2 m1){return m0*m1;}\r\n\
+float3x3 mul(float3x3 m0,float3x3 m1){return m0*m1;}\r\n\
+float4x4 mul(float4x4 m0,float4x4 m1){return m0*m1;}\r\n\
+float saturate(float v){return clamp(v,0.0,1.0);}\r\n\
+float2 saturate(float2 v){return clamp(v,float2(0.0),float2(1.0));}\r\n\
+float3 saturate(float3 v){return clamp(v,float3(0.0),float3(1.0));}\r\n\
+float4 saturate(float4 v){return clamp(v,float4(0.0),float4(1.0));}\r\n\
+float getMaxComponment(float2 v)\r\n\
+{\r\n\
+	return max(v.x, v.y);\r\n\
+}\r\n\
+float getMaxComponment(float3 v)\r\n\
+{\r\n\
+	return max(v.x, getMaxComponment(v.yz));\r\n\
+}\r\n\
+float getMaxComponment(float4 v)\r\n\
+{\r\n\
+	return max(v.x, getMaxComponment(v.yzw));\r\n\
+}\r\n\
+float getMinComponment(float2 v)\r\n\
+{\r\n\
+	return min(v.x, v.y);\r\n\
+}\r\n\
+float getMinComponment(float3 v)\r\n\
+{\r\n\
+	return min(v.x, getMinComponment(v.yz));\r\n\
+}\r\n\
+float getMinComponment(float4 v)\r\n\
+{\r\n\
+	return min(v.x, getMinComponment(v.yzw));\r\n\
+}\r\n\
+float3 getCameraPosition(float4x4 viewMatrix)\r\n\
+{\r\n\
+	return -viewMatrix[3].xyz;\r\n\
+}\r\n\
+float3 getCameraDirection(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=float3x3(viewMatrix);\r\n\
+	return rot[2];\r\n\
+}\r\n\
+float3 getCameraUp(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=float3x3(viewMatrix);\r\n\
+	return rot[1];\r\n\
+}\r\n\
+float3 getCameraRight(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=float3x3(viewMatrix);\r\n\
+	return rot[0];\r\n\
+}\r\n\
+float calcDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
+{\r\n\
+	return saturate(dot(vertexToLightDirection,worldNormal));\r\n\
+}\r\n\
+float calcSpecularFactor(float3 vertexToLightDirection,float3 worldNormal,float3 worldPosition,float3 cameraPosition)\r\n\
+{\r\n\
+	float3 half_vector=normalize(normalize(cameraPosition-worldPosition)+vertexToLightDirection);\r\n\
+	float specular_factor=saturate(dot(half_vector,worldNormal));\r\n\
+	return specular_factor;\r\n\
+}\r\n\
+//return 1意味着无衰减，return 0意味着完全衰减\r\n\
+float calcFalloffFactor(float current, float begin, float reciprocalRange)\r\n\
+{\r\n\
+	float factor=saturate((current-begin)*reciprocalRange);\r\n\
+    return 1.0-factor*factor;\r\n\
 }\r\n\
 float3 encodeNormal(float3 normal)\r\n\
 {\r\n\
@@ -631,7 +1569,126 @@ float2 getQuadPosition(int vertexID)\r\n\
         ret = float2(1.0, -1.0);\r\n\
     return ret;\r\n\
 }";
-FunctionEx="#include \"Function.glsl\"\r\n\
+FunctionEx="#define float2 vec2\r\n\
+#define float3 vec3\r\n\
+#define float4 vec4\r\n\
+#define int2 ivec2\r\n\
+#define int3 ivec3\r\n\
+#define int4 ivec4\r\n\
+#define uint2 int2\r\n\
+#define uint3 int3\r\n\
+#define uint4 int4\r\n\
+#define float2x2 mat2\r\n\
+#define float2x3 mat2x3\r\n\
+#define float2x4 mat2x4\r\n\
+#define float3x2 mat3x2\r\n\
+#define float3x3 mat3\r\n\
+#define float3x4 mat3x4\r\n\
+#define float4x2 mat4x2\r\n\
+#define float4x3 mat4x3\r\n\
+#define float4x4 mat4\r\n\
+#define cbuffer layout(shared) uniform\r\n\
+float2 mul(float2 v,float2x2 m){return v*m;}\r\n\
+float3 mul(float2 v,float3x2 m){return v*m;}\r\n\
+float4 mul(float2 v,float4x2 m){return v*m;}\r\n\
+float2 mul(float3 v,float2x3 m){return v*m;}\r\n\
+float3 mul(float3 v,float3x3 m){return v*m;}\r\n\
+float4 mul(float3 v,float4x3 m){return v*m;}\r\n\
+float2 mul(float4 v,float2x4 m){return v*m;}\r\n\
+float3 mul(float4 v,float3x4 m){return v*m;}\r\n\
+float4 mul(float4 v,float4x4 m){return v*m;}\r\n\
+float2 mul(float2x2 m,float2 v){return m*v;}\r\n\
+float2 mul(float3x2 m,float3 v){return m*v;}\r\n\
+float2 mul(float4x2 m,float4 v){return m*v;}\r\n\
+float3 mul(float2x3 m,float2 v){return m*v;}\r\n\
+float3 mul(float3x3 m,float3 v){return m*v;}\r\n\
+float3 mul(float4x3 m,float4 v){return m*v;}\r\n\
+float4 mul(float2x4 m,float2 v){return m*v;}\r\n\
+float4 mul(float3x4 m,float3 v){return m*v;}\r\n\
+float4 mul(float4x4 m,float4 v){return m*v;}\r\n\
+float2x2 mul(float2x2 m0,float2x2 m1){return m0*m1;}\r\n\
+float3x3 mul(float3x3 m0,float3x3 m1){return m0*m1;}\r\n\
+float4x4 mul(float4x4 m0,float4x4 m1){return m0*m1;}\r\n\
+float saturate(float v){return clamp(v,0.0,1.0);}\r\n\
+float2 saturate(float2 v){return clamp(v,float2(0.0),float2(1.0));}\r\n\
+float3 saturate(float3 v){return clamp(v,float3(0.0),float3(1.0));}\r\n\
+float4 saturate(float4 v){return clamp(v,float4(0.0),float4(1.0));}\r\n\
+float getMaxComponment(float2 v)\r\n\
+{\r\n\
+	return max(v.x, v.y);\r\n\
+}\r\n\
+float getMaxComponment(float3 v)\r\n\
+{\r\n\
+	return max(v.x, getMaxComponment(v.yz));\r\n\
+}\r\n\
+float getMaxComponment(float4 v)\r\n\
+{\r\n\
+	return max(v.x, getMaxComponment(v.yzw));\r\n\
+}\r\n\
+float getMinComponment(float2 v)\r\n\
+{\r\n\
+	return min(v.x, v.y);\r\n\
+}\r\n\
+float getMinComponment(float3 v)\r\n\
+{\r\n\
+	return min(v.x, getMinComponment(v.yz));\r\n\
+}\r\n\
+float getMinComponment(float4 v)\r\n\
+{\r\n\
+	return min(v.x, getMinComponment(v.yzw));\r\n\
+}\r\n\
+float3 getCameraPosition(float4x4 viewMatrix)\r\n\
+{\r\n\
+	return -viewMatrix[3].xyz;\r\n\
+}\r\n\
+float3 getCameraDirection(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=float3x3(viewMatrix);\r\n\
+	return rot[2];\r\n\
+}\r\n\
+float3 getCameraUp(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=float3x3(viewMatrix);\r\n\
+	return rot[1];\r\n\
+}\r\n\
+float3 getCameraRight(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=float3x3(viewMatrix);\r\n\
+	return rot[0];\r\n\
+}\r\n\
+float calcDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
+{\r\n\
+	return saturate(dot(vertexToLightDirection,worldNormal));\r\n\
+}\r\n\
+float calcSpecularFactor(float3 vertexToLightDirection,float3 worldNormal,float3 worldPosition,float3 cameraPosition)\r\n\
+{\r\n\
+	float3 half_vector=normalize(normalize(cameraPosition-worldPosition)+vertexToLightDirection);\r\n\
+	float specular_factor=saturate(dot(half_vector,worldNormal));\r\n\
+	return specular_factor;\r\n\
+}\r\n\
+//return 1意味着无衰减，return 0意味着完全衰减\r\n\
+float calcFalloffFactor(float current, float begin, float reciprocalRange)\r\n\
+{\r\n\
+	float factor=saturate((current-begin)*reciprocalRange);\r\n\
+    return 1.0-factor*factor;\r\n\
+}\r\n\
+float3 encodeNormal(float3 normal)\r\n\
+{\r\n\
+	return normal / getMaxComponment(normal);\r\n\
+}\r\n\
+float2 getQuadPosition(int vertexID)\r\n\
+{\r\n\
+    float2 ret;\r\n\
+    if(0==vertexID)\r\n\
+        ret = float2(-1.0, 1.0);\r\n\
+    else if(1==vertexID)\r\n\
+        ret = float2(1.0, 1.0);\r\n\
+    else if(2==vertexID)\r\n\
+        ret = float2(-1.0, -1.0);\r\n\
+    else\r\n\
+        ret = float2(1.0, -1.0);\r\n\
+    return ret;\r\n\
+}\r\n\
 float3 getCameraPosition()\r\n\
 {\r\n\
 	return getCameraPosition(gViewMatrix);\r\n\
@@ -649,7 +1706,126 @@ float3 getCameraRight()\r\n\
 	return getCameraRight(gViewMatrix);\r\n\
 }\r\n\
 ";
-OverlayShaderPixel="#include \"Function.hlsl\"\r\n\
+OverlayShaderPixel="#define float2 vec2\r\n\
+#define float3 vec3\r\n\
+#define float4 vec4\r\n\
+#define int2 ivec2\r\n\
+#define int3 ivec3\r\n\
+#define int4 ivec4\r\n\
+#define uint2 int2\r\n\
+#define uint3 int3\r\n\
+#define uint4 int4\r\n\
+#define float2x2 mat2\r\n\
+#define float2x3 mat2x3\r\n\
+#define float2x4 mat2x4\r\n\
+#define float3x2 mat3x2\r\n\
+#define float3x3 mat3\r\n\
+#define float3x4 mat3x4\r\n\
+#define float4x2 mat4x2\r\n\
+#define float4x3 mat4x3\r\n\
+#define float4x4 mat4\r\n\
+#define cbuffer layout(shared) uniform\r\n\
+float2 mul(float2 v,float2x2 m){return v*m;}\r\n\
+float3 mul(float2 v,float3x2 m){return v*m;}\r\n\
+float4 mul(float2 v,float4x2 m){return v*m;}\r\n\
+float2 mul(float3 v,float2x3 m){return v*m;}\r\n\
+float3 mul(float3 v,float3x3 m){return v*m;}\r\n\
+float4 mul(float3 v,float4x3 m){return v*m;}\r\n\
+float2 mul(float4 v,float2x4 m){return v*m;}\r\n\
+float3 mul(float4 v,float3x4 m){return v*m;}\r\n\
+float4 mul(float4 v,float4x4 m){return v*m;}\r\n\
+float2 mul(float2x2 m,float2 v){return m*v;}\r\n\
+float2 mul(float3x2 m,float3 v){return m*v;}\r\n\
+float2 mul(float4x2 m,float4 v){return m*v;}\r\n\
+float3 mul(float2x3 m,float2 v){return m*v;}\r\n\
+float3 mul(float3x3 m,float3 v){return m*v;}\r\n\
+float3 mul(float4x3 m,float4 v){return m*v;}\r\n\
+float4 mul(float2x4 m,float2 v){return m*v;}\r\n\
+float4 mul(float3x4 m,float3 v){return m*v;}\r\n\
+float4 mul(float4x4 m,float4 v){return m*v;}\r\n\
+float2x2 mul(float2x2 m0,float2x2 m1){return m0*m1;}\r\n\
+float3x3 mul(float3x3 m0,float3x3 m1){return m0*m1;}\r\n\
+float4x4 mul(float4x4 m0,float4x4 m1){return m0*m1;}\r\n\
+float saturate(float v){return clamp(v,0.0,1.0);}\r\n\
+float2 saturate(float2 v){return clamp(v,float2(0.0),float2(1.0));}\r\n\
+float3 saturate(float3 v){return clamp(v,float3(0.0),float3(1.0));}\r\n\
+float4 saturate(float4 v){return clamp(v,float4(0.0),float4(1.0));}\r\n\
+float getMaxComponment(float2 v)\r\n\
+{\r\n\
+	return max(v.x, v.y);\r\n\
+}\r\n\
+float getMaxComponment(float3 v)\r\n\
+{\r\n\
+	return max(v.x, getMaxComponment(v.yz));\r\n\
+}\r\n\
+float getMaxComponment(float4 v)\r\n\
+{\r\n\
+	return max(v.x, getMaxComponment(v.yzw));\r\n\
+}\r\n\
+float getMinComponment(float2 v)\r\n\
+{\r\n\
+	return min(v.x, v.y);\r\n\
+}\r\n\
+float getMinComponment(float3 v)\r\n\
+{\r\n\
+	return min(v.x, getMinComponment(v.yz));\r\n\
+}\r\n\
+float getMinComponment(float4 v)\r\n\
+{\r\n\
+	return min(v.x, getMinComponment(v.yzw));\r\n\
+}\r\n\
+float3 getCameraPosition(float4x4 viewMatrix)\r\n\
+{\r\n\
+	return -viewMatrix[3].xyz;\r\n\
+}\r\n\
+float3 getCameraDirection(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=float3x3(viewMatrix);\r\n\
+	return rot[2];\r\n\
+}\r\n\
+float3 getCameraUp(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=float3x3(viewMatrix);\r\n\
+	return rot[1];\r\n\
+}\r\n\
+float3 getCameraRight(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=float3x3(viewMatrix);\r\n\
+	return rot[0];\r\n\
+}\r\n\
+float calcDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
+{\r\n\
+	return saturate(dot(vertexToLightDirection,worldNormal));\r\n\
+}\r\n\
+float calcSpecularFactor(float3 vertexToLightDirection,float3 worldNormal,float3 worldPosition,float3 cameraPosition)\r\n\
+{\r\n\
+	float3 half_vector=normalize(normalize(cameraPosition-worldPosition)+vertexToLightDirection);\r\n\
+	float specular_factor=saturate(dot(half_vector,worldNormal));\r\n\
+	return specular_factor;\r\n\
+}\r\n\
+//return 1意味着无衰减，return 0意味着完全衰减\r\n\
+float calcFalloffFactor(float current, float begin, float reciprocalRange)\r\n\
+{\r\n\
+	float factor=saturate((current-begin)*reciprocalRange);\r\n\
+    return 1.0-factor*factor;\r\n\
+}\r\n\
+float3 encodeNormal(float3 normal)\r\n\
+{\r\n\
+	return normal / getMaxComponment(normal);\r\n\
+}\r\n\
+float2 getQuadPosition(int vertexID)\r\n\
+{\r\n\
+    float2 ret;\r\n\
+    if(0==vertexID)\r\n\
+        ret = float2(-1.0, 1.0);\r\n\
+    else if(1==vertexID)\r\n\
+        ret = float2(1.0, 1.0);\r\n\
+    else if(2==vertexID)\r\n\
+        ret = float2(-1.0, -1.0);\r\n\
+    else\r\n\
+        ret = float2(1.0, -1.0);\r\n\
+    return ret;\r\n\
+}\r\n\
 #ifndef USE_DIFFUSE_TEXTURE\r\n\
 #define USE_DIFFUSE_TEXTURE 0\r\n\
 #endif\r\n\
@@ -680,7 +1856,126 @@ void main()\r\n\
     gFragColour.rgb = colour_emissive;\r\n\
     gFragColour.a = alpha;\r\n\
 }";
-OverlayShaderVertex="#include \"Function.hlsl\"\r\n\
+OverlayShaderVertex="#define float2 vec2\r\n\
+#define float3 vec3\r\n\
+#define float4 vec4\r\n\
+#define int2 ivec2\r\n\
+#define int3 ivec3\r\n\
+#define int4 ivec4\r\n\
+#define uint2 int2\r\n\
+#define uint3 int3\r\n\
+#define uint4 int4\r\n\
+#define float2x2 mat2\r\n\
+#define float2x3 mat2x3\r\n\
+#define float2x4 mat2x4\r\n\
+#define float3x2 mat3x2\r\n\
+#define float3x3 mat3\r\n\
+#define float3x4 mat3x4\r\n\
+#define float4x2 mat4x2\r\n\
+#define float4x3 mat4x3\r\n\
+#define float4x4 mat4\r\n\
+#define cbuffer layout(shared) uniform\r\n\
+float2 mul(float2 v,float2x2 m){return v*m;}\r\n\
+float3 mul(float2 v,float3x2 m){return v*m;}\r\n\
+float4 mul(float2 v,float4x2 m){return v*m;}\r\n\
+float2 mul(float3 v,float2x3 m){return v*m;}\r\n\
+float3 mul(float3 v,float3x3 m){return v*m;}\r\n\
+float4 mul(float3 v,float4x3 m){return v*m;}\r\n\
+float2 mul(float4 v,float2x4 m){return v*m;}\r\n\
+float3 mul(float4 v,float3x4 m){return v*m;}\r\n\
+float4 mul(float4 v,float4x4 m){return v*m;}\r\n\
+float2 mul(float2x2 m,float2 v){return m*v;}\r\n\
+float2 mul(float3x2 m,float3 v){return m*v;}\r\n\
+float2 mul(float4x2 m,float4 v){return m*v;}\r\n\
+float3 mul(float2x3 m,float2 v){return m*v;}\r\n\
+float3 mul(float3x3 m,float3 v){return m*v;}\r\n\
+float3 mul(float4x3 m,float4 v){return m*v;}\r\n\
+float4 mul(float2x4 m,float2 v){return m*v;}\r\n\
+float4 mul(float3x4 m,float3 v){return m*v;}\r\n\
+float4 mul(float4x4 m,float4 v){return m*v;}\r\n\
+float2x2 mul(float2x2 m0,float2x2 m1){return m0*m1;}\r\n\
+float3x3 mul(float3x3 m0,float3x3 m1){return m0*m1;}\r\n\
+float4x4 mul(float4x4 m0,float4x4 m1){return m0*m1;}\r\n\
+float saturate(float v){return clamp(v,0.0,1.0);}\r\n\
+float2 saturate(float2 v){return clamp(v,float2(0.0),float2(1.0));}\r\n\
+float3 saturate(float3 v){return clamp(v,float3(0.0),float3(1.0));}\r\n\
+float4 saturate(float4 v){return clamp(v,float4(0.0),float4(1.0));}\r\n\
+float getMaxComponment(float2 v)\r\n\
+{\r\n\
+	return max(v.x, v.y);\r\n\
+}\r\n\
+float getMaxComponment(float3 v)\r\n\
+{\r\n\
+	return max(v.x, getMaxComponment(v.yz));\r\n\
+}\r\n\
+float getMaxComponment(float4 v)\r\n\
+{\r\n\
+	return max(v.x, getMaxComponment(v.yzw));\r\n\
+}\r\n\
+float getMinComponment(float2 v)\r\n\
+{\r\n\
+	return min(v.x, v.y);\r\n\
+}\r\n\
+float getMinComponment(float3 v)\r\n\
+{\r\n\
+	return min(v.x, getMinComponment(v.yz));\r\n\
+}\r\n\
+float getMinComponment(float4 v)\r\n\
+{\r\n\
+	return min(v.x, getMinComponment(v.yzw));\r\n\
+}\r\n\
+float3 getCameraPosition(float4x4 viewMatrix)\r\n\
+{\r\n\
+	return -viewMatrix[3].xyz;\r\n\
+}\r\n\
+float3 getCameraDirection(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=float3x3(viewMatrix);\r\n\
+	return rot[2];\r\n\
+}\r\n\
+float3 getCameraUp(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=float3x3(viewMatrix);\r\n\
+	return rot[1];\r\n\
+}\r\n\
+float3 getCameraRight(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=float3x3(viewMatrix);\r\n\
+	return rot[0];\r\n\
+}\r\n\
+float calcDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
+{\r\n\
+	return saturate(dot(vertexToLightDirection,worldNormal));\r\n\
+}\r\n\
+float calcSpecularFactor(float3 vertexToLightDirection,float3 worldNormal,float3 worldPosition,float3 cameraPosition)\r\n\
+{\r\n\
+	float3 half_vector=normalize(normalize(cameraPosition-worldPosition)+vertexToLightDirection);\r\n\
+	float specular_factor=saturate(dot(half_vector,worldNormal));\r\n\
+	return specular_factor;\r\n\
+}\r\n\
+//return 1意味着无衰减，return 0意味着完全衰减\r\n\
+float calcFalloffFactor(float current, float begin, float reciprocalRange)\r\n\
+{\r\n\
+	float factor=saturate((current-begin)*reciprocalRange);\r\n\
+    return 1.0-factor*factor;\r\n\
+}\r\n\
+float3 encodeNormal(float3 normal)\r\n\
+{\r\n\
+	return normal / getMaxComponment(normal);\r\n\
+}\r\n\
+float2 getQuadPosition(int vertexID)\r\n\
+{\r\n\
+    float2 ret;\r\n\
+    if(0==vertexID)\r\n\
+        ret = float2(-1.0, 1.0);\r\n\
+    else if(1==vertexID)\r\n\
+        ret = float2(1.0, 1.0);\r\n\
+    else if(2==vertexID)\r\n\
+        ret = float2(-1.0, -1.0);\r\n\
+    else\r\n\
+        ret = float2(1.0, -1.0);\r\n\
+    return ret;\r\n\
+}\r\n\
 in float3 gPositionVS;\r\n\
 in float2 gMainUVVS;\r\n\
 in float4 gDiffuseVS;\r\n\

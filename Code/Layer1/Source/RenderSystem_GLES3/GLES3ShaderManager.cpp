@@ -13,7 +13,7 @@ NSDevilX::NSRenderSystem::NSGLES3::CShaderManager::~CShaderManager()
 
 GLuint NSDevilX::NSRenderSystem::NSGLES3::CShaderManager::registerVertexShader(const String & key,const String & code,const MacroDefines & macros)
 {
-	String macro_string="#version 320\r\n";
+	String macro_string="#version 310 es\r\n";
 	for(auto macro:macros)
 		macro_string+="#define "+macro.first+" "+macro.second+"\r\n";
 	String final_code=macro_string+code;
@@ -50,7 +50,8 @@ GLuint NSDevilX::NSRenderSystem::NSGLES3::CShaderManager::registerVertexShader(c
 
 GLuint NSDevilX::NSRenderSystem::NSGLES3::CShaderManager::registerPixelShader(const String & key,const String & code,const MacroDefines & macros)
 {
-	String macro_string="#version 320\r\n";
+	String macro_string="#version 310 es\r\n";
+	macro_string+="precision highp float;\r\n";
 	for(auto macro:macros)
 		macro_string+="#define "+macro.first+" "+macro.second+"\r\n";
 	String final_code=macro_string+code;

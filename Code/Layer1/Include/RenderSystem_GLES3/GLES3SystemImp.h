@@ -60,6 +60,10 @@ namespace NSDevilX
 				{
 					return mRenderTaskThreadPool;
 				}
+				decltype(mDisplay) getDisplay()const
+				{
+					return mDisplay;
+				}
 				decltype(mContext) getContext()const
 				{
 					return mContext;

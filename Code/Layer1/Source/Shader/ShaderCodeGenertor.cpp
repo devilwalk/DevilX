@@ -113,7 +113,8 @@ void generatorCpp(const std::vector<std::string> & files,const std::string & ver
 		func_buf=temp;
 		functions.push_back(func_buf);
 	}
-	if(std::string::npos!=version.find("GLSL"))
+	if((std::string::npos!=version.find("GLSL"))
+		||(std::string::npos!=version.find("GLESSL")))
 	{
 		bool has_include=false;
 		do

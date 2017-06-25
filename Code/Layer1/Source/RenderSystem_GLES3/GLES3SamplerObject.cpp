@@ -7,9 +7,14 @@ NSDevilX::NSRenderSystem::NSGLES3::CSamplerObject::CSamplerObject(const SSampler
 	:mInternal(0)
 {
 	glGenSamplers(1,&mInternal);
+	CUtility::checkGLError();
 	for(auto state:desc.mStates)
+	{
 		glSamplerParameteri(getInternal(),state.first,state.second);
-	glSamplerParameterfv(getInternal(),GL_TEXTURE_BORDER_COLOR,reinterpret_cast<const GLfloat*>(&desc.mBorderColor));
+		CUtility::checkGLError();
+	}
+	glSamplerParameterfv(getInternal(),GL_TEXTURE_BORDER_COLOR,reinterpret_cast<const GLfloat*>(static_cast<const CFloat4*>(&desc.mBorderColor)));
+	CUtility::checkGLError();
 }
 
 NSDevilX::NSRenderSystem::NSGLES3::CSamplerObject::~CSamplerObject()
@@ -17,5 +22,6 @@ NSDevilX::NSRenderSystem::NSGLES3::CSamplerObject::~CSamplerObject()
 	if(getInternal())
 	{
 		glDeleteSamplers(1,&mInternal);
+		CUtility::checkGLError();
 	}
 }

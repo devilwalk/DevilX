@@ -80,7 +80,8 @@ float calcSpecularFactor(float3 vertexToLightDirection,float3 worldNormal,float3
 //return 1意味着无衰减，return 0意味着完全衰减
 float calcFalloffFactor(float current, float begin, float reciprocalRange)
 {
-    return 1.0 - pow(saturate((current - begin) * reciprocalRange), 2);
+	float factor=saturate((current-begin)*reciprocalRange);
+    return 1.0-factor*factor;
 }
 float3 encodeNormal(float3 normal)
 {

@@ -16,6 +16,19 @@ namespace NSDevilX
 					GLsizei mWidth;
 					GLsizei mHeight;
 				};
+				static Void checkEGLError()
+				{
+#ifdef DEVILX_DEBUG
+					auto err=eglGetError();
+					if(EGL_SUCCESS!=err)
+					{
+#if DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_WINDOWS
+						OutputDebugStringA(CStringConverter::toString(err).c_str());
+						OutputDebugStringA("\r\n");
+#endif
+					}
+#endif
+				}
 				static Void checkGLError()
 				{
 #ifdef DEVILX_DEBUG
@@ -23,8 +36,13 @@ namespace NSDevilX
 					if(GL_NO_ERROR!=err)
 					{
 #if DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_WINDOWS
-						OutputDebugStringA(CStringConverter::toString(err).c_str());
+						auto module=LoadLibrary(L"glu32.dll");
+						typedef const GLubyte* APIENTRY gluErrorString(
+							GLenum   errCode);
+						auto gluErrorStringFunc=reinterpret_cast<gluErrorString*>(GetProcAddress(module,"gluErrorString"));
+						OutputDebugStringA(reinterpret_cast<LPCSTR>(gluErrorStringFunc(err)));
 						OutputDebugStringA("\r\n");
+						FreeLibrary(module);
 #endif
 					}
 #endif

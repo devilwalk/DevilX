@@ -20,7 +20,6 @@ namespace NSDevilX
 				};
 			protected:
 				EGLNativeDisplayType mDC;
-				EGLDisplay mDisplay;
 				EGLSurface mSurface;
 			public:
 				CWindowImp(IWindowImp * interfaceImp);

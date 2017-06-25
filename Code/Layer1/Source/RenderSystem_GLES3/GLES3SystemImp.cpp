@@ -12,7 +12,8 @@ ISystem * NSDevilX::NSRenderSystem::getSystem()
 NSDevilX::NSRenderSystem::NSGLES3::CSystemImp::CSystemImp()
 	:CConstantBufferContainer("cbSystem")
 	,mRenderTaskThreadPool(nullptr)
-	,mContext(nullptr)
+	,mContext(EGL_NO_CONTEXT)
+	,mDisplay(EGL_NO_DISPLAY)
 	,mShaderManager(nullptr)
 	,mDefinitionShader(nullptr)
 	,mConstantBufferDescriptionManager(nullptr)
@@ -42,39 +43,47 @@ NSDevilX::NSRenderSystem::NSGLES3::CSystemImp::CSystemImp()
 #elif DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_X
 #endif
 	mDisplay=eglGetDisplay(EGL_DEFAULT_DISPLAY);
-	EGLint major=1,minor=5;
-	eglInitialize(mDisplay,&major,&minor);
-	const EGLint config_attr[]={
-		EGL_RENDERABLE_TYPE,EGL_OPENGL_ES3_BIT,
-		EGL_SURFACE_TYPE,EGL_WINDOW_BIT,
+	CUtility::checkEGLError();
+	eglInitialize(getDisplay(),nullptr,nullptr);
+	CUtility::checkEGLError();
+	eglBindAPI(EGL_OPENGL_ES_API);
+	CUtility::checkEGLError();
+	const EGLint config_attr[]=
+	{
 		EGL_RED_SIZE,8,
 		EGL_GREEN_SIZE,8,
 		EGL_BLUE_SIZE,8,
 		EGL_ALPHA_SIZE,8,
+		EGL_COLOR_BUFFER_TYPE,EGL_RGB_BUFFER,
 		EGL_DEPTH_SIZE,24,
+		EGL_RENDERABLE_TYPE,EGL_OPENGL_ES3_BIT,
 		EGL_STENCIL_SIZE,8,
+		EGL_SURFACE_TYPE,EGL_WINDOW_BIT,
 		EGL_NONE
 	};
 	EGLConfig config=0;
 	EGLint num_config=0;
-	eglChooseConfig(mDisplay,config_attr,&config,1,&num_config);
+	eglChooseConfig(getDisplay(),config_attr,&config,1,&num_config);
+	CUtility::checkEGLError();
 	const EGLint context_attr[]={
-		EGL_CONTEXT_CLIENT_VERSION,3,
+		EGL_CONTEXT_MAJOR_VERSION,3,
+		EGL_CONTEXT_MINOR_VERSION,2,
 		EGL_NONE
 	};
-	mContext=eglCreateContext(mDisplay,config,EGL_NO_CONTEXT,context_attr);
+	mContext=eglCreateContext(getDisplay(),config,EGL_NO_CONTEXT,context_attr);
+	CUtility::checkEGLError();
+	auto surface=eglCreateWindowSurface(getDisplay(),config,wnd,nullptr);
+	CUtility::checkEGLError();
+	eglMakeCurrent(getDisplay(),surface,surface,getContext());
+	CUtility::checkEGLError();
+	eglDestroySurface(getDisplay(),surface);
+	CUtility::checkEGLError();
 #if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
 	DestroyWindow(wnd);
 #elif DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_X
 #endif
 #ifdef DEVILX_DEBUG
 	glEnable(GL_DEBUG_OUTPUT);
-	CUtility::checkGLError();
-	glDebugMessageCallback([](GLenum source,GLenum type,GLuint id,GLenum serverity,GLsizei length,const GLchar *message,const GLvoid *userParam)
-	{
-		OutputDebugStringA(message);
-		OutputDebugStringA("\r\n");
-	},nullptr);
 	CUtility::checkGLError();
 #endif
 	mSamplerObjects.push_back(DEVILX_NEW CSamplerObject(SSamplerDescription()));
@@ -117,8 +126,12 @@ NSDevilX::NSRenderSystem::NSGLES3::CSystemImp::~CSystemImp()
 	mTransformers.destroyAll();
 	DEVILX_DELETE(mConstantBuffer);
 	mConstantBuffer=nullptr;
-	eglMakeCurrent(mDisplay,EGL_NO_SURFACE,EGL_NO_SURFACE,EGL_NO_CONTEXT);
-	eglDestroyContext(mDisplay,getContext());
+	eglMakeCurrent(getDisplay(),EGL_NO_SURFACE,EGL_NO_SURFACE,EGL_NO_CONTEXT);
+	CUtility::checkEGLError();
+	eglDestroyContext(getDisplay(),getContext());
+	CUtility::checkEGLError();
+	eglTerminate(getDisplay());
+	CUtility::checkEGLError();
 	mInstanceByInternals.clear();
 }
 
