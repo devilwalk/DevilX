@@ -203,8 +203,6 @@
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11Viewport.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11ViewportImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11WindowImp.h" />
-    <ClInclude Include="..\..\..\Code\Layer1\Include\Shader\HLSL4_1DefnitionShaderCodeFunction.h" />
-    <ClInclude Include="..\..\..\Code\Layer1\Include\Shader\HLSL5DefnitionShaderCodeFunction.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\Precompiler.h" />
   </ItemGroup>
   <ItemGroup>
@@ -255,8 +253,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Layer1\Source\Shader\HLSL4_1DefnitionShaderCodeFunction.cpp" />
-    <ClCompile Include="..\..\..\Code\Layer1\Source\Shader\HLSL5DefnitionShaderCodeFunction.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

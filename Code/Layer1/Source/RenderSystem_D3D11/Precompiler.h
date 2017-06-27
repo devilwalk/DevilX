@@ -8,8 +8,6 @@
 #define DEVILX_RENDERSYSTEM_D3D11_MT_DS 1
 #define DEVILX_RENDERSYSTEM_D3D11_MT 2
 #define DEVILX_RENDERSYSTEM_D3D11_MODE DEVILX_RENDERSYSTEM_D3D11_MT_DS
-#include "HLSL5DefnitionShaderCodeFunction.h"
-#include "HLSL4_1DefnitionShaderCodeFunction.h"
 #include "D3D11BaseObject.h"
 #include "D3D11Enum.h"
 #include "D3D11Utility.h"

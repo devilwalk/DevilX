@@ -13,7 +13,6 @@
 #include "GLES3ClearViewportProgram.h"
 #include "GLES3OverlayMaterialManager.h"
 #include "GLES3SamplerObject.h"
-#include "GLESSL3_2DefnitionShaderCodeFunction.h"
 namespace NSDevilX
 {
 	namespace NSRenderSystem
@@ -39,7 +38,6 @@ namespace NSDevilX
 				EGLDisplay mDisplay;
 				EGLContext mContext;
 				CShaderManager * mShaderManager;
-				NSGLESSL3_2::CDefinitionShader * mDefinitionShader;
 				CConstantBufferDescriptionManager * mConstantBufferDescriptionManager;
 				CClearViewportProgram * mClearViewportProgram;
 				COverlayMaterialManager * mOverlayMaterialManager;
@@ -71,10 +69,6 @@ namespace NSDevilX
 				CShaderManager * getShaderManager()const
 				{
 					return mShaderManager;
-				}
-				decltype(mDefinitionShader) getDefinitionShader()const
-				{
-					return mDefinitionShader;
 				}
 				CConstantBufferDescriptionManager * getConstantBufferDescriptionManager()const
 				{

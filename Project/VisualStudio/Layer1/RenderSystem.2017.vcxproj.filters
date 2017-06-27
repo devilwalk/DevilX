@@ -177,6 +177,9 @@
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IEntityRenderableImp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Include\Shader\DefnitionShaderCodeFunction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\ICameraImp.cpp">
@@ -252,6 +255,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IEntityImp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer1\Source\Shader\DefnitionShaderCodeFunction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -14,6 +14,7 @@ NSDevilX::NSRenderSystem::NSGL4::CShaderManager::~CShaderManager()
 GLuint NSDevilX::NSRenderSystem::NSGL4::CShaderManager::registerVertexShader(const String & key,const String & code,const MacroDefines & macros)
 {
 	String macro_string="#version 450\r\n";
+	macro_string+="#define GLSL_VERSION 450\r\n";
 	for(auto macro:macros)
 		macro_string+="#define "+macro.first+" "+macro.second+"\r\n";
 	String final_code=macro_string+code;
@@ -51,6 +52,7 @@ GLuint NSDevilX::NSRenderSystem::NSGL4::CShaderManager::registerVertexShader(con
 GLuint NSDevilX::NSRenderSystem::NSGL4::CShaderManager::registerPixelShader(const String & key,const String & code,const MacroDefines & macros)
 {
 	String macro_string="#version 450\r\n";
+	macro_string+="#define GLSL_VERSION 450\r\n";
 	for(auto macro:macros)
 		macro_string+="#define "+macro.first+" "+macro.second+"\r\n";
 	String final_code=macro_string+code;

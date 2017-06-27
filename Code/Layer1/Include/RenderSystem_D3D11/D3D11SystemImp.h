@@ -51,11 +51,6 @@ namespace NSDevilX
 				CShaderCodeManager * mShaderCodeManager;
 				CConstantBufferDescriptionManager * mConstantBufferDescriptionManager;
 				COverlayMaterialManager * mOverlayMaterialManager;
-				union
-				{
-					NSHLSL5::CDefinitionShader * mDefinitionShader5;
-					NSHLSL4_1::CDefinitionShader * mDefinitionShader4_1;
-				};
 				D3D_FEATURE_LEVEL mSupport;
 				CClearViewportShader * mClearViewportShader;
 				TResourcePtrVector<SInputLayout> mInputLayouts;
@@ -121,14 +116,6 @@ namespace NSDevilX
 				COverlayMaterialManager * getOverlayMaterialManager()const
 				{
 					return mOverlayMaterialManager;
-				}
-				NSHLSL5::CDefinitionShader * getDefinitionShader5()const
-				{
-					return mDefinitionShader5;
-				}
-				NSHLSL4_1::CDefinitionShader * getDefinitionShader4_1()const
-				{
-					return mDefinitionShader4_1;
 				}
 				CDepthStencil * getFreeDepthStencil(UInt32 width,UInt32 height);
 				ID3D11InputLayout * getInputLayout(const D3D11_INPUT_ELEMENT_DESC * descs,UINT numElements);

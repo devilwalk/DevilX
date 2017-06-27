@@ -1,6 +1,5 @@
 #pragma once
 #include "GL4ShaderManager.h"
-#include "GLSL4_5DefnitionShaderCodeFunction.h"
 #include "GL4ConstantBufferDescriptionManager.h"
 #include "GL4ConstantBufferContainer.h"
 #include "GL4DepthStencil.h"
@@ -38,7 +37,6 @@ namespace NSDevilX
 				CThreadPool * mRenderTaskThreadPool;
 				HGLRC mContext;
 				CShaderManager * mShaderManager;
-				NSGLSL4_5::CDefinitionShader * mDefinitionShader;
 				CConstantBufferDescriptionManager * mConstantBufferDescriptionManager;
 				CClearViewportProgram * mClearViewportProgram;
 				COverlayMaterialManager * mOverlayMaterialManager;
@@ -66,10 +64,6 @@ namespace NSDevilX
 				CShaderManager * getShaderManager()const
 				{
 					return mShaderManager;
-				}
-				decltype(mDefinitionShader) getDefinitionShader()const
-				{
-					return mDefinitionShader;
 				}
 				CConstantBufferDescriptionManager * getConstantBufferDescriptionManager()const
 				{

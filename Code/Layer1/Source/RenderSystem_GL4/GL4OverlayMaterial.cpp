@@ -25,7 +25,7 @@ Void NSDevilX::NSRenderSystem::NSGL4::COverlayMaterial::_updateShader()
 	auto vertex_shader=CSystemImp::getSingleton().getShaderManager()->getShader(code_key);
 	if(0==vertex_shader)
 	{
-		vertex_shader=CSystemImp::getSingleton().getShaderManager()->registerVertexShader(code_key,CSystemImp::getSingleton().getDefinitionShader()->OverlayShaderVertex,TVector<std::pair<String,String> >());
+		vertex_shader=CSystemImp::getSingleton().getShaderManager()->registerVertexShader(code_key,ISystemImp::getSingleton().getDefinitionShader()->OverlayVertexShader_glsl,TVector<std::pair<String,String> >());
 	}
 
 	code_key="Overlay_PixelShader";
@@ -60,7 +60,7 @@ Void NSDevilX::NSRenderSystem::NSGL4::COverlayMaterial::_updateShader()
 				macros.push_back(def);
 			}
 		}
-		pixel_shader=CSystemImp::getSingleton().getShaderManager()->registerPixelShader(code_key,CSystemImp::getSingleton().getDefinitionShader()->OverlayShaderPixel,macros);
+		pixel_shader=CSystemImp::getSingleton().getShaderManager()->registerPixelShader(code_key,ISystemImp::getSingleton().getDefinitionShader()->OverlayPixelShader_glsl,macros);
 	}
 	mProgram=DEVILX_NEW CProgram(vertex_shader,pixel_shader);
 }

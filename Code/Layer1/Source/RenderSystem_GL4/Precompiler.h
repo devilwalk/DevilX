@@ -53,4 +53,3 @@
 #include "GL4Viewport.h"
 #include "GL4ViewportImp.h"
 #include "GL4WindowImp.h"
-#include "GLSL4_5DefnitionShaderCodeFunction.h"

@@ -74,8 +74,10 @@ Void NSDevilX::NSRenderSystem::NSGLES3::CWindowImp::prepare()
 Void NSDevilX::NSRenderSystem::NSGLES3::CWindowImp::render()
 {
 	eglMakeCurrent(CSystemImp::getSingleton().getDisplay(),mSurface,mSurface,CSystemImp::getSingleton().getContext());
+	CUtility::checkEGLError();
 	CRenderTargetImp::render();
 	eglSwapBuffers(CSystemImp::getSingleton().getDisplay(),mSurface);
+	CUtility::checkEGLError();
 }
 
 Void NSDevilX::NSRenderSystem::NSGLES3::CWindowImp::_resize()

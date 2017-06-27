@@ -3,6 +3,7 @@
 #include "IWindowImp.h"
 #include "IRenderableSurfaceImp.h"
 #include "ISceneImp.h"
+#include "DefnitionShaderCodeFunction.h"
 namespace NSDevilX
 {
 	namespace NSRenderSystem
@@ -35,6 +36,7 @@ namespace NSDevilX
 			Bool mExit;
 			UInt32 mFrameIndex;
 			Float mFrameTimeInSecond;
+			CDefinitionShader * mDefinitionShader;
 			IResourceManagerImp * mResourceManager;
 			TResourcePtrMap<CWindow*,IWindowImp> mWindows;
 			TNamedResourcePtrMap<IRenderableSurfaceImp> mRenderableSurfaces;
@@ -53,6 +55,10 @@ namespace NSDevilX
 			decltype(mFrameTimeInSecond) getFrameTimeInSecond()const
 			{
 				return mFrameTimeInSecond;
+			}
+			CDefinitionShader * getDefinitionShader()const
+			{
+				return mDefinitionShader;
 			}
 			// Inherited via ISystem
 			virtual Void shutdown() override;

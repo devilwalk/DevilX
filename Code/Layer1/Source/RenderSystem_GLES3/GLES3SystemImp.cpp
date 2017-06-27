@@ -15,7 +15,6 @@ NSDevilX::NSRenderSystem::NSGLES3::CSystemImp::CSystemImp()
 	,mContext(EGL_NO_CONTEXT)
 	,mDisplay(EGL_NO_DISPLAY)
 	,mShaderManager(nullptr)
-	,mDefinitionShader(nullptr)
 	,mConstantBufferDescriptionManager(nullptr)
 	,mClearViewportProgram(nullptr)
 	,mOverlayMaterialManager(nullptr)
@@ -88,7 +87,6 @@ NSDevilX::NSRenderSystem::NSGLES3::CSystemImp::CSystemImp()
 #endif
 	mSamplerObjects.push_back(DEVILX_NEW CSamplerObject(SSamplerDescription()));
 	mShaderManager=DEVILX_NEW CShaderManager;
-	mDefinitionShader=DEVILX_NEW NSGLESSL3_2::CDefinitionShader;
 	mConstantBufferDescriptionManager=DEVILX_NEW CConstantBufferDescriptionManager;
 	mOverlayMaterialManager=DEVILX_NEW COverlayMaterialManager();
 	mClearViewportProgram=DEVILX_NEW CClearViewportProgram;
@@ -114,7 +112,6 @@ NSDevilX::NSRenderSystem::NSGLES3::CSystemImp::~CSystemImp()
 	DEVILX_DELETE(mClearViewportProgram);
 	DEVILX_DELETE(mOverlayMaterialManager);
 	DEVILX_DELETE(mConstantBufferDescriptionManager);
-	DEVILX_DELETE(mDefinitionShader);
 	DEVILX_DELETE(mShaderManager);
 	mSamplerObjects.destroyAll();
 	mDepthStencils.destroyAll();

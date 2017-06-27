@@ -135,9 +135,6 @@
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3WindowImp.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Layer1\Source\Shader\GLESSL3_2DefnitionShaderCodeFunction.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\Precompiler.h">

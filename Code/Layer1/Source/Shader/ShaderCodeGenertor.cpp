@@ -1,10 +1,12 @@
 #include <Windows.h>
 #include <string>
 #include <vector>
-bool isDir(const WIN32_FIND_DATAA & wfd)
+#include <assert.h>
+#include <set>
+bool isVaild(const WIN32_FIND_DATAA & wfd)
 {
-	if((wfd.dwFileAttributes&FILE_ATTRIBUTE_DIRECTORY)
-		&&(std::string::npos==std::string(wfd.cFileName).find("."))
+	if(((wfd.dwFileAttributes&FILE_ATTRIBUTE_DIRECTORY)==0)
+		&&((std::string::npos!=std::string(wfd.cFileName).find(".sl"))||(std::string::npos!=std::string(wfd.cFileName).find(".hlsl"))||(std::string::npos!=std::string(wfd.cFileName).find(".glsl")))
 		)
 	{
 		return true;
@@ -12,7 +14,7 @@ bool isDir(const WIN32_FIND_DATAA & wfd)
 	else
 		return false;
 }
-std::vector<std::string> findDirs()
+std::vector<std::string> findFiles()
 {
 	std::vector<std::string> ret;
 	char filename[MAX_PATH]={0};
@@ -24,11 +26,11 @@ std::vector<std::string> findDirs()
 	auto handle=FindFirstFileA((dir+"\\*").c_str(),&wfd);
 	if(INVALID_HANDLE_VALUE!=handle)
 	{
-		if(isDir(wfd))
+		if(isVaild(wfd))
 			ret.push_back(dir+"\\"+wfd.cFileName);
 		while(FindNextFileA(handle,&wfd))
 		{
-			if(isDir(wfd))
+			if(isVaild(wfd))
 				ret.push_back(dir+"\\"+wfd.cFileName);
 		}
 	}
@@ -51,18 +53,27 @@ std::vector<std::string> findFiles(const std::string & dir,const std::string & e
 	FindClose(handle);
 	return ret;
 }
-void generatorHead(const std::vector<std::string> & files,const std::string & version)
+void generatorHead(const std::vector<std::string> & files)
 {
-	std::string buf="#pragma once\r\nnamespace NSDevilX\r\n{\r\nnamespace NSRenderSystem\r\n{\r\nnamespace NS"+version+"\r\n{\r\nclass CDefinitionShader:public TBaseObject<CDefinitionShader>{\r\npublic:\r\n";
-	for(auto file:files)
+	std::string buf="#pragma once\r\nnamespace NSDevilX\r\n{\r\nnamespace NSRenderSystem\r\n{\r\nclass CDefinitionShader:public TBaseObject<CDefinitionShader>{\r\npublic:\r\n";
+	for(auto const & file:files)
 	{
-		std::string function_name=file.substr(file.find_last_of("\\")+1);
-		function_name=function_name.replace(function_name.find("."),5,"");
-		buf+="String "+function_name+";\r\n";
+		auto handle=CreateFileA(file.c_str(),GENERIC_READ,FILE_SHARE_READ,nullptr,OPEN_EXISTING,0,nullptr);
+		std::string func_buf;
+		func_buf.resize(GetFileSize(handle,nullptr));
+		DWORD real=0;
+		ReadFile(handle,&func_buf[0],static_cast<DWORD>(func_buf.size()),&real,nullptr);
+		CloseHandle(handle);
+		if((func_buf.find("main(")!=std::string::npos)||(func_buf.find("vsMain(")!=std::string::npos))
+		{
+			std::string function_name=file.substr(file.find_last_of("\\")+1);
+			function_name=function_name.replace(function_name.find("."),1,1,'_');
+			buf+="String "+function_name+";\r\n";
+		}
 	}
-	buf+="CDefinitionShader();\r\n};\r\n}\r\n}\r\n}";
+	buf+="CDefinitionShader();\r\n};\r\n}\r\n}";
 	const std::string gen_head_dir=files.front().substr(0,files.front().find("\\Code\\"))+"\\Code\\Layer1\\Include\\Shader";
-	const std::string gen_head_file_name=version+"DefnitionShaderCodeFunction.h";
+	const std::string gen_head_file_name="DefnitionShaderCodeFunction.h";
 	const std::string gen_head_full_name=gen_head_dir+"\\"+gen_head_file_name;
 	std::string test_buf;
 	DWORD real=0;
@@ -79,15 +90,44 @@ void generatorHead(const std::vector<std::string> & files,const std::string & ve
 	WriteFile(handle,&buf[0],static_cast<DWORD>(buf.size()),&real,nullptr);
 	CloseHandle(handle);
 }
-void generatorCpp(const std::vector<std::string> & files,const std::string & version)
+std::string processInclude(const std::vector<std::string> & functions,const std::vector<std::string> & functionNames,unsigned int index,std::vector<unsigned int> & includeStack,std::set<unsigned int> & includeSet)
 {
-	std::string buf="#include \"Precompiler.h\"\r\nusing namespace NSDevilX;\r\nusing namespace NSRenderSystem;\r\nusing namespace NS"+version+";\r\nNSDevilX::NSRenderSystem::NS"+version+"::CDefinitionShader::CDefinitionShader()\r\n{\r\n";
+	assert(std::find(includeStack.begin(),includeStack.end(),index)==includeStack.end());
+	if(includeSet.find(index)!=includeSet.end())
+		return std::string();
+	includeSet.insert(index);
+	includeStack.push_back(index);
+	std::string ret=functions[index];
+	while(std::string::npos!=ret.find("#include"))
+	{
+		auto include_left_index=ret.find_first_of("\"")+1;
+		auto temp_text=ret.substr(include_left_index);
+		auto include_right_index=include_left_index+temp_text.find_first_of("\"")-1;
+		auto include=ret.substr(include_left_index,include_right_index-include_left_index+1);
+		include=include.replace(include.find("."),1,1,'_');
+		auto include_function_index=std::find(functionNames.begin(),functionNames.end(),include)-functionNames.begin();
+		auto include_function=processInclude(functions,functionNames,include_function_index,includeStack,includeSet);
+		std::string new_function;
+		auto splite_index=ret.find("#include");
+		if(splite_index>0)
+			new_function=ret.substr(0,splite_index);
+		new_function+=include_function;
+		ret=ret.substr(include_right_index+2);
+		new_function+=ret+"\r\n";
+		ret=new_function;
+	}
+	includeStack.pop_back();
+	return ret;
+}
+void generatorCpp(const std::vector<std::string> & files)
+{
+	std::string buf="#include \"Precompiler.h\"\r\nusing namespace NSDevilX;\r\nusing namespace NSRenderSystem;\r\nNSDevilX::NSRenderSystem::CDefinitionShader::CDefinitionShader()\r\n{\r\n";
 	std::vector<std::string> function_names;
 	std::vector<std::string> functions;
-	for(auto file:files)
+	for(auto const & file:files)
 	{
 		std::string function_name=file.substr(file.find_last_of("\\")+1);
-		function_name=function_name.replace(function_name.find("."),5,"");
+		function_name=function_name.replace(function_name.find("."),1,1,'_');
 		function_names.push_back(function_name);
 		auto handle=CreateFileA(file.c_str(),GENERIC_READ,FILE_SHARE_READ,nullptr,OPEN_EXISTING,0,nullptr);
 		std::string func_buf;
@@ -95,6 +135,17 @@ void generatorCpp(const std::vector<std::string> & files,const std::string & ver
 		DWORD real=0;
 		ReadFile(handle,&func_buf[0],static_cast<DWORD>(func_buf.size()),&real,nullptr);
 		CloseHandle(handle);
+		functions.push_back(func_buf);
+	}
+	std::vector<std::string> valid_functions;
+	std::vector<std::string> valid_function_names;
+	for(unsigned int i=0;i<functions.size();++i)
+	{
+		if((functions[i].find("main(")==std::string::npos)&&(functions[i].find("vsMain(")==std::string::npos))
+			continue;
+		std::vector<unsigned int> include_stack;
+		std::set<unsigned int> include_set;
+		auto func_buf=processInclude(functions,function_names,i,include_stack,include_set);
 		std::string temp;
 		while(func_buf.find("\r\n")!=std::string::npos)
 		{
@@ -111,44 +162,16 @@ void generatorCpp(const std::vector<std::string> & files,const std::string & ver
 		}
 		temp+=func_buf;
 		func_buf=temp;
-		functions.push_back(func_buf);
+		valid_functions.push_back(func_buf);
+		valid_function_names.push_back(function_names[i]);
 	}
-	if((std::string::npos!=version.find("GLSL"))
-		||(std::string::npos!=version.find("GLESSL")))
+	for(size_t i=0;i<valid_functions.size();++i)
 	{
-		bool has_include=false;
-		do
-		{
-			has_include=false;
-			for(auto & function:functions)
-			{
-				while(std::string::npos!=function.find("#include"))
-				{
-					auto include_left_index=function.find_first_of("\"")+1;
-					auto temp_text=function.substr(include_left_index);
-					auto include_right_index=include_left_index+temp_text.find_first_of("\"")-2;
-					auto include=function.substr(include_left_index,include_right_index-include_left_index-5+1);
-					auto include_function=functions[std::find(function_names.begin(),function_names.end(),include)-function_names.begin()];
-					std::string new_function;
-					auto splite_index=function.find("#include");
-					if(splite_index>0)
-						new_function=function.substr(0,splite_index);
-					new_function+=include_function;
-					new_function+=function.substr(include_right_index+3);
-					function=new_function;
-					has_include=true;
-				}
-			}
-		}
-		while(has_include);
-	}
-	for(size_t i=0;i<functions.size();++i)
-	{
-		buf+=function_names[i]+"=\""+functions[i]+"\";\r\n";
+		buf+=valid_function_names[i]+"=\""+valid_functions[i]+"\";\r\n";
 	}
 	buf+="}";
 	const std::string gen_cpp_dir=files.front().substr(0,files.front().find("\\Code\\"))+"\\Code\\Layer1\\Source\\Shader";
-	const std::string gen_cpp_file_name=version+"DefnitionShaderCodeFunction.cpp";
+	const std::string gen_cpp_file_name="DefnitionShaderCodeFunction.cpp";
 	const std::string gen_cpp_full_name=gen_cpp_dir+"\\"+gen_cpp_file_name;
 	std::string test_buf;
 	DWORD real=0;
@@ -167,32 +190,7 @@ void generatorCpp(const std::vector<std::string> & files,const std::string & ver
 }
 void main()
 {
-	auto dirs=findDirs();
-	for(auto dir:dirs)
-	{
-		if(dir.find("\\HLSL5")!=std::string::npos)
-		{
-			auto files=findFiles(dir,"hlsl");
-			generatorHead(files,"HLSL5");
-			generatorCpp(files,"HLSL5");
-		}
-		else if(dir.find("\\HLSL4_1")!=std::string::npos)
-		{
-			auto files=findFiles(dir,"hlsl");
-			generatorHead(files,"HLSL4_1");
-			generatorCpp(files,"HLSL4_1");
-		}
-		else if(dir.find("\\GLSL4_5")!=std::string::npos)
-		{
-			auto files=findFiles(dir,"glsl");
-			generatorHead(files,"GLSL4_5");
-			generatorCpp(files,"GLSL4_5");
-		}
-		else if(dir.find("\\GLESSL3_2")!=std::string::npos)
-		{
-			auto files=findFiles(dir,"glsl");
-			generatorHead(files,"GLESSL3_2");
-			generatorCpp(files,"GLESSL3_2");
-		}
-	}
+	auto files=findFiles();
+	generatorHead(files);
+	generatorCpp(files);
 }

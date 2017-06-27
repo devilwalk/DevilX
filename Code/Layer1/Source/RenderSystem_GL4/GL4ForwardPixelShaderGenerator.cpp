@@ -56,7 +56,7 @@ GLuint NSDevilX::NSRenderSystem::NSGL4::CForwardPixelShaderCodeGenerator::genera
 				macro_list.push_back(def);
 			}
 		}
-		ret=CSystemImp::getSingleton().getShaderManager()->registerPixelShader(code_key,CSystemImp::getSingleton().getDefinitionShader()->ForwardShaderPixel,macro_list);
+		ret=CSystemImp::getSingleton().getShaderManager()->registerPixelShader(code_key,ISystemImp::getSingleton().getDefinitionShader()->ForwardPixelShader_glsl,macro_list);
 	}
 	return ret;
 }

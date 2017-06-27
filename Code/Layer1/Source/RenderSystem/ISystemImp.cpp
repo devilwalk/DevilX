@@ -6,7 +6,9 @@ NSDevilX::NSRenderSystem::ISystemImp::ISystemImp()
 	,mExit(False)
 	,mFrameTimeInSecond(0.0f)
 	,mFrameIndex(0)
+	,mDefinitionShader(nullptr)
 {
+	mDefinitionShader=DEVILX_NEW CDefinitionShader;
 	mResourceManager=DEVILX_NEW IResourceManagerImp;
 }
 
@@ -15,6 +17,7 @@ NSDevilX::NSRenderSystem::ISystemImp::~ISystemImp()
 	mExit=True;
 	notify(EMessage_Destruction);
 	DEVILX_DELETE(mResourceManager);
+	DEVILX_DELETE(mDefinitionShader);
 }
 
 Void NSDevilX::NSRenderSystem::ISystemImp::shutdown()

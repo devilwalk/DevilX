@@ -31,17 +31,7 @@ ID3DBlob * NSDevilX::NSRenderSystem::NSD3D11::CForwardVertexShaderGenerator::gen
 		TVector<D3D_SHADER_MACRO> macro_list=generateMacro();
 		D3D_SHADER_MACRO null_macro={nullptr,nullptr};
 		macro_list.push_back(null_macro);
-		String code;
-		switch(CSystemImp::getSingleton().getShaderModelType())
-		{
-		case CEnum::EShaderModelType_4_1:
-			code=CSystemImp::getSingleton().getDefinitionShader4_1()->ForwardShader;
-			break;
-		case CEnum::EShaderModelType_5:
-			code=CSystemImp::getSingleton().getDefinitionShader5()->ForwardShader;
-			break;
-		}
-		ret=CSystemImp::getSingleton().getShaderCodeManager()->registerShader(code_key,code,CEnum::EShaderType_VertexShader,CSystemImp::getSingleton().getShaderModelType(),&macro_list[0]);
+		ret=CSystemImp::getSingleton().getShaderCodeManager()->registerShader(code_key,ISystemImp::getSingleton().getDefinitionShader()->ForwardShader_hlsl,CEnum::EShaderType_VertexShader,CSystemImp::getSingleton().getShaderModelType(),&macro_list[0]);
 	}
 	return ret;
 }

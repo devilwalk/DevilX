@@ -45,6 +45,7 @@
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IVisibleAreaImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IWindowImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\SceneManager.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\Shader\DefnitionShaderCodeFunction.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderEntityRenderable.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderEntity.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderableSurface.h" />
@@ -104,6 +105,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\SceneManager.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\Shader\DefnitionShaderCodeFunction.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{6370D2B2-ABDA-4A54-BCCB-9FB75368E79C}</ProjectGuid>
@@ -165,23 +167,29 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Layer1\Interface\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Layer1\Interface\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\Shader;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PreBuildEvent>
+      <Command>call $(OutDir)ShaderCodeGenerator.2017.exe</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Layer1\Interface\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Layer1\Interface\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\Shader;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PreBuildEvent>
+      <Command>call $(OutDir)ShaderCodeGenerator.2017.exe</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -189,7 +197,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Layer1\Interface\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Layer1\Interface\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\Shader;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -197,6 +205,9 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
+    <PreBuildEvent>
+      <Command>call $(OutDir)ShaderCodeGenerator.2017.exe</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -204,7 +215,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Layer1\Interface\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Layer1\Interface\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\RenderSystem;$(SolutionDir)..\..\Code\Layer1\Include\Shader;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -212,6 +223,9 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
+    <PreBuildEvent>
+      <Command>call $(OutDir)ShaderCodeGenerator.2017.exe</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

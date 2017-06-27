@@ -25,3 +25,4 @@
 #include "IVisibleAreaImp.h"
 #include "IWindowImp.h"
 #include "SceneManager.h"
+#include "DefnitionShaderCodeFunction.h"

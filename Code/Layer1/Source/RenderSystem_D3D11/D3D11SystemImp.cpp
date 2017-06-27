@@ -60,7 +60,6 @@ NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::CSystemImp()
 	,mFactory(nullptr)
 	,mConstantBufferDescriptionManager(nullptr)
 	,mShaderModelType(CEnum::EShaderModelType_4_1)
-	,mDefinitionShader5(nullptr)
 	,mOverlayMaterialManager(nullptr)
 {
 	DEVILX_NEW ISystemImp();
@@ -132,9 +131,9 @@ NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::CSystemImp()
 	D3D11CreateDevice(nullptr,D3D_DRIVER_TYPE_HARDWARE,nullptr,flag,feature_levels,sizeof(feature_levels)/sizeof(feature_levels[0]),D3D11_SDK_VERSION,&dev,&mSupport,&context);
 	switch(mSupport)
 	{
-	case D3D_FEATURE_LEVEL_10_1:mShaderModelType=CEnum::EShaderModelType_4_1;mDefinitionShader4_1=DEVILX_NEW NSHLSL4_1::CDefinitionShader;break;
+	case D3D_FEATURE_LEVEL_10_1:mShaderModelType=CEnum::EShaderModelType_4_1;break;
 	case D3D_FEATURE_LEVEL_11_0:
-	case D3D_FEATURE_LEVEL_11_1:mShaderModelType=CEnum::EShaderModelType_5;mDefinitionShader5=DEVILX_NEW NSHLSL5::CDefinitionShader;break;
+	case D3D_FEATURE_LEVEL_11_1:mShaderModelType=CEnum::EShaderModelType_5;break;
 	}
 	dev->QueryInterface(__uuidof(ID3D11Device1),reinterpret_cast<VoidPtr*>(&mDevice));
 	context->QueryInterface(__uuidof(ID3D11DeviceContext1),reinterpret_cast<VoidPtr*>(&mImmediateContext));
@@ -164,12 +163,6 @@ NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::CSystemImp()
 NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::~CSystemImp()
 {
 	DEVILX_DELETE(mRenderTaskThreadPool);
-	switch(mSupport)
-	{
-	case D3D_FEATURE_LEVEL_10_1:mShaderModelType=CEnum::EShaderModelType_4_1;DEVILX_DELETE(mDefinitionShader4_1);break;
-	case D3D_FEATURE_LEVEL_11_0:
-	case D3D_FEATURE_LEVEL_11_1:mShaderModelType=CEnum::EShaderModelType_5;DEVILX_DELETE(mDefinitionShader5);break;
-	}
 	DEVILX_DELETE(mShaderCodeManager);
 	DEVILX_DELETE(mConstantBufferDescriptionManager);
 	DEVILX_DELETE(mClearViewportShader);

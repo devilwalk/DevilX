@@ -1,0 +1,21 @@
+#include "Defines.sl"
+DECL_CB(cbShadowMap0)
+CB_MEMBER float4x4 gShadowMap0ViewProjectionMatrix;
+CB_MEMBER float gShadowMap0FarDistance;
+CB_MEMBER float gShadowMap0InverseFarDistance;
+END_DECL
+DECL_CB(cbShadowMap1)
+CB_MEMBER float4x4 gShadowMap1ViewProjectionMatrix;
+CB_MEMBER float gShadowMap1FarDistance;
+CB_MEMBER float gShadowMap1InverseFarDistance;
+END_DECL
+DECL_CB(cbShadowMap2)
+CB_MEMBER float4x4 gShadowMap2ViewProjectionMatrix;
+CB_MEMBER float gShadowMap2FarDistance;
+CB_MEMBER float gShadowMap2InverseFarDistance;
+END_DECL
+DECL_CB(cbShadowMap3)
+CB_MEMBER float4x4 gShadowMap3ViewProjectionMatrix;
+CB_MEMBER float gShadowMap3FarDistance;
+CB_MEMBER float gShadowMap3InverseFarDistance;
+END_DECL

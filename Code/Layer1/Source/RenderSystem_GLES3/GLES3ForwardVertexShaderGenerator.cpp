@@ -28,7 +28,7 @@ GLuint NSDevilX::NSRenderSystem::NSGLES3::CForwardVertexShaderGenerator::generat
 	auto ret=CSystemImp::getSingleton().getShaderManager()->getShader(code_key);
 	if(0==ret)
 	{
-		ret=CSystemImp::getSingleton().getShaderManager()->registerVertexShader(code_key,CSystemImp::getSingleton().getDefinitionShader()->ForwardShaderVertex,generateMacro());
+		ret=CSystemImp::getSingleton().getShaderManager()->registerVertexShader(code_key,ISystemImp::getSingleton().getDefinitionShader()->ForwardVertexShader_glsl,generateMacro());
 	}
 	return ret;
 }

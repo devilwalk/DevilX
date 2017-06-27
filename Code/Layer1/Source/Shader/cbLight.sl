@@ -1,0 +1,23 @@
+#include "Defines.sl"
+DECL_CB(cbDirectionLight)
+CB_MEMBER float3 gDirectionLightDiffuseColour;
+CB_MEMBER float3 gDirectionLightSpecularColour;
+CB_MEMBER float3 gDirectionLightDirection;
+END_DECL
+DECL_CB(cbPointLight)
+CB_MEMBER float3 gPointLightDiffuseColour;
+CB_MEMBER float3 gPointLightSpecularColour;
+CB_MEMBER float3 gPointLightPosition;
+CB_MEMBER float gPointLightReciprocalRange;
+CB_MEMBER float gPointLightStartFallOffDistance;
+END_DECL
+DECL_CB(cbSpotLight)
+CB_MEMBER float3 gSpotLightDiffuseColour;
+CB_MEMBER float3 gSpotLightSpecularColour;
+CB_MEMBER float3 gSpotLightDirection;
+CB_MEMBER float3 gSpotLightPosition;
+CB_MEMBER float gSpotLightReciprocalRange;
+CB_MEMBER float gSpotLightStartFallOffDistance;
+CB_MEMBER float gSpotLightCosInnerCornerHalfAngle;
+CB_MEMBER float gSpotLightReciprocalDeltaCosHalfAngle;
+END_DECL
