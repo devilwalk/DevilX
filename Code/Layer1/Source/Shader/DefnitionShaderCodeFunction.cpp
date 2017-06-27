@@ -2187,20 +2187,18 @@ uniform sampler2D gDiffuseTexture;\r\n\
 out float4 gFragColour;\r\n\
 void main()\r\n\
 {\r\n\
-#if USE_FONT_TEXTURE\r\n\
-	float4 diffuse_texture_sampler=float4(float3(1.0),texture(gDiffuseTexture,gMainUVPS).r);\r\n\
-#elif USE_DIFFUSE_TEXTURE\r\n\
+#if USE_FONT_TEXTURE||USE_DIFFUSE_TEXTURE\r\n\
 	float4 diffuse_texture_sampler=texture(gDiffuseTexture,gMainUVPS);\r\n\
 #endif\r\n\
 #define iDiffuse gDiffusePS\r\n\
 #define oColour gFragColour\r\n\
 	oColour=iDiffuse;\r\n\
-#if USE_DIFFUSE_TEXTURE\r\n\
-#if USE_FONT_TEXTURE\r\n\
+#if USE_DIFFUSE_TEXTURE||USE_FONT_TEXTURE\r\n\
+	#if USE_FONT_TEXTURE\r\n\
 	float4 diffuse_texture_colour=float4(float3(1.0),diffuse_texture_sampler.r);\r\n\
-#else\r\n\
-	diffuse_texture_colour=diffuse_texture_sampler;\r\n\
-#endif\r\n\
+	#else\r\n\
+	float4 diffuse_texture_colour=diffuse_texture_sampler;\r\n\
+	#endif\r\n\
 	oColour*=diffuse_texture_colour;\r\n\
 #endif\r\n\
 }\r\n\
@@ -2442,12 +2440,12 @@ SPixelShaderOutput psMain(SVertexShaderOutput input)\r\n\
 #define iDiffuse input.mDiffuse\r\n\
 #define oColour output.mColour\r\n\
 	oColour=iDiffuse;\r\n\
-#if USE_DIFFUSE_TEXTURE\r\n\
-#if USE_FONT_TEXTURE\r\n\
+#if USE_DIFFUSE_TEXTURE||USE_FONT_TEXTURE\r\n\
+	#if USE_FONT_TEXTURE\r\n\
 	float4 diffuse_texture_colour=float4(float3(1.0),diffuse_texture_sampler.r);\r\n\
-#else\r\n\
-	diffuse_texture_colour=diffuse_texture_sampler;\r\n\
-#endif\r\n\
+	#else\r\n\
+	float4 diffuse_texture_colour=diffuse_texture_sampler;\r\n\
+	#endif\r\n\
 	oColour*=diffuse_texture_colour;\r\n\
 #endif\r\n\
     return output;\r\n\

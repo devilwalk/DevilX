@@ -11,9 +11,7 @@ uniform sampler2D gDiffuseTexture;
 out float4 gFragColour;
 void main()
 {
-#if USE_FONT_TEXTURE
-	float4 diffuse_texture_sampler=float4(float3(1.0),texture(gDiffuseTexture,gMainUVPS).r);
-#elif USE_DIFFUSE_TEXTURE
+#if USE_FONT_TEXTURE||USE_DIFFUSE_TEXTURE
 	float4 diffuse_texture_sampler=texture(gDiffuseTexture,gMainUVPS);
 #endif
 #define iDiffuse gDiffusePS
