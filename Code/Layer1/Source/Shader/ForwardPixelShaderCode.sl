@@ -8,6 +8,7 @@
     alpha *= iDiffuse.a;
 #endif
 #if USE_DIFFUSE_TEXTURE
+	float4 diffuse_texture_sampler=SAMPLE_TEXTURE(Diffuse,iMainUV);
 	float3 diffuse_texture_colour = diffuse_texture_sampler.rgb;
 	float diffuse_texture_alpha = diffuse_texture_sampler.a;
 	alpha *= diffuse_texture_alpha;
@@ -23,6 +24,7 @@
     float lighting_falloff_factor=1.0;
 	float3 world_normal=normalize(iWorldNormal);
 		#if USE_NORMAL_TEXTURE
+	float4 normal_texture_sampler=SAMPLE_TEXTURE(Normal,iMainUV);
 	float3 normal_texture_normal=normal_texture_sampler.xyz * 2.0-1.0;
 	float3 world_tangent=normalize(iWorldTangent);
 	float3 world_binormal=cross(world_normal,world_tangent);

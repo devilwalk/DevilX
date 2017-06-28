@@ -38,3 +38,8 @@
 	#define END_DECL
 	#define CB_MEMBER
 #endif
+#if HLSL_VERSION
+	#define SAMPLE_TEXTURE(tex_name,uv) g##tex_name##Texture.Sample(g##tex_name##SamplerState,uv)
+#else
+	#define SAMPLE_TEXTURE(tex_name,uv) texture(g##tex_name##Texture,uv)
+#endif

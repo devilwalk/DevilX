@@ -198,7 +198,6 @@
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4Viewport.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4ViewportImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4WindowImp.h" />
-    <ClInclude Include="..\..\..\Code\Layer1\Include\Shader\GLSL4_5DefnitionShaderCodeFunction.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\Precompiler.h" />
   </ItemGroup>
   <ItemGroup>
@@ -253,7 +252,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Layer1\Source\Shader\GLSL4_5DefnitionShaderCodeFunction.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

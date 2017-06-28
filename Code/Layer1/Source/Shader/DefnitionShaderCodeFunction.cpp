@@ -43,6 +43,12 @@ ClearViewport_hlsl="#ifndef GLSL_VERSION\r\n\
 	#define END_DECL\r\n\
 	#define CB_MEMBER\r\n\
 #endif\r\n\
+#if HLSL_VERSION\r\n\
+	#define SAMPLE_TEXTURE(tex_name,uv) g##tex_name##Texture.Sample(g##tex_name##SamplerState,uv)\r\n\
+#else\r\n\
+	#define SAMPLE_TEXTURE(tex_name,uv) texture(g##tex_name##Texture,uv)\r\n\
+#endif\r\n\
+\r\n\
 #if HLSL_VERSION==0\r\n\
 float2 mul(float2 v,float2x2 m){return v*m;}\r\n\
 float3 mul(float2 v,float3x2 m){return v*m;}\r\n\
@@ -276,6 +282,12 @@ ClearViewportPixel_glsl="#ifndef GLSL_VERSION\r\n\
 	#define END_DECL\r\n\
 	#define CB_MEMBER\r\n\
 #endif\r\n\
+#if HLSL_VERSION\r\n\
+	#define SAMPLE_TEXTURE(tex_name,uv) g##tex_name##Texture.Sample(g##tex_name##SamplerState,uv)\r\n\
+#else\r\n\
+	#define SAMPLE_TEXTURE(tex_name,uv) texture(g##tex_name##Texture,uv)\r\n\
+#endif\r\n\
+\r\n\
 DECL_CB(cbClearViewport)\r\n\
 CB_MEMBER float4 gClearColour0;\r\n\
 CB_MEMBER float4 gClearColour1;\r\n\
@@ -505,6 +517,12 @@ ClearViewportVertex_glsl="#ifndef GLSL_VERSION\r\n\
 	#define END_DECL\r\n\
 	#define CB_MEMBER\r\n\
 #endif\r\n\
+#if HLSL_VERSION\r\n\
+	#define SAMPLE_TEXTURE(tex_name,uv) g##tex_name##Texture.Sample(g##tex_name##SamplerState,uv)\r\n\
+#else\r\n\
+	#define SAMPLE_TEXTURE(tex_name,uv) texture(g##tex_name##Texture,uv)\r\n\
+#endif\r\n\
+\r\n\
 DECL_CB(cbClearViewport)\r\n\
 CB_MEMBER float4 gClearColour0;\r\n\
 CB_MEMBER float4 gClearColour1;\r\n\
@@ -717,6 +735,12 @@ ForwardPixelShader_glsl="#ifndef GLSL_VERSION\r\n\
 	#define END_DECL\r\n\
 	#define CB_MEMBER\r\n\
 #endif\r\n\
+#if HLSL_VERSION\r\n\
+	#define SAMPLE_TEXTURE(tex_name,uv) g##tex_name##Texture.Sample(g##tex_name##SamplerState,uv)\r\n\
+#else\r\n\
+	#define SAMPLE_TEXTURE(tex_name,uv) texture(g##tex_name##Texture,uv)\r\n\
+#endif\r\n\
+\r\n\
 #if HLSL_VERSION==0\r\n\
 float2 mul(float2 v,float2x2 m){return v*m;}\r\n\
 float3 mul(float2 v,float3x2 m){return v*m;}\r\n\
@@ -1025,12 +1049,6 @@ sampler2D gNormalTexture;\r\n\
 out float4 gFragColour;\r\n\
 void main()\r\n\
 {\r\n\
-#if USE_DIFFUSE_TEXTURE\r\n\
-	float4 diffuse_texture_sampler=texture(gDiffuseTexture,input.mMainUV);\r\n\
-#endif\r\n\
-#if USE_NORMAL_TEXTURE\r\n\
-	float4 normal_texture_sampler=texture(gNormalTexture,input.mMainUV);\r\n\
-#endif\r\n\
 #define iWorldPosition gWorldPositionPS\r\n\
 #define iWorldNormal gWorldNormalPS\r\n\
 #define iWorldTangent gWorldTangentPS\r\n\
@@ -1047,6 +1065,7 @@ void main()\r\n\
     alpha *= iDiffuse.a;\r\n\
 #endif\r\n\
 #if USE_DIFFUSE_TEXTURE\r\n\
+	float4 diffuse_texture_sampler=SAMPLE_TEXTURE(Diffuse,iMainUV);\r\n\
 	float3 diffuse_texture_colour = diffuse_texture_sampler.rgb;\r\n\
 	float diffuse_texture_alpha = diffuse_texture_sampler.a;\r\n\
 	alpha *= diffuse_texture_alpha;\r\n\
@@ -1062,6 +1081,7 @@ void main()\r\n\
     float lighting_falloff_factor=1.0;\r\n\
 	float3 world_normal=normalize(iWorldNormal);\r\n\
 		#if USE_NORMAL_TEXTURE\r\n\
+	float4 normal_texture_sampler=SAMPLE_TEXTURE(Normal,iMainUV);\r\n\
 	float3 normal_texture_normal=normal_texture_sampler.xyz * 2.0-1.0;\r\n\
 	float3 world_tangent=normalize(iWorldTangent);\r\n\
 	float3 world_binormal=cross(world_normal,world_tangent);\r\n\
@@ -1147,6 +1167,12 @@ ForwardShader_hlsl="#ifndef GLSL_VERSION\r\n\
 	#define END_DECL\r\n\
 	#define CB_MEMBER\r\n\
 #endif\r\n\
+#if HLSL_VERSION\r\n\
+	#define SAMPLE_TEXTURE(tex_name,uv) g##tex_name##Texture.Sample(g##tex_name##SamplerState,uv)\r\n\
+#else\r\n\
+	#define SAMPLE_TEXTURE(tex_name,uv) texture(g##tex_name##Texture,uv)\r\n\
+#endif\r\n\
+\r\n\
 #if HLSL_VERSION==0\r\n\
 float2 mul(float2 v,float2x2 m){return v*m;}\r\n\
 float3 mul(float2 v,float3x2 m){return v*m;}\r\n\
@@ -1514,12 +1540,6 @@ struct SPixelShaderOutput\r\n\
 SPixelShaderOutput psMain(SVertexShaderOutput input)\r\n\
 {\r\n\
     SPixelShaderOutput output = (SPixelShaderOutput)0;\r\n\
-#if USE_DIFFUSE_TEXTURE\r\n\
-	float4 diffuse_texture_sampler = gDiffuseTexture.Sample(gDiffuseSamplerState, input.mMainUV);\r\n\
-#endif\r\n\
-#if USE_NORMAL_TEXTURE\r\n\
-	float4 normal_texture_sampler=gNormalTexture.Sample(gNormalSamplerState,input.mMainUV);\r\n\
-#endif\r\n\
 #define iWorldPosition input.mWorldPosition\r\n\
 #define iWorldNormal input.mWorldNormal\r\n\
 #define iWorldTangent input.mWorldTangent\r\n\
@@ -1536,6 +1556,7 @@ SPixelShaderOutput psMain(SVertexShaderOutput input)\r\n\
     alpha *= iDiffuse.a;\r\n\
 #endif\r\n\
 #if USE_DIFFUSE_TEXTURE\r\n\
+	float4 diffuse_texture_sampler=SAMPLE_TEXTURE(Diffuse,iMainUV);\r\n\
 	float3 diffuse_texture_colour = diffuse_texture_sampler.rgb;\r\n\
 	float diffuse_texture_alpha = diffuse_texture_sampler.a;\r\n\
 	alpha *= diffuse_texture_alpha;\r\n\
@@ -1551,6 +1572,7 @@ SPixelShaderOutput psMain(SVertexShaderOutput input)\r\n\
     float lighting_falloff_factor=1.0;\r\n\
 	float3 world_normal=normalize(iWorldNormal);\r\n\
 		#if USE_NORMAL_TEXTURE\r\n\
+	float4 normal_texture_sampler=SAMPLE_TEXTURE(Normal,iMainUV);\r\n\
 	float3 normal_texture_normal=normal_texture_sampler.xyz * 2.0-1.0;\r\n\
 	float3 world_tangent=normalize(iWorldTangent);\r\n\
 	float3 world_binormal=cross(world_normal,world_tangent);\r\n\
@@ -1638,6 +1660,12 @@ ForwardVertexShader_glsl="#ifndef GLSL_VERSION\r\n\
 	#define END_DECL\r\n\
 	#define CB_MEMBER\r\n\
 #endif\r\n\
+#if HLSL_VERSION\r\n\
+	#define SAMPLE_TEXTURE(tex_name,uv) g##tex_name##Texture.Sample(g##tex_name##SamplerState,uv)\r\n\
+#else\r\n\
+	#define SAMPLE_TEXTURE(tex_name,uv) texture(g##tex_name##Texture,uv)\r\n\
+#endif\r\n\
+\r\n\
 #if HLSL_VERSION==0\r\n\
 float2 mul(float2 v,float2x2 m){return v*m;}\r\n\
 float3 mul(float2 v,float3x2 m){return v*m;}\r\n\
@@ -2020,6 +2048,12 @@ OverlayPixelShader_glsl="#ifndef GLSL_VERSION\r\n\
 	#define END_DECL\r\n\
 	#define CB_MEMBER\r\n\
 #endif\r\n\
+#if HLSL_VERSION\r\n\
+	#define SAMPLE_TEXTURE(tex_name,uv) g##tex_name##Texture.Sample(g##tex_name##SamplerState,uv)\r\n\
+#else\r\n\
+	#define SAMPLE_TEXTURE(tex_name,uv) texture(g##tex_name##Texture,uv)\r\n\
+#endif\r\n\
+\r\n\
 #if HLSL_VERSION==0\r\n\
 float2 mul(float2 v,float2x2 m){return v*m;}\r\n\
 float3 mul(float2 v,float3x2 m){return v*m;}\r\n\
@@ -2244,6 +2278,12 @@ OverlayShader_hlsl="#ifndef GLSL_VERSION\r\n\
 	#define END_DECL\r\n\
 	#define CB_MEMBER\r\n\
 #endif\r\n\
+#if HLSL_VERSION\r\n\
+	#define SAMPLE_TEXTURE(tex_name,uv) g##tex_name##Texture.Sample(g##tex_name##SamplerState,uv)\r\n\
+#else\r\n\
+	#define SAMPLE_TEXTURE(tex_name,uv) texture(g##tex_name##Texture,uv)\r\n\
+#endif\r\n\
+\r\n\
 #if HLSL_VERSION==0\r\n\
 float2 mul(float2 v,float2x2 m){return v*m;}\r\n\
 float3 mul(float2 v,float3x2 m){return v*m;}\r\n\
@@ -2493,6 +2533,12 @@ OverlayVertexShader_glsl="#ifndef GLSL_VERSION\r\n\
 	#define END_DECL\r\n\
 	#define CB_MEMBER\r\n\
 #endif\r\n\
+#if HLSL_VERSION\r\n\
+	#define SAMPLE_TEXTURE(tex_name,uv) g##tex_name##Texture.Sample(g##tex_name##SamplerState,uv)\r\n\
+#else\r\n\
+	#define SAMPLE_TEXTURE(tex_name,uv) texture(g##tex_name##Texture,uv)\r\n\
+#endif\r\n\
+\r\n\
 #if HLSL_VERSION==0\r\n\
 float2 mul(float2 v,float2x2 m){return v*m;}\r\n\
 float3 mul(float2 v,float3x2 m){return v*m;}\r\n\

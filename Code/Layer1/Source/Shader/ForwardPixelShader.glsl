@@ -19,12 +19,6 @@ sampler2D gNormalTexture;
 out float4 gFragColour;
 void main()
 {
-#if USE_DIFFUSE_TEXTURE
-	float4 diffuse_texture_sampler=texture(gDiffuseTexture,input.mMainUV);
-#endif
-#if USE_NORMAL_TEXTURE
-	float4 normal_texture_sampler=texture(gNormalTexture,input.mMainUV);
-#endif
 #define iWorldPosition gWorldPositionPS
 #define iWorldNormal gWorldNormalPS
 #define iWorldTangent gWorldTangentPS

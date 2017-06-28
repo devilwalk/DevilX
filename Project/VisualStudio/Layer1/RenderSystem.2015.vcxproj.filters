@@ -254,5 +254,8 @@
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IEntityImp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer1\Source\Shader\DefnitionShaderCodeFunction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -62,12 +62,6 @@ struct SPixelShaderOutput
 SPixelShaderOutput psMain(SVertexShaderOutput input)
 {
     SPixelShaderOutput output = (SPixelShaderOutput)0;
-#if USE_DIFFUSE_TEXTURE
-	float4 diffuse_texture_sampler = gDiffuseTexture.Sample(gDiffuseSamplerState, input.mMainUV);
-#endif
-#if USE_NORMAL_TEXTURE
-	float4 normal_texture_sampler=gNormalTexture.Sample(gNormalSamplerState,input.mMainUV);
-#endif
 #define iWorldPosition input.mWorldPosition
 #define iWorldNormal input.mWorldNormal
 #define iWorldTangent input.mWorldTangent
