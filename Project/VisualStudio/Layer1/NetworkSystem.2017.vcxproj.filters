@@ -27,12 +27,6 @@
     <ClInclude Include="..\..\..\Code\Layer1\Interface\NetworkSystem\INetworkLink.h">
       <Filter>Interface Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer1\Interface\NetworkSystem\INetworkSystem.h">
-      <Filter>Interface Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer1\Interface\NetworkSystem\INetworkSystemInterface.h">
-      <Filter>Interface Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\Layer1\Include\NetworkSystem\ILinkImp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -45,6 +39,24 @@
     <ClInclude Include="..\..\..\Code\Layer1\Source\NetworkSystem\Precompiler.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Interface\NetworkSystem\INetworkServer.h">
+      <Filter>Interface Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Interface\NetworkSystem\INetworkSystem.h">
+      <Filter>Interface Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Interface\NetworkSystem\INetworkSystemInterface.h">
+      <Filter>Interface Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Interface\NetworkSystem\INetworkClient.h">
+      <Filter>Interface Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Include\NetworkSystem\IClientImp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Include\NetworkSystem\IServerImp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Layer1\Source\NetworkSystem\ILinkImp.cpp">
@@ -54,6 +66,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Layer1\Source\NetworkSystem\Precompiler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer1\Source\NetworkSystem\IServerImp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer1\Source\NetworkSystem\IClientImp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

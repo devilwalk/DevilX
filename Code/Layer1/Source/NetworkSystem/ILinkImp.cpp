@@ -2,24 +2,30 @@
 using namespace NSDevilX;
 using namespace NSNetworkSystem;
 
-NSDevilX::NSNetworkSystem::ILinkImp::ILinkImp(const String & destIP,UInt16 port)
-	:mDestination(destIP)
-	,mPort(port)
+NSDevilX::NSNetworkSystem::ILinkImp::ILinkImp(const String & destIP,UInt16 destPort,UInt16 srcPort)
+	:mDestIP(destIP)
+	,mDestPort(destPort)
+	,mSrcPort(srcPort)
 {}
 
 NSDevilX::NSNetworkSystem::ILinkImp::~ILinkImp()
 {
 }
 
-const String & NSDevilX::NSNetworkSystem::ILinkImp::getDestination() const
+const String & NSDevilX::NSNetworkSystem::ILinkImp::getDestIP() const
 {
 	// TODO: insert return statement here
-	return mDestination;
+	return mDestIP;
 }
 
-UInt16 NSDevilX::NSNetworkSystem::ILinkImp::getPort() const
+UInt16 NSDevilX::NSNetworkSystem::ILinkImp::getDestPort() const
 {
-	return mPort;
+	return mDestPort;
+}
+
+UInt16 NSDevilX::NSNetworkSystem::ILinkImp::getSrcPort() const
+{
+	return mSrcPort;
 }
 
 Void NSDevilX::NSNetworkSystem::ILinkImp::pushSendData(ConstVoidPtr data,UInt32 sizeInBytes)

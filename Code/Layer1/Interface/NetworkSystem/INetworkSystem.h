@@ -1,5 +1,6 @@
 #pragma once
-#include "INetworkLink.h"
+#include "INetworkServer.h"
+#include "INetworkClient.h"
 namespace NSDevilX
 {
 	namespace NSNetworkSystem
@@ -10,8 +11,6 @@ namespace NSDevilX
 			virtual ~ISystemListener(){}
 		public:
 			virtual Void onSearch(String destIP,UInt16 port)=0;
-			virtual Void onConnect(String destIP,UInt16 port)=0;
-			virtual Void onDeconnect(ILink * link)=0;
 		};
 		class ISystem
 		{
@@ -20,10 +19,13 @@ namespace NSDevilX
 		public:
 			virtual Void shutdown()=0;
 			virtual Void update()=0;
-			virtual Void search(const String & destIP,UInt16 portStart=49152,UInt16 portEnd=-1)=0;
-			virtual ILink * createLink(const String & destIP,UInt16 port)=0;
-			virtual ILink * getLink(const String & destIP,UInt16 port)const=0;
-			virtual Void destroyLink(ILink * link)=0;
+			virtual Void searchServer(const String & destIP,UInt16 portStart=49152,UInt16 portEnd=-1)=0;
+			virtual IServer * createServer(UInt16 port=-1)=0;
+			virtual IServer * getServer(UInt16 port)const=0;
+			virtual Void destroyServer(IServer * peer)=0;
+			virtual IClient * createClient(const String & destIP,UInt16 port)=0;
+			virtual IClient * getClient(const String & destIP,UInt16 port)const=0;
+			virtual Void destroyClient(IClient * link)=0;
 			virtual Void setListener(ISystemListener * listener)=0;
 			virtual ISystemListener * getListener()const=0;
 		};

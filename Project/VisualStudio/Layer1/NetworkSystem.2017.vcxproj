@@ -130,17 +130,23 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\Code\Layer1\Include\NetworkSystem\IClientImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\NetworkSystem\ILinkImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\NetworkSystem\Include.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\NetworkSystem\IServerImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\NetworkSystem\ISystemImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Interface\NetworkSystem\INetworkClient.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\NetworkSystem\INetworkEnum.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\NetworkSystem\INetworkLink.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Interface\NetworkSystem\INetworkServer.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\NetworkSystem\INetworkSystem.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\NetworkSystem\INetworkSystemInterface.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Source\NetworkSystem\Precompiler.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Code\Layer1\Source\NetworkSystem\IClientImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\NetworkSystem\ILinkImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\NetworkSystem\IServerImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\NetworkSystem\ISystemImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\NetworkSystem\Precompiler.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
