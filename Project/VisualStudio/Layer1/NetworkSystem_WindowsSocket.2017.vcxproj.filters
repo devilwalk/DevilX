@@ -21,13 +21,7 @@
     <ClInclude Include="..\..\..\Code\Layer1\Include\NetworkSystem_WindowsSocket\WSBaseObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer1\Include\NetworkSystem_WindowsSocket\WSLink.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\Layer1\Include\NetworkSystem_WindowsSocket\WSLinker.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer1\Include\NetworkSystem_WindowsSocket\WSSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Layer1\Source\NetworkSystem_WindowsSocket\Precompiler.h">
@@ -36,18 +30,36 @@
     <ClInclude Include="..\..\..\Code\Layer1\Include\NetworkSystem_WindowsSocket\WSProtocol.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Include\NetworkSystem_WindowsSocket\WSServerImp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Include\NetworkSystem_WindowsSocket\WSClientImp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Include\NetworkSystem_WindowsSocket\WSLinkImp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Include\NetworkSystem_WindowsSocket\WSSystemImp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Layer1\Source\NetworkSystem_WindowsSocket\Precompiler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Layer1\Source\NetworkSystem_WindowsSocket\WSLink.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Code\Layer1\Source\NetworkSystem_WindowsSocket\WSLinker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Layer1\Source\NetworkSystem_WindowsSocket\WSSystem.cpp">
+    <ClCompile Include="..\..\..\Code\Layer1\Source\NetworkSystem_WindowsSocket\WSServerImp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer1\Source\NetworkSystem_WindowsSocket\WSClientImp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer1\Source\NetworkSystem_WindowsSocket\WSLinkImp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer1\Source\NetworkSystem_WindowsSocket\WSSystemImp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

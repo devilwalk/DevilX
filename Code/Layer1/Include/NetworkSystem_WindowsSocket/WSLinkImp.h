@@ -7,15 +7,15 @@ namespace NSDevilX
 	{
 		namespace NSWindowsSocket
 		{
-			class CLink
+			class CLinkImp
 				:public TInterfaceObject<ILinkImp>
 				,public TMessageReceiver<ISystemImp>
 			{
 			protected:
 				CLinker * mLinker;
 			public:
-				CLink(ILinkImp * interfaceImp);
-				virtual ~CLink();
+				CLinkImp(ILinkImp * interfaceImp,SOCKET s);
+				virtual ~CLinkImp();
 				CLinker * getLinker()const
 				{
 					return mLinker;
@@ -27,26 +27,6 @@ namespace NSDevilX
 			protected:
 				Void _sendData();
 				Void _recvData();
-			};
-			class CLinkTo
-				:public CLink
-				,public TBaseObject<CLinkTo>
-			{
-			public:
-				CLinkTo(ILinkImp * interfaceImp);
-				~CLinkTo();
-				CLinker * getLinker()const
-				{
-					return mLinker;
-				}
-			};
-			class CLinkFrom
-				:public CLink
-				,public TBaseObject<CLinkFrom>
-			{
-			public:
-				CLinkFrom(ILinkImp * interfaceImp,CLinker * linker);
-				~CLinkFrom();
 			};
 		}
 	}

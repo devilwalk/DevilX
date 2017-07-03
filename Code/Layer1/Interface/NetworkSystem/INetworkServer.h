@@ -10,7 +10,7 @@ namespace NSDevilX
 			virtual ~IServerListener()
 			{}
 		public:
-			virtual Boolean onConnect(String destIP,UInt16 port,String connectData)=0;
+			virtual Boolean onConnect(String destIP,UInt16 port,TVector<Byte> connectData)=0;
 			virtual Void onDeconnect(ILink * link)=0;
 		};
 		class IServer
@@ -19,7 +19,6 @@ namespace NSDevilX
 			virtual ~IServer(){}
 		public:
 			virtual UInt16 getPort()const=0;
-			virtual ILink * getLink(String destIP,UInt16 port)const=0;
 			virtual Void setListener(IServerListener * listener)=0;
 			virtual IServerListener * getListener()const=0;
 		};

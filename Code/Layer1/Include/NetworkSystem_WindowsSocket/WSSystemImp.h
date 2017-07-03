@@ -1,37 +1,30 @@
 #pragma once
 #include "WSBaseObject.h"
-#include "WSLink.h"
 namespace NSDevilX
 {
 	namespace NSNetworkSystem
 	{
 		namespace NSWindowsSocket
 		{
-			class CSystem
+			class CSystemImp
 				:public TBaseObject<CSystem>
 				,public TMessageReceiver<ISystemImp>
 				,public TSingleton<CSystem>
+				,public CMessageNotifier
 			{
-			protected:
-				SOCKET mServerSocket;
-				HANDLE mServerListenThread;
-				UInt16 mServerPort;
-				TResourcePtrMap<ConstVoidPtr,Void> mInstanceByInterfaceImps;
-				TResourcePtrMap<ILinkImp*,CLink> mLinks;
-				TResourcePtrListMT<CLinker> mUnprocessedLinkers;
-				TMapMT<String,TList<UInt16> > mSearchPorts;
-				TListMT<std::pair<String,UInt16> > mOnConnects;
 			public:
-				CSystem();
-				~CSystem();
-				SOCKET getServerSocket()const
+				enum EMessage
 				{
-					return mServerSocket;
-				}
-				UInt16 getServerPort()const
-				{
-					return mServerPort;
-				}
+					EMessage_Update
+				};
+			protected:
+				TResourcePtrMap<ConstVoidPtr,Void> mInstanceByInterfaceImps;
+				TMapMT<String,TList<UInt16> > mSearchPorts;
+				TResourcePtrMap<IServerImp*,CServerImp> mServers;
+				TResourcePtrMap<IClientImp*,CClientImp> mClients;
+			public:
+				CSystemImp();
+				~CSystemImp();
 				VoidPtr getInstanceByInterfaceImp(ConstVoidPtr interfaceImp)const
 				{
 					return mInstanceByInterfaceImps.get(interfaceImp);
@@ -48,8 +41,6 @@ namespace NSDevilX
 				{
 					mInstanceByInterfaceImps.erase(interfaceImp);
 				}
-				Void addLinkerMT(CLinker * linker);
-				Void removeLinkerMT(CLinker * linker);
 				Void addSearchPortMT(const String & ip,UInt16 port);
 				// Inherited via TMessageReceiver
 				virtual Void onMessage(ISystemImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;

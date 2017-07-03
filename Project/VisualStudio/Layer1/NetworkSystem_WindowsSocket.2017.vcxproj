@@ -147,10 +147,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\Layer1\Include\NetworkSystem_WindowsSocket\WSBaseObject.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\NetworkSystem_WindowsSocket\WSClientImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\NetworkSystem_WindowsSocket\WSProtocol.h" />
-    <ClInclude Include="..\..\..\Code\Layer1\Include\NetworkSystem_WindowsSocket\WSLink.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\NetworkSystem_WindowsSocket\WSLinkImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\NetworkSystem_WindowsSocket\WSLinker.h" />
-    <ClInclude Include="..\..\..\Code\Layer1\Include\NetworkSystem_WindowsSocket\WSSystem.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\NetworkSystem_WindowsSocket\WSServerImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\NetworkSystem_WindowsSocket\WSSystemImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Source\NetworkSystem_WindowsSocket\Precompiler.h" />
   </ItemGroup>
   <ItemGroup>
@@ -160,9 +162,11 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Layer1\Source\NetworkSystem_WindowsSocket\WSLink.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\NetworkSystem_WindowsSocket\WSClientImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\NetworkSystem_WindowsSocket\WSLinkImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\NetworkSystem_WindowsSocket\WSLinker.cpp" />
-    <ClCompile Include="..\..\..\Code\Layer1\Source\NetworkSystem_WindowsSocket\WSSystem.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\NetworkSystem_WindowsSocket\WSServerImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\NetworkSystem_WindowsSocket\WSSystemImp.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

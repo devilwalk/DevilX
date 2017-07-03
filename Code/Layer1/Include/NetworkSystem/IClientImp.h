@@ -9,10 +9,13 @@ namespace NSDevilX
 			,public TBaseObject<IClientImp>
 		{
 		protected:
-			ILinkImp * const mLink;
+			ILinkImp * mLink;
 		public:
-			IClientImp(ILinkImp * link);
+			IClientImp(const String & serverIP,UInt16 port);
 			~IClientImp();
+
+			// Í¨¹ý IClient ¼Ì³Ð
+			virtual ILink * getLink() const override;
 		};
 	}
 }

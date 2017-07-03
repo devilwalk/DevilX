@@ -1,4 +1,5 @@
 #pragma once
+#include "ILinkImp.h"
 namespace NSDevilX
 {
 	namespace NSNetworkSystem
@@ -8,11 +9,15 @@ namespace NSDevilX
 			,public TBaseObject<IServerImp>
 		{
 		protected:
-			const UInt16 mPort;
+			UInt16 mPort;
+			TResourcePtrList<ILinkImp> mLinks;
 		public:
 			IServerImp(UInt16 port);
 			~IServerImp();
-
+			Void setPort(UInt16 port)
+			{
+				mPort=port;
+			}
 			// Í¨¹ý IServer ¼Ì³Ð
 			virtual UInt16 getPort() const override;
 			virtual Void setListener(IServerListener * listener) override;

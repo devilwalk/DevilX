@@ -22,10 +22,10 @@ namespace NSDevilX
 			virtual Void searchServer(const String & destIP,UInt16 portStart=49152,UInt16 portEnd=-1)=0;
 			virtual IServer * createServer(UInt16 port=-1)=0;
 			virtual IServer * getServer(UInt16 port)const=0;
-			virtual Void destroyServer(IServer * peer)=0;
+			virtual Void destroyServer(IServer * server)=0;
 			virtual IClient * createClient(const String & destIP,UInt16 port)=0;
 			virtual IClient * getClient(const String & destIP,UInt16 port)const=0;
-			virtual Void destroyClient(IClient * link)=0;
+			virtual Void destroyClient(IClient * client)=0;
 			virtual Void setListener(ISystemListener * listener)=0;
 			virtual ISystemListener * getListener()const=0;
 		};

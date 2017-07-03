@@ -5,9 +5,17 @@ namespace NSDevilX
 	{
 		namespace NSWindowsSocket
 		{
+			class CSystemImp;
 			class CLinker
 				:public TBaseObject<CLinker>
+				,public CMessageNotifier
+				,public TMessageReceiver<CSystemImp>
 			{
+			public:
+				enum EMessage
+				{
+					EMessage_Disconnect
+				};
 			protected:
 				volatile SOCKET mSocket;
 				volatile Bool mDisconnect;
