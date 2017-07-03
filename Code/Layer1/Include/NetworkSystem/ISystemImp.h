@@ -39,7 +39,7 @@ namespace NSDevilX
 			// Inherited via ISystem
 			virtual Void shutdown() override;
 			virtual Void update() override;
-			virtual Void searchServer(const String & destIP,UInt16 portStart=49152,UInt16 portEnd=-1) override;
+			virtual Void searchServer(const String & serverIP,const TVector<Byte> & connectData,UInt16 serverPortStart=49152,UInt16 serverPortEnd=-1) override;
 			virtual IServer * createServer(UInt16 port) override;
 			virtual IServer * getServer(UInt16 port) const override;
 			virtual Void destroyServer(IServer * server) override;

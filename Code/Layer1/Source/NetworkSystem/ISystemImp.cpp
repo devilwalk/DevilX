@@ -22,15 +22,16 @@ Void NSDevilX::NSNetworkSystem::ISystemImp::update()
 	notify(EMessage_Update);
 }
 
-Void NSDevilX::NSNetworkSystem::ISystemImp::searchServer(const String & destIP,UInt16 portStart,UInt16 portEnd)
+Void NSDevilX::NSNetworkSystem::ISystemImp::searchServer(const String & serverIP,const TVector<Byte> & connectData,UInt16 serverPortStart=49152,UInt16 serverPortEnd=-1)
 {
 	struct SSearch
 	{
-		const String & mDestIP;
-		UInt16 mPortStart;
-		UInt16 mPortEnd;
+		const String & mServerIP;
+		const TVector<Byte> & mConnectData;
+		UInt16 mServerPortStart;
+		UInt16 mServerPortEnd;
 	};
-	SSearch s={destIP,portStart,portEnd};
+	SSearch s={serverIP,connectData,serverPortStart,serverPortEnd};
 	notify(EMessage_SearchServer,&s);
 }
 
@@ -79,7 +80,7 @@ IClient * NSDevilX::NSNetworkSystem::ISystemImp::getClient(const String & destIP
 
 Void NSDevilX::NSNetworkSystem::ISystemImp::destroyClient(IClient * client)
 {
-	const String key=client->getLink()->getDestIP()+":"+CStringConverter::toString(client->getLink()->getDestPort());
+	const String key=client->getLink()->getServerIP()+":"+CStringConverter::toString(client->getLink()->getServerPort());
 	notify(EMessage_BeginDestroyClient);
 	mClients.destroy(key);
 	notify(EMessage_EndDestroyClient);

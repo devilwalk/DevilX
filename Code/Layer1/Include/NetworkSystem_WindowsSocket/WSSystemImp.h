@@ -7,9 +7,9 @@ namespace NSDevilX
 		namespace NSWindowsSocket
 		{
 			class CSystemImp
-				:public TBaseObject<CSystem>
+				:public TBaseObject<CSystemImp>
 				,public TMessageReceiver<ISystemImp>
-				,public TSingleton<CSystem>
+				,public TSingleton<CSystemImp>
 				,public CMessageNotifier
 			{
 			public:
@@ -19,9 +19,9 @@ namespace NSDevilX
 				};
 			protected:
 				TResourcePtrMap<ConstVoidPtr,Void> mInstanceByInterfaceImps;
-				TMapMT<String,TList<UInt16> > mSearchPorts;
 				TResourcePtrMap<IServerImp*,CServerImp> mServers;
 				TResourcePtrMap<IClientImp*,CClientImp> mClients;
+				TResourcePtrListMT<CLinker> mSearchedLinkers;
 			public:
 				CSystemImp();
 				~CSystemImp();
@@ -41,7 +41,7 @@ namespace NSDevilX
 				{
 					mInstanceByInterfaceImps.erase(interfaceImp);
 				}
-				Void addSearchPortMT(const String & ip,UInt16 port);
+				Void addSearchLinkerMT(CLinker * linker);
 				// Inherited via TMessageReceiver
 				virtual Void onMessage(ISystemImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 			};

@@ -6,26 +6,32 @@ namespace NSDevilX
 		namespace NSWindowsSocket
 		{
 			class CServerImp
-				:public TInterfaceObject<IServerImp>
-				,public TBaseObject<CServerImp>
+				:public TBaseObject<CServerImp>
+				,public TMessageReceiver<CSystemImp>
 			{
 			protected:
+				IServerImp * const mInterfaceImp;
 				SOCKET mAcceptSocket;
 				HANDLE mAcceptThreadHandle;
 				TResourcePtrListMT<CLinker> mUnprocessedLinkers;
+				TResourcePtrListMT<CLinker> mUnvisibleLinkers;
+				TResourcePtrListMT<CLinker> mLinkers;
 			public:
 				CServerImp(IServerImp * interfaceImp);
 				~CServerImp();
+				IServerImp * getInterfaceImp()const
+				{
+					return mInterfaceImp;
+				}
 				SOCKET getAcceptSocket()const
 				{
 					return mAcceptSocket;
 				}
 				Void addLinkerMT(CLinker * linker);
+				Void addUnprocessedLinkerMT(CLinker * linker);
 			protected:
-				Void _processUnprocessedLinkers();
-
 				// Í¨¹ý TInterfaceObject ¼Ì³Ð
-				virtual Void onMessage(IServerImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
+				virtual Void onMessage(CSystemImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 			};
 		}
 	}

@@ -47,6 +47,7 @@ namespace NSDevilX
 						case SOCKET_ERROR:
 							OutputDebugStringA(("\r\nreadProc:"+CStringConverter::toString(WSAGetLastError())+"\r\n").c_str());
 							linker->disconnect();
+							return 0;
 						}
 					}
 					return 0;
@@ -81,7 +82,8 @@ namespace NSDevilX
 							{
 							case SOCKET_ERROR:
 								OutputDebugStringA(("\r\nwriteProc:"+CStringConverter::toString(WSAGetLastError())+"\r\n").c_str());
-								break;
+								linker->disconnect();
+								return 0;
 							}
 							datas.clear();
 						}
@@ -112,7 +114,9 @@ NSDevilX::NSNetworkSystem::NSWindowsSocket::CLinker::CLinker(SOCKET s)
 	}
 	mDestIP=inet_ntoa(addr.sin_addr);
 	mDestPort=ntohs(addr.sin_port);
-	setActive(true);
+	mWriteThreadEvent=CreateEvent(nullptr,FALSE,FALSE,nullptr);
+	mReadThread=CreateThread(nullptr,0,NSInternal::readProc,this,0,nullptr);
+	mWriteThread=CreateThread(nullptr,0,NSInternal::writeProc,this,0,nullptr);
 }
 
 NSDevilX::NSNetworkSystem::NSWindowsSocket::CLinker::~CLinker()
@@ -162,41 +166,5 @@ Void NSDevilX::NSNetworkSystem::NSWindowsSocket::CLinker::addRecvData(ConstVoidP
 
 Void NSDevilX::NSNetworkSystem::NSWindowsSocket::CLinker::disconnect()
 {
-	closesocket(mSocket);
-	mSocket=INVALID_SOCKET;
 	mDisconnect=True;
-	CSystem::getSingleton().removeLinkerMT(this);
-}
-
-Void NSDevilX::NSNetworkSystem::NSWindowsSocket::CLinker::setActive(Boolean active)
-{
-	if(isActive()!=active)
-	{
-		if(active)
-		{
-			mWriteThreadEvent=CreateEvent(nullptr,FALSE,getSendDatas().empty()?FALSE:TRUE,nullptr);
-			mReadThread=CreateThread(nullptr,0,NSInternal::readProc,this,0,nullptr);
-			mWriteThread=CreateThread(nullptr,0,NSInternal::writeProc,this,0,nullptr);
-		}
-		else
-		{
-			auto save_socket=getSocket();
-			mSocket=INVALID_SOCKET;
-			SetEvent(getWriteThreadEvent());
-			WaitForSingleObject(mReadThread,INFINITE);
-			CloseHandle(mReadThread);
-			mReadThread=INVALID_HANDLE_VALUE;
-			WaitForSingleObject(mWriteThread,INFINITE);
-			CloseHandle(mWriteThread);
-			mWriteThread=INVALID_HANDLE_VALUE;
-			CloseHandle(getWriteThreadEvent());
-			mWriteThreadEvent=INVALID_HANDLE_VALUE;
-			mSocket=save_socket;
-		}
-	}
-}
-
-Boolean NSDevilX::NSNetworkSystem::NSWindowsSocket::CLinker::isActive() const
-{
-	return INVALID_HANDLE_VALUE!=mReadThread;
 }

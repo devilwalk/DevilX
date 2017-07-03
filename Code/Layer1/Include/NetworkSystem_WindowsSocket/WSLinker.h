@@ -8,14 +8,7 @@ namespace NSDevilX
 			class CSystemImp;
 			class CLinker
 				:public TBaseObject<CLinker>
-				,public CMessageNotifier
-				,public TMessageReceiver<CSystemImp>
 			{
-			public:
-				enum EMessage
-				{
-					EMessage_Disconnect
-				};
 			protected:
 				volatile SOCKET mSocket;
 				volatile Bool mDisconnect;
@@ -31,6 +24,10 @@ namespace NSDevilX
 				SOCKET getSocket()const
 				{
 					return mSocket;
+				}
+				Bool isDisconnect()const
+				{
+					return mDisconnect;
 				}
 				const String & getDestIP()const
 				{
@@ -55,8 +52,6 @@ namespace NSDevilX
 					return mRecvDatas;
 				}
 				Void disconnect();
-				Void setActive(Boolean active);
-				Boolean isActive()const;
 			};
 		}
 	}
