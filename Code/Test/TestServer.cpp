@@ -8,16 +8,21 @@ class CSystemListener
 	:public NSNetworkSystem::ISystemListener
 {
 	// 通过 ISystemListener 继承
-	virtual Void onSearch(String destIP,UInt16 port,ConstVoidPtr connectData,UInt32 connectDataSizeInBytes) override
+	virtual Boolean onSearch(String destIP,UInt16 port) override
 	{
-		return Void();
+		return true;
+	}
+
+	// 通过 ISystemListener 继承
+	virtual Void onSearched(NSNetworkSystem::ILink * link) override
+	{
 	}
 };
 class CServerListener
 	:public NSNetworkSystem::IServerListener
 {
 	// 通过 IServerListener 继承
-	virtual Boolean onConnect(String clientIP,UInt16 clientPort,ConstVoidPtr connectData,UInt32 connectDataSizeInBytes) override
+	virtual Boolean onConnect(String clientIP,UInt16 clientPort) override
 	{
 		return true;
 	}
@@ -36,9 +41,9 @@ int main()
 	NSNetworkSystem::getSystem()->setListener(&system_listener);
 	auto server=NSNetworkSystem::getSystem()->createServer();
 	server->setListener(&server_listener);
-	NSNetworkSystem::getSystem()->searchServer("127.0.0.1","search",strlen("search"));
-	auto client=NSNetworkSystem::getSystem()->createClient("127.0.0.1",server->getPort());
-	client->getLink()->pushSendData("fuck",strlen("fuck"));
+	NSNetworkSystem::getSystem()->searchServer("127.0.0.1");
+	//auto client=NSNetworkSystem::getSystem()->createClient("127.0.0.1",server->getPort());
+	//client->getLink()->addSendData("fuck",strlen("fuck"));
 	while(true)
 		NSNetworkSystem::getSystem()->update();
 	NSNetworkSystem::getSystem()->shutdown();

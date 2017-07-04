@@ -8,23 +8,21 @@ namespace NSDevilX
 		namespace NSWindowsSocket
 		{
 			class CLinkImp
-				:public TMessageReceiver<ISystemImp>
+				:public TInterfaceObject<ILinkImp>
+				,public TMessageReceiver<ISystemImp>
 			{
 			protected:
-				ILinkImp * mInterfaceImp;
 				CLinker * mLinker;
 			public:
 				CLinkImp(ILinkImp * interfaceImp,SOCKET s);
+				CLinkImp(ILinkImp * interfaceImp,CLinker * linker);
 				virtual ~CLinkImp();
-				ILinkImp * getInterfaceImp()const
-				{
-					return mInterfaceImp;
-				}
 				CLinker * getLinker()const
 				{
 					return mLinker;
 				}
 				// Inherited via TMessageReceiver
+				virtual Void onMessage(ILinkImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 				virtual Void onMessage(ISystemImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 			protected:
 				Void _sendData();

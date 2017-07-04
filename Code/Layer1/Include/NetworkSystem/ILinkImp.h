@@ -8,7 +8,13 @@ namespace NSDevilX
 		class ILinkImp
 			:public ILink
 			,public TBaseObject<ILinkImp>
+			,public CMessageNotifier
 		{
+		public:
+			enum EMessage
+			{
+				EMessage_Destruction
+			};
 		protected:
 			const String mServerIP;
 			const UInt16 mServerPort;
@@ -30,6 +36,7 @@ namespace NSDevilX
 			virtual const String & getClientIP() const override;
 			virtual UInt16 getClientPort() const override;
 			virtual Void addSendData(ConstVoidPtr data,UInt32 sizeInBytes) override;
+			virtual Void close() override;
 			virtual Void setListener(ILinkListener * listener);
 			virtual ILinkListener * getListener()const;
 		};

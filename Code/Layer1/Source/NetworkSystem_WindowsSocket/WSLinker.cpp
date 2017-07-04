@@ -24,7 +24,8 @@ namespace NSDevilX
 						switch(ret)
 						{
 						case 0:
-							linker->addRecvData(data_buf,recv_size);
+							if(recv_size>0)
+								linker->addRecvData(data_buf,recv_size);
 							break;
 						case SOCKET_ERROR:
 							OutputDebugStringA(("\r\nreadProc:"+CStringConverter::toString(WSAGetLastError())+"\r\n").c_str());

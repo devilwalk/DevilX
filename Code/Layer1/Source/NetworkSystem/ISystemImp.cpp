@@ -12,6 +12,13 @@ NSDevilX::NSNetworkSystem::ISystemImp::~ISystemImp()
 	notify(EMessage_Destruction);
 }
 
+ILinkImp * NSDevilX::NSNetworkSystem::ISystemImp::createLink(const String & serverIP,UInt16 serverPort,const String & clientIP,UInt16 clientPort)
+{
+	auto ret=DEVILX_NEW ILinkImp(serverIP,serverPort,clientIP,clientPort);
+	mLinks.push_back(ret);
+	return ret;
+}
+
 Void NSDevilX::NSNetworkSystem::ISystemImp::shutdown()
 {
 	DEVILX_DELETE(this);

@@ -119,11 +119,16 @@ Void NSDevilX::NSNetworkSystem::NSWindowsSocket::CSystemImp::onMessage(ISystemIm
 				if((!linker->isDisconnect())&&ISystemImp::getSingleton().getListener()->onSearch(linker->getDestIP(),linker->getDestPort()))
 				{
 					auto link_imp=ISystemImp::getSingleton().createLink(linker->getDestIP(),linker->getDestPort(),"127.0.0.1",-1);
+					DEVILX_NEW CLinkImp(link_imp,linker);
 					ISystemImp::getSingleton().getListener()->onSearched(link_imp);
+				}
+				else
+				{
+					DEVILX_DELETE(linker);
 				}
 			}
 		}
-		mSearchedLinkers.destroyAll();
+		mSearchedLinkers.clear();
 		mSearchedLinkers.unLockWrite();
 		notify(EMessage_Update);
 		break;

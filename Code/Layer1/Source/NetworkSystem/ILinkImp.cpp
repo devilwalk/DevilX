@@ -12,6 +12,7 @@ NSDevilX::NSNetworkSystem::ILinkImp::ILinkImp(const String & serverIP,UInt16 ser
 
 NSDevilX::NSNetworkSystem::ILinkImp::~ILinkImp()
 {
+	notify(EMessage_Destruction);
 }
 
 Void NSDevilX::NSNetworkSystem::ILinkImp::addReceivedBuffer(ConstVoidPtr buffer,UInt32 bufferSizeInBytes)
@@ -67,6 +68,11 @@ Void NSDevilX::NSNetworkSystem::ILinkImp::addSendData(ConstVoidPtr data,UInt32 s
 	CProtocol protocol;
 	protocol.setUserData(data,sizeInBytes);
 	memcpy(&getSendBufferRef()[index],protocol.getSendData(),protocol.getSendSizeInBytes());
+}
+
+Void NSDevilX::NSNetworkSystem::ILinkImp::close()
+{
+	DEVILX_DELETE(this);
 }
 
 Void NSDevilX::NSNetworkSystem::ILinkImp::setListener(ILinkListener * listener)
