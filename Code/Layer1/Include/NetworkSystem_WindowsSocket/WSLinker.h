@@ -16,8 +16,8 @@ namespace NSDevilX
 				HANDLE mWriteThreadEvent;
 				String mDestIP;
 				UInt16 mDestPort;
-				TListMT<TVector<Byte> > mSendDatas;
-				TVectorMT<TVector<Byte> > mRecvDatas;
+				TVectorMT<Byte> mSendBuffer;
+				TVectorMT<Byte> mRecvBuffer;
 			public:
 				CLinker(SOCKET s);
 				virtual ~CLinker();
@@ -42,14 +42,14 @@ namespace NSDevilX
 					return mWriteThreadEvent;
 				}
 				Void addSendData(ConstVoidPtr data,SizeT sizeInBytes);
-				decltype(mSendDatas) & getSendDatas()
+				decltype(mSendBuffer) & getSendBuffer()
 				{
-					return mSendDatas;
+					return mSendBuffer;
 				}
 				Void addRecvData(ConstVoidPtr data,SizeT sizeInBytes);
-				decltype(mRecvDatas) & getReceiveDatas()
+				decltype(mRecvBuffer) & getReceivedBuffer()
 				{
-					return mRecvDatas;
+					return mRecvBuffer;
 				}
 				Void disconnect();
 			};

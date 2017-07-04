@@ -29,6 +29,7 @@ namespace NSDevilX
 			ISystemListener * mListener;
 			TResourcePtrMap<UInt16,IServerImp> mServers;
 			TNamedResourcePtrMap<IClientImp> mClients;
+			TResourcePtrList<ILinkImp> mLinks;
 		public:
 			ISystemImp();
 			~ISystemImp();
@@ -36,10 +37,11 @@ namespace NSDevilX
 			{
 				return mExit;
 			}
+			ILinkImp * createLink(const String & serverIP,UInt16 serverPort,const String & clientIP,UInt16 clientPort);
 			// Inherited via ISystem
 			virtual Void shutdown() override;
 			virtual Void update() override;
-			virtual Void searchServer(const String & serverIP,const TVector<Byte> & connectData,UInt16 serverPortStart=49152,UInt16 serverPortEnd=-1) override;
+			virtual Void searchServer(const String & serverIP,UInt16 serverPortStart=1024,UInt16 serverPortEnd=-1) override;
 			virtual IServer * createServer(UInt16 port) override;
 			virtual IServer * getServer(UInt16 port) const override;
 			virtual Void destroyServer(IServer * server) override;

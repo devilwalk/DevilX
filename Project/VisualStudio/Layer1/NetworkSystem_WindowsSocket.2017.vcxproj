@@ -148,7 +148,6 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\Layer1\Include\NetworkSystem_WindowsSocket\WSBaseObject.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\NetworkSystem_WindowsSocket\WSClientImp.h" />
-    <ClInclude Include="..\..\..\Code\Layer1\Include\NetworkSystem_WindowsSocket\WSProtocol.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\NetworkSystem_WindowsSocket\WSLinkImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\NetworkSystem_WindowsSocket\WSLinker.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\NetworkSystem_WindowsSocket\WSServerImp.h" />

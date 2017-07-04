@@ -57,6 +57,9 @@
     <ClInclude Include="..\..\..\Code\Layer1\Include\NetworkSystem\IServerImp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Include\NetworkSystem\Protocol.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Layer1\Source\NetworkSystem\ILinkImp.cpp">

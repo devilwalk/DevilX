@@ -7,10 +7,35 @@ NSDevilX::NSNetworkSystem::ILinkImp::ILinkImp(const String & serverIP,UInt16 ser
 	,mClientPort(clientPort)
 	,mServerIP(serverIP)
 	,mServerPort(serverPort)
+	,mListener(nullptr)
 {}
 
 NSDevilX::NSNetworkSystem::ILinkImp::~ILinkImp()
 {
+}
+
+Void NSDevilX::NSNetworkSystem::ILinkImp::addReceivedBuffer(ConstVoidPtr buffer,UInt32 bufferSizeInBytes)
+{
+	if(getListener())
+	{
+		TVector<CProtocol> protocols;
+		CProtocol protocol;
+		UInt32 parsed_size=0;
+		while(parsed_size<bufferSizeInBytes)
+		{
+			protocol.parse(buffer);
+			parsed_size+=protocol.getSendSizeInBytes();
+			protocols.push_back(protocol);
+		}
+		if(parsed_size==bufferSizeInBytes)
+		{
+			for(size_t i=0;i<protocols.size();++i)
+			{
+				const auto & proto=protocols[i];
+				getListener()->onDataReceived(proto.getUserData(),proto.getUserSizeInBytes());
+			}
+		}
+	}
 }
 
 const String & NSDevilX::NSNetworkSystem::ILinkImp::getServerIP() const
@@ -35,23 +60,21 @@ UInt16 NSDevilX::NSNetworkSystem::ILinkImp::getClientPort() const
 	return mClientPort;
 }
 
-Void NSDevilX::NSNetworkSystem::ILinkImp::pushSendData(ConstVoidPtr data,UInt32 sizeInBytes)
+Void NSDevilX::NSNetworkSystem::ILinkImp::addSendData(ConstVoidPtr data,UInt32 sizeInBytes)
 {
-	notify(EMessage_BeginPushSendData);
-	TVector<Byte> send_data;
-	send_data.resize(sizeInBytes);
-	memcpy(&send_data[0],data,sizeInBytes);
-	mSendDatas.push_back(send_data);
-	notify(EMessage_EndPushSendData);
+	const auto index=getSendBufferRef().size();
+	getSendBufferRef().resize(index+sizeInBytes);
+	CProtocol protocol;
+	protocol.setUserData(data,sizeInBytes);
+	memcpy(&getSendBufferRef()[index],protocol.getSendData(),protocol.getSendSizeInBytes());
 }
 
-UInt32 NSDevilX::NSNetworkSystem::ILinkImp::getFirstReceiveDataSizeInBytes() const
+Void NSDevilX::NSNetworkSystem::ILinkImp::setListener(ILinkListener * listener)
 {
-	return mReceiveDatas.empty()?0:static_cast<UInt32>(mReceiveDatas.front().size());
+	mListener=listener;
 }
 
-Void NSDevilX::NSNetworkSystem::ILinkImp::popReceiveData(VoidPtr data)
+ILinkListener * NSDevilX::NSNetworkSystem::ILinkImp::getListener() const
 {
-	memcpy(data,&mReceiveDatas.front()[0],mReceiveDatas.front().size());
-	mReceiveDatas.pop_front();
+	return mListener;
 }

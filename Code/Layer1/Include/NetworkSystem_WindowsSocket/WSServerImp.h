@@ -14,8 +14,7 @@ namespace NSDevilX
 				SOCKET mAcceptSocket;
 				HANDLE mAcceptThreadHandle;
 				TResourcePtrListMT<CLinker> mUnprocessedLinkers;
-				TResourcePtrListMT<CLinker> mUnvisibleLinkers;
-				TResourcePtrListMT<CLinker> mLinkers;
+				TResourcePtrList<CLinker> mLinkers;
 			public:
 				CServerImp(IServerImp * interfaceImp);
 				~CServerImp();
@@ -27,7 +26,6 @@ namespace NSDevilX
 				{
 					return mAcceptSocket;
 				}
-				Void addLinkerMT(CLinker * linker);
 				Void addUnprocessedLinkerMT(CLinker * linker);
 			protected:
 				// Í¨¹ý TInterfaceObject ¼Ì³Ð

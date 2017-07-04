@@ -3,3 +3,4 @@
 #include "ILinkImp.h"
 #include "IServerImp.h"
 #include "ISystemImp.h"
+#include "Protocol.h"

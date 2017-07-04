@@ -7,6 +7,5 @@
 #include "WSClientImp.h"
 #include "WSLinker.h"
 #include "WSLinkImp.h"
-#include "WSProtocol.h"
 #include "WSServerImp.h"
 #include "WSSystemImp.h"

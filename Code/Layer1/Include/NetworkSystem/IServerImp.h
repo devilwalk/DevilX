@@ -10,6 +10,7 @@ namespace NSDevilX
 		{
 		protected:
 			UInt16 mPort;
+			IServerListener * mListener;
 			TResourcePtrList<ILinkImp> mLinks;
 		public:
 			IServerImp(UInt16 port);

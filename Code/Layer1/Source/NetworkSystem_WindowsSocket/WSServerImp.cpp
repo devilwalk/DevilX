@@ -31,58 +31,6 @@ namespace NSDevilX
 					}
 					return 0;
 				}
-				struct SConnectTestParameter
-					:public TBaseObject<SConnectTestParameter>
-				{
-					CServerImp * mServer;
-					CLinker * mLinker;
-					SConnectTestParameter(CServerImp * server,CLinker * linker)
-						:mServer(server)
-						,mLinker(linker)
-					{}
-				};
-				static DWORD CALLBACK connectTest(LPVOID parameter)
-				{
-					auto p=static_cast<SConnectTestParameter*>(parameter);
-					auto server=p->mServer;
-					auto linker=p->mLinker;
-					Boolean connect_success=false;
-					DEVILX_DELETE(p);
-					Boolean has_recv_data=false;
-					Int32 test_count=500;
-					do
-					{
-						linker->getReceiveDatas().lockRead();
-						has_recv_data=!linker->getReceiveDatas().empty();
-						if(has_recv_data)
-						{
-							auto const & data=linker->getReceiveDatas().front();
-							linker->getReceiveDatas().unLockRead();
-							if(server->getInterfaceImp()->getListener()->onConnect(linker->getDestIP(),linker->getDestPort(),data))
-							{
-								connect_success=true;
-							}
-							else
-							{
-								DEVILX_DELETE(linker);
-								linker=nullptr;
-							}
-							break;
-						}
-						linker->getReceiveDatas().unLockRead();
-						Sleep(10);
-					}
-					while((!has_recv_data)&&((--test_count)>0));
-					if(connect_success)
-					{
-						
-					}
-					else if(linker!=nullptr)
-					{
-						server->addUnprocessedLinkerMT(linker);
-					}
-					return 0;
-				}
 			}
 		}
 	}
@@ -101,6 +49,8 @@ NSDevilX::NSNetworkSystem::NSWindowsSocket::CServerImp::CServerImp(IServerImp * 
 	service.sin_addr.S_un.S_addr=INADDR_ANY;
 	service.sin_family=AF_INET;
 	auto port=getInterfaceImp()->getPort();
+	if(static_cast<UInt16>(-1)==port)
+		port=1024;
 	service.sin_port=htons(port);
 	while(bind(getAcceptSocket(),reinterpret_cast<sockaddr*>(&service),sizeof(service)))
 	{
@@ -119,11 +69,6 @@ NSDevilX::NSNetworkSystem::NSWindowsSocket::CServerImp::~CServerImp()
 	CloseHandle(mAcceptThreadHandle);
 }
 
-Void NSDevilX::NSNetworkSystem::NSWindowsSocket::CServerImp::addLinkerMT(CLinker * linker)
-{
-	mUnvisibleLinkers.pushBackMT(linker);
-}
-
 Void NSDevilX::NSNetworkSystem::NSWindowsSocket::CServerImp::addUnprocessedLinkerMT(CLinker * linker)
 {
 	mUnprocessedLinkers.pushBackMT(linker);
@@ -134,13 +79,23 @@ Void NSDevilX::NSNetworkSystem::NSWindowsSocket::CServerImp::onMessage(CSystemIm
 	switch(message)
 	{
 	case CSystemImp::EMessage_Update:
-		mUnprocessedLinkers.lockWrite();
-		for(auto linker:mUnprocessedLinkers)
+		if(getInterfaceImp()->getListener())
 		{
-			CloseHandle(CreateThread(nullptr,0,NSInternal::connectTest,DEVILX_NEW NSInternal::SConnectTestParameter(this,linker),0,nullptr));
+			mUnprocessedLinkers.lockWrite();
+			for(auto linker:mUnprocessedLinkers)
+			{
+				if(getInterfaceImp()->getListener()->onConnect(linker->getDestIP(),linker->getDestPort()))
+				{
+					mLinkers.push_back(linker);
+				}
+				else
+				{
+					DEVILX_DELETE(linker);
+				}
+			}
+			mUnprocessedLinkers.clear();
+			mUnprocessedLinkers.unLockWrite();
 		}
-		mUnprocessedLinkers.clear();
-		mUnprocessedLinkers.unLockWrite();
 		break;
 	}
 }

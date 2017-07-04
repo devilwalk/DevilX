@@ -135,6 +135,7 @@
     <ClInclude Include="..\..\..\Code\Layer1\Include\NetworkSystem\Include.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\NetworkSystem\IServerImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\NetworkSystem\ISystemImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\NetworkSystem\Protocol.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\NetworkSystem\INetworkClient.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\NetworkSystem\INetworkEnum.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\NetworkSystem\INetworkLink.h" />

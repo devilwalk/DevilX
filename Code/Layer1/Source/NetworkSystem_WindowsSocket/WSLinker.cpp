@@ -10,7 +10,6 @@ namespace NSDevilX
 				static DWORD CALLBACK readProc(LPVOID parameter)
 				{
 					auto linker=static_cast<CLinker*>(parameter);
-					CProtocol protocol;
 					Char data_buf[UINT16_MAX+1]={0};
 					WSABUF buf;
 					buf.len=sizeof(data_buf);
@@ -25,25 +24,8 @@ namespace NSDevilX
 						switch(ret)
 						{
 						case 0:
-						{
-							auto unparse_size=recv_size;
-							auto unparse_buf=data_buf;
-							while(unparse_size)
-							{
-								if(protocol.parse(unparse_buf,unparse_size))
-								{
-									linker->addRecvData(protocol.getUserData(),protocol.getUserSizeInBytes());
-									unparse_buf+=protocol.getUserSizeInBytes();
-									unparse_size-=protocol.getUserSizeInBytes();
-								}
-								else
-								{
-									OutputDebugStringA("\r\nreadProc:Parse Failed!!!\r\n");
-									break;
-								}
-							}
-						}
-						break;
+							linker->addRecvData(data_buf,recv_size);
+							break;
 						case SOCKET_ERROR:
 							OutputDebugStringA(("\r\nreadProc:"+CStringConverter::toString(WSAGetLastError())+"\r\n").c_str());
 							linker->disconnect();
@@ -55,8 +37,6 @@ namespace NSDevilX
 				static DWORD CALLBACK writeProc(LPVOID parameter)
 				{
 					const auto linker=static_cast<CLinker*>(parameter);
-					TVector<Byte> datas;
-					CProtocol protocol;
 					WSABUF buf;
 					DWORD send_size;
 					auto socket=linker->getSocket();
@@ -64,19 +44,14 @@ namespace NSDevilX
 					while(linker->getSocket()!=INVALID_SOCKET)
 					{
 						WaitForSingleObject(event_handle,INFINITE);
-						linker->getSendDatas().lockWrite();
-						for(const auto & data:linker->getSendDatas())
+						linker->getSendBuffer().lockWrite();
+						TVector<Byte> send_buffer=linker->getSendBuffer();
+						linker->getSendBuffer().clear();
+						linker->getSendBuffer().unLockWrite();
+						if(!send_buffer.empty())
 						{
-							protocol.setUserData(&data[0],static_cast<UInt16>(data.size()));
-							datas.resize(datas.size()+protocol.getSendSizeInByts());
-							memcpy(&datas[datas.size()-protocol.getSendSizeInByts()],protocol.getSendData(),protocol.getSendSizeInByts());
-						}
-						linker->getSendDatas().clear();
-						linker->getSendDatas().unLockWrite();
-						if(!datas.empty())
-						{
-							buf.len=static_cast<decltype(buf.len)>(datas.size());
-							buf.buf=reinterpret_cast<decltype(buf.buf)>(&datas[0]);
+							buf.len=static_cast<decltype(buf.len)>(send_buffer.size());
+							buf.buf=reinterpret_cast<decltype(buf.buf)>(&send_buffer[0]);
 							auto ret=WSASend(socket,&buf,1,&send_size,0,nullptr,nullptr);
 							switch(ret)
 							{
@@ -85,7 +60,6 @@ namespace NSDevilX
 								linker->disconnect();
 								return 0;
 							}
-							datas.clear();
 						}
 					}
 					return 0;
@@ -149,19 +123,21 @@ NSDevilX::NSNetworkSystem::NSWindowsSocket::CLinker::~CLinker()
 
 Void NSDevilX::NSNetworkSystem::NSWindowsSocket::CLinker::addSendData(ConstVoidPtr data,SizeT sizeInBytes)
 {
-	TVector<Byte> send_data;
-	send_data.resize(sizeInBytes);
-	memcpy(&send_data[0],data,sizeInBytes);
-	mSendDatas.pushBackMT(send_data);
+	mSendBuffer.lockWrite();
+	const auto index=mSendBuffer.size();
+	mSendBuffer.resize(index+sizeInBytes);
+	memcpy(&mSendBuffer[0],data,sizeInBytes);
+	mSendBuffer.unLockWrite();
 	SetEvent(getWriteThreadEvent());
 }
 
 Void NSDevilX::NSNetworkSystem::NSWindowsSocket::CLinker::addRecvData(ConstVoidPtr data,SizeT sizeInBytes)
 {
-	TVector<Byte> recv_data;
-	recv_data.resize(sizeInBytes);
-	memcpy(&recv_data[0],data,sizeInBytes);
-	mRecvDatas.pushBackMT(recv_data);
+	mRecvBuffer.lockWrite();
+	const auto index=mRecvBuffer.size();
+	mRecvBuffer.resize(index+sizeInBytes);
+	memcpy(&mRecvBuffer[0],data,sizeInBytes);
+	mRecvBuffer.unLockWrite();
 }
 
 Void NSDevilX::NSNetworkSystem::NSWindowsSocket::CLinker::disconnect()

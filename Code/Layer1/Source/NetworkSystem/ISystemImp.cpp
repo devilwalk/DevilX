@@ -22,16 +22,15 @@ Void NSDevilX::NSNetworkSystem::ISystemImp::update()
 	notify(EMessage_Update);
 }
 
-Void NSDevilX::NSNetworkSystem::ISystemImp::searchServer(const String & serverIP,const TVector<Byte> & connectData,UInt16 serverPortStart=49152,UInt16 serverPortEnd=-1)
+Void NSDevilX::NSNetworkSystem::ISystemImp::searchServer(const String & serverIP,UInt16 serverPortStart,UInt16 serverPortEnd)
 {
 	struct SSearch
 	{
 		const String & mServerIP;
-		const TVector<Byte> & mConnectData;
 		UInt16 mServerPortStart;
 		UInt16 mServerPortEnd;
 	};
-	SSearch s={serverIP,connectData,serverPortStart,serverPortEnd};
+	SSearch s={serverIP,serverPortStart,serverPortEnd};
 	notify(EMessage_SearchServer,&s);
 }
 
@@ -68,7 +67,7 @@ IClient * NSDevilX::NSNetworkSystem::ISystemImp::createClient(const String & des
 	notify(EMessage_BeginCreateClient);
 	ret=DEVILX_NEW IClientImp(destIP,port);
 	mClients.add(key,ret);
-	notify(EMessage_EndCreateClient);
+	notify(EMessage_EndCreateClient,ret);
 	return ret;
 }
 

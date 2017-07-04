@@ -12,14 +12,12 @@ namespace NSDevilX
 				{
 					String mIP;
 					UInt16 mPort;
-					TVector<Byte> mConnectData;
 				};
 				static DWORD CALLBACK connectTest(LPVOID parameter)
 				{
 					auto p=static_cast<SConnectTestParameter*>(parameter);
 					const auto ip=p->mIP;
 					const auto port=p->mPort;
-					const auto connect_data=p->mConnectData;
 					DEVILX_DELETE(p);
 					sockaddr_in addr;
 					addr.sin_addr.S_un.S_addr=inet_addr(ip.c_str());
@@ -32,23 +30,7 @@ namespace NSDevilX
 						if(0==WSAConnect(s,reinterpret_cast<const sockaddr*>(&addr),sizeof(addr),nullptr,nullptr,nullptr,nullptr))
 						{
 							auto linker=DEVILX_NEW CLinker(s);
-							linker->addSendData(&connect_data[0],connect_data.size());
-							Boolean has_recv_data=false;
-							Int32 test_count=500;
-							do
-							{
-								linker->getReceiveDatas().lockRead();
-								has_recv_data=!linker->getReceiveDatas().empty();
-								linker->getReceiveDatas().unLockRead();
-								if(has_recv_data)
-								{
-									break;
-								}
-								Sleep(10);
-							}
-							while((!has_recv_data)&&((--test_count)>0));
-							if(has_recv_data)
-								CSystemImp::getSingleton().addSearchLinkerMT(linker);
+							CSystemImp::getSingleton().addSearchLinkerMT(linker);
 							loop=false;
 						}
 						else
@@ -69,7 +51,6 @@ namespace NSDevilX
 					:public TBaseObject<SSearchParameter>
 				{
 					String mServerIP;
-					TVector<Byte> mConnectData;
 					UInt16 mServerPortStart;
 					UInt16 mServerPortEnd;
 				};
@@ -79,14 +60,12 @@ namespace NSDevilX
 					const auto port_start=search_param->mServerPortStart;
 					const auto port_end=search_param->mServerPortEnd;
 					const auto ip=search_param->mServerIP;
-					const auto connect_data=search_param->mConnectData;
 					DEVILX_DELETE(search_param);
 					for(UInt16 port=port_start;port<=port_end;++port)
 					{
 						NSInternal::SConnectTestParameter * parameter=DEVILX_NEW NSInternal::SConnectTestParameter();
 						parameter->mIP=ip;
 						parameter->mPort=port;
-						parameter->mConnectData=connect_data;
 						CloseHandle(CreateThread(nullptr,0,NSInternal::connectTest,parameter,0,nullptr));
 					}
 					return 0;
@@ -137,8 +116,11 @@ Void NSDevilX::NSNetworkSystem::NSWindowsSocket::CSystemImp::onMessage(ISystemIm
 		{
 			for(auto linker:mSearchedLinkers)
 			{
-				if(!linker->isDisconnect())
-					ISystemImp::getSingleton().getListener()->onSearch(linker->getDestIP(),linker->getDestPort(),linker->getReceiveDatas()[0]);
+				if((!linker->isDisconnect())&&ISystemImp::getSingleton().getListener()->onSearch(linker->getDestIP(),linker->getDestPort()))
+				{
+					auto link_imp=ISystemImp::getSingleton().createLink(linker->getDestIP(),linker->getDestPort(),"127.0.0.1",-1);
+					ISystemImp::getSingleton().getListener()->onSearched(link_imp);
+				}
 			}
 		}
 		mSearchedLinkers.destroyAll();
@@ -162,13 +144,11 @@ Void NSDevilX::NSNetworkSystem::NSWindowsSocket::CSystemImp::onMessage(ISystemIm
 		struct SSearch
 		{
 			const String & mServerIP;
-			const TVector<Byte> & mConnectData;
 			UInt16 mServerPortStart;
 			UInt16 mServerPortEnd;
 		};
 		auto parameter=DEVILX_NEW NSInternal::SSearchParameter();
 		parameter->mServerIP=static_cast<SSearch*>(data)->mServerIP;
-		parameter->mConnectData=static_cast<SSearch*>(data)->mConnectData;
 		parameter->mServerPortStart=static_cast<SSearch*>(data)->mServerPortStart;
 		parameter->mServerPortEnd=static_cast<SSearch*>(data)->mServerPortEnd;
 		CloseHandle(CreateThread(nullptr,0,NSInternal::search,parameter,0,nullptr));

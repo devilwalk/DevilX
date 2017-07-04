@@ -4,6 +4,7 @@ using namespace NSNetworkSystem;
 
 NSDevilX::NSNetworkSystem::IServerImp::IServerImp(UInt16 port)
 	:mPort(port)
+	,mListener(nullptr)
 {}
 
 NSDevilX::NSNetworkSystem::IServerImp::~IServerImp()
@@ -16,10 +17,10 @@ UInt16 NSDevilX::NSNetworkSystem::IServerImp::getPort() const
 
 Void NSDevilX::NSNetworkSystem::IServerImp::setListener(IServerListener * listener)
 {
-	return Void();
+	mListener=listener;
 }
 
 IServerListener * NSDevilX::NSNetworkSystem::IServerImp::getListener() const
 {
-	return nullptr;
+	return mListener;
 }

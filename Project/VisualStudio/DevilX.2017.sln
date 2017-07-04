@@ -17,11 +17,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Editor", "Editor", "{E1B8AC
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shader", "Shader", "{5F075A03-B5A6-4BDB-8252-A7E64A979480}"
 	ProjectSection(SolutionItems) = preProject
+		..\..\Code\Layer1\Source\Shader\cbClearViewport.sl = ..\..\Code\Layer1\Source\Shader\cbClearViewport.sl
 		..\..\Code\Layer1\Source\Shader\cbCommon.sl = ..\..\Code\Layer1\Source\Shader\cbCommon.sl
 		..\..\Code\Layer1\Source\Shader\cbLight.sl = ..\..\Code\Layer1\Source\Shader\cbLight.sl
 		..\..\Code\Layer1\Source\Shader\cbObject.sl = ..\..\Code\Layer1\Source\Shader\cbObject.sl
 		..\..\Code\Layer1\Source\Shader\cbShadow.sl = ..\..\Code\Layer1\Source\Shader\cbShadow.sl
-		..\..\Code\Layer1\Source\Shader\cbClearViewport.sl = ..\..\Code\Layer1\Source\Shader\cbClearViewport.sl
 		..\..\Code\Layer1\Source\Shader\ClearViewport.hlsl = ..\..\Code\Layer1\Source\Shader\ClearViewport.hlsl
 		..\..\Code\Layer1\Source\Shader\ClearViewportPixel.glsl = ..\..\Code\Layer1\Source\Shader\ClearViewportPixel.glsl
 		..\..\Code\Layer1\Source\Shader\ClearViewportVertex.glsl = ..\..\Code\Layer1\Source\Shader\ClearViewportVertex.glsl
@@ -114,6 +114,11 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test", "Test\Test.2017.vcxproj", "{D54BA21F-D042-46C6-9F8D-DF7C68813D86}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestServer.2017", "Test\TestServer.2017.vcxproj", "{3D63F700-5871-49FB-BEA1-AFE4DCF4331B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3AFD9611-B882-45CD-92A2-159321DF0861} = {3AFD9611-B882-45CD-92A2-159321DF0861}
+		{1AC3D07C-53AB-4C61-A591-0167C6841852} = {1AC3D07C-53AB-4C61-A591-0167C6841852}
+		{F0D5FFC1-43A4-4786-8A8A-7A4935E48C4E} = {F0D5FFC1-43A4-4786-8A8A-7A4935E48C4E}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Ungrouped.2017", "Ungrouped\Ungrouped.2017.vcxproj", "{6F67BE02-CD38-4BDB-81AB-D629D2500402}"
 EndProject
