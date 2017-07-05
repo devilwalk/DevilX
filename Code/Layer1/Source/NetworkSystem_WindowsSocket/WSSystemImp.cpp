@@ -95,9 +95,13 @@ NSDevilX::NSNetworkSystem::NSWindowsSocket::CSystemImp::CSystemImp()
 	ISystemImp::getSingleton().addListener(this,ISystemImp::EMessage_SearchServer);
 	ISystemImp::getSingleton().addListener(this,ISystemImp::EMessage_Update);
 	ISystemImp::getSingleton().addListener(this,ISystemImp::EMessage_Destruction);
+	ISystemImp::getSingleton().addListener(this,ISystemImp::EMessage_EndCreateLink);
+	ISystemImp::getSingleton().addListener(this,ISystemImp::EMessage_BeginDestroyLink);
 }
 NSDevilX::NSNetworkSystem::NSWindowsSocket::CSystemImp::~CSystemImp()
 {
+	mLinks.destroyAll();
+	mServers.destroyAll();
 	WSACleanup();
 }
 
@@ -119,7 +123,8 @@ Void NSDevilX::NSNetworkSystem::NSWindowsSocket::CSystemImp::onMessage(ISystemIm
 				if((!linker->isDisconnect())&&ISystemImp::getSingleton().getListener()->onSearch(linker->getDestIP(),linker->getDestPort()))
 				{
 					auto link_imp=ISystemImp::getSingleton().createLink(linker->getDestIP(),linker->getDestPort(),"127.0.0.1",-1);
-					DEVILX_NEW CLinkImp(link_imp,linker);
+					auto link=getLink(link_imp);
+					link->attach(linker);
 					ISystemImp::getSingleton().getListener()->onSearched(link_imp);
 				}
 				else
@@ -143,6 +148,12 @@ Void NSDevilX::NSNetworkSystem::NSWindowsSocket::CSystemImp::onMessage(ISystemIm
 		break;
 	case ISystemImp::EMessage_BeginDestroyClient:
 		mClients.destroy(static_cast<IClientImp*>(data));
+		break;
+	case ISystemImp::EMessage_EndCreateLink:
+		mLinks.add(static_cast<ILinkImp*>(data),DEVILX_NEW CLinkImp(static_cast<ILinkImp*>(data)));
+		break;
+	case ISystemImp::EMessage_BeginDestroyLink:
+		mLinks.destroy(static_cast<ILinkImp*>(data));
 		break;
 	case ISystemImp::EMessage_SearchServer:
 	{

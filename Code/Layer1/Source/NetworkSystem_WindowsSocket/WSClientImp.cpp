@@ -7,6 +7,7 @@ NSDevilX::NSNetworkSystem::NSWindowsSocket::CClientImp::CClientImp(IClientImp * 
 	:mInterfaceImp(interfaceImp)
 	,mLink(nullptr)
 {
+	mLink=CSystemImp::getSingleton().getLink(static_cast<ILinkImp*>(getInterfaceImp()->getLink()));
 	auto s=WSASocket(AF_INET,SOCK_STREAM,IPPROTO_TCP,nullptr,0,WSA_FLAG_OVERLAPPED);
 	sockaddr_in addr;
 	addr.sin_addr.S_un.S_addr=inet_addr(getInterfaceImp()->getLink()->getServerIP().c_str());
@@ -14,29 +15,14 @@ NSDevilX::NSNetworkSystem::NSWindowsSocket::CClientImp::CClientImp(IClientImp * 
 	addr.sin_port=htons(getInterfaceImp()->getLink()->getServerPort());
 	if(0==WSAConnect(s,reinterpret_cast<sockaddr*>(&addr),sizeof(addr),nullptr,nullptr,nullptr,nullptr))
 	{
-		mLink=DEVILX_NEW CLinkImp(static_cast<ILinkImp*>(getInterfaceImp()->getLink()),s);
+		mLink->attach(DEVILX_NEW CLinker(s));
 	}
 	else
 	{
 		closesocket(s);
 	}
-	CSystemImp::getSingleton().addListener(static_cast<TMessageReceiver<CSystemImp>*>(this),CSystemImp::EMessage_Update);
 }
 
 NSDevilX::NSNetworkSystem::NSWindowsSocket::CClientImp::~CClientImp()
 {
-	DEVILX_DELETE(mLink);
-}
-
-Void NSDevilX::NSNetworkSystem::NSWindowsSocket::CClientImp::onMessage(CSystemImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
-{
-	switch(message)
-	{
-	case CSystemImp::EMessage_Update:
-		if(mLink->getLinker()->isDisconnect())
-		{
-
-		}
-		break;
-	}
 }

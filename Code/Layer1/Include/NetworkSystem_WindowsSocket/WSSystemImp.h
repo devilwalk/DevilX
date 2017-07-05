@@ -18,28 +18,16 @@ namespace NSDevilX
 					EMessage_Update
 				};
 			protected:
-				TResourcePtrMap<ConstVoidPtr,Void> mInstanceByInterfaceImps;
 				TResourcePtrMap<IServerImp*,CServerImp> mServers;
 				TResourcePtrMap<IClientImp*,CClientImp> mClients;
+				TResourcePtrMap<ILinkImp*,CLinkImp> mLinks;
 				TResourcePtrListMT<CLinker> mSearchedLinkers;
 			public:
 				CSystemImp();
 				~CSystemImp();
-				VoidPtr getInstanceByInterfaceImp(ConstVoidPtr interfaceImp)const
+				CLinkImp * getLink(ILinkImp * link)const
 				{
-					return mInstanceByInterfaceImps.get(interfaceImp);
-				}
-				Boolean hasInstanceByInterfaceImp(ConstVoidPtr interfaceImp)const
-				{
-					return mInstanceByInterfaceImps.has(interfaceImp);
-				}
-				Void addInstanceByInterfaceImp(ConstVoidPtr interfaceImp,VoidPtr instance)
-				{
-					mInstanceByInterfaceImps.add(interfaceImp,instance);
-				}
-				Void removeInstanceByInterfaceImp(ConstVoidPtr interfaceImp)
-				{
-					mInstanceByInterfaceImps.erase(interfaceImp);
+					return mLinks.get(link);
 				}
 				Void addSearchLinkerMT(CLinker * linker);
 				// Inherited via TMessageReceiver

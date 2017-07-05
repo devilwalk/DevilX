@@ -13,13 +13,14 @@ namespace NSDevilX
 		public:
 			enum EMessage
 			{
-				EMessage_Destruction
+				EMessage_Destruction,
 			};
 		protected:
 			const String mServerIP;
 			const UInt16 mServerPort;
 			const String mClientIP;
 			const UInt16 mClientPort;
+			Bool mIsInvalidate;
 			ILinkListener * mListener;
 			TVector<Byte> mSendBuffer;
 		public:
@@ -30,13 +31,13 @@ namespace NSDevilX
 				return mSendBuffer;
 			}
 			Void addReceivedBuffer(ConstVoidPtr buffer,UInt32 bufferSizeInBytes);
+			Void setInvalidate();
 			// Inherited via ILink
 			virtual const String & getServerIP() const override;
 			virtual UInt16 getServerPort() const override;
 			virtual const String & getClientIP() const override;
 			virtual UInt16 getClientPort() const override;
 			virtual Void addSendData(ConstVoidPtr data,UInt32 sizeInBytes) override;
-			virtual Void close() override;
 			virtual Void setListener(ILinkListener * listener);
 			virtual ILinkListener * getListener()const;
 		};

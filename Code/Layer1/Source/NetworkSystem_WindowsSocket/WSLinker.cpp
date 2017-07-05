@@ -124,21 +124,21 @@ NSDevilX::NSNetworkSystem::NSWindowsSocket::CLinker::~CLinker()
 
 Void NSDevilX::NSNetworkSystem::NSWindowsSocket::CLinker::addSendData(ConstVoidPtr data,SizeT sizeInBytes)
 {
-	mSendBuffer.lockWrite();
-	const auto index=mSendBuffer.size();
-	mSendBuffer.resize(index+sizeInBytes);
-	memcpy(&mSendBuffer[0],data,sizeInBytes);
-	mSendBuffer.unLockWrite();
+	getSendBuffer().lockWrite();
+	const auto index=getSendBuffer().size();
+	getSendBuffer().resize(index+sizeInBytes);
+	memcpy(&getSendBuffer()[index],data,sizeInBytes);
+	getSendBuffer().unLockWrite();
 	SetEvent(getWriteThreadEvent());
 }
 
 Void NSDevilX::NSNetworkSystem::NSWindowsSocket::CLinker::addRecvData(ConstVoidPtr data,SizeT sizeInBytes)
 {
-	mRecvBuffer.lockWrite();
-	const auto index=mRecvBuffer.size();
-	mRecvBuffer.resize(index+sizeInBytes);
-	memcpy(&mRecvBuffer[0],data,sizeInBytes);
-	mRecvBuffer.unLockWrite();
+	getReceivedBuffer().lockWrite();
+	const auto index=getReceivedBuffer().size();
+	getReceivedBuffer().resize(index+sizeInBytes);
+	memcpy(&getReceivedBuffer()[index],data,sizeInBytes);
+	getReceivedBuffer().unLockWrite();
 }
 
 Void NSDevilX::NSNetworkSystem::NSWindowsSocket::CLinker::disconnect()

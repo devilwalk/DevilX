@@ -22,7 +22,11 @@ namespace NSDevilX
 				EMessage_EndDestroyClient,
 				EMessage_SearchServer,
 				EMessage_Destruction,
-				EMessage_Update
+				EMessage_Update,
+				EMessage_BeginCreateLink,
+				EMessage_EndCreateLink,
+				EMessage_BeginDestroyLink,
+				EMessage_EndDestroyLink
 			};
 		protected:
 			Bool mExit;
@@ -38,6 +42,7 @@ namespace NSDevilX
 				return mExit;
 			}
 			ILinkImp * createLink(const String & serverIP,UInt16 serverPort,const String & clientIP,UInt16 clientPort);
+			Void destroyLink(ILinkImp * link);
 			// Inherited via ISystem
 			virtual Void shutdown() override;
 			virtual Void update() override;

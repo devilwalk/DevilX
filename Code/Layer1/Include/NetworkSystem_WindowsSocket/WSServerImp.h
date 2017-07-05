@@ -1,4 +1,5 @@
 #pragma once
+#include "WSLinkImp.h"
 namespace NSDevilX
 {
 	namespace NSNetworkSystem
@@ -14,7 +15,7 @@ namespace NSDevilX
 				SOCKET mAcceptSocket;
 				HANDLE mAcceptThreadHandle;
 				TResourcePtrListMT<CLinker> mUnprocessedLinkers;
-				TResourcePtrList<CLinker> mLinkers;
+				TList<CLinkImp*> mLinks;
 			public:
 				CServerImp(IServerImp * interfaceImp);
 				~CServerImp();

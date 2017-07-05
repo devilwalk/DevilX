@@ -7,6 +7,7 @@ NSDevilX::NSNetworkSystem::ILinkImp::ILinkImp(const String & serverIP,UInt16 ser
 	,mClientPort(clientPort)
 	,mServerIP(serverIP)
 	,mServerPort(serverPort)
+	,mIsInvalidate(False)
 	,mListener(nullptr)
 {}
 
@@ -33,8 +34,24 @@ Void NSDevilX::NSNetworkSystem::ILinkImp::addReceivedBuffer(ConstVoidPtr buffer,
 			for(size_t i=0;i<protocols.size();++i)
 			{
 				const auto & proto=protocols[i];
-				getListener()->onDataReceived(proto.getUserData(),proto.getUserSizeInBytes());
+				getListener()->onDataReceived(this,proto.getUserData(),proto.getUserSizeInBytes());
 			}
+		}
+		else
+		{
+			assert(0);
+		}
+	}
+}
+
+Void NSDevilX::NSNetworkSystem::ILinkImp::setInvalidate()
+{
+	if(False==mIsInvalidate)
+	{
+		mIsInvalidate=True;
+		if(getListener())
+		{
+			getListener()->onDeconnect(this);
 		}
 	}
 }
@@ -64,15 +81,10 @@ UInt16 NSDevilX::NSNetworkSystem::ILinkImp::getClientPort() const
 Void NSDevilX::NSNetworkSystem::ILinkImp::addSendData(ConstVoidPtr data,UInt32 sizeInBytes)
 {
 	const auto index=getSendBufferRef().size();
-	getSendBufferRef().resize(index+sizeInBytes);
 	CProtocol protocol;
 	protocol.setUserData(data,sizeInBytes);
+	getSendBufferRef().resize(index+protocol.getSendSizeInBytes());
 	memcpy(&getSendBufferRef()[index],protocol.getSendData(),protocol.getSendSizeInBytes());
-}
-
-Void NSDevilX::NSNetworkSystem::ILinkImp::close()
-{
-	DEVILX_DELETE(this);
 }
 
 Void NSDevilX::NSNetworkSystem::ILinkImp::setListener(ILinkListener * listener)

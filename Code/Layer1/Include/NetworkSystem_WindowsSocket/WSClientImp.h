@@ -8,7 +8,6 @@ namespace NSDevilX
 		{
 			class CClientImp
 				:public TBaseObject<CClientImp>
-				,public TMessageReceiver<CSystemImp>
 			{
 			protected:
 				IClientImp * const mInterfaceImp;
@@ -20,9 +19,6 @@ namespace NSDevilX
 				{
 					return mInterfaceImp;
 				}
-			protected:
-				// Í¨¹ý TInterfaceObject ¼Ì³Ð
-				virtual Void onMessage(CSystemImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 			};
 		}
 	}

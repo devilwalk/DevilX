@@ -14,13 +14,13 @@ namespace NSDevilX
 			protected:
 				CLinker * mLinker;
 			public:
-				CLinkImp(ILinkImp * interfaceImp,SOCKET s);
-				CLinkImp(ILinkImp * interfaceImp,CLinker * linker);
+				CLinkImp(ILinkImp * interfaceImp);
 				virtual ~CLinkImp();
 				CLinker * getLinker()const
 				{
 					return mLinker;
 				}
+				Void attach(CLinker * linker);
 				// Inherited via TMessageReceiver
 				virtual Void onMessage(ILinkImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 				virtual Void onMessage(ISystemImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;

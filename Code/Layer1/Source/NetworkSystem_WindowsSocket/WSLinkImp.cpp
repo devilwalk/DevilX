@@ -3,18 +3,9 @@ using namespace NSDevilX;
 using namespace NSNetworkSystem;
 using namespace NSWindowsSocket;
 
-NSDevilX::NSNetworkSystem::NSWindowsSocket::CLinkImp::CLinkImp(ILinkImp * interfaceImp,SOCKET s)
+NSDevilX::NSNetworkSystem::NSWindowsSocket::CLinkImp::CLinkImp(ILinkImp * interfaceImp)
 	:TInterfaceObject<ILinkImp>(interfaceImp)
 	,mLinker(nullptr)
-{
-	mLinker=DEVILX_NEW CLinker(s);
-	getInterfaceImp()->addListener(static_cast<TMessageReceiver<ILinkImp>*>(this),ILinkImp::EMessage_Destruction);
-	ISystemImp::getSingleton().addListener(static_cast<TMessageReceiver<ISystemImp>*>(this),ISystemImp::EMessage_Update);
-}
-
-NSDevilX::NSNetworkSystem::NSWindowsSocket::CLinkImp::CLinkImp(ILinkImp * interfaceImp,CLinker * linker)
-	:TInterfaceObject<ILinkImp>(interfaceImp)
-	,mLinker(linker)
 {
 	getInterfaceImp()->addListener(static_cast<TMessageReceiver<ILinkImp>*>(this),ILinkImp::EMessage_Destruction);
 	ISystemImp::getSingleton().addListener(static_cast<TMessageReceiver<ISystemImp>*>(this),ISystemImp::EMessage_Update);
@@ -23,6 +14,12 @@ NSDevilX::NSNetworkSystem::NSWindowsSocket::CLinkImp::CLinkImp(ILinkImp * interf
 NSDevilX::NSNetworkSystem::NSWindowsSocket::CLinkImp::~CLinkImp()
 {
 	DEVILX_DELETE(getLinker());
+}
+
+Void NSDevilX::NSNetworkSystem::NSWindowsSocket::CLinkImp::attach(CLinker * linker)
+{
+	assert(nullptr==getLinker());
+	mLinker=linker;
 }
 
 Void NSDevilX::NSNetworkSystem::NSWindowsSocket::CLinkImp::onMessage(ILinkImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
@@ -40,8 +37,20 @@ Void NSDevilX::NSNetworkSystem::NSWindowsSocket::CLinkImp::onMessage(ISystemImp 
 	switch(message)
 	{
 	case ISystemImp::EMessage_Update:
-		_recvData();
-		_sendData();
+		if(getLinker()&&getLinker()->isDisconnect())
+		{
+			DEVILX_DELETE(getLinker());
+			mLinker=nullptr;
+		}
+		if(getLinker())
+		{
+			_recvData();
+			_sendData();
+		}
+		else
+		{
+			getInterfaceImp()->setInvalidate();
+		}
 		break;
 	}
 }

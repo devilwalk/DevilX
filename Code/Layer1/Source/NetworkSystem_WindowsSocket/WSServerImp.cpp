@@ -84,9 +84,13 @@ Void NSDevilX::NSNetworkSystem::NSWindowsSocket::CServerImp::onMessage(CSystemIm
 			mUnprocessedLinkers.lockWrite();
 			for(auto linker:mUnprocessedLinkers)
 			{
-				if(getInterfaceImp()->getListener()->onConnect(linker->getDestIP(),linker->getDestPort()))
+				if(getInterfaceImp()->getListener()->onConnect(getInterfaceImp(),linker->getDestIP(),linker->getDestPort()))
 				{
-					mLinkers.push_back(linker);
+					auto link_imp=ISystemImp::getSingleton().createLink("127.0.0.1",getInterfaceImp()->getPort(),linker->getDestIP(),linker->getDestPort());
+					auto link=CSystemImp::getSingleton().getLink(link_imp);
+					link->attach(linker);
+					mLinks.push_back(link);
+					getInterfaceImp()->getListener()->onConnected(getInterfaceImp(),link_imp);
 				}
 				else
 				{

@@ -5,7 +5,6 @@ namespace NSDevilX
 	{
 		namespace NSWindowsSocket
 		{
-			class CSystemImp;
 			template<class InterfaceImpT>
 			class TInterfaceObject
 				:public TMessageReceiver<InterfaceImpT>
@@ -23,11 +22,7 @@ namespace NSDevilX
 				{
 					if(interfaceImp!=mInterfaceImp)
 					{
-						if(mInterfaceImp)
-							CSystemImp::getSingleton().removeInstanceByInterfaceImp(mInterfaceImp);
 						mInterfaceImp=interfaceImp;
-						if(mInterfaceImp)
-							CSystemImp::getSingleton().addInstanceByInterfaceImp(interfaceImp,this);
 					}
 				}
 				InterfaceImpT * getInterfaceImp()const
@@ -53,11 +48,7 @@ namespace NSDevilX
 				{
 					if(i!=mInternal)
 					{
-						if(mInternal)
-							CSystemImp::getSingleton().removeInstanceByInternal(mInternal);
 						mInternal=i;
-						if(mInternal)
-							CSystemImp::getSingleton().addInstanceByInternal(i,this);
 					}
 				}
 				InternalT * getInternal()const
@@ -85,12 +76,9 @@ namespace NSDevilX
 					{
 						if(mInternal)
 						{
-							CSystemImp::getSingleton().removeInstanceByCOMInternal(mInternal);
 							mInternal->Release();
 						}
 						mInternal=i;
-						if(mInternal)
-							CSystemImp::getSingleton().addInstanceByCOMInternal(i,this);
 					}
 				}
 				InternalT * getInternal()const
