@@ -14,7 +14,7 @@ namespace NSDevilX
 				IServerImp * const mInterfaceImp;
 				SOCKET mAcceptSocket;
 				HANDLE mAcceptThreadHandle;
-				TResourcePtrListMT<CLinker> mUnprocessedLinkers;
+				TListMT<CLinker*> mUnprocessedLinkers;
 				TList<CLinkImp*> mLinks;
 			public:
 				CServerImp(IServerImp * interfaceImp);

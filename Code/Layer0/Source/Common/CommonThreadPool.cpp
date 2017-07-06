@@ -9,13 +9,6 @@ namespace NSDevilX
 	}
 }
 
-NSDevilX::CDefaultThreadPool::CDefaultThreadPool()
-	:CThreadPool(4)
-{}
-
-NSDevilX::CDefaultThreadPool::~CDefaultThreadPool()
-{}
-
 NSDevilX::CSemaphorePool::CSemaphorePool()
 {}
 

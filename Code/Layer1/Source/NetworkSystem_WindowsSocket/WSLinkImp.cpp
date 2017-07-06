@@ -13,7 +13,7 @@ NSDevilX::NSNetworkSystem::NSWindowsSocket::CLinkImp::CLinkImp(ILinkImp * interf
 
 NSDevilX::NSNetworkSystem::NSWindowsSocket::CLinkImp::~CLinkImp()
 {
-	DEVILX_DELETE(getLinker());
+	CSystemImp::getSingleton().destroyLinker(getLinker());
 }
 
 Void NSDevilX::NSNetworkSystem::NSWindowsSocket::CLinkImp::attach(CLinker * linker)

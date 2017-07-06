@@ -9,6 +9,42 @@ namespace NSDevilX
 			class CLinker
 				:public TBaseObject<CLinker>
 			{
+			public:
+				struct SIOComplete
+					:public TBaseObject<SIOComplete>
+				{
+					enum EType
+					{
+						EType_Recv,
+						EType_Send
+					};
+					const EType mType;
+					WSABUF mBuffer;
+					DWORD mIOSize;
+					DWORD mFlag;
+					SIOComplete(EType type)
+						:mType(type)
+						,mIOSize(0)
+						,mFlag(0)
+					{
+						switch(type)
+						{
+						case EType_Recv:
+							mBuffer.buf=static_cast<decltype(mBuffer.buf)>(DEVILX_ALLOC(UINT16_MAX+32));
+							SecureZeroMemory(mBuffer.buf,UINT16_MAX+32);
+							mBuffer.len=UINT16_MAX+32;
+							break;
+						case EType_Send:
+							mBuffer.buf=nullptr;
+							mBuffer.buf=0;
+							break;
+						}
+					}
+					~SIOComplete()
+					{
+						DEVILX_FREE(mBuffer.buf);
+					}
+				};
 			protected:
 				volatile SOCKET mSocket;
 				volatile Bool mDisconnect;

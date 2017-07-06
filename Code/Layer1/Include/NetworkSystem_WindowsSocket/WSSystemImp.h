@@ -18,17 +18,29 @@ namespace NSDevilX
 					EMessage_Update
 				};
 			protected:
+				HANDLE mIOCompletePort;
 				TResourcePtrMap<IServerImp*,CServerImp> mServers;
 				TResourcePtrMap<IClientImp*,CClientImp> mClients;
 				TResourcePtrMap<ILinkImp*,CLinkImp> mLinks;
-				TResourcePtrListMT<CLinker> mSearchedLinkers;
+				TListMT<CLinker*> mSearchedLinkers;
+				TResourcePtrListMT<CLinker> mLinkers;
 			public:
 				CSystemImp();
 				~CSystemImp();
+				HANDLE getIOCompletePort()const
+				{
+					return mIOCompletePort;
+				}
 				CLinkImp * getLink(ILinkImp * link)const
 				{
 					return mLinks.get(link);
 				}
+				decltype(mLinkers) & getLinkersRef()
+				{
+					return mLinkers;
+				}
+				CLinker * createLinkerMT(SOCKET s);
+				Void destroyLinker(CLinker * linker);
 				Void addSearchLinkerMT(CLinker * linker);
 				// Inherited via TMessageReceiver
 				virtual Void onMessage(ISystemImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;

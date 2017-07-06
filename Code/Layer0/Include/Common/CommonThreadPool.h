@@ -56,12 +56,4 @@ namespace NSDevilX
 		Void waitMT(Int32 syncGroupID);
 		static Void threadFunction(VoidPtr parameter);
 	};
-	class CDefaultThreadPool
-		:public CThreadPool
-		,public TSingletonEx<CDefaultThreadPool>
-	{
-	public:
-		CDefaultThreadPool();
-		~CDefaultThreadPool();
-	};
 }

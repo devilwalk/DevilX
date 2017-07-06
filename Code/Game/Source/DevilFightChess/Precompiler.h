@@ -22,6 +22,7 @@
 #include "Module.h"
 #include "Player.h"
 #include "PlayerManager.h"
+#include "Protocol.h"
 #include "Scene.h"
 #include "Server.h"
 #include "ServerManager.h"

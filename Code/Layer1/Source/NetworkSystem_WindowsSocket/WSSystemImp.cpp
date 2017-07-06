@@ -29,7 +29,7 @@ namespace NSDevilX
 						auto s=WSASocket(AF_INET,SOCK_STREAM,IPPROTO_TCP,nullptr,0,WSA_FLAG_OVERLAPPED);
 						if(0==WSAConnect(s,reinterpret_cast<const sockaddr*>(&addr),sizeof(addr),nullptr,nullptr,nullptr,nullptr))
 						{
-							auto linker=DEVILX_NEW CLinker(s);
+							auto linker=CSystemImp::getSingleton().createLinkerMT(s);
 							CSystemImp::getSingleton().addSearchLinkerMT(linker);
 							loop=false;
 						}
@@ -70,6 +70,87 @@ namespace NSDevilX
 					}
 					return 0;
 				}
+				static DWORD CALLBACK ioProc(LPVOID parameter)
+				{
+					const HANDLE io_complete_port=CSystemImp::getSingleton().getIOCompletePort();
+					auto & linkers_ref=CSystemImp::getSingleton().getLinkersRef();
+					while(False==ISystemImp::getSingleton().isExit())
+					{
+						linkers_ref.lockRead();
+						for(auto linker:linkers_ref)
+						{
+							if(linker->isDisconnect())
+								continue;
+							linker->getSendBuffer().lockWrite();
+							auto overlapped=new WSAOVERLAPPED;
+							SecureZeroMemory(overlapped,sizeof(WSAOVERLAPPED));
+							overlapped->Pointer=DEVILX_NEW CLinker::SIOComplete(CLinker::SIOComplete::EType_Send);
+							static_cast<CLinker::SIOComplete*>(overlapped->Pointer)->mBuffer.len=static_cast<ULONG>(linker->getSendBuffer().size());
+							if(static_cast<CLinker::SIOComplete*>(overlapped->Pointer)->mBuffer.len>0)
+							{
+								static_cast<CLinker::SIOComplete*>(overlapped->Pointer)->mBuffer.buf=static_cast<Char*>(DEVILX_ALLOC(static_cast<CLinker::SIOComplete*>(overlapped->Pointer)->mBuffer.len));
+								CopyMemory(static_cast<CLinker::SIOComplete*>(overlapped->Pointer)->mBuffer.buf,&linker->getSendBuffer()[0],static_cast<CLinker::SIOComplete*>(overlapped->Pointer)->mBuffer.len);
+							}
+							linker->getSendBuffer().clear();
+							linker->getSendBuffer().unLockWrite();
+							if(static_cast<CLinker::SIOComplete*>(overlapped->Pointer)->mBuffer.len>0)
+							{
+								auto ret=WSASend(linker->getSocket(),&static_cast<CLinker::SIOComplete*>(overlapped->Pointer)->mBuffer,1,&static_cast<CLinker::SIOComplete*>(overlapped->Pointer)->mIOSize,0,overlapped,nullptr);
+								switch(ret)
+								{
+								case SOCKET_ERROR:
+									switch(WSAGetLastError())
+									{
+									case WSA_IO_PENDING:break;
+									default:
+										OutputDebugStringA(("\r\nwriteProc:"+CStringConverter::toString(WSAGetLastError())+"\r\n").c_str());
+										linker->disconnect();
+									}
+								}
+							}
+						}
+						linkers_ref.unLockRead();
+						DWORD transform_bytes=0;
+						CLinker * linker=nullptr;
+						LPOVERLAPPED overlapped=nullptr;
+						if(GetQueuedCompletionStatus(io_complete_port,&transform_bytes,reinterpret_cast<PULONG_PTR>(&linker),&overlapped,INFINITE))
+						{
+							switch(static_cast<CLinker::SIOComplete*>(overlapped->Pointer)->mType)
+							{
+							case CLinker::SIOComplete::EType_Recv:
+							{
+								auto overlapped=new WSAOVERLAPPED;
+								SecureZeroMemory(overlapped,sizeof(WSAOVERLAPPED));
+								overlapped->Pointer=DEVILX_NEW CLinker::SIOComplete(CLinker::SIOComplete::EType_Recv);
+								auto ret=WSARecv(linker->getSocket(),&static_cast<CLinker::SIOComplete*>(overlapped->Pointer)->mBuffer,1,&static_cast<CLinker::SIOComplete*>(overlapped->Pointer)->mIOSize,&static_cast<CLinker::SIOComplete*>(overlapped->Pointer)->mFlag,overlapped,nullptr);
+								switch(ret)
+								{
+								case 0:
+									linker->addRecvData(static_cast<CLinker::SIOComplete*>(overlapped->Pointer)->mBuffer.buf,static_cast<CLinker::SIOComplete*>(overlapped->Pointer)->mIOSize);
+									break;
+								case SOCKET_ERROR:
+									switch(WSAGetLastError())
+									{
+									case WSA_IO_PENDING:break;
+									default:
+										OutputDebugStringA(("\r\nreadProc:"+CStringConverter::toString(WSAGetLastError())+"\r\n").c_str());
+										DEVILX_DELETE(static_cast<CLinker::SIOComplete*>(overlapped->Pointer));
+										delete overlapped;
+										linker->disconnect();
+									}
+								}
+							}
+							break;
+							case CLinker::SIOComplete::EType_Send:
+								DEVILX_FREE(static_cast<CLinker::SIOComplete*>(overlapped->Pointer)->mBuffer.buf);
+								break;
+							}
+							DEVILX_DELETE(static_cast<CLinker::SIOComplete*>(overlapped->Pointer));
+							delete overlapped;
+						}
+					}
+					return 0;
+				}
 			}
 		}
 	}
@@ -84,10 +165,13 @@ ISystem * NSDevilX::NSNetworkSystem::getSystem()
 	return ISystemImp::getSingletonPtr();
 }
 NSDevilX::NSNetworkSystem::NSWindowsSocket::CSystemImp::CSystemImp()
+	:mIOCompletePort(INVALID_HANDLE_VALUE)
 {
 	DEVILX_NEW ISystemImp;
 	WSADATA data;
 	WSAStartup(MAKEWORD(2,2),&data);
+	mIOCompletePort=CreateIoCompletionPort(INVALID_HANDLE_VALUE,NULL,NULL,0);
+	CloseHandle(CreateThread(nullptr,0,NSInternal::ioProc,this,0,nullptr));
 	ISystemImp::getSingleton().addListener(this,ISystemImp::EMessage_EndCreateServer);
 	ISystemImp::getSingleton().addListener(this,ISystemImp::EMessage_BeginDestroyServer);
 	ISystemImp::getSingleton().addListener(this,ISystemImp::EMessage_EndCreateClient);
@@ -100,9 +184,22 @@ NSDevilX::NSNetworkSystem::NSWindowsSocket::CSystemImp::CSystemImp()
 }
 NSDevilX::NSNetworkSystem::NSWindowsSocket::CSystemImp::~CSystemImp()
 {
+	PostQueuedCompletionStatus(getIOCompletePort(),-1,0,nullptr);
 	mLinks.destroyAll();
 	mServers.destroyAll();
 	WSACleanup();
+}
+
+CLinker * NSDevilX::NSNetworkSystem::NSWindowsSocket::CSystemImp::createLinkerMT(SOCKET s)
+{
+	auto ret=DEVILX_NEW CLinker(s);
+	mLinkers.pushBackMT(ret);
+	return ret;
+}
+
+Void NSDevilX::NSNetworkSystem::NSWindowsSocket::CSystemImp::destroyLinker(CLinker * linker)
+{
+	mLinkers.destroy(linker);
 }
 
 Void NSDevilX::NSNetworkSystem::NSWindowsSocket::CSystemImp::addSearchLinkerMT(CLinker * linker)
@@ -129,7 +226,7 @@ Void NSDevilX::NSNetworkSystem::NSWindowsSocket::CSystemImp::onMessage(ISystemIm
 				}
 				else
 				{
-					DEVILX_DELETE(linker);
+					destroyLinker(linker);
 				}
 			}
 		}

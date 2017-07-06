@@ -13,7 +13,21 @@ namespace NSDevilX
 					Boolean loop=true;
 					while(loop)
 					{
-						auto s=WSAAccept(server->getAcceptSocket(),nullptr,nullptr,nullptr,NULL);
+						auto s=WSAAccept(server->getAcceptSocket(),nullptr,nullptr,
+							[](
+								IN LPWSABUF lpCallerId,
+								IN LPWSABUF lpCallerData,
+								IN OUT LPQOS lpSQOS,
+								IN OUT LPQOS lpGQOS,
+								IN LPWSABUF lpCalleeId,
+								OUT LPWSABUF lpCalleeData,
+								OUT GROUP FAR *g,
+								IN DWORD_PTR dwCallbackData
+								)
+						{
+							return CF_ACCEPT;
+						}
+							,NULL);
 						if(INVALID_SOCKET==s)
 						{
 							switch(WSAGetLastError())
@@ -25,7 +39,7 @@ namespace NSDevilX
 						}
 						else
 						{
-							auto linker=DEVILX_NEW CLinker(s);
+							auto linker=CSystemImp::getSingleton().createLinkerMT(s);
 							server->addUnprocessedLinkerMT(linker);
 						}
 					}
@@ -94,7 +108,7 @@ Void NSDevilX::NSNetworkSystem::NSWindowsSocket::CServerImp::onMessage(CSystemIm
 				}
 				else
 				{
-					DEVILX_DELETE(linker);
+					CSystemImp::getSingleton().destroyLinker(linker);
 				}
 			}
 			mUnprocessedLinkers.clear();

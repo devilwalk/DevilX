@@ -89,14 +89,33 @@ NSDevilX::NSNetworkSystem::NSWindowsSocket::CLinker::CLinker(SOCKET s)
 	}
 	mDestIP=inet_ntoa(addr.sin_addr);
 	mDestPort=ntohs(addr.sin_port);
-	mWriteThreadEvent=CreateEvent(nullptr,FALSE,FALSE,nullptr);
-	mReadThread=CreateThread(nullptr,0,NSInternal::readProc,this,0,nullptr);
-	mWriteThread=CreateThread(nullptr,0,NSInternal::writeProc,this,0,nullptr);
+	//mWriteThreadEvent=CreateEvent(nullptr,FALSE,FALSE,nullptr);
+	//mReadThread=CreateThread(nullptr,0,NSInternal::readProc,this,0,nullptr);
+	//mWriteThread=CreateThread(nullptr,0,NSInternal::writeProc,this,0,nullptr);
+
+	CreateIoCompletionPort(reinterpret_cast<HANDLE>(getSocket()),CSystemImp::getSingleton().getIOCompletePort(),reinterpret_cast<ULONG_PTR>(this),0);
+	auto overlapped=new WSAOVERLAPPED;
+	SecureZeroMemory(overlapped,sizeof(WSAOVERLAPPED));
+	overlapped->Pointer=DEVILX_NEW SIOComplete(SIOComplete::EType_Recv);
+	auto ret=WSARecv(getSocket(),&static_cast<SIOComplete*>(overlapped->Pointer)->mBuffer,1,&static_cast<SIOComplete*>(overlapped->Pointer)->mIOSize,&static_cast<SIOComplete*>(overlapped->Pointer)->mFlag,overlapped,nullptr);
+	switch(ret)
+	{
+	case SOCKET_ERROR:
+		switch(WSAGetLastError())
+		{
+		case WSA_IO_PENDING:break;
+		default:
+			OutputDebugStringA(("\r\nCLinker:"+CStringConverter::toString(WSAGetLastError())+"\r\n").c_str());
+			DEVILX_DELETE(static_cast<SIOComplete*>(overlapped->Pointer));
+			delete overlapped;
+			disconnect();
+		}
+	}
 }
 
 NSDevilX::NSNetworkSystem::NSWindowsSocket::CLinker::~CLinker()
 {
-	if(INVALID_SOCKET!=mSocket)
+	if(INVALID_SOCKET!=getSocket())
 	{
 		closesocket(mSocket);
 		mSocket=INVALID_SOCKET;

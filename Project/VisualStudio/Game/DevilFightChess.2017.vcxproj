@@ -197,6 +197,7 @@ copy $(ProjectDir)..\..\..\Code\Game\Resource\DevilFightChess\* $(OutDir)Resourc
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MessageBox.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Player.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\PlayerManager.h" />
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Protocol.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Register.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\LocalServer.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Login.h" />

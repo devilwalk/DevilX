@@ -15,7 +15,7 @@ NSDevilX::NSNetworkSystem::NSWindowsSocket::CClientImp::CClientImp(IClientImp * 
 	addr.sin_port=htons(getInterfaceImp()->getLink()->getServerPort());
 	if(0==WSAConnect(s,reinterpret_cast<sockaddr*>(&addr),sizeof(addr),nullptr,nullptr,nullptr,nullptr))
 	{
-		mLink->attach(DEVILX_NEW CLinker(s));
+		mLink->attach(CSystemImp::getSingleton().createLinkerMT(s));
 	}
 	else
 	{

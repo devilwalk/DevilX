@@ -87,6 +87,9 @@
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchServer.h">
       <Filter>Include</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Protocol.h">
+      <Filter>Include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\App.cpp">
