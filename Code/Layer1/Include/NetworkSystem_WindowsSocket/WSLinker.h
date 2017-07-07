@@ -20,11 +20,9 @@ namespace NSDevilX
 					};
 					const EType mType;
 					WSABUF mBuffer;
-					DWORD mIOSize;
 					DWORD mFlag;
 					SIOComplete(EType type)
 						:mType(type)
-						,mIOSize(0)
 						,mFlag(0)
 					{
 						switch(type)
@@ -42,18 +40,24 @@ namespace NSDevilX
 					}
 					~SIOComplete()
 					{
-						DEVILX_FREE(mBuffer.buf);
+						switch(mType)
+						{
+						case EType_Recv:
+							DEVILX_FREE(mBuffer.buf);
+							break;
+						}
 					}
 				};
 			protected:
 				volatile SOCKET mSocket;
 				volatile Bool mDisconnect;
-				HANDLE mReadThread,mWriteThread;
-				HANDLE mWriteThreadEvent;
 				String mDestIP;
 				UInt16 mDestPort;
-				TVectorMT<Byte> mSendBuffer;
-				TVectorMT<Byte> mRecvBuffer;
+				WSAOVERLAPPED mWriteOverlapped;
+				WSAOVERLAPPED mReadOverlapped;
+				TVectorMT<Byte> mSendBufferCache;
+				TVectorMT<Byte> mRecvBufferCache;
+				TVector<Char> mSendBuffer;
 			public:
 				CLinker(SOCKET s);
 				virtual ~CLinker();
@@ -73,20 +77,22 @@ namespace NSDevilX
 				{
 					return mDestPort;
 				}
-				HANDLE getWriteThreadEvent()const
+				WSAOVERLAPPED & getWriteOverlappedRef()
 				{
-					return mWriteThreadEvent;
+					return mWriteOverlapped;
+				}
+				WSAOVERLAPPED & getReadOverlappedRef()
+				{
+					return mReadOverlapped;
+				}
+				decltype(mRecvBufferCache) & getRecvBufferCache()
+				{
+					return mRecvBufferCache;
 				}
 				Void addSendData(ConstVoidPtr data,SizeT sizeInBytes);
-				decltype(mSendBuffer) & getSendBuffer()
-				{
-					return mSendBuffer;
-				}
 				Void addRecvData(ConstVoidPtr data,SizeT sizeInBytes);
-				decltype(mRecvBuffer) & getReceivedBuffer()
-				{
-					return mRecvBuffer;
-				}
+				Void send();
+				Void receive();
 				Void disconnect();
 			};
 		}

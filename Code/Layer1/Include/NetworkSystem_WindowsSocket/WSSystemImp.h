@@ -18,7 +18,9 @@ namespace NSDevilX
 					EMessage_Update
 				};
 			protected:
-				HANDLE mIOCompletePort;
+				HANDLE mIOCompletionPort;
+				HANDLE mWriteThread;
+				HANDLE mReadThread;
 				TResourcePtrMap<IServerImp*,CServerImp> mServers;
 				TResourcePtrMap<IClientImp*,CClientImp> mClients;
 				TResourcePtrMap<ILinkImp*,CLinkImp> mLinks;
@@ -27,9 +29,9 @@ namespace NSDevilX
 			public:
 				CSystemImp();
 				~CSystemImp();
-				HANDLE getIOCompletePort()const
+				HANDLE getIOCompletionPort()const
 				{
-					return mIOCompletePort;
+					return mIOCompletionPort;
 				}
 				CLinkImp * getLink(ILinkImp * link)const
 				{

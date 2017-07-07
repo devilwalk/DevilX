@@ -13,6 +13,8 @@ NSDevilX::NSNetworkSystem::NSWindowsSocket::CLinkImp::CLinkImp(ILinkImp * interf
 
 NSDevilX::NSNetworkSystem::NSWindowsSocket::CLinkImp::~CLinkImp()
 {
+	if(ISystemImp::getSingleton().isExit())
+		return;
 	CSystemImp::getSingleton().destroyLinker(getLinker());
 }
 
@@ -66,11 +68,11 @@ Void NSDevilX::NSNetworkSystem::NSWindowsSocket::CLinkImp::_sendData()
 
 Void NSDevilX::NSNetworkSystem::NSWindowsSocket::CLinkImp::_recvData()
 {
-	mLinker->getReceivedBuffer().lockWrite();
-	if(!mLinker->getReceivedBuffer().empty())
+	mLinker->getRecvBufferCache().lockWrite();
+	if(!mLinker->getRecvBufferCache().empty())
 	{
-		getInterfaceImp()->addReceivedBuffer(&mLinker->getReceivedBuffer()[0],mLinker->getReceivedBuffer().size());
-		mLinker->getReceivedBuffer().clear();
+		getInterfaceImp()->addReceivedBuffer(&mLinker->getRecvBufferCache()[0],mLinker->getRecvBufferCache().size());
+		mLinker->getRecvBufferCache().clear();
 	}
-	mLinker->getReceivedBuffer().unLockWrite();
+	mLinker->getRecvBufferCache().unLockWrite();
 }

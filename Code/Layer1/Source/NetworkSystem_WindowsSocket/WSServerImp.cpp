@@ -30,12 +30,7 @@ namespace NSDevilX
 							,NULL);
 						if(INVALID_SOCKET==s)
 						{
-							switch(WSAGetLastError())
-							{
-							case WSAEINVAL:
-								loop=false;
-								break;
-							}
+							loop=false;
 						}
 						else
 						{

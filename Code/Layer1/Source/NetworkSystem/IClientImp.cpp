@@ -10,6 +10,8 @@ NSDevilX::NSNetworkSystem::IClientImp::IClientImp(const String & serverIP,UInt16
 
 NSDevilX::NSNetworkSystem::IClientImp::~IClientImp()
 {
+	if(ISystemImp::getSingleton().isExit())
+		return;
 	ISystemImp::getSingleton().destroyLink(mLink);
 }
 

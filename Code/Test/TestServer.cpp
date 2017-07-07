@@ -80,7 +80,7 @@ int main()
 	gClient=NSNetworkSystem::getSystem()->createClient("127.0.0.1",gServer->getPort());
 	gClient->getLink()->setListener(&gLinkListener);
 	UInt32 number=0;
-	while(true)
+	while(number<10000)
 	{
 		String number_text=CStringConverter::toString(number);
 		if(gServerLink)
