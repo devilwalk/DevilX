@@ -1,0 +1,3 @@
+<Map include="Common.mapgrid" rowCount="64" columCount="64">
+  <Grids type="grass" startX="0" endX="63" startY="0" endY="63" />
+</Map>

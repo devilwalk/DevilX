@@ -1,22 +1,24 @@
 #pragma once
-#include "Terrain.h"
+#include "MatchTeam.h"
+#include "MatchMap.h"
 namespace NSDevilX
 {
 	namespace NSFightChess
 	{
-		class CScene
-			:public TBaseObject<CScene>
+		class CMatchScene
+			:public TBaseObject<CMatchScene>
 		{
 		protected:
 			NSRenderSystem::IScene * mRenderScene;
-			CTerrain * mTerrain;
+			CMatchMap * mMap;
 		public:
-			CScene();
-			~CScene();
+			CMatchScene();
+			~CMatchScene();
 			NSRenderSystem::IScene * getRenderScene()const
 			{
 				return mRenderScene;
 			}
+			Void loadMap(const CDataStream * dataStream);
 		};
 	}
 }

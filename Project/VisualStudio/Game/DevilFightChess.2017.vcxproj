@@ -193,7 +193,13 @@ copy $(ProjectDir)..\..\..\Code\Game\Resource\DevilFightChess\* $(OutDir)Resourc
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\BigWorld.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\FontManager.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\HumanPlayer.h" />
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchMap.h" />
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchMapGridMaterial.h" />
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchMapGridMaterialManager.h" />
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchPlayer.h" />
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchScene.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchServer.h" />
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchTeam.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MessageBox.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Player.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\PlayerManager.h" />
@@ -207,11 +213,10 @@ copy $(ProjectDir)..\..\..\Code\Game\Resource\DevilFightChess\* $(OutDir)Resourc
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Server.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\ServerManager.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\SinglePlayer.h" />
-    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Terrain.h" />
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchTerrain2D.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Buff.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Game.h" />
-    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Grid.h" />
-    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Scene.h" />
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchMapGrid.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\UIScript.h" />
     <ClInclude Include="..\..\..\Code\Game\Source\DevilFightChess\Precompiler.h" />
   </ItemGroup>
@@ -222,9 +227,12 @@ copy $(ProjectDir)..\..\..\Code\Game\Resource\DevilFightChess\* $(OutDir)Resourc
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\FontManager.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Game.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Geometry.cpp" />
-    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Grid.cpp" />
+    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchMap.cpp" />
+    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchMapGrid.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\LocalServer.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Login.cpp" />
+    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchMapGridMaterialManager.cpp" />
+    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchScene.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchServer.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MessageBox.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Precompiler.cpp">
@@ -234,14 +242,15 @@ copy $(ProjectDir)..\..\..\Code\Game\Resource\DevilFightChess\* $(OutDir)Resourc
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Register.cpp" />
-    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Scene.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\ServerManager.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\SinglePlayer.cpp" />
-    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Terrain.cpp" />
+    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchTerrain2D.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\UIScript.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\Code\Game\Resource\DevilFightChess\Basic.map" />
     <None Include="..\..\..\Code\Game\Resource\DevilFightChess\BigWorld.layout" />
+    <None Include="..\..\..\Code\Game\Resource\DevilFightChess\Common.mapgrid" />
     <None Include="..\..\..\Code\Game\Resource\DevilFightChess\LoginPage.layout" />
     <None Include="..\..\..\Code\Game\Resource\DevilFightChess\MessageBox.layout" />
     <None Include="..\..\..\Code\Game\Resource\DevilFightChess\RegisterPage.layout" />

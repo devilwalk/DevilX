@@ -18,22 +18,13 @@
     <ClInclude Include="..\..\..\Code\Game\Source\DevilFightChess\Precompiler.h">
       <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Scene.h">
-      <Filter>Include</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Actor.h">
       <Filter>Include</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Game.h">
       <Filter>Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Grid.h">
-      <Filter>Include</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Buff.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Terrain.h">
       <Filter>Include</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Module.h">
@@ -90,6 +81,30 @@
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Protocol.h">
       <Filter>Include</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchTeam.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchPlayer.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchScene.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchTerrain2D.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchMap.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchMapGrid.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchMapGridMaterial.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchMapGridMaterialManager.h">
+      <Filter>Include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\App.cpp">
@@ -98,19 +113,10 @@
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Precompiler.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Scene.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Actor.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Game.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Grid.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Terrain.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\LocalServer.cpp">
@@ -146,6 +152,21 @@
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchServer.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchScene.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchTerrain2D.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchMapGrid.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchMap.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchMapGridMaterialManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\Code\Game\Resource\DevilFightChess\LoginPage.layout">
@@ -158,6 +179,12 @@
       <Filter>Resource</Filter>
     </None>
     <None Include="..\..\..\Code\Game\Resource\DevilFightChess\BigWorld.layout">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="..\..\..\Code\Game\Resource\DevilFightChess\Basic.map">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="..\..\..\Code\Game\Resource\DevilFightChess\Common.mapgrid">
       <Filter>Resource</Filter>
     </None>
   </ItemGroup>

@@ -9,17 +9,10 @@ namespace NSDevilX
 			,public NSNetworkSystem::ILinkListener
 		{
 		public:
-			struct SConnectRequest
+			struct SConnectRequestAndResponse
 			{
 				const Byte mData[15];
-				SConnectRequest()
-					:mData({'D','e','v','i','l','F','i','g','h','t','C','h','e','s','s'})
-				{}
-			};
-			struct SConnectResponse
-			{
-				const Byte mData[15];
-				SConnectResponse()
+				SConnectRequestAndResponse()
 					:mData({'D','e','v','i','l','F','i','g','h','t','C','h','e','s','s'})
 				{}
 			};
