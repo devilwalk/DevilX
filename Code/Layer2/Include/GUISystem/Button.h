@@ -1,6 +1,7 @@
 #pragma once
 #include "Control.h"
 #include "StaticText.h"
+#include "GraphicWindowTextureUtility.h"
 namespace NSDevilX
 {
 	namespace NSGUISystem
@@ -20,7 +21,7 @@ namespace NSDevilX
 			};
 		protected:
 			CStaticText * mTextControl;
-			NSResourceSystem::IResource * mBackgroundResource;
+			CGraphicWindowTextureUtility * mBackground;
 			Bool mPressed;
 		public:
 			CButton(const String & name,CControl * parent);

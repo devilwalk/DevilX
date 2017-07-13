@@ -117,6 +117,9 @@
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\TextProperty.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\GraphicWindowTextureUtility.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\Precompiler.cpp">
@@ -177,6 +180,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\TextProperty.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\GraphicWindowTextureUtility.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

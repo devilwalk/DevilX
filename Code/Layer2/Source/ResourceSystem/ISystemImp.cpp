@@ -30,11 +30,11 @@ Void NSDevilX::NSResourceSystem::ISystemImp::shutdown()
 	DEVILX_DELETE(this);
 }
 
-IResource * NSDevilX::NSResourceSystem::ISystemImp::createResource(const String & name,const String & fileName)
+IResource * NSDevilX::NSResourceSystem::ISystemImp::createResource(const String & name,const String & filename)
 {
 	if(mResources.has(name))
 		return nullptr;
-	auto ret=DEVILX_NEW IResourceImp(name,fileName);
+	auto ret=DEVILX_NEW IResourceImp(name,filename);
 	mResources.add(name,ret);
 	return ret;
 }
@@ -47,6 +47,14 @@ IResource * NSDevilX::NSResourceSystem::ISystemImp::getResource(const String & n
 Void NSDevilX::NSResourceSystem::ISystemImp::destroyResource(IResource * res)
 {
 	return mResources.destroy(res->getName());
+}
+
+IResource * NSDevilX::NSResourceSystem::ISystemImp::createOrRetrieveResource(const String & name,const String & filename)
+{
+	auto ret=getResource(name);
+	if(!ret)
+		ret=createResource(name,filename);
+	return ret;
 }
 
 CImage * NSDevilX::NSResourceSystem::ISystemImp::getImage(ILoadedResource * resource)

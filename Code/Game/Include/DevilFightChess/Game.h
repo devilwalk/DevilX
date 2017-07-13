@@ -2,6 +2,7 @@
 #include "ServerManager.h"
 #include "FontManager.h"
 #include "Module.h"
+#include "MatchMapGridRenderMaterialManager.h"
 namespace NSDevilX
 {
 	namespace NSFightChess
@@ -13,6 +14,7 @@ namespace NSDevilX
 			NSRenderSystem::IViewport * mViewport;
 			CServerManager * mServerManager;
 			CFontManager * mFontManager;
+			CMatchMapGridRenderMaterialManager * mMatchMapGridRenderMaterialManager;
 			NSGUISystem::IScene * mGUIScene;
 			TSet<CModule*> mActiveModules;
 			TNamedResourcePtrMap<CModule> mModules;
@@ -26,6 +28,10 @@ namespace NSDevilX
 			CFontManager * getFontManager()const
 			{
 				return mFontManager;
+			}
+			CMatchMapGridRenderMaterialManager * getMatchMapGridRenderMaterialManager()const
+			{
+				return mMatchMapGridRenderMaterialManager;
 			}
 			NSGUISystem::IScene * getGUIScene()const
 			{

@@ -5,7 +5,7 @@ using namespace NSGUISystem;
 NSDevilX::NSGUISystem::CButton::CButton(const String & name,CControl * parent)
 	:CControl(name,parent)
 	,mTextControl(nullptr)
-	,mBackgroundResource(nullptr)
+	,mBackground(nullptr)
 	,mPressed(False)
 {
 	auto background=getGraphicScene()->createWindow(name+"/Background");
@@ -13,6 +13,7 @@ NSDevilX::NSGUISystem::CButton::CButton(const String & name,CControl * parent)
 	background->queryInterface_IElement()->setSize(CFloat2::sOne);
 	background->setColour(CFloatRGBA::sBlue);
 	_attachWindow(background);
+	mBackground=DEVILX_NEW CGraphicWindowTextureUtility(background);
 	mTextControl=DEVILX_NEW CStaticText(name+"/TextControl",this);
 	mTextControl->getLayer()->setSize(CFloat2::sOne);
 
@@ -24,17 +25,18 @@ NSDevilX::NSGUISystem::CButton::CButton(const String & name,CControl * parent)
 
 NSDevilX::NSGUISystem::CButton::~CButton()
 {
+	DEVILX_DELETE(mBackground);
 	DEVILX_DELETE(getTextControl());
 }
 
 Void NSDevilX::NSGUISystem::CButton::setBackground(NSResourceSystem::IResource * resource)
 {
-	mBackgroundResource=resource;
+	mBackground->setTexture(resource);
 }
 
 NSResourceSystem::IResource * NSDevilX::NSGUISystem::CButton::getBackground() const
 {
-	return mBackgroundResource;
+	return mBackground->getTextureResource();
 }
 
 Void NSDevilX::NSGUISystem::CButton::setPrepareFocus(Bool focus)

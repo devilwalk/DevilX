@@ -1,6 +1,7 @@
 #pragma once
 #include "StaticText.h"
 #include "Caret.h"
+#include "GraphicWindowTextureUtility.h"
 namespace NSDevilX
 {
 	namespace NSGUISystem
@@ -23,7 +24,7 @@ namespace NSDevilX
 		protected:
 			CStaticText * mTextControl;
 			CCaret * mCaret;
-			NSResourceSystem::IResource * mBackgroundResource;
+			CGraphicWindowTextureUtility * mBackground;
 			UInt32 mCaretPosition;
 			Bool mPrepareFocus;
 		public:

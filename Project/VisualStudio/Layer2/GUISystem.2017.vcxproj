@@ -24,6 +24,7 @@
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\Control.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\EditBox.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\Event.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\GraphicWindowTextureUtility.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\IButtonImp.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\IControlImp.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\IEditBoxImp.h" />
@@ -58,6 +59,7 @@
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\Caret.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\Control.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\EditBox.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\GraphicWindowTextureUtility.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\IButtonImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\IControlImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\IEditBoxImp.cpp" />

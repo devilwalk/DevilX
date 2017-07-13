@@ -6,7 +6,7 @@ NSDevilX::NSGUISystem::CEditBox::CEditBox(const String & name,CControl * parent)
 	:CControl(name,parent)
 	,mTextControl(nullptr)
 	,mCaret(nullptr)
-	,mBackgroundResource(nullptr)
+	,mBackground(nullptr)
 	,mCaretPosition(0)
 	,mPrepareFocus(False)
 {
@@ -15,6 +15,7 @@ NSDevilX::NSGUISystem::CEditBox::CEditBox(const String & name,CControl * parent)
 	background->queryInterface_IElement()->setSize(CFloat2::sOne);
 	background->setColour(CFloatRGBA::sWhite);
 	_attachWindow(background);
+	mBackground=DEVILX_NEW CGraphicWindowTextureUtility(background);
 	mTextControl=DEVILX_NEW CStaticText(name+"/TextControl",this);
 	getTextControl()->getLayer()->setPosition(CFloat2::sZero);
 	mTextControl->getTextProperty()->setColour(CFloatRGBA::sBlack);
@@ -29,18 +30,19 @@ NSDevilX::NSGUISystem::CEditBox::CEditBox(const String & name,CControl * parent)
 
 NSDevilX::NSGUISystem::CEditBox::~CEditBox()
 {
+	DEVILX_DELETE(mBackground);
 	DEVILX_DELETE(getTextControl());
 	DEVILX_DELETE(mCaret);
 }
 
 Void NSDevilX::NSGUISystem::CEditBox::setBackground(NSResourceSystem::IResource * resource)
 {
-	mBackgroundResource=resource;
+	mBackground->setTexture(resource);
 }
 
 NSResourceSystem::IResource * NSDevilX::NSGUISystem::CEditBox::getBackground() const
 {
-	return mBackgroundResource;
+	return mBackground->getTextureResource();
 }
 
 Void NSDevilX::NSGUISystem::CEditBox::setPrepareFocus(Bool focus)

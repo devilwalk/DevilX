@@ -194,8 +194,10 @@ copy $(ProjectDir)..\..\..\Code\Game\Resource\DevilFightChess\* $(OutDir)Resourc
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\FontManager.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\HumanPlayer.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchMap.h" />
-    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchMapGridMaterial.h" />
-    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchMapGridMaterialManager.h" />
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchMapGridRenderMaterial.h" />
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchMapGridRenderMaterial2D.h" />
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchMapGridRenderMaterial3D.h" />
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchMapGridRenderMaterialManager.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchPlayer.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchScene.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchServer.h" />
@@ -231,7 +233,8 @@ copy $(ProjectDir)..\..\..\Code\Game\Resource\DevilFightChess\* $(OutDir)Resourc
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchMapGrid.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\LocalServer.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Login.cpp" />
-    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchMapGridMaterialManager.cpp" />
+    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchMapGridRenderMaterial.cpp" />
+    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchMapGridRenderMaterialManager.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchScene.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchServer.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MessageBox.cpp" />

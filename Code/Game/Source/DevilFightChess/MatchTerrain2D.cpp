@@ -43,9 +43,24 @@ NSDevilX::NSFightChess::CMatchTerrain2D::CMatchTerrain2D(CMatchMap * map)
 	mGeometry->getVertexBuffer()->setPositions(positions);
 	mGeometry->getVertexBuffer()->setTextureCoords(uvs);
 	mRenderEntity=getMap()->getScene()->getRenderScene()->createEntity("MatchTerrain2D");
+	auto renderable=mRenderEntity->createRenderable("0");
+	renderable->setGeometry(mGeometry);
+	renderable->queryInterface_IGeometryUsage()->setVertexCount(mGeometry->getVertexBuffer()->getCount());
+	renderable->queryInterface_IGeometryUsage()->setIndexCount(mGeometry->getIndexBuffer()->getCount());
+	mRenderables[CApp::getSingleton().getGame()->getMatchMapGridRenderMaterialManager()->getDefaultMaterial()->getMaterial2D()].push_back(renderable);
 	mRenderVisibleArea=getMap()->getScene()->getRenderScene()->createVisibleArea("MatchTerrain2D");
 	mRenderVisibleArea->attachObject(mRenderEntity->queryInterface_ISceneElement());
 	mRenderVisibleArea->setBoundingBox(DirectX::BoundingBox(CFloat3::sZero,CFloat3(10000.0f)));
+
+	for(UInt16 row=0;row<getMap()->getRowCount();++row)
+	{
+		for(UInt16 colume=0;colume<getMap()->getColumeCount();++colume)
+		{
+			auto grid=getMap()->getGrid(row,colume);
+			grid->addListener(this,CMatchMapGrid::EMessage_BeginRenderMaterialChange);
+			grid->addListener(this,CMatchMapGrid::EMessage_EndRenderMaterialChange);
+		}
+	}
 }
 
 NSDevilX::NSFightChess::CMatchTerrain2D::~CMatchTerrain2D()
@@ -56,4 +71,15 @@ NSDevilX::NSFightChess::CMatchTerrain2D::~CMatchTerrain2D()
 	NSRenderSystem::getSystem()->queryInterface_IResourceManager()->destroyGeometry(mGeometry);
 	getMap()->getScene()->getRenderScene()->destroyEntity(mRenderEntity);
 	getMap()->getScene()->getRenderScene()->destroyVisibleArea(mRenderVisibleArea);
+}
+
+Void NSDevilX::NSFightChess::CMatchTerrain2D::onMessage(CMatchMapGrid * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
+{
+	switch(message)
+	{
+	case CMatchMapGrid::EMessage_BeginRenderMaterialChange:
+		break;
+	case CMatchMapGrid::EMessage_EndRenderMaterialChange:
+		break;
+	}
 }

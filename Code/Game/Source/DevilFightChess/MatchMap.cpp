@@ -11,7 +11,8 @@ NSDevilX::NSFightChess::CMatchMap::CMatchMap(UInt16 row,UInt16 column,CMatchScen
 		mGrids[colume_index].reserve(row);
 		for(UInt16 row_index;row_index<row;++row_index)
 		{
-			mGrids[colume_index].push_back(DEVILX_NEW CMatchMapGrid(row_index,colume_index));
+			auto grid=DEVILX_NEW CMatchMapGrid(row_index,colume_index);
+			mGrids[colume_index].push_back(grid);
 		}
 	}
 }

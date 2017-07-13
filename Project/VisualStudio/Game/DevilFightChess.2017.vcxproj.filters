@@ -99,10 +99,16 @@
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchMapGrid.h">
       <Filter>Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchMapGridMaterial.h">
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchMapGridRenderMaterial.h">
       <Filter>Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchMapGridMaterialManager.h">
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchMapGridRenderMaterial2D.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchMapGridRenderMaterial3D.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchMapGridRenderMaterialManager.h">
       <Filter>Include</Filter>
     </ClInclude>
   </ItemGroup>
@@ -164,7 +170,10 @@
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchMap.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchMapGridMaterialManager.cpp">
+    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchMapGridRenderMaterial.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchMapGridRenderMaterialManager.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

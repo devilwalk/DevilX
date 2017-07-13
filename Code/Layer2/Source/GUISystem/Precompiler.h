@@ -8,6 +8,7 @@
 #include "Control.h"
 #include "EditBox.h"
 #include "Event.h"
+#include "GraphicWindowTextureUtility.h"
 #include "IButtonImp.h"
 #include "IControlImp.h"
 #include "IEditBoxImp.h"

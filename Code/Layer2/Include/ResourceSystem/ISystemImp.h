@@ -29,9 +29,10 @@ namespace NSDevilX
 			// Í¨¹ý ISystem ¼Ì³Ð
 			virtual Void update() override;
 			virtual Void shutdown() override;
-			virtual IResource * createResource(const String & name,const String & fileName) override;
+			virtual IResource * createResource(const String & name,const String & filename) override;
 			virtual IResource * getResource(const String & name) const override;
 			virtual Void destroyResource(IResource * res) override;
+			virtual IResource * createOrRetrieveResource(const String & name,const String & filename) override;
 			virtual CImage * getImage(ILoadedResource * resource) override;
 			virtual CFontManager::SChar getChar(ILoadedResource * resource,const CUTF8Char & c) override;
 			virtual NSRenderSystem::ITexture * getRenderTexture(ILoadedResource * resource) override;
