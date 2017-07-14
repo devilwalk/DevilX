@@ -46,7 +46,7 @@
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonMemoryTracker.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonMessageMode.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonModule.h" />
-    <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonNames.h" />
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonUtility.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonNode.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonOctree.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonPlane.h" />

@@ -27,6 +27,7 @@
 #include "MatchServer.h"
 #include "MatchTeam.h"
 #include "MatchTerrain2D.h"
+#include "MatchView.h"
 #include "MessageBox.h"
 #include "Module.h"
 #include "Player.h"

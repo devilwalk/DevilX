@@ -202,6 +202,7 @@ copy $(ProjectDir)..\..\..\Code\Game\Resource\DevilFightChess\* $(OutDir)Resourc
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchScene.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchServer.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchTeam.h" />
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchView.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MessageBox.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Player.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\PlayerManager.h" />
@@ -237,6 +238,7 @@ copy $(ProjectDir)..\..\..\Code\Game\Resource\DevilFightChess\* $(OutDir)Resourc
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchMapGridRenderMaterialManager.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchScene.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchServer.cpp" />
+    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchView.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MessageBox.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Precompiler.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

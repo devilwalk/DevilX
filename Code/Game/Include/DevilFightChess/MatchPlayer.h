@@ -8,7 +8,6 @@ namespace NSDevilX
 		{
 		protected:
 		public:
-
 		};
 	}
 }
