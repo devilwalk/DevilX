@@ -29,21 +29,23 @@ namespace NSDevilX
 			protected:
 				TVector<SMouseFrameDataImp*> mFrameDatas;
 				TResourcePtrVector<SMouseFrameDataImp> mFrameDatasPool;
+				DIDEVICEOBJECTDATA mLastData;
 			public:
 				CMouse(IVirtualDeviceImp * device);
 				virtual ~CMouse();
 			protected:
 				SMouseFrameDataImp * _allocFrameData()
 				{
+					SMouseFrameDataImp * ret=nullptr;
 					if(mFrameDatasPool.empty())
-						return DEVILX_NEW SMouseFrameDataImp();
+						ret=DEVILX_NEW SMouseFrameDataImp();
 					else
 					{
-						auto ret=mFrameDatasPool.back();
+						ret=mFrameDatasPool.back();
 						mFrameDatas.push_back(ret);
 						mFrameDatasPool.pop_back();
-						return ret;
 					}
+					return ret;
 				}
 				virtual Void _beginUpdateData() override;
 				virtual Void _processData(const DIDEVICEOBJECTDATA & data) override;
@@ -55,6 +57,7 @@ namespace NSDevilX
 			protected:
 				TVector<SKeyboardFrameDataImp*> mFrameDatas;
 				TResourcePtrVector<SKeyboardFrameDataImp> mFrameDatasPool;
+				std::array<DIDEVICEOBJECTDATA,256> mLastData;
 			public:
 				CKeyboard(IVirtualDeviceImp * device);
 				virtual ~CKeyboard();

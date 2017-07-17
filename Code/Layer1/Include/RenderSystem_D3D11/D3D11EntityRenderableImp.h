@@ -1,6 +1,6 @@
 #pragma once
 #include "D3D11BaseObject.h"
-#include "D3D11Geometry.h"
+#include "D3D11GeometryImp.h"
 #include "D3D11EntityMaterial.h"
 namespace NSDevilX
 {
@@ -18,7 +18,7 @@ namespace NSDevilX
 			{
 			protected:
 				CEntityImp * const mEntity;
-				CGeometry * mGeometry;
+				CGeometryImp * mGeometry;
 				CEntityMaterial * mMaterial;
 				D3D11_PRIMITIVE_TOPOLOGY mPrimitiveTopology;
 			public:

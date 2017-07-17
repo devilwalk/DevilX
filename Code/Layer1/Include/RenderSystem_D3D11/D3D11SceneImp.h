@@ -10,7 +10,7 @@ namespace NSDevilX
 	{
 		namespace NSD3D11
 		{
-			class CScene
+			class CSceneImp
 				:public TInterfaceObject<ISceneImp>
 				,public CConstantBufferContainer
 			{
@@ -19,8 +19,8 @@ namespace NSDevilX
 				TResourcePtrMap<ICameraImp*const,CCamera> mCameras;
 				TResourcePtrMap<ILightImp*const,CLight> mLights;
 			public:
-				CScene(ISceneImp * interfaceImp);
-				~CScene();
+				CSceneImp(ISceneImp * interfaceImp);
+				~CSceneImp();
 				CEntityImp * getRenderableObject(IEntityImp * interfaceImp)const
 				{
 					return mEntities.get(interfaceImp);

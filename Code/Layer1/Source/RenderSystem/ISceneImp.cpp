@@ -154,6 +154,31 @@ Void NSDevilX::NSRenderSystem::ISceneImp::destroySky(ISky * sky)
 	notify(EMessage_EndSkyDestroy);
 }
 
+IQueryObject * NSDevilX::NSRenderSystem::ISceneImp::createQueryObject(const String & name)
+{
+	if(mQueryObjects.has(name))
+		return nullptr;
+	notify(EMessage_BeginQueryObjectCreate);
+	auto * ret=DEVILX_NEW IQueryObjectImp(name,this);
+	mQueryObjects[name]=ret;
+	notify(EMessage_EndQueryObjectCreate,ret);
+	return ret;
+}
+
+IQueryObject * NSDevilX::NSRenderSystem::ISceneImp::getQueryObject(const String & name) const
+{
+	return mQueryObjects.get(name);
+}
+
+Void NSDevilX::NSRenderSystem::ISceneImp::destroyQueryObject(IQueryObject * obj)
+{
+	if(!mQueryObjects.has(obj->queryInterface_ISceneElement()->getName()))
+		return;
+	notify(EMessage_BeginQueryObjectDestroy,static_cast<IQueryObjectImp*>(obj));
+	mQueryObjects.destroy(obj->queryInterface_ISceneElement()->getName());
+	notify(EMessage_EndQueryObjectDestroy);
+}
+
 Void NSDevilX::NSRenderSystem::ISceneImp::setAmbientColour(const CColour & colour)
 {
 	if(colour!=getAmbientColour())

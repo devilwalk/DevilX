@@ -19,6 +19,7 @@ NSDevilX::NSFightChess::CMatchView::CMatchView(CMatchScene * scene)
 	mRenderViewport2D->setWidth(0.6f);
 	mRenderViewport2D->setTop(0.2f);
 	mRenderViewport2D->setHeight(0.6f);
+	mRenderViewport2D->setClearColour(CFloatRGBA::sZero);
 }
 
 NSDevilX::NSFightChess::CMatchView::~CMatchView()

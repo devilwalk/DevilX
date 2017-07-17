@@ -93,6 +93,7 @@ namespace NSDevilX
 		,public TBaseObject<CFloatRGBA>
 	{
 	public:
+		static const CFloatRGBA sZero;
 		static const CFloatRGBA sBlack;
 		static const CFloatRGBA sWhite;
 		static const CFloatRGBA sRed;

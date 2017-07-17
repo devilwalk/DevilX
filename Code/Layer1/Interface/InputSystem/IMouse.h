@@ -14,13 +14,15 @@ namespace NSDevilX
 			virtual Int32 getAxisYOffset()const=0;
 			virtual Int32 getWheelOffset()const=0;
 			virtual IEnum::EButtonState getButtonState(IEnum::EMouseButtonType type)const=0;
+			virtual IEnum::EMouseEventType getEvent()const=0;
 		};
+		class IMouse;
 		class IMouseListener
 		{
 		protected:
 			virtual ~IMouseListener(){}
 		public:
-			virtual Void addFrameData(IMouseFrameData * data)=0;
+			virtual Void addFrameData(IMouse * mouse,IMouseFrameData * data)=0;
 		};
 		class IMouse
 		{

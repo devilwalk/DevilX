@@ -30,6 +30,8 @@
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IOverlayElementImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IEntityRenderableImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IEntityImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IQueryImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IQueryObjectImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IRenderableSurfaceImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IRenderTargetImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IResourceManagerImp.h" />
@@ -58,6 +60,8 @@
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderLight.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderOverlay.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderOverlayElement.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderQuery.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderQueryObject.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderResourceManager.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderScene.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderSceneElement.h" />
@@ -84,6 +88,8 @@
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IOverlayElementImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IEntityRenderableImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IEntityImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IQueryImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IQueryObjectImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IRenderableSurfaceImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IRenderTargetImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IResourceManagerImp.cpp" />

@@ -4,6 +4,7 @@
 #include "IEntityImp.h"
 #include "IVisibleAreaImp.h"
 #include "ISkyImp.h"
+#include "IQueryObjectImp.h"
 #include "SceneManager.h"
 namespace NSDevilX
 {
@@ -37,6 +38,10 @@ namespace NSDevilX
 				EMessage_EndSkyCreate,
 				EMessage_BeginSkyDestroy,
 				EMessage_EndSkyDestroy,
+				EMessage_BeginQueryObjectCreate,
+				EMessage_EndQueryObjectCreate,
+				EMessage_BeginQueryObjectDestroy,
+				EMessage_EndQueryObjectDestroy,
 				EMessage_BeginAmbientColourChange,
 				EMessage_EndAmbientColourChange
 			};
@@ -49,6 +54,7 @@ namespace NSDevilX
 			TNamedResourcePtrMap<IEntityImp> mEntities;
 			TNamedResourcePtrMap<IVisibleAreaImp> mVisibleAreas;
 			TNamedResourcePtrMap<ISkyImp> mSkys;
+			TNamedResourcePtrMap<IQueryObjectImp> mQueryObjects;
 		public:
 			ISceneImp(const String & name,IEnum::ESceneManagerAlgorithm algorithm);
 			~ISceneImp();
@@ -82,6 +88,9 @@ namespace NSDevilX
 			virtual ISky * createSky(const String & name) override;
 			virtual ISky * getSky(const String & name) const override;
 			virtual Void destroySky(ISky * sky) override;
+			virtual IQueryObject * createQueryObject(const String & name) override;
+			virtual IQueryObject * getQueryObject(const String & name) const override;
+			virtual Void destroyQueryObject(IQueryObject * obj) override;
 			virtual Void setAmbientColour(const CColour & colour) override;
 			virtual const CColour & getAmbientColour() const override;
 		};

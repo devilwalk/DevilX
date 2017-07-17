@@ -1,6 +1,7 @@
 #pragma once
 #include "IRenderCamera.h"
 #include "IRenderOverlay.h"
+#include "IRenderQuery.h"
 namespace NSDevilX
 {
 	namespace NSRenderSystem
@@ -28,6 +29,9 @@ namespace NSDevilX
 			virtual IEnum::ERenderTechnique getTechnique()const=0;
 			virtual Void setClearColour(const CColour & colour)=0;
 			virtual const CColour & getClearColour()const=0;
+			virtual IQuery * createQuery(const String & name)=0;
+			virtual IQuery * getQuery(const String & name)const=0;
+			virtual Void destroyQuery(IQuery * query)=0;
 		};
 	}
 }

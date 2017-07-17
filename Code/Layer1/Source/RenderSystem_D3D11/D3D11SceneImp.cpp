@@ -3,7 +3,7 @@ using namespace NSDevilX;
 using namespace NSRenderSystem;
 using namespace NSD3D11;
 
-NSDevilX::NSRenderSystem::NSD3D11::CScene::CScene(ISceneImp * interfaceImp)
+NSDevilX::NSRenderSystem::NSD3D11::CSceneImp::CSceneImp(ISceneImp * interfaceImp)
 	:TInterfaceObject<ISceneImp>(interfaceImp)
 	,CConstantBufferContainer("cbScene")
 {
@@ -18,11 +18,11 @@ NSDevilX::NSRenderSystem::NSD3D11::CScene::CScene(ISceneImp * interfaceImp)
 	getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISceneImp>*>(this),ISceneImp::EMessage_EndAmbientColourChange);
 }
 
-NSDevilX::NSRenderSystem::NSD3D11::CScene::~CScene()
+NSDevilX::NSRenderSystem::NSD3D11::CSceneImp::~CSceneImp()
 {
 }
 
-Void NSDevilX::NSRenderSystem::NSD3D11::CScene::onMessage(ISceneImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
+Void NSDevilX::NSRenderSystem::NSD3D11::CSceneImp::onMessage(ISceneImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
 {
 	switch(message)
 	{
@@ -59,7 +59,7 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CScene::onMessage(ISceneImp * notifier,U
 	}
 }
 
-Void NSDevilX::NSRenderSystem::NSD3D11::CScene::_updateConstantBuffer(Byte * buffer)
+Void NSDevilX::NSRenderSystem::NSD3D11::CSceneImp::_updateConstantBuffer(Byte * buffer)
 {
 	auto offset=mConstantBuffer->getDescription()->getConstantDesc("gAmbientColour").StartOffset;
 	memcpy(&buffer[offset],&getInterfaceImp()->getAmbientColour(),sizeof(CFloat3));

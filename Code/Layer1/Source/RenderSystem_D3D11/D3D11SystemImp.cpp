@@ -445,7 +445,7 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::onMessage(ISystemImp * notif
 	break;
 	case ISystemImp::EMessage_EndSceneCreate:
 	{
-		auto * scene=DEVILX_NEW CScene(static_cast<ISceneImp*>(data));
+		auto * scene=DEVILX_NEW CSceneImp(static_cast<ISceneImp*>(data));
 		mScenes[static_cast<ISceneImp*>(data)]=scene;
 	}
 	break;
@@ -474,7 +474,7 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::onMessage(IResourceManagerIm
 	switch(message)
 	{
 	case IResourceManagerImp::EMessage_EndGeometryCreate:
-		mGeometrys[static_cast<IGeometryImp*>(data)]=DEVILX_NEW CGeometry(static_cast<IGeometryImp*>(data));
+		mGeometrys[static_cast<IGeometryImp*>(data)]=DEVILX_NEW CGeometryImp(static_cast<IGeometryImp*>(data));
 		break;
 	case IResourceManagerImp::EMessage_BeginGeometryDestroy:
 		mGeometrys.destroy(static_cast<IGeometryImp*>(data));

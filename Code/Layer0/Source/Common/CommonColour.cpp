@@ -54,7 +54,7 @@ Float NSDevilX::CFloatRGB::a() const
 {
 	return 1.0f;
 }
-
+const NSDevilX::CFloatRGBA NSDevilX::CFloatRGBA::sZero(CFloat4::sZero);
 const NSDevilX::CFloatRGBA NSDevilX::CFloatRGBA::sBlack(0.0f,0.0f,0.0f,1.0f);
 const NSDevilX::CFloatRGBA NSDevilX::CFloatRGBA::sWhite(1.0f,1.0f,1.0f,1.0f);
 const NSDevilX::CFloatRGBA NSDevilX::CFloatRGBA::sRed(1.0f,0.0f,0.0f,1.0f);

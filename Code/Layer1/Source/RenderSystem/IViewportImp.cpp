@@ -170,6 +170,31 @@ const CColour & NSDevilX::NSRenderSystem::IViewportImp::getClearColour() const
 	return mClearColour;
 }
 
+IQuery * NSDevilX::NSRenderSystem::IViewportImp::createQuery(const String & name)
+{
+	if(mQuerys.has(name))
+		return nullptr;
+	notify(EMessage_BeginQueryCreate);
+	auto ret=DEVILX_NEW IQueryImp(name,this);
+	mQuerys.add(name,ret);
+	notify(EMessage_EndQueryCreate,ret);
+	return ret;
+}
+
+IQuery * NSDevilX::NSRenderSystem::IViewportImp::getQuery(const String & name) const
+{
+	return mQuerys.get(name);
+}
+
+Void NSDevilX::NSRenderSystem::IViewportImp::destroyQuery(IQuery * query)
+{
+	if(!mQuerys.has(query->getName()))
+		return;
+	notify(EMessage_BeginQueryDestroy,static_cast<IQueryImp*>(query));
+	mQuerys.destroy(query->getName());
+	notify(EMessage_EndQueryDestroy);
+}
+
 IOverlayElement * NSDevilX::NSRenderSystem::IViewportImp::createElement(const String & name)
 {
 	if(mOverlayElements.has(name))

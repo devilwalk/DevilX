@@ -198,6 +198,7 @@ copy $(ProjectDir)..\..\..\Code\Game\Resource\DevilFightChess\* $(OutDir)Resourc
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchMapGridRenderMaterial2D.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchMapGridRenderMaterial3D.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchMapGridRenderMaterialManager.h" />
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchOperation.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchPlayer.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchScene.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchServer.h" />
@@ -236,6 +237,7 @@ copy $(ProjectDir)..\..\..\Code\Game\Resource\DevilFightChess\* $(OutDir)Resourc
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Login.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchMapGridRenderMaterial.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchMapGridRenderMaterialManager.cpp" />
+    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchOperation.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchScene.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchServer.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchView.cpp" />

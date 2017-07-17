@@ -65,7 +65,9 @@ Void NSDevilX::NSInputSystem::NSDirectX::CVirtualDevice::onMessage(IVirtualDevic
 
 NSDevilX::NSInputSystem::NSDirectX::CMouse::CMouse(IVirtualDeviceImp * device)
 	:CVirtualDevice(device)
-{}
+{
+	SecureZeroMemory(&mLastData,sizeof(mLastData));
+}
 
 NSDevilX::NSInputSystem::NSDirectX::CMouse::~CMouse()
 {}
@@ -78,15 +80,33 @@ Void NSDevilX::NSInputSystem::NSDirectX::CMouse::_beginUpdateData()
 
 Void NSDevilX::NSInputSystem::NSDirectX::CMouse::_processData(const DIDEVICEOBJECTDATA & data)
 {
+	switch(data.dwOfs)
+	{
+	case DIMOFS_BUTTON0:
+	case DIMOFS_BUTTON1:
+	case DIMOFS_BUTTON2:
+		if(data.dwData==mLastData.dwData)
+			return;
+		break;
+	}
 	auto frame_data=_allocFrameData();
 	switch(data.dwOfs)
 	{
 	case DIMOFS_X:frame_data->mType=SMouseFrameDataImp::EType_AxisOffsetX;frame_data->mValue=data.dwData;break;
 	case DIMOFS_Y:frame_data->mType=SMouseFrameDataImp::EType_AxisOffsetY;frame_data->mValue=data.dwData;break;
 	case DIMOFS_Z:frame_data->mType=SMouseFrameDataImp::EType_AxisOffsetZ;frame_data->mValue=data.dwData;break;
-	case DIMOFS_BUTTON0:frame_data->mType=SMouseFrameDataImp::EType_ButtonState_Left;frame_data->mValue=(data.dwData&0x80)?IEnum::EButtonState_Pressed:IEnum::EButtonState_Released;break;
-	case DIMOFS_BUTTON1:frame_data->mType=SMouseFrameDataImp::EType_ButtonState_Right;frame_data->mValue=(data.dwData&0x80)?IEnum::EButtonState_Pressed:IEnum::EButtonState_Released;break;
-	case DIMOFS_BUTTON2:frame_data->mType=SMouseFrameDataImp::EType_ButtonState_Middle;frame_data->mValue=(data.dwData&0x80)?IEnum::EButtonState_Pressed:IEnum::EButtonState_Released;break;
+	case DIMOFS_BUTTON0:
+		frame_data->mType=SMouseFrameDataImp::EType_ButtonState_Left;
+		frame_data->mValue=(data.dwData&0x80)?IEnum::EButtonState_Pressed:IEnum::EButtonState_Released;
+		break;
+	case DIMOFS_BUTTON1:
+		frame_data->mType=SMouseFrameDataImp::EType_ButtonState_Right;
+		frame_data->mValue=(data.dwData&0x80)?IEnum::EButtonState_Pressed:IEnum::EButtonState_Released;
+		break;
+	case DIMOFS_BUTTON2:
+		frame_data->mType=SMouseFrameDataImp::EType_ButtonState_Middle;
+		frame_data->mValue=(data.dwData&0x80)?IEnum::EButtonState_Pressed:IEnum::EButtonState_Released;
+		break;
 	case DIMOFS_BUTTON3:break;
 	case DIMOFS_BUTTON4:break;
 	case DIMOFS_BUTTON5:break;
@@ -94,11 +114,14 @@ Void NSDevilX::NSInputSystem::NSDirectX::CMouse::_processData(const DIDEVICEOBJE
 	case DIMOFS_BUTTON7:break;
 	}
 	static_cast<IMouseImp*>(mInterfaceImp)->addFrameData(frame_data);
+	mLastData=data;
 }
 
 NSDevilX::NSInputSystem::NSDirectX::CKeyboard::CKeyboard(IVirtualDeviceImp * device)
 	:CVirtualDevice(device)
-{}
+{
+	SecureZeroMemory(&mLastData[0],sizeof(mLastData[0])*mLastData.size());
+}
 
 NSDevilX::NSInputSystem::NSDirectX::CKeyboard::~CKeyboard()
 {}
@@ -111,8 +134,11 @@ Void NSDevilX::NSInputSystem::NSDirectX::CKeyboard::_beginUpdateData()
 
 Void NSDevilX::NSInputSystem::NSDirectX::CKeyboard::_processData(const DIDEVICEOBJECTDATA & data)
 {
+	if(data.dwData==mLastData[data.dwOfs].dwData)
+		return;
 	auto frame_data=_allocFrameData();
 	frame_data->mKey=*reinterpret_cast<const IEnum::EKeyType*>(&data.dwOfs);
 	frame_data->mState=(data.dwData&0x80)?IEnum::EButtonState_Pressed:IEnum::EButtonState_Released;
 	static_cast<IKeyboardImp*>(mInterfaceImp)->addFrameData(frame_data);
+	mLastData[data.dwOfs]=data;
 }

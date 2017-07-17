@@ -1,5 +1,6 @@
 #pragma once
 #include "IOverlayElementImp.h"
+#include "IQueryImp.h"
 namespace NSDevilX
 {
 	namespace NSRenderSystem
@@ -30,6 +31,10 @@ namespace NSDevilX
 				EMessage_EndTechniqueChange,
 				EMessage_BeginClearColourChange,
 				EMessage_EndClearColourChange,
+				EMessage_BeginQueryCreate,
+				EMessage_EndQueryCreate,
+				EMessage_BeginQueryDestroy,
+				EMessage_EndQueryDestroy,
 				EMessage_BeginOverlayElementCreate,
 				EMessage_EndOverlayElementCreate,
 				EMessage_BeginOverlayElementDestroy,
@@ -44,6 +49,7 @@ namespace NSDevilX
 			Int32 mTechnique;
 			CFloatRGBA mClearColour;
 			TNamedResourcePtrMap<IOverlayElementImp> mOverlayElements;
+			TNamedResourcePtrMap<IQueryImp> mQuerys;
 		public:
 			IViewportImp(const String & name,IRenderTargetImp * rt);
 			~IViewportImp();
@@ -71,6 +77,9 @@ namespace NSDevilX
 			virtual IEnum::ERenderTechnique getTechnique() const override;
 			virtual Void setClearColour(const CColour & colour) override;
 			virtual const CColour & getClearColour() const override;
+			virtual IQuery * createQuery(const String & name) override;
+			virtual IQuery * getQuery(const String & name) const override;
+			virtual Void destroyQuery(IQuery * query) override;
 
 			// Í¨¹ý IOverlay ¼Ì³Ð
 			virtual IOverlayElement * createElement(const String & name) override;

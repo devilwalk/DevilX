@@ -13,6 +13,7 @@ namespace NSDevilX
 			};
 			enum EButtonState
 			{
+				EButtonState_Unknown,
 				EButtonState_Released,
 				EButtonState_Pressed
 			};
@@ -206,11 +207,6 @@ namespace NSDevilX
 				EMouseEventType_Move,
 				EMouseEventType_ButtonDown,
 				EMouseEventType_ButtonUp
-			};
-			enum EKeyboardEventType
-			{
-				EKeyboardEventType_KeyDown,
-				EKeyboardEventType_KeyUp
 			};
 		};
 	}

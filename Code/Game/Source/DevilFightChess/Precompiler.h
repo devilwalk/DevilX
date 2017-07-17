@@ -1,5 +1,6 @@
 #pragma once
 #include "Common.h"
+#include "InputSystem/IInputSystemInterface.h"
 #include "NetworkSystem/INetworkSystemInterface.h"
 #include "RenderSystem/IRenderSystemInterface.h"
 #include "GUISystem/IGUISystemInterface.h"
@@ -22,6 +23,7 @@
 #include "MatchMapGridRenderMaterial2D.h"
 #include "MatchMapGridRenderMaterial3D.h"
 #include "MatchMapGridRenderMaterialManager.h"
+#include "MatchOperation.h"
 #include "MatchPlayer.h"
 #include "MatchScene.h"
 #include "MatchServer.h"

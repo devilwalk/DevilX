@@ -8,16 +8,16 @@ namespace NSDevilX
 	{
 		namespace NSD3D11
 		{
-			class CGeometry
+			class CGeometryImp
 				:public TInterfaceObject<IGeometryImp>
-				,public TBaseObject<CGeometry>
+				,public TBaseObject<CGeometryImp>
 			{
 			protected:
 				CVertexBufferImp * mVertexBuffer;
 				CIndexBufferImp * mIndexBuffer;
 			public:
-				CGeometry(IGeometryImp * interfaceImp);
-				~CGeometry();
+				CGeometryImp(IGeometryImp * interfaceImp);
+				~CGeometryImp();
 				decltype(mVertexBuffer) const & getVertexBuffer()const
 				{
 					return mVertexBuffer;

@@ -27,6 +27,7 @@ namespace NSDevilX
 			virtual Int32 getAxisYOffset() const override;
 			virtual Int32 getWheelOffset() const override;
 			virtual IEnum::EButtonState getButtonState(IEnum::EMouseButtonType type) const override;
+			virtual IEnum::EMouseEventType getEvent() const override;
 		};
 		class IMouseImp
 			:public IMouse

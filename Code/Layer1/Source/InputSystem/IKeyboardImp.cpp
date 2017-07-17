@@ -3,7 +3,7 @@ using namespace NSDevilX;
 using namespace NSInputSystem;
 
 NSDevilX::NSInputSystem::SKeyboardFrameDataImp::SKeyboardFrameDataImp()
-	:mState(IEnum::EButtonState_Released)
+	:mState(IEnum::EButtonState_Unknown)
 {
 }
 
@@ -44,7 +44,7 @@ Void NSDevilX::NSInputSystem::IKeyboardImp::update()
 	{
 		for(auto data:mFrameDatas)
 		{
-			getListener()->addFrameData(data);
+			getListener()->addFrameData(this,data);
 		}
 	}
 }

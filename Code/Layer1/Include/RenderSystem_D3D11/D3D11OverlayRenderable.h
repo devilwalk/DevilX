@@ -1,5 +1,5 @@
 #pragma once
-#include "D3D11Geometry.h"
+#include "D3D11GeometryImp.h"
 #include "D3D11OverlayMaterial.h"
 #include "D3D11RenderOperation.h"
 namespace NSDevilX
@@ -18,7 +18,7 @@ namespace NSDevilX
 				COverlayMaterial * const mMaterial;
 				const CFloat4 mScissorRectParameter;
 				COverlayManager * const mManager;
-				CGeometry * mGeometry;
+				CGeometryImp * mGeometry;
 				TVector<CFloat3> mPositions;
 				TVector<CFloat2> mUVs;
 				TVector<RGBA> mDiffuses;

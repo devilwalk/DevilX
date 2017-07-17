@@ -28,7 +28,6 @@ namespace NSDevilX
 		public:
 			IGeometryUsageImp();
 			virtual ~IGeometryUsageImp();
-
 			// Í¨¹ý ISubMesh ¼Ì³Ð
 			virtual Void setVertexBufferOffset(UInt32 offset) override;
 			virtual UInt32 getVertexBufferOffset() const override;

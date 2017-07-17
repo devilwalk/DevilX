@@ -2,9 +2,9 @@
 #include "D3D11Shader.h"
 #include "D3D11WindowImp.h"
 #include "D3D11RenderableSurfaceImp.h"
-#include "D3D11Geometry.h"
+#include "D3D11GeometryImp.h"
 #include "D3D11ClearViewportShader.h"
-#include "D3D11Scene.h"
+#include "D3D11SceneImp.h"
 #include "D3D11ShaderCodeManager.h"
 #include "D3D11ConstantBufferDescriptionManager.h"
 #include "D3D11ConstantBufferContainer.h"
@@ -62,8 +62,8 @@ namespace NSDevilX
 				TCOMResourcePtrVector<ID3D11SamplerState> mSamplerStates;
 				TResourcePtrMap<IWindowImp*const,CWindowImp> mWindows;
 				TResourcePtrMap<IRenderableSurfaceImp*const,CRenderableSurfaceImp> mRenderableSurfaces;
-				TResourcePtrMap<ISceneImp*const,CScene> mScenes;
-				TResourcePtrMap<IGeometryImp*const,CGeometry> mGeometrys;
+				TResourcePtrMap<ISceneImp*const,CSceneImp> mScenes;
+				TResourcePtrMap<IGeometryImp*const,CGeometryImp> mGeometrys;
 				TResourcePtrMap<ITexture2DImp*const,CTexture2D> mTexture2Ds;
 				TResourcePtrMap<IVertexBufferImp*const,CVertexBufferImp> mVertexBuffers;
 				TResourcePtrMap<IIndexBufferImp*const,CIndexBufferImp> mIndexBuffers;
@@ -146,7 +146,7 @@ namespace NSDevilX
 					else
 						return getWindow(static_cast<IWindowImp*>(interfaceImp));
 				}
-				CGeometry * getGeometry(IGeometryImp * interfaceImp)const
+				CGeometryImp * getGeometry(IGeometryImp * interfaceImp)const
 				{
 					return mGeometrys.get(interfaceImp);
 				}

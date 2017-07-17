@@ -6,14 +6,14 @@ namespace NSDevilX
 		namespace NSD3D11
 		{
 			class CPass;
-			class CGeometry;
+			class CGeometryImp;
 			class CConstantBuffer;
 			class CRenderOperation
 				:public TBaseObject<CRenderOperation>
 			{
 			public:
 				ID3D11DeviceContext1 * const mContext;
-				CGeometry * mGeometry;
+				CGeometryImp * mGeometry;
 				CPass * mPass;
 				UINT mIndexBufferOffset;
 				UINT mIndexCount;

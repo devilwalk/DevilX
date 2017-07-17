@@ -10,6 +10,8 @@
 #include "IIndexBufferImp.h"
 #include "ILightImp.h"
 #include "IOverlayElementImp.h"
+#include "IQueryImp.h"
+#include "IQueryObjectImp.h"
 #include "IRenderableSurfaceImp.h"
 #include "IRenderTargetImp.h"
 #include "IResourceManagerImp.h"

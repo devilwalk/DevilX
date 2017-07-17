@@ -12,12 +12,13 @@ namespace NSDevilX
 			virtual IEnum::EKeyType getKey()const=0;
 			virtual IEnum::EButtonState getButtonState()const=0;
 		};
+		class IKeyboard;
 		class IKeyboardListener
 		{
 		protected:
 			virtual ~IKeyboardListener(){}
 		public:
-			virtual Void addFrameData(IKeyboardFrameData * data)=0;
+			virtual Void addFrameData(IKeyboard * keyboard,IKeyboardFrameData * data)=0;
 		};
 		class IKeyboard
 		{

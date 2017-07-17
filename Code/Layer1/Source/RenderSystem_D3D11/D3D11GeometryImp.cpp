@@ -3,7 +3,7 @@ using namespace NSDevilX;
 using namespace NSRenderSystem;
 using namespace NSD3D11;
 
-NSDevilX::NSRenderSystem::NSD3D11::CGeometry::CGeometry(IGeometryImp * interfaceImp)
+NSDevilX::NSRenderSystem::NSD3D11::CGeometryImp::CGeometryImp(IGeometryImp * interfaceImp)
 	:TInterfaceObject<IGeometryImp>(interfaceImp)
 	,mVertexBuffer(nullptr)
 	,mIndexBuffer(nullptr)
@@ -14,11 +14,11 @@ NSDevilX::NSRenderSystem::NSD3D11::CGeometry::CGeometry(IGeometryImp * interface
 	getInterfaceImp()->addListener(this,IGeometryImp::EMessage_EndIndexBufferChange);
 }
 
-NSDevilX::NSRenderSystem::NSD3D11::CGeometry::~CGeometry()
+NSDevilX::NSRenderSystem::NSD3D11::CGeometryImp::~CGeometryImp()
 {
 }
 
-Void NSDevilX::NSRenderSystem::NSD3D11::CGeometry::onMessage(IGeometryImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
+Void NSDevilX::NSRenderSystem::NSD3D11::CGeometryImp::onMessage(IGeometryImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
 {
 	switch(message)
 	{
