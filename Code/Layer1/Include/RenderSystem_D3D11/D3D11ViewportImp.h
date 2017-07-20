@@ -11,12 +11,15 @@ namespace NSDevilX
 		{
 			class CRenderTargetImp;
 			class CWindowImp;
+			class CSystemImp;
 			class CViewportImp
 				:public TBaseObject<CViewportImp>
 				,public TInterfaceObject<IViewportImp>
 				,public TInternalObject<CViewport>
 				,public CDirtyFlagContainer
 				,public TMessageReceiver<CWindowImp>
+				,public TMessageReceiver<CSystemImp>
+				,public TMessageReceiver<IQueryImp>
 			{
 			public:
 				enum EDirtyFlag
@@ -26,7 +29,8 @@ namespace NSDevilX
 			protected:
 				CRenderTargetImp * const mRenderTarget;
 				CCamera * mCamera;
-				CRenderTask * mTask;
+				CRenderTask * mRenderTask;
+				CQueryTask * mQueryTask;
 				COverlayManager * mOverlayManager;
 			public:
 				CViewportImp(IViewportImp * interfaceImp);
@@ -48,10 +52,13 @@ namespace NSDevilX
 				// Inherited via TInterfaceObject
 				virtual Void onMessage(IViewportImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 				virtual Void onMessage(CWindowImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
+				virtual Void onMessage(CSystemImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
+				virtual Void onMessage(IQueryImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 				virtual Boolean _process(UInt32 flagIndex,OUT Bool & needNextProcess) override;
 			protected:
 				Void _updateInternal();
 				Void _updateRenderTask();
+				Void _updateQueryTask();
 			};
 		}
 	}

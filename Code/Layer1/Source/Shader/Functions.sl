@@ -1,5 +1,5 @@
 #include "Defines.sl"
-#if HLSL_VERSION==0
+#if DEVILX_HLSL_VERSION==0
 float2 mul(float2 v,float2x2 m){return v*m;}
 float3 mul(float2 v,float3x2 m){return v*m;}
 float4 mul(float2 v,float4x2 m){return v*m;}
@@ -28,7 +28,7 @@ float4 saturate(float4 v){return clamp(v,float4(0.0),float4(1.0));}
 #endif
 float3x3 convert(float4x4 v)
 {
-#if HLSL_VERSION
+#if DEVILX_HLSL_VERSION
 	return (float3x3)v;
 #else
 	return float3x3(v);

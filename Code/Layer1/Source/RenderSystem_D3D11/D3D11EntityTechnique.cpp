@@ -19,9 +19,18 @@ NSDevilX::NSRenderSystem::NSD3D11::CEntityForwardTechnique::CEntityForwardTechni
 	mPasses.resize(CEnum::EForwardPassType_Count);
 	for(int i=0;i<CEnum::EForwardPassType_Count;++i)
 	{
-		mPasses[i]=DEVILX_NEW CEntityPass((CEnum::EForwardPassType)i,this);
+		mPasses[i]=DEVILX_NEW CEntityForwardPass((CEnum::EForwardPassType)i,this);
 	}
 }
 
 NSDevilX::NSRenderSystem::NSD3D11::CEntityForwardTechnique::~CEntityForwardTechnique()
+{}
+
+NSDevilX::NSRenderSystem::NSD3D11::CEntityQueryTechnique::CEntityQueryTechnique(CEntityMaterial * material)
+	:CEntityTechnique(CEnum::ETechniqueType_Query,material)
+{
+	mPasses.push_back(DEVILX_NEW CEntityQueryPass(this));
+}
+
+NSDevilX::NSRenderSystem::NSD3D11::CEntityQueryTechnique::~CEntityQueryTechnique()
 {}

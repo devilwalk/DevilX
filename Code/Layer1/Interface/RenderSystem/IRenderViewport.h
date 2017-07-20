@@ -32,6 +32,8 @@ namespace NSDevilX
 			virtual IQuery * createQuery(const String & name)=0;
 			virtual IQuery * getQuery(const String & name)const=0;
 			virtual Void destroyQuery(IQuery * query)=0;
+			virtual const UInt32 * getQueryDatas()const=0;
+			virtual UInt32 getQueryDatasCount()const=0;
 		};
 	}
 }

@@ -31,21 +31,38 @@ ID3DBlob * NSDevilX::NSRenderSystem::NSD3D11::CShaderCodeManager::registerShader
 	case CEnum::EShaderType_PixelShader:entry="psMain";target="ps_";break;
 	case CEnum::EShaderType_ComputeShader:entry="csMain";target="cs_";break;
 	}
-	CComPtr<ID3DBlob> error;
+	String real_code="#define DEVILX_HLSL_VERSION ";
 	switch(modeType)
 	{
 	case CEnum::EShaderModelType_4_1:
 		target+="4_1";
+		real_code+="410";
 		break;
 	case CEnum::EShaderModelType_5:
 		target+="5_0";
+		real_code+="500";
 		break;
 	}
-	D3DCompile(&code[0],code.size(),nullptr,macros,nullptr,entry.c_str(),target.c_str(),flag,0,&ret,&error);
+	real_code+="\r\n";
+	if(macros)
+	{
+		while(macros->Definition&&macros->Name)
+		{
+			real_code+=String("#define ")+macros->Name+" "+macros->Definition+"\r\n";
+			macros++;
+		}
+	}
+	real_code+=code;
+	CComPtr<ID3DBlob> error;
+	D3DCompile(&real_code[0],real_code.size(),nullptr,nullptr,nullptr,entry.c_str(),target.c_str(),flag,0,&ret,&error);
 	if(error.p)
 	{
 		OutputDebugStringA(static_cast<LPCSTR>(error->GetBufferPointer()));
 		OutputDebugStringA("\r\n");
+		auto handle=CreateFileA((key+".hlsl").c_str(),GENERIC_WRITE,FILE_SHARE_READ,nullptr,CREATE_ALWAYS,FILE_ATTRIBUTE_NORMAL,nullptr);
+		DWORD write_size=static_cast<DWORD>(real_code.size());
+		WriteFile(handle,&real_code[0],write_size,&write_size,nullptr);
+		CloseHandle(handle);
 	}
 	if(ret)
 	{

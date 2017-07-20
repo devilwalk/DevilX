@@ -71,8 +71,7 @@ Void NSDevilX::NSInputSystem::IMouseImp::addFrameData(SMouseFrameDataImp * data)
 		mButtonStateList[data->mType-SMouseFrameDataImp::EType_ButtonState_Left]=*reinterpret_cast<const IEnum::EButtonState*>(&data->mValue);
 	else
 	{
-		mOffset[data->mType]+=data->mValue;
-		mPosition[data->mType]+=data->mValue;
+		mPosition[data->mType-SMouseFrameDataImp::EType_AxisOffsetX]+=data->mValue;
 	}
 }
 
@@ -94,21 +93,10 @@ IVirtualDevice * NSDevilX::NSInputSystem::IMouseImp::queryInterface_IVirtualDevi
 	return const_cast<IMouseImp*>(this);
 }
 
-const CInt2 & NSDevilX::NSInputSystem::IMouseImp::getOffset() const
-{
-	// TODO: insert return statement here
-	return mOffset.xy();
-}
-
 const CInt2 & NSDevilX::NSInputSystem::IMouseImp::getPosition() const
 {
 	// TODO: insert return statement here
 	return mPosition.xy();
-}
-
-Int32 NSDevilX::NSInputSystem::IMouseImp::getWheelOffset() const
-{
-	return mOffset.z;
 }
 
 Int32 NSDevilX::NSInputSystem::IMouseImp::getWheelPosition() const

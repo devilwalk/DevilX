@@ -159,6 +159,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11BaseObject.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11BufferUpdater.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11Camera.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11ClearViewportShader.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11ConstantBuffer.h" />
@@ -166,6 +167,7 @@
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11ConstantBufferDescription.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11ConstantBufferDescriptionManager.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11DepthStencil.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11EntityPass.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11Enum.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11ForwardPixelShaderGenerator.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11ForwardVertexShaderGenerator.h" />
@@ -177,12 +179,11 @@
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11OverlayMaterial.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11OverlayMaterialManager.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11OverlayRenderable.h" />
-    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11EntityPass.h" />
-    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11EntityRenderableImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11EntityForwardPass.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11SubEntityImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11EntityImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11Pass.h" />
-    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11QueryObjectRenderable.h" />
-    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11QueryObjectManager.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11EntityQueryPass.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11RenderOperation.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11RenderableSurfaceImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11RenderTarget.h" />
@@ -208,6 +209,7 @@
     <ClInclude Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\Precompiler.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11BufferUpdater.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11Camera.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11ClearViewportShader.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11ConstantBuffer.cpp" />
@@ -215,6 +217,7 @@
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11ConstantBufferDescription.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11ConstantBufferDescriptionManager.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11DepthStencil.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11EntityPass.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11ForwardPixelShaderGenerator.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11ForwardVertexShaderGenerator.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11GeometryImp.cpp" />
@@ -225,12 +228,11 @@
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11OverlayMaterial.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11OverlayMaterialManager.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11OverlayRenderable.cpp" />
-    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11EntityPass.cpp" />
-    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11EntityRenderableImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11EntityForwardPass.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11SubEntityImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11EntityImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11Pass.cpp" />
-    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11QueryObjectRenderable.cpp" />
-    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11QueryObjectManager.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11EntityQueryPass.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11RenderOperation.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11RenderableSurfaceImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11RenderTarget.cpp" />

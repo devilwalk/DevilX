@@ -1,5 +1,5 @@
 #pragma once
-#include "D3D11EntityPass.h"
+#include "D3D11EntityForwardPass.h"
 #include "D3D11Enum.h"
 namespace NSDevilX
 {
@@ -38,6 +38,15 @@ namespace NSDevilX
 			public:
 				CEntityForwardTechnique(CEntityMaterial * material);
 				~CEntityForwardTechnique();
+			};
+			class CEntityQueryTechnique
+				:public CEntityTechnique
+				,public TBaseObject<CEntityQueryTechnique>
+			{
+			protected:
+			public:
+				CEntityQueryTechnique(CEntityMaterial * material);
+				~CEntityQueryTechnique();
 			};
 		}
 	}

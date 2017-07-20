@@ -8,16 +8,23 @@ namespace NSDevilX
 	namespace NSRenderSystem
 	{
 		class IEntity;
-		class IEntityRenderable
+		class ISubEntity
 		{
 		protected:
-			virtual ~IEntityRenderable(){}
+			virtual ~ISubEntity(){}
 		public:
+			virtual IGeometryUsage * queryInterface_IGeometryUsage()const=0;
 			virtual const String & getName()const=0;
 			virtual IEntity * getEntity()const=0;
-			virtual IGeometryUsage * queryInterface_IGeometryUsage()const=0;
+			virtual Void setRenderable(Bool renderable)=0;
+			virtual Bool isRenderable()const=0;
+			virtual Void setQueriable(Bool queriable)=0;
+			virtual Bool isQueriable()const=0;
 			virtual Void setGeometry(IGeometry * geometry)=0;
 			virtual IGeometry * getGeometry()const=0;
+			virtual Void setQueryDatas(const UInt32 * datas,UInt32 count)=0;
+			virtual Void updateQueryDatas(UInt32 offset,UInt32 count)=0;
+			virtual const UInt32 * getQueryDatas()const=0;
 			virtual Void setVisible(Bool visible)=0;
 			virtual Bool getVisible()const=0;
 			virtual IColourUnitState * getColourUnitState(IEnum::EEntityColourUnitStateType type)=0;

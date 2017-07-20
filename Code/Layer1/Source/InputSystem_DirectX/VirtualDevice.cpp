@@ -10,7 +10,7 @@ NSDevilX::NSInputSystem::NSDirectX::CVirtualDevice::CVirtualDevice(IVirtualDevic
 	HRESULT hr=CSystem::getSingleton().getDirectInput()->CreateDevice(instance.guidInstance,&mDevice,nullptr);
 	CHECK_API_SUCCESSED;
 	assert(mDevice.p);
-	hr=mDevice->SetCooperativeLevel(mInterfaceImp->getWindow()?static_cast<HWND>(mInterfaceImp->getWindow()->getHandle()):GetDesktopWindow(),DISCL_FOREGROUND|DISCL_NONEXCLUSIVE);
+	hr=mDevice->SetCooperativeLevel(mInterfaceImp->getWindow()?static_cast<HWND>(mInterfaceImp->getWindow()->getHandle()):GetDesktopWindow(),(mInterfaceImp->getWindow()?DISCL_FOREGROUND:DISCL_BACKGROUND)|DISCL_NONEXCLUSIVE);
 	CHECK_API_SUCCESSED;
 	DIPROPDWORD pw;
 	pw.diph.dwHow=DIPH_DEVICE;
@@ -33,6 +33,7 @@ NSDevilX::NSInputSystem::NSDirectX::CVirtualDevice::CVirtualDevice(IVirtualDevic
 	CHECK_API_SUCCESSED;
 	hr=mDevice->Acquire();
 	CHECK_API_SUCCESSED;
+	mInterfaceImp->addListener(this,IVirtualDeviceImp::EMessage_UpdateData);
 }
 
 NSDevilX::NSInputSystem::NSDirectX::CVirtualDevice::~CVirtualDevice()
@@ -112,6 +113,8 @@ Void NSDevilX::NSInputSystem::NSDirectX::CMouse::_processData(const DIDEVICEOBJE
 	case DIMOFS_BUTTON5:break;
 	case DIMOFS_BUTTON6:break;
 	case DIMOFS_BUTTON7:break;
+	default:
+		assert(0);
 	}
 	static_cast<IMouseImp*>(mInterfaceImp)->addFrameData(frame_data);
 	mLastData=data;

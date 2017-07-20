@@ -30,6 +30,7 @@ namespace NSDevilX
 				Void submit();
 				virtual Void prepare();
 				virtual Void process();
+				virtual Void postProcess();
 				Void clearState();
 			};
 			class CClearViewportTask
@@ -123,6 +124,38 @@ namespace NSDevilX
 				virtual Void prepare() override;
 				virtual Void process() override;
 			};
+			class CQuerySceneTask
+				:public CRenderTask
+				,public TBaseObject<CQuerySceneTask>
+			{
+			public:
+				struct SQuery
+					:public TBaseObject<SQuery>
+				{
+					const D3D11_BOX * mBox;
+					ID3D11Buffer * mBuffer;
+					SQuery(const D3D11_BOX & box,ID3D11Buffer * buffer)
+						:mBox(&box)
+						,mBuffer(buffer)
+					{}
+				};
+			protected:
+				TVector<CConstantBuffer*> mSubmitConstantBuffers;
+				TVector<SQuery> mQueries;
+			public:
+				CQuerySceneTask(CViewport * viewport);
+				~CQuerySceneTask();
+				Void addQuery(const D3D11_BOX & box,ID3D11Buffer * buffer)
+				{
+					mQueries.push_back(SQuery(box,buffer));
+				}
+				Void clearQuery()
+				{
+					mQueries.clear();
+				}
+				virtual Void prepare() override;
+				virtual Void process() override;
+			};
 			class CForwardRenderTask
 				:public CRenderTask
 				,public TBaseObject<CForwardRenderTask>
@@ -145,6 +178,40 @@ namespace NSDevilX
 				~CRenderSceneGBufferTask();
 			protected:
 				virtual Void prepare() override;
+			};
+			class CQueryTask
+				:public CRenderTask
+				,public TBaseObject<CQueryTask>
+			{
+			public:
+				struct SQuery
+					:public TBaseObject<SQuery>
+				{
+					CFloat4 mAreaPosition;
+					D3D11_BOX mBox;
+					CComPtr<ID3D11Buffer> mBuffer;
+					SQuery()
+						:mBox({0})
+					{
+						mBox.back=1;
+					}
+				};
+			protected:
+				TMap<SizeT,SQuery> mQueries;
+				TSet<UInt32> mQueryResults;
+			public:
+				CQueryTask(CViewport * viewport);
+				~CQueryTask();
+				Void setClearDepth(Float depth);
+				Void setClearStencil(Int32 stencil);
+				Void setQueryRange(SizeT key,const CFloat2 & startPosition,const CFloat2 & endPosition);
+				Void removeQueryRange(SizeT key);
+				const decltype(mQueryResults) & getQueryResults()const
+				{
+					return mQueryResults;
+				}
+				virtual Void prepare() override;
+				virtual Void postProcess() override;
 			};
 		}
 	}

@@ -1,6 +1,6 @@
 #pragma once
 #include "D3D11BaseObject.h"
-#include "D3D11EntityRenderableImp.h"
+#include "D3D11SubEntityImp.h"
 #include "D3D11TransformerImp.h"
 namespace NSDevilX
 {
@@ -8,20 +8,20 @@ namespace NSDevilX
 	{
 		namespace NSD3D11
 		{
-			class CScene;
+			class CSceneImp;
 			class CEntityImp
 				:public TBaseObject<CEntityImp>
 				,public TInterfaceObject<IEntityImp>
 				,public TMessageReceiver<ISceneElementImp>
 			{
 			protected:
-				CScene * const mScene;
+				CSceneImp * const mScene;
 				CTransformerImp * mTransformer;
-				TResourcePtrMap<IEntityRenderableImp*const,CEntityRenderableImp> mRenderables;
+				TResourcePtrMap<ISubEntityImp*const,CSubEntityImp> mSubEntities;
 			public:
 				CEntityImp(IEntityImp * interfaceImp);
 				virtual ~CEntityImp();
-				CScene * getScene()const
+				CSceneImp * getScene()const
 				{
 					return mScene;
 				}

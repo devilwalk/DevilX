@@ -172,27 +172,41 @@ const CColour & NSDevilX::NSRenderSystem::IViewportImp::getClearColour() const
 
 IQuery * NSDevilX::NSRenderSystem::IViewportImp::createQuery(const String & name)
 {
-	if(mQuerys.has(name))
+	if(mQueries.has(name))
 		return nullptr;
 	notify(EMessage_BeginQueryCreate);
 	auto ret=DEVILX_NEW IQueryImp(name,this);
-	mQuerys.add(name,ret);
+	mQueries.add(name,ret);
 	notify(EMessage_EndQueryCreate,ret);
+	if(getQueies().size()==1)
+		notify(EMessage_QueryEnableChange);
 	return ret;
 }
 
 IQuery * NSDevilX::NSRenderSystem::IViewportImp::getQuery(const String & name) const
 {
-	return mQuerys.get(name);
+	return mQueries.get(name);
 }
 
 Void NSDevilX::NSRenderSystem::IViewportImp::destroyQuery(IQuery * query)
 {
-	if(!mQuerys.has(query->getName()))
+	if(!mQueries.has(query->getName()))
 		return;
 	notify(EMessage_BeginQueryDestroy,static_cast<IQueryImp*>(query));
-	mQuerys.destroy(query->getName());
+	mQueries.destroy(query->getName());
 	notify(EMessage_EndQueryDestroy);
+	if(getQueies().empty())
+		notify(EMessage_QueryEnableChange);
+}
+
+const UInt32 * NSDevilX::NSRenderSystem::IViewportImp::getQueryDatas() const
+{
+	return mQueryDatas.empty()?nullptr:&mQueryDatas[0];
+}
+
+UInt32 NSDevilX::NSRenderSystem::IViewportImp::getQueryDatasCount() const
+{
+	return static_cast<UInt32>(mQueryDatas.size());
 }
 
 IOverlayElement * NSDevilX::NSRenderSystem::IViewportImp::createElement(const String & name)

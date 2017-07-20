@@ -85,6 +85,9 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CRenderTask::process()
 	}
 }
 
+Void NSDevilX::NSRenderSystem::NSD3D11::CRenderTask::postProcess()
+{}
+
 Void NSDevilX::NSRenderSystem::NSD3D11::CRenderTask::clearState()
 {
 	if(mTasks.empty())
@@ -180,6 +183,194 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CClearViewportTask::_updateConstantBuffe
 	memcpy(&buffer[offset],&mClearDepth,sizeof(Float));
 }
 
+NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::CAmbientTask::CAmbientTask(CViewport * viewport)
+	:CRenderTask(viewport)
+{}
+
+NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::CAmbientTask::~CAmbientTask()
+{}
+
+Void NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::CAmbientTask::process()
+{
+	TVector<CSubEntityImp*> solid_renderables,transparent_renderables;
+	for(auto object:mViewport->getCamera()->getInterfaceImp()->getVisibleEntities())
+	{
+		for(UInt32 i=0;i<object->getSubEntityCount();++i)
+		{
+			if(object->getSubEntity(i)->isRenderable())
+			{
+				auto renderable=static_cast<ISubEntityImp*>(object->getSubEntity(i))->getUserPointer<CSubEntityImp>(0);
+				if(renderable->getInterfaceImp()->getTransparentEnable())
+					transparent_renderables.push_back(renderable);
+				else
+					solid_renderables.push_back(renderable);
+			}
+		}
+	}
+	TVector<CConstantBuffer*> common_constant_buffers;
+	if(auto cb=CSystemImp::getSingleton().getConstantBufferMT())
+	{
+		cb->submit();
+		common_constant_buffers.push_back(cb);
+	}
+	if(auto cb=getViewport()->getRenderTarget()->getConstantBufferMT())
+	{
+		cb->submit();
+		common_constant_buffers.push_back(cb);
+	}
+	if(auto cb=getViewport()->getConstantBufferMT())
+	{
+		cb->submit();
+		common_constant_buffers.push_back(cb);
+	}
+	if(auto cb=getViewport()->getCamera()->getConstantBufferMT())
+	{
+		cb->submit();
+		common_constant_buffers.push_back(cb);
+	}
+	CRenderOperation operation(CSystemImp::getSingleton().getImmediateContext());
+	for(auto renderable:solid_renderables)
+	{
+		renderable->renderForward(nullptr,operation);
+		for(auto cb:operation.mConstantBuffers)
+			cb->submit();
+		operation.mConstantBuffers.insert(operation.mConstantBuffers.end(),common_constant_buffers.begin(),common_constant_buffers.end());
+		operation.process();
+		operation.mConstantBuffers.clear();
+	}
+	for(auto renderable:transparent_renderables)
+	{
+		renderable->renderForward(nullptr,operation);
+		for(auto cb:operation.mConstantBuffers)
+			cb->submit();
+		operation.mConstantBuffers.insert(operation.mConstantBuffers.end(),common_constant_buffers.begin(),common_constant_buffers.end());
+		operation.process();
+		operation.mConstantBuffers.clear();
+	}
+}
+
+NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::CLightTask::CLightTask(CLight * light,CViewport * viewport)
+	:CRenderTask(viewport)
+	,mLight(light)
+{}
+
+NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::CLightTask::~CLightTask()
+{}
+
+Void NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::CLightTask::prepare()
+{
+	if(mLight->getInterfaceImp()->getType()==IEnum::ELightType_Directional)
+		return;
+	mLight->getInterfaceImp()->findVisibleObjectsMT();
+	mViewport->setupMT(mContext);
+	TVector<CConstantBuffer*> common_constant_buffers;
+	if(auto cb=CSystemImp::getSingleton().getConstantBufferMT())
+	{
+		common_constant_buffers.push_back(cb);
+		mSubmitConstantBuffers.push_back(cb);
+	}
+	if(auto cb=getViewport()->getRenderTarget()->getConstantBufferMT())
+	{
+		common_constant_buffers.push_back(cb);
+		mSubmitConstantBuffers.push_back(cb);
+	}
+	if(auto cb=getViewport()->getConstantBufferMT())
+	{
+		common_constant_buffers.push_back(cb);
+		mSubmitConstantBuffers.push_back(cb);
+	}
+	if(auto cb=getViewport()->getCamera()->getConstantBufferMT())
+	{
+		common_constant_buffers.push_back(cb);
+		mSubmitConstantBuffers.push_back(cb);
+	}
+	if(auto cb=mLight->getConstantBufferMT())
+	{
+		common_constant_buffers.push_back(cb);
+		mSubmitConstantBuffers.push_back(cb);
+	}
+	CRenderOperation operation(mContext);
+	for(auto object:mLight->getInterfaceImp()->getVisibleEntities())
+	{
+		for(UInt32 i=0;i<object->getSubEntityCount();++i)
+		{
+			if(object->getSubEntity(i)->isRenderable())
+			{
+				auto renderable=static_cast<ISubEntityImp*>(object->getSubEntity(i))->getUserPointer<CSubEntityImp>(0);
+				if(renderable->getInterfaceImp()->getLightEnable())
+				{
+					renderable->renderForward(mLight,operation);
+					mSubmitConstantBuffers.insert(mSubmitConstantBuffers.end(),operation.mConstantBuffers.begin(),operation.mConstantBuffers.end());
+					operation.mConstantBuffers.insert(operation.mConstantBuffers.end(),common_constant_buffers.begin(),common_constant_buffers.end());
+					operation.process();
+					operation.mConstantBuffers.clear();
+				}
+			}
+		}
+	}
+	CRenderTask::prepare();
+}
+
+Void NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::CLightTask::process()
+{
+	if(mLight->getInterfaceImp()->getType()==IEnum::ELightType_Directional)
+	{
+		TVector<CConstantBuffer*> common_constant_buffers;
+		if(auto cb=CSystemImp::getSingleton().getConstantBufferMT())
+		{
+			cb->submit();
+			common_constant_buffers.push_back(cb);
+		}
+		if(auto cb=getViewport()->getRenderTarget()->getConstantBufferMT())
+		{
+			cb->submit();
+			common_constant_buffers.push_back(cb);
+		}
+		if(auto cb=getViewport()->getConstantBufferMT())
+		{
+			cb->submit();
+			common_constant_buffers.push_back(cb);
+		}
+		if(auto cb=getViewport()->getCamera()->getConstantBufferMT())
+		{
+			cb->submit();
+			common_constant_buffers.push_back(cb);
+		}
+		if(auto cb=mLight->getConstantBufferMT())
+		{
+			cb->submit();
+			common_constant_buffers.push_back(cb);
+		}
+		CRenderOperation operation(CSystemImp::getSingleton().getImmediateContext());
+		for(auto object:mViewport->getCamera()->getInterfaceImp()->getVisibleEntities())
+		{
+			for(UInt32 i=0;i<object->getSubEntityCount();++i)
+			{
+				if(object->getSubEntity(i)->isRenderable())
+				{
+					auto renderable=static_cast<ISubEntityImp*>(object->getSubEntity(i))->getUserPointer<CSubEntityImp>(0);
+					if(renderable->getInterfaceImp()->getLightEnable())
+					{
+						renderable->renderForward(mLight,operation);
+						for(auto cb:operation.mConstantBuffers)
+							cb->submit();
+						operation.mConstantBuffers.insert(operation.mConstantBuffers.end(),common_constant_buffers.begin(),common_constant_buffers.end());
+						operation.process();
+						operation.mConstantBuffers.clear();
+					}
+				}
+			}
+		}
+	}
+	else
+	{
+		for(auto cb:mSubmitConstantBuffers)
+			cb->submit();
+		CRenderTask::process();
+		mSubmitConstantBuffers.clear();
+	}
+}
+
 NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::CRenderSceneForwardTask(CViewport * viewport)
 	:CRenderTask(viewport)
 {
@@ -245,141 +436,18 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::process()
 	CRenderTask::process();
 }
 
-NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::CAmbientTask::CAmbientTask(CViewport * viewport)
+NSDevilX::NSRenderSystem::NSD3D11::CQuerySceneTask::CQuerySceneTask(CViewport * viewport)
 	:CRenderTask(viewport)
 {
+
 }
 
-NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::CAmbientTask::~CAmbientTask()
+NSDevilX::NSRenderSystem::NSD3D11::CQuerySceneTask::~CQuerySceneTask()
 {}
 
-Void NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::CAmbientTask::process()
+Void NSDevilX::NSRenderSystem::NSD3D11::CQuerySceneTask::prepare()
 {
-	TVector<CEntityRenderableImp*> solid_renderables,transparent_renderables;
-	for(auto object:mViewport->getCamera()->getInterfaceImp()->getVisibleEntities())
-	{
-		for(UInt32 i=0;i<object->getRenderableCount();++i)
-		{
-			auto renderable=static_cast<IEntityRenderableImp*>(object->getRenderable(i))->getUserPointer<CEntityRenderableImp>(0);
-			if(renderable->getInterfaceImp()->getTransparentEnable())
-				transparent_renderables.push_back(renderable);
-			else
-				solid_renderables.push_back(renderable);
-		}
-	}
-	TVector<CConstantBuffer*> common_constant_buffers;
-	if(auto cb=CSystemImp::getSingleton().getConstantBufferMT())
-	{
-		cb->submit();
-		common_constant_buffers.push_back(cb);
-	}
-	if(auto cb=getViewport()->getRenderTarget()->getConstantBufferMT())
-	{
-		cb->submit();
-		common_constant_buffers.push_back(cb);
-	}
-	if(auto cb=getViewport()->getConstantBufferMT())
-	{
-		cb->submit();
-		common_constant_buffers.push_back(cb);
-	}
-	if(auto cb=getViewport()->getCamera()->getConstantBufferMT())
-	{
-		cb->submit();
-		common_constant_buffers.push_back(cb);
-	}
-	CRenderOperation operation(CSystemImp::getSingleton().getImmediateContext());
-	for(auto renderable:solid_renderables)
-	{
-		renderable->renderForward(nullptr,operation);
-		for(auto cb:operation.mConstantBuffers)
-			cb->submit();
-		operation.mConstantBuffers.insert(operation.mConstantBuffers.end(),common_constant_buffers.begin(),common_constant_buffers.end());
-		operation.process();
-		operation.mConstantBuffers.clear();
-	}
-	for(auto renderable:transparent_renderables)
-	{
-		renderable->renderForward(nullptr,operation);
-		for(auto cb:operation.mConstantBuffers)
-			cb->submit();
-		operation.mConstantBuffers.insert(operation.mConstantBuffers.end(),common_constant_buffers.begin(),common_constant_buffers.end());
-		operation.process();
-		operation.mConstantBuffers.clear();
-	}
-}
-
-NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::CLightTask::CLightTask(CLight * light,CViewport * viewport)
-	:CRenderTask(viewport)
-	,mLight(light)
-{
-}
-
-NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::CLightTask::~CLightTask()
-{}
-
-Void NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::CLightTask::process()
-{
-	if(mLight->getInterfaceImp()->getType()==IEnum::ELightType_Directional)
-	{
-		TVector<CConstantBuffer*> common_constant_buffers;
-		if(auto cb=CSystemImp::getSingleton().getConstantBufferMT())
-		{
-			cb->submit();
-			common_constant_buffers.push_back(cb);
-		}
-		if(auto cb=getViewport()->getRenderTarget()->getConstantBufferMT())
-		{
-			cb->submit();
-			common_constant_buffers.push_back(cb);
-		}
-		if(auto cb=getViewport()->getConstantBufferMT())
-		{
-			cb->submit();
-			common_constant_buffers.push_back(cb);
-		}
-		if(auto cb=getViewport()->getCamera()->getConstantBufferMT())
-		{
-			cb->submit();
-			common_constant_buffers.push_back(cb);
-		}
-		if(auto cb=mLight->getConstantBufferMT())
-		{
-			cb->submit();
-			common_constant_buffers.push_back(cb);
-		}
-		CRenderOperation operation(CSystemImp::getSingleton().getImmediateContext());
-		for(auto object:mViewport->getCamera()->getInterfaceImp()->getVisibleEntities())
-		{
-			for(UInt32 i=0;i<object->getRenderableCount();++i)
-			{
-				auto renderable=static_cast<IEntityRenderableImp*>(object->getRenderable(i))->getUserPointer<CEntityRenderableImp>(0);
-				if(renderable->getInterfaceImp()->getLightEnable())
-				{
-					renderable->renderForward(mLight,operation);
-					for(auto cb:operation.mConstantBuffers)
-						cb->submit();
-					operation.mConstantBuffers.insert(operation.mConstantBuffers.end(),common_constant_buffers.begin(),common_constant_buffers.end());
-					operation.process();
-					operation.mConstantBuffers.clear();
-				}
-			}
-		}
-	}
-	else
-	{
-		for(auto cb:mSubmitConstantBuffers)
-			cb->submit();
-		CRenderTask::process();
-		mSubmitConstantBuffers.clear();
-	}
-}
-
-Void NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::CLightTask::prepare()
-{
-	if(mLight->getInterfaceImp()->getType()==IEnum::ELightType_Directional)
-		return;
-	mLight->getInterfaceImp()->findVisibleObjectsMT();
+	mViewport->getCamera()->getInterfaceImp()->findVisibleObjectsMT();
 	mViewport->setupMT(mContext);
 	TVector<CConstantBuffer*> common_constant_buffers;
 	if(auto cb=CSystemImp::getSingleton().getConstantBufferMT())
@@ -402,20 +470,15 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::CLightTask::pre
 		common_constant_buffers.push_back(cb);
 		mSubmitConstantBuffers.push_back(cb);
 	}
-	if(auto cb=mLight->getConstantBufferMT())
-	{
-		common_constant_buffers.push_back(cb);
-		mSubmitConstantBuffers.push_back(cb);
-	}
 	CRenderOperation operation(mContext);
-	for(auto object:mLight->getInterfaceImp()->getVisibleEntities())
+	for(auto object:mViewport->getCamera()->getInterfaceImp()->getVisibleEntities())
 	{
-		for(UInt32 i=0;i<object->getRenderableCount();++i)
+		for(UInt32 i=0;i<object->getSubEntityCount();++i)
 		{
-			auto renderable=static_cast<IEntityRenderableImp*>(object->getRenderable(i))->getUserPointer<CEntityRenderableImp>(0);
-			if(renderable->getInterfaceImp()->getLightEnable())
+			if(object->getSubEntity(i)->isQueriable())
 			{
-				renderable->renderForward(mLight,operation);
+				auto renderable=static_cast<ISubEntityImp*>(object->getSubEntity(i))->getUserPointer<CSubEntityImp>(0);
+				renderable->query(operation);
 				mSubmitConstantBuffers.insert(mSubmitConstantBuffers.end(),operation.mConstantBuffers.begin(),operation.mConstantBuffers.end());
 				operation.mConstantBuffers.insert(operation.mConstantBuffers.end(),common_constant_buffers.begin(),common_constant_buffers.end());
 				operation.process();
@@ -423,7 +486,21 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::CLightTask::pre
 			}
 		}
 	}
+	CComPtr<ID3D11Resource> rt_res;
+	mViewport->getRenderTarget()->getRTView(0)->GetResource(&rt_res);
+	for(const auto & query:mQueries)
+	{
+		mContext->CopySubresourceRegion1(query.mBuffer,0,0,0,0,rt_res,0,query.mBox,D3D11_COPY_DISCARD);
+	}
 	CRenderTask::prepare();
+}
+
+Void NSDevilX::NSRenderSystem::NSD3D11::CQuerySceneTask::process()
+{
+	for(auto cb:mSubmitConstantBuffers)
+		cb->submit();
+	CRenderTask::process();
+	mSubmitConstantBuffers.clear();
 }
 
 NSDevilX::NSRenderSystem::NSD3D11::CForwardRenderTask::CForwardRenderTask(CViewport * viewport)
@@ -476,4 +553,83 @@ NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneGBufferTask::~CRenderSceneGBuffer
 Void NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneGBufferTask::prepare()
 {
 }
+
+NSDevilX::NSRenderSystem::NSD3D11::CQueryTask::CQueryTask(CViewport * viewport)
+	:CRenderTask(viewport)
+{
+	mTasks.resize(2);
+	mTasks[0]=DEVILX_NEW CClearViewportTask(viewport);
+	static_cast<CClearViewportTask*>(mTasks[0])->setClearColour(0,CFloatRGBA::sZero);
+	mTasks[1]=DEVILX_NEW CQuerySceneTask(viewport);
+}
+
+NSDevilX::NSRenderSystem::NSD3D11::CQueryTask::~CQueryTask()
+{}
+
+Void NSDevilX::NSRenderSystem::NSD3D11::CQueryTask::setClearDepth(Float depth)
+{
+	static_cast<CClearViewportTask*>(mTasks[0])->setClearDepth(depth);
+}
+
+Void NSDevilX::NSRenderSystem::NSD3D11::CQueryTask::setClearStencil(Int32 stencil)
+{
+	static_cast<CClearViewportTask*>(mTasks[0])->setClearStencil(stencil);
+}
+
+Void NSDevilX::NSRenderSystem::NSD3D11::CQueryTask::setQueryRange(SizeT key,const CFloat2 & startPosition,const CFloat2 & endPosition)
+{
+	auto & query=mQueries[key];
+	query.mAreaPosition=CFloat4(startPosition,endPosition);
+}
+
+Void NSDevilX::NSRenderSystem::NSD3D11::CQueryTask::removeQueryRange(SizeT key)
+{
+	mQueries.erase(key);
+}
+
+Void NSDevilX::NSRenderSystem::NSD3D11::CQueryTask::prepare()
+{
+	if(getViewport()->getCamera())
+	{
+		static_cast<CQuerySceneTask*>(mTasks[1])->clearQuery();
+		for(auto & query_pair:mQueries)
+		{
+			auto & query=query_pair.second;
+			const CUInt4 new_box=query.mAreaPosition*CFloat4(mViewport->getInternal().Width,mViewport->getInternal().Height,mViewport->getInternal().Width,mViewport->getInternal().Height)+CFloat4(0,0,1.0f,1.0f)+CFloat4(mViewport->getInternal().TopLeftX,mViewport->getInternal().TopLeftY,mViewport->getInternal().TopLeftX,mViewport->getInternal().TopLeftY);
+			if(new_box!=CUInt4(query.mBox.left,query.mBox.top,query.mBox.right,query.mBox.bottom))
+			{
+				query.mBox.left=new_box.x;
+				query.mBox.top=new_box.y;
+				query.mBox.right=new_box.z;
+				query.mBox.bottom=new_box.w;
+				D3D11_BUFFER_DESC desc={0};
+				desc.BindFlags=D3D11_BIND_VERTEX_BUFFER;
+				desc.ByteWidth=(query.mBox.right-query.mBox.left)*(query.mBox.bottom-query.mBox.top)*(query.mBox.back-query.mBox.front)*sizeof(UInt32);
+				desc.CPUAccessFlags=D3D11_CPU_ACCESS_READ;
+				desc.StructureByteStride=sizeof(UInt32);
+				desc.Usage=D3D11_USAGE_STAGING;
+				CSystemImp::getSingleton().getDevice()->CreateBuffer(&desc,nullptr,&query.mBuffer);
+			}
+			static_cast<CQuerySceneTask*>(mTasks[1])->addQuery(query.mBox,query.mBuffer);
+		}
+		mTasks[1]->submit();
+	}
+}
+
+Void NSDevilX::NSRenderSystem::NSD3D11::CQueryTask::postProcess()
+{
+	mQueryResults.clear();
+	for(auto & query_pair:mQueries)
+	{
+		auto & query=query_pair.second;
+		D3D11_MAPPED_SUBRESOURCE res;
+		CSystemImp::getSingleton().getImmediateContext()->Map(query.mBuffer,0,D3D11_MAP_READ,0,&res);
+		for(UInt32 i=0;i<res.RowPitch;i+=sizeof(UInt32))
+		{
+			mQueryResults.insert(*reinterpret_cast<UInt32*>(static_cast<Byte*>(res.pData)+i));
+		}
+		CSystemImp::getSingleton().getImmediateContext()->Unmap(query.mBuffer,0);
+	}
+}
+
 #endif

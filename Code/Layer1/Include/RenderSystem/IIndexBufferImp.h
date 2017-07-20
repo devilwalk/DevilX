@@ -41,7 +41,10 @@ namespace NSDevilX
 			{
 				return mIndicesDirties;
 			}
-
+			const UInt32 * const & getIndicesRef()const
+			{
+				return mIndices;
+			}
 			// Inherited via IIndexBuffer
 			virtual Void setCount(UInt32 count) override;
 			virtual UInt32 getCount() const override;

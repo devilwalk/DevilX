@@ -35,6 +35,7 @@ namespace NSDevilX
 				EMessage_EndQueryCreate,
 				EMessage_BeginQueryDestroy,
 				EMessage_EndQueryDestroy,
+				EMessage_QueryEnableChange,
 				EMessage_BeginOverlayElementCreate,
 				EMessage_EndOverlayElementCreate,
 				EMessage_BeginOverlayElementDestroy,
@@ -49,13 +50,26 @@ namespace NSDevilX
 			Int32 mTechnique;
 			CFloatRGBA mClearColour;
 			TNamedResourcePtrMap<IOverlayElementImp> mOverlayElements;
-			TNamedResourcePtrMap<IQueryImp> mQuerys;
+			TNamedResourcePtrMap<IQueryImp> mQueries;
+			TVector<UInt32> mQueryDatas;
 		public:
 			IViewportImp(const String & name,IRenderTargetImp * rt);
 			~IViewportImp();
 			IRenderTargetImp * getRenderTarget()const
 			{
 				return mRenderTarget;
+			}
+			const decltype(mQueries) & getQueies()const
+			{
+				return mQueries;
+			}
+			Void addQueryResult(UInt32 result)
+			{
+				mQueryDatas.push_back(result);
+			}
+			Void clearQueryResult()
+			{
+				mQueryDatas.clear();
 			}
 			Boolean isFullViewport()const;
 			// Inherited via IViewport
@@ -80,6 +94,8 @@ namespace NSDevilX
 			virtual IQuery * createQuery(const String & name) override;
 			virtual IQuery * getQuery(const String & name) const override;
 			virtual Void destroyQuery(IQuery * query) override;
+			virtual const UInt32 * getQueryDatas() const override;
+			virtual UInt32 getQueryDatasCount() const override;
 
 			// Í¨¹ý IOverlay ¼Ì³Ð
 			virtual IOverlayElement * createElement(const String & name) override;

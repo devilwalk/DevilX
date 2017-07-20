@@ -1,4 +1,5 @@
 #pragma once
+#include "D3D11BufferUpdater.h"
 namespace NSDevilX
 {
 	namespace NSRenderSystem
@@ -12,7 +13,7 @@ namespace NSDevilX
 				,public TMessageReceiver<CSystemImp>
 			{
 			protected:
-				ID3D11Buffer * mBuffers[CEnum::EVertexBufferType_Count];
+				TResourcePtrVector<CBufferUpdater> mBuffers;
 			public:
 				CVertexBufferImp(IVertexBufferImp * interfaceImp);
 				~CVertexBufferImp();

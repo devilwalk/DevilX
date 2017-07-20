@@ -9,8 +9,8 @@ NSDevilX::NSRenderSystem::NSD3D11::CEntityImp::CEntityImp(IEntityImp * interface
 	,mTransformer(nullptr)
 {
 	_updateTransformer();
-	getInterfaceImp()->addListener(static_cast<TMessageReceiver<IEntityImp>*>(this),IEntityImp::EMessage_EndRenderableCreate);
-	getInterfaceImp()->addListener(static_cast<TMessageReceiver<IEntityImp>*>(this),IEntityImp::EMessage_BeginRenderableDestroy);
+	getInterfaceImp()->addListener(static_cast<TMessageReceiver<IEntityImp>*>(this),IEntityImp::EMessage_EndSubEntityCreate);
+	getInterfaceImp()->addListener(static_cast<TMessageReceiver<IEntityImp>*>(this),IEntityImp::EMessage_BeginSubEntityDestroy);
 	static_cast<ISceneElementImp*>(getInterfaceImp()->queryInterface_ISceneElement())->addListener(static_cast<TMessageReceiver<ISceneElementImp>*>(this),ISceneElementImp::EMessage_EndTransformerChange);
 }
 
@@ -22,14 +22,14 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CEntityImp::onMessage(IEntityImp * notif
 {
 	switch(message)
 	{
-	case IEntityImp::EMessage_EndRenderableCreate:
+	case IEntityImp::EMessage_EndSubEntityCreate:
 	{
-		auto renderable=DEVILX_NEW CEntityRenderableImp(static_cast<IEntityRenderableImp*>(data),this);
-		mRenderables[static_cast<IEntityRenderableImp*>(data)]=renderable;
+		auto renderable=DEVILX_NEW CSubEntityImp(static_cast<ISubEntityImp*>(data),this);
+		mSubEntities[static_cast<ISubEntityImp*>(data)]=renderable;
 	}
 	break;
-	case IEntityImp::EMessage_BeginRenderableDestroy:
-		mRenderables.destroy(static_cast<IEntityRenderableImp*>(data));
+	case IEntityImp::EMessage_BeginSubEntityDestroy:
+		mSubEntities.destroy(static_cast<ISubEntityImp*>(data));
 		break;
 	}
 }

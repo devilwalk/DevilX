@@ -28,10 +28,9 @@
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\ILightImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\Include.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IOverlayElementImp.h" />
-    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IEntityRenderableImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\ISubEntityImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IEntityImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IQueryImp.h" />
-    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IQueryObjectImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IRenderableSurfaceImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IRenderTargetImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IResourceManagerImp.h" />
@@ -48,7 +47,7 @@
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IWindowImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\SceneManager.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\Shader\DefnitionShaderCodeFunction.h" />
-    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderEntityRenderable.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderSubEntity.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderEntity.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderableSurface.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderCamera.h" />
@@ -61,7 +60,6 @@
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderOverlay.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderOverlayElement.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderQuery.h" />
-    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderQueryObject.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderResourceManager.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderScene.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderSceneElement.h" />
@@ -86,10 +84,9 @@
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IIndexBufferImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\ILightImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IOverlayElementImp.cpp" />
-    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IEntityRenderableImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\ISubEntityImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IEntityImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IQueryImp.cpp" />
-    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IQueryObjectImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IRenderableSurfaceImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IRenderTargetImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IResourceManagerImp.cpp" />

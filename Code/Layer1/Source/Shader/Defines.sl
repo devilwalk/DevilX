@@ -4,8 +4,8 @@
 #ifndef GLSLES_VERSION
 	#define GLSLES_VERSION 0
 #endif
-#ifndef HLSL_VERSION
-	#define HLSL_VERSION 0
+#ifndef DEVILX_HLSL_VERSION
+	#define DEVILX_HLSL_VERSION 0
 #endif
 #if (GLSL_VERSION>=300)||(GLSLES_VERSION>=300)
 	#define float2 vec2
@@ -29,7 +29,7 @@
 	#define cbuffer layout(shared) uniform
 	#define lerp mix
 #endif
-#if (GLSL_VERSION>=300)||(GLSLES_VERSION>=300)||(HLSL_VERSION>=400)
+#if (GLSL_VERSION>=300)||(GLSLES_VERSION>=300)||(DEVILX_HLSL_VERSION>=400)
 	#define DECL_CB(cb) cbuffer cb{
 	#define END_DECL };
 	#define CB_MEMBER uniform
@@ -38,7 +38,7 @@
 	#define END_DECL
 	#define CB_MEMBER
 #endif
-#if HLSL_VERSION
+#if DEVILX_HLSL_VERSION
 	#define SAMPLE_TEXTURE(tex_name,uv) g##tex_name##Texture.Sample(g##tex_name##SamplerState,uv)
 #else
 	#define SAMPLE_TEXTURE(tex_name,uv) texture(g##tex_name##Texture,uv)

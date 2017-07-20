@@ -26,6 +26,7 @@ namespace NSDevilX
 					ETechniqueType_Forward,
 					ETechniqueType_GBufferDS,
 					ETechniqueType_GBufferDL,
+					ETechniqueType_Query,
 					ETechniqueType_Count
 				};
 				enum EForwardPassType

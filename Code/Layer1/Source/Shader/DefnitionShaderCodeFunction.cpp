@@ -9,8 +9,8 @@ ClearViewport_hlsl="#ifndef GLSL_VERSION\r\n\
 #ifndef GLSLES_VERSION\r\n\
 	#define GLSLES_VERSION 0\r\n\
 #endif\r\n\
-#ifndef HLSL_VERSION\r\n\
-	#define HLSL_VERSION 0\r\n\
+#ifndef DEVILX_HLSL_VERSION\r\n\
+	#define DEVILX_HLSL_VERSION 0\r\n\
 #endif\r\n\
 #if (GLSL_VERSION>=300)||(GLSLES_VERSION>=300)\r\n\
 	#define float2 vec2\r\n\
@@ -34,7 +34,7 @@ ClearViewport_hlsl="#ifndef GLSL_VERSION\r\n\
 	#define cbuffer layout(shared) uniform\r\n\
 	#define lerp mix\r\n\
 #endif\r\n\
-#if (GLSL_VERSION>=300)||(GLSLES_VERSION>=300)||(HLSL_VERSION>=400)\r\n\
+#if (GLSL_VERSION>=300)||(GLSLES_VERSION>=300)||(DEVILX_HLSL_VERSION>=400)\r\n\
 	#define DECL_CB(cb) cbuffer cb{\r\n\
 	#define END_DECL };\r\n\
 	#define CB_MEMBER uniform\r\n\
@@ -43,13 +43,13 @@ ClearViewport_hlsl="#ifndef GLSL_VERSION\r\n\
 	#define END_DECL\r\n\
 	#define CB_MEMBER\r\n\
 #endif\r\n\
-#if HLSL_VERSION\r\n\
+#if DEVILX_HLSL_VERSION\r\n\
 	#define SAMPLE_TEXTURE(tex_name,uv) g##tex_name##Texture.Sample(g##tex_name##SamplerState,uv)\r\n\
 #else\r\n\
 	#define SAMPLE_TEXTURE(tex_name,uv) texture(g##tex_name##Texture,uv)\r\n\
 #endif\r\n\
 \r\n\
-#if HLSL_VERSION==0\r\n\
+#if DEVILX_HLSL_VERSION==0\r\n\
 float2 mul(float2 v,float2x2 m){return v*m;}\r\n\
 float3 mul(float2 v,float3x2 m){return v*m;}\r\n\
 float4 mul(float2 v,float4x2 m){return v*m;}\r\n\
@@ -78,7 +78,7 @@ float4 saturate(float4 v){return clamp(v,float4(0.0),float4(1.0));}\r\n\
 #endif\r\n\
 float3x3 convert(float4x4 v)\r\n\
 {\r\n\
-#if HLSL_VERSION\r\n\
+#if DEVILX_HLSL_VERSION\r\n\
 	return (float3x3)v;\r\n\
 #else\r\n\
 	return float3x3(v);\r\n\
@@ -248,8 +248,8 @@ ClearViewportPixel_glsl="#ifndef GLSL_VERSION\r\n\
 #ifndef GLSLES_VERSION\r\n\
 	#define GLSLES_VERSION 0\r\n\
 #endif\r\n\
-#ifndef HLSL_VERSION\r\n\
-	#define HLSL_VERSION 0\r\n\
+#ifndef DEVILX_HLSL_VERSION\r\n\
+	#define DEVILX_HLSL_VERSION 0\r\n\
 #endif\r\n\
 #if (GLSL_VERSION>=300)||(GLSLES_VERSION>=300)\r\n\
 	#define float2 vec2\r\n\
@@ -273,7 +273,7 @@ ClearViewportPixel_glsl="#ifndef GLSL_VERSION\r\n\
 	#define cbuffer layout(shared) uniform\r\n\
 	#define lerp mix\r\n\
 #endif\r\n\
-#if (GLSL_VERSION>=300)||(GLSLES_VERSION>=300)||(HLSL_VERSION>=400)\r\n\
+#if (GLSL_VERSION>=300)||(GLSLES_VERSION>=300)||(DEVILX_HLSL_VERSION>=400)\r\n\
 	#define DECL_CB(cb) cbuffer cb{\r\n\
 	#define END_DECL };\r\n\
 	#define CB_MEMBER uniform\r\n\
@@ -282,7 +282,7 @@ ClearViewportPixel_glsl="#ifndef GLSL_VERSION\r\n\
 	#define END_DECL\r\n\
 	#define CB_MEMBER\r\n\
 #endif\r\n\
-#if HLSL_VERSION\r\n\
+#if DEVILX_HLSL_VERSION\r\n\
 	#define SAMPLE_TEXTURE(tex_name,uv) g##tex_name##Texture.Sample(g##tex_name##SamplerState,uv)\r\n\
 #else\r\n\
 	#define SAMPLE_TEXTURE(tex_name,uv) texture(g##tex_name##Texture,uv)\r\n\
@@ -301,7 +301,7 @@ CB_MEMBER float gClearDepth;\r\n\
 END_DECL\r\n\
 \r\n\
 \r\n\
-#if HLSL_VERSION==0\r\n\
+#if DEVILX_HLSL_VERSION==0\r\n\
 float2 mul(float2 v,float2x2 m){return v*m;}\r\n\
 float3 mul(float2 v,float3x2 m){return v*m;}\r\n\
 float4 mul(float2 v,float4x2 m){return v*m;}\r\n\
@@ -330,7 +330,7 @@ float4 saturate(float4 v){return clamp(v,float4(0.0),float4(1.0));}\r\n\
 #endif\r\n\
 float3x3 convert(float4x4 v)\r\n\
 {\r\n\
-#if HLSL_VERSION\r\n\
+#if DEVILX_HLSL_VERSION\r\n\
 	return (float3x3)v;\r\n\
 #else\r\n\
 	return float3x3(v);\r\n\
@@ -483,8 +483,8 @@ ClearViewportVertex_glsl="#ifndef GLSL_VERSION\r\n\
 #ifndef GLSLES_VERSION\r\n\
 	#define GLSLES_VERSION 0\r\n\
 #endif\r\n\
-#ifndef HLSL_VERSION\r\n\
-	#define HLSL_VERSION 0\r\n\
+#ifndef DEVILX_HLSL_VERSION\r\n\
+	#define DEVILX_HLSL_VERSION 0\r\n\
 #endif\r\n\
 #if (GLSL_VERSION>=300)||(GLSLES_VERSION>=300)\r\n\
 	#define float2 vec2\r\n\
@@ -508,7 +508,7 @@ ClearViewportVertex_glsl="#ifndef GLSL_VERSION\r\n\
 	#define cbuffer layout(shared) uniform\r\n\
 	#define lerp mix\r\n\
 #endif\r\n\
-#if (GLSL_VERSION>=300)||(GLSLES_VERSION>=300)||(HLSL_VERSION>=400)\r\n\
+#if (GLSL_VERSION>=300)||(GLSLES_VERSION>=300)||(DEVILX_HLSL_VERSION>=400)\r\n\
 	#define DECL_CB(cb) cbuffer cb{\r\n\
 	#define END_DECL };\r\n\
 	#define CB_MEMBER uniform\r\n\
@@ -517,7 +517,7 @@ ClearViewportVertex_glsl="#ifndef GLSL_VERSION\r\n\
 	#define END_DECL\r\n\
 	#define CB_MEMBER\r\n\
 #endif\r\n\
-#if HLSL_VERSION\r\n\
+#if DEVILX_HLSL_VERSION\r\n\
 	#define SAMPLE_TEXTURE(tex_name,uv) g##tex_name##Texture.Sample(g##tex_name##SamplerState,uv)\r\n\
 #else\r\n\
 	#define SAMPLE_TEXTURE(tex_name,uv) texture(g##tex_name##Texture,uv)\r\n\
@@ -536,7 +536,7 @@ CB_MEMBER float gClearDepth;\r\n\
 END_DECL\r\n\
 \r\n\
 \r\n\
-#if HLSL_VERSION==0\r\n\
+#if DEVILX_HLSL_VERSION==0\r\n\
 float2 mul(float2 v,float2x2 m){return v*m;}\r\n\
 float3 mul(float2 v,float3x2 m){return v*m;}\r\n\
 float4 mul(float2 v,float4x2 m){return v*m;}\r\n\
@@ -565,7 +565,7 @@ float4 saturate(float4 v){return clamp(v,float4(0.0),float4(1.0));}\r\n\
 #endif\r\n\
 float3x3 convert(float4x4 v)\r\n\
 {\r\n\
-#if HLSL_VERSION\r\n\
+#if DEVILX_HLSL_VERSION\r\n\
 	return (float3x3)v;\r\n\
 #else\r\n\
 	return float3x3(v);\r\n\
@@ -701,8 +701,8 @@ ForwardPixelShader_glsl="#ifndef GLSL_VERSION\r\n\
 #ifndef GLSLES_VERSION\r\n\
 	#define GLSLES_VERSION 0\r\n\
 #endif\r\n\
-#ifndef HLSL_VERSION\r\n\
-	#define HLSL_VERSION 0\r\n\
+#ifndef DEVILX_HLSL_VERSION\r\n\
+	#define DEVILX_HLSL_VERSION 0\r\n\
 #endif\r\n\
 #if (GLSL_VERSION>=300)||(GLSLES_VERSION>=300)\r\n\
 	#define float2 vec2\r\n\
@@ -726,7 +726,7 @@ ForwardPixelShader_glsl="#ifndef GLSL_VERSION\r\n\
 	#define cbuffer layout(shared) uniform\r\n\
 	#define lerp mix\r\n\
 #endif\r\n\
-#if (GLSL_VERSION>=300)||(GLSLES_VERSION>=300)||(HLSL_VERSION>=400)\r\n\
+#if (GLSL_VERSION>=300)||(GLSLES_VERSION>=300)||(DEVILX_HLSL_VERSION>=400)\r\n\
 	#define DECL_CB(cb) cbuffer cb{\r\n\
 	#define END_DECL };\r\n\
 	#define CB_MEMBER uniform\r\n\
@@ -735,13 +735,13 @@ ForwardPixelShader_glsl="#ifndef GLSL_VERSION\r\n\
 	#define END_DECL\r\n\
 	#define CB_MEMBER\r\n\
 #endif\r\n\
-#if HLSL_VERSION\r\n\
+#if DEVILX_HLSL_VERSION\r\n\
 	#define SAMPLE_TEXTURE(tex_name,uv) g##tex_name##Texture.Sample(g##tex_name##SamplerState,uv)\r\n\
 #else\r\n\
 	#define SAMPLE_TEXTURE(tex_name,uv) texture(g##tex_name##Texture,uv)\r\n\
 #endif\r\n\
 \r\n\
-#if HLSL_VERSION==0\r\n\
+#if DEVILX_HLSL_VERSION==0\r\n\
 float2 mul(float2 v,float2x2 m){return v*m;}\r\n\
 float3 mul(float2 v,float3x2 m){return v*m;}\r\n\
 float4 mul(float2 v,float4x2 m){return v*m;}\r\n\
@@ -770,7 +770,7 @@ float4 saturate(float4 v){return clamp(v,float4(0.0),float4(1.0));}\r\n\
 #endif\r\n\
 float3x3 convert(float4x4 v)\r\n\
 {\r\n\
-#if HLSL_VERSION\r\n\
+#if DEVILX_HLSL_VERSION\r\n\
 	return (float3x3)v;\r\n\
 #else\r\n\
 	return float3x3(v);\r\n\
@@ -942,8 +942,8 @@ float3 getCameraRight()\r\n\
 }\r\n\
 float3 calcHemisphereLightColour(float3 worldNormal)\r\n\
 {\r\n\
-	float factor=calcHemisphereLightFactor(-gSkyLightDirection,worldNormal);\r\n\
-	return lerp(gGroundColour,gSkyColour,float3(factor));\r\n\
+	float3 factor=calcHemisphereLightFactor(-gSkyLightDirection,worldNormal);\r\n\
+	return lerp(gGroundColour,gSkyColour,factor);\r\n\
 }\r\n\
 \r\n\
 \r\n\
@@ -1133,8 +1133,8 @@ ForwardShader_hlsl="#ifndef GLSL_VERSION\r\n\
 #ifndef GLSLES_VERSION\r\n\
 	#define GLSLES_VERSION 0\r\n\
 #endif\r\n\
-#ifndef HLSL_VERSION\r\n\
-	#define HLSL_VERSION 0\r\n\
+#ifndef DEVILX_HLSL_VERSION\r\n\
+	#define DEVILX_HLSL_VERSION 0\r\n\
 #endif\r\n\
 #if (GLSL_VERSION>=300)||(GLSLES_VERSION>=300)\r\n\
 	#define float2 vec2\r\n\
@@ -1158,7 +1158,7 @@ ForwardShader_hlsl="#ifndef GLSL_VERSION\r\n\
 	#define cbuffer layout(shared) uniform\r\n\
 	#define lerp mix\r\n\
 #endif\r\n\
-#if (GLSL_VERSION>=300)||(GLSLES_VERSION>=300)||(HLSL_VERSION>=400)\r\n\
+#if (GLSL_VERSION>=300)||(GLSLES_VERSION>=300)||(DEVILX_HLSL_VERSION>=400)\r\n\
 	#define DECL_CB(cb) cbuffer cb{\r\n\
 	#define END_DECL };\r\n\
 	#define CB_MEMBER uniform\r\n\
@@ -1167,13 +1167,13 @@ ForwardShader_hlsl="#ifndef GLSL_VERSION\r\n\
 	#define END_DECL\r\n\
 	#define CB_MEMBER\r\n\
 #endif\r\n\
-#if HLSL_VERSION\r\n\
+#if DEVILX_HLSL_VERSION\r\n\
 	#define SAMPLE_TEXTURE(tex_name,uv) g##tex_name##Texture.Sample(g##tex_name##SamplerState,uv)\r\n\
 #else\r\n\
 	#define SAMPLE_TEXTURE(tex_name,uv) texture(g##tex_name##Texture,uv)\r\n\
 #endif\r\n\
 \r\n\
-#if HLSL_VERSION==0\r\n\
+#if DEVILX_HLSL_VERSION==0\r\n\
 float2 mul(float2 v,float2x2 m){return v*m;}\r\n\
 float3 mul(float2 v,float3x2 m){return v*m;}\r\n\
 float4 mul(float2 v,float4x2 m){return v*m;}\r\n\
@@ -1202,7 +1202,7 @@ float4 saturate(float4 v){return clamp(v,float4(0.0),float4(1.0));}\r\n\
 #endif\r\n\
 float3x3 convert(float4x4 v)\r\n\
 {\r\n\
-#if HLSL_VERSION\r\n\
+#if DEVILX_HLSL_VERSION\r\n\
 	return (float3x3)v;\r\n\
 #else\r\n\
 	return float3x3(v);\r\n\
@@ -1374,8 +1374,8 @@ float3 getCameraRight()\r\n\
 }\r\n\
 float3 calcHemisphereLightColour(float3 worldNormal)\r\n\
 {\r\n\
-	float factor=calcHemisphereLightFactor(-gSkyLightDirection,worldNormal);\r\n\
-	return lerp(gGroundColour,gSkyColour,float3(factor));\r\n\
+	float3 factor=calcHemisphereLightFactor(-gSkyLightDirection,worldNormal);\r\n\
+	return lerp(gGroundColour,gSkyColour,factor);\r\n\
 }\r\n\
 \r\n\
 \r\n\
@@ -1626,8 +1626,8 @@ ForwardVertexShader_glsl="#ifndef GLSL_VERSION\r\n\
 #ifndef GLSLES_VERSION\r\n\
 	#define GLSLES_VERSION 0\r\n\
 #endif\r\n\
-#ifndef HLSL_VERSION\r\n\
-	#define HLSL_VERSION 0\r\n\
+#ifndef DEVILX_HLSL_VERSION\r\n\
+	#define DEVILX_HLSL_VERSION 0\r\n\
 #endif\r\n\
 #if (GLSL_VERSION>=300)||(GLSLES_VERSION>=300)\r\n\
 	#define float2 vec2\r\n\
@@ -1651,7 +1651,7 @@ ForwardVertexShader_glsl="#ifndef GLSL_VERSION\r\n\
 	#define cbuffer layout(shared) uniform\r\n\
 	#define lerp mix\r\n\
 #endif\r\n\
-#if (GLSL_VERSION>=300)||(GLSLES_VERSION>=300)||(HLSL_VERSION>=400)\r\n\
+#if (GLSL_VERSION>=300)||(GLSLES_VERSION>=300)||(DEVILX_HLSL_VERSION>=400)\r\n\
 	#define DECL_CB(cb) cbuffer cb{\r\n\
 	#define END_DECL };\r\n\
 	#define CB_MEMBER uniform\r\n\
@@ -1660,13 +1660,13 @@ ForwardVertexShader_glsl="#ifndef GLSL_VERSION\r\n\
 	#define END_DECL\r\n\
 	#define CB_MEMBER\r\n\
 #endif\r\n\
-#if HLSL_VERSION\r\n\
+#if DEVILX_HLSL_VERSION\r\n\
 	#define SAMPLE_TEXTURE(tex_name,uv) g##tex_name##Texture.Sample(g##tex_name##SamplerState,uv)\r\n\
 #else\r\n\
 	#define SAMPLE_TEXTURE(tex_name,uv) texture(g##tex_name##Texture,uv)\r\n\
 #endif\r\n\
 \r\n\
-#if HLSL_VERSION==0\r\n\
+#if DEVILX_HLSL_VERSION==0\r\n\
 float2 mul(float2 v,float2x2 m){return v*m;}\r\n\
 float3 mul(float2 v,float3x2 m){return v*m;}\r\n\
 float4 mul(float2 v,float4x2 m){return v*m;}\r\n\
@@ -1695,7 +1695,7 @@ float4 saturate(float4 v){return clamp(v,float4(0.0),float4(1.0));}\r\n\
 #endif\r\n\
 float3x3 convert(float4x4 v)\r\n\
 {\r\n\
-#if HLSL_VERSION\r\n\
+#if DEVILX_HLSL_VERSION\r\n\
 	return (float3x3)v;\r\n\
 #else\r\n\
 	return float3x3(v);\r\n\
@@ -1867,8 +1867,8 @@ float3 getCameraRight()\r\n\
 }\r\n\
 float3 calcHemisphereLightColour(float3 worldNormal)\r\n\
 {\r\n\
-	float factor=calcHemisphereLightFactor(-gSkyLightDirection,worldNormal);\r\n\
-	return lerp(gGroundColour,gSkyColour,float3(factor));\r\n\
+	float3 factor=calcHemisphereLightFactor(-gSkyLightDirection,worldNormal);\r\n\
+	return lerp(gGroundColour,gSkyColour,factor);\r\n\
 }\r\n\
 \r\n\
 \r\n\
@@ -2014,8 +2014,8 @@ OverlayPixelShader_glsl="#ifndef GLSL_VERSION\r\n\
 #ifndef GLSLES_VERSION\r\n\
 	#define GLSLES_VERSION 0\r\n\
 #endif\r\n\
-#ifndef HLSL_VERSION\r\n\
-	#define HLSL_VERSION 0\r\n\
+#ifndef DEVILX_HLSL_VERSION\r\n\
+	#define DEVILX_HLSL_VERSION 0\r\n\
 #endif\r\n\
 #if (GLSL_VERSION>=300)||(GLSLES_VERSION>=300)\r\n\
 	#define float2 vec2\r\n\
@@ -2039,7 +2039,7 @@ OverlayPixelShader_glsl="#ifndef GLSL_VERSION\r\n\
 	#define cbuffer layout(shared) uniform\r\n\
 	#define lerp mix\r\n\
 #endif\r\n\
-#if (GLSL_VERSION>=300)||(GLSLES_VERSION>=300)||(HLSL_VERSION>=400)\r\n\
+#if (GLSL_VERSION>=300)||(GLSLES_VERSION>=300)||(DEVILX_HLSL_VERSION>=400)\r\n\
 	#define DECL_CB(cb) cbuffer cb{\r\n\
 	#define END_DECL };\r\n\
 	#define CB_MEMBER uniform\r\n\
@@ -2048,13 +2048,13 @@ OverlayPixelShader_glsl="#ifndef GLSL_VERSION\r\n\
 	#define END_DECL\r\n\
 	#define CB_MEMBER\r\n\
 #endif\r\n\
-#if HLSL_VERSION\r\n\
+#if DEVILX_HLSL_VERSION\r\n\
 	#define SAMPLE_TEXTURE(tex_name,uv) g##tex_name##Texture.Sample(g##tex_name##SamplerState,uv)\r\n\
 #else\r\n\
 	#define SAMPLE_TEXTURE(tex_name,uv) texture(g##tex_name##Texture,uv)\r\n\
 #endif\r\n\
 \r\n\
-#if HLSL_VERSION==0\r\n\
+#if DEVILX_HLSL_VERSION==0\r\n\
 float2 mul(float2 v,float2x2 m){return v*m;}\r\n\
 float3 mul(float2 v,float3x2 m){return v*m;}\r\n\
 float4 mul(float2 v,float4x2 m){return v*m;}\r\n\
@@ -2083,7 +2083,7 @@ float4 saturate(float4 v){return clamp(v,float4(0.0),float4(1.0));}\r\n\
 #endif\r\n\
 float3x3 convert(float4x4 v)\r\n\
 {\r\n\
-#if HLSL_VERSION\r\n\
+#if DEVILX_HLSL_VERSION\r\n\
 	return (float3x3)v;\r\n\
 #else\r\n\
 	return float3x3(v);\r\n\
@@ -2244,8 +2244,8 @@ OverlayShader_hlsl="#ifndef GLSL_VERSION\r\n\
 #ifndef GLSLES_VERSION\r\n\
 	#define GLSLES_VERSION 0\r\n\
 #endif\r\n\
-#ifndef HLSL_VERSION\r\n\
-	#define HLSL_VERSION 0\r\n\
+#ifndef DEVILX_HLSL_VERSION\r\n\
+	#define DEVILX_HLSL_VERSION 0\r\n\
 #endif\r\n\
 #if (GLSL_VERSION>=300)||(GLSLES_VERSION>=300)\r\n\
 	#define float2 vec2\r\n\
@@ -2269,7 +2269,7 @@ OverlayShader_hlsl="#ifndef GLSL_VERSION\r\n\
 	#define cbuffer layout(shared) uniform\r\n\
 	#define lerp mix\r\n\
 #endif\r\n\
-#if (GLSL_VERSION>=300)||(GLSLES_VERSION>=300)||(HLSL_VERSION>=400)\r\n\
+#if (GLSL_VERSION>=300)||(GLSLES_VERSION>=300)||(DEVILX_HLSL_VERSION>=400)\r\n\
 	#define DECL_CB(cb) cbuffer cb{\r\n\
 	#define END_DECL };\r\n\
 	#define CB_MEMBER uniform\r\n\
@@ -2278,13 +2278,13 @@ OverlayShader_hlsl="#ifndef GLSL_VERSION\r\n\
 	#define END_DECL\r\n\
 	#define CB_MEMBER\r\n\
 #endif\r\n\
-#if HLSL_VERSION\r\n\
+#if DEVILX_HLSL_VERSION\r\n\
 	#define SAMPLE_TEXTURE(tex_name,uv) g##tex_name##Texture.Sample(g##tex_name##SamplerState,uv)\r\n\
 #else\r\n\
 	#define SAMPLE_TEXTURE(tex_name,uv) texture(g##tex_name##Texture,uv)\r\n\
 #endif\r\n\
 \r\n\
-#if HLSL_VERSION==0\r\n\
+#if DEVILX_HLSL_VERSION==0\r\n\
 float2 mul(float2 v,float2x2 m){return v*m;}\r\n\
 float3 mul(float2 v,float3x2 m){return v*m;}\r\n\
 float4 mul(float2 v,float4x2 m){return v*m;}\r\n\
@@ -2313,7 +2313,7 @@ float4 saturate(float4 v){return clamp(v,float4(0.0),float4(1.0));}\r\n\
 #endif\r\n\
 float3x3 convert(float4x4 v)\r\n\
 {\r\n\
-#if HLSL_VERSION\r\n\
+#if DEVILX_HLSL_VERSION\r\n\
 	return (float3x3)v;\r\n\
 #else\r\n\
 	return float3x3(v);\r\n\
@@ -2499,8 +2499,8 @@ OverlayVertexShader_glsl="#ifndef GLSL_VERSION\r\n\
 #ifndef GLSLES_VERSION\r\n\
 	#define GLSLES_VERSION 0\r\n\
 #endif\r\n\
-#ifndef HLSL_VERSION\r\n\
-	#define HLSL_VERSION 0\r\n\
+#ifndef DEVILX_HLSL_VERSION\r\n\
+	#define DEVILX_HLSL_VERSION 0\r\n\
 #endif\r\n\
 #if (GLSL_VERSION>=300)||(GLSLES_VERSION>=300)\r\n\
 	#define float2 vec2\r\n\
@@ -2524,7 +2524,7 @@ OverlayVertexShader_glsl="#ifndef GLSL_VERSION\r\n\
 	#define cbuffer layout(shared) uniform\r\n\
 	#define lerp mix\r\n\
 #endif\r\n\
-#if (GLSL_VERSION>=300)||(GLSLES_VERSION>=300)||(HLSL_VERSION>=400)\r\n\
+#if (GLSL_VERSION>=300)||(GLSLES_VERSION>=300)||(DEVILX_HLSL_VERSION>=400)\r\n\
 	#define DECL_CB(cb) cbuffer cb{\r\n\
 	#define END_DECL };\r\n\
 	#define CB_MEMBER uniform\r\n\
@@ -2533,13 +2533,13 @@ OverlayVertexShader_glsl="#ifndef GLSL_VERSION\r\n\
 	#define END_DECL\r\n\
 	#define CB_MEMBER\r\n\
 #endif\r\n\
-#if HLSL_VERSION\r\n\
+#if DEVILX_HLSL_VERSION\r\n\
 	#define SAMPLE_TEXTURE(tex_name,uv) g##tex_name##Texture.Sample(g##tex_name##SamplerState,uv)\r\n\
 #else\r\n\
 	#define SAMPLE_TEXTURE(tex_name,uv) texture(g##tex_name##Texture,uv)\r\n\
 #endif\r\n\
 \r\n\
-#if HLSL_VERSION==0\r\n\
+#if DEVILX_HLSL_VERSION==0\r\n\
 float2 mul(float2 v,float2x2 m){return v*m;}\r\n\
 float3 mul(float2 v,float3x2 m){return v*m;}\r\n\
 float4 mul(float2 v,float4x2 m){return v*m;}\r\n\
@@ -2568,7 +2568,7 @@ float4 saturate(float4 v){return clamp(v,float4(0.0),float4(1.0));}\r\n\
 #endif\r\n\
 float3x3 convert(float4x4 v)\r\n\
 {\r\n\
-#if HLSL_VERSION\r\n\
+#if DEVILX_HLSL_VERSION\r\n\
 	return (float3x3)v;\r\n\
 #else\r\n\
 	return float3x3(v);\r\n\
@@ -2710,6 +2710,251 @@ void main()\r\n\
 	oPosition=float4(iPosition,1.0);\r\n\
 	oMainUV=iMainUV;\r\n\
 	oDiffuse=iDiffuse;\r\n\
+}\r\n\
+\r\n\
+\r\n\
+";
+QueryShader_hlsl="#ifndef GLSL_VERSION\r\n\
+	#define GLSL_VERSION 0\r\n\
+#endif\r\n\
+#ifndef GLSLES_VERSION\r\n\
+	#define GLSLES_VERSION 0\r\n\
+#endif\r\n\
+#ifndef DEVILX_HLSL_VERSION\r\n\
+	#define DEVILX_HLSL_VERSION 0\r\n\
+#endif\r\n\
+#if (GLSL_VERSION>=300)||(GLSLES_VERSION>=300)\r\n\
+	#define float2 vec2\r\n\
+	#define float3 vec3\r\n\
+	#define float4 vec4\r\n\
+	#define int2 ivec2\r\n\
+	#define int3 ivec3\r\n\
+	#define int4 ivec4\r\n\
+	#define uint2 int2\r\n\
+	#define uint3 int3\r\n\
+	#define uint4 int4\r\n\
+	#define float2x2 mat2\r\n\
+	#define float2x3 mat2x3\r\n\
+	#define float2x4 mat2x4\r\n\
+	#define float3x2 mat3x2\r\n\
+	#define float3x3 mat3\r\n\
+	#define float3x4 mat3x4\r\n\
+	#define float4x2 mat4x2\r\n\
+	#define float4x3 mat4x3\r\n\
+	#define float4x4 mat4\r\n\
+	#define cbuffer layout(shared) uniform\r\n\
+	#define lerp mix\r\n\
+#endif\r\n\
+#if (GLSL_VERSION>=300)||(GLSLES_VERSION>=300)||(DEVILX_HLSL_VERSION>=400)\r\n\
+	#define DECL_CB(cb) cbuffer cb{\r\n\
+	#define END_DECL };\r\n\
+	#define CB_MEMBER uniform\r\n\
+#else\r\n\
+	#define DECL_CB(cb)\r\n\
+	#define END_DECL\r\n\
+	#define CB_MEMBER\r\n\
+#endif\r\n\
+#if DEVILX_HLSL_VERSION\r\n\
+	#define SAMPLE_TEXTURE(tex_name,uv) g##tex_name##Texture.Sample(g##tex_name##SamplerState,uv)\r\n\
+#else\r\n\
+	#define SAMPLE_TEXTURE(tex_name,uv) texture(g##tex_name##Texture,uv)\r\n\
+#endif\r\n\
+\r\n\
+#if DEVILX_HLSL_VERSION==0\r\n\
+float2 mul(float2 v,float2x2 m){return v*m;}\r\n\
+float3 mul(float2 v,float3x2 m){return v*m;}\r\n\
+float4 mul(float2 v,float4x2 m){return v*m;}\r\n\
+float2 mul(float3 v,float2x3 m){return v*m;}\r\n\
+float3 mul(float3 v,float3x3 m){return v*m;}\r\n\
+float4 mul(float3 v,float4x3 m){return v*m;}\r\n\
+float2 mul(float4 v,float2x4 m){return v*m;}\r\n\
+float3 mul(float4 v,float3x4 m){return v*m;}\r\n\
+float4 mul(float4 v,float4x4 m){return v*m;}\r\n\
+float2 mul(float2x2 m,float2 v){return m*v;}\r\n\
+float2 mul(float3x2 m,float3 v){return m*v;}\r\n\
+float2 mul(float4x2 m,float4 v){return m*v;}\r\n\
+float3 mul(float2x3 m,float2 v){return m*v;}\r\n\
+float3 mul(float3x3 m,float3 v){return m*v;}\r\n\
+float3 mul(float4x3 m,float4 v){return m*v;}\r\n\
+float4 mul(float2x4 m,float2 v){return m*v;}\r\n\
+float4 mul(float3x4 m,float3 v){return m*v;}\r\n\
+float4 mul(float4x4 m,float4 v){return m*v;}\r\n\
+float2x2 mul(float2x2 m0,float2x2 m1){return m0*m1;}\r\n\
+float3x3 mul(float3x3 m0,float3x3 m1){return m0*m1;}\r\n\
+float4x4 mul(float4x4 m0,float4x4 m1){return m0*m1;}\r\n\
+float saturate(float v){return clamp(v,0.0,1.0);}\r\n\
+float2 saturate(float2 v){return clamp(v,float2(0.0),float2(1.0));}\r\n\
+float3 saturate(float3 v){return clamp(v,float3(0.0),float3(1.0));}\r\n\
+float4 saturate(float4 v){return clamp(v,float4(0.0),float4(1.0));}\r\n\
+#endif\r\n\
+float3x3 convert(float4x4 v)\r\n\
+{\r\n\
+#if DEVILX_HLSL_VERSION\r\n\
+	return (float3x3)v;\r\n\
+#else\r\n\
+	return float3x3(v);\r\n\
+#endif\r\n\
+}\r\n\
+float getMaxComponment(float2 v)\r\n\
+{\r\n\
+	return max(v.x,v.y);\r\n\
+}\r\n\
+float getMaxComponment(float3 v)\r\n\
+{\r\n\
+	return max(v.x,getMaxComponment(v.yz));\r\n\
+}\r\n\
+float getMaxComponment(float4 v)\r\n\
+{\r\n\
+	return max(v.x,getMaxComponment(v.yzw));\r\n\
+}\r\n\
+float getMinComponment(float2 v)\r\n\
+{\r\n\
+	return min(v.x,v.y);\r\n\
+}\r\n\
+float getMinComponment(float3 v)\r\n\
+{\r\n\
+	return min(v.x,getMinComponment(v.yz));\r\n\
+}\r\n\
+float getMinComponment(float4 v)\r\n\
+{\r\n\
+	return min(v.x,getMinComponment(v.yzw));\r\n\
+}\r\n\
+float3 getCameraPosition(float4x4 viewMatrix)\r\n\
+{\r\n\
+	return -viewMatrix[3].xyz;\r\n\
+}\r\n\
+float3 getCameraDirection(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=convert(viewMatrix);\r\n\
+	return rot[2];\r\n\
+}\r\n\
+float3 getCameraUp(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=convert(viewMatrix);\r\n\
+	return rot[1];\r\n\
+}\r\n\
+float3 getCameraRight(float4x4 viewMatrix)\r\n\
+{\r\n\
+	float3x3 rot=convert(viewMatrix);\r\n\
+	return rot[0];\r\n\
+}\r\n\
+float calcHemisphereLightFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
+{\r\n\
+	float cos_the=dot(vertexToLightDirection,worldNormal);\r\n\
+	return cos_the*0.5+0.5;\r\n\
+}\r\n\
+float calcLambertDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
+{\r\n\
+	return saturate(dot(vertexToLightDirection,worldNormal));\r\n\
+}\r\n\
+float calcPhongSpecularFactor(float3 lightToVertexDirection,float3 worldNormal,float3 worldPosition,float3 vertexToCameraDirection)\r\n\
+{\r\n\
+	float3 reflect_dir=reflect(lightToVertexDirection,worldNormal);\r\n\
+	float factor=saturate(dot(reflect_dir,vertexToCameraDirection));\r\n\
+	return factor;\r\n\
+}\r\n\
+float calcBlinnPhongSpecularFactor(float3 vertexToLightDirection,float3 worldNormal,float3 worldPosition,float3 vertexToCameraDirection)\r\n\
+{\r\n\
+	float3 half_vector = normalize(vertexToCameraDirection + vertexToLightDirection);\r\n\
+	float specular_factor = saturate(dot(half_vector, worldNormal));\r\n\
+	return specular_factor;\r\n\
+}\r\n\
+float3 calcSphericalHarmonicsLightFactor(float3 worldNormal)\r\n\
+{\r\n\
+	const float c1=0.429043;\r\n\
+	const float c2=0.511664;\r\n\
+	const float c3=0.743125;\r\n\
+	const float c4=0.886227;\r\n\
+	const float c5=0.247708;\r\n\
+	const float3 l00=float3(0.871297,0.875222,0.864470);\r\n\
+	const float3 l1m1=float3(0.175058,0.245335,0.312891);\r\n\
+	const float3 l10=float3(0.034675,0.036107,0.037362);\r\n\
+	const float3 l11=float3(-0.004629,-0.029448,-0.048028);\r\n\
+	const float3 l2m2=float3(-0.120535,-0.121160,-0.117507);\r\n\
+	const float3 l2m1=float3(0.003242,0.003624,0.007511);\r\n\
+	const float3 l20=float3(-0.028667,-0.024926,-0.020998);\r\n\
+	const float3 l21=float3(-0.077539,-0.086325,-0.091591);\r\n\
+	const float3 l22=float3(-0.161784,-0.191783,0.219152);\r\n\
+	float3 factor=c1*l22*(worldNormal.x*worldNormal.x-worldNormal.y*worldNormal.y)\r\n\
+	+c3*l20*worldNormal.z*worldNormal.z\r\n\
+	+c4*l00\r\n\
+	-c5*l20\r\n\
+	+2.0*c1*l2m2*worldNormal.x*worldNormal.y\r\n\
+	+2.0*c1*l21*worldNormal.x*worldNormal.z\r\n\
+	+2.0*c1*l2m1*worldNormal.y*worldNormal.z\r\n\
+	+2.0*c2*l11*worldNormal.x\r\n\
+	+2.0*c2*l1m1*worldNormal.y\r\n\
+	+2.0*c2*l10*worldNormal.z;\r\n\
+	return factor;\r\n\
+}\r\n\
+//return 1意味着无衰减，return 0意味着完全衰减\r\n\
+float calcFalloffFactor(float current, float begin, float reciprocalRange)\r\n\
+{\r\n\
+	float factor=saturate((current - begin) * reciprocalRange);\r\n\
+    return 1.0 - factor*factor;\r\n\
+}\r\n\
+float3 encodeNormal(float3 normal)\r\n\
+{\r\n\
+	return normal / getMaxComponment(normal);\r\n\
+}\r\n\
+float2 getQuadPosition(int vertexID)\r\n\
+{\r\n\
+    float2 ret;\r\n\
+    if(0==vertexID)\r\n\
+        ret = float2(-1.0, 1.0);\r\n\
+    else if(1==vertexID)\r\n\
+        ret = float2(1.0, 1.0);\r\n\
+    else if(2==vertexID)\r\n\
+        ret = float2(-1.0, -1.0);\r\n\
+    else\r\n\
+        ret = float2(1.0, -1.0);\r\n\
+    return ret;\r\n\
+}\r\n\
+\r\n\
+\r\n\
+\r\n\
+struct SVertexShaderInput\r\n\
+{\r\n\
+    float3 mPosition : SV_Position;\r\n\
+    float2 mMainUV : TEXCOORD0;\r\n\
+    float4 mDiffuse : DIFFUSE;\r\n\
+};\r\n\
+struct SVertexShaderOutput\r\n\
+{\r\n\
+    float4 mPosition : SV_Position;\r\n\
+    float2 mMainUV : TEXCOORD0;\r\n\
+    float4 mDiffuse : DIFFUSE;\r\n\
+};\r\n\
+SVertexShaderOutput vsMain(SVertexShaderInput input)\r\n\
+{\r\n\
+    SVertexShaderOutput output = (SVertexShaderOutput) 0;\r\n\
+#define iPosition input.mPosition\r\n\
+#define iMainUV input.mMainUV\r\n\
+#define iDiffuse input.mDiffuse\r\n\
+#define oPosition output.mPosition\r\n\
+#define oMainUV output.mMainUV\r\n\
+#define oDiffuse output.mDiffuse\r\n\
+	oPosition=float4(iPosition,1.0);\r\n\
+	oMainUV=iMainUV;\r\n\
+	oDiffuse=iDiffuse;\r\n\
+    return output;\r\n\
+}\r\n\
+SamplerState gDiffuseSamplerState;\r\n\
+Texture2D<float4> gDiffuseTexture;\r\n\
+struct SPixelShaderOutput\r\n\
+{\r\n\
+    float4 mColour : SV_Target;\r\n\
+};\r\n\
+SPixelShaderOutput psMain(SVertexShaderOutput input)\r\n\
+{\r\n\
+    SPixelShaderOutput output = (SPixelShaderOutput) 0;\r\n\
+#if USE_DIFFUSE_TEXTURE\r\n\
+	float4 diffuse_texture_sampler = gDiffuseTexture.Sample(gDiffuseSamplerState, input.mMainUV);\r\n\
+#endif\r\n\
+#define iDiffuse input.mDiffuse\r\n\
+#define oColour output.mColour\r\n\
+oColour=iDiffuse;\r\n\
+    return output;\r\n\
 }\r\n\
 \r\n\
 \r\n\

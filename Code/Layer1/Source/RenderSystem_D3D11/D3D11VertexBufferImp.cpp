@@ -6,18 +6,13 @@ using namespace NSD3D11;
 NSDevilX::NSRenderSystem::NSD3D11::CVertexBufferImp::CVertexBufferImp(IVertexBufferImp * interfaceImp)
 	:TInterfaceObject<IVertexBufferImp>(interfaceImp)
 {
-	ZeroMemory(mBuffers,sizeof(mBuffers));
+	mBuffers.resize(CEnum::EVertexBufferType_Count);
 	_update();
 	CSystemImp::getSingleton().addListener(static_cast<TMessageReceiver<CSystemImp>*>(this),CSystemImp::EMessage_BeginFrame);
 }
 
 NSDevilX::NSRenderSystem::NSD3D11::CVertexBufferImp::~CVertexBufferImp()
 {
-	for(auto buffer:mBuffers)
-	{
-		if(buffer)
-			buffer->Release();
-	}
 }
 
 Void NSDevilX::NSRenderSystem::NSD3D11::CVertexBufferImp::onMessage(IVertexBufferImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
@@ -43,8 +38,7 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CVertexBufferImp::_update()
 		{
 			if(vb)
 			{
-				vb->Release();
-				vb=nullptr;
+				vb->setBuffer(nullptr);
 			}
 		}
 		getInterfaceImp()->removeDirtyFlag(IVertexBufferImp::EDirtyFlag_Count);
@@ -90,35 +84,35 @@ Bool NSDevilX::NSRenderSystem::NSD3D11::CVertexBufferImp::_update(CEnum::EVertex
 	switch(type)
 	{
 	case CEnum::EVertexBufferType_Position:
-		data_ptr=getInterfaceImp()->getPositions();
+		data_ptr=&getInterfaceImp()->getPositionsRef();
 		dirties=&getInterfaceImp()->getPositionsDirties();
 		break;
 	case CEnum::EVertexBufferType_Normal:
-		data_ptr=getInterfaceImp()->getNormals();
+		data_ptr=&getInterfaceImp()->getNormalsRef();
 		dirties=&getInterfaceImp()->getNormalsDirties();
 		break;
 	case CEnum::EVertexBufferType_Tangent:
-		data_ptr=getInterfaceImp()->getTangents();
+		data_ptr=&getInterfaceImp()->getTangentsRef();
 		dirties=&getInterfaceImp()->getTangentsDirties();
 		break;
 	case CEnum::EVertexBufferType_TextureCoord0:
-		data_ptr=getInterfaceImp()->getTextureCoords(IEnum::ETextureCoord_0);
+		data_ptr=&getInterfaceImp()->getTextureCoordsRef(IEnum::ETextureCoord_0);
 		dirties=&getInterfaceImp()->getTextureCoordsDities(IEnum::ETextureCoord_0);
 		break;
 	case CEnum::EVertexBufferType_TextureCoord1:
-		data_ptr=getInterfaceImp()->getTextureCoords(IEnum::ETextureCoord_1);
+		data_ptr=&getInterfaceImp()->getTextureCoordsRef(IEnum::ETextureCoord_1);
 		dirties=&getInterfaceImp()->getTextureCoordsDities(IEnum::ETextureCoord_1);
 		break;
 	case CEnum::EVertexBufferType_BlendWeight:
-		data_ptr=getInterfaceImp()->getBlendWeights();
+		data_ptr=&getInterfaceImp()->getBlendWeightsRef();
 		dirties=&getInterfaceImp()->getBlendWeightsDirties();
 		break;
 	case CEnum::EVertexBufferType_BlendIndex:
-		data_ptr=getInterfaceImp()->getBlendIndices();
+		data_ptr=&getInterfaceImp()->getBlendIndicesRef();
 		dirties=&getInterfaceImp()->getBlendIndicesDirties();
 		break;
 	case CEnum::EVertexBufferType_Diffuse:
-		data_ptr=getInterfaceImp()->getDiffuses();
+		data_ptr=&getInterfaceImp()->getDiffusesRef();
 		dirties=&getInterfaceImp()->getDiffusesDirties();
 		break;
 	default:
@@ -127,6 +121,12 @@ Bool NSDevilX::NSRenderSystem::NSD3D11::CVertexBufferImp::_update(CEnum::EVertex
 	if(nullptr==data_ptr)
 		return False;
 	if(!getBuffers()[type])
+	{
+		mBuffers[type]=DEVILX_NEW CBufferUpdater(CUtility::getStride(type));
+		mBuffers[type]->setDataSource(static_cast<const ConstVoidPtr*>(data_ptr));
+		mBuffers[type]->setDirtyRanges(dirties);
+	}
+	if(!getBuffers()[type]->get())
 	{
 		ID3D11Buffer * buf=nullptr;
 		D3D11_BUFFER_DESC desc;
@@ -137,25 +137,8 @@ Bool NSDevilX::NSRenderSystem::NSD3D11::CVertexBufferImp::_update(CEnum::EVertex
 		desc.ByteWidth=getInterfaceImp()->getCount()*desc.StructureByteStride;
 		desc.Usage=D3D11_USAGE_DEFAULT;
 		CSystemImp::getSingleton().getDevice()->CreateBuffer(&desc,nullptr,&buf);
-		mBuffers[type]=buf;
+		mBuffers[type]->setBuffer(buf);
 	}
-	if(dirties->empty())
-	{
-		if(data_ptr)
-			CSystemImp::getSingleton().getImmediateContext()->UpdateSubresource(getBuffers()[type],0,nullptr,data_ptr,getInterfaceImp()->getCount()*CUtility::getStride(type),getInterfaceImp()->getCount()*CUtility::getStride(type));
-	}
-	else
-	{
-		for(auto const & dirty:*dirties)
-		{
-			D3D11_BOX dst_box={0};
-			dst_box.left=dirty.getMin()*CUtility::getStride(type);
-			dst_box.right=(dirty.getMax()+1)*CUtility::getStride(type);
-			dst_box.bottom=1;
-			dst_box.back=1;
-			ConstVoidPtr src_ptr=reinterpret_cast<ConstVoidPtr>(reinterpret_cast<SizeT>(data_ptr)+dst_box.left);
-			CSystemImp::getSingleton().getImmediateContext()->UpdateSubresource(getBuffers()[type],0,&dst_box,src_ptr,dst_box.right-dst_box.left+1,dst_box.right-dst_box.left+1);
-		}
-	}
+	mBuffers[type]->update();
 	return True;
 }

@@ -25,7 +25,7 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CRenderOperation::process()
 	const UINT vertex_offsets[16]={0};
 	for(decltype(mPass->getVertexShader()->getInputElementDescs().size()) i=0;i<mPass->getVertexShader()->getInputElementDescs().size();++i)
 	{
-		vertex_buffers[i]=mGeometry->getVertexBuffer()->getBuffers()[mPass->getVertexShader()->getInputSlots()[i]];
+		vertex_buffers[i]=mGeometry->getVertexBuffer()->getBuffers()[mPass->getVertexShader()->getInputSlots()[i]]->get();
 		vertex_strides[i]=CUtility::getStride((CEnum::EVertexBufferType)mPass->getVertexShader()->getInputSlots()[i]);
 	}
 	if(mPass->getVertexShader()->getInputElementDescs().empty())

@@ -31,8 +31,7 @@ namespace NSDevilX
 				EContainerObjectType_Entity,
 				EContainerObjectType_Light,
 				EContainerObjectType_Camera,
-				EContainerObjectType_Sky,
-				EContainerObjectType_QueryObject
+				EContainerObjectType_Sky
 			};
 		protected:
 			const String mName;

@@ -23,8 +23,13 @@ IViewport * NSDevilX::NSRenderSystem::IQueryImp::getViewport() const
 
 Void NSDevilX::NSRenderSystem::IQueryImp::setArea(const CFloat2 & startPosition,const CFloat2 & endPosition)
 {
-	mStartPosition=startPosition;
-	mEndPosition=endPosition;
+	if((getStartPosition()!=startPosition)||(getEndPosition()!=endPosition))
+	{
+		notify(EMessage_BeginAreaChange);
+		mStartPosition=startPosition;
+		mEndPosition=endPosition;
+		notify(EMessage_EndAreaChange);
+	}
 }
 
 const CFloat2 & NSDevilX::NSRenderSystem::IQueryImp::getStartPosition() const

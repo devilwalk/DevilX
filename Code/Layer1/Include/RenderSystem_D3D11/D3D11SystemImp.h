@@ -127,7 +127,7 @@ namespace NSDevilX
 				CHullShader * getHullShader(ID3DBlob * code);
 				CDomainShader * getDomainShader(ID3DBlob * code);
 				CPixelShader * getPixelShader(ID3DBlob * code);
-				CScene * getScene(ISceneImp * interfaceImp)const
+				CSceneImp * getScene(ISceneImp * interfaceImp)const
 				{
 					return mScenes.get(interfaceImp);
 				}

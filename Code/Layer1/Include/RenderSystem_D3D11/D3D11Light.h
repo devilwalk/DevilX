@@ -7,7 +7,7 @@ namespace NSDevilX
 	{
 		namespace NSD3D11
 		{
-			class CScene;
+			class CSceneImp;
 			class CLight
 				:public TInterfaceObject<ILightImp>
 				,public TBaseObject<CLight>
@@ -15,11 +15,11 @@ namespace NSDevilX
 				,public TMessageReceiver<IColourUnitStateImp>
 			{
 			protected:
-				CScene * const mScene;
+				CSceneImp * const mScene;
 			public:
 				CLight(ILightImp * interfaceImp);
 				~CLight();
-				CScene * getScene()const
+				CSceneImp * getScene()const
 				{
 					return mScene;
 				}

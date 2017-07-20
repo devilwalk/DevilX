@@ -14,6 +14,7 @@ String ForwardVertexShader_glsl;
 String OverlayPixelShader_glsl;
 String OverlayShader_hlsl;
 String OverlayVertexShader_glsl;
+String QueryShader_hlsl;
 CDefinitionShader();
 };
 }

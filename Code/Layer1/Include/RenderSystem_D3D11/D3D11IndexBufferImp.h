@@ -1,4 +1,5 @@
 #pragma once
+#include "D3D11BufferUpdater.h"
 namespace NSDevilX
 {
 	namespace NSRenderSystem
@@ -12,13 +13,13 @@ namespace NSDevilX
 				,public TMessageReceiver<CSystemImp>
 			{
 			protected:
-				ID3D11Buffer * mBuffer;
+				CBufferUpdater * mBuffer;
 			public:
 				CIndexBufferImp(IIndexBufferImp * interfaceImp);
 				~CIndexBufferImp();
 				ID3D11Buffer * getBuffer()const
 				{
-					return mBuffer;
+					return mBuffer->get();
 				}
 				// Inherited via TInterfaceObject
 				virtual Void onMessage(IIndexBufferImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;

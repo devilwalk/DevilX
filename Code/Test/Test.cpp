@@ -10,7 +10,7 @@
 #include "CubeBlockSystem/ICubeBlockSystemInterface.h"
 #include "CubeBlockWorld/ICubeBlockWorldInterface.h"
 #include "UISystem/IUISystemInterface.h"
-#pragma comment(lib,"RenderSystem_D3D11.lib")
+#pragma comment(lib,"RenderSystem_D3D11.2017.lib")
 using namespace NSDevilX;
 class CPhysicalQueryResultReceiver
 	:public NSPhysicalSystem::IQueryResultReceiver
@@ -29,43 +29,8 @@ public:
 	}
 
 };
-NSNetworkSystem::ILink * gLocalSendLink=nullptr;
-NSNetworkSystem::ILink * gLocalReceiveLink=nullptr;
 int main()
 {
-	struct SNetworkSystemListener
-		:public NSNetworkSystem::ISystemListener
-	{
-	public:
-		TVector<String> mSendData;
-		SNetworkSystemListener()
-		{
-			for(SizeT i=0;i<300;++i)
-			{
-				mSendData.push_back(CStringConverter::toString(i));
-			}
-		}
-		virtual Void onSearch(String destIP,UInt16 port) override
-		{
-			if((!gLocalSendLink)&&(destIP=="127.0.0.1"))
-			{
-				gLocalSendLink=NSNetworkSystem::getSystem()->createLink(destIP,port);
-			}
-		}
-		virtual Void onConnect(String destIP,UInt16 port) override
-		{
-			if((!gLocalReceiveLink)&&(destIP=="127.0.0.1"))
-			{
-				gLocalReceiveLink=NSNetworkSystem::getSystem()->createLink(destIP,port);
-			}
-		}
-		virtual Void onDeconnect(NSNetworkSystem::ILink * link) override
-		{}
-	};
-	SNetworkSystemListener network_system_listener;
-	NSNetworkSystem::getSystem()->setListener(&network_system_listener);
-	NSNetworkSystem::getSystem()->search("127.0.0.1",49152,49200);
-	//CModule * game_module=DEVILX_NEW CModule("Game3D");
 	auto physical_scene=NSPhysicalSystem::getSystem()->createScene("Test");
 	auto physical_geometry=NSPhysicalSystem::getSystem()->queryInterface_IResourceManager()->createGeometry("Test");
 	auto physical_mesh=NSPhysicalSystem::getSystem()->queryInterface_IResourceManager()->createMesh("Test");
@@ -92,7 +57,7 @@ int main()
 	UInt32 window_size[]={800,600,400,200};
 	UInt32 current_window_size_index=0;
 	CWindow window;
-	window.setSize(CSInt2(window_size[current_window_size_index],window_size[current_window_size_index]));
+	window.setSize(CUInt2(window_size[current_window_size_index],window_size[current_window_size_index]));
 	MSG msg={0};
 	auto render_scene=NSRenderSystem::getSystem()->createScene("Test",NSRenderSystem::IEnum::ESceneManagerAlgorithm_Simple);
 	render_scene->setAmbientColour(CFloatRGBA::sRed);
@@ -119,11 +84,24 @@ int main()
 	auto render_spot_light_area=render_scene->createVisibleArea("Test_Spot");
 	render_spot_light_area->setBoundingBox(DirectX::BoundingBox(CFloat3::sZero,CFloat3(100.0f)));
 	render_spot_light_area->attachObject(render_spot_light->queryInterface_ISceneElement());
-	auto * render_window=NSRenderSystem::getSystem()->createWindow(window.getHandle());
+	auto * render_window=NSRenderSystem::getSystem()->createWindow(&window);
 	auto render_viewport=render_window->queryInterface_IRenderTarget()->createViewport("Test");
 	render_viewport->setCamera(render_camera);
 	render_viewport->setClearColour(CFloatRGBA::sBlack);
-	//render_viewport->setWidth(0.5f);
+	auto render_geometry=NSRenderSystem::getSystem()->queryInterface_IResourceManager()->createGeometry("Test");
+	render_geometry->getVertexBuffer()->setCount(3);
+	render_geometry->getVertexBuffer()->setPositions(positions);
+	RGBA diffuses[]={-1,-1,-1};
+	render_geometry->getVertexBuffer()->setDiffuses(diffuses);
+	auto render_entity=render_scene->createEntity("Test");
+	auto render_sub_entity=render_entity->createSubEntity("0");
+	render_sub_entity->setQueriable(True);
+	render_sub_entity->setGeometry(render_geometry);
+	render_sub_entity->setLightEnable(False);
+	render_sub_entity->setVisible(True);
+	UInt32 query_datas[]={666,666,666};
+	render_sub_entity->setQueryDatas(query_datas,3);
+	render_sub_entity->queryInterface_IGeometryUsage()->setVertexCount(3);
 
 	/*auto block_terrain_gen=NSCubeBlockWorld::getWorld()->getTerrainGenerator("Simple");
 	auto block_scene_manager=NSCubeBlockWorld::getWorld()->createSceneManager("Test",block_terrain_gen,render_scene);
@@ -134,19 +112,19 @@ int main()
 	auto ui_graphic_scene=NSUISystem::getSystem()->createGraphicScene(render_viewport);
 	auto ui_graphic_window_lt=ui_graphic_scene->createWindow("Test_LT");
 	ui_graphic_window_lt->queryInterface_IElement()->setPosition(CFloat2::sZero);
-	ui_graphic_window_lt->queryInterface_IElement()->setSize(CFloat2(0.5f));
+	ui_graphic_window_lt->queryInterface_IElement()->setSize(CFloat2(0.25f));
 	ui_graphic_window_lt->setColour(CFloatRGBA::sRed);
 	auto ui_graphic_window_rt=ui_graphic_scene->createWindow("Test_RT");
-	ui_graphic_window_rt->queryInterface_IElement()->setPosition(CFloat2(0.5f,0.0f));
-	ui_graphic_window_rt->queryInterface_IElement()->setSize(CFloat2(0.5f));
+	ui_graphic_window_rt->queryInterface_IElement()->setPosition(CFloat2(0.25f,0.0f));
+	ui_graphic_window_rt->queryInterface_IElement()->setSize(CFloat2(0.25f));
 	ui_graphic_window_rt->setColour(CFloatRGBA::sGreen);
 	auto ui_graphic_window_lb=ui_graphic_scene->createWindow("Test_LB");
-	ui_graphic_window_lb->queryInterface_IElement()->setPosition(CFloat2(0.0f,0.5f));
-	ui_graphic_window_lb->queryInterface_IElement()->setSize(CFloat2(0.5f));
+	ui_graphic_window_lb->queryInterface_IElement()->setPosition(CFloat2(0.0f,0.25f));
+	ui_graphic_window_lb->queryInterface_IElement()->setSize(CFloat2(0.25f));
 	ui_graphic_window_lb->setColour(CFloatRGBA::sBlue);
 	auto ui_graphic_window_rb=ui_graphic_scene->createWindow("Test_RB");
-	ui_graphic_window_rb->queryInterface_IElement()->setPosition(CFloat2(0.5f,0.5f));
-	ui_graphic_window_rb->queryInterface_IElement()->setSize(CFloat2(0.5f));
+	ui_graphic_window_rb->queryInterface_IElement()->setPosition(CFloat2(0.25f,0.25f));
+	ui_graphic_window_rb->queryInterface_IElement()->setSize(CFloat2(0.25f));
 	ui_graphic_window_rb->setColour(CFloatRGBA::sWhite);
 	struct SUIEvent
 		:public NSUISystem::IEvent
@@ -177,11 +155,23 @@ int main()
 		{
 			return CStringConverter::sBlank;
 		}
+		virtual Void setParent(IElement * parent) override
+		{
+
+		}
+		virtual IElement * getParent() const override
+		{
+			return nullptr;
+		}
 		virtual Void setPosition(const CFloat2 & position) override
 		{
 			mPosition=position;
 		}
 		virtual const CFloat2 & getPosition() const override
+		{
+			return mPosition;
+		}
+		virtual const CFloat2 & getDerivedPosition() const override
 		{
 			return mPosition;
 		}
@@ -192,6 +182,10 @@ int main()
 		{
 			return CFloat2::sZero;
 		}
+		virtual const CFloat2 & getDerivedSize() const override
+		{
+			return CFloat2::sZero;
+		}
 		virtual Void setOrder(Int32 order) override
 		{
 			mOrder=order;
@@ -199,6 +193,18 @@ int main()
 		virtual Int32 getOrder()const
 		{
 			return mOrder;
+		}
+		virtual Int32 getDerivedOrder() const override
+		{
+			return mOrder;
+		}
+		virtual CFloat2 convertSize(const CFloat2 & size,ECoord fromCoord,ECoord toCoord) const override
+		{
+			return CFloat2::sZero;
+		}
+		virtual CFloat2 convertPosition(const CFloat2 & position,ECoord fromCoord,ECoord toCoord) const override
+		{
+			return CFloat2::sZero;
 		}
 	};
 	SUIEvent mouse_left_button_down_event(SUIEvent::EType_MouseLeftButtonDown);
@@ -219,25 +225,25 @@ int main()
 	SUIEventListener ui_event_listener_lt("Test_LT");
 	auto ui_event_window_lt=ui_event_scene->createWindow("Test_LT");
 	ui_event_window_lt->queryInterface_IElement()->setPosition(CFloat2::sZero);
-	ui_event_window_lt->queryInterface_IElement()->setSize(CFloat2(0.5f));
+	ui_event_window_lt->queryInterface_IElement()->setSize(CFloat2(0.25f));
 	ui_event_window_lt->registerListener(&ui_event_listener_lt,SUIEvent::EType_MouseLeftButtonDown);
 	ui_event_window_lt->registerListener(&ui_event_listener_lt,SUIEvent::EType_MouseRightButtonDown);
 	SUIEventListener ui_event_listener_rt("Test_RT");
 	auto ui_event_window_rt=ui_event_scene->createWindow("Test_RT");
-	ui_event_window_rt->queryInterface_IElement()->setPosition(CFloat2(0.5f,0.0f));
-	ui_event_window_rt->queryInterface_IElement()->setSize(CFloat2(0.5f));
+	ui_event_window_rt->queryInterface_IElement()->setPosition(CFloat2(0.25f,0.0f));
+	ui_event_window_rt->queryInterface_IElement()->setSize(CFloat2(0.25f));
 	ui_event_window_rt->registerListener(&ui_event_listener_rt,SUIEvent::EType_MouseLeftButtonDown);
 	ui_event_window_rt->registerListener(&ui_event_listener_rt,SUIEvent::EType_MouseRightButtonDown);
 	SUIEventListener ui_event_listener_lb("Test_LB");
 	auto ui_event_window_lb=ui_event_scene->createWindow("Test_LB");
-	ui_event_window_lb->queryInterface_IElement()->setPosition(CFloat2(0.0f,0.5f));
-	ui_event_window_lb->queryInterface_IElement()->setSize(CFloat2(0.5f));
+	ui_event_window_lb->queryInterface_IElement()->setPosition(CFloat2(0.0f,0.25f));
+	ui_event_window_lb->queryInterface_IElement()->setSize(CFloat2(0.25f));
 	ui_event_window_lb->registerListener(&ui_event_listener_lb,SUIEvent::EType_MouseLeftButtonDown);
 	ui_event_window_lb->registerListener(&ui_event_listener_lb,SUIEvent::EType_MouseRightButtonDown);
 	SUIEventListener ui_event_listener_rb("Test_RB");
 	auto ui_event_window_rb=ui_event_scene->createWindow("Test_RB");
-	ui_event_window_rb->queryInterface_IElement()->setPosition(CFloat2(0.5f,0.5f));
-	ui_event_window_rb->queryInterface_IElement()->setSize(CFloat2(0.5f));
+	ui_event_window_rb->queryInterface_IElement()->setPosition(CFloat2(0.25f,0.25f));
+	ui_event_window_rb->queryInterface_IElement()->setSize(CFloat2(0.25f));
 	ui_event_window_rb->registerListener(&ui_event_listener_rb,SUIEvent::EType_MouseLeftButtonDown);
 	ui_event_window_rb->registerListener(&ui_event_listener_rb,SUIEvent::EType_MouseRightButtonDown);
 
@@ -247,67 +253,67 @@ int main()
 	CTimer timer;
 	auto yaw=0.0f;
 	auto pitch=0.0f;
-	auto mouse=NSInputSystem::getSystem()->getVirtualDeviceManager()->createDevice("Mouse",NSInputSystem::getSystem()->getPhysicalDeviceManager()->getDevice(0));
-	auto keyboard=NSInputSystem::getSystem()->getVirtualDeviceManager()->createDevice("Keyboard",NSInputSystem::getSystem()->getPhysicalDeviceManager()->getDevice(1));
-	while(keyboard->queryInterface_IKeyboard()->getButtonState(NSInputSystem::IEnum::EKeyType_ESCAPE)==NSInputSystem::IEnum::EButtonState_Released)
+	auto mouse=NSInputSystem::getSystem()->getVirtualDeviceManager()->createMouse("Mouse",NSInputSystem::getSystem()->getPhysicalDeviceManager()->getDevice(0));
+	auto keyboard=NSInputSystem::getSystem()->getVirtualDeviceManager()->createKeyboard("Keyboard",NSInputSystem::getSystem()->getPhysicalDeviceManager()->getDevice(1));
+	while(keyboard->getButtonState(NSInputSystem::IEnum::EKeyType_ESCAPE)!=NSInputSystem::IEnum::EButtonState_Pressed)
 	{
-		timer.updateLastTime();
-		timer.updateCurrentTime();
+		POINT cursor_pos;
+		GetCursorPos(&cursor_pos);
+		ScreenToClient(static_cast<HWND>(window.getHandle()),&cursor_pos);
 		auto delta_time=timer.getInMillisecond();
 		NSInputSystem::getSystem()->update();
 		String temp;
 		temp.resize(256);
-		sprintf_s(&temp[0],temp.size(),"%d,%d",mouse->queryInterface_IMouse()->getOffset().x,mouse->queryInterface_IMouse()->getOffset().y);
-		std::cout<<"Mouse Offset:"<<temp.c_str();
+		sprintf_s(&temp[0],temp.size(),"%d,%d",mouse->getPosition().x,mouse->getPosition().y);
+		std::cout<<"Mouse Position:"<<temp.c_str();
 
 		temp.clear();
 		temp.resize(256);
 		sprintf_s(&temp[0],temp.size(),"Left:%s,Right:%s,Middle:%s"
-			,mouse->queryInterface_IMouse()->getButtonState(NSInputSystem::IEnum::EMouseButtonType_Left)==NSInputSystem::IEnum::EButtonState_Released?"Released":"Pressed"
-			,mouse->queryInterface_IMouse()->getButtonState(NSInputSystem::IEnum::EMouseButtonType_Right)==NSInputSystem::IEnum::EButtonState_Released?"Released":"Pressed"
-			,mouse->queryInterface_IMouse()->getButtonState(NSInputSystem::IEnum::EMouseButtonType_Middle)==NSInputSystem::IEnum::EButtonState_Released?"Released":"Pressed"
+			,mouse->getButtonState(NSInputSystem::IEnum::EMouseButtonType_Left)==NSInputSystem::IEnum::EButtonState_Pressed?"Pressed":"Released"
+			,mouse->getButtonState(NSInputSystem::IEnum::EMouseButtonType_Right)==NSInputSystem::IEnum::EButtonState_Pressed?"Pressed":"Released"
+			,mouse->getButtonState(NSInputSystem::IEnum::EMouseButtonType_Middle)==NSInputSystem::IEnum::EButtonState_Pressed?"Pressed":"Released"
 			);
 		std::cout<<" Button State:"<<temp.c_str();
 
 		temp.clear();
 		temp.resize(256);
-		sprintf_s(&temp[0],temp.size(),"%d",mouse->queryInterface_IMouse()->getWheelOffset());
-		std::cout<<" WheelOffset:"<<temp.c_str();
+		sprintf_s(&temp[0],temp.size(),"%d",mouse->getWheelPosition());
+		std::cout<<" WheelPosition:"<<temp.c_str();
 		std::cout<<std::endl;
 		NSPhysicalSystem::getSystem()->update();
 		physical_ray_query->execute();
-		if(NSInputSystem::IEnum::EButtonState_Pressed==keyboard->queryInterface_IKeyboard()->getButtonState(NSInputSystem::IEnum::EKeyType_W))
+		if(NSInputSystem::IEnum::EButtonState_Pressed==keyboard->getButtonState(NSInputSystem::IEnum::EKeyType_W))
 			camera_node.setPosition(camera_node.getPosition()+camera_node.getDirection()*static_cast<Float>(delta_time)*0.001f*10);
-		if(NSInputSystem::IEnum::EButtonState_Pressed==keyboard->queryInterface_IKeyboard()->getButtonState(NSInputSystem::IEnum::EKeyType_S))
+		if(NSInputSystem::IEnum::EButtonState_Pressed==keyboard->getButtonState(NSInputSystem::IEnum::EKeyType_S))
 			camera_node.setPosition(camera_node.getPosition()-camera_node.getDirection()*static_cast<Float>(delta_time)*0.001f*10);
-		if(NSInputSystem::IEnum::EButtonState_Pressed==keyboard->queryInterface_IKeyboard()->getButtonState(NSInputSystem::IEnum::EKeyType_A))
+		if(NSInputSystem::IEnum::EButtonState_Pressed==keyboard->getButtonState(NSInputSystem::IEnum::EKeyType_A))
 			camera_node.setPosition(camera_node.getPosition()-camera_node.getRight()*static_cast<Float>(delta_time)*0.001f*10);
-		if(NSInputSystem::IEnum::EButtonState_Pressed==keyboard->queryInterface_IKeyboard()->getButtonState(NSInputSystem::IEnum::EKeyType_D))
+		if(NSInputSystem::IEnum::EButtonState_Pressed==keyboard->getButtonState(NSInputSystem::IEnum::EKeyType_D))
 			camera_node.setPosition(camera_node.getPosition()+camera_node.getRight()*static_cast<Float>(delta_time)*0.001f*10);
-		if(NSInputSystem::IEnum::EButtonState_Pressed==keyboard->queryInterface_IKeyboard()->getButtonState(NSInputSystem::IEnum::EKeyType_SPACE))
+		if(NSInputSystem::IEnum::EButtonState_Pressed==keyboard->getButtonState(NSInputSystem::IEnum::EKeyType_SPACE))
 		{
 			++current_window_size_index;
 			current_window_size_index=current_window_size_index%(sizeof(window_size)/sizeof(UInt32));
-			window.setSize(CSInt2(window_size[current_window_size_index],window_size[current_window_size_index]));
-			render_window->resize();
+			window.setSize(CUInt2(window_size[current_window_size_index],window_size[current_window_size_index]));
 		}
-		if(NSInputSystem::IEnum::EButtonState_Pressed==mouse->queryInterface_IMouse()->getButtonState(NSInputSystem::IEnum::EMouseButtonType_Left))
+		if(NSInputSystem::IEnum::EButtonState_Pressed==mouse->getButtonState(NSInputSystem::IEnum::EMouseButtonType_Left))
 		{
-			mouse_left_button_down_event.setPosition(mouse->queryInterface_IMouse()->getPosition()/static_cast<Float>(window_size[current_window_size_index]));
+			mouse_left_button_down_event.setPosition(CInt2(cursor_pos.x,cursor_pos.y)/static_cast<Float>(window_size[current_window_size_index]));
 		}
 		else
 		{
 			mouse_left_button_down_event.setPosition(CFloat2(10000.0f));
 		}
-		if(NSInputSystem::IEnum::EButtonState_Pressed==mouse->queryInterface_IMouse()->getButtonState(NSInputSystem::IEnum::EMouseButtonType_Right))
+		if(NSInputSystem::IEnum::EButtonState_Pressed==mouse->getButtonState(NSInputSystem::IEnum::EMouseButtonType_Right))
 		{
-			yaw+=mouse->queryInterface_IMouse()->getOffset().x*static_cast<Float>(delta_time)*0.001f*10;
-			pitch+=mouse->queryInterface_IMouse()->getOffset().y*static_cast<Float>(delta_time)*0.001f*10;
+			//yaw+=mouse->getOffset().x*static_cast<Float>(delta_time)*0.001f*10;
+			//pitch+=mouse->getOffset().y*static_cast<Float>(delta_time)*0.001f*10;
 			pitch=std::max<Float>(pitch,-90.0f);
 			pitch=std::min<Float>(pitch,90.0f);
 			camera_node.setRotation(yaw,0,pitch);
 
-			mouse_right_button_down_event.setPosition(mouse->queryInterface_IMouse()->getPosition()/static_cast<Float>(window_size[current_window_size_index]));
+			mouse_right_button_down_event.setPosition(CInt2(cursor_pos.x,cursor_pos.y)/static_cast<Float>(window_size[current_window_size_index]));
 		}
 		else
 		{
@@ -316,28 +322,13 @@ int main()
 		render_camera->queryInterface_ISceneElement()->getTransformer()->setPosition(camera_node.getDerivedPosition());
 		render_camera->queryInterface_ISceneElement()->getTransformer()->setOrientation(camera_node.getDerivedOrientation());
 		//block_loader->setBlockPosition(CSInt3(camera_node.getDerivedPosition())-CSInt3::sUnitY*2);
-		NSCubeBlockWorld::getWorld()->update();
+		//NSCubeBlockWorld::getWorld()->update();
 		NSRenderSystem::getSystem()->update();
 		NSNetworkSystem::getSystem()->update();
 
 		ui_event_scene->route(&mouse_left_button_down_event);
 		ui_event_scene->route(&mouse_right_button_down_event);
 
-		if(gLocalSendLink)
-		{
-			for(auto const & data:network_system_listener.mSendData)
-				gLocalSendLink->pushSendData(&data[0],static_cast<UInt32>(data.size()));
-		}
-		if(gLocalReceiveLink)
-		{
-			while(auto size=gLocalReceiveLink->getFirstReceiveDataSizeInBytes())
-			{
-				String receive_data;
-				receive_data.resize(size);
-				gLocalReceiveLink->popReceiveData(&receive_data[0]);
-				std::cout<<receive_data<<std::endl;
-			}
-		}
 		if(PeekMessage(&msg,static_cast<HWND>(window.getHandle()),0,0,PM_REMOVE))
 		{
 			TranslateMessage(&msg);

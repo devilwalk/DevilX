@@ -9,15 +9,18 @@ namespace NSDevilX
 	namespace NSRenderSystem
 	{
 		class IEntityImp;
-		class CRenderList;
-		class IEntityRenderableImp
-			:public IEntityRenderable
+		class ISubEntityImp
+			:public ISubEntity
 			,public CMessageNotifier
 			,public CUserDataContainer
 		{
 		public:
 			enum EMessage
 			{
+				EMessage_BeginRenderableChange,
+				EMessage_EndRenderableChange,
+				EMessage_BeginQueriableChange,
+				EMessage_EndQueriableChange,
 				EMessage_BeginGeometryChange,
 				EMessage_EndGeometryChange,
 				EMessage_BeginVisibleChange,
@@ -35,9 +38,22 @@ namespace NSDevilX
 				EMessage_BeginTransparentEnableChange,
 				EMessage_EndTransparentEnableChange
 			};
+			struct SDirties
+				:public CRangesI
+			{
+				using CRangesI::CRangesI;
+				Void addDirty(UInt32 offset,UInt32 count)
+				{
+					addRange(CRangeI(offset,count+offset-1));
+				}
+			};
 		protected:
 			const String mName;
 			IEntityImp * const mObject;
+			Bool mIsRenderable;
+			Bool mIsQueriable;
+			const UInt32 * mQueryDatas;
+			SDirties mQueryDataDirties;
 			IGeometryImp * mGeometry;
 			IGeometryUsageImp * mGeometryUsage;
 			Bool mVisible;
@@ -46,8 +62,16 @@ namespace NSDevilX
 			Bool mLightEnable,mTransparentEnable;
 			Float mAlphaTestValue;
 		public:
-			IEntityRenderableImp(const String & name,IEntityImp * object);
-			virtual ~IEntityRenderableImp();
+			ISubEntityImp(const String & name,IEntityImp * object);
+			virtual ~ISubEntityImp();
+			const SDirties & getQueryDatasDirties()const
+			{
+				return mQueryDataDirties;
+			}
+			const UInt32 * const & getQueryDatasRef()const
+			{
+				return mQueryDatas;
+			}
 			Boolean isAlphaTestEnable()const
 			{
 				return mAlphaTestValue>0;
@@ -55,9 +79,16 @@ namespace NSDevilX
 			IColourUnitStateImp * getColourUnitState(IEnum::EEntityColourUnitStateType type) const;
 			ITextureUnitStateImp * getTextureUnitState(IEnum::EEntityTextureUnitStateType type) const;
 			// Inherited via IRenderable
+			virtual IGeometryUsage * queryInterface_IGeometryUsage() const override;
 			virtual const String & getName() const override;
 			virtual IEntity * getEntity() const override;
-			virtual IGeometryUsage * queryInterface_IGeometryUsage() const override;
+			virtual Void setRenderable(Bool renderable) override;
+			virtual Bool isRenderable() const override;
+			virtual Void setQueriable(Bool queriable) override;
+			virtual Bool isQueriable() const override;
+			virtual Void setQueryDatas(const UInt32 * datas,UInt32 count) override;
+			virtual Void updateQueryDatas(UInt32 offset,UInt32 count) override;
+			virtual const UInt32 * getQueryDatas() const override;
 			virtual Void setVisible(Bool visible) override;
 			virtual Bool getVisible() const override;
 			virtual Void setGeometry(IGeometry * geometry) override;

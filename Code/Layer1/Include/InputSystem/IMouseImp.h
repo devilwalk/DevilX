@@ -37,7 +37,6 @@ namespace NSDevilX
 		public:
 			typedef std::array<IEnum::EButtonState,IEnum::EMouseButtonType_Last+1> ButtonStateList;
 		protected:
-			CInt3 mOffset;
 			CInt3 mPosition;
 			ButtonStateList mButtonStateList;
 			IMouseListener * mListener;
@@ -49,9 +48,7 @@ namespace NSDevilX
 			virtual Void update() override;
 			// Inherited via IMouse
 			virtual IVirtualDevice * queryInterface_IVirtualDevice() const override;
-			virtual const CInt2 & getOffset() const override;
 			virtual const CInt2 & getPosition() const override;
-			virtual Int32 getWheelOffset() const override;
 			virtual Int32 getWheelPosition() const override;
 			virtual IEnum::EButtonState getButtonState(IEnum::EMouseButtonType type) const override;
 			virtual UInt32 getFrameDataCount() const override;

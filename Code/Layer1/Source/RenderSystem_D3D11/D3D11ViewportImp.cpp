@@ -7,19 +7,24 @@ NSDevilX::NSRenderSystem::NSD3D11::CViewportImp::CViewportImp(IViewportImp * int
 	:TInterfaceObject<IViewportImp>(interfaceImp)
 	,mRenderTarget(CSystemImp::getSingleton().getWindow(static_cast<IWindowImp*>(interfaceImp->getRenderTarget())))
 	,mCamera(nullptr)
-	,mTask(nullptr)
+	,mRenderTask(nullptr)
+	,mQueryTask(nullptr)
 	,mOverlayManager(nullptr)
 {
 	mOverlayManager=DEVILX_NEW COverlayManager(this);
 	setInternal(DEVILX_NEW CViewport(getRenderTarget()->getInternal()));
 	_updateInternal();
 	_updateRenderTask();
+	_updateQueryTask();
 	getInterfaceImp()->addListener(static_cast<TMessageReceiver<IViewportImp>*>(this),IViewportImp::EMessage_EndWidthChange);
 	getInterfaceImp()->addListener(static_cast<TMessageReceiver<IViewportImp>*>(this),IViewportImp::EMessage_EndHeightChange);
 	getInterfaceImp()->addListener(static_cast<TMessageReceiver<IViewportImp>*>(this),IViewportImp::EMessage_EndLeftChange);
 	getInterfaceImp()->addListener(static_cast<TMessageReceiver<IViewportImp>*>(this),IViewportImp::EMessage_EndTopChange);
 	getInterfaceImp()->addListener(static_cast<TMessageReceiver<IViewportImp>*>(this),IViewportImp::EMessage_EndClearColourChange);
 	getInterfaceImp()->addListener(static_cast<TMessageReceiver<IViewportImp>*>(this),IViewportImp::EMessage_EndCameraChange);
+	getInterfaceImp()->addListener(static_cast<TMessageReceiver<IViewportImp>*>(this),IViewportImp::EMessage_EndQueryCreate);
+	getInterfaceImp()->addListener(static_cast<TMessageReceiver<IViewportImp>*>(this),IViewportImp::EMessage_BeginQueryDestroy);
+	getInterfaceImp()->addListener(static_cast<TMessageReceiver<IViewportImp>*>(this),IViewportImp::EMessage_EndQueryDestroy);
 	if(dynamic_cast<CWindowImp*>(getRenderTarget()))
 	{
 		static_cast<CWindowImp*>(getRenderTarget())->addListener(static_cast<TMessageReceiver<CWindowImp>*>(this),CWindowImp::EMessage_BeginResize);
@@ -29,7 +34,8 @@ NSDevilX::NSRenderSystem::NSD3D11::CViewportImp::CViewportImp(IViewportImp * int
 
 NSDevilX::NSRenderSystem::NSD3D11::CViewportImp::~CViewportImp()
 {
-	DEVILX_DELETE(mTask);
+	DEVILX_DELETE(mQueryTask);
+	DEVILX_DELETE(mRenderTask);
 	DEVILX_DELETE(getInternal());
 	DEVILX_DELETE(mOverlayManager);
 }
@@ -37,12 +43,16 @@ NSDevilX::NSRenderSystem::NSD3D11::CViewportImp::~CViewportImp()
 Void NSDevilX::NSRenderSystem::NSD3D11::CViewportImp::prepare()
 {
 	process();
-	mTask->prepare();
+	if(mQueryTask)
+		mQueryTask->prepare();
+	mRenderTask->prepare();
 }
 
 Void NSDevilX::NSRenderSystem::NSD3D11::CViewportImp::render()
 {
-	mTask->process();
+	if(mQueryTask)
+		mQueryTask->process();
+	mRenderTask->process();
 	mOverlayManager->render();
 }
 
@@ -60,13 +70,23 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CViewportImp::onMessage(IViewportImp * n
 		switch(getInterfaceImp()->getTechnique())
 		{
 		case IEnum::ERenderTechnique_Forward:
-			static_cast<CForwardRenderTask*>(mTask)->setClearColour(getInterfaceImp()->getClearColour());
+			static_cast<CForwardRenderTask*>(mRenderTask)->setClearColour(getInterfaceImp()->getClearColour());
 			break;
 		}
 		break;
 	case IViewportImp::EMessage_EndCameraChange:
 		mCamera=getInterfaceImp()->getCamera()?CSystemImp::getSingleton().getScene(static_cast<ISceneImp*>(static_cast<ISceneElementImp*>(getInterfaceImp()->getCamera()->queryInterface_ISceneElement())->getScene()))->getCamera(static_cast<ICameraImp*>(getInterfaceImp()->getCamera())):nullptr;
 		getInternal()->setCamera(mCamera);
+		break;
+	case IViewportImp::EMessage_EndQueryCreate:
+		_updateQueryTask();
+		static_cast<IQueryImp*>(data)->addListener(static_cast<TMessageReceiver<IQueryImp>*>(this),IQueryImp::EMessage_EndAreaChange);
+		break;
+	case IViewportImp::EMessage_BeginQueryDestroy:
+		mQueryTask->removeQueryRange(reinterpret_cast<SizeT>(data));
+		break;
+	case IViewportImp::EMessage_EndQueryDestroy:
+		_updateQueryTask();
 		break;
 	}
 }
@@ -76,10 +96,37 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CViewportImp::onMessage(CWindowImp * not
 	switch(message)
 	{
 	case CWindowImp::EMessage_BeginResize:
-		mTask->clearState();
+		mRenderTask->clearState();
+		if(mQueryTask)
+			mQueryTask->clearState();
 		break;
 	case CWindowImp::EMessage_EndResize:
 		_updateInternal();
+		break;
+	}
+}
+
+Void NSDevilX::NSRenderSystem::NSD3D11::CViewportImp::onMessage(CSystemImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
+{
+	switch(message)
+	{
+	case CSystemImp::EMessage_EndFrame:
+		mQueryTask->postProcess();
+		getInterfaceImp()->clearQueryResult();
+		for(auto result:mQueryTask->getQueryResults())
+		{
+			getInterfaceImp()->addQueryResult(result);
+		}
+		break;
+	}
+}
+
+Void NSDevilX::NSRenderSystem::NSD3D11::CViewportImp::onMessage(IQueryImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
+{
+	switch(message)
+	{
+	case IQueryImp::EMessage_EndAreaChange:
+		mQueryTask->setQueryRange(reinterpret_cast<SizeT>(notifier),notifier->getStartPosition(),notifier->getEndPosition());
 		break;
 	}
 }
@@ -110,12 +157,30 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CViewportImp::_updateInternal()
 
 Void NSDevilX::NSRenderSystem::NSD3D11::CViewportImp::_updateRenderTask()
 {
-	DEVILX_DELETE(mTask);
-	mTask=nullptr;
+	DEVILX_DELETE(mRenderTask);
+	mRenderTask=nullptr;
 	switch(getInterfaceImp()->getTechnique())
 	{
 	case IEnum::ERenderTechnique_Forward:
-		mTask=DEVILX_NEW CForwardRenderTask(getInternal());
+		mRenderTask=DEVILX_NEW CForwardRenderTask(getInternal());
 		break;
+	}
+}
+
+Void NSDevilX::NSRenderSystem::NSD3D11::CViewportImp::_updateQueryTask()
+{
+	if(getInterfaceImp()->getQueies().empty())
+	{
+		DEVILX_DELETE(mQueryTask);
+		mQueryTask=nullptr;
+		CSystemImp::getSingleton().removeListener(static_cast<TMessageReceiver<CSystemImp>*>(this),CSystemImp::EMessage_EndFrame);
+	}
+	else
+	{
+		if(!mQueryTask)
+		{
+			mQueryTask=DEVILX_NEW CQueryTask(getInternal());
+			CSystemImp::getSingleton().addListener(static_cast<TMessageReceiver<CSystemImp>*>(this),CSystemImp::EMessage_EndFrame);
+		}
 	}
 }

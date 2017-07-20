@@ -5,16 +5,18 @@ using namespace NSD3D11;
 
 NSDevilX::NSRenderSystem::NSD3D11::CIndexBufferImp::CIndexBufferImp(IIndexBufferImp * interfaceImp)
 	:TInterfaceObject<IIndexBufferImp>(interfaceImp)
-	,mBuffer(0)
+	,mBuffer(nullptr)
 {
+	mBuffer=DEVILX_NEW CBufferUpdater(sizeof(UInt32));
+	mBuffer->setDataSource(reinterpret_cast<const ConstVoidPtr*>(&getInterfaceImp()->getIndicesRef()));
+	mBuffer->setDirtyRanges(&getInterfaceImp()->getIndicesDirties());
 	_update();
 	CSystemImp::getSingleton().addListener(static_cast<TMessageReceiver<CSystemImp>*>(this),CSystemImp::EMessage_BeginFrame);
 }
 
 NSDevilX::NSRenderSystem::NSD3D11::CIndexBufferImp::~CIndexBufferImp()
 {
-	if(getBuffer())
-		mBuffer->Release();
+	DEVILX_DELETE(mBuffer);
 }
 
 Void NSDevilX::NSRenderSystem::NSD3D11::CIndexBufferImp::onMessage(IIndexBufferImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
@@ -36,11 +38,7 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CIndexBufferImp::_update()
 {
 	if(getInterfaceImp()->hasDirtyFlag(IIndexBufferImp::EDirtyFlag_Count))
 	{
-		if(getBuffer())
-		{
-			getBuffer()->Release();
-			mBuffer=nullptr;
-		}
+		mBuffer->setBuffer(nullptr);
 		getInterfaceImp()->removeDirtyFlag(IIndexBufferImp::EDirtyFlag_Count);
 	}
 	if(getInterfaceImp()->hasDirtyFlag(IIndexBufferImp::EDirtyFlag_Index))
@@ -58,26 +56,9 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CIndexBufferImp::_update()
 				desc.ByteWidth=getInterfaceImp()->getCount()*desc.StructureByteStride;
 				desc.Usage=D3D11_USAGE_DEFAULT;
 				CSystemImp::getSingleton().getDevice()->CreateBuffer(&desc,nullptr,&buf);
-				mBuffer=buf;
+				mBuffer->setBuffer(buf);
 			}
-			if(getInterfaceImp()->getIndicesDirties().empty())
-			{
-				if(getInterfaceImp()->getIndices())
-					CSystemImp::getSingleton().getImmediateContext()->UpdateSubresource(getBuffer(),0,nullptr,getInterfaceImp()->getIndices(),getInterfaceImp()->getCount()*sizeof(UInt32),getInterfaceImp()->getCount()*sizeof(UInt32));
-			}
-			else
-			{
-				for(auto const & dirty:getInterfaceImp()->getIndicesDirties())
-				{
-					D3D11_BOX dst_box={0};
-					dst_box.left=dirty.getMin()*sizeof(UInt32);
-					dst_box.right=(dirty.getMax()+1)*sizeof(UInt32);
-					dst_box.bottom=1;
-					dst_box.back=1;
-					ConstVoidPtr src_ptr=reinterpret_cast<ConstVoidPtr>(reinterpret_cast<SizeT>(getInterfaceImp()->getIndices())+dst_box.left);
-					CSystemImp::getSingleton().getImmediateContext()->UpdateSubresource(getBuffer(),0,&dst_box,src_ptr,dst_box.right-dst_box.left+1,dst_box.right-dst_box.left+1);
-				}
-			}
+			mBuffer->update();
 			getInterfaceImp()->removeDirtyFlag(IIndexBufferImp::EDirtyFlag_Index);
 		}
 	}

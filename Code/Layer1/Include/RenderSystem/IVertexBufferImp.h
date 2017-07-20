@@ -94,6 +94,34 @@ namespace NSDevilX
 			{
 				return mDiffusesDirty;
 			}
+			const CFloat3 * const & getPositionsRef()const
+			{
+				return mPositions;
+			}
+			const CFloat3 * const & getNormalsRef()const
+			{
+				return mNormals;
+			}
+			const CFloat3 * const & getTangentsRef()const
+			{
+				return mTangents;
+			}
+			const CFloat2 * const & getTextureCoordsRef(IEnum::ETextureCoord index=IEnum::ETextureCoord_0)const
+			{
+				return mTextureCoords[IEnum::ETextureCoord_0];
+			}
+			const CFloat4 * const & getBlendWeightsRef()const
+			{
+				return mBlendWeights;
+			}
+			const UInt8 * const & getBlendIndicesRef()const
+			{
+				return mBlendIndices;
+			}
+			const RGBA * const & getDiffusesRef()const
+			{
+				return mDiffuses;
+			}
 			virtual Void setCount(UInt32 count) override;
 			virtual UInt32 getCount() const override;
 			virtual Void setPositions(const CFloat3 * positions,UInt32 count=0) override;

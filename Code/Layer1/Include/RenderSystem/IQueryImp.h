@@ -7,7 +7,14 @@ namespace NSDevilX
 		class IQueryImp
 			:public IQuery
 			,public TBaseObject<IQueryImp>
+			,public CMessageNotifier
 		{
+		public:
+			enum EMessage
+			{
+				EMessage_BeginAreaChange,
+				EMessage_EndAreaChange
+			};
 		protected:
 			const String mName;
 			IViewportImp * const mViewport;

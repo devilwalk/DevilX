@@ -1,6 +1,6 @@
 #pragma once
 #include "IRenderSceneElement.h"
-#include "IRenderEntityRenderable.h"
+#include "IRenderSubEntity.h"
 namespace NSDevilX
 {
 	namespace NSRenderSystem
@@ -11,11 +11,11 @@ namespace NSDevilX
 			virtual ~IEntity(){}
 		public:
 			virtual ISceneElement * queryInterface_ISceneElement()const=0;
-			virtual IEntityRenderable * createRenderable(const String & name)=0;
-			virtual IEntityRenderable * getRenderable(const String & name)const=0;
-			virtual IEntityRenderable * getRenderable(UInt32 index)const=0;
-			virtual UInt32 getRenderableCount()const=0;
-			virtual Void destroyRenderable(IEntityRenderable * renderable)=0;
+			virtual ISubEntity * createSubEntity(const String & name)=0;
+			virtual ISubEntity * getSubEntity(const String & name)const=0;
+			virtual ISubEntity * getSubEntity(UInt32 index)const=0;
+			virtual UInt32 getSubEntityCount()const=0;
+			virtual Void destroySubEntity(ISubEntity * subEntity)=0;
 		};
 	}
 }

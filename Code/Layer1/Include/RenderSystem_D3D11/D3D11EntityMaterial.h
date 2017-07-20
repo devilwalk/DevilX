@@ -9,30 +9,31 @@ namespace NSDevilX
 	{
 		namespace NSD3D11
 		{
-			class CEntityRenderableImp;
+			class CSubEntityImp;
 			class CEntityMaterial
 				:public CConstantBufferContainer
 				,public TMessageReceiver<IColourUnitStateImp>
-				,public TMessageReceiver<IEntityRenderableImp>
+				,public TMessageReceiver<ISubEntityImp>
 			{
 			protected:
-				CEntityRenderableImp * const mRenderable;
-				CEntityTechnique * mTechniques[CEnum::ETechniqueType_Count];
+				CSubEntityImp * const mSubEntity;
+				std::array<CEntityTechnique*,CEnum::ETechniqueType_Count> mTechniques;
 			public:
-				CEntityMaterial(CEntityRenderableImp * renderable);
+				CEntityMaterial(CSubEntityImp * subEntity);
 				~CEntityMaterial();
-				CEntityRenderableImp * getRenderable()const
+				CSubEntityImp * getSubEntity()const
 				{
-					return mRenderable;
+					return mSubEntity;
 				}
 				CEntityTechnique * getTechnique(CEnum::ETechniqueType type)const
 				{
 					return mTechniques[type];
 				}
-
+			protected:
+				Void _refreshTechnique();
 				// Í¨¹ý TInterfaceObject ¼Ì³Ð
 				virtual Void onMessage(IColourUnitStateImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
-				virtual Void onMessage(IEntityRenderableImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
+				virtual Void onMessage(ISubEntityImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 				// Inherited via CConstantBufferContainer
 				virtual Void _updateConstantBuffer(Byte * buffer) override;
 			};

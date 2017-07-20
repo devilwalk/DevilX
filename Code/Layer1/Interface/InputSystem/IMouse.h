@@ -30,9 +30,7 @@ namespace NSDevilX
 			virtual ~IMouse(){}
 		public:
 			virtual IVirtualDevice * queryInterface_IVirtualDevice()const=0;
-			virtual const CInt2 & getOffset()const=0;
 			virtual const CInt2 & getPosition()const=0;
-			virtual Int32 getWheelOffset()const=0;
 			virtual Int32 getWheelPosition()const=0;
 			virtual IEnum::EButtonState getButtonState(IEnum::EMouseButtonType type)const=0;
 			virtual UInt32 getFrameDataCount()const=0;

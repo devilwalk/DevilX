@@ -5,7 +5,6 @@
 #include "IRenderEntity.h"
 #include "IRenderVisibleArea.h"
 #include "IRenderSky.h"
-#include "IRenderQueryObject.h"
 namespace NSDevilX
 {
 	namespace NSRenderSystem
@@ -32,9 +31,6 @@ namespace NSDevilX
 			virtual ISky * createSky(const String & name)=0;
 			virtual Void destroySky(ISky * sky)=0;
 			virtual ISky * getSky(const String & name)const=0;
-			virtual IQueryObject * createQueryObject(const String & name)=0;
-			virtual IQueryObject * getQueryObject(const String & name)const=0;
-			virtual Void destroyQueryObject(IQueryObject * obj)=0;
 			virtual Void setAmbientColour(const CColour & colour)=0;
 			virtual const CColour & getAmbientColour()const=0;
 		};
