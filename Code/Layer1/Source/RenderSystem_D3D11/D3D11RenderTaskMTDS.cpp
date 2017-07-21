@@ -46,7 +46,8 @@ NSDevilX::NSRenderSystem::NSD3D11::CRenderTask::~CRenderTask()
 
 Void NSDevilX::NSRenderSystem::NSD3D11::CRenderTask::submit()
 {
-	CSystemImp::getSingleton().getRenderTaskThreadPool()->submitMT(NSInternal::threadFunction,this,mThreadSyncGroupID);
+	if(_needSubmit())
+		CSystemImp::getSingleton().getRenderTaskThreadPool()->submitMT(NSInternal::threadFunction,this,mThreadSyncGroupID);
 }
 
 Void NSDevilX::NSRenderSystem::NSD3D11::CRenderTask::prepare()
@@ -71,9 +72,12 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CRenderTask::process()
 	CSystemImp::getSingleton().getRenderTaskThreadPool()->waitMT(mThreadSyncGroupID);
 	if(mTasks.empty())
 	{
-		CSystemImp::getSingleton().getImmediateContext()->ExecuteCommandList(mCommandList,FALSE);
-		mCommandList->Release();
-		mCommandList=nullptr;
+		if(mCommandList)
+		{
+			CSystemImp::getSingleton().getImmediateContext()->ExecuteCommandList(mCommandList,FALSE);
+			mCommandList->Release();
+			mCommandList=nullptr;
+		}
 	}
 	else
 	{
@@ -87,6 +91,11 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CRenderTask::process()
 
 Void NSDevilX::NSRenderSystem::NSD3D11::CRenderTask::postProcess()
 {}
+
+Boolean NSDevilX::NSRenderSystem::NSD3D11::CRenderTask::_needSubmit() const
+{
+	return true;
+}
 
 Void NSDevilX::NSRenderSystem::NSD3D11::CRenderTask::clearState()
 {
@@ -503,6 +512,11 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CQuerySceneTask::process()
 	mSubmitConstantBuffers.clear();
 }
 
+Boolean NSDevilX::NSRenderSystem::NSD3D11::CQuerySceneTask::_needSubmit() const
+{
+	return !mQueries.empty();
+}
+
 NSDevilX::NSRenderSystem::NSD3D11::CForwardRenderTask::CForwardRenderTask(CViewport * viewport)
 	:CRenderTask(viewport)
 {
@@ -595,22 +609,33 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CQueryTask::prepare()
 		for(auto & query_pair:mQueries)
 		{
 			auto & query=query_pair.second;
-			const CUInt4 new_box=query.mAreaPosition*CFloat4(mViewport->getInternal().Width,mViewport->getInternal().Height,mViewport->getInternal().Width,mViewport->getInternal().Height)+CFloat4(0,0,1.0f,1.0f)+CFloat4(mViewport->getInternal().TopLeftX,mViewport->getInternal().TopLeftY,mViewport->getInternal().TopLeftX,mViewport->getInternal().TopLeftY);
-			if(new_box!=CUInt4(query.mBox.left,query.mBox.top,query.mBox.right,query.mBox.bottom))
+			if((query.mAreaPosition>=CFloat4::sZero)&&(query.mAreaPosition<=CFloat4::sOne))
 			{
-				query.mBox.left=new_box.x;
-				query.mBox.top=new_box.y;
-				query.mBox.right=new_box.z;
-				query.mBox.bottom=new_box.w;
-				D3D11_BUFFER_DESC desc={0};
-				desc.BindFlags=D3D11_BIND_VERTEX_BUFFER;
-				desc.ByteWidth=(query.mBox.right-query.mBox.left)*(query.mBox.bottom-query.mBox.top)*(query.mBox.back-query.mBox.front)*sizeof(UInt32);
-				desc.CPUAccessFlags=D3D11_CPU_ACCESS_READ;
-				desc.StructureByteStride=sizeof(UInt32);
-				desc.Usage=D3D11_USAGE_STAGING;
-				CSystemImp::getSingleton().getDevice()->CreateBuffer(&desc,nullptr,&query.mBuffer);
+				const CUInt4 new_box=query.mAreaPosition*CFloat4(mViewport->getInternal().Width,mViewport->getInternal().Height,mViewport->getInternal().Width,mViewport->getInternal().Height)+CFloat4(0,0,1.0f,1.0f)+CFloat4(mViewport->getInternal().TopLeftX,mViewport->getInternal().TopLeftY,mViewport->getInternal().TopLeftX,mViewport->getInternal().TopLeftY);
+				if(((new_box.z-new_box.x)!=(query.mBox.right-query.mBox.left))||(new_box.w-new_box.y)!=(query.mBox.bottom-query.mBox.top))
+				{
+					D3D11_TEXTURE2D_DESC desc={0};
+					desc.ArraySize=1;
+					desc.BindFlags=0;
+					desc.CPUAccessFlags=D3D11_CPU_ACCESS_READ;
+					desc.Format=DXGI_FORMAT_R8G8B8A8_UNORM;
+					desc.Height=new_box.w-new_box.y;
+					desc.MipLevels=1;
+					desc.SampleDesc.Count=1;
+					desc.SampleDesc.Quality=0;
+					desc.Usage=D3D11_USAGE_STAGING;
+					desc.Width=new_box.z-new_box.x;
+					CSystemImp::getSingleton().getDevice()->CreateTexture2D(&desc,nullptr,&query.mBuffer);
+				}
+				if(new_box!=CUInt4(query.mBox.left,query.mBox.top,query.mBox.right,query.mBox.bottom))
+				{
+					query.mBox.left=new_box.x;
+					query.mBox.top=new_box.y;
+					query.mBox.right=new_box.z;
+					query.mBox.bottom=new_box.w;
+				}
+				static_cast<CQuerySceneTask*>(mTasks[1])->addQuery(query.mBox,query.mBuffer);
 			}
-			static_cast<CQuerySceneTask*>(mTasks[1])->addQuery(query.mBox,query.mBuffer);
 		}
 		mTasks[1]->submit();
 	}
@@ -621,14 +646,20 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CQueryTask::postProcess()
 	mQueryResults.clear();
 	for(auto & query_pair:mQueries)
 	{
-		auto & query=query_pair.second;
-		D3D11_MAPPED_SUBRESOURCE res;
-		CSystemImp::getSingleton().getImmediateContext()->Map(query.mBuffer,0,D3D11_MAP_READ,0,&res);
-		for(UInt32 i=0;i<res.RowPitch;i+=sizeof(UInt32))
+		auto const & query=query_pair.second;
+		if(query.mBuffer)
 		{
-			mQueryResults.insert(*reinterpret_cast<UInt32*>(static_cast<Byte*>(res.pData)+i));
+			D3D11_MAPPED_SUBRESOURCE res;
+			CSystemImp::getSingleton().getImmediateContext()->Map(query.mBuffer,0,D3D11_MAP_READ,0,&res);
+			for(UInt32 u=0;u<query.mBox.right-query.mBox.left;++u)
+			{
+				for(UInt32 v=0;v<query.mBox.bottom-query.mBox.top;++v)
+				{
+					mQueryResults.insert(*reinterpret_cast<UInt32*>(static_cast<Byte*>(res.pData)+v*res.RowPitch+u*sizeof(UInt32)));
+				}
+			}
+			CSystemImp::getSingleton().getImmediateContext()->Unmap(query.mBuffer,0);
 		}
-		CSystemImp::getSingleton().getImmediateContext()->Unmap(query.mBuffer,0);
 	}
 }
 

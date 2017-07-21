@@ -120,9 +120,6 @@
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4EntityMaterial.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4EntityRenderableImp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4EntityImp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -145,6 +142,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4OverlayRenderable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4SubEntityImp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -242,9 +242,6 @@
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4EntityMaterial.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4EntityRenderableImp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4EntityImp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -270,6 +267,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4SamplerObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4SubEntityImp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

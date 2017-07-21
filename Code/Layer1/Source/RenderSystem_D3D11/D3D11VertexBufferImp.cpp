@@ -6,7 +6,7 @@ using namespace NSD3D11;
 NSDevilX::NSRenderSystem::NSD3D11::CVertexBufferImp::CVertexBufferImp(IVertexBufferImp * interfaceImp)
 	:TInterfaceObject<IVertexBufferImp>(interfaceImp)
 {
-	mBuffers.resize(CEnum::EVertexBufferType_Count);
+	mBuffers.resize(CEnum::EVertexBufferType_GeometryCount);
 	_update();
 	CSystemImp::getSingleton().addListener(static_cast<TMessageReceiver<CSystemImp>*>(this),CSystemImp::EMessage_BeginFrame);
 }
@@ -126,7 +126,7 @@ Bool NSDevilX::NSRenderSystem::NSD3D11::CVertexBufferImp::_update(CEnum::EVertex
 		mBuffers[type]->setDataSource(static_cast<const ConstVoidPtr*>(data_ptr));
 		mBuffers[type]->setDirtyRanges(dirties);
 	}
-	if(!getBuffers()[type]->get())
+	if(!getBuffers()[type]->getBuffer())
 	{
 		ID3D11Buffer * buf=nullptr;
 		D3D11_BUFFER_DESC desc;

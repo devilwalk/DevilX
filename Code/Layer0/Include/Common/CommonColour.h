@@ -38,6 +38,14 @@ namespace NSDevilX
 		{
 			return static_cast<UInt8>(a()*255);
 		}
+		CFloat3 rgb()const
+		{
+			return CFloat3(r(),g(),b());
+		}
+		CFloat4 rgba()const
+		{
+			return CFloat4(r(),g(),b(),a());
+		}
 		virtual Float r()const=0;
 		virtual Float g()const=0;
 		virtual Float b()const=0;

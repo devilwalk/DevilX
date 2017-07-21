@@ -1,1 +1,1 @@
-oColour=iDiffuse;
+oColour=iQuery;

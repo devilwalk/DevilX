@@ -88,20 +88,25 @@ int main()
 	auto render_viewport=render_window->queryInterface_IRenderTarget()->createViewport("Test");
 	render_viewport->setCamera(render_camera);
 	render_viewport->setClearColour(CFloatRGBA::sBlack);
+	auto query=render_viewport->createQuery("Test");
+	query->setArea(CFloat2(-1.0f),CFloat2(-1.0f));
 	auto render_geometry=NSRenderSystem::getSystem()->queryInterface_IResourceManager()->createGeometry("Test");
 	render_geometry->getVertexBuffer()->setCount(3);
 	render_geometry->getVertexBuffer()->setPositions(positions);
-	RGBA diffuses[]={-1,-1,-1};
-	render_geometry->getVertexBuffer()->setDiffuses(diffuses);
 	auto render_entity=render_scene->createEntity("Test");
 	auto render_sub_entity=render_entity->createSubEntity("0");
 	render_sub_entity->setQueriable(True);
 	render_sub_entity->setGeometry(render_geometry);
 	render_sub_entity->setLightEnable(False);
+	render_sub_entity->getColourUnitState(NSRenderSystem::IEnum::EEntityColourUnitStateType_Emissive)->setEnable(True);
+	render_sub_entity->getColourUnitState(NSRenderSystem::IEnum::EEntityColourUnitStateType_Emissive)->setValue(CFloatRGBA::sWhite);
 	render_sub_entity->setVisible(True);
 	UInt32 query_datas[]={666,666,666};
 	render_sub_entity->setQueryDatas(query_datas,3);
 	render_sub_entity->queryInterface_IGeometryUsage()->setVertexCount(3);
+	auto render_visible_area=render_scene->createVisibleArea("Test_Entity");
+	render_visible_area->setBoundingBox(DirectX::BoundingBox(CFloat3::sZero,CFloat3(100.0f)));
+	render_visible_area->attachObject(render_entity->queryInterface_ISceneElement());
 
 	/*auto block_terrain_gen=NSCubeBlockWorld::getWorld()->getTerrainGenerator("Simple");
 	auto block_scene_manager=NSCubeBlockWorld::getWorld()->createSceneManager("Test",block_terrain_gen,render_scene);
@@ -257,9 +262,8 @@ int main()
 	auto keyboard=NSInputSystem::getSystem()->getVirtualDeviceManager()->createKeyboard("Keyboard",NSInputSystem::getSystem()->getPhysicalDeviceManager()->getDevice(1));
 	while(keyboard->getButtonState(NSInputSystem::IEnum::EKeyType_ESCAPE)!=NSInputSystem::IEnum::EButtonState_Pressed)
 	{
-		POINT cursor_pos;
-		GetCursorPos(&cursor_pos);
-		ScreenToClient(static_cast<HWND>(window.getHandle()),&cursor_pos);
+		query->setArea(CFloat2(-1.0f),CFloat2(-1.0f));
+		CInt2 cursor_pos=window.getCursorPosition();
 		auto delta_time=timer.getInMillisecond();
 		NSInputSystem::getSystem()->update();
 		String temp;
@@ -299,7 +303,8 @@ int main()
 		}
 		if(NSInputSystem::IEnum::EButtonState_Pressed==mouse->getButtonState(NSInputSystem::IEnum::EMouseButtonType_Left))
 		{
-			mouse_left_button_down_event.setPosition(CInt2(cursor_pos.x,cursor_pos.y)/static_cast<Float>(window_size[current_window_size_index]));
+			mouse_left_button_down_event.setPosition(cursor_pos/static_cast<Float>(window_size[current_window_size_index]));
+			query->setArea(cursor_pos/static_cast<Float>(window_size[current_window_size_index]),cursor_pos/static_cast<Float>(window_size[current_window_size_index]));
 		}
 		else
 		{
@@ -313,7 +318,7 @@ int main()
 			pitch=std::min<Float>(pitch,90.0f);
 			camera_node.setRotation(yaw,0,pitch);
 
-			mouse_right_button_down_event.setPosition(CInt2(cursor_pos.x,cursor_pos.y)/static_cast<Float>(window_size[current_window_size_index]));
+			mouse_right_button_down_event.setPosition(cursor_pos/static_cast<Float>(window_size[current_window_size_index]));
 		}
 		else
 		{

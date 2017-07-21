@@ -32,6 +32,8 @@ namespace NSDevilX
 				virtual Void process();
 				virtual Void postProcess();
 				Void clearState();
+			protected:
+				virtual Boolean _needSubmit()const;
 			};
 			class CClearViewportTask
 				:public CRenderTask
@@ -133,8 +135,8 @@ namespace NSDevilX
 					:public TBaseObject<SQuery>
 				{
 					const D3D11_BOX * mBox;
-					ID3D11Buffer * mBuffer;
-					SQuery(const D3D11_BOX & box,ID3D11Buffer * buffer)
+					ID3D11Texture2D * mBuffer;
+					SQuery(const D3D11_BOX & box,ID3D11Texture2D * buffer)
 						:mBox(&box)
 						,mBuffer(buffer)
 					{}
@@ -145,7 +147,7 @@ namespace NSDevilX
 			public:
 				CQuerySceneTask(CViewport * viewport);
 				~CQuerySceneTask();
-				Void addQuery(const D3D11_BOX & box,ID3D11Buffer * buffer)
+				Void addQuery(const D3D11_BOX & box,ID3D11Texture2D * buffer)
 				{
 					mQueries.push_back(SQuery(box,buffer));
 				}
@@ -155,6 +157,8 @@ namespace NSDevilX
 				}
 				virtual Void prepare() override;
 				virtual Void process() override;
+			protected:
+				virtual Boolean _needSubmit() const override;
 			};
 			class CForwardRenderTask
 				:public CRenderTask
@@ -189,7 +193,7 @@ namespace NSDevilX
 				{
 					CFloat4 mAreaPosition;
 					D3D11_BOX mBox;
-					CComPtr<ID3D11Buffer> mBuffer;
+					CComPtr<ID3D11Texture2D> mBuffer;
 					SQuery()
 						:mBox({0})
 					{

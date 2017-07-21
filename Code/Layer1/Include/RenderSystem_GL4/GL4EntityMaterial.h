@@ -9,21 +9,21 @@ namespace NSDevilX
 	{
 		namespace NSGL4
 		{
-			class CEntityRenderableImp;
+			class CSubEntityImp;
 			class CEntityMaterial
 				:public CConstantBufferContainer
 				,public TMessageReceiver<IColourUnitStateImp>
-				,public TMessageReceiver<IEntityRenderableImp>
+				,public TMessageReceiver<ISubEntityImp>
 			{
 			protected:
-				CEntityRenderableImp * const mRenderable;
+				CSubEntityImp * const mSubEntity;
 				CEntityTechnique * mTechniques[CEnum::ETechniqueType_Count];
 			public:
-				CEntityMaterial(CEntityRenderableImp * renderable);
+				CEntityMaterial(CSubEntityImp * subEntity);
 				~CEntityMaterial();
-				CEntityRenderableImp * getRenderable()const
+				CSubEntityImp * getSubEntity()const
 				{
-					return mRenderable;
+					return mSubEntity;
 				}
 				CEntityTechnique * getTechnique(CEnum::ETechniqueType type)const
 				{
@@ -32,7 +32,7 @@ namespace NSDevilX
 
 				// Í¨¹ý TInterfaceObject ¼Ì³Ð
 				virtual Void onMessage(IColourUnitStateImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
-				virtual Void onMessage(IEntityRenderableImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
+				virtual Void onMessage(ISubEntityImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 				// Inherited via CConstantBufferContainer
 				virtual Void _updateConstantBuffer(Byte * buffer) override;
 			};

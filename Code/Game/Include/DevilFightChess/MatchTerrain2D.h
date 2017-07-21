@@ -14,7 +14,7 @@ namespace NSDevilX
 			NSRenderSystem::IGeometry * mGeometry;
 			NSRenderSystem::IEntity * mRenderEntity;
 			NSRenderSystem::IVisibleArea * mRenderVisibleArea;
-			TMap<CMatchMapGridRenderMaterial2D*,TList<NSRenderSystem::IEntityRenderable*> > mRenderables;
+			TMap<CMatchMapGridRenderMaterial2D*,TList<NSRenderSystem::ISubEntity*> > mSubEntities;
 			CNameGenerator mRenderableNameGenerator;
 		public:
 			CMatchTerrain2D(CMatchMap * map);

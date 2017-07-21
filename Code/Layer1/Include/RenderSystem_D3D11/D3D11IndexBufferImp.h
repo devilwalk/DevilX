@@ -19,7 +19,7 @@ namespace NSDevilX
 				~CIndexBufferImp();
 				ID3D11Buffer * getBuffer()const
 				{
-					return mBuffer->get();
+					return mBuffer->getBuffer();
 				}
 				// Inherited via TInterfaceObject
 				virtual Void onMessage(IIndexBufferImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;

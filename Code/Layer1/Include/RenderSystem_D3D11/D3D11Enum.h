@@ -48,6 +48,8 @@ namespace NSDevilX
 					EVertexBufferType_BlendWeight,
 					EVertexBufferType_BlendIndex,
 					EVertexBufferType_Diffuse,
+					EVertexBufferType_GeometryCount,
+					EVertexBufferType_Query=EVertexBufferType_GeometryCount,
 					EVertexBufferType_Count
 				};
 			};

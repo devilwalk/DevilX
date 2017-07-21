@@ -6,6 +6,7 @@ NSDevilX::NSFightChess::CMatchView::CMatchView(CMatchScene * scene)
 	:mScene(scene)
 	,mRenderViewport2D(nullptr)
 	,mRenderCamera2D(nullptr)
+	,mRenderQuery2D(nullptr)
 {
 	mRenderCamera2D=mScene->getRenderScene()->createCamera(CStringConverter::toString(this)+"/2D");
 	mRenderCamera2D->setProjectionType(NSRenderSystem::IEnum::EProjectionType_Ortho);
@@ -20,6 +21,7 @@ NSDevilX::NSFightChess::CMatchView::CMatchView(CMatchScene * scene)
 	mRenderViewport2D->setTop(0.2f);
 	mRenderViewport2D->setHeight(0.6f);
 	mRenderViewport2D->setClearColour(CFloatRGBA::sZero);
+	mRenderQuery2D=mRenderViewport2D->createQuery("Query");
 }
 
 NSDevilX::NSFightChess::CMatchView::~CMatchView()

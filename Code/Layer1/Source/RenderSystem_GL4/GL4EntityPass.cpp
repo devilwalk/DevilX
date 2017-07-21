@@ -16,18 +16,18 @@ NSDevilX::NSRenderSystem::NSGL4::CEntityPass::CEntityPass(CEntityTechnique * tec
 	switch(getTechnique()->getType())
 	{
 	case CEnum::ETechniqueType_GBufferDS:
-		getTechnique()->getMaterial()->getRenderable()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<IEntityRenderableImp>*>(this),IEntityRenderableImp::EMessage_EndAlphaTestEnableChange);
-		getTechnique()->getMaterial()->getRenderable()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<IEntityRenderableImp>*>(this),IEntityRenderableImp::EMessage_EndColourUnitStateCreate);
+		getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndAlphaTestEnableChange);
+		getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndColourUnitStateCreate);
 		break;
 	case CEnum::ETechniqueType_GBufferDL:
-		getTechnique()->getMaterial()->getRenderable()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<IEntityRenderableImp>*>(this),IEntityRenderableImp::EMessage_EndAlphaTestEnableChange);
-		getTechnique()->getMaterial()->getRenderable()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<IEntityRenderableImp>*>(this),IEntityRenderableImp::EMessage_EndLightEnableChange);
-		getTechnique()->getMaterial()->getRenderable()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<IEntityRenderableImp>*>(this),IEntityRenderableImp::EMessage_EndTransparentEnableChange);
-		getTechnique()->getMaterial()->getRenderable()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<IEntityRenderableImp>*>(this),IEntityRenderableImp::EMessage_EndColourUnitStateCreate);
+		getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndAlphaTestEnableChange);
+		getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndLightEnableChange);
+		getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndTransparentEnableChange);
+		getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndColourUnitStateCreate);
 		break;
 	}
-	getTechnique()->getMaterial()->getRenderable()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<IEntityRenderableImp>*>(this),IEntityRenderableImp::EMessage_BeginGeometryChange);
-	getTechnique()->getMaterial()->getRenderable()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<IEntityRenderableImp>*>(this),IEntityRenderableImp::EMessage_EndGeometryChange);
+	getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_BeginGeometryChange);
+	getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndGeometryChange);
 	_registerToIGeometryImp();
 }
 
@@ -41,42 +41,42 @@ NSDevilX::NSRenderSystem::NSGL4::CEntityPass::CEntityPass(CEnum::EForwardPassTyp
 	_updateRasterizerState();
 	_updateBlendState();
 	_updateDepthStencilState();
-	getTechnique()->getMaterial()->getRenderable()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<IEntityRenderableImp>*>(this),IEntityRenderableImp::EMessage_EndAlphaTestEnableChange);
-	getTechnique()->getMaterial()->getRenderable()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<IEntityRenderableImp>*>(this),IEntityRenderableImp::EMessage_EndLightEnableChange);
-	getTechnique()->getMaterial()->getRenderable()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<IEntityRenderableImp>*>(this),IEntityRenderableImp::EMessage_EndTransparentEnableChange);
-	getTechnique()->getMaterial()->getRenderable()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<IEntityRenderableImp>*>(this),IEntityRenderableImp::EMessage_EndColourUnitStateCreate);
-	getTechnique()->getMaterial()->getRenderable()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<IEntityRenderableImp>*>(this),IEntityRenderableImp::EMessage_EndTextureUnitStateCreate);
-	getTechnique()->getMaterial()->getRenderable()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<IEntityRenderableImp>*>(this),IEntityRenderableImp::EMessage_BeginGeometryChange);
-	getTechnique()->getMaterial()->getRenderable()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<IEntityRenderableImp>*>(this),IEntityRenderableImp::EMessage_EndGeometryChange);
+	getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndAlphaTestEnableChange);
+	getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndLightEnableChange);
+	getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndTransparentEnableChange);
+	getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndColourUnitStateCreate);
+	getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndTextureUnitStateCreate);
+	getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_BeginGeometryChange);
+	getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndGeometryChange);
 	_registerToIGeometryImp();
 }
 
 NSDevilX::NSRenderSystem::NSGL4::CEntityPass::~CEntityPass()
 {}
 
-Void NSDevilX::NSRenderSystem::NSGL4::CEntityPass::onMessage(IEntityRenderableImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
+Void NSDevilX::NSRenderSystem::NSGL4::CEntityPass::onMessage(ISubEntityImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
 {
 	switch(message)
 	{
-	case IEntityRenderableImp::EMessage_EndAlphaTestEnableChange:
+	case ISubEntityImp::EMessage_EndAlphaTestEnableChange:
 		_updateShader();
 		break;
-	case IEntityRenderableImp::EMessage_EndLightEnableChange:
+	case ISubEntityImp::EMessage_EndLightEnableChange:
 		_updateShader();
 		break;
-	case IEntityRenderableImp::EMessage_EndTransparentEnableChange:
+	case ISubEntityImp::EMessage_EndTransparentEnableChange:
 		_updateBlendState();
 		break;
-	case IEntityRenderableImp::EMessage_EndColourUnitStateCreate:
+	case ISubEntityImp::EMessage_EndColourUnitStateCreate:
 		_updateShader();
 		break;
-	case IEntityRenderableImp::EMessage_EndTextureUnitStateCreate:
+	case ISubEntityImp::EMessage_EndTextureUnitStateCreate:
 		static_cast<ITextureUnitStateImp*>(data)->addListener(static_cast<TMessageReceiver<ITextureUnitStateImp>*>(this),ITextureUnitStateImp::EMessage_EndTextureChange);
 		break;
-	case IEntityRenderableImp::EMessage_BeginGeometryChange:
+	case ISubEntityImp::EMessage_BeginGeometryChange:
 		_unregisterToIGeometryImp();
 		break;
-	case IEntityRenderableImp::EMessage_EndGeometryChange:
+	case ISubEntityImp::EMessage_EndGeometryChange:
 		_updateShader();
 		_registerToIGeometryImp();
 		break;
@@ -105,9 +105,9 @@ Void NSDevilX::NSRenderSystem::NSGL4::CEntityPass::onMessage(ITextureUnitStateIm
 
 Void NSDevilX::NSRenderSystem::NSGL4::CEntityPass::_updateShader()
 {
-	if(nullptr==getTechnique()->getMaterial()->getRenderable()->getInterfaceImp()->getGeometry())
+	if(nullptr==getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->getGeometry())
 		return;
-	const auto * const mat_imp=getTechnique()->getMaterial()->getRenderable()->getInterfaceImp();
+	const auto * const mat_imp=getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp();
 	switch(getTechnique()->getType())
 	{
 	case CEnum::ETechniqueType_Forward:
@@ -124,16 +124,16 @@ Void NSDevilX::NSRenderSystem::NSGL4::CEntityPass::_updateShader()
 				vs_gen.addOutput(CForwardVertexShaderGenerator::EOutput_WorldPosition);
 			}
 		}
-		if(getTechnique()->getMaterial()->getRenderable()->getInterfaceImp()->getGeometry()->getVertexBuffer()->getDiffuses())
+		if(getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->getGeometry()->getVertexBuffer()->getDiffuses())
 			vs_gen.addOutput(CForwardVertexShaderGenerator::EOutput_Diffuse);
-		if(getTechnique()->getMaterial()->getRenderable()->getInterfaceImp()->getGeometry()->getVertexBuffer()->getTextureCoords()
+		if(getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->getGeometry()->getVertexBuffer()->getTextureCoords()
 			&&mat_imp->getTextureUnitState(IEnum::EEntityTextureUnitStateType_Diffuse)
 			&&mat_imp->getTextureUnitState(IEnum::EEntityTextureUnitStateType_Diffuse)->getTexture()
 			)
 			vs_gen.addOutput(CForwardVertexShaderGenerator::EOutput_MainUV);
 		auto vertex_shader=vs_gen.generate();
 		CForwardPixelShaderCodeGenerator ps_gen;
-		if(getTechnique()->getMaterial()->getRenderable()->getInterfaceImp()->getGeometry()->getVertexBuffer()->getTextureCoords()
+		if(getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->getGeometry()->getVertexBuffer()->getTextureCoords()
 			&&mat_imp->getTextureUnitState(IEnum::EEntityTextureUnitStateType_Diffuse)
 			&&mat_imp->getTextureUnitState(IEnum::EEntityTextureUnitStateType_Diffuse)->getTexture()
 			)
@@ -178,7 +178,7 @@ Void NSDevilX::NSRenderSystem::NSGL4::CEntityPass::_updateShader()
 
 Void NSDevilX::NSRenderSystem::NSGL4::CEntityPass::_updateTextures()
 {
-	const auto * const mat_imp=getTechnique()->getMaterial()->getRenderable()->getInterfaceImp();
+	const auto * const mat_imp=getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp();
 	mVSTextures.clear();
 	mPSTextures.clear();
 	if(0xffffffff!=getProgram()->getSlot("gDiffuseTexture"))
@@ -206,7 +206,7 @@ Void NSDevilX::NSRenderSystem::NSGL4::CEntityPass::_updateBlendState()
 {
 	mEnabledState.remove(GL_BLEND);
 	mStateFunctions.erase(glBlendFunci);
-	const auto * const mat_imp=getTechnique()->getMaterial()->getRenderable()->getInterfaceImp();
+	const auto * const mat_imp=getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp();
 	switch(getTechnique()->getType())
 	{
 	case CEnum::ETechniqueType_Forward:
@@ -244,7 +244,7 @@ Void NSDevilX::NSRenderSystem::NSGL4::CEntityPass::_updateDepthStencilState()
 {
 	mStateFunctions.erase(glDepthMask);
 	mStateFunctions.erase(glDepthFunc);
-	const auto * const mat_imp=getTechnique()->getMaterial()->getRenderable()->getInterfaceImp();
+	const auto * const mat_imp=getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp();
 	switch(getTechnique()->getType())
 	{
 	case CEnum::ETechniqueType_Forward:
@@ -290,7 +290,7 @@ Void NSDevilX::NSRenderSystem::NSGL4::CEntityPass::_updateVertexArrayObject()
 		const auto vb_type=getProgram()->getInputSlot(i);
 		if(static_cast<UInt32>(-1)!=vb_type)
 		{
-			glBindBuffer(GL_ARRAY_BUFFER,getTechnique()->getMaterial()->getRenderable()->getGeometry()->getVertexBuffer()->getBuffers()[vb_type]);
+			glBindBuffer(GL_ARRAY_BUFFER,getTechnique()->getMaterial()->getSubEntity()->getGeometry()->getVertexBuffer()->getBuffers()[vb_type]);
 			CUtility::checkGLError();
 			if(CEnum::EVertexBufferType_BlendIndex==vb_type)
 			{
@@ -305,7 +305,7 @@ Void NSDevilX::NSRenderSystem::NSGL4::CEntityPass::_updateVertexArrayObject()
 			CUtility::checkGLError();
 		}
 	}
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,getTechnique()->getMaterial()->getRenderable()->getGeometry()->getIndexBuffer()->getBuffer());
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,getTechnique()->getMaterial()->getSubEntity()->getGeometry()->getIndexBuffer()->getBuffer());
 	CUtility::checkGLError();
 	glBindVertexArray(0);
 	CUtility::checkGLError();
@@ -313,16 +313,16 @@ Void NSDevilX::NSRenderSystem::NSGL4::CEntityPass::_updateVertexArrayObject()
 
 Void NSDevilX::NSRenderSystem::NSGL4::CEntityPass::_registerToIGeometryImp()
 {
-	if(getTechnique()->getMaterial()->getRenderable()->getInterfaceImp()->getGeometry())
+	if(getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->getGeometry())
 	{
-		static_cast<IGeometryImp*>(getTechnique()->getMaterial()->getRenderable()->getInterfaceImp()->getGeometry())->addListener(static_cast<TMessageReceiver<IGeometryImp>*>(this),IGeometryImp::EMessage_EndDiffuseEnableChange);
+		static_cast<IGeometryImp*>(getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->getGeometry())->addListener(static_cast<TMessageReceiver<IGeometryImp>*>(this),IGeometryImp::EMessage_EndDiffuseEnableChange);
 	}
 }
 
 Void NSDevilX::NSRenderSystem::NSGL4::CEntityPass::_unregisterToIGeometryImp()
 {
-	if(getTechnique()->getMaterial()->getRenderable()->getInterfaceImp()->getGeometry())
+	if(getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->getGeometry())
 	{
-		static_cast<IGeometryImp*>(getTechnique()->getMaterial()->getRenderable()->getInterfaceImp()->getGeometry())->removeListener(static_cast<TMessageReceiver<IGeometryImp>*>(this),IGeometryImp::EMessage_EndDiffuseEnableChange);
+		static_cast<IGeometryImp*>(getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->getGeometry())->removeListener(static_cast<TMessageReceiver<IGeometryImp>*>(this),IGeometryImp::EMessage_EndDiffuseEnableChange);
 	}
 }

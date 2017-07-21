@@ -29,7 +29,7 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CEntityMaterial::onMessage(ISubEntityImp
 		needUpdate();
 		break;
 	case ISubEntityImp::EMessage_EndColourUnitStateCreate:
-		static_cast<IColourUnitStateImp*>(data)->addListener(static_cast<TMessageReceiver<IColourUnitStateImp>*>(this),IColourUnitStateImp::EMessage_EndValueChange);
+		static_cast<const ISubEntityImp*>(notifier)->getColourUnitState(*static_cast<IEnum::EEntityColourUnitStateType*>(data))->addListener(static_cast<TMessageReceiver<IColourUnitStateImp>*>(this),IColourUnitStateImp::EMessage_EndValueChange);
 		break;
 	case ISubEntityImp::EMessage_EndRenderableChange:
 	case ISubEntityImp::EMessage_EndQueriableChange:
@@ -77,7 +77,7 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CEntityMaterial::_updateConstantBuffer(B
 	auto offset=mConstantBuffer->getDescription()->getConstantDesc("gMainColour").StartOffset;
 	if(static_cast<const ISubEntityImp*>(getSubEntity()->getInterfaceImp())->getColourUnitState(IEnum::EEntityColourUnitStateType_Diffuse))
 	{
-		memcpy(&buffer[offset],&getSubEntity()->getInterfaceImp()->getColourUnitState(IEnum::EEntityColourUnitStateType_Diffuse)->getValue(),sizeof(CFloat3));
+		*reinterpret_cast<CFloat3*>(&buffer[offset])=getSubEntity()->getInterfaceImp()->getColourUnitState(IEnum::EEntityColourUnitStateType_Diffuse)->getValue().rgb();
 	}
 	else
 	{
@@ -88,7 +88,7 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CEntityMaterial::_updateConstantBuffer(B
 	offset=mConstantBuffer->getDescription()->getConstantDesc("gSpecularColour").StartOffset;
 	if(static_cast<const ISubEntityImp*>(getSubEntity()->getInterfaceImp())->getColourUnitState(IEnum::EEntityColourUnitStateType_Specular))
 	{
-		memcpy(&buffer[offset],&getSubEntity()->getInterfaceImp()->getColourUnitState(IEnum::EEntityColourUnitStateType_Specular)->getValue(),sizeof(CFloat3));
+		*reinterpret_cast<CFloat3*>(&buffer[offset])=getSubEntity()->getInterfaceImp()->getColourUnitState(IEnum::EEntityColourUnitStateType_Specular)->getValue().rgb();
 	}
 	else
 	{
@@ -99,7 +99,7 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CEntityMaterial::_updateConstantBuffer(B
 	offset=mConstantBuffer->getDescription()->getConstantDesc("gEmissiveColour").StartOffset;
 	if(static_cast<const ISubEntityImp*>(getSubEntity()->getInterfaceImp())->getColourUnitState(IEnum::EEntityColourUnitStateType_Emissive))
 	{
-		memcpy(&buffer[offset],&getSubEntity()->getInterfaceImp()->getColourUnitState(IEnum::EEntityColourUnitStateType_Emissive)->getValue(),sizeof(CFloat3));
+		*reinterpret_cast<CFloat3*>(&buffer[offset])=getSubEntity()->getInterfaceImp()->getColourUnitState(IEnum::EEntityColourUnitStateType_Emissive)->getValue().rgb();
 	}
 	else
 	{

@@ -64,9 +64,13 @@ namespace NSDevilX
 		public:
 			ISubEntityImp(const String & name,IEntityImp * object);
 			virtual ~ISubEntityImp();
-			const SDirties & getQueryDatasDirties()const
+			const SDirties & getQueryDataDirties()const
 			{
 				return mQueryDataDirties;
+			}
+			Void clearQueryDataDirties()
+			{
+				mQueryDataDirties.clear();
 			}
 			const UInt32 * const & getQueryDatasRef()const
 			{

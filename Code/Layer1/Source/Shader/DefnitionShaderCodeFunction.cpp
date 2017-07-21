@@ -2912,31 +2912,87 @@ float2 getQuadPosition(int vertexID)\r\n\
 }\r\n\
 \r\n\
 \r\n\
+DECL_CB(cbSystem)\r\n\
+CB_MEMBER float gFrameTimeInSeconds;\r\n\
+CB_MEMBER float gInverseFrameTimeInSeconds;\r\n\
+END_DECL\r\n\
+DECL_CB(cbRenderTarget)\r\n\
+CB_MEMBER float2 gRenderTargetSizeInPixel;\r\n\
+CB_MEMBER float2 gInverseRenderTargetSizeInPixel;\r\n\
+END_DECL\r\n\
+DECL_CB(cbViewport)\r\n\
+CB_MEMBER float2 gViewportSizeInPixel;\r\n\
+CB_MEMBER float2 gInverseViewportSizeInPixel;\r\n\
+END_DECL\r\n\
+DECL_CB(cbCamera)\r\n\
+CB_MEMBER float4x4 gViewMatrix;\r\n\
+CB_MEMBER float4x4 gInverseViewMatrix;\r\n\
+CB_MEMBER float4x4 gProjectionMatrix;\r\n\
+CB_MEMBER float4x4 gInverseProjectionMatrix;\r\n\
+CB_MEMBER float4x4 gViewProjectionMatrix;\r\n\
+CB_MEMBER float4x4 gInverseViewProjectionMatrix;\r\n\
+CB_MEMBER float gFarDistance;\r\n\
+CB_MEMBER float gInverseFarDistance;\r\n\
+END_DECL\r\n\
+DECL_CB(cbScene)\r\n\
+CB_MEMBER float3 gAmbientColour;\r\n\
+CB_MEMBER float3 gSkyColour;\r\n\
+CB_MEMBER float3 gGroundColour;\r\n\
+CB_MEMBER float3 gSkyLightDirection;\r\n\
+END_DECL\r\n\
+\r\n\
+\r\n\
+\r\n\
+DECL_CB(cbObjectTransform)\r\n\
+CB_MEMBER float4x4 gWorldMatrix;\r\n\
+END_DECL\r\n\
+DECL_CB(cbObjectMaterial)\r\n\
+CB_MEMBER float3 gMainColour;\r\n\
+CB_MEMBER float gAlpha;\r\n\
+CB_MEMBER float3 gSpecularColour;\r\n\
+CB_MEMBER float gSpecularPower;\r\n\
+CB_MEMBER float3 gEmissiveColour;\r\n\
+CB_MEMBER float gAlphaTestValue;\r\n\
+END_DECL\r\n\
+\r\n\
+#ifndef OUTPUT_MAIN_UV\r\n\
+#define OUTPUT_MAIN_UV 0\r\n\
+#endif\r\n\
+\r\n\
+\r\n\
+\r\n\
 \r\n\
 struct SVertexShaderInput\r\n\
 {\r\n\
     float3 mPosition : SV_Position;\r\n\
+#if OUTPUT_MAIN_UV\r\n\
     float2 mMainUV : TEXCOORD0;\r\n\
-    float4 mDiffuse : DIFFUSE;\r\n\
+#endif\r\n\
+    float4 mQuery : QUERY;\r\n\
 };\r\n\
 struct SVertexShaderOutput\r\n\
 {\r\n\
     float4 mPosition : SV_Position;\r\n\
+#if OUTPUT_MAIN_UV\r\n\
     float2 mMainUV : TEXCOORD0;\r\n\
-    float4 mDiffuse : DIFFUSE;\r\n\
+ #endif\r\n\
+   float4 mQuery : QUERY;\r\n\
 };\r\n\
 SVertexShaderOutput vsMain(SVertexShaderInput input)\r\n\
 {\r\n\
     SVertexShaderOutput output = (SVertexShaderOutput) 0;\r\n\
 #define iPosition input.mPosition\r\n\
 #define iMainUV input.mMainUV\r\n\
-#define iDiffuse input.mDiffuse\r\n\
+#define iQuery input.mQuery\r\n\
 #define oPosition output.mPosition\r\n\
 #define oMainUV output.mMainUV\r\n\
-#define oDiffuse output.mDiffuse\r\n\
-	oPosition=float4(iPosition,1.0);\r\n\
+#define oQuery output.mQuery\r\n\
+    float4 world_position = mul(gWorldMatrix, float4(iPosition, 1.0));\r\n\
+    oPosition = mul(gViewProjectionMatrix, world_position);\r\n\
+#if OUTPUT_MAIN_UV\r\n\
 	oMainUV=iMainUV;\r\n\
-	oDiffuse=iDiffuse;\r\n\
+#endif\r\n\
+	oQuery=iQuery;\r\n\
     return output;\r\n\
 }\r\n\
 SamplerState gDiffuseSamplerState;\r\n\
@@ -2951,9 +3007,9 @@ SPixelShaderOutput psMain(SVertexShaderOutput input)\r\n\
 #if USE_DIFFUSE_TEXTURE\r\n\
 	float4 diffuse_texture_sampler = gDiffuseTexture.Sample(gDiffuseSamplerState, input.mMainUV);\r\n\
 #endif\r\n\
-#define iDiffuse input.mDiffuse\r\n\
+#define iQuery input.mQuery\r\n\
 #define oColour output.mColour\r\n\
-oColour=iDiffuse;\r\n\
+oColour=iQuery;\r\n\
     return output;\r\n\
 }\r\n\
 \r\n\

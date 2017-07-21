@@ -157,7 +157,7 @@ CInt2 NSDevilX::CWindow::getCursorPosition() const
 	CInt2 ret;
 #if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
 	::GetCursorPos(reinterpret_cast<LPPOINT>(&ret));
-	ret-=getPosition();
+	::ScreenToClient(static_cast<HWND>(getHandle()),reinterpret_cast<LPPOINT>(&ret));
 #endif
 	return ret;
 }

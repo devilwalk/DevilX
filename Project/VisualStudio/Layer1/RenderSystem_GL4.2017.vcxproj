@@ -166,7 +166,7 @@
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4EntityImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4EntityMaterial.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4EntityPass.h" />
-    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4EntityRenderableImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4SubEntityImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4EntityTechnique.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4Enum.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4ForwardPixelShaderGenerator.h" />
@@ -210,7 +210,7 @@
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4EntityImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4EntityMaterial.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4EntityPass.cpp" />
-    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4EntityRenderableImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4SubEntityImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4EntityTechnique.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4ForwardPixelShaderGenerator.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4ForwardVertexShaderGenerator.cpp" />

@@ -44,11 +44,11 @@ NSDevilX::NSFightChess::CMatchTerrain2D::CMatchTerrain2D(CMatchMap * map)
 	mGeometry->getVertexBuffer()->setPositions(positions);
 	mGeometry->getVertexBuffer()->setTextureCoords(uvs);
 	mRenderEntity=getMap()->getScene()->getRenderScene()->createEntity("MatchTerrain2D");
-	auto renderable=mRenderEntity->createRenderable(mRenderableNameGenerator.generateNext());
-	renderable->setGeometry(mGeometry);
-	renderable->queryInterface_IGeometryUsage()->setVertexCount(mGeometry->getVertexBuffer()->getCount());
-	renderable->queryInterface_IGeometryUsage()->setIndexCount(mGeometry->getIndexBuffer()->getCount());
-	mRenderables[CApp::getSingleton().getGame()->getMatchMapGridRenderMaterialManager()->getDefaultMaterial()->getMaterial2D()].push_back(renderable);
+	auto sub_entity=mRenderEntity->createSubEntity(mRenderableNameGenerator.generateNext());
+	sub_entity->setGeometry(mGeometry);
+	sub_entity->queryInterface_IGeometryUsage()->setVertexCount(mGeometry->getVertexBuffer()->getCount());
+	sub_entity->queryInterface_IGeometryUsage()->setIndexCount(mGeometry->getIndexBuffer()->getCount());
+	mSubEntities[CApp::getSingleton().getGame()->getMatchMapGridRenderMaterialManager()->getDefaultMaterial()->getMaterial2D()].push_back(sub_entity);
 	mRenderVisibleArea=getMap()->getScene()->getRenderScene()->createVisibleArea("MatchTerrain2D");
 	mRenderVisibleArea->attachObject(mRenderEntity->queryInterface_ISceneElement());
 	mRenderVisibleArea->setBoundingBox(DirectX::BoundingBox(CFloat3::sZero,CFloat3(10000.0f)));
@@ -81,23 +81,23 @@ Void NSDevilX::NSFightChess::CMatchTerrain2D::onMessage(CMatchMapGrid * notifier
 	case CMatchMapGrid::EMessage_BeginRenderMaterialChange:
 	{
 		auto index_start=_calculateIndexStart(notifier->getRowIndex(),notifier->getColumeIndex());
-		auto & renderables=mRenderables[notifier->getRenderMaterial()->getMaterial2D()];
-		for(auto iter=renderables.begin();renderables.end()!=iter;++iter)
+		auto & sub_entities=mSubEntities[notifier->getRenderMaterial()->getMaterial2D()];
+		for(auto iter=sub_entities.begin();sub_entities.end()!=iter;++iter)
 		{
-			auto renderable=*iter;
-			if((renderable->queryInterface_IGeometryUsage()->getIndexBufferOffset()<=index_start)&&(renderable->queryInterface_IGeometryUsage()->getIndexBufferOffset()+renderable->queryInterface_IGeometryUsage()->getIndexCount()>index_start))
+			auto sub_entity=*iter;
+			if((sub_entity->queryInterface_IGeometryUsage()->getIndexBufferOffset()<=index_start)&&(sub_entity->queryInterface_IGeometryUsage()->getIndexBufferOffset()+sub_entity->queryInterface_IGeometryUsage()->getIndexCount()>index_start))
 			{
-				if(renderable->queryInterface_IGeometryUsage()->getIndexBufferOffset()<index_start)
+				if(sub_entity->queryInterface_IGeometryUsage()->getIndexBufferOffset()<index_start)
 				{
-					auto first_renderable=mRenderEntity->createRenderable(mRenderableNameGenerator.generateNext());
-					first_renderable->setGeometry(mGeometry);
-					first_renderable->queryInterface_IGeometryUsage()->setVertexCount(mGeometry->getVertexBuffer()->getCount());
-					first_renderable->queryInterface_IGeometryUsage()->setIndexBufferOffset(renderable->queryInterface_IGeometryUsage()->getIndexBufferOffset());
-					first_renderable->queryInterface_IGeometryUsage()->setIndexCount(index_start-renderable->queryInterface_IGeometryUsage()->getIndexBufferOffset());
-					renderables.insert(iter,first_renderable);
+					auto first_sub_entity=mRenderEntity->createSubEntity(mRenderableNameGenerator.generateNext());
+					first_sub_entity->setGeometry(mGeometry);
+					first_sub_entity->queryInterface_IGeometryUsage()->setVertexCount(mGeometry->getVertexBuffer()->getCount());
+					first_sub_entity->queryInterface_IGeometryUsage()->setIndexBufferOffset(sub_entity->queryInterface_IGeometryUsage()->getIndexBufferOffset());
+					first_sub_entity->queryInterface_IGeometryUsage()->setIndexCount(index_start-sub_entity->queryInterface_IGeometryUsage()->getIndexBufferOffset());
+					sub_entities.insert(iter,first_sub_entity);
 				}
-				renderable->queryInterface_IGeometryUsage()->setIndexCount(renderable->queryInterface_IGeometryUsage()->getIndexBufferOffset()+renderable->queryInterface_IGeometryUsage()->getIndexCount()-(index_start+6));
-				renderable->queryInterface_IGeometryUsage()->setIndexBufferOffset(index_start+6);
+				sub_entity->queryInterface_IGeometryUsage()->setIndexCount(sub_entity->queryInterface_IGeometryUsage()->getIndexBufferOffset()+sub_entity->queryInterface_IGeometryUsage()->getIndexCount()-(index_start+6));
+				sub_entity->queryInterface_IGeometryUsage()->setIndexBufferOffset(index_start+6);
 				break;
 			}
 		}
@@ -107,28 +107,28 @@ Void NSDevilX::NSFightChess::CMatchTerrain2D::onMessage(CMatchMapGrid * notifier
 	{
 		Boolean added=false;
 		auto index_start=_calculateIndexStart(notifier->getRowIndex(),notifier->getColumeIndex());
-		auto & renderables=mRenderables[notifier->getRenderMaterial()->getMaterial2D()];
-		for(auto iter=renderables.begin();renderables.end()!=iter;++iter)
+		auto & sub_entities=mSubEntities[notifier->getRenderMaterial()->getMaterial2D()];
+		for(auto iter=sub_entities.begin();sub_entities.end()!=iter;++iter)
 		{
-			auto renderable=*iter;
-			if(renderable->queryInterface_IGeometryUsage()->getIndexBufferOffset()==index_start+6)
+			auto sub_entity=*iter;
+			if(sub_entity->queryInterface_IGeometryUsage()->getIndexBufferOffset()==index_start+6)
 			{
-				renderable->queryInterface_IGeometryUsage()->setIndexBufferOffset(index_start);
+				sub_entity->queryInterface_IGeometryUsage()->setIndexBufferOffset(index_start);
 				added=true;
 				break;
 			}
-			else if(renderable->queryInterface_IGeometryUsage()->getIndexBufferOffset()+renderable->queryInterface_IGeometryUsage()->getIndexCount()==index_start)
+			else if(sub_entity->queryInterface_IGeometryUsage()->getIndexBufferOffset()+sub_entity->queryInterface_IGeometryUsage()->getIndexCount()==index_start)
 			{
-				renderable->queryInterface_IGeometryUsage()->setIndexCount(renderable->queryInterface_IGeometryUsage()->getIndexCount()+6);
+				sub_entity->queryInterface_IGeometryUsage()->setIndexCount(sub_entity->queryInterface_IGeometryUsage()->getIndexCount()+6);
 				++iter;
-				if(renderables.end()!=iter)
+				if(sub_entities.end()!=iter)
 				{
-					auto next_renderable=*iter;
-					if(renderable->queryInterface_IGeometryUsage()->getIndexBufferOffset()+renderable->queryInterface_IGeometryUsage()->getIndexCount()==next_renderable->queryInterface_IGeometryUsage()->getIndexBufferOffset())
+					auto next_sub_entity=*iter;
+					if(sub_entity->queryInterface_IGeometryUsage()->getIndexBufferOffset()+sub_entity->queryInterface_IGeometryUsage()->getIndexCount()==next_sub_entity->queryInterface_IGeometryUsage()->getIndexBufferOffset())
 					{
-						renderable->queryInterface_IGeometryUsage()->setIndexCount(renderable->queryInterface_IGeometryUsage()->getIndexCount()+next_renderable->queryInterface_IGeometryUsage()->getIndexCount());
-						renderables.erase(iter);
-						mRenderEntity->destroyRenderable(next_renderable);
+						sub_entity->queryInterface_IGeometryUsage()->setIndexCount(sub_entity->queryInterface_IGeometryUsage()->getIndexCount()+next_sub_entity->queryInterface_IGeometryUsage()->getIndexCount());
+						sub_entities.erase(iter);
+						mRenderEntity->destroySubEntity(next_sub_entity);
 					}
 				}
 				added=true;
@@ -137,11 +137,11 @@ Void NSDevilX::NSFightChess::CMatchTerrain2D::onMessage(CMatchMapGrid * notifier
 		}
 		if(!added)
 		{
-			auto renderable=mRenderEntity->createRenderable(mRenderableNameGenerator.generateNext());
-			renderable->setGeometry(mGeometry);
-			renderable->queryInterface_IGeometryUsage()->setVertexCount(mGeometry->getVertexBuffer()->getCount());
-			renderable->queryInterface_IGeometryUsage()->setIndexBufferOffset(index_start);
-			renderable->queryInterface_IGeometryUsage()->setIndexCount(6);
+			auto sub_entity=mRenderEntity->createSubEntity(mRenderableNameGenerator.generateNext());
+			sub_entity->setGeometry(mGeometry);
+			sub_entity->queryInterface_IGeometryUsage()->setVertexCount(mGeometry->getVertexBuffer()->getCount());
+			sub_entity->queryInterface_IGeometryUsage()->setIndexBufferOffset(index_start);
+			sub_entity->queryInterface_IGeometryUsage()->setIndexCount(6);
 		}
 	}
 	break;

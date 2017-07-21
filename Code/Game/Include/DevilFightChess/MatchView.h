@@ -11,6 +11,7 @@ namespace NSDevilX
 			CMatchScene * const mScene;
 			NSRenderSystem::IViewport * mRenderViewport2D;
 			NSRenderSystem::ICamera * mRenderCamera2D;
+			NSRenderSystem::IQuery * mRenderQuery2D;
 		public:
 			CMatchView(CMatchScene * scene);
 			~CMatchView();

@@ -13,7 +13,9 @@ namespace NSDevilX
 			{
 			public:
 				ID3D11DeviceContext1 * const mContext;
-				CGeometryImp * mGeometry;
+				TVector<ID3D11Buffer*> mVertexBuffers;
+				TVector<UInt32> mVertexStrides;
+				ID3D11Buffer * mIndexBuffer;
 				CPass * mPass;
 				UINT mIndexBufferOffset;
 				UINT mIndexCount;

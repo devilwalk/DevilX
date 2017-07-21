@@ -29,7 +29,7 @@
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3EntityImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3EntityMaterial.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3EntityPass.cpp" />
-    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3EntityRenderableImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3SubEntityImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3EntityTechnique.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3ForwardPixelShaderGenerator.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3ForwardVertexShaderGenerator.cpp" />
@@ -77,7 +77,7 @@
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3EntityImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3EntityMaterial.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3EntityPass.h" />
-    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3EntityRenderableImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3SubEntityImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3EntityTechnique.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3Enum.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3ForwardPixelShaderGenerator.h" />

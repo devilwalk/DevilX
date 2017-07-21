@@ -1,6 +1,6 @@
 #pragma once
 #include "GLES3BaseObject.h"
-#include "GLES3EntityRenderableImp.h"
+#include "GLES3SubEntityImp.h"
 #include "GLES3TransformerImp.h"
 namespace NSDevilX
 {
@@ -17,7 +17,7 @@ namespace NSDevilX
 			protected:
 				CScene * const mScene;
 				CTransformerImp * mTransformer;
-				TResourcePtrMap<IEntityRenderableImp*const,CEntityRenderableImp> mRenderables;
+				TResourcePtrMap<ISubEntityImp*const,CSubEntityImp> mSubEntities;
 			public:
 				CEntityImp(IEntityImp * interfaceImp);
 				virtual ~CEntityImp();

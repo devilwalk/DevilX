@@ -16,9 +16,17 @@ namespace NSDevilX
 			public:
 				CBufferUpdater(UInt32 stride);
 				~CBufferUpdater();
+				UInt32 getStride()const
+				{
+					return mStride;
+				}
 				Void setBuffer(ID3D11Buffer * buffer)
 				{
 					mBuffer=buffer;
+				}
+				ID3D11Buffer * getBuffer()const
+				{
+					return mBuffer;
 				}
 				Void setDataSource(const ConstVoidPtr * source)
 				{
@@ -29,10 +37,6 @@ namespace NSDevilX
 					mDirtyRanges=dirtyRanges;
 				}
 				Void update();
-				ID3D11Buffer * get()const
-				{
-					return mBuffer;
-				}
 			};
 		}
 	}

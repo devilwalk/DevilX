@@ -1,6 +1,6 @@
 #pragma once
 #include "GL4BaseObject.h"
-#include "GL4EntityRenderableImp.h"
+#include "GL4SubEntityImp.h"
 #include "GL4TransformerImp.h"
 namespace NSDevilX
 {
@@ -17,7 +17,7 @@ namespace NSDevilX
 			protected:
 				CScene * const mScene;
 				CTransformerImp * mTransformer;
-				TResourcePtrMap<IEntityRenderableImp*const,CEntityRenderableImp> mRenderables;
+				TResourcePtrMap<ISubEntityImp*const,CSubEntityImp> mSubEntities;
 			public:
 				CEntityImp(IEntityImp * interfaceImp);
 				virtual ~CEntityImp();

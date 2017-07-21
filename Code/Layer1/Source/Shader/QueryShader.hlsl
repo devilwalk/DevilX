@@ -2,24 +2,28 @@
 struct SVertexShaderInput
 {
     float3 mPosition : SV_Position;
+#if OUTPUT_MAIN_UV
     float2 mMainUV : TEXCOORD0;
-    float4 mDiffuse : DIFFUSE;
+#endif
+    float4 mQuery : QUERY;
 };
 struct SVertexShaderOutput
 {
     float4 mPosition : SV_Position;
+#if OUTPUT_MAIN_UV
     float2 mMainUV : TEXCOORD0;
-    float4 mDiffuse : DIFFUSE;
+ #endif
+   float4 mQuery : QUERY;
 };
 SVertexShaderOutput vsMain(SVertexShaderInput input)
 {
     SVertexShaderOutput output = (SVertexShaderOutput) 0;
 #define iPosition input.mPosition
 #define iMainUV input.mMainUV
-#define iDiffuse input.mDiffuse
+#define iQuery input.mQuery
 #define oPosition output.mPosition
 #define oMainUV output.mMainUV
-#define oDiffuse output.mDiffuse
+#define oQuery output.mQuery
 #include "QueryVertexShaderCode.sl"
     return output;
 }
@@ -35,7 +39,7 @@ SPixelShaderOutput psMain(SVertexShaderOutput input)
 #if USE_DIFFUSE_TEXTURE
 	float4 diffuse_texture_sampler = gDiffuseTexture.Sample(gDiffuseSamplerState, input.mMainUV);
 #endif
-#define iDiffuse input.mDiffuse
+#define iQuery input.mQuery
 #define oColour output.mColour
 #include "QueryPixelShaderCode.sl"
     return output;

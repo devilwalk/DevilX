@@ -48,9 +48,6 @@
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3EntityPass.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3EntityRenderableImp.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3EntityTechnique.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -135,6 +132,9 @@
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3WindowImp.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\GLES3SubEntityImp.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\Layer1\Source\RenderSystem_GLES3\Precompiler.h">
@@ -171,9 +171,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3EntityPass.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3EntityRenderableImp.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3EntityTechnique.h">
@@ -267,6 +264,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3WindowImp.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GLES3\GLES3SubEntityImp.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

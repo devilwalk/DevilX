@@ -1,10 +1,10 @@
 #include "Precompiler.h"
 using namespace NSDevilX;
 using namespace NSRenderSystem;
-using namespace NSGL4;
+using namespace NSGLES3;
 
-NSDevilX::NSRenderSystem::NSGL4::CEntityRenderableImp::CEntityRenderableImp(IEntityRenderableImp * interfaceImp,CEntityImp * obj)
-	:TInterfaceObject<IEntityRenderableImp>(interfaceImp)
+NSDevilX::NSRenderSystem::NSGLES3::CSubEntityImp::CSubEntityImp(ISubEntityImp * interfaceImp,CEntityImp * obj)
+	:TInterfaceObject<ISubEntityImp>(interfaceImp)
 	,mEntity(obj)
 	,mGeometry(nullptr)
 	,mMaterial(nullptr)
@@ -13,16 +13,16 @@ NSDevilX::NSRenderSystem::NSGL4::CEntityRenderableImp::CEntityRenderableImp(IEnt
 	mMaterial=DEVILX_NEW CEntityMaterial(this);
 	_updatePrimitiveTopology();
 	getInterfaceImp()->setUserPointer(0,this);
-	getInterfaceImp()->addListener(static_cast<TInterfaceObject<IEntityRenderableImp>*>(this),IEntityRenderableImp::EMessage_EndGeometryChange);
+	getInterfaceImp()->addListener(static_cast<TInterfaceObject<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndGeometryChange);
 	static_cast<IGeometryUsageImp*>(getInterfaceImp()->queryInterface_IGeometryUsage())->addListener(static_cast<TMessageReceiver<IGeometryUsageImp>*>(this),IGeometryUsageImp::EMessage_EndOperationTypeChange);
 }
 
-NSDevilX::NSRenderSystem::NSGL4::CEntityRenderableImp::~CEntityRenderableImp()
+NSDevilX::NSRenderSystem::NSGLES3::CSubEntityImp::~CSubEntityImp()
 {
 	DEVILX_DELETE(mMaterial);
 }
 
-Void NSDevilX::NSRenderSystem::NSGL4::CEntityRenderableImp::renderForward(CLight * light,CRenderOperation & operation)
+Void NSDevilX::NSRenderSystem::NSGLES3::CSubEntityImp::renderForward(CLight * light,CRenderOperation & operation)
 {
 	if(getEntity()->getScene()->getConstantBufferMT())
 		operation.mConstantBuffers.push_back(getEntity()->getScene()->getConstantBufferMT());
@@ -59,17 +59,17 @@ Void NSDevilX::NSRenderSystem::NSGL4::CEntityRenderableImp::renderForward(CLight
 	operation.mVertexBufferOffset=getInterfaceImp()->queryInterface_IGeometryUsage()->getVertexBufferOffset();
 }
 
-Void NSDevilX::NSRenderSystem::NSGL4::CEntityRenderableImp::onMessage(IEntityRenderableImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
+Void NSDevilX::NSRenderSystem::NSGLES3::CSubEntityImp::onMessage(ISubEntityImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
 {
 	switch(message)
 	{
-	case IEntityRenderableImp::EMessage_EndGeometryChange:
+	case ISubEntityImp::EMessage_EndGeometryChange:
 		mGeometry=CSystemImp::getSingleton().getGeometry(static_cast<IGeometryImp*>(getInterfaceImp()->getGeometry()));
 		break;
 	}
 }
 
-Void NSDevilX::NSRenderSystem::NSGL4::CEntityRenderableImp::onMessage(IGeometryUsageImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
+Void NSDevilX::NSRenderSystem::NSGLES3::CSubEntityImp::onMessage(IGeometryUsageImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
 {
 	switch(message)
 	{
@@ -79,7 +79,7 @@ Void NSDevilX::NSRenderSystem::NSGL4::CEntityRenderableImp::onMessage(IGeometryU
 	}
 }
 
-Void NSDevilX::NSRenderSystem::NSGL4::CEntityRenderableImp::_updatePrimitiveTopology()
+Void NSDevilX::NSRenderSystem::NSGLES3::CSubEntityImp::_updatePrimitiveTopology()
 {
 	switch(getInterfaceImp()->queryInterface_IGeometryUsage()->getOperationType())
 	{

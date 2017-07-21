@@ -1,19 +1,19 @@
 #pragma once
-#include "GL4BaseObject.h"
-#include "GL4Geometry.h"
-#include "GL4EntityMaterial.h"
+#include "GLES3BaseObject.h"
+#include "GLES3Geometry.h"
+#include "GLES3EntityMaterial.h"
 namespace NSDevilX
 {
 	namespace NSRenderSystem
 	{
-		namespace NSGL4
+		namespace NSGLES3
 		{
 			class CEntityImp;
 			class CLight;
 			class CRenderOperation;
-			class CEntityRenderableImp
-				:public TInterfaceObject<IEntityRenderableImp>
-				,public TBaseObject<CEntityRenderableImp>
+			class CSubEntityImp
+				:public TInterfaceObject<ISubEntityImp>
+				,public TBaseObject<ISubEntityImp>
 				,public TMessageReceiver<IGeometryUsageImp>
 			{
 			protected:
@@ -22,8 +22,8 @@ namespace NSDevilX
 				CEntityMaterial * mMaterial;
 				GLenum mPrimitiveTopology;
 			public:
-				CEntityRenderableImp(IEntityRenderableImp * interfaceImp,CEntityImp * obj);
-				~CEntityRenderableImp();
+				CSubEntityImp(ISubEntityImp * interfaceImp,CEntityImp * obj);
+				~CSubEntityImp();
 				CEntityImp * getEntity()const
 				{
 					return mEntity;
@@ -34,7 +34,7 @@ namespace NSDevilX
 				}
 				Void renderForward(CLight * light,CRenderOperation & operation);
 				// Í¨¹ý TInterfaceObject ¼Ì³Ð
-				virtual Void onMessage(IEntityRenderableImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
+				virtual Void onMessage(ISubEntityImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 
 				// Inherited via TMessageReceiver
 				virtual Void onMessage(IGeometryUsageImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;

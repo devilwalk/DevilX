@@ -11,7 +11,7 @@ namespace NSDevilX
 			class CEntityPass
 				:public TBaseObject<CEntityPass>
 				,public CPass
-				,public TMessageReceiver<IEntityRenderableImp>
+				,public TMessageReceiver<ISubEntityImp>
 				,public TMessageReceiver<IGeometryImp>
 				,public TMessageReceiver<ITextureUnitStateImp>
 			{
@@ -36,7 +36,7 @@ namespace NSDevilX
 					return mVertexArrayObject;
 				}
 				// Í¨¹ý TMessageReceiver ¼Ì³Ð
-				virtual Void onMessage(IEntityRenderableImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
+				virtual Void onMessage(ISubEntityImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 				virtual Void onMessage(IGeometryImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 				virtual Void onMessage(ITextureUnitStateImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 			protected:

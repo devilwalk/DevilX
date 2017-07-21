@@ -57,12 +57,15 @@ NSDevilX::NSRenderSystem::NSD3D11::CVertexShader::CVertexShader(ID3DBlob * code)
 		{
 			input_element_desc.Format=DXGI_FORMAT_R8G8B8A8_UINT;
 		}
-		else if(strcmp(input_parameter_desc.SemanticName,"DIFFUSE")==0)
+		else if((strcmp(input_parameter_desc.SemanticName,"DIFFUSE")==0)
+			||(strcmp(input_parameter_desc.SemanticName,"QUERY")==0)
+			)
 		{
 			input_element_desc.Format=DXGI_FORMAT_R8G8B8A8_UNORM;
 		}
 		else
 		{
+			assert(0);
 			input_element_desc.Format=DXGI_FORMAT_UNKNOWN;
 		}
 		input_element_desc.InputSlot=i;
@@ -102,6 +105,14 @@ NSDevilX::NSRenderSystem::NSD3D11::CVertexShader::CVertexShader(ID3DBlob * code)
 		else if(strcmp(input_element_desc.SemanticName,"DIFFUSE")==0)
 		{
 			mInputSlots[i]=CEnum::EVertexBufferType_Diffuse;
+		}
+		else if(strcmp(input_element_desc.SemanticName,"QUERY")==0)
+		{
+			mInputSlots[i]=CEnum::EVertexBufferType_Query;
+		}
+		else
+		{
+			assert(0);
 		}
 	}
 	for(decltype(shader_desc.BoundResources) i=0;i<shader_desc.BoundResources;++i)
