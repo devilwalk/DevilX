@@ -9,17 +9,12 @@ namespace NSDevilX
 				:public TBaseObject<CBufferUpdater>
 			{
 			protected:
-				CComPtr<ID3D11Buffer> mBuffer;
-				const UInt32 mStride;
+				ID3D11Buffer * mBuffer;
 				const ConstVoidPtr * mSource;
 				const CRangesI * mDirtyRanges;
 			public:
-				CBufferUpdater(UInt32 stride);
+				CBufferUpdater();
 				~CBufferUpdater();
-				UInt32 getStride()const
-				{
-					return mStride;
-				}
 				Void setBuffer(ID3D11Buffer * buffer)
 				{
 					mBuffer=buffer;

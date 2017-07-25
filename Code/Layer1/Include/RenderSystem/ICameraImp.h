@@ -93,6 +93,7 @@ namespace NSDevilX
 			,public CMessageNotifier
 			,public NSDevilX::CDirtyFlagContainerMT
 			,public TMessageReceiver<ISceneElementImp>
+			,public CReferenceObject
 		{
 		public:
 			enum EMessage
@@ -142,7 +143,6 @@ namespace NSDevilX
 			TSharedReadData<UInt32> mVisibleObjectsFrameIndex;
 		public:
 			ICameraImp(const String & name,ISceneImp * scene);
-			~ICameraImp();
 			Void setViewport(IViewportImp * viewport)
 			{
 				mViewport=viewport;
@@ -200,6 +200,7 @@ namespace NSDevilX
 			virtual IOrthoProperty * queryInterface_IOrthoProperty() const override;
 			virtual ISceneElement * queryInterface_ISceneElement() const override;
 		protected:
+			~ICameraImp();
 			Void _createProperty();
 			Void _destroyProperty();
 			const DirectX::BoundingFrustum & _getFrustom();

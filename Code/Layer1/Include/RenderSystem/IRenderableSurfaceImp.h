@@ -23,7 +23,6 @@ namespace NSDevilX
 			IEnum::ERenderableSurfaceFormat mFormat;
 		public:
 			IRenderableSurfaceImp(const String & name);
-			~IRenderableSurfaceImp();
 
 			// Í¨¹ý IRenderableSurface ¼Ì³Ð
 			virtual IRenderTarget * queryInterface_IRenderTarget() const override;
@@ -33,6 +32,8 @@ namespace NSDevilX
 			virtual UInt32 getHeight() const override;
 			virtual Void setFormat(IEnum::ERenderableSurfaceFormat format) override;
 			virtual IEnum::ERenderableSurfaceFormat getFormat() const override;
+		protected:
+			~IRenderableSurfaceImp();
 		};
 	}
 }

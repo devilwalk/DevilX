@@ -63,10 +63,11 @@ namespace NSDevilX
 				TResourcePtrMap<IWindowImp*const,CWindowImp> mWindows;
 				TResourcePtrMap<IRenderableSurfaceImp*const,CRenderableSurfaceImp> mRenderableSurfaces;
 				TResourcePtrMap<ISceneImp*const,CSceneImp> mScenes;
-				TResourcePtrMap<IGeometryImp*const,CGeometryImp> mGeometrys;
-				TResourcePtrMap<ITexture2DImp*const,CTexture2D> mTexture2Ds;
-				TResourcePtrMap<IVertexBufferImp*const,CVertexBufferImp> mVertexBuffers;
-				TResourcePtrMap<IIndexBufferImp*const,CIndexBufferImp> mIndexBuffers;
+				TRefResourcePtrMap<IGeometryImp*const,CGeometryImp> mGeometrys;
+				TRefResourcePtrMap<ITexture2DImp*const,CTexture2D> mTexture2Ds;
+				TRefResourcePtrMap<IVertexBufferImp*const,CVertexBufferImp> mVertexBuffers;
+				TRefResourcePtrMap<IIndexBufferImp*const,CIndexBufferImp> mIndexBuffers;
+				TRefResourcePtrMap<IBufferImp*const,CBufferImp> mBuffers;
 				TResourcePtrMap<ITransformerImp*,CTransformerImp> mTransformers;
 				D3D11_RASTERIZER_DESC1 mDefaultRasterizerStateDesc;
 				D3D11_BLEND_DESC1 mDefaultBlendStateDesc;
@@ -168,6 +169,10 @@ namespace NSDevilX
 				CIndexBufferImp * getIndexBuffer(IIndexBufferImp * interfaceImp)const
 				{
 					return mIndexBuffers.get(interfaceImp);
+				}
+				CBufferImp * getBuffer(IBufferImp * interfaceImp)const
+				{
+					return mBuffers.get(interfaceImp);
 				}
 				CTransformerImp * createTransformer(ITransformerImp * interfaceImp);
 				CTransformerImp * getTransformer(ITransformerImp * interfaceImp)const

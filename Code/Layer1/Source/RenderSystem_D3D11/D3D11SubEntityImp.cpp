@@ -9,19 +9,20 @@ NSDevilX::NSRenderSystem::NSD3D11::CSubEntityImp::CSubEntityImp(ISubEntityImp * 
 	,mGeometry(nullptr)
 	,mMaterial(nullptr)
 	,mPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
-	,mQueryDataBuffer(nullptr)
+	,mQueryBuffer(nullptr)
 {
 	mMaterial=DEVILX_NEW CEntityMaterial(this);
 	_updatePrimitiveTopology();
 	getInterfaceImp()->setUserPointer(0,this);
 	getInterfaceImp()->addListener(static_cast<TInterfaceObject<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndGeometryChange);
-	getInterfaceImp()->addListener(static_cast<TInterfaceObject<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndQueriableChange);
+	getInterfaceImp()->addListener(static_cast<TInterfaceObject<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndQueryBufferChange);
 	static_cast<IGeometryUsageImp*>(getInterfaceImp()->queryInterface_IGeometryUsage())->addListener(static_cast<TMessageReceiver<IGeometryUsageImp>*>(this),IGeometryUsageImp::EMessage_EndOperationTypeChange);
 }
 
 NSDevilX::NSRenderSystem::NSD3D11::CSubEntityImp::~CSubEntityImp()
 {
-	DEVILX_DELETE(mQueryDataBuffer);
+	if(mQueryBuffer)
+		mQueryBuffer->release();
 	DEVILX_DELETE(mMaterial);
 }
 
@@ -63,7 +64,7 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CSubEntityImp::renderForward(CLight * li
 	operation.mVertexStrides.resize(operation.mPass->getVertexShader()->getInputElementDescs().size());
 	for(decltype(operation.mPass->getVertexShader()->getInputElementDescs().size()) i=0;i<operation.mPass->getVertexShader()->getInputElementDescs().size();++i)
 	{
-		operation.mVertexBuffers[i]=mGeometry->getVertexBuffer()->getBuffers()[operation.mPass->getVertexShader()->getInputSlots()[i]]->getBuffer();
+		operation.mVertexBuffers[i]=mGeometry->getVertexBuffer()->getBuffers()[operation.mPass->getVertexShader()->getInputSlots()[i]]->getInternal();
 		operation.mVertexStrides[i]=CUtility::getStride((CEnum::EVertexBufferType)operation.mPass->getVertexShader()->getInputSlots()[i]);
 	}
 	operation.mIndexBuffer=mGeometry->getIndexBuffer()->getBuffer();
@@ -89,12 +90,12 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CSubEntityImp::query(CRenderOperation & 
 	{
 		if(CEnum::EVertexBufferType_Query==operation.mPass->getVertexShader()->getInputSlots()[i])
 		{
-			operation.mVertexBuffers[i]=mQueryDataBuffer->getBuffer();
-			operation.mVertexStrides[i]=mQueryDataBuffer->getStride();;
+			operation.mVertexBuffers[i]=mQueryBuffer->getInternal();
+			operation.mVertexStrides[i]=sizeof(UInt32);
 		}
 		else
 		{
-			operation.mVertexBuffers[i]=mGeometry->getVertexBuffer()->getBuffers()[operation.mPass->getVertexShader()->getInputSlots()[i]]->getBuffer();
+			operation.mVertexBuffers[i]=mGeometry->getVertexBuffer()->getBuffers()[operation.mPass->getVertexShader()->getInputSlots()[i]]->getInternal();
 			operation.mVertexStrides[i]=CUtility::getStride((CEnum::EVertexBufferType)operation.mPass->getVertexShader()->getInputSlots()[i]);
 		}
 	}
@@ -113,19 +114,19 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CSubEntityImp::onMessage(ISubEntityImp *
 	case ISubEntityImp::EMessage_EndGeometryChange:
 		mGeometry=CSystemImp::getSingleton().getGeometry(static_cast<IGeometryImp*>(getInterfaceImp()->getGeometry()));
 		break;
-	case ISubEntityImp::EMessage_EndQueriableChange:
-		if(getInterfaceImp()->isQueriable())
+	case ISubEntityImp::EMessage_EndQueryBufferChange:
+		if(getInterfaceImp()->getQueryBuffer())
 		{
-			mQueryDataBuffer=DEVILX_NEW CBufferUpdater(sizeof(UInt32));
-			mQueryDataBuffer->setDataSource(reinterpret_cast<const ConstVoidPtr*>(&getInterfaceImp()->getQueryDatasRef()));
-			mQueryDataBuffer->setDirtyRanges(&getInterfaceImp()->getQueryDataDirties());
-			CSystemImp::getSingleton().addListener(static_cast<TMessageReceiver<CSystemImp>*>(this),CSystemImp::EMessage_BeginFrame);
+			mQueryBuffer=CSystemImp::getSingleton().getBuffer(static_cast<IBufferImp*>(getInterfaceImp()->getQueryBuffer()));
+			mQueryBuffer->addRef();
 		}
 		else
 		{
-			DEVILX_DELETE(mQueryDataBuffer);
-			mQueryDataBuffer=nullptr;
-			CSystemImp::getSingleton().removeListener(static_cast<TMessageReceiver<CSystemImp>*>(this),CSystemImp::EMessage_BeginFrame);
+			if(mQueryBuffer)
+			{
+				mQueryBuffer->release();
+				mQueryBuffer=nullptr;
+			}
 		}
 		break;
 	}
@@ -150,30 +151,6 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CSubEntityImp::_updatePrimitiveTopology(
 		break;
 	case IEnum::EOperationType_TriangleStrip:
 		mPrimitiveTopology=D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;
-		break;
-	}
-}
-
-Void NSDevilX::NSRenderSystem::NSD3D11::CSubEntityImp::onMessage(CSystemImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
-{
-	switch(message)
-	{
-	case CSystemImp::EMessage_BeginFrame:
-		if((!mQueryDataBuffer->getBuffer())&&getInterfaceImp()->getQueryDatas())
-		{
-			CComPtr<ID3D11Buffer> buf;
-			D3D11_BUFFER_DESC desc;
-			desc.BindFlags=D3D11_BIND_VERTEX_BUFFER;
-			desc.CPUAccessFlags=0;
-			desc.MiscFlags=0;
-			desc.StructureByteStride=sizeof(UInt32);
-			desc.ByteWidth=getInterfaceImp()->getGeometry()->getVertexBuffer()->getCount()*desc.StructureByteStride;
-			desc.Usage=D3D11_USAGE_DEFAULT;
-			CSystemImp::getSingleton().getDevice()->CreateBuffer(&desc,nullptr,&buf);
-			mQueryDataBuffer->setBuffer(buf);
-		}
-		mQueryDataBuffer->update();
-		getInterfaceImp()->clearQueryDataDirties();
 		break;
 	}
 }

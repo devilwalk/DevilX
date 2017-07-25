@@ -20,6 +20,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\Enum.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IBufferImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IBufferUsageImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\ICameraImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IColourUnitStateImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IGeometryImp.h" />
@@ -47,6 +49,8 @@
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IWindowImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\SceneManager.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\Shader\DefnitionShaderCodeFunction.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderBuffer.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderBufferUsage.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderSubEntity.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderEntity.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderableSurface.h" />
@@ -77,6 +81,8 @@
     <ClInclude Include="..\..\..\Code\Layer1\Source\RenderSystem\Precompiler.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IBufferImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IBufferUsageImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\ICameraImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IColourUnitStateImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IGeometryImp.cpp" />

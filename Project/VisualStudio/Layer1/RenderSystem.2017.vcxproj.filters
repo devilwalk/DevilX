@@ -186,6 +186,18 @@
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\ISubEntityImp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderBuffer.h">
+      <Filter>Interface Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderBufferUsage.h">
+      <Filter>Interface Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IBufferImp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IBufferUsageImp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\ICameraImp.cpp">
@@ -267,6 +279,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\ISubEntityImp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IBufferImp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IBufferUsageImp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

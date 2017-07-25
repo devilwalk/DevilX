@@ -11,19 +11,17 @@ namespace NSDevilX
 			class CEntityImp;
 			class CLight;
 			class CRenderOperation;
-			class CSystemImp;
 			class CSubEntityImp
 				:public TInterfaceObject<ISubEntityImp>
 				,public TBaseObject<CSubEntityImp>
 				,public TMessageReceiver<IGeometryUsageImp>
-				,public TMessageReceiver<CSystemImp>
 			{
 			protected:
 				CEntityImp * const mEntity;
 				CGeometryImp * mGeometry;
 				CEntityMaterial * mMaterial;
 				D3D11_PRIMITIVE_TOPOLOGY mPrimitiveTopology;
-				CBufferUpdater * mQueryDataBuffer;
+				CBufferImp * mQueryBuffer;
 			public:
 				CSubEntityImp(ISubEntityImp * interfaceImp,CEntityImp * obj);
 				~CSubEntityImp();
@@ -37,9 +35,6 @@ namespace NSDevilX
 				virtual Void onMessage(IGeometryUsageImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 			protected:
 				Void _updatePrimitiveTopology();
-
-				// Í¨¹ý TMessageReceiver ¼Ì³Ð
-				virtual Void onMessage(CSystemImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 			};
 		}
 	}

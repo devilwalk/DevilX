@@ -33,7 +33,6 @@ namespace NSDevilX
 			CMatrix4F mTransform;
 		public:
 			ITransformerImp();
-			~ITransformerImp();
 			const CMatrix4F & getTransformMT();
 
 			virtual Void setPosition(const CFloat3 & pos) override;
@@ -48,6 +47,7 @@ namespace NSDevilX
 
 			virtual const CFloat3 & getScale() const override;
 		protected:
+			~ITransformerImp();
 			virtual Boolean _process(UInt32 flagIndex,OUT Bool & needNextProcess) override;
 		};
 	}

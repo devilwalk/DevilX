@@ -13,6 +13,7 @@ namespace NSDevilX
 			:public ISubEntity
 			,public CMessageNotifier
 			,public CUserDataContainer
+			,public CReferenceObject
 		{
 		public:
 			enum EMessage
@@ -23,6 +24,8 @@ namespace NSDevilX
 				EMessage_EndQueriableChange,
 				EMessage_BeginGeometryChange,
 				EMessage_EndGeometryChange,
+				EMessage_BeginQueryBufferChange,
+				EMessage_EndQueryBufferChange,
 				EMessage_BeginVisibleChange,
 				EMessage_EndVisibleChange,
 				EMessage_BeginColourUnitStateCreate,
@@ -38,24 +41,15 @@ namespace NSDevilX
 				EMessage_BeginTransparentEnableChange,
 				EMessage_EndTransparentEnableChange
 			};
-			struct SDirties
-				:public CRangesI
-			{
-				using CRangesI::CRangesI;
-				Void addDirty(UInt32 offset,UInt32 count)
-				{
-					addRange(CRangeI(offset,count+offset-1));
-				}
-			};
 		protected:
 			const String mName;
 			IEntityImp * const mObject;
 			Bool mIsRenderable;
 			Bool mIsQueriable;
-			const UInt32 * mQueryDatas;
-			SDirties mQueryDataDirties;
 			IGeometryImp * mGeometry;
 			IGeometryUsageImp * mGeometryUsage;
+			IBufferImp * mQueryBuffer;
+			IBufferUsageImp * mQueryBufferUsage;
 			Bool mVisible;
 			TVector<IColourUnitStateImp*> mColourUnitStates;
 			TVector<ITextureUnitStateImp*> mTextureUnitStates;
@@ -63,19 +57,6 @@ namespace NSDevilX
 			Float mAlphaTestValue;
 		public:
 			ISubEntityImp(const String & name,IEntityImp * object);
-			virtual ~ISubEntityImp();
-			const SDirties & getQueryDataDirties()const
-			{
-				return mQueryDataDirties;
-			}
-			Void clearQueryDataDirties()
-			{
-				mQueryDataDirties.clear();
-			}
-			const UInt32 * const & getQueryDatasRef()const
-			{
-				return mQueryDatas;
-			}
 			Boolean isAlphaTestEnable()const
 			{
 				return mAlphaTestValue>0;
@@ -90,9 +71,9 @@ namespace NSDevilX
 			virtual Bool isRenderable() const override;
 			virtual Void setQueriable(Bool queriable) override;
 			virtual Bool isQueriable() const override;
-			virtual Void setQueryDatas(const UInt32 * datas,UInt32 count) override;
-			virtual Void updateQueryDatas(UInt32 offset,UInt32 count) override;
-			virtual const UInt32 * getQueryDatas() const override;
+			virtual Void setQueryBuffer(IBuffer * buffer) override;
+			virtual IBuffer * getQueryBuffer() const override;
+			virtual IBufferUsage * getQueryBufferUsage() const override;
 			virtual Void setVisible(Bool visible) override;
 			virtual Bool getVisible() const override;
 			virtual Void setGeometry(IGeometry * geometry) override;
@@ -105,6 +86,8 @@ namespace NSDevilX
 			virtual Float getAlphaTestValue() const override;
 			virtual Void setTransparentEnable(Bool enable) override;
 			virtual Bool getTransparentEnable() const override;
+		protected:
+			~ISubEntityImp();
 		};
 	}
 }

@@ -1,7 +1,3 @@
-// Project.cpp : Defines the entry point for the console application.
-//
-
-#include <iostream>
 #include "Common.h"
 #include "InputSystem/IInputSystemInterface.h"
 #include "PhysicalSystem/IPhysicalSystemInterface.h"
@@ -12,6 +8,7 @@
 #include "UISystem/IUISystemInterface.h"
 #pragma comment(lib,"RenderSystem_D3D11.2017.lib")
 using namespace NSDevilX;
+#if 0
 class CPhysicalQueryResultReceiver
 	:public NSPhysicalSystem::IQueryResultReceiver
 	,public TBaseObject<CPhysicalQueryResultReceiver>
@@ -53,12 +50,19 @@ int main()
 	CFloat3 ray_dir=CFloat3(0.5f,0.5f,1.0f);
 	ray_dir.normalize();
 	physical_ray_query->queryInterface_IRayQuery()->setRay(CRay(CFloat3(0,0,-1.0f),ray_dir));
-
+	NSPhysicalSystem::getSystem()->update();
+	physical_ray_query->execute();
+	NSPhysicalSystem::getSystem()->shutdown();
+	return 0;
+}
+#endif
+#if 0
+int main()
+{
 	UInt32 window_size[]={800,600,400,200};
 	UInt32 current_window_size_index=0;
 	CWindow window;
 	window.setSize(CUInt2(window_size[current_window_size_index],window_size[current_window_size_index]));
-	MSG msg={0};
 	auto render_scene=NSRenderSystem::getSystem()->createScene("Test",NSRenderSystem::IEnum::ESceneManagerAlgorithm_Simple);
 	render_scene->setAmbientColour(CFloatRGBA::sRed);
 	auto render_camera=render_scene->createCamera("Test");
@@ -90,6 +94,7 @@ int main()
 	render_viewport->setClearColour(CFloatRGBA::sBlack);
 	auto query=render_viewport->createQuery("Test");
 	query->setArea(CFloat2(-1.0f),CFloat2(-1.0f));
+	const CFloat3 positions[]={CFloat3(-1.0f,0,10.0f),CFloat3(0,1.0f,10.0f),CFloat3(1.0f,0,10.0f)};
 	auto render_geometry=NSRenderSystem::getSystem()->queryInterface_IResourceManager()->createGeometry("Test");
 	render_geometry->getVertexBuffer()->setCount(3);
 	render_geometry->getVertexBuffer()->setPositions(positions);
@@ -110,13 +115,17 @@ int main()
 	auto render_visible_area=render_scene->createVisibleArea("Test_Entity");
 	render_visible_area->setBoundingBox(DirectX::BoundingBox(CFloat3::sZero,CFloat3(100.0f)));
 	render_visible_area->attachObject(render_entity->queryInterface_ISceneElement());
-
-	/*auto block_terrain_gen=NSCubeBlockWorld::getWorld()->getTerrainGenerator("Simple");
-	auto block_scene_manager=NSCubeBlockWorld::getWorld()->createSceneManager("Test",block_terrain_gen,render_scene);
-	block_scene_manager->setRange(CRange3I(CSInt3(INT_MIN,INT_MIN,INT_MIN),CSInt3(INT_MAX,0,INT_MAX)));
-	auto block_loader=block_scene_manager->createLoader("Test");
-	block_loader->setChunkRange(CSInt3(1,1,1));*/
-
+	NSRenderSystem::getSystem()->update();
+	NSRenderSystem::getSystem()->shutdown();
+	return 0;
+}
+#endif
+#if 1
+int main()
+{
+	auto * render_surface=NSRenderSystem::getSystem()->createRenderableSurface("Test");
+	render_surface->setSize(800,600);
+	auto render_viewport=render_surface->queryInterface_IRenderTarget()->createViewport("Test");
 	auto ui_graphic_scene=NSUISystem::getSystem()->createGraphicScene(render_viewport);
 	auto ui_graphic_window_lt=ui_graphic_scene->createWindow("Test_LT");
 	ui_graphic_window_lt->queryInterface_IElement()->setPosition(CFloat2::sZero);
@@ -184,8 +193,7 @@ int main()
 			return mPosition;
 		}
 		virtual Void setSize(const CFloat2 & size) override
-		{
-		}
+		{}
 		virtual const CFloat2 & getSize() const override
 		{
 			return CFloat2::sZero;
@@ -254,101 +262,11 @@ int main()
 	ui_event_window_rb->queryInterface_IElement()->setSize(CFloat2(0.25f));
 	ui_event_window_rb->registerListener(&ui_event_listener_rb,SUIEvent::EType_MouseLeftButtonDown);
 	ui_event_window_rb->registerListener(&ui_event_listener_rb,SUIEvent::EType_MouseRightButtonDown);
-
-	CTransform3DNode camera_node;
-	camera_node.setPosition(CFloat3(0,1.0f,0));
-
-	CTimer timer;
-	auto yaw=0.0f;
-	auto pitch=0.0f;
-	auto mouse=NSInputSystem::getSystem()->getVirtualDeviceManager()->createMouse("Mouse",NSInputSystem::getSystem()->getPhysicalDeviceManager()->getDevice(0));
-	auto keyboard=NSInputSystem::getSystem()->getVirtualDeviceManager()->createKeyboard("Keyboard",NSInputSystem::getSystem()->getPhysicalDeviceManager()->getDevice(1));
-	while(keyboard->getButtonState(NSInputSystem::IEnum::EKeyType_ESCAPE)!=NSInputSystem::IEnum::EButtonState_Pressed)
-	{
-		query->setArea(CFloat2(-1.0f),CFloat2(-1.0f));
-		CInt2 cursor_pos=window.getCursorPosition();
-		auto delta_time=timer.getInMillisecond();
-		NSInputSystem::getSystem()->update();
-		String temp;
-		temp.resize(256);
-		sprintf_s(&temp[0],temp.size(),"%d,%d",mouse->getPosition().x,mouse->getPosition().y);
-		std::cout<<"Mouse Position:"<<temp.c_str();
-
-		temp.clear();
-		temp.resize(256);
-		sprintf_s(&temp[0],temp.size(),"Left:%s,Right:%s,Middle:%s"
-			,mouse->getButtonState(NSInputSystem::IEnum::EMouseButtonType_Left)==NSInputSystem::IEnum::EButtonState_Pressed?"Pressed":"Released"
-			,mouse->getButtonState(NSInputSystem::IEnum::EMouseButtonType_Right)==NSInputSystem::IEnum::EButtonState_Pressed?"Pressed":"Released"
-			,mouse->getButtonState(NSInputSystem::IEnum::EMouseButtonType_Middle)==NSInputSystem::IEnum::EButtonState_Pressed?"Pressed":"Released"
-			);
-		std::cout<<" Button State:"<<temp.c_str();
-
-		temp.clear();
-		temp.resize(256);
-		sprintf_s(&temp[0],temp.size(),"%d",mouse->getWheelPosition());
-		std::cout<<" WheelPosition:"<<temp.c_str();
-		std::cout<<std::endl;
-		NSPhysicalSystem::getSystem()->update();
-		physical_ray_query->execute();
-		if(NSInputSystem::IEnum::EButtonState_Pressed==keyboard->getButtonState(NSInputSystem::IEnum::EKeyType_W))
-			camera_node.setPosition(camera_node.getPosition()+camera_node.getDirection()*static_cast<Float>(delta_time)*0.001f*10);
-		if(NSInputSystem::IEnum::EButtonState_Pressed==keyboard->getButtonState(NSInputSystem::IEnum::EKeyType_S))
-			camera_node.setPosition(camera_node.getPosition()-camera_node.getDirection()*static_cast<Float>(delta_time)*0.001f*10);
-		if(NSInputSystem::IEnum::EButtonState_Pressed==keyboard->getButtonState(NSInputSystem::IEnum::EKeyType_A))
-			camera_node.setPosition(camera_node.getPosition()-camera_node.getRight()*static_cast<Float>(delta_time)*0.001f*10);
-		if(NSInputSystem::IEnum::EButtonState_Pressed==keyboard->getButtonState(NSInputSystem::IEnum::EKeyType_D))
-			camera_node.setPosition(camera_node.getPosition()+camera_node.getRight()*static_cast<Float>(delta_time)*0.001f*10);
-		if(NSInputSystem::IEnum::EButtonState_Pressed==keyboard->getButtonState(NSInputSystem::IEnum::EKeyType_SPACE))
-		{
-			++current_window_size_index;
-			current_window_size_index=current_window_size_index%(sizeof(window_size)/sizeof(UInt32));
-			window.setSize(CUInt2(window_size[current_window_size_index],window_size[current_window_size_index]));
-		}
-		if(NSInputSystem::IEnum::EButtonState_Pressed==mouse->getButtonState(NSInputSystem::IEnum::EMouseButtonType_Left))
-		{
-			mouse_left_button_down_event.setPosition(cursor_pos/static_cast<Float>(window_size[current_window_size_index]));
-			query->setArea(cursor_pos/static_cast<Float>(window_size[current_window_size_index]),cursor_pos/static_cast<Float>(window_size[current_window_size_index]));
-		}
-		else
-		{
-			mouse_left_button_down_event.setPosition(CFloat2(10000.0f));
-		}
-		if(NSInputSystem::IEnum::EButtonState_Pressed==mouse->getButtonState(NSInputSystem::IEnum::EMouseButtonType_Right))
-		{
-			//yaw+=mouse->getOffset().x*static_cast<Float>(delta_time)*0.001f*10;
-			//pitch+=mouse->getOffset().y*static_cast<Float>(delta_time)*0.001f*10;
-			pitch=std::max<Float>(pitch,-90.0f);
-			pitch=std::min<Float>(pitch,90.0f);
-			camera_node.setRotation(yaw,0,pitch);
-
-			mouse_right_button_down_event.setPosition(cursor_pos/static_cast<Float>(window_size[current_window_size_index]));
-		}
-		else
-		{
-			mouse_right_button_down_event.setPosition(CFloat2(10000.0f));
-		}
-		render_camera->queryInterface_ISceneElement()->getTransformer()->setPosition(camera_node.getDerivedPosition());
-		render_camera->queryInterface_ISceneElement()->getTransformer()->setOrientation(camera_node.getDerivedOrientation());
-		//block_loader->setBlockPosition(CSInt3(camera_node.getDerivedPosition())-CSInt3::sUnitY*2);
-		//NSCubeBlockWorld::getWorld()->update();
-		NSRenderSystem::getSystem()->update();
-		NSNetworkSystem::getSystem()->update();
-
-		ui_event_scene->route(&mouse_left_button_down_event);
-		ui_event_scene->route(&mouse_right_button_down_event);
-
-		if(PeekMessage(&msg,static_cast<HWND>(window.getHandle()),0,0,PM_REMOVE))
-		{
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
-		}
-	}
+	ui_event_scene->route(&mouse_left_button_down_event);
+	ui_event_scene->route(&mouse_right_button_down_event);
+	NSRenderSystem::getSystem()->update();
 	NSUISystem::getSystem()->shutdown();
-	NSInputSystem::getSystem()->shutdown();
-	NSPhysicalSystem::getSystem()->shutdown();
 	NSRenderSystem::getSystem()->shutdown();
-	NSNetworkSystem::getSystem()->shutdown();
-	DEVILX_TRACK_SHUTDOWN;
-    return 0;
+	return 0;
 }
-
+#endif

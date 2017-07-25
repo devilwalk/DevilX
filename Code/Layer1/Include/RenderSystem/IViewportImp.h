@@ -11,6 +11,7 @@ namespace NSDevilX
 			,public IOverlay
 			,public TBaseObject<IViewportImp>
 			,public CMessageNotifier
+			,public CReferenceObject
 		{
 		public:
 			enum EMessage
@@ -54,7 +55,6 @@ namespace NSDevilX
 			TVector<UInt32> mQueryDatas;
 		public:
 			IViewportImp(const String & name,IRenderTargetImp * rt);
-			~IViewportImp();
 			IRenderTargetImp * getRenderTarget()const
 			{
 				return mRenderTarget;
@@ -101,6 +101,8 @@ namespace NSDevilX
 			virtual IOverlayElement * createElement(const String & name) override;
 			virtual IOverlayElement * getElement(const String & name) const override;
 			virtual Void destroyElement(IOverlayElement * element) override;
+		protected:
+			~IViewportImp();
 		};
 	}
 }

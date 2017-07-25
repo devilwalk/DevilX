@@ -82,7 +82,6 @@ Void NSDevilX::NSRenderSystem::IGeometryImp::_registerToIVertexBufferImp()
 	mVertexBuffer->addListener(static_cast<TMessageReceiver<IVertexBufferImp>*>(this),IVertexBufferImp::EMessage_BeginTextureCoord0EnableChange);
 	mVertexBuffer->addListener(static_cast<TMessageReceiver<IVertexBufferImp>*>(this),IVertexBufferImp::EMessage_BeginTextureCoord1EnableChange);
 	mVertexBuffer->addListener(static_cast<TMessageReceiver<IVertexBufferImp>*>(this),IVertexBufferImp::EMessage_EndDiffuseEnableChange);
-	mVertexBuffer->addListener(static_cast<TMessageReceiver<IVertexBufferImp>*>(this),IVertexBufferImp::EMessage_EndDirtyFlagAdd);
 	mVertexBuffer->addListener(static_cast<TMessageReceiver<IVertexBufferImp>*>(this),IVertexBufferImp::EMessage_EndNormalEnableChange);
 	mVertexBuffer->addListener(static_cast<TMessageReceiver<IVertexBufferImp>*>(this),IVertexBufferImp::EMessage_EndTangentEnableChange);
 	mVertexBuffer->addListener(static_cast<TMessageReceiver<IVertexBufferImp>*>(this),IVertexBufferImp::EMessage_EndTextureCoord0EnableChange);
@@ -97,7 +96,6 @@ Void NSDevilX::NSRenderSystem::IGeometryImp::_unregisterToIVertexBufferImp()
 	mVertexBuffer->removeListener(static_cast<TMessageReceiver<IVertexBufferImp>*>(this),IVertexBufferImp::EMessage_BeginTextureCoord0EnableChange);
 	mVertexBuffer->removeListener(static_cast<TMessageReceiver<IVertexBufferImp>*>(this),IVertexBufferImp::EMessage_BeginTextureCoord1EnableChange);
 	mVertexBuffer->removeListener(static_cast<TMessageReceiver<IVertexBufferImp>*>(this),IVertexBufferImp::EMessage_EndDiffuseEnableChange);
-	mVertexBuffer->removeListener(static_cast<TMessageReceiver<IVertexBufferImp>*>(this),IVertexBufferImp::EMessage_EndDirtyFlagAdd);
 	mVertexBuffer->removeListener(static_cast<TMessageReceiver<IVertexBufferImp>*>(this),IVertexBufferImp::EMessage_EndNormalEnableChange);
 	mVertexBuffer->removeListener(static_cast<TMessageReceiver<IVertexBufferImp>*>(this),IVertexBufferImp::EMessage_EndTangentEnableChange);
 	mVertexBuffer->removeListener(static_cast<TMessageReceiver<IVertexBufferImp>*>(this),IVertexBufferImp::EMessage_EndTextureCoord0EnableChange);

@@ -49,7 +49,8 @@ namespace NSDevilX
 		{
 			for(auto res:*this)
 			{
-				res->release();
+				if(res)
+					res->release();
 			}
 			this->clear();
 		}
@@ -74,7 +75,8 @@ namespace NSDevilX
 		{
 			for(auto res:*this)
 			{
-				res->Release();
+				if(res)
+					res->Release();
 			}
 			this->clear();
 		}
@@ -87,6 +89,16 @@ namespace NSDevilX
 		using TResourcePtrContainer<TVector<ValueT*> >::TResourcePtrContainer;
 		using TResourcePtrContainer<TVector<ValueT*> >::operator=;
 		virtual ~TResourcePtrVector(){}
+	};
+	template<class ValueT>
+	class TRefResourcePtrVector
+		:public TRefResourcePtrContainer<TVector<ValueT*> >
+	{
+	public:
+		using TRefResourcePtrContainer<TVector<ValueT*> >::TRefResourcePtrContainer;
+		using TRefResourcePtrContainer<TVector<ValueT*> >::operator=;
+		virtual ~TRefResourcePtrVector()
+		{}
 	};
 	template<class ValueT>
 	class TCOMResourcePtrVector
@@ -205,7 +217,8 @@ namespace NSDevilX
 			this->lockWrite();
 			for(auto res:*this)
 			{
-				res->release();
+				if(res)
+					res->release();
 			}
 			this->clear();
 			this->unLockWrite();
@@ -324,7 +337,8 @@ namespace NSDevilX
 		{
 			for(auto res:*this)
 			{
-				res.second->release();
+				if(res.second)
+					res.second->release();
 			}
 			this->clear();
 		}
@@ -354,7 +368,8 @@ namespace NSDevilX
 		{
 			for(auto res:*this)
 			{
-				res.second->release();
+				if(res.second)
+					res.second->release();
 			}
 			this->clear();
 		}
@@ -523,7 +538,8 @@ namespace NSDevilX
 		{
 			for(auto res:this->mResources)
 			{
-				res->release();
+				if(res)
+					res->release();
 			}
 			this->mResources.clear();
 			this->mIndices.clear();

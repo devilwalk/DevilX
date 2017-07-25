@@ -121,6 +121,7 @@ namespace NSDevilX
 			,public TBaseObject<ILightImp>
 			,public CMessageNotifier
 			,public CUserDataContainer
+			,public CReferenceObject
 		{
 		public:
 			enum EMessage
@@ -147,7 +148,6 @@ namespace NSDevilX
 			TSharedReadData<UInt32> mVisibleElementsFrameIndex;
 		public:
 			ILightImp(const String & name,IEnum::ELightType type,ISceneImp * scene);
-			virtual ~ILightImp();
 			decltype(mVisibleEntities) const & getVisibleEntities()const
 			{
 				return mVisibleEntities;
@@ -166,6 +166,8 @@ namespace NSDevilX
 			virtual IColourUnitState * getColourUnitState(IEnum::ELightColourUnitStateType type) override;
 			virtual Void setShadowEnable(Bool enable) override;
 			virtual Bool getShadowEnable() const override;
+		protected:
+			~ILightImp();
 		};
 	}
 }

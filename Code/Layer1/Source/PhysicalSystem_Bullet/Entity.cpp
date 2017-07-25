@@ -21,7 +21,8 @@ NSDevilX::NSPhysicalSystem::NSBullet::CEntity::~CEntity()
 {
 	if(getInternal())
 	{
-		delete static_cast<btScaledBvhTriangleMeshShape*>(getInternal()->getCollisionShape())->getChildShape();
+		if(getInternal()->getCollisionShape())
+			delete static_cast<btScaledBvhTriangleMeshShape*>(getInternal()->getCollisionShape())->getChildShape();
 		delete getInternal()->getCollisionShape();
 		delete getInternal();
 	}

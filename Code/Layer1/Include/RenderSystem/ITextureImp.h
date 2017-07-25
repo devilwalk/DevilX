@@ -7,13 +7,15 @@ namespace NSDevilX
 		class IRenderTargetImp;
 		class ITextureImp
 			:public ITexture
+			,public CReferenceObject
 		{
 		protected:
 			const String mName;
 		public:
 			ITextureImp(const String & name);
-			virtual ~ITextureImp();
 			virtual const String & getName() const override;
+		protected:
+			virtual ~ITextureImp();
 		};
 		class ITexture2DImp
 			:public ITexture2DReadable
@@ -62,7 +64,6 @@ namespace NSDevilX
 			TResourcePtrMap<UInt32,SSubTexture> mSubTextures;
 		public:
 			ITexture2DImp(const String & name);
-			~ITexture2DImp();
 			static UInt32 encodeSubTextureKey(UInt32 mipmapLevel,UInt32 arrayIndex)
 			{
 				return (arrayIndex<<16)+mipmapLevel;
@@ -132,6 +133,7 @@ namespace NSDevilX
 			virtual Void updatePixels(UInt32 mipmapLevel=0,UInt32 arrayIndex=0) override;
 			virtual ConstVoidPtr getPixels(UInt32 mipmapLevel=-1,UInt32 arrayIndex=-1) const override;
 		protected:
+			~ITexture2DImp();
 			Void _createSubTextures();
 		};
 	}

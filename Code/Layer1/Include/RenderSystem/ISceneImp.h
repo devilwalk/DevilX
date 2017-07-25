@@ -13,6 +13,7 @@ namespace NSDevilX
 			:public IScene
 			,public TBaseObject<ISceneImp>
 			,public CMessageNotifier
+			,public CReferenceObject
 		{
 		public:
 			enum EMessage
@@ -44,14 +45,13 @@ namespace NSDevilX
 			const String mName;
 			CSceneManager * mManager;
 			CFloatRGBA mAmbientColour;
-			TNamedResourcePtrMap<ICameraImp> mCameras;
-			TNamedResourcePtrMap<ILightImp> mLights;
-			TNamedResourcePtrMap<IEntityImp> mEntities;
+			TNamedRefResourcePtrMap<ICameraImp> mCameras;
+			TNamedRefResourcePtrMap<ILightImp> mLights;
+			TNamedRefResourcePtrMap<IEntityImp> mEntities;
 			TNamedResourcePtrMap<IVisibleAreaImp> mVisibleAreas;
-			TNamedResourcePtrMap<ISkyImp> mSkys;
+			TNamedRefResourcePtrMap<ISkyImp> mSkys;
 		public:
 			ISceneImp(const String & name,IEnum::ESceneManagerAlgorithm algorithm);
-			~ISceneImp();
 			CSceneManager * getManager()const
 			{
 				return mManager;
@@ -84,6 +84,8 @@ namespace NSDevilX
 			virtual Void destroySky(ISky * sky) override;
 			virtual Void setAmbientColour(const CColour & colour) override;
 			virtual const CColour & getAmbientColour() const override;
+		protected:
+			~ISceneImp();
 		};
 	}
 }

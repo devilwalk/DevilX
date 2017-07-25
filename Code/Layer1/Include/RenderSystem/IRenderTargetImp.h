@@ -8,6 +8,7 @@ namespace NSDevilX
 			:public IRenderTarget
 			,public CMessageNotifier
 			,public TMessageReceiver<IViewportImp>
+			,public CReferenceObject
 		{
 		public:
 			enum EMessage
@@ -19,7 +20,7 @@ namespace NSDevilX
 				EMessage_BeginClearColourChange,
 				EMessage_EndClearColourChange
 			};
-			typedef TNamedIndexResourcePtrContainer<IViewportImp> Viewports;
+			typedef TNamedIndexRefResourcePtrContainer<IViewportImp> Viewports;
 			typedef TMap<UInt32,TSet<SizeT> > Orders;
 		protected:
 			Viewports mViewports;
@@ -27,7 +28,6 @@ namespace NSDevilX
 			CFloatRGBA mClearColour;
 		public:
 			IRenderTargetImp();
-			virtual ~IRenderTargetImp();
 			// Inherited via IRenderTarget
 			virtual IViewport * createViewport(const String & name) override;
 			virtual Void destroyViewport(IViewport * viewport) override;
@@ -37,6 +37,8 @@ namespace NSDevilX
 
 			// Inherited via TMessageReceiver
 			virtual Void onMessage(IViewportImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
+		protected:
+			virtual ~IRenderTargetImp();
 		};
 	}
 }

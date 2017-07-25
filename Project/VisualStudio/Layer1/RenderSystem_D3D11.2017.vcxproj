@@ -159,6 +159,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11BaseObject.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11BufferImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11BufferUpdater.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11Camera.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11ClearViewportShader.h" />
@@ -209,6 +210,7 @@
     <ClInclude Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\Precompiler.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11BufferImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11BufferUpdater.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11Camera.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11ClearViewportShader.cpp" />

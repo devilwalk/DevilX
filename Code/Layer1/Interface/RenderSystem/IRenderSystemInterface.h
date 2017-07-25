@@ -1,5 +1,7 @@
 #pragma once
 #include "IRenderableSurface.h"
+#include "IRenderBuffer.h"
+#include "IRenderBufferUsage.h"
 #include "IRenderCamera.h"
 #include "IRenderColourUnitState.h"
 #include "IRenderEntity.h"

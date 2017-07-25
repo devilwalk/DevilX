@@ -16,6 +16,9 @@ namespace NSDevilX
 			virtual ITexture * createTexture(const String & name,IEnum::ETextureType type)=0;
 			virtual ITexture * getTexture(const String & name)const=0;
 			virtual Void destroyTexture(ITexture * texture)=0;
+			virtual IBuffer * createBuffer(const String & name)=0;
+			virtual IBuffer * getBuffer(const String & name)const=0;
+			virtual Void destroyBuffer(IBuffer * buffer)=0;
 		};
 	}
 }

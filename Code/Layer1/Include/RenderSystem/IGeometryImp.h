@@ -8,6 +8,7 @@ namespace NSDevilX
 		class IGeometryImp
 			:public IGeometry
 			,public TBaseObject<IGeometryImp>
+			,public CReferenceObject
 			,public CMessageNotifier
 			,public TMessageReceiver<IVertexBufferImp>
 			,public TMessageReceiver<IIndexBufferImp>
@@ -38,7 +39,6 @@ namespace NSDevilX
 			IIndexBufferImp * mIndexBuffer;
 		public:
 			IGeometryImp(const String & name);
-			virtual ~IGeometryImp();
 			// Inherited via IGeometry
 			virtual const String & getName() const override;
 			virtual Void setVertexBuffer(IVertexBuffer * buffer) override;
@@ -46,6 +46,7 @@ namespace NSDevilX
 			virtual Void setIndexBuffer(IIndexBuffer * buffer) override;
 			virtual IIndexBuffer * getIndexBuffer() const override;
 		protected:
+			~IGeometryImp();
 			Void _registerToIVertexBufferImp();
 			Void _unregisterToIVertexBufferImp();
 			Void _registerToIIndexBufferImp();

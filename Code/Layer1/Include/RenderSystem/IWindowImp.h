@@ -13,10 +13,11 @@ namespace NSDevilX
 			CWindow * const mWindow;
 		public:
 			IWindowImp(CWindow * window);
-			~IWindowImp();
 			// Inherited via IWindow
 			virtual IRenderTarget * queryInterface_IRenderTarget() const override;
 			virtual CWindow * getWindow() const override;
+		protected:
+			~IWindowImp();
 		};
 	}
 }

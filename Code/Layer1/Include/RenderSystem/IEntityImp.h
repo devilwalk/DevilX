@@ -9,6 +9,7 @@ namespace NSDevilX
 			:public IEntity
 			,public TBaseObject<IEntityImp>
 			,public CMessageNotifier
+			,public CReferenceObject
 		{
 		public:
 			enum EMessage
@@ -20,10 +21,9 @@ namespace NSDevilX
 			};
 		protected:
 			ISceneElementImp * mSceneElement;
-			TNamedIndexResourcePtrContainer<ISubEntityImp> mSubEntities;
+			TNamedIndexRefResourcePtrContainer<ISubEntityImp> mSubEntities;
 		public:
 			IEntityImp(const String & name,ISceneImp * scene);
-			virtual ~IEntityImp();
 			// Inherited via IRenderableObject
 			virtual ISceneElement * queryInterface_ISceneElement() const override;
 			virtual ISubEntity * createSubEntity(const String & name) override;
@@ -31,6 +31,8 @@ namespace NSDevilX
 			virtual ISubEntity * getSubEntity(UInt32 index) const override;
 			virtual UInt32 getSubEntityCount() const override;
 			virtual Void destroySubEntity(ISubEntity * subEntity) override;
+		protected:
+			~IEntityImp();
 		};
 	}
 }

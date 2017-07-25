@@ -25,7 +25,7 @@ Boolean NSDevilX::NSRenderSystem::NSD3D11::COverlayRenderable::render(CRenderOpe
 	ro.mVertexStrides.resize(mMaterial->getVertexShader()->getInputElementDescs().size());
 	for(decltype(mMaterial->getVertexShader()->getInputElementDescs().size()) i=0;i<mMaterial->getVertexShader()->getInputElementDescs().size();++i)
 	{
-		ro.mVertexBuffers[i]=mGeometry->getVertexBuffer()->getBuffers()[mMaterial->getVertexShader()->getInputSlots()[i]]->getBuffer();
+		ro.mVertexBuffers[i]=mGeometry->getVertexBuffer()->getBuffers()[mMaterial->getVertexShader()->getInputSlots()[i]]->getInternal();
 		ro.mVertexStrides[i]=CUtility::getStride((CEnum::EVertexBufferType)mMaterial->getVertexShader()->getInputSlots()[i]);
 	}
 	ro.mIndexBuffer=mGeometry->getIndexBuffer()->getBuffer();

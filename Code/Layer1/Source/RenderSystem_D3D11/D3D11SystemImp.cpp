@@ -158,6 +158,8 @@ NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::CSystemImp()
 	static_cast<IResourceManagerImp*>(ISystemImp::getSingleton().queryInterface_IResourceManager())->addListener(static_cast<TMessageReceiver<IResourceManagerImp>*>(this),IResourceManagerImp::EMessage_VertexBufferDestroy);
 	static_cast<IResourceManagerImp*>(ISystemImp::getSingleton().queryInterface_IResourceManager())->addListener(static_cast<TMessageReceiver<IResourceManagerImp>*>(this),IResourceManagerImp::EMessage_IndexBufferCreate);
 	static_cast<IResourceManagerImp*>(ISystemImp::getSingleton().queryInterface_IResourceManager())->addListener(static_cast<TMessageReceiver<IResourceManagerImp>*>(this),IResourceManagerImp::EMessage_IndexBufferDestroy);
+	static_cast<IResourceManagerImp*>(ISystemImp::getSingleton().queryInterface_IResourceManager())->addListener(static_cast<TMessageReceiver<IResourceManagerImp>*>(this),IResourceManagerImp::EMessage_EndBufferCreate);
+	static_cast<IResourceManagerImp*>(ISystemImp::getSingleton().queryInterface_IResourceManager())->addListener(static_cast<TMessageReceiver<IResourceManagerImp>*>(this),IResourceManagerImp::EMessage_BeginBufferDestroy);
 }
 
 NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::~CSystemImp()
@@ -179,6 +181,7 @@ NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::~CSystemImp()
 	mGeometrys.destroyAll();
 	mVertexBuffers.destroyAll();
 	mIndexBuffers.destroyAll();
+	mBuffers.destroyAll();
 	mTexture2Ds.destroyAll();
 	mTransformers.destroyAll();
 	DEVILX_DELETE(mConstantBuffer);
@@ -510,6 +513,12 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::onMessage(IResourceManagerIm
 		break;
 	case IResourceManagerImp::EMessage_IndexBufferDestroy:
 		mIndexBuffers.destroy(static_cast<IIndexBufferImp*>(data));
+		break;
+	case IResourceManagerImp::EMessage_EndBufferCreate:
+		mBuffers[static_cast<IBufferImp*>(data)]=DEVILX_NEW CBufferImp(static_cast<IBufferImp*>(data));
+		break;
+	case IResourceManagerImp::EMessage_BeginBufferCreate:
+		mBuffers.destroy(static_cast<IBufferImp*>(data));
 		break;
 	}
 }

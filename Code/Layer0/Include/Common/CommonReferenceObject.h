@@ -27,7 +27,9 @@ namespace NSDevilX
 		}
 	protected:
 		virtual ~CReferenceObject()
-		{}
+		{
+			assert(0==getRef());
+		}
 	};
 	class CReferenceObjectMT
 	{
@@ -60,6 +62,8 @@ namespace NSDevilX
 		}
 	protected:
 		virtual ~CReferenceObjectMT()
-		{}
+		{
+			assert(0==getRef());
+		}
 	};
 }

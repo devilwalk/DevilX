@@ -2,6 +2,7 @@
 using namespace NSDevilX;
 using namespace NSRenderSystem;
 NSDevilX::NSRenderSystem::IResourceManagerImp::IResourceManagerImp()
+	:mInternalBufferNameGenerator("Internal/Buffer")
 {}
 
 NSDevilX::NSRenderSystem::IResourceManagerImp::~IResourceManagerImp()
@@ -54,10 +55,39 @@ ITexture * NSDevilX::NSRenderSystem::IResourceManagerImp::createTexture(const St
 
 Void NSDevilX::NSRenderSystem::IResourceManagerImp::destroyTexture(ITexture * texture)
 {
-	return Void();
+	if(!mTextures.has(texture->getName()))
+		return;
+	notify(EMessage_BeginTextureDestroy,static_cast<ITextureImp*>(texture));
+	mTextures.destroy(texture->getName());
+	notify(EMessage_EndTextureDestroy);
 }
 
 ITexture * NSDevilX::NSRenderSystem::IResourceManagerImp::getTexture(const String & name) const
 {
-	return nullptr;
+	return mTextures.get(name);
+}
+
+IBuffer * NSDevilX::NSRenderSystem::IResourceManagerImp::createBuffer(const String & name)
+{
+	if(mBuffers.has(name))
+		return nullptr;
+	notify(EMessage_BeginBufferCreate);
+	IBufferImp * ret=DEVILX_NEW IBufferImp(name);
+	mBuffers[name]=ret;
+	notify(EMessage_EndBufferCreate,ret);
+	return ret;
+}
+
+IBuffer * NSDevilX::NSRenderSystem::IResourceManagerImp::getBuffer(const String & name) const
+{
+	return mBuffers.get(name);
+}
+
+Void NSDevilX::NSRenderSystem::IResourceManagerImp::destroyBuffer(IBuffer * buffer)
+{
+	if(!mBuffers.has(buffer->getName()))
+		return;
+	notify(EMessage_BeginBufferDestroy,static_cast<IBufferImp*>(buffer));
+	mBuffers.destroy(buffer->getName());
+	notify(EMessage_EndBufferDestroy);
 }

@@ -3,8 +3,8 @@ using namespace NSDevilX;
 using namespace NSRenderSystem;
 using namespace NSD3D11;
 
-NSDevilX::NSRenderSystem::NSD3D11::CBufferUpdater::CBufferUpdater(UInt32 stride)
-	:mStride(stride)
+NSDevilX::NSRenderSystem::NSD3D11::CBufferUpdater::CBufferUpdater()
+	:mBuffer(nullptr)
 	,mSource(nullptr)
 	,mDirtyRanges(nullptr)
 {
@@ -20,8 +20,8 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CBufferUpdater::update()
 		for(auto const & dirty:*mDirtyRanges)
 		{
 			D3D11_BOX dst_box={0};
-			dst_box.left=dirty.getMin()*mStride;
-			dst_box.right=(dirty.getMax()+1)*mStride;
+			dst_box.left=dirty.getMin();
+			dst_box.right=dirty.getMax()+1;
 			dst_box.bottom=1;
 			dst_box.back=1;
 			ConstVoidPtr src_ptr=reinterpret_cast<ConstVoidPtr>(reinterpret_cast<SizeT>(*mSource)+dst_box.left);

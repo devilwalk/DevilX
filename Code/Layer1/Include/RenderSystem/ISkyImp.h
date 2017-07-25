@@ -11,6 +11,7 @@ namespace NSDevilX
 			:public ISky
 			,public TBaseObject<ISkyImp>
 			,public CMessageNotifier
+			,public CReferenceObject
 		{
 			enum EMessage
 			{
@@ -32,7 +33,6 @@ namespace NSDevilX
 			ITextureUnitStateImp * mTextureUnitState;
 		public:
 			ISkyImp(const String & name,ISceneImp * scene);
-			~ISkyImp();
 
 			// Inherited via ISky
 			virtual ISceneElement * queryInterface_ISceneElement() const override;
@@ -44,6 +44,8 @@ namespace NSDevilX
 			virtual Int32 getOrder() const override;
 			virtual IColourUnitState * getColourUnitState() override;
 			virtual ITextureUnitState * getTextureUnitState() override;
+		protected:
+			~ISkyImp();
 		};
 	}
 }

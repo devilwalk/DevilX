@@ -7,7 +7,8 @@ NSDevilX::NSRenderSystem::ISubEntityImp::ISubEntityImp(const String & name,IEnti
 	,mObject(object)
 	,mIsRenderable(True)
 	,mIsQueriable(False)
-	,mQueryDatas(nullptr)
+	,mQueryBuffer(nullptr)
+	,mQueryBufferUsage(nullptr)
 	,mGeometry(nullptr)
 	,mGeometryUsage(nullptr)
 	,mVisible(True)
@@ -59,6 +60,21 @@ Void NSDevilX::NSRenderSystem::ISubEntityImp::setQueriable(Bool queriable)
 	{
 		notify(EMessage_BeginQueriableChange);
 		mIsQueriable=queriable;
+		if(queriable)
+		{
+			if(nullptr!=getQueryBufferUsage())
+			{
+				DEVILX_DELETE(mQueryBufferUsage);
+				mQueryBufferUsage=nullptr;
+			}
+		}
+		else
+		{
+			if(nullptr==getQueryBufferUsage())
+			{
+				mQueryBufferUsage=DEVILX_NEW IBufferUsageImp;
+			}
+		}
 		notify(EMessage_EndQueriableChange);
 	}
 }
@@ -68,23 +84,24 @@ Bool NSDevilX::NSRenderSystem::ISubEntityImp::isQueriable() const
 	return mIsQueriable;
 }
 
-Void NSDevilX::NSRenderSystem::ISubEntityImp::setQueryDatas(const UInt32 * datas,UInt32 count)
+Void NSDevilX::NSRenderSystem::ISubEntityImp::setQueryBuffer(IBuffer * buffer)
 {
-	if(datas!=getQueryDatas())
+	if(getQueryBuffer()!=buffer)
 	{
-		mQueryDatas=datas;
-		updateQueryDatas(0,count);
+		notify(EMessage_BeginQueryBufferChange);
+		mQueryBuffer=static_cast<IBufferImp*>(buffer);
+		notify(EMessage_EndQueryBufferChange);
 	}
 }
 
-Void NSDevilX::NSRenderSystem::ISubEntityImp::updateQueryDatas(UInt32 offset,UInt32 count)
+IBuffer * NSDevilX::NSRenderSystem::ISubEntityImp::getQueryBuffer() const
 {
-	mQueryDataDirties.addDirty(offset,count);
+	return mQueryBuffer;
 }
 
-const UInt32 * NSDevilX::NSRenderSystem::ISubEntityImp::getQueryDatas() const
+IBufferUsage * NSDevilX::NSRenderSystem::ISubEntityImp::getQueryBufferUsage() const
 {
-	return mQueryDatas;
+	return mQueryBufferUsage;
 }
 
 IGeometryUsage * NSDevilX::NSRenderSystem::ISubEntityImp::queryInterface_IGeometryUsage() const

@@ -1,6 +1,8 @@
 #pragma once
 #include "IRenderGeometry.h"
 #include "IRenderGeometryUsage.h"
+#include "IRenderBuffer.h"
+#include "IRenderBufferUsage.h"
 #include "IRenderColourUnitState.h"
 #include "IRenderTextureUnitState.h"
 namespace NSDevilX
@@ -22,9 +24,9 @@ namespace NSDevilX
 			virtual Bool isQueriable()const=0;
 			virtual Void setGeometry(IGeometry * geometry)=0;
 			virtual IGeometry * getGeometry()const=0;
-			virtual Void setQueryDatas(const UInt32 * datas,UInt32 count)=0;
-			virtual Void updateQueryDatas(UInt32 offset,UInt32 count)=0;
-			virtual const UInt32 * getQueryDatas()const=0;
+			virtual Void setQueryBuffer(IBuffer * buffer)=0;
+			virtual IBuffer * getQueryBuffer()const=0;
+			virtual IBufferUsage * getQueryBufferUsage()const=0;
 			virtual Void setVisible(Bool visible)=0;
 			virtual Bool getVisible()const=0;
 			virtual IColourUnitState * getColourUnitState(IEnum::EEntityColourUnitStateType type)=0;

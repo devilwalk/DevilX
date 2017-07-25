@@ -17,10 +17,16 @@ namespace NSDevilX
 				}
 				virtual ~TInterfaceObject()
 				{
+					if(getInterfaceImp())
+						getInterfaceImp()->release();
 				}
 				Void setInterfaceImp(InterfaceImpT * interfaceImp)
 				{
+					if(getInterfaceImp())
+						getInterfaceImp()->release();
 					mInterfaceImp=interfaceImp;
+					if(getInterfaceImp())
+						getInterfaceImp()->addRef();
 				}
 				InterfaceImpT * getInterfaceImp()const
 				{
@@ -71,26 +77,28 @@ namespace NSDevilX
 				{}
 				virtual ~TCOMInternalObject()
 				{
-					if(ISystemImp::getSingleton().isExit())
+					if(!ISystemImp::getSingleton().isExit())
+					{
+						setInternal(nullptr);
+					}
+					else
 					{
 						if(getInternal())
 							getInternal()->Release();
 					}
-					else
-						setInternal(nullptr);
 				}
 				Void setInternal(InternalT * i)
 				{
-					if(i!=mInternal)
+					if(i!=getInternal())
 					{
-						if(mInternal)
+						if(getInternal())
 						{
-							CSystemImp::getSingleton().removeInstanceByCOMInternal(mInternal);
-							mInternal->Release();
+							CSystemImp::getSingleton().removeInstanceByCOMInternal(getInternal());
+							getInternal()->Release();
 						}
 						mInternal=i;
-						if(mInternal)
-							CSystemImp::getSingleton().addInstanceByCOMInternal(i,this);
+						if(getInternal())
+							CSystemImp::getSingleton().addInstanceByCOMInternal(getInternal(),this);
 					}
 				}
 				InternalT * getInternal()const
