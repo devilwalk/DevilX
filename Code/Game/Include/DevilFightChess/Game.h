@@ -1,7 +1,9 @@
 #pragma once
 #include "ServerManager.h"
 #include "FontManager.h"
+#include "UIManager.h"
 #include "Module.h"
+#include "MatchServerManager.h"
 #include "MatchMapGridRenderMaterialManager.h"
 namespace NSDevilX
 {
@@ -14,6 +16,8 @@ namespace NSDevilX
 			NSRenderSystem::IViewport * mViewport;
 			CServerManager * mServerManager;
 			CFontManager * mFontManager;
+			CUIManager * mUIManager;
+			CMatchServerManager * mMatchServerManager;
 			CMatchMapGridRenderMaterialManager * mMatchMapGridRenderMaterialManager;
 			NSGUISystem::IScene * mGUIScene;
 			TSet<CModule*> mActiveModules;
@@ -29,6 +33,14 @@ namespace NSDevilX
 			{
 				return mFontManager;
 			}
+			CUIManager * getUIManager()const
+			{
+				return mUIManager;
+			}
+			CMatchServerManager * getMatchServerManager()const
+			{
+				return mMatchServerManager;
+			}
 			CMatchMapGridRenderMaterialManager * getMatchMapGridRenderMaterialManager()const
 			{
 				return mMatchMapGridRenderMaterialManager;
@@ -42,7 +54,8 @@ namespace NSDevilX
 				return mViewport;
 			}
 			Void initialize();
-			Void registerModule(CModule * module);
+			Void registerModule(CModule * mod);
+			Void setModuleParameter(const String & moduleName,const String & name,const CAny & parameter);
 			Void startModule(const String & moduleName);
 			Void stopModule(const String & moduleName);
 			Void update();

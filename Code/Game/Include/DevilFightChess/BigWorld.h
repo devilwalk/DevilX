@@ -22,12 +22,31 @@ namespace NSDevilX
 			// 通过 IEditBoxEventCallback 继承
 			virtual Void onEvent(NSGUISystem::IEditBox * control,NSGUISystem::IEditBoxEventCallback::EEvent events) override;
 		};
+		class CMatchServerConfigPage
+			:public TBaseObject<CMatchServerConfigPage>
+			,public NSGUISystem::IButtonEventCallback
+			,public NSGUISystem::IEditBoxEventCallback
+		{
+		protected:
+			CBigWorld * const mModule;
+			NSGUISystem::IWindow * mGUIWindow;
+		public:
+			CMatchServerConfigPage(CBigWorld * bigWorld);
+			~CMatchServerConfigPage();
+
+			// 通过 IButtonEventCallback 继承
+			virtual Void onEvent(NSGUISystem::IButton * control,NSGUISystem::IButtonEventCallback::EEvent events) override;
+
+			// 通过 IEditBoxEventCallback 继承
+			virtual Void onEvent(NSGUISystem::IEditBox * control,NSGUISystem::IEditBoxEventCallback::EEvent events) override;
+		};
 		class CBigWorld
 			:public TBaseObject<CBigWorld>
 			,public CModule
 		{
 		protected:
 			CBigWorldPage * mPage;
+			CMatchServerConfigPage * mMatchServerConfigPage;
 			TSharedReadData<Int32> mReturnCode;
 		public:
 			CBigWorld();

@@ -11,19 +11,31 @@ namespace NSDevilX
 		public:
 			struct SConnectRequestAndResponse
 			{
-				const Byte mData[15];
+				const Byte mData[15]={'D','e','v','i','l','F','i','g','h','t','C','h','e','s','s'};
 				SConnectRequestAndResponse()
-					:mData({'D','e','v','i','l','F','i','g','h','t','C','h','e','s','s'})
 				{}
 			};
 		protected:
+			const String mName;
+			String mPassword;
 			NSNetworkSystem::IServer * mServer;
 			TSet<NSNetworkSystem::ILink*> mInvalidLinks;
 			TList<NSNetworkSystem::ILink*> mLinks;
 		public:
-			CMatchServer();
+			CMatchServer(const String & name);
 			~CMatchServer();
-
+			const String & getName()const
+			{
+				return mName;
+			}
+			Void setPassword(const String & password)
+			{
+				mPassword=password;
+			}
+			const String & getPassword()const
+			{
+				return mPassword;
+			}
 		protected:
 			Void _processProtocal(NSNetworkSystem::ILink * link,ConstVoidPtr data,UInt32 dataSizeInBytes);
 			// Í¨¹ý IServerListener ¼Ì³Ð

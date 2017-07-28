@@ -1,0 +1,11 @@
+<Window Name="MatchServerConfig/Window" Position="0.25,0.25" Size="0.5,0.5">
+  <ImageBox Name="MatchServerConfig/Background" Position="0,0" Size="1,1">
+    <StaticText Name="MatchServerConfig/StaticText_Title" Position="0.3,0.1" Size="0.4,0.1" Text="服务器配置" Colour="0,0,0,1"/>
+    <StaticText Name="MatchServerConfig/StaticText_Name" Position="0.1,0.3" Size="0.2,0.05" Text="名称:" Colour="0,0,0,1"/>
+    <EditBox Name="MatchServerConfig/EditBox_Name" Position="0.4,0.3" Size="0.4,0.05" Colour="0,0,0,1"/>
+    <StaticText Name="MatchServerConfig/StaticText_Password" Position="0.1,0.4" Size="0.2,0.05" Text="密码:" Colour="0,0,0,1"/>
+    <EditBox Name="MatchServerConfig/EditBox_Password" Position="0.4,0.4" Size="0.4,0.05" Colour="0,0,0,1"/>
+    <Button Name="MatchServerConfig/Button_OK" Position="0.25,0.8" Size="0.2,0.05" Text="确定" Colour="0,0,0,1"/>
+    <Button Name="MatchServerConfig/Button_Cancel" Position="0.55,0.8" Size="0.2,0.05" Text="取消" Colour="0,0,0,1"/>
+  </ImageBox>
+</Window>

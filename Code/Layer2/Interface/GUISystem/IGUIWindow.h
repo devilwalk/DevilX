@@ -22,8 +22,12 @@ namespace NSDevilX
 			virtual IStaticText * getStaticText(const String & name)const=0;
 			virtual IButton * createButton(const String & name)=0;
 			virtual IButton * getButton(const String & name)const=0;
+			virtual UInt32 getButtonCount()const=0;
+			virtual IButton * getButton(UInt32 index)const=0;
 			virtual IEditBox * createEditBox(const String & name)=0;
 			virtual IEditBox * getEditBox(const String & name)const=0;
+			virtual UInt32 getEditBoxCount()const=0;
+			virtual IEditBox * getEditBox(UInt32 index)const=0;
 			virtual IPageBar * createPageBar(const String & name)=0;
 			virtual IPageBar * getPageBar(const String & name)const=0;
 			virtual Void destroyControl(IControl * control)=0;

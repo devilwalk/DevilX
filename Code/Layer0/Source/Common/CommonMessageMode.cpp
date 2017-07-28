@@ -12,6 +12,8 @@ CMessageSource::CMessageSource(UInt32 message,CMessageNotifier * notifier)
 }
 CMessageSource::~CMessageSource()
 {
+	//不允许在通知的时候被删除
+	assert(nullptr==mNotifing);
 	if(mListenerList[mCurrentListenerListIndex])
 	{
 		if(mNotifyListenersWhenDestruction)
@@ -69,6 +71,7 @@ Void CMessageSource::removeListener(CMessageListener * listener,Bool removeSourc
 }
 Void CMessageSource::notify(VoidPtr data)
 {
+	//一定要避免在通知里把自己删除的情况
 	Bool need_next_process=True;
 	while(need_next_process&&(!_getCurrentListenerList().empty()))
 	{

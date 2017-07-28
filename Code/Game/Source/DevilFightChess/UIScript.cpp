@@ -9,16 +9,16 @@ NSDevilX::NSFightChess::CUIScript::CUIScript()
 NSDevilX::NSFightChess::CUIScript::~CUIScript()
 {}
 
-Boolean NSDevilX::NSFightChess::CUIScript::process(const String & scriptFile,NSGUISystem::IWindow * guiWindow,NSGUISystem::IButtonEventCallback * buttonEventCallback,NSGUISystem::IEditBoxEventCallback * editBoxEventCallback)
+Boolean NSDevilX::NSFightChess::CUIScript::process(const String & scriptFile,NSGUISystem::IWindow * guiWindow)
 {
 	TiXmlDocument doc;
 	doc.LoadFile(scriptFile.c_str());
 	auto element=doc.FirstChildElement();
-	_processElement(element,guiWindow,buttonEventCallback,editBoxEventCallback);
+	_processElement(element,guiWindow);
 	return true;
 }
 
-Void NSDevilX::NSFightChess::CUIScript::_processElement(TiXmlElement * element,NSGUISystem::IWindow * guiWindow,NSGUISystem::IButtonEventCallback * buttonEventCallback,NSGUISystem::IEditBoxEventCallback * editBoxEventCallback,NSGUISystem::IControl * parent)
+Void NSDevilX::NSFightChess::CUIScript::_processElement(TiXmlElement * element,NSGUISystem::IWindow * guiWindow,NSGUISystem::IControl * parent)
 {
 	NSGUISystem::IControl * control=parent;
 	if(String("Window")==element->Value())
@@ -56,7 +56,6 @@ Void NSDevilX::NSFightChess::CUIScript::_processElement(TiXmlElement * element,N
 			ctl->setBackground(NSResourceSystem::getSystem()->createResource(_getAttribute("Background",element).get<String>(),_getAttribute("Background",element).get<String>()));
 		ctl->queryInterface_IControl()->setPosition(_getAttribute("Position",element).get<CFloat2>());
 		ctl->queryInterface_IControl()->setSize(_getAttribute("Size",element).get<CFloat2>());
-		ctl->setEventCallback(editBoxEventCallback);
 		control=ctl->queryInterface_IControl();
 	}
 	else if(String("Button")==element->Value())
@@ -71,7 +70,6 @@ Void NSDevilX::NSFightChess::CUIScript::_processElement(TiXmlElement * element,N
 			ctl->setBackground(NSResourceSystem::getSystem()->createResource(_getAttribute("Background",element).get<String>(),_getAttribute("Background",element).get<String>()));
 		ctl->queryInterface_IControl()->setPosition(_getAttribute("Position",element).get<CFloat2>());
 		ctl->queryInterface_IControl()->setSize(_getAttribute("Size",element).get<CFloat2>());
-		ctl->setEventCallback(buttonEventCallback);
 		control=ctl->queryInterface_IControl();
 	}
 	else
@@ -83,7 +81,7 @@ Void NSDevilX::NSFightChess::CUIScript::_processElement(TiXmlElement * element,N
 	auto child=element->FirstChildElement();
 	while(child)
 	{
-		_processElement(child,guiWindow,buttonEventCallback,editBoxEventCallback,control);
+		_processElement(child,guiWindow,control);
 		child=child->NextSiblingElement();
 	}
 }

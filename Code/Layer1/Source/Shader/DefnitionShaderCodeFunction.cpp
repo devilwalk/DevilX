@@ -2976,7 +2976,7 @@ struct SVertexShaderOutput\r\n\
 #if OUTPUT_MAIN_UV\r\n\
     float2 mMainUV : TEXCOORD0;\r\n\
  #endif\r\n\
-   float4 mQuery : QUERY;\r\n\
+    nointerpolation float4 mQuery : QUERY;\r\n\
 };\r\n\
 SVertexShaderOutput vsMain(SVertexShaderInput input)\r\n\
 {\r\n\

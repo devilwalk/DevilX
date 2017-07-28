@@ -1,5 +1,6 @@
 #pragma once
 #include "MatchMapGrid.h"
+#include "MatchTerrain2D.h"
 namespace NSDevilX
 {
 	namespace NSFightChess

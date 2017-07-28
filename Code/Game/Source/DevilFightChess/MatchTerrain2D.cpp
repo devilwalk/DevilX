@@ -7,6 +7,7 @@ NSDevilX::NSFightChess::CMatchTerrain2D::CMatchTerrain2D(CMatchMap * map)
 	,mGeometry(nullptr)
 	,mRenderEntity(nullptr)
 	,mRenderVisibleArea(nullptr)
+	,mQueryBuffer(nullptr)
 	,mRenderableNameGenerator("")
 {
 	mGeometry=NSRenderSystem::getSystem()->queryInterface_IResourceManager()->createGeometry("MatchTerrain2D");
@@ -26,24 +27,39 @@ NSDevilX::NSFightChess::CMatchTerrain2D::CMatchTerrain2D(CMatchMap * map)
 	mGeometry->getVertexBuffer()->setCount(grid_count*4);
 	CFloat3 * positions=DEVILX_NEW CFloat3[mGeometry->getVertexBuffer()->getCount()];
 	CFloat2 * uvs=DEVILX_NEW CFloat2[mGeometry->getVertexBuffer()->getCount()];
+	UInt32 * query_datas=reinterpret_cast<UInt32*>(DEVILX_ALLOC(sizeof(UInt32)*mGeometry->getVertexBuffer()->getCount()));
 	for(auto grid_x=0;grid_x<getMap()->getColumeCount();++grid_x)
 	{
 		for(auto grid_y=0;grid_y<getMap()->getRowCount();++grid_y)
 		{
 			const auto grid_index=grid_x*getMap()->getRowCount()+grid_y;
-			positions[grid_index*4+0]=CFloat3(grid_x,grid_y,0.0f);
+			positions[grid_index*4+0]=CFloat3(static_cast<Float>(grid_x),static_cast<Float>(grid_y),0.0f);
 			uvs[grid_index*4+0]=CFloat2(0.0f,0.0f);
-			positions[grid_index*4+1]=CFloat3(grid_x+1.0f,grid_y,0.0f);
+			positions[grid_index*4+1]=CFloat3(static_cast<Float>(grid_x)+1.0f,static_cast<Float>(grid_y),0.0f);
 			uvs[grid_index*4+1]=CFloat2(1.0f,0.0f);
-			positions[grid_index*4+2]=CFloat3(grid_x,grid_y+1.0f,0.0f);
+			positions[grid_index*4+2]=CFloat3(static_cast<Float>(grid_x),static_cast<Float>(grid_y)+1.0f,0.0f);
 			uvs[grid_index*4+2]=CFloat2(0.0f,1.0f);
-			positions[grid_index*4+3]=CFloat3(grid_x+1.0f,grid_y+1.0f,0.0f);
+			positions[grid_index*4+3]=CFloat3(static_cast<Float>(grid_x)+1.0f,static_cast<Float>(grid_y)+1.0f,0.0f);
 			uvs[grid_index*4+3]=CFloat2(1.0f,1.0f);
+
+			query_datas[grid_index*4+0]=grid_index;
+			query_datas[grid_index*4+1]=grid_index;
+			query_datas[grid_index*4+2]=grid_index;
+			query_datas[grid_index*4+3]=grid_index;
 		}
 	}
 	mGeometry->getVertexBuffer()->setPositions(positions);
 	mGeometry->getVertexBuffer()->setTextureCoords(uvs);
+	mQueryBuffer=NSRenderSystem::getSystem()->queryInterface_IResourceManager()->createBuffer("MatchTerrain2D/Query");
+	mQueryBuffer->setSize(grid_count*4);
+	mQueryBuffer->setDatas(query_datas);
 	mRenderEntity=getMap()->getScene()->getRenderScene()->createEntity("MatchTerrain2D");
+	auto query_sub_entity=mRenderEntity->createSubEntity("Query");
+	query_sub_entity->setGeometry(mGeometry);
+	query_sub_entity->setQueriable(True);
+	query_sub_entity->setRenderable(False);
+	query_sub_entity->queryInterface_IGeometryUsage()->setVertexCount(mGeometry->getVertexBuffer()->getCount());
+	query_sub_entity->queryInterface_IGeometryUsage()->setIndexCount(mGeometry->getIndexBuffer()->getCount());
 	auto sub_entity=mRenderEntity->createSubEntity(mRenderableNameGenerator.generateNext());
 	sub_entity->setGeometry(mGeometry);
 	sub_entity->queryInterface_IGeometryUsage()->setVertexCount(mGeometry->getVertexBuffer()->getCount());
@@ -66,12 +82,20 @@ NSDevilX::NSFightChess::CMatchTerrain2D::CMatchTerrain2D(CMatchMap * map)
 
 NSDevilX::NSFightChess::CMatchTerrain2D::~CMatchTerrain2D()
 {
+	DEVILX_FREE(reinterpret_cast<VoidPtr>(reinterpret_cast<SizeT>(mQueryBuffer->getDatas())));
 	DEVILX_FREE(reinterpret_cast<VoidPtr>(reinterpret_cast<SizeT>(mGeometry->getIndexBuffer()->getIndices())));
 	DEVILX_DELETE(mGeometry->getVertexBuffer()->getPositions());
 	DEVILX_DELETE(mGeometry->getVertexBuffer()->getTextureCoords());
 	NSRenderSystem::getSystem()->queryInterface_IResourceManager()->destroyGeometry(mGeometry);
+	NSRenderSystem::getSystem()->queryInterface_IResourceManager()->destroyBuffer(mQueryBuffer);
 	getMap()->getScene()->getRenderScene()->destroyEntity(mRenderEntity);
 	getMap()->getScene()->getRenderScene()->destroyVisibleArea(mRenderVisibleArea);
+}
+
+UInt32 NSDevilX::NSFightChess::CMatchTerrain2D::_calculateIndexStart(UInt16 rowIndex,UInt16 columnIndex) const
+{
+	const auto grid_index=columnIndex*getMap()->getRowCount()+rowIndex;
+	return grid_index*6;
 }
 
 Void NSDevilX::NSFightChess::CMatchTerrain2D::onMessage(CMatchMapGrid * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)

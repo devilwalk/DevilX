@@ -265,6 +265,8 @@ int main()
 	auto keyboard=NSInputSystem::getSystem()->getVirtualDeviceManager()->createKeyboard("Keyboard",NSInputSystem::getSystem()->getPhysicalDeviceManager()->getDevice(1));
 	while(keyboard->getButtonState(NSInputSystem::IEnum::EKeyType_ESCAPE)!=NSInputSystem::IEnum::EButtonState_Pressed)
 	{
+		for(UInt32 i=0;i<render_viewport->getQueryDatasCount();++i)
+			std::cout<<"Last Viewport Query:"<<i<<":"<<render_viewport->getQueryDatas()[i]<<std::endl;
 		query->setArea(CFloat2(-1.0f),CFloat2(-1.0f));
 		CInt2 cursor_pos=window.getCursorPosition();
 		auto delta_time=timer.getInMillisecond();

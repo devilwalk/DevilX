@@ -42,9 +42,6 @@
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\LocalServer.h">
       <Filter>Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Register.h">
-      <Filter>Include</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\FontManager.h">
       <Filter>Include</Filter>
     </ClInclude>
@@ -115,6 +112,36 @@
       <Filter>Include</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchOperation.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Match.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchEntity.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchServerManager.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\UIManager.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\UIPage.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\UIPageLogic.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\LoginPageLogic.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Register.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\RegisterPageLogic.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\BigWorldPageLogic.h">
       <Filter>Include</Filter>
     </ClInclude>
   </ItemGroup>
@@ -188,6 +215,33 @@
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchOperation.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Match.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchMapGridRenderMaterial2D.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchServerConfig.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchServerManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\UIManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\UIPage.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\LoginPageLogic.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\RegisterPageLogic.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\BigWorldPageLogic.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\Code\Game\Resource\DevilFightChess\LoginPage.layout">
@@ -196,17 +250,25 @@
     <None Include="..\..\..\Code\Game\Resource\DevilFightChess\RegisterPage.layout">
       <Filter>Resource</Filter>
     </None>
-    <None Include="..\..\..\Code\Game\Resource\DevilFightChess\MessageBox.layout">
-      <Filter>Resource</Filter>
-    </None>
-    <None Include="..\..\..\Code\Game\Resource\DevilFightChess\BigWorld.layout">
-      <Filter>Resource</Filter>
-    </None>
     <None Include="..\..\..\Code\Game\Resource\DevilFightChess\Basic.map">
       <Filter>Resource</Filter>
     </None>
     <None Include="..\..\..\Code\Game\Resource\DevilFightChess\Common.mapgrid">
       <Filter>Resource</Filter>
     </None>
+    <None Include="..\..\..\Code\Game\Resource\DevilFightChess\MatchServerConfigPage.layout">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="..\..\..\Code\Game\Resource\DevilFightChess\MessageBoxPage.layout">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="..\..\..\Code\Game\Resource\DevilFightChess\BigWorldPage.layout">
+      <Filter>Resource</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\..\Code\Game\Include\DevilFightChess\MatchServerConfig.h">
+      <Filter>Include</Filter>
+    </Text>
   </ItemGroup>
 </Project>

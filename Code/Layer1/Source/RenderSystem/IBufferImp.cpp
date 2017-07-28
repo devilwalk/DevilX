@@ -24,6 +24,7 @@ Void NSDevilX::NSRenderSystem::IBufferImp::setSize(UInt32 sizeInBytes)
 	if(getSize()!=sizeInBytes)
 	{
 		mSizeInBytes=sizeInBytes;
+		updateData();
 		addDirtyFlag(EDirtyFlag_Size);
 	}
 }

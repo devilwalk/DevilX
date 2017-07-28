@@ -1,12 +1,12 @@
 #pragma once
-#include "Grid.h"
+#include "MatchMapGrid.h"
 namespace NSDevilX
 {
 	namespace NSFightChess
 	{
 		class CScene;
-		class CEntity
-			:public TBaseObject<CEntity>
+		class CMatchEntity
+			:public TBaseObject<CMatchEntity>
 		{
 		protected:
 			CScene * const mScene;
@@ -15,10 +15,10 @@ namespace NSDevilX
 			UInt32 mAttack;
 			UInt32 mDefense;
 			UInt32 mSpeed;
-			CGrid * mGrid;
+			CMatchMapGrid * mGrid;
 		public:
-			CEntity(CScene * scene);
-			~CEntity();
+			CMatchEntity(CScene * scene);
+			~CMatchEntity();
 			Void setHP(UInt32 hp);
 			UInt32 getHP()const
 			{
@@ -44,10 +44,10 @@ namespace NSDevilX
 			{
 				return mSpeed;
 			}
-			Void setPosition(CGrid * grid);
-			const CGrid * getPosition()const;
-			Void attack(CEntity * dst);
-			Void moveTo(CGrid * grid);
+			Void setPosition(CMatchMapGrid * grid);
+			const CMatchMapGrid * getPosition()const;
+			Void attack(CMatchEntity * dst);
+			Void moveTo(CMatchMapGrid * grid);
 		};
 	}
 }

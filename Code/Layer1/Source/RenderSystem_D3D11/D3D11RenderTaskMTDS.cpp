@@ -573,7 +573,7 @@ NSDevilX::NSRenderSystem::NSD3D11::CQueryTask::CQueryTask(CViewport * viewport)
 {
 	mTasks.resize(2);
 	mTasks[0]=DEVILX_NEW CClearViewportTask(viewport);
-	static_cast<CClearViewportTask*>(mTasks[0])->setClearColour(0,CFloatRGBA::sZero);
+	static_cast<CClearViewportTask*>(mTasks[0])->setClearColour(0,CFloatRGBA::sWhite);
 	mTasks[1]=DEVILX_NEW CQuerySceneTask(viewport);
 }
 
@@ -647,7 +647,7 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CQueryTask::postProcess()
 	for(auto & query_pair:mQueries)
 	{
 		auto const & query=query_pair.second;
-		if(query.mBuffer)
+		if((query.mAreaPosition>=CFloat4::sZero)&&(query.mAreaPosition<=CFloat4::sOne)&&query.mBuffer)
 		{
 			D3D11_MAPPED_SUBRESOURCE res;
 			CSystemImp::getSingleton().getImmediateContext()->Map(query.mBuffer,0,D3D11_MAP_READ,0,&res);
@@ -655,7 +655,9 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CQueryTask::postProcess()
 			{
 				for(UInt32 v=0;v<query.mBox.bottom-query.mBox.top;++v)
 				{
-					mQueryResults.insert(*reinterpret_cast<UInt32*>(static_cast<Byte*>(res.pData)+v*res.RowPitch+u*sizeof(UInt32)));
+					UInt32 result=*reinterpret_cast<UInt32*>(static_cast<Byte*>(res.pData)+v*res.RowPitch+u*sizeof(UInt32));
+					if(result<static_cast<UInt32>(-1))
+						mQueryResults.insert(result);
 				}
 			}
 			CSystemImp::getSingleton().getImmediateContext()->Unmap(query.mBuffer,0);

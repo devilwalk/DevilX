@@ -2,8 +2,9 @@
 using namespace NSDevilX;
 using namespace NSFightChess;
 
-NSDevilX::NSFightChess::CMatchServer::CMatchServer()
-	:mServer(nullptr)
+NSDevilX::NSFightChess::CMatchServer::CMatchServer(const String & name)
+	:mName(name)
+	,mServer(nullptr)
 {
 	mServer=NSNetworkSystem::getSystem()->createServer();
 	mServer->setListener(this);

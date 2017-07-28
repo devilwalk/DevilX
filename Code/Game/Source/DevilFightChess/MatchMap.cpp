@@ -6,10 +6,10 @@ NSDevilX::NSFightChess::CMatchMap::CMatchMap(UInt16 row,UInt16 column,CMatchScen
 	:mScene(scene)
 {
 	mGrids.resize(column);
-	for(UInt16 colume_index;colume_index<column;++colume_index)
+	for(UInt16 colume_index=0;colume_index<column;++colume_index)
 	{
 		mGrids[colume_index].reserve(row);
-		for(UInt16 row_index;row_index<row;++row_index)
+		for(UInt16 row_index=0;row_index<row;++row_index)
 		{
 			auto grid=DEVILX_NEW CMatchMapGrid(row_index,colume_index);
 			mGrids[colume_index].push_back(grid);

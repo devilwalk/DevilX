@@ -3,15 +3,23 @@ namespace NSDevilX
 {
 	namespace NSFightChess
 	{
-		class CMatchOperation
-			:public TBaseObject<CMatchOperation>
+		class CMatchOperation2D
+			:public TBaseObject<CMatchOperation2D>
 			,public NSInputSystem::IMouseListener
 			,public NSInputSystem::IKeyboardListener
 		{
 		protected:
+			NSInputSystem::IMouse * mMouse;
+			NSInputSystem::IKeyboard * mKeyboard;
 		public:
-			CMatchOperation();
-			~CMatchOperation();
+			CMatchOperation2D();
+			~CMatchOperation2D();
+
+			// 通过 IMouseListener 继承
+			virtual Void addFrameData(NSInputSystem::IMouse * mouse,NSInputSystem::IMouseFrameData * data) override;
+
+			// 通过 IKeyboardListener 继承
+			virtual Void addFrameData(NSInputSystem::IKeyboard * keyboard,NSInputSystem::IKeyboardFrameData * data) override;
 		};
 	}
 }

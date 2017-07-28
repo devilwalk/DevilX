@@ -12,11 +12,13 @@ namespace NSDevilX
 			,public TMessageReceiver<IControlImp>
 			,public NSUISystem::IEventListener
 			,public TMessageReceiver<CButton>
+			,public TMessageReceiver<ISystemImp>
 		{
 		protected:
 			IControlImp * mControl;
 			ITextPropertyImp * mTextProperty;
 			IButtonEventCallback * mEventCallback;
+			TVector<IButtonEventCallback::EEvent> mLastEvents;
 		public:
 			IButtonImp(const String & name,IWindowImp * window);
 			~IButtonImp();
@@ -34,7 +36,7 @@ namespace NSDevilX
 			// 通过 TMessageReceiver 继承
 			virtual Void onMessage(IControlImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 			virtual Void onMessage(CButton * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
-
+			virtual Void onMessage(ISystemImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 			// 通过 IEventListener 继承
 			virtual Void onEvent(NSUISystem::IEvent * e) override;
 		};

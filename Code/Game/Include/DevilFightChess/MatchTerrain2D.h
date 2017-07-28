@@ -14,6 +14,7 @@ namespace NSDevilX
 			NSRenderSystem::IGeometry * mGeometry;
 			NSRenderSystem::IEntity * mRenderEntity;
 			NSRenderSystem::IVisibleArea * mRenderVisibleArea;
+			NSRenderSystem::IBuffer * mQueryBuffer;
 			TMap<CMatchMapGridRenderMaterial2D*,TList<NSRenderSystem::ISubEntity*> > mSubEntities;
 			CNameGenerator mRenderableNameGenerator;
 		public:
@@ -24,7 +25,6 @@ namespace NSDevilX
 				return mMap;
 			}
 		protected:
-			UInt32 _calculateVertexStart(UInt16 rowIndex,UInt16 columnIndex)const;
 			UInt32 _calculateIndexStart(UInt16 rowIndex,UInt16 columnIndex)const;
 
 			// Í¨¹ý TMessageReceiver ¼Ì³Ð

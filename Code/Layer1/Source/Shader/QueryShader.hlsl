@@ -13,7 +13,7 @@ struct SVertexShaderOutput
 #if OUTPUT_MAIN_UV
     float2 mMainUV : TEXCOORD0;
  #endif
-   float4 mQuery : QUERY;
+    nointerpolation float4 mQuery : QUERY;
 };
 SVertexShaderOutput vsMain(SVertexShaderInput input)
 {

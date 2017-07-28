@@ -5,6 +5,8 @@ using namespace NSRenderSystem;
 NSDevilX::NSRenderSystem::IQueryImp::IQueryImp(const String & name,IViewportImp * vp)
 	:mName(name)
 	,mViewport(vp)
+	,mStartPosition(-1.0f)
+	,mEndPosition(-1.0f)
 {}
 
 NSDevilX::NSRenderSystem::IQueryImp::~IQueryImp()

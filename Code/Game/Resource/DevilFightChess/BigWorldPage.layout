@@ -1,7 +1,7 @@
 <Window Name="BigWorld/Window" Position="0,0" Size="1,1">
   <ImageBox Name="BigWorld/Background" Position="0,0" Size="1,1">
-    <Button Name="BigWorld/Button_SinglePlayer" Position="0.4,0.1" Size="0.2,0.05" Text="单人游戏" Colour="0,0,0,1"/>
-    <Button Name="BigWorld/Button_MultiPlayer" Position="0.4,0.2" Size="0.2,0.05" Text="多人游戏" Colour="0,0,0,1"/>
+    <Button Name="BigWorld/Button_CreateMatchServer" Position="0.4,0.1" Size="0.2,0.05" Text="创建服务器" Colour="0,0,0,1"/>
+    <Button Name="BigWorld/Button_IntranetList" Position="0.4,0.2" Size="0.2,0.05" Text="局域网服务器列表" Colour="0,0,0,1"/>
     <Button Name="BigWorld/Button_Return" Position="0.4,0.8" Size="0.2,0.05" Text="返回" Colour="0,0,0,1"/>
     <Button Name="BigWorld/Button_Exit" Position="0.4,0.9" Size="0.2,0.05" Text="退出" Colour="0,0,0,1"/>
   </ImageBox>

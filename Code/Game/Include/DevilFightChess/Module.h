@@ -15,7 +15,7 @@ namespace NSDevilX
 			{
 				return mName;
 			}
-			Void setParameters(const String & name,const CAny & parameter)
+			Void setParameter(const String & name,const CAny & parameter)
 			{
 				mParameters[name]=parameter;
 			}
