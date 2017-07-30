@@ -8,8 +8,6 @@ namespace NSDevilX
 		class IControlImp
 			:public IControl
 			,public TBaseObject<IControlImp>
-			,public CMessageNotifier
-			,public CUserDataContainer
 		{
 		public:
 			enum EType
@@ -20,11 +18,6 @@ namespace NSDevilX
 				EType_ImageBox,
 				EType_EditBox,
 				EType_PageBar
-			};
-			enum EMessage
-			{
-				EMessage_BeginDestruction,
-				EMessage_EndDestruction
 			};
 		protected:
 			EType const mType;

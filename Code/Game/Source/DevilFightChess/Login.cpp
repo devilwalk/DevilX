@@ -59,7 +59,13 @@ Void NSDevilX::NSFightChess::CLogin::update()
 		MESSAGEBOX(L"用户名或密码错误!");
 		break;
 	case CServer::EReturnCode_Success:
-		stop();
+		auto success_callback_any=getParameter("mSuccessCallback");
+		if(success_callback_any.isValidate())
+		{
+			typedef Void SuccessCallbackFunc();
+			auto func_ptr=success_callback_any.get<SuccessCallbackFunc*>();
+			(*func_ptr)();
+		}
 		break;
 	}
 }

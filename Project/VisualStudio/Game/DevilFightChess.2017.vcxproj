@@ -190,9 +190,9 @@ copy $(ProjectDir)..\..\..\Code\Game\Resource\DevilFightChess\* $(OutDir)Resourc
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Actor.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\App.h" />
-    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\BigWorld.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\BigWorldPageLogic.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\FontManager.h" />
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\GameLogic.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\HumanPlayer.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\LoginPageLogic.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\Match.h" />
@@ -229,17 +229,16 @@ copy $(ProjectDir)..\..\..\Code\Game\Resource\DevilFightChess\* $(OutDir)Resourc
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchMapGrid.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\UIManager.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\UIPage.h" />
-    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\UIPageLogic.h" />
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\UIScript.h" />
     <ClInclude Include="..\..\..\Code\Game\Source\DevilFightChess\Precompiler.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Actor.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\App.cpp" />
-    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\BigWorld.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\BigWorldPageLogic.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\FontManager.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Game.cpp" />
+    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\GameLogic.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Geometry.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\LoginPageLogic.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Match.cpp" />
@@ -253,7 +252,7 @@ copy $(ProjectDir)..\..\..\Code\Game\Resource\DevilFightChess\* $(OutDir)Resourc
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchOperation.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchScene.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchServer.cpp" />
-    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchServerConfig.cpp" />
+    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchServerConfigPageLogic.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchServerManager.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchView.cpp" />
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MessageBox.cpp" />
@@ -282,7 +281,7 @@ copy $(ProjectDir)..\..\..\Code\Game\Resource\DevilFightChess\* $(OutDir)Resourc
     <None Include="..\..\..\Code\Game\Resource\DevilFightChess\RegisterPage.layout" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\..\..\Code\Game\Include\DevilFightChess\MatchServerConfig.h" />
+    <Text Include="..\..\..\Code\Game\Include\DevilFightChess\MatchServerConfigPageLogic.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

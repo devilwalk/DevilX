@@ -57,9 +57,6 @@
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MessageBox.h">
       <Filter>Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\BigWorld.h">
-      <Filter>Include</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\SinglePlayer.h">
       <Filter>Include</Filter>
     </ClInclude>
@@ -129,9 +126,6 @@
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\UIPage.h">
       <Filter>Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\UIPageLogic.h">
-      <Filter>Include</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\LoginPageLogic.h">
       <Filter>Include</Filter>
     </ClInclude>
@@ -142,6 +136,9 @@
       <Filter>Include</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\BigWorldPageLogic.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\GameLogic.h">
       <Filter>Include</Filter>
     </ClInclude>
   </ItemGroup>
@@ -182,9 +179,6 @@
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MessageBox.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\BigWorld.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\SinglePlayer.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -221,9 +215,6 @@
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchMapGridRenderMaterial2D.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchServerConfig.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchServerManager.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -240,6 +231,12 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\BigWorldPageLogic.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchServerConfigPageLogic.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\GameLogic.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
@@ -267,7 +264,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\..\..\Code\Game\Include\DevilFightChess\MatchServerConfig.h">
+    <Text Include="..\..\..\Code\Game\Include\DevilFightChess\MatchServerConfigPageLogic.h">
       <Filter>Include</Filter>
     </Text>
   </ItemGroup>

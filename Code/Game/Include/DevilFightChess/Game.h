@@ -1,4 +1,5 @@
 #pragma once
+#include "GameLogic.h"
 #include "ServerManager.h"
 #include "FontManager.h"
 #include "UIManager.h"
@@ -14,6 +15,7 @@ namespace NSDevilX
 		{
 		protected:
 			NSRenderSystem::IViewport * mViewport;
+			CGameLogic * mLogic;
 			CServerManager * mServerManager;
 			CFontManager * mFontManager;
 			CUIManager * mUIManager;
@@ -25,6 +27,10 @@ namespace NSDevilX
 		public:
 			CGame();
 			~CGame();
+			CGameLogic * getLogic()const
+			{
+				return mLogic;
+			}
 			CServerManager * getServerManager()const
 			{
 				return mServerManager;

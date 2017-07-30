@@ -11,14 +11,13 @@ namespace NSDevilX
 
 		protected:
 			std::array<String,CUIPage::EType_Count> mPageResouceLocations;
-			TResourcePtrVector<CUIPageLogic> mPageLogics;
 			TResourcePtrVector<CUIPage> mPages;
 		public:
 			CUIManager();
 			~CUIManager();
 			const String & getPageResourceLocation(CUIPage::EType type)const
 			{
-				mPageResouceLocations[type];
+				return mPageResouceLocations[type];
 			}
 			CUIPage * createPage(CUIPage::EType type);
 			CUIPage * getPage(CUIPage::EType type)const;

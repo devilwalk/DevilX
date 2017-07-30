@@ -9,7 +9,6 @@ namespace NSDevilX
 		class IEditBoxImp
 			:public IEditBox
 			,public TBaseObject<IEditBoxImp>
-			,public TMessageReceiver<IControlImp>
 			,public NSUISystem::IEventListener
 			,public TMessageReceiver<CEditBox>
 		{
@@ -32,7 +31,6 @@ namespace NSDevilX
 			virtual IEditBoxEventCallback * getEventCallback() const override;
 
 			// 通过 TMessageReceiver 继承
-			virtual Void onMessage(IControlImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 			virtual Void onMessage(CEditBox * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 
 			// 通过 IEventListener 继承

@@ -9,7 +9,6 @@ namespace NSDevilX
 		class IStaticTextImp
 			:public IStaticText
 			,public TBaseObject<IStaticTextImp>
-			,public TMessageReceiver<IControlImp>
 		{
 		protected:
 			IControlImp * mControl;
@@ -23,9 +22,6 @@ namespace NSDevilX
 			virtual ITextProperty * getTextProperty() const override;
 			virtual Void setText(const CUTF8String & text) override;
 			virtual const CUTF8String & getText() const override;
-
-			// Í¨¹ý TMessageReceiver ¼Ì³Ð
-			virtual Void onMessage(IControlImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 		};
 	}
 }

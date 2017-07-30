@@ -8,7 +8,6 @@ namespace NSDevilX
 		class IImageBoxImp
 			:public IImageBox
 			,public TBaseObject<IImageBoxImp>
-			,public TMessageReceiver<IControlImp>
 		{
 		protected:
 			IControlImp * mControl;
@@ -20,9 +19,6 @@ namespace NSDevilX
 			virtual IControl * queryInterface_IControl() const override;
 			virtual Void setBackground(NSResourceSystem::IResource * resource) override;
 			virtual NSResourceSystem::IResource * getBackground() const override;
-
-			// Í¨¹ý TMessageReceiver ¼Ì³Ð
-			virtual Void onMessage(IControlImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 		};
 	}
 }

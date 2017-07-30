@@ -7,6 +7,7 @@ NSDevilX::NSFightChess::CMatchMapGrid::CMatchMapGrid(UInt16 rowIndex,UInt16 colu
 	,mColumnIndex(columnIndex)
 	,mRenderMaterial(nullptr)
 {
+	mRenderMaterial=CApp::getSingleton().getGame()->getMatchMapGridRenderMaterialManager()->getDefaultMaterial();
 }
 
 NSDevilX::NSFightChess::CMatchMapGrid::~CMatchMapGrid()
@@ -15,6 +16,8 @@ NSDevilX::NSFightChess::CMatchMapGrid::~CMatchMapGrid()
 
 Void NSDevilX::NSFightChess::CMatchMapGrid::setRenderMaterial(CMatchMapGridRenderMaterial * material)
 {
+	if(nullptr==material)
+		material=CApp::getSingleton().getGame()->getMatchMapGridRenderMaterialManager()->getDefaultMaterial();
 	if(getRenderMaterial()!=material)
 	{
 		notify(EMessage_BeginRenderMaterialChange);

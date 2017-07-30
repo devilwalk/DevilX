@@ -2,14 +2,7 @@
 using namespace NSDevilX;
 using namespace NSFightChess;
 
-NSDevilX::NSFightChess::CLoginPageLogic::CLoginPageLogic()
-	:CUIPageLogic(CUIPage::EType_Login)
-{}
-
-NSDevilX::NSFightChess::CLoginPageLogic::~CLoginPageLogic()
-{}
-
-Void NSDevilX::NSFightChess::CLoginPageLogic::onEvent(NSGUISystem::IButton * control,NSGUISystem::IButtonEventCallback::EEvent e)
+Void NSDevilX::NSFightChess::CLoginPageLogic::buttonLogic(NSGUISystem::IButton * control,NSGUISystem::IButtonEventCallback::EEvent e)
 {
 	if(control->queryInterface_IControl()->getName()=="LoginPage/Button_Close")
 	{
@@ -28,7 +21,8 @@ Void NSDevilX::NSFightChess::CLoginPageLogic::onEvent(NSGUISystem::IButton * con
 		{
 		case NSGUISystem::IButtonEventCallback::EEvent::EEvent_Click:
 			CApp::getSingleton().getGame()->getUIManager()->destroyPage(CUIPage::EType_Login);
-			CApp::getSingleton().getGame()->getUIManager()->createPage(CUIPage::EType_Register);
+			auto page=CApp::getSingleton().getGame()->getUIManager()->createPage(CUIPage::EType_Register);
+			page->setButtonLogic(CRegisterPageLogic::buttonLogic);
 			break;
 		}
 	}
@@ -39,6 +33,15 @@ Void NSDevilX::NSFightChess::CLoginPageLogic::onEvent(NSGUISystem::IButton * con
 		case NSGUISystem::IButtonEventCallback::EEvent::EEvent_Click:
 			CApp::getSingleton().getGame()->setModuleParameter("Login","mUsername",CApp::getSingleton().getGame()->getUIManager()->getPage(CUIPage::EType_Login)->getGUIWindow()->getEditBox("LoginPage/Edit_Username")->getText().toString());
 			CApp::getSingleton().getGame()->setModuleParameter("Login","mPassword",CApp::getSingleton().getGame()->getUIManager()->getPage(CUIPage::EType_Login)->getGUIWindow()->getEditBox("LoginPage/Edit_Password")->getText().toString());
+			CApp::getSingleton().getGame()->setModuleParameter("Login","mSuccessCallback"
+				,&[]()
+			{
+				CApp::getSingleton().getGame()->getUIManager()->destroyPage(CUIPage::EType_Login);
+				auto page=CApp::getSingleton().getGame()->getUIManager()->createPage(CUIPage::EType_BigWorld);
+				page->setButtonLogic(CBigWorldPageLogic::buttonLogic);
+				CApp::getSingleton().getGame()->stopModule("Login");
+			}
+			);
 			CApp::getSingleton().getGame()->startModule("Login");
 			break;
 		}

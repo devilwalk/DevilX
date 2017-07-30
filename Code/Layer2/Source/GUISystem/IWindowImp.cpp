@@ -13,7 +13,6 @@ NSDevilX::NSGUISystem::IWindowImp::IWindowImp(const String & name,ISceneImp * sc
 {
 	mEventScene=NSUISystem::getSystem()->createEventScene(CStringConverter::toString(getScene()->getRenderViewport())+"/"+name);
 	mControl=DEVILX_NEW IControlImp(IControlImp::EType_Container,DEVILX_NEW CContainer(name,static_cast<ISceneImp*>(getScene())->getGraphicScene(),mEventScene),nullptr);
-	mControl->setUserPointer(0,this);
 	mEventWindow=static_cast<ISceneImp*>(getScene())->getEventScene()->createWindow(name);
 	mEventWindow->queryInterface_IElement()->setParent(mControl->getControl()->getLayer());
 	mEventWindow->queryInterface_IElement()->setSize(CFloat2::sOne);
@@ -24,7 +23,11 @@ NSDevilX::NSGUISystem::IWindowImp::~IWindowImp()
 {
 	setPrepareFocusControl(nullptr);
 	setFocusControl(nullptr);
-	mControls.destroyAll();
+	mButtons.destroyAll();
+	mStaticTexts.destroyAll();
+	mImageBoxes.destroyAll();
+	mEditBoxes.destroyAll();
+	mPageBars.destroyAll();
 	static_cast<ISceneImp*>(getScene())->getEventScene()->destroyWindow(mEventWindow);
 	DEVILX_DELETE(mControl);
 	NSUISystem::getSystem()->destroyEventScene(mEventScene);
@@ -77,35 +80,50 @@ IScene * NSDevilX::NSGUISystem::IWindowImp::getScene() const
 
 IImageBox * NSDevilX::NSGUISystem::IWindowImp::createImageBox(const String & name)
 {
+	if(mImageBoxes.has(name))
+		return nullptr;
 	auto ret=DEVILX_NEW IImageBoxImp(name,this);
-	mControls.add(name,static_cast<IControlImp*>(ret->queryInterface_IControl()));
+	mImageBoxes.add(name,ret);
 	return ret;
 }
 
 IStaticText * NSDevilX::NSGUISystem::IWindowImp::createStaticText(const String & name)
 {
+	if(mStaticTexts.has(name))
+		return nullptr;
 	auto ret=DEVILX_NEW IStaticTextImp(name,this);
-	mControls.add(name,static_cast<IControlImp*>(ret->queryInterface_IControl()));
+	mStaticTexts.add(name,ret);
 	return ret;
 }
 
 IButton * NSDevilX::NSGUISystem::IWindowImp::createButton(const String & name)
 {
+	if(mButtons.has(name))
+		return nullptr;
 	auto ret=DEVILX_NEW IButtonImp(name,this);
-	mControls.add(name,static_cast<IControlImp*>(ret->queryInterface_IControl()));
+	mButtons.add(name,ret);
 	return ret;
 }
 
 IEditBox * NSDevilX::NSGUISystem::IWindowImp::createEditBox(const String & name)
 {
+	if(mEditBoxes.has(name))
+		return nullptr;
 	auto ret=DEVILX_NEW IEditBoxImp(name,this);
-	mControls.add(name,static_cast<IControlImp*>(ret->queryInterface_IControl()));
+	mEditBoxes.add(name,ret);
 	return ret;
 }
 
 Void NSDevilX::NSGUISystem::IWindowImp::destroyControl(IControl * control)
 {
-	mControls.destroy(control->getName());
+	switch(static_cast<IControlImp*>(control)->getType())
+	{
+	case IControlImp::EType_Button:mButtons.destroy(control->getName());break;
+	case IControlImp::EType_EditBox:mEditBoxes.destroy(control->getName());break;
+	case IControlImp::EType_ImageBox:mImageBoxes.destroy(control->getName());break;
+	case IControlImp::EType_PageBar:mPageBars.destroy(control->getName());break;
+	case IControlImp::EType_StaticText:mStaticTexts.destroy(control->getName());break;
+	}
 }
 
 Void NSDevilX::NSGUISystem::IWindowImp::onEvent(NSUISystem::IEvent * e)
@@ -120,52 +138,54 @@ Void NSDevilX::NSGUISystem::IWindowImp::onEvent(NSUISystem::IEvent * e)
 
 IImageBox * NSDevilX::NSGUISystem::IWindowImp::getImageBox(const String & name) const
 {
-	auto control=mControls.get(name);
-	if(control&&(control->getType()==IControlImp::EType_ImageBox))
-		return control->getUserPointer<IImageBoxImp>(0);
-	else
-		return nullptr;
+	return mImageBoxes.get(name);
 }
 
 IStaticText * NSDevilX::NSGUISystem::IWindowImp::getStaticText(const String & name) const
 {
-	auto control=mControls.get(name);
-	if(control&&(control->getType()==IControlImp::EType_StaticText))
-		return control->getUserPointer<IStaticTextImp>(0);
-	else
-		return nullptr;
+	return mStaticTexts.get(name);
 }
 
 IButton * NSDevilX::NSGUISystem::IWindowImp::getButton(const String & name) const
 {
-	auto control=mControls.get(name);
-	if(control&&(control->getType()==IControlImp::EType_Button))
-		return control->getUserPointer<IButtonImp>(0);
-	else
-		return nullptr;
+	return mButtons.get(name);
 }
 
 IEditBox * NSDevilX::NSGUISystem::IWindowImp::getEditBox(const String & name) const
 {
-	auto control=mControls.get(name);
-	if(control&&(control->getType()==IControlImp::EType_EditBox))
-		return control->getUserPointer<IEditBoxImp>(0);
-	else
-		return nullptr;
+	return mEditBoxes.get(name);
 }
 
 IPageBar * NSDevilX::NSGUISystem::IWindowImp::createPageBar(const String & name)
 {
+	if(mPageBars.has(name))
+		return nullptr;
 	auto ret=DEVILX_NEW IPageBarImp(name,this);
-	mControls.add(name,static_cast<IControlImp*>(ret->queryInterface_IControl()));
+	mPageBars.add(name,ret);
 	return ret;
 }
 
 IPageBar * NSDevilX::NSGUISystem::IWindowImp::getPageBar(const String & name) const
 {
-	auto control=mControls.get(name);
-	if(control&&(control->getType()==IControlImp::EType_PageBar))
-		return control->getUserPointer<IPageBarImp>(0);
-	else
-		return nullptr;
+	return mPageBars.get(name);
+}
+
+UInt32 NSDevilX::NSGUISystem::IWindowImp::getButtonCount() const
+{
+	return static_cast<UInt32>(mButtons.size());
+}
+
+IButton * NSDevilX::NSGUISystem::IWindowImp::getButton(UInt32 index) const
+{
+	return mButtons.get(index);
+}
+
+UInt32 NSDevilX::NSGUISystem::IWindowImp::getEditBoxCount() const
+{
+	return static_cast<UInt32>(mEditBoxes.size());
+}
+
+IEditBox * NSDevilX::NSGUISystem::IWindowImp::getEditBox(UInt32 index) const
+{
+	return mEditBoxes.get(index);
 }

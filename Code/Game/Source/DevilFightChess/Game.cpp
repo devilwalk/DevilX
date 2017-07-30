@@ -4,6 +4,7 @@ using namespace NSFightChess;
 
 NSDevilX::NSFightChess::CGame::CGame()
 	:mViewport(nullptr)
+	,mLogic(nullptr)
 	,mServerManager(nullptr)
 	,mFontManager(nullptr)
 	,mUIManager(nullptr)
@@ -13,13 +14,12 @@ NSDevilX::NSFightChess::CGame::CGame()
 	mViewport=CApp::getSingleton().getRenderWindow()->queryInterface_IRenderTarget()->createViewport("Main");
 	registerModule(DEVILX_NEW CRegister);
 	registerModule(DEVILX_NEW CLogin);
-	registerModule(DEVILX_NEW CBigWorld);
-	registerModule(DEVILX_NEW CMatchServerConfig);
 }
 
 NSDevilX::NSFightChess::CGame::~CGame()
 {
 	mModules.destroyAll();
+	DEVILX_DELETE(mLogic);
 	DEVILX_DELETE(mMatchServerManager);
 	DEVILX_DELETE(mServerManager);
 	DEVILX_DELETE(getUIManager());
@@ -29,13 +29,15 @@ NSDevilX::NSFightChess::CGame::~CGame()
 
 Void NSDevilX::NSFightChess::CGame::initialize()
 {
+	mLogic=DEVILX_NEW CGameLogic;
 	mServerManager=DEVILX_NEW CServerManager;
 	mFontManager=DEVILX_NEW CFontManager;
 	mUIManager=DEVILX_NEW CUIManager;
 	mMatchServerManager=DEVILX_NEW CMatchServerManager;
 	mGUIScene=NSGUISystem::getSystem()->createScene(getViewport());
 
-	startModule("Login");
+	auto page=getUIManager()->createOrRetrievePage(CUIPage::EType_Login);
+	page->setButtonLogic(CLoginPageLogic::buttonLogic);
 }
 
 Void NSDevilX::NSFightChess::CGame::registerModule(CModule * mod)

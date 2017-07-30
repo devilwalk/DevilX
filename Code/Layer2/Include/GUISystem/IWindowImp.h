@@ -17,7 +17,11 @@ namespace NSDevilX
 			IControlImp * mPrepareFocusControl;
 			IControlImp * mFocusControl;
 			ISceneImp * const mScene;
-			TNamedResourcePtrMap<IControlImp> mControls;
+			TNamedIndexResourcePtrContainer<IButtonImp> mButtons;
+			TNamedIndexResourcePtrContainer<IImageBoxImp> mImageBoxes;
+			TNamedIndexResourcePtrContainer<IEditBoxImp> mEditBoxes;
+			TNamedIndexResourcePtrContainer<IStaticTextImp> mStaticTexts;
+			TNamedIndexResourcePtrContainer<IPageBarImp> mPageBars;
 		public:
 			IWindowImp(const String & name,ISceneImp * scene,Bool isModule);
 			~IWindowImp();
@@ -49,6 +53,12 @@ namespace NSDevilX
 			// 通过 IWindow 继承
 			virtual IPageBar * createPageBar(const String & name) override;
 			virtual IPageBar * getPageBar(const String & name) const override;
+
+			// 通过 IWindow 继承
+			virtual UInt32 getButtonCount() const override;
+			virtual IButton * getButton(UInt32 index) const override;
+			virtual UInt32 getEditBoxCount() const override;
+			virtual IEditBox * getEditBox(UInt32 index) const override;
 		};
 	}
 }

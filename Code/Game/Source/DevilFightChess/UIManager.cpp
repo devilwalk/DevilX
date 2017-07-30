@@ -4,7 +4,6 @@ using namespace NSFightChess;
 
 NSDevilX::NSFightChess::CUIManager::CUIManager()
 {
-	mPageLogics[CUIPage::EType_Login]=DEVILX_NEW CLoginPageLogic();
 	mPageResouceLocations[CUIPage::EType_Login]=CDirectory::getApplicationDirectory()+"/Resource/""Login""Page.layout";
 	mPageResouceLocations[CUIPage::EType_Register]=CDirectory::getApplicationDirectory()+"/Resource/""Register""Page.layout";
 	mPageResouceLocations[CUIPage::EType_BigWorld]=CDirectory::getApplicationDirectory()+"/Resource/""BigWorld""Page.layout";
@@ -21,7 +20,6 @@ CUIPage * NSDevilX::NSFightChess::CUIManager::createPage(CUIPage::EType type)
 		return nullptr;
 	auto ret=DEVILX_NEW CUIPage(type);
 	mPages[type]=ret;
-	ret->setPageLogic(mPageLogics[type]);
 	return ret;
 }
 

@@ -8,14 +8,13 @@ NSDevilX::NSGUISystem::IButtonImp::IButtonImp(const String & name,IWindowImp * w
 	,mEventCallback(nullptr)
 {
 	mControl=DEVILX_NEW IControlImp(IControlImp::EType_Button,DEVILX_NEW CButton(name,static_cast<IControlImp*>(window->queryInterface_IControl())->getControl()),window);
-	mControl->setUserPointer(0,this);
 	mControl->getControl()->getEventWindow()->registerListener(this,CEvent::EType_MouseMove);
-	mControl->addListener(static_cast<TMessageReceiver<IControlImp>*>(this),IControlImp::EMessage_BeginDestruction);
 	mTextProperty=DEVILX_NEW ITextPropertyImp(static_cast<CButton*>(mControl->getControl())->getTextControl()->getTextProperty());
 }
 
 NSDevilX::NSGUISystem::IButtonImp::~IButtonImp()
 {
+	DEVILX_DELETE(mControl);
 	DEVILX_DELETE(mTextProperty);
 }
 
@@ -78,16 +77,6 @@ Void NSDevilX::NSGUISystem::IButtonImp::setEventCallback(IButtonEventCallback * 
 IButtonEventCallback * NSDevilX::NSGUISystem::IButtonImp::getEventCallback() const
 {
 	return mEventCallback;
-}
-
-Void NSDevilX::NSGUISystem::IButtonImp::onMessage(IControlImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
-{
-	switch(message)
-	{
-	case IControlImp::EMessage_BeginDestruction:
-		DEVILX_DELETE(this);
-		break;
-	}
 }
 
 Void NSDevilX::NSGUISystem::IButtonImp::onMessage(CButton * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)

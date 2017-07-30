@@ -12,9 +12,7 @@ NSDevilX::NSGUISystem::IControlImp::IControlImp(EType type,CControl * control,IW
 
 NSDevilX::NSGUISystem::IControlImp::~IControlImp()
 {
-	notify(EMessage_BeginDestruction);
 	DEVILX_DELETE(getControl());
-	notify(EMessage_EndDestruction);
 }
 
 const String & NSDevilX::NSGUISystem::IControlImp::getName() const

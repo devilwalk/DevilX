@@ -9,7 +9,6 @@ namespace NSDevilX
 		class IPageBarImp
 			:public IPageBar
 			,public TBaseObject<IPageBarImp>
-			,public TMessageReceiver<IControlImp>
 			,public NSUISystem::IEventListener
 		{
 		protected:
@@ -29,9 +28,6 @@ namespace NSDevilX
 			virtual UInt32 getActivePageIndex() const override;
 			virtual Void setEventCallback(IPageBarEventCallback * callback) override;
 			virtual IPageBarEventCallback * getEventCallback() const override;
-
-			// 通过 TMessageReceiver 继承
-			virtual Void onMessage(IControlImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 
 			// 通过 IEventListener 继承
 			virtual Void onEvent(NSUISystem::IEvent * e) override;

@@ -52,8 +52,13 @@ Void NSDevilX::NSFightChess::CRegister::update()
 	switch(return_code)
 	{
 	case CServer::EReturnCode_Success:
-		CApp::getSingleton().getGame()->stopModule(getName());
-		CApp::getSingleton().getGame()->startModule("Login");
+		auto success_callback_any=getParameter("mSuccessCallback");
+		if(success_callback_any.isValidate())
+		{
+			typedef Void SuccessCallbackFunc();
+			auto func_ptr=success_callback_any.get<SuccessCallbackFunc*>();
+			(*func_ptr)();
+		}
 		break;
 	}
 }

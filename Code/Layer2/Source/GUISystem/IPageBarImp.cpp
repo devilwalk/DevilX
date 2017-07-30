@@ -8,15 +8,14 @@ NSDevilX::NSGUISystem::IPageBarImp::IPageBarImp(const String & name,IWindowImp *
 	,mEventCallback(nullptr)
 {
 	mControl=DEVILX_NEW IControlImp(IControlImp::EType_PageBar,DEVILX_NEW CPageBar(name,static_cast<IControlImp*>(window->queryInterface_IControl())->getControl()),window);
-	mControl->setUserPointer(0,this);
 	mControl->getControl()->getEventWindow()->registerListener(this,CEvent::EType_MouseMove);
-	mControl->addListener(static_cast<TMessageReceiver<IControlImp>*>(this),IControlImp::EMessage_BeginDestruction);
 
 	mTextProperty=DEVILX_NEW ITextPropertyImp(static_cast<CPageBar*>(mControl->getControl())->getTextProperty());
 }
 
 NSDevilX::NSGUISystem::IPageBarImp::~IPageBarImp()
 {
+	DEVILX_DELETE(mControl);
 	DEVILX_DELETE(mTextProperty);
 }
 
@@ -59,16 +58,6 @@ Void NSDevilX::NSGUISystem::IPageBarImp::setEventCallback(IPageBarEventCallback 
 IPageBarEventCallback * NSDevilX::NSGUISystem::IPageBarImp::getEventCallback() const
 {
 	return mEventCallback;
-}
-
-Void NSDevilX::NSGUISystem::IPageBarImp::onMessage(IControlImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
-{
-	switch(message)
-	{
-	case IControlImp::EMessage_BeginDestruction:
-		DEVILX_DELETE(this);
-		break;
-	}
 }
 
 Void NSDevilX::NSGUISystem::IPageBarImp::onEvent(NSUISystem::IEvent * e)

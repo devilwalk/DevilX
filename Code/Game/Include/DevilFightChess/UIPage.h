@@ -1,11 +1,12 @@
 #pragma once
-#include "UIPageLogic.h"
 namespace NSDevilX
 {
 	namespace NSFightChess
 	{
 		class CUIPage
 			:public TBaseObject<CUIPage>
+			,public NSGUISystem::IButtonEventCallback
+			,public NSGUISystem::IEditBoxEventCallback
 		{
 		public:
 			enum EType
@@ -16,10 +17,13 @@ namespace NSDevilX
 				EType_MatchServerConfig,
 				EType_Count
 			};
+			typedef Void buttonLogic(NSGUISystem::IButton*,NSGUISystem::IButtonEventCallback::EEvent);
+			typedef Void editBoxLogic(NSGUISystem::IEditBox*,NSGUISystem::IEditBoxEventCallback::EEvent);
 		protected:
 			EType const mType;
 			NSGUISystem::IWindow * mGUIWindow;
-			CUIPageLogic * mPageLogic;
+			buttonLogic * mButtonLogic;
+			editBoxLogic * mEditBoxLogic;
 		public:
 			CUIPage(EType type);
 			virtual ~CUIPage();
@@ -31,7 +35,14 @@ namespace NSDevilX
 			{
 				return mGUIWindow;
 			}
-			Void setPageLogic(CUIPageLogic * logic);
+			Void setButtonLogic(buttonLogic * logic);
+			Void setEditBoxLogic(editBoxLogic * logic);
+
+			// 通过 IButtonEventCallback 继承
+			virtual Void onEvent(NSGUISystem::IButton * control,NSGUISystem::IButtonEventCallback::EEvent e) override;
+
+			// 通过 IEditBoxEventCallback 继承
+			virtual Void onEvent(NSGUISystem::IEditBox * control,NSGUISystem::IEditBoxEventCallback::EEvent e) override;
 		};
 	}
 }

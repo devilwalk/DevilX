@@ -2,22 +2,16 @@
 using namespace NSDevilX;
 using namespace NSFightChess;
 
-NSDevilX::NSFightChess::CRegisterPageLogic::CRegisterPageLogic()
-	:CUIPageLogic(CUIPage::EType_Register)
-{}
-
-NSDevilX::NSFightChess::CRegisterPageLogic::~CRegisterPageLogic()
-{}
-
-Void NSDevilX::NSFightChess::CRegisterPageLogic::onEvent(NSGUISystem::IButton * control,NSGUISystem::IButtonEventCallback::EEvent e)
+Void NSDevilX::NSFightChess::CRegisterPageLogic::buttonLogic(NSGUISystem::IButton * control,NSGUISystem::IButtonEventCallback::EEvent e)
 {
 	if(control->queryInterface_IControl()->getName()=="RegisterPage/Button_Cancel")
 	{
 		switch(e)
 		{
-		case IButtonEventCallback::EEvent::EEvent_Click:
+		case NSGUISystem::IButtonEventCallback::EEvent::EEvent_Click:
 			CApp::getSingleton().getGame()->getUIManager()->destroyPage(CUIPage::EType_Register);
-			CApp::getSingleton().getGame()->getUIManager()->createPage(CUIPage::EType_Login);
+			auto page=CApp::getSingleton().getGame()->getUIManager()->createPage(CUIPage::EType_Login);
+			page->setButtonLogic(CLoginPageLogic::buttonLogic);
 			break;
 		}
 	}
@@ -25,9 +19,18 @@ Void NSDevilX::NSFightChess::CRegisterPageLogic::onEvent(NSGUISystem::IButton * 
 	{
 		switch(e)
 		{
-		case IButtonEventCallback::EEvent::EEvent_Click:
+		case NSGUISystem::IButtonEventCallback::EEvent::EEvent_Click:
 			CApp::getSingleton().getGame()->setModuleParameter("Register","mUsername",CApp::getSingleton().getGame()->getUIManager()->getPage(CUIPage::EType_Register)->getGUIWindow()->getEditBox("Register/Edit_Username")->getText().toString());
 			CApp::getSingleton().getGame()->setModuleParameter("Register","mPassword",CApp::getSingleton().getGame()->getUIManager()->getPage(CUIPage::EType_Register)->getGUIWindow()->getEditBox("Register/Edit_Password")->getText().toString());
+			CApp::getSingleton().getGame()->setModuleParameter("Register","mSuccessCallback"
+				,&[]()
+			{
+				CApp::getSingleton().getGame()->getUIManager()->destroyPage(CUIPage::EType_Register);
+				auto page=CApp::getSingleton().getGame()->getUIManager()->createPage(CUIPage::EType_Login);
+				page->setButtonLogic(CLoginPageLogic::buttonLogic);
+				CApp::getSingleton().getGame()->stopModule("Register");
+			}
+			);
 			CApp::getSingleton().getGame()->startModule("Register");
 			break;
 		}

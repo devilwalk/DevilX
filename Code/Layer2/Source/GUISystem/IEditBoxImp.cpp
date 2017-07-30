@@ -8,9 +8,7 @@ NSDevilX::NSGUISystem::IEditBoxImp::IEditBoxImp(const String & name,IWindowImp *
 	,mEventCallback(nullptr)
 {
 	mControl=DEVILX_NEW IControlImp(IControlImp::EType_EditBox,DEVILX_NEW CEditBox(name,static_cast<IControlImp*>(window->queryInterface_IControl())->getControl()),window);
-	mControl->setUserPointer(0,this);
 	mControl->getControl()->getEventWindow()->registerListener(this,CEvent::EType_MouseMove);
-	mControl->addListener(static_cast<TMessageReceiver<IControlImp>*>(this),IControlImp::EMessage_BeginDestruction);
 	mTextProperty=DEVILX_NEW ITextPropertyImp(static_cast<CEditBox*>(mControl->getControl())->getTextControl()->getTextProperty());
 	static_cast<CEditBox*>(mControl->getControl())->addListener(static_cast<TMessageReceiver<CEditBox>*>(this),CEditBox::EMessage_SetFocus);
 	static_cast<CEditBox*>(mControl->getControl())->addListener(static_cast<TMessageReceiver<CEditBox>*>(this),CEditBox::EMessage_EndTextChange);
@@ -18,6 +16,7 @@ NSDevilX::NSGUISystem::IEditBoxImp::IEditBoxImp(const String & name,IWindowImp *
 
 NSDevilX::NSGUISystem::IEditBoxImp::~IEditBoxImp()
 {
+	DEVILX_DELETE(mControl);
 	DEVILX_DELETE(mTextProperty);
 }
 
@@ -60,16 +59,6 @@ Void NSDevilX::NSGUISystem::IEditBoxImp::setEventCallback(IEditBoxEventCallback 
 IEditBoxEventCallback * NSDevilX::NSGUISystem::IEditBoxImp::getEventCallback() const
 {
 	return mEventCallback;
-}
-
-Void NSDevilX::NSGUISystem::IEditBoxImp::onMessage(IControlImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
-{
-	switch(message)
-	{
-	case IControlImp::EMessage_BeginDestruction:
-		DEVILX_DELETE(this);
-		break;
-	}
 }
 
 Void NSDevilX::NSGUISystem::IEditBoxImp::onMessage(CEditBox * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
