@@ -147,6 +147,12 @@
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4SubEntityImp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4BufferImp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4BufferUpdater.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4Camera.cpp">
@@ -270,6 +276,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4SubEntityImp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4BufferUpdater.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4BufferImp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

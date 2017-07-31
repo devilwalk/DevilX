@@ -10,7 +10,8 @@
 #include "CubeBlockSystem/ICubeBlockSystemInterface.h"
 #include "CubeBlockWorld/ICubeBlockWorldInterface.h"
 #include "UISystem/IUISystemInterface.h"
-#pragma comment(lib,"RenderSystem_D3D11.2017.lib")
+//#pragma comment(lib,"RenderSystem_D3D11.2017.lib")
+#pragma comment(lib,"RenderSystem_GL4.2017.lib")
 using namespace NSDevilX;
 class CPhysicalQueryResultReceiver
 	:public NSPhysicalSystem::IQueryResultReceiver

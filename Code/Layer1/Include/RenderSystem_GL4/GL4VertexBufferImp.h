@@ -1,5 +1,5 @@
 #pragma once
-#include "GL4Enum.h"
+#include "GL4BufferImp.h"
 namespace NSDevilX
 {
 	namespace NSRenderSystem
@@ -10,29 +10,27 @@ namespace NSDevilX
 			class CVertexBufferImp
 				:public TInterfaceObject<IVertexBufferImp>
 				,public TBaseObject<CVertexBufferImp>
-				,public TMessageReceiver<CSystemImp>
+				,public CReferenceObject
 				,public CMessageNotifier
 			{
 			public:
 				enum EMessage
 				{
-					EMessage_BufferCreate
+					EMessage_BeginBufferChange,
+					EMessage_EndBufferChange
 				};
 			protected:
-				GLuint mBuffers[CEnum::EVertexBufferType_Count];
+				TRefResourcePtrVector<CBufferImp> mBuffers;
 			public:
 				CVertexBufferImp(IVertexBufferImp * interfaceImp);
-				~CVertexBufferImp();
 				decltype(mBuffers) const & getBuffers()const
 				{
 					return mBuffers;
 				}
+			protected:
+				~CVertexBufferImp();
 				// Inherited via TInterfaceObject
 				virtual Void onMessage(IVertexBufferImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
-				virtual Void onMessage(CSystemImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
-			protected:
-				Void _update();
-				Bool _update(CEnum::EVertexBufferType type);
 			};
 		}
 	}

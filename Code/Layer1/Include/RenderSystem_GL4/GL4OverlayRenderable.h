@@ -14,7 +14,7 @@ namespace NSDevilX
 				,public TMessageReceiver<IOverlayElementImp>
 				,public TMessageReceiver<IColourUnitStateImp>
 				,public TMessageReceiver<CVertexBufferImp>
-				,public TMessageReceiver<CIndexBufferImp>
+				,public TMessageReceiver<CBufferImp>
 			{
 			protected:
 				COverlayMaterial * const mMaterial;
@@ -54,7 +54,7 @@ namespace NSDevilX
 				virtual Void onMessage(IOverlayElementImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 				virtual Void onMessage(IColourUnitStateImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 				virtual Void onMessage(CVertexBufferImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
-				virtual Void onMessage(CIndexBufferImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
+				virtual Void onMessage(CBufferImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 			protected:
 				Void _updateElementPosition(IOverlayElementImp * element);
 				Void _updateElementTextureCoord(IOverlayElementImp * element);

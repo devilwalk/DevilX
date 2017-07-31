@@ -126,6 +126,8 @@ NSDevilX::NSRenderSystem::NSGL4::CSystemImp::CSystemImp()
 	static_cast<IResourceManagerImp*>(ISystemImp::getSingleton().queryInterface_IResourceManager())->addListener(static_cast<TMessageReceiver<IResourceManagerImp>*>(this),IResourceManagerImp::EMessage_VertexBufferDestroy);
 	static_cast<IResourceManagerImp*>(ISystemImp::getSingleton().queryInterface_IResourceManager())->addListener(static_cast<TMessageReceiver<IResourceManagerImp>*>(this),IResourceManagerImp::EMessage_IndexBufferCreate);
 	static_cast<IResourceManagerImp*>(ISystemImp::getSingleton().queryInterface_IResourceManager())->addListener(static_cast<TMessageReceiver<IResourceManagerImp>*>(this),IResourceManagerImp::EMessage_IndexBufferDestroy);
+	static_cast<IResourceManagerImp*>(ISystemImp::getSingleton().queryInterface_IResourceManager())->addListener(static_cast<TMessageReceiver<IResourceManagerImp>*>(this),IResourceManagerImp::EMessage_EndBufferCreate);
+	static_cast<IResourceManagerImp*>(ISystemImp::getSingleton().queryInterface_IResourceManager())->addListener(static_cast<TMessageReceiver<IResourceManagerImp>*>(this),IResourceManagerImp::EMessage_BeginBufferDestroy);
 }
 
 NSDevilX::NSRenderSystem::NSGL4::CSystemImp::~CSystemImp()
@@ -290,6 +292,12 @@ Void NSDevilX::NSRenderSystem::NSGL4::CSystemImp::onMessage(IResourceManagerImp 
 		break;
 	case IResourceManagerImp::EMessage_IndexBufferDestroy:
 		mIndexBuffers.destroy(static_cast<IIndexBufferImp*>(data));
+		break;
+	case IResourceManagerImp::EMessage_EndBufferCreate:
+		mBuffers[static_cast<IBufferImp*>(data)]=DEVILX_NEW CBufferImp(static_cast<IBufferImp*>(data));
+		break;
+	case IResourceManagerImp::EMessage_BeginBufferDestroy:
+		mBuffers.destroy(static_cast<IBufferImp*>(data));
 		break;
 	}
 }

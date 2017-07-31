@@ -156,6 +156,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4BaseObject.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4BufferImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4BufferUpdater.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4Camera.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4ClearViewportProgram.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_GL4\GL4ConstantBuffer.h" />
@@ -200,6 +202,8 @@
     <ClInclude Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\Precompiler.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4BufferImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4BufferUpdater.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4Camera.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4ClearViewportProgram.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_GL4\GL4ConstantBuffer.cpp" />

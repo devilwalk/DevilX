@@ -1,12 +1,11 @@
 #pragma once
-#include "D3D11BufferUpdater.h"
+#include "D3D11BufferImp.h"
 namespace NSDevilX
 {
 	namespace NSRenderSystem
 	{
 		namespace NSD3D11
 		{
-			class CSystemImp;
 			class CIndexBufferImp
 				:public TInterfaceObject<IIndexBufferImp>
 				,public TBaseObject<CIndexBufferImp>

@@ -11,8 +11,9 @@ NSDevilX::NSRenderSystem::NSGL4::COverlayRenderable::COverlayRenderable(COverlay
 	,mVertexArrayObject(0)
 {
 	mGeometry=CSystemImp::getSingleton().getGeometry(static_cast<IGeometryImp*>(ISystemImp::getSingleton().queryInterface_IResourceManager()->createGeometry("Internal/OverlayRenderable/"+CStringConverter::toString(reinterpret_cast<SizeT>(this)))));
-	mGeometry->getVertexBuffer()->addListener(static_cast<TMessageReceiver<CVertexBufferImp>*>(this),CVertexBufferImp::EMessage_BufferCreate);
-	mGeometry->getIndexBuffer()->addListener(static_cast<TMessageReceiver<CIndexBufferImp>*>(this),CIndexBufferImp::EMessage_BufferCreate);
+	mGeometry->getVertexBuffer()->addListener(static_cast<TMessageReceiver<CVertexBufferImp>*>(this),CVertexBufferImp::EMessage_BeginBufferChange);
+	mGeometry->getVertexBuffer()->addListener(static_cast<TMessageReceiver<CVertexBufferImp>*>(this),CVertexBufferImp::EMessage_EndBufferChange);
+	mGeometry->getIndexBuffer()->getBuffer()->addListener(static_cast<TMessageReceiver<CBufferImp>*>(this),CBufferImp::EMessage_InternalCreate);
 }
 
 NSDevilX::NSRenderSystem::NSGL4::COverlayRenderable::~COverlayRenderable()
@@ -147,17 +148,23 @@ Void NSDevilX::NSRenderSystem::NSGL4::COverlayRenderable::onMessage(CVertexBuffe
 {
 	switch(message)
 	{
-	case CVertexBufferImp::EMessage_BufferCreate:
+	case CVertexBufferImp::EMessage_BeginBufferChange:
+		if(notifier->getBuffers()[*static_cast<const UInt32*>(data)])
+			notifier->getBuffers()[*static_cast<const UInt32*>(data)]->removeListener(static_cast<TMessageReceiver<CBufferImp>*>(this),CBufferImp::EMessage_InternalCreate);
+		break;
+	case CVertexBufferImp::EMessage_EndBufferChange:
 		_updateVertexArrayObject();
+		if(notifier->getBuffers()[*static_cast<const UInt32*>(data)])
+			notifier->getBuffers()[*static_cast<const UInt32*>(data)]->addListener(static_cast<TMessageReceiver<CBufferImp>*>(this),CBufferImp::EMessage_InternalCreate);
 		break;
 	}
 }
 
-Void NSDevilX::NSRenderSystem::NSGL4::COverlayRenderable::onMessage(CIndexBufferImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
+Void NSDevilX::NSRenderSystem::NSGL4::COverlayRenderable::onMessage(CBufferImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
 {
 	switch(message)
 	{
-	case CVertexBufferImp::EMessage_BufferCreate:
+	case CBufferImp::EMessage_InternalCreate:
 		_updateVertexArrayObject();
 		break;
 	}
@@ -222,22 +229,25 @@ Void NSDevilX::NSRenderSystem::NSGL4::COverlayRenderable::_updateVertexArrayObje
 		const auto vb_type=getMaterial()->getProgram()->getInputSlot(i);
 		if(static_cast<UInt32>(-1)!=vb_type)
 		{
-			glBindBuffer(GL_ARRAY_BUFFER,mGeometry->getVertexBuffer()->getBuffers()[vb_type]);
-			CUtility::checkGLError();
-			if(CEnum::EVertexBufferType_BlendIndex==vb_type)
+			if(mGeometry->getVertexBuffer()->getBuffers()[vb_type])
 			{
-				glVertexAttribIPointer(i,CUtility::getComponmentCount(vb_type),CUtility::getFormat(vb_type),CUtility::getStride(vb_type),nullptr);
-			}
-			else
-			{
-				glVertexAttribPointer(i,CUtility::getComponmentCount(vb_type),CUtility::getFormat(vb_type),CUtility::needNormalized(vb_type),CUtility::getStride(vb_type),nullptr);
+				glBindBuffer(GL_ARRAY_BUFFER,mGeometry->getVertexBuffer()->getBuffers()[vb_type]->getInternal());
+				CUtility::checkGLError();
+				if(CEnum::EVertexBufferType_BlendIndex==vb_type)
+				{
+					glVertexAttribIPointer(i,CUtility::getComponmentCount(vb_type),CUtility::getFormat(vb_type),CUtility::getStride(vb_type),nullptr);
+				}
+				else
+				{
+					glVertexAttribPointer(i,CUtility::getComponmentCount(vb_type),CUtility::getFormat(vb_type),CUtility::needNormalized(vb_type),CUtility::getStride(vb_type),nullptr);
+					CUtility::checkGLError();
+				}
+				glEnableVertexAttribArray(i);
 				CUtility::checkGLError();
 			}
-			glEnableVertexAttribArray(i);
-			CUtility::checkGLError();
 		}
 	}
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,mGeometry->getIndexBuffer()->getBuffer());
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,mGeometry->getIndexBuffer()->getBuffer()->getInternal());
 	CUtility::checkGLError();
 	glBindVertexArray(0);
 	CUtility::checkGLError();

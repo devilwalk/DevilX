@@ -1,5 +1,5 @@
 #pragma once
-#include "GL4VertexBufferImp.h"
+#include "GL4Enum.h"
 namespace NSDevilX
 {
 	namespace NSRenderSystem

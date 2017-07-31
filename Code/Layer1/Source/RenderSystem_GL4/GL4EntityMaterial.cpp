@@ -27,7 +27,7 @@ Void NSDevilX::NSRenderSystem::NSGL4::CEntityMaterial::onMessage(ISubEntityImp *
 		needUpdate();
 		break;
 	case ISubEntityImp::EMessage_EndColourUnitStateCreate:
-		static_cast<IColourUnitStateImp*>(data)->addListener(static_cast<TMessageReceiver<IColourUnitStateImp>*>(this),IColourUnitStateImp::EMessage_EndValueChange);
+		static_cast<const ISubEntityImp*>(notifier)->getColourUnitState(*static_cast<IEnum::EEntityColourUnitStateType*>(data))->addListener(static_cast<TMessageReceiver<IColourUnitStateImp>*>(this),IColourUnitStateImp::EMessage_EndValueChange);
 		break;
 	}
 }

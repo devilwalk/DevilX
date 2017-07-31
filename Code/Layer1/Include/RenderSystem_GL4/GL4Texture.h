@@ -9,6 +9,7 @@ namespace NSDevilX
 			class CTexture
 				:public CResource
 				,public CDirtyFlagContainer
+				,public CReferenceObject
 			{
 			public:
 				enum EDirtyFlag
@@ -36,11 +37,11 @@ namespace NSDevilX
 				TSet<UInt32> mDirtyContentSubTextureKeys;
 			public:
 				CTexture2D(ITexture2DImp * interfaceImp);
-				~CTexture2D();
 				// Inherited via TInterfaceObject
 				virtual Void onMessage(ITexture2DImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 				virtual Void onMessage(CSystemImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 			protected:
+				~CTexture2D();
 				Void _update();
 				Boolean _recreateInternal();
 				Boolean _updatePixels();

@@ -13,6 +13,8 @@
 #define DEVILX_RENDERSYSTEM_GL4_MT 1
 #define DEVILX_RENDERSYSTEM_GL4_MODE DEVILX_RENDERSYSTEM_GL4_ST
 #include "GL4BaseObject.h"
+#include "GL4BufferImp.h"
+#include "GL4BufferUpdater.h"
 #include "GL4ClearViewportProgram.h"
 #include "GL4Enum.h"
 #include "GL4Utility.h"

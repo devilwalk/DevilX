@@ -290,7 +290,7 @@ Void NSDevilX::NSRenderSystem::NSGL4::CEntityPass::_updateVertexArrayObject()
 		const auto vb_type=getProgram()->getInputSlot(i);
 		if(static_cast<UInt32>(-1)!=vb_type)
 		{
-			glBindBuffer(GL_ARRAY_BUFFER,getTechnique()->getMaterial()->getSubEntity()->getGeometry()->getVertexBuffer()->getBuffers()[vb_type]);
+			glBindBuffer(GL_ARRAY_BUFFER,getTechnique()->getMaterial()->getSubEntity()->getGeometry()->getVertexBuffer()->getBuffers()[vb_type]->getInternal());
 			CUtility::checkGLError();
 			if(CEnum::EVertexBufferType_BlendIndex==vb_type)
 			{
@@ -305,7 +305,7 @@ Void NSDevilX::NSRenderSystem::NSGL4::CEntityPass::_updateVertexArrayObject()
 			CUtility::checkGLError();
 		}
 	}
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,getTechnique()->getMaterial()->getSubEntity()->getGeometry()->getIndexBuffer()->getBuffer());
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,getTechnique()->getMaterial()->getSubEntity()->getGeometry()->getIndexBuffer()->getBuffer()->getInternal());
 	CUtility::checkGLError();
 	glBindVertexArray(0);
 	CUtility::checkGLError();

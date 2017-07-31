@@ -13,6 +13,7 @@
 #include "GL4ClearViewportProgram.h"
 #include "GL4OverlayMaterialManager.h"
 #include "GL4SamplerObject.h"
+#include "GL4BufferImp.h"
 namespace NSDevilX
 {
 	namespace NSRenderSystem
@@ -44,10 +45,11 @@ namespace NSDevilX
 				TResourcePtrVector<CSamplerObject> mSamplerObjects;
 				TResourcePtrMap<IWindowImp*const,CWindowImp> mWindows;
 				TResourcePtrMap<ISceneImp*const,CScene> mScenes;
-				TResourcePtrMap<IVertexBufferImp*const,CVertexBufferImp> mVertexBuffers;
-				TResourcePtrMap<IIndexBufferImp*const,CIndexBufferImp> mIndexBuffers;
-				TResourcePtrMap<IGeometryImp*const,CGeometry> mGeometrys;
-				TResourcePtrMap<ITexture2DImp*const,CTexture2D> mTexture2Ds;
+				TRefResourcePtrMap<IBufferImp*const,CBufferImp> mBuffers;
+				TRefResourcePtrMap<IVertexBufferImp*const,CVertexBufferImp> mVertexBuffers;
+				TRefResourcePtrMap<IIndexBufferImp*const,CIndexBufferImp> mIndexBuffers;
+				TRefResourcePtrMap<IGeometryImp*const,CGeometry> mGeometrys;
+				TRefResourcePtrMap<ITexture2DImp*const,CTexture2D> mTexture2Ds;
 				TResourcePtrMap<ITransformerImp*const,CTransformerImp> mTransformers;
 				TResourcePtrMap<ConstVoidPtr,Void> mInstanceByInternals;
 			public:
@@ -87,6 +89,10 @@ namespace NSDevilX
 				CScene * getScene(ISceneImp * interfaceImp)const
 				{
 					return mScenes.get(interfaceImp);
+				}
+				CBufferImp * getBuffer(IBufferImp * interfaceImp)const
+				{
+					return mBuffers.get(interfaceImp);
 				}
 				CVertexBufferImp * getVertexBuffer(IVertexBufferImp * interfaceImp)const
 				{

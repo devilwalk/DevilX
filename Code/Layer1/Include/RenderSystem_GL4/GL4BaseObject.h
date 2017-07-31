@@ -60,26 +60,31 @@ namespace NSDevilX
 			private:
 				InternalT * mInternal;
 			};
-			class CGLResourceObject
+			class CGLInternalObject
 			{
 			public:
-				CGLResourceObject()
-					:mResource(0)
-				{}
-				virtual ~CGLResourceObject()
-				{
-				}
-				GLuint getResource()const
-				{
-					return mResource;
-				}
+				typedef GLvoid (GLAPIENTRY*glDeleteFunctionPtr)(GLsizei,GLuint*);
 			protected:
-				Void _setResource(GLuint res)
+				glDeleteFunctionPtr mDeleteFunctionPtr;
+			public:
+				CGLInternalObject(VoidPtr funcPtr)
+					:mInternal(0)
+					,mDeleteFunctionPtr(static_cast<glDeleteFunctionPtr>(funcPtr))
+				{}
+				virtual ~CGLInternalObject()
 				{
-					mResource=res;
+					(*mDeleteFunctionPtr)(1,&mInternal);
+				}
+				GLuint getInternal()const
+				{
+					return mInternal;
+				}
+				Void setInternal(GLuint res)
+				{
+					mInternal=res;
 				}
 			private:
-				GLuint mResource;
+				GLuint mInternal;
 			};
 		}
 	}

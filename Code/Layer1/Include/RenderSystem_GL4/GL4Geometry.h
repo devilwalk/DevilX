@@ -10,13 +10,13 @@ namespace NSDevilX
 			class CGeometry
 				:public TInterfaceObject<IGeometryImp>
 				,public TBaseObject<CGeometry>
+				,public CReferenceObject
 			{
 			protected:
 				CVertexBufferImp * mVertexBuffer;
 				CIndexBufferImp * mIndexBuffer;
 			public:
 				CGeometry(IGeometryImp * interfaceImp);
-				~CGeometry();
 				decltype(mVertexBuffer) const & getVertexBuffer()const
 				{
 					return mVertexBuffer;
@@ -25,7 +25,8 @@ namespace NSDevilX
 				{
 					return mIndexBuffer;
 				}
-
+			protected:
+				~CGeometry();
 				// Inherited via TInterfaceObject
 				virtual Void onMessage(IGeometryImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 			};
