@@ -1,14 +1,13 @@
 #pragma once
-#include "CommonControl.h"
-#include "Caret.h"
+#include "EditBox.h"
 namespace NSDevilX
 {
 	namespace NSGUISystem
 	{
 		class ISystemImp;
-		class CEditBox
+		class CComboBox
 			:public CControl
-			,public TBaseObject<CEditBox>
+			,public TBaseObject<CComboBox>
 			,public CDefaultWindowEventListener
 			,public CMessageNotifier
 			,public TMessageReceiver<ISystemImp>
@@ -21,17 +20,20 @@ namespace NSDevilX
 				EMessage_EndTextChange
 			};
 		protected:
-			CCommonControl * mCommonControl;
+			CStaticText * mTextControl;
 			CCaret * mCaret;
+			CGraphicWindowTextureUtility * mBackground;
 			UInt32 mCaretPosition;
 			Bool mPrepareFocus;
 		public:
-			CEditBox(const String & name,CControl * coordParent,CControl * orderParent);
-			~CEditBox();
-			CCommonControl * getCommonControl()const
+			CComboBox(const String & name,CControl * coordParent,CControl * orderParent);
+			~CComboBox();
+			CStaticText * getTextControl()const
 			{
-				return mCommonControl;
+				return mTextControl;
 			}
+			Void setBackground(NSResourceSystem::IResource * resource);
+			NSResourceSystem::IResource * getBackground()const;
 			virtual Void setPrepareFocus(Bool focus) override;
 			virtual Void setFocus(Bool focus) override;
 			virtual Void onMouseButtonEvent(CWindow * window,EMouseButtonType buttonType,EMouseButtonEventType eventType,const CUInt2 & position) override;

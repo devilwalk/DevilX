@@ -10,7 +10,8 @@ NSDevilX::NSUISystem::IElementImp::IElementImp(const String & name)
 	,mDerivedSize(CFloat2::sZero)
 	,mOrder(0)
 	,mDerivedOrder(0)
-	,mParent(nullptr)
+	,mCoordParent(nullptr)
+	,mOrderParent(nullptr)
 {}
 
 NSDevilX::NSUISystem::IElementImp::~IElementImp()
@@ -19,34 +20,55 @@ NSDevilX::NSUISystem::IElementImp::~IElementImp()
 	notify(EMessage_EndDestruction);
 }
 
-Void NSDevilX::NSUISystem::IElementImp::setParent(IElement * parent)
+Void NSDevilX::NSUISystem::IElementImp::setCoordParent(IElement * parent)
 {
-	if(parent!=getParent())
+	if(parent!=getCoordParent())
 	{
-		if(mParent)
+		if(getCoordParent())
 		{
-			mParent->removeListener(this,IElementImp::EMessage_EndDerivedOrderChange);
-			mParent->removeListener(this,IElementImp::EMessage_EndDerivedPositionChange);
-			mParent->removeListener(this,IElementImp::EMessage_EndDerivedSizeChange);
-			mParent->removeListener(this,IElementImp::EMessage_EndDestruction);
+			mCoordParent->removeListener(this,IElementImp::EMessage_EndDerivedPositionChange);
+			mCoordParent->removeListener(this,IElementImp::EMessage_EndDerivedSizeChange);
+			mCoordParent->removeListener(this,IElementImp::EMessage_EndDestruction);
 		}
-		mParent=static_cast<IElementImp*>(parent);
+		mCoordParent=static_cast<IElementImp*>(parent);
 		_updateDerivedPosition();
 		_updateDerivedSize();
-		_updateDerivedOrder();
-		if(mParent)
+		if(getCoordParent())
 		{
-			mParent->addListener(this,IElementImp::EMessage_EndDerivedOrderChange);
-			mParent->addListener(this,IElementImp::EMessage_EndDerivedPositionChange);
-			mParent->addListener(this,IElementImp::EMessage_EndDerivedSizeChange);
-			mParent->addListener(this,IElementImp::EMessage_EndDestruction);
+			mCoordParent->addListener(this,IElementImp::EMessage_EndDerivedPositionChange);
+			mCoordParent->addListener(this,IElementImp::EMessage_EndDerivedSizeChange);
+			mCoordParent->addListener(this,IElementImp::EMessage_EndDestruction);
 		}
 	}
 }
 
-IElement * NSDevilX::NSUISystem::IElementImp::getParent() const
+IElement * NSDevilX::NSUISystem::IElementImp::getCoordParent() const
 {
-	return mParent;
+	return mCoordParent;
+}
+
+Void NSDevilX::NSUISystem::IElementImp::setOrderParent(IElement * parent)
+{
+	if(parent!=getOrderParent())
+	{
+		if(getOrderParent())
+		{
+			mOrderParent->removeListener(this,IElementImp::EMessage_EndDerivedOrderChange);
+			mOrderParent->removeListener(this,IElementImp::EMessage_EndDestruction);
+		}
+		mOrderParent=static_cast<IElementImp*>(parent);
+		_updateDerivedOrder();
+		if(getOrderParent())
+		{
+			mOrderParent->addListener(this,IElementImp::EMessage_EndDerivedOrderChange);
+			mOrderParent->addListener(this,IElementImp::EMessage_EndDestruction);
+		}
+	}
+}
+
+IElement * NSDevilX::NSUISystem::IElementImp::getOrderParent() const
+{
+	return mOrderParent;
 }
 
 const String & NSDevilX::NSUISystem::IElementImp::getName() const
@@ -163,9 +185,9 @@ CFloat2 NSDevilX::NSUISystem::IElementImp::convertPosition(const CFloat2 & posit
 Void NSDevilX::NSUISystem::IElementImp::_updateDerivedPosition()
 {
 	notify(EMessage_BeginDerivedPositionChange);
-	if(mParent)
+	if(getCoordParent())
 	{
-		mDerivedPosition=mParent->getDerivedPosition()+getPosition()*mParent->getDerivedSize();
+		mDerivedPosition=getCoordParent()->getDerivedPosition()+getPosition()*getCoordParent()->getDerivedSize();
 	}
 	else
 	{
@@ -177,9 +199,9 @@ Void NSDevilX::NSUISystem::IElementImp::_updateDerivedPosition()
 Void NSDevilX::NSUISystem::IElementImp::_updateDerivedSize()
 {
 	notify(EMessage_BeginDerivedSizeChange);
-	if(mParent)
+	if(getCoordParent())
 	{
-		mDerivedSize=getSize()*mParent->getDerivedSize();
+		mDerivedSize=getSize()*getCoordParent()->getDerivedSize();
 	}
 	else
 	{
@@ -191,9 +213,9 @@ Void NSDevilX::NSUISystem::IElementImp::_updateDerivedSize()
 Void NSDevilX::NSUISystem::IElementImp::_updateDerivedOrder()
 {
 	notify(EMessage_BeginDerivedOrderChange);
-	if(mParent)
+	if(getOrderParent())
 	{
-		mDerivedOrder=mParent->getDerivedOrder()+1;
+		mDerivedOrder=getOrderParent()->getDerivedOrder()+1;
 	}
 	else
 	{
@@ -217,7 +239,10 @@ Void NSDevilX::NSUISystem::IElementImp::onMessage(IElementImp * notifier,UInt32 
 		_updateDerivedOrder();
 		break;
 	case IElementImp::EMessage_EndDestruction:
-		setParent(nullptr);
+		if(getOrderParent()==notifier)
+			setOrderParent(nullptr);
+		else
+			setCoordParent(nullptr);
 		break;
 	}
 }

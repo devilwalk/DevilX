@@ -14,7 +14,7 @@ namespace NSDevilX
 		protected:
 			CStaticText * mTextControl;
 		public:
-			CPageBarItem(const String & name,CControl * parent);
+			CPageBarItem(const String & name,CControl * coordParent,CControl * orderParent);
 			~CPageBarItem();
 			CStaticText * getTextControl()const
 			{

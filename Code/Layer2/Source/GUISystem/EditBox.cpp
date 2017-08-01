@@ -2,26 +2,17 @@
 using namespace NSDevilX;
 using namespace NSGUISystem;
 
-NSDevilX::NSGUISystem::CEditBox::CEditBox(const String & name,CControl * parent)
-	:CControl(name,parent)
-	,mTextControl(nullptr)
+NSDevilX::NSGUISystem::CEditBox::CEditBox(const String & name,CControl * coordParent,CControl * orderParent)
+	:CControl(name,coordParent,orderParent)
+	,mCommonControl(nullptr)
 	,mCaret(nullptr)
-	,mBackground(nullptr)
 	,mCaretPosition(0)
 	,mPrepareFocus(False)
 {
-	auto background=getGraphicScene()->createWindow(name+"/Background");
-	background->queryInterface_IElement()->setPosition(CFloat2::sZero);
-	background->queryInterface_IElement()->setSize(CFloat2::sOne);
-	background->setColour(CFloatRGBA::sWhite);
-	_attachWindow(background);
-	mBackground=DEVILX_NEW CGraphicWindowTextureUtility(background);
-	mTextControl=DEVILX_NEW CStaticText(name+"/TextControl",this);
-	getTextControl()->getLayer()->setPosition(CFloat2::sZero);
-	mTextControl->getTextProperty()->setColour(CFloatRGBA::sBlack);
-	mCaret=DEVILX_NEW CCaret(name+"/Caret",this);
-	mCaret->getLayer()->setPosition(CFloat2::sZero);
+	mCommonControl=DEVILX_NEW CCommonControl(name+"/CommonControl",this,this);
+	mCaret=DEVILX_NEW CCaret(name+"/Caret",this,getCommonControl()->getImageControl());
 	mCaret->getLayer()->setSize(CFloat2(0.01f,1.0f));
+	mCaret->getLayer()->setOrder(getCommonControl()->getImageControl()->getLayer()->getOrder()+1);
 	auto event_window=getEventScene()->createWindow(name);
 	event_window->queryInterface_IElement()->setPosition(CFloat2::sZero);
 	event_window->queryInterface_IElement()->setSize(CFloat2::sOne);
@@ -30,19 +21,8 @@ NSDevilX::NSGUISystem::CEditBox::CEditBox(const String & name,CControl * parent)
 
 NSDevilX::NSGUISystem::CEditBox::~CEditBox()
 {
-	DEVILX_DELETE(mBackground);
-	DEVILX_DELETE(getTextControl());
+	DEVILX_DELETE(getCommonControl());
 	DEVILX_DELETE(mCaret);
-}
-
-Void NSDevilX::NSGUISystem::CEditBox::setBackground(NSResourceSystem::IResource * resource)
-{
-	mBackground->setTexture(resource);
-}
-
-NSResourceSystem::IResource * NSDevilX::NSGUISystem::CEditBox::getBackground() const
-{
-	return mBackground->getTextureResource();
 }
 
 Void NSDevilX::NSGUISystem::CEditBox::setPrepareFocus(Bool focus)
@@ -69,22 +49,22 @@ Void NSDevilX::NSGUISystem::CEditBox::onMouseButtonEvent(CWindow * window,EMouse
 			notify(EMessage_SetFocus);
 		TVector<CFloat2> char_positions;
 		Float last_char_right;
-		if(getTextControl()->getPositions(&char_positions,&last_char_right))
+		if(getCommonControl()->getTextControl()->getPositions(&char_positions,&last_char_right))
 		{
 			CFloat2 position_f=position/ISystemImp::getSingleton().getWindow()->getSize();
 			TList<NSUISystem::IElement*> parents;
-			auto * first_parent=getLayer()->getParent();
+			auto * first_parent=getLayer()->getCoordParent();
 			while(first_parent)
 			{
 				parents.push_front(first_parent);
-				first_parent=first_parent->getParent();
+				first_parent=first_parent->getCoordParent();
 			}
 			for(auto control:parents)
 			{
 				position_f=control->convertPosition(position_f,NSUISystem::IElement::ECoord_Parent,NSUISystem::IElement::ECoord_Local);
 			}
 			position_f=getLayer()->convertPosition(position_f,NSUISystem::IElement::ECoord_Parent,NSUISystem::IElement::ECoord_Local);
-			position_f=getTextControl()->getLayer()->convertPosition(position_f,NSUISystem::IElement::ECoord_Parent,NSUISystem::IElement::ECoord_Local);
+			position_f=getCommonControl()->getTextControl()->getLayer()->convertPosition(position_f,NSUISystem::IElement::ECoord_Parent,NSUISystem::IElement::ECoord_Local);
 			TVector<Float> distances;
 			for(auto const & char_pos:char_positions)
 			{
@@ -108,20 +88,20 @@ Void NSDevilX::NSGUISystem::CEditBox::onCharEvent(CWindow * window,const CUTF16C
 		if(erase_pos>0)
 		{
 			erase_pos=erase_pos-1;
-			auto text=getTextControl()->getText();
+			auto text=getCommonControl()->getTextControl()->getText();
 			text.erase(text.begin()+erase_pos);
-			getTextControl()->setText(text);
+			getCommonControl()->getTextControl()->setText(text);
 			--mCaretPosition;
 		}
 	}
 	else
 	{
-		auto text=getTextControl()->getText();
+		auto text=getCommonControl()->getTextControl()->getText();
 		text.insert(text.begin()+mCaretPosition,CUTF8Char(ch));
-		getTextControl()->setText(text);
+		getCommonControl()->getTextControl()->setText(text);
 		++mCaretPosition;
 	}
-	getTextControl()->getLayer()->setSize(CFloat2(std::min<Float>(getTextControl()->getText().size()/20.0f,1.0f),1.0f));
+	getCommonControl()->getTextControl()->getLayer()->setSize(CFloat2(std::min<Float>(getCommonControl()->getTextControl()->getText().size()/20.0f,1.0f),1.0f));
 	notify(EMessage_EndTextChange);
 }
 
@@ -132,9 +112,9 @@ Void NSDevilX::NSGUISystem::CEditBox::onMessage(ISystemImp * notifier,UInt32 mes
 	case ISystemImp::EMessage_Update:
 	{
 		CFloat2 pos(CFloat2::sZero);
-		if(getTextControl()->getPosition(mCaretPosition,&pos))
+		if(getCommonControl()->getTextControl()->getPosition(mCaretPosition,&pos))
 		{
-			pos=getTextControl()->getLayer()->convertPosition(pos,NSUISystem::IElement::ECoord_Local,NSUISystem::IElement::ECoord_Parent);
+			pos=getCommonControl()->getTextControl()->getLayer()->convertPosition(pos,NSUISystem::IElement::ECoord_Local,NSUISystem::IElement::ECoord_Parent);
 			mCaret->getLayer()->setPosition(CFloat2(pos.x,0.0f));
 		}
 	}

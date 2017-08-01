@@ -14,7 +14,7 @@ namespace NSDevilX
 			Bool mEnable;
 			CTimer mTimer;
 		public:
-			CCaret(const String & name,CControl * parent);
+			CCaret(const String & name,CControl * coordParent,CControl * orderParent);
 			~CCaret();
 			Void setEnable(Bool enable);
 			Bool isEnable()const

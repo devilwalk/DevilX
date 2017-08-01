@@ -2,8 +2,8 @@
 using namespace NSDevilX;
 using namespace NSGUISystem;
 
-NSDevilX::NSGUISystem::CPageBar::CPageBar(const String & name,CControl * parent)
-	:CControl(name,parent)
+NSDevilX::NSGUISystem::CPageBar::CPageBar(const String & name,CControl * coordParent,CControl * orderParent)
+	:CControl(name,coordParent,orderParent)
 	,mTextProperty(nullptr)
 	,mNextItemName(0)
 	,mFocus(nullptr)
@@ -43,7 +43,7 @@ Void NSDevilX::NSGUISystem::CPageBar::setPrepareFocusControl(CPageBarItem * item
 
 Void NSDevilX::NSGUISystem::CPageBar::addItem(const CUTF8String & text)
 {
-	auto item=DEVILX_NEW CPageBarItem(this->getLayer()->getName()+"/"+CStringConverter::toString(mNextItemName++),this);
+	auto item=DEVILX_NEW CPageBarItem(this->getLayer()->getName()+"/"+CStringConverter::toString(mNextItemName++),this,this);
 	item->getTextControl()->getTextProperty()->copyFrom(getTextProperty());
 	item->getTextControl()->setText(text);
 	mItems.push_back(item);

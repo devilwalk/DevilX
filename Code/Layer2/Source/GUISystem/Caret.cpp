@@ -2,8 +2,8 @@
 using namespace NSDevilX;
 using namespace NSGUISystem;
 
-NSDevilX::NSGUISystem::CCaret::CCaret(const String & name,CControl * parent)
-	:CControl(name,parent)
+NSDevilX::NSGUISystem::CCaret::CCaret(const String & name,CControl * coordParent,CControl * orderParent)
+	:CControl(name,coordParent,orderParent)
 	,mEnable(False)
 {
 	auto background=getGraphicScene()->createWindow(name);

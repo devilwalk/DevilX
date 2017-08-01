@@ -7,9 +7,10 @@ NSDevilX::NSGUISystem::IEditBoxImp::IEditBoxImp(const String & name,IWindowImp *
 	,mTextProperty(nullptr)
 	,mEventCallback(nullptr)
 {
-	mControl=DEVILX_NEW IControlImp(IControlImp::EType_EditBox,DEVILX_NEW CEditBox(name,static_cast<IControlImp*>(window->queryInterface_IControl())->getControl()),window);
+	mControl=DEVILX_NEW IControlImp(IControlImp::EType_EditBox,DEVILX_NEW CEditBox(name,static_cast<IControlImp*>(window->queryInterface_IControl())->getControl(),static_cast<IControlImp*>(window->queryInterface_IControl())->getControl()),window);
 	mControl->getControl()->getEventWindow()->registerListener(this,CEvent::EType_MouseMove);
-	mTextProperty=DEVILX_NEW ITextPropertyImp(static_cast<CEditBox*>(mControl->getControl())->getTextControl()->getTextProperty());
+	mTextProperty=DEVILX_NEW ITextPropertyImp(static_cast<CEditBox*>(mControl->getControl())->getCommonControl()->getTextControl()->getTextProperty());
+	getTextProperty()->setRowAlignMode(IEnum::ETextRowAlignMode_Left);
 	static_cast<CEditBox*>(mControl->getControl())->addListener(static_cast<TMessageReceiver<CEditBox>*>(this),CEditBox::EMessage_SetFocus);
 	static_cast<CEditBox*>(mControl->getControl())->addListener(static_cast<TMessageReceiver<CEditBox>*>(this),CEditBox::EMessage_EndTextChange);
 }
@@ -32,23 +33,23 @@ ITextProperty * NSDevilX::NSGUISystem::IEditBoxImp::getTextProperty() const
 
 Void NSDevilX::NSGUISystem::IEditBoxImp::setText(const CUTF8String & text)
 {
-	static_cast<CEditBox*>(mControl->getControl())->getTextControl()->setText(text);
+	static_cast<CEditBox*>(mControl->getControl())->getCommonControl()->getTextControl()->setText(text);
 }
 
 const CUTF8String & NSDevilX::NSGUISystem::IEditBoxImp::getText() const
 {
 	// TODO: 在此处插入 return 语句
-	return static_cast<CEditBox*>(mControl->getControl())->getTextControl()->getText();
+	return static_cast<CEditBox*>(mControl->getControl())->getCommonControl()->getTextControl()->getText();
 }
 
 Void NSDevilX::NSGUISystem::IEditBoxImp::setBackground(NSResourceSystem::IResource * resource)
 {
-	static_cast<CEditBox*>(mControl->getControl())->setBackground(resource);
+	static_cast<CEditBox*>(mControl->getControl())->getCommonControl()->getImageControl()->setBackground(resource);
 }
 
 NSResourceSystem::IResource * NSDevilX::NSGUISystem::IEditBoxImp::getBackground() const
 {
-	return static_cast<CEditBox*>(mControl->getControl())->getBackground();
+	return static_cast<CEditBox*>(mControl->getControl())->getCommonControl()->getImageControl()->getBackground();
 }
 
 Void NSDevilX::NSGUISystem::IEditBoxImp::setEventCallback(IEditBoxEventCallback * callback)

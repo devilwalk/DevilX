@@ -4,6 +4,7 @@ using namespace NSFightChess;
 
 NSDevilX::NSFightChess::CUIPage::CUIPage(EType type)
 	:mType(type)
+	,mCallPage(EType_Unknown)
 	,mButtonLogic(nullptr)
 	,mEditBoxLogic(nullptr)
 {
@@ -33,6 +34,11 @@ Void NSDevilX::NSFightChess::CUIPage::setButtonLogic(buttonLogic * logic)
 Void NSDevilX::NSFightChess::CUIPage::setEditBoxLogic(editBoxLogic * logic)
 {
 	mEditBoxLogic=logic;
+}
+
+Void NSDevilX::NSFightChess::CUIPage::setCallPage(EType type)
+{
+	mCallPage=type;
 }
 
 Void NSDevilX::NSFightChess::CUIPage::onEvent(NSGUISystem::IButton * control,NSGUISystem::IButtonEventCallback::EEvent e)

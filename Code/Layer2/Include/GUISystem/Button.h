@@ -1,7 +1,6 @@
 #pragma once
 #include "Control.h"
-#include "StaticText.h"
-#include "GraphicWindowTextureUtility.h"
+#include "CommonControl.h"
 namespace NSDevilX
 {
 	namespace NSGUISystem
@@ -20,18 +19,15 @@ namespace NSDevilX
 				EMessage_Click
 			};
 		protected:
-			CStaticText * mTextControl;
-			CGraphicWindowTextureUtility * mBackground;
+			CCommonControl * mCommonControl;
 			Bool mPressed;
 		public:
-			CButton(const String & name,CControl * parent);
+			CButton(const String & name,CControl * coordParent,CControl * orderParent);
 			~CButton();
-			CStaticText * getTextControl()const
+			CCommonControl * getCommonControl()const
 			{
-				return mTextControl;
+				return mCommonControl;
 			}
-			Void setBackground(NSResourceSystem::IResource * resource);
-			NSResourceSystem::IResource * getBackground()const;
 			virtual Void setPrepareFocus(Bool focus) override;
 			virtual Void onMouseButtonEvent(CWindow * window,EMouseButtonType buttonType,EMouseButtonEventType eventType,const CUInt2 & position) override;
 		};

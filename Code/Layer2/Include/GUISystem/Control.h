@@ -8,13 +8,14 @@ namespace NSDevilX
 		protected:
 			NSUISystem::IGraphicScene * const mGraphicScene;
 			NSUISystem::IEventScene * const mEventScene;
-			CControl * mParent;
+			CControl * mCoordParent;
+			CControl * mOrderParent;
 			NSUISystem::IElement * mLayer;
 			TVector<NSUISystem::IGraphicWindow*> mGraphicWindows;
 			NSUISystem::IEventWindow * mEventWindow;
 		public:
 			CControl(const String & name,NSUISystem::IGraphicScene * graphicScene,NSUISystem::IEventScene * eventScene);
-			CControl(const String & name,CControl * parent);
+			CControl(const String & name,CControl * coordParent,CControl * orderParent);
 			virtual ~CControl();
 			NSUISystem::IGraphicScene * getGraphicScene()const
 			{
@@ -24,10 +25,15 @@ namespace NSDevilX
 			{
 				return mEventScene;
 			}
-			Void setParent(CControl * control);
-			CControl * getParent()const
+			Void setCoordParent(CControl * control);
+			CControl * getCoordParent()const
 			{
-				return mParent;
+				return mCoordParent;
+			}
+			Void setOrderParent(CControl * control);
+			CControl * getOrderParent()const
+			{
+				return mOrderParent;
 			}
 			NSUISystem::IElement * getLayer()const
 			{

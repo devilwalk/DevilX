@@ -7,9 +7,9 @@ NSDevilX::NSGUISystem::IButtonImp::IButtonImp(const String & name,IWindowImp * w
 	,mTextProperty(nullptr)
 	,mEventCallback(nullptr)
 {
-	mControl=DEVILX_NEW IControlImp(IControlImp::EType_Button,DEVILX_NEW CButton(name,static_cast<IControlImp*>(window->queryInterface_IControl())->getControl()),window);
+	mControl=DEVILX_NEW IControlImp(IControlImp::EType_Button,DEVILX_NEW CButton(name,static_cast<IControlImp*>(window->queryInterface_IControl())->getControl(),static_cast<IControlImp*>(window->queryInterface_IControl())->getControl()),window);
 	mControl->getControl()->getEventWindow()->registerListener(this,CEvent::EType_MouseMove);
-	mTextProperty=DEVILX_NEW ITextPropertyImp(static_cast<CButton*>(mControl->getControl())->getTextControl()->getTextProperty());
+	mTextProperty=DEVILX_NEW ITextPropertyImp(static_cast<CButton*>(mControl->getControl())->getCommonControl()->getTextControl()->getTextProperty());
 }
 
 NSDevilX::NSGUISystem::IButtonImp::~IButtonImp()
@@ -30,23 +30,23 @@ ITextProperty * NSDevilX::NSGUISystem::IButtonImp::getTextProperty() const
 
 Void NSDevilX::NSGUISystem::IButtonImp::setText(const CUTF8String & text)
 {
-	static_cast<CButton*>(mControl->getControl())->getTextControl()->setText(text);
+	static_cast<CButton*>(mControl->getControl())->getCommonControl()->getTextControl()->setText(text);
 }
 
 const CUTF8String & NSDevilX::NSGUISystem::IButtonImp::getText() const
 {
 	// TODO: 在此处插入 return 语句
-	return static_cast<CButton*>(mControl->getControl())->getTextControl()->getText();
+	return static_cast<CButton*>(mControl->getControl())->getCommonControl()->getTextControl()->getText();
 }
 
 Void NSDevilX::NSGUISystem::IButtonImp::setBackground(NSResourceSystem::IResource * resource)
 {
-	static_cast<CButton*>(mControl->getControl())->setBackground(resource);
+	static_cast<CButton*>(mControl->getControl())->getCommonControl()->getImageControl()->setBackground(resource);
 }
 
 NSResourceSystem::IResource * NSDevilX::NSGUISystem::IButtonImp::getBackground() const
 {
-	return static_cast<CButton*>(mControl->getControl())->getBackground();
+	return static_cast<CButton*>(mControl->getControl())->getCommonControl()->getImageControl()->getBackground();
 }
 
 Void NSDevilX::NSGUISystem::IButtonImp::setEventCallback(IButtonEventCallback * callback)

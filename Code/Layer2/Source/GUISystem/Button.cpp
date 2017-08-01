@@ -2,21 +2,13 @@
 using namespace NSDevilX;
 using namespace NSGUISystem;
 
-NSDevilX::NSGUISystem::CButton::CButton(const String & name,CControl * parent)
-	:CControl(name,parent)
-	,mTextControl(nullptr)
-	,mBackground(nullptr)
+NSDevilX::NSGUISystem::CButton::CButton(const String & name,CControl * coordParent,CControl * orderParent)
+	:CControl(name,coordParent,orderParent)
+	,mCommonControl(nullptr)
 	,mPressed(False)
 {
-	auto background=getGraphicScene()->createWindow(name+"/Background");
-	background->queryInterface_IElement()->setPosition(CFloat2::sZero);
-	background->queryInterface_IElement()->setSize(CFloat2::sOne);
-	background->setColour(CFloatRGBA::sBlue);
-	_attachWindow(background);
-	mBackground=DEVILX_NEW CGraphicWindowTextureUtility(background);
-	mTextControl=DEVILX_NEW CStaticText(name+"/TextControl",this);
-	mTextControl->getLayer()->setSize(CFloat2::sOne);
-
+	mCommonControl=DEVILX_NEW CCommonControl(name+"/CommonControl",this,this);
+	getCommonControl()->getImageControl()->setBackgroundColour(CFloatRGBA::sBlue);
 	auto event_window=getEventScene()->createWindow(name);
 	event_window->queryInterface_IElement()->setPosition(CFloat2::sZero);
 	event_window->queryInterface_IElement()->setSize(CFloat2::sOne);
@@ -25,18 +17,7 @@ NSDevilX::NSGUISystem::CButton::CButton(const String & name,CControl * parent)
 
 NSDevilX::NSGUISystem::CButton::~CButton()
 {
-	DEVILX_DELETE(mBackground);
-	DEVILX_DELETE(getTextControl());
-}
-
-Void NSDevilX::NSGUISystem::CButton::setBackground(NSResourceSystem::IResource * resource)
-{
-	mBackground->setTexture(resource);
-}
-
-NSResourceSystem::IResource * NSDevilX::NSGUISystem::CButton::getBackground() const
-{
-	return mBackground->getTextureResource();
+	DEVILX_DELETE(getCommonControl());
 }
 
 Void NSDevilX::NSGUISystem::CButton::setPrepareFocus(Bool focus)

@@ -1,5 +1,6 @@
 #pragma once
 #include "Control.h"
+#include "GraphicWindowTextureUtility.h"
 namespace NSDevilX
 {
 	namespace NSGUISystem
@@ -9,12 +10,14 @@ namespace NSDevilX
 			,public TBaseObject<CImageBox>
 		{
 		protected:
-			NSResourceSystem::IResource * mBackgroundResource;
+			CGraphicWindowTextureUtility * mBackground;
 		public:
 			CImageBox(const String & name,CControl * parent);
 			~CImageBox();
 			Void setBackground(NSResourceSystem::IResource * resource);
 			NSResourceSystem::IResource * getBackground()const;
+			Void setBackgroundColour(const CColour & colour);
+			const CColour & getBackgroundColour()const;
 		};
 	}
 }

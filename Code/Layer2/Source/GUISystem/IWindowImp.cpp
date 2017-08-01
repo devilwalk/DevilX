@@ -14,7 +14,8 @@ NSDevilX::NSGUISystem::IWindowImp::IWindowImp(const String & name,ISceneImp * sc
 	mEventScene=NSUISystem::getSystem()->createEventScene(CStringConverter::toString(getScene()->getRenderViewport())+"/"+name);
 	mControl=DEVILX_NEW IControlImp(IControlImp::EType_Container,DEVILX_NEW CContainer(name,static_cast<ISceneImp*>(getScene())->getGraphicScene(),mEventScene),nullptr);
 	mEventWindow=static_cast<ISceneImp*>(getScene())->getEventScene()->createWindow(name);
-	mEventWindow->queryInterface_IElement()->setParent(mControl->getControl()->getLayer());
+	mEventWindow->queryInterface_IElement()->setCoordParent(mControl->getControl()->getLayer());
+	mEventWindow->queryInterface_IElement()->setOrderParent(mControl->getControl()->getLayer());
 	mEventWindow->queryInterface_IElement()->setSize(CFloat2::sOne);
 	mEventWindow->registerListener(this,ISceneImp::SEvent::EType_WindowActive);
 }

@@ -30,14 +30,17 @@ namespace NSDevilX
 			CFloat2 mDerivedSize;
 			Int32 mOrder;
 			Int32 mDerivedOrder;
-			IElementImp * mParent;
+			IElementImp * mCoordParent;
+			IElementImp * mOrderParent;
 		public:
 			IElementImp(const String & name);
 			virtual ~IElementImp();
 			// Í¨¹ý IElement ¼Ì³Ð
 			virtual const String & getName() const override;
-			virtual Void setParent(IElement * parent) override;
-			virtual IElement * getParent() const override;
+			virtual Void setCoordParent(IElement * parent) override;
+			virtual IElement * getCoordParent() const override;
+			virtual Void setOrderParent(IElement * parent) override;
+			virtual IElement * getOrderParent() const override;
 			virtual Void setPosition(const CFloat2 & position) override;
 			virtual const CFloat2 & getPosition() const override;
 			virtual const CFloat2 & getDerivedPosition() const override;

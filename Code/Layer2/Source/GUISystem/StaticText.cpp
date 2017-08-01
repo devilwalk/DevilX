@@ -2,8 +2,8 @@
 using namespace NSDevilX;
 using namespace NSGUISystem;
 
-NSDevilX::NSGUISystem::CStaticText::CStaticText(const String & name,CControl * parent)
-	:CControl(name,parent)
+NSDevilX::NSGUISystem::CStaticText::CStaticText(const String & name,CControl * coordParent,CControl * orderParent)
+	:CControl(name,coordParent,orderParent)
 	,mTextProperty(nullptr)
 {
 	mTextProperty=DEVILX_NEW CTextProperty;

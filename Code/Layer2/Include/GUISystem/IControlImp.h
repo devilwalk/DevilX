@@ -17,7 +17,8 @@ namespace NSDevilX
 				EType_Button,
 				EType_ImageBox,
 				EType_EditBox,
-				EType_PageBar
+				EType_PageBar,
+				EType_ComboBox
 			};
 		protected:
 			EType const mType;

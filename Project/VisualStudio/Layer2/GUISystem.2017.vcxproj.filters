@@ -120,6 +120,21 @@
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\GraphicWindowTextureUtility.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIComboBox.h">
+      <Filter>Interface Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIListBox.h">
+      <Filter>Interface Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\IComboBoxImp.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\ComboBox.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\CommonControl.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\Precompiler.cpp">
@@ -183,6 +198,15 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\GraphicWindowTextureUtility.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\IComboBoxImp.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\ComboBox.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\CommonControl.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -7,7 +7,7 @@ NSDevilX::NSGUISystem::IPageBarImp::IPageBarImp(const String & name,IWindowImp *
 	,mTextProperty(nullptr)
 	,mEventCallback(nullptr)
 {
-	mControl=DEVILX_NEW IControlImp(IControlImp::EType_PageBar,DEVILX_NEW CPageBar(name,static_cast<IControlImp*>(window->queryInterface_IControl())->getControl()),window);
+	mControl=DEVILX_NEW IControlImp(IControlImp::EType_PageBar,DEVILX_NEW CPageBar(name,static_cast<IControlImp*>(window->queryInterface_IControl())->getControl(),static_cast<IControlImp*>(window->queryInterface_IControl())->getControl()),window);
 	mControl->getControl()->getEventWindow()->registerListener(this,CEvent::EType_MouseMove);
 
 	mTextProperty=DEVILX_NEW ITextPropertyImp(static_cast<CPageBar*>(mControl->getControl())->getTextProperty());

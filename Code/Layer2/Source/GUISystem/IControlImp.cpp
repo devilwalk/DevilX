@@ -48,7 +48,8 @@ Void NSDevilX::NSGUISystem::IControlImp::setParent(IControl * control)
 	if(control!=getParent())
 	{
 		mParentControl=static_cast<IControlImp*>(control);
-		getControl()->setParent(mParentControl->getControl());
+		getControl()->setCoordParent(mParentControl->getControl());
+		getControl()->setOrderParent(mParentControl->getControl());
 	}
 }
 

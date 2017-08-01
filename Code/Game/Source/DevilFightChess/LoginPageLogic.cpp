@@ -2,6 +2,20 @@
 using namespace NSDevilX;
 using namespace NSFightChess;
 
+namespace NSDevilX
+{
+	namespace NSFightChess
+	{
+		static Void onOK()
+		{
+			CApp::getSingleton().getGame()->getUIManager()->destroyPage(CUIPage::EType_Login);
+			auto page=CApp::getSingleton().getGame()->getUIManager()->createPage(CUIPage::EType_BigWorld);
+			page->setButtonLogic(CBigWorldPageLogic::buttonLogic);
+			CApp::getSingleton().getGame()->stopModule("Login");
+		}
+	}
+}
+
 Void NSDevilX::NSFightChess::CLoginPageLogic::buttonLogic(NSGUISystem::IButton * control,NSGUISystem::IButtonEventCallback::EEvent e)
 {
 	if(control->queryInterface_IControl()->getName()=="LoginPage/Button_Close")
@@ -33,15 +47,7 @@ Void NSDevilX::NSFightChess::CLoginPageLogic::buttonLogic(NSGUISystem::IButton *
 		case NSGUISystem::IButtonEventCallback::EEvent::EEvent_Click:
 			CApp::getSingleton().getGame()->setModuleParameter("Login","mUsername",CApp::getSingleton().getGame()->getUIManager()->getPage(CUIPage::EType_Login)->getGUIWindow()->getEditBox("LoginPage/Edit_Username")->getText().toString());
 			CApp::getSingleton().getGame()->setModuleParameter("Login","mPassword",CApp::getSingleton().getGame()->getUIManager()->getPage(CUIPage::EType_Login)->getGUIWindow()->getEditBox("LoginPage/Edit_Password")->getText().toString());
-			CApp::getSingleton().getGame()->setModuleParameter("Login","mSuccessCallback"
-				,&[]()
-			{
-				CApp::getSingleton().getGame()->getUIManager()->destroyPage(CUIPage::EType_Login);
-				auto page=CApp::getSingleton().getGame()->getUIManager()->createPage(CUIPage::EType_BigWorld);
-				page->setButtonLogic(CBigWorldPageLogic::buttonLogic);
-				CApp::getSingleton().getGame()->stopModule("Login");
-			}
-			);
+			CApp::getSingleton().getGame()->setModuleParameter("Login","mSuccessCallback",&onOK);
 			CApp::getSingleton().getGame()->startModule("Login");
 			break;
 		}

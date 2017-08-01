@@ -5,7 +5,7 @@ using namespace NSGUISystem;
 NSDevilX::NSGUISystem::IStaticTextImp::IStaticTextImp(const String & name,IWindowImp * window)
 	:mControl(nullptr)
 {
-	mControl=DEVILX_NEW IControlImp(IControlImp::EType_StaticText,DEVILX_NEW CStaticText(name,static_cast<IControlImp*>(window->queryInterface_IControl())->getControl()),window);
+	mControl=DEVILX_NEW IControlImp(IControlImp::EType_StaticText,DEVILX_NEW CStaticText(name,static_cast<IControlImp*>(window->queryInterface_IControl())->getControl(),static_cast<IControlImp*>(window->queryInterface_IControl())->getControl()),window);
 
 	mTextProperty=DEVILX_NEW ITextPropertyImp(static_cast<CStaticText*>(mControl->getControl())->getTextProperty());
 }

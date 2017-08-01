@@ -33,7 +33,8 @@ Void NSDevilX::NSFightChess::CBigWorldPageLogic::buttonLogic(NSGUISystem::IButto
 		case NSGUISystem::IButtonEventCallback::EEvent::EEvent_Click:
 			CApp::getSingleton().getGame()->getUIManager()->destroyPage(CUIPage::EType_BigWorld);
 			auto page=CApp::getSingleton().getGame()->getUIManager()->createPage(CUIPage::EType_MatchServerConfig);
-			page->setButtonLogic(CLoginPageLogic::buttonLogic);
+			page->setCallPage(CUIPage::EType_BigWorld);
+			page->setButtonLogic(CMatchServerConfigPageLogic::buttonLogic);
 			break;
 		}
 	}

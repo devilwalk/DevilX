@@ -21,11 +21,14 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\Button.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\Caret.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\ComboBox.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\CommonControl.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\Control.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\EditBox.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\Event.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\GraphicWindowTextureUtility.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\IButtonImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\IComboBoxImp.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\IControlImp.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\IEditBoxImp.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\IImageBoxImp.h" />
@@ -41,10 +44,12 @@
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\StaticText.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\TextProperty.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIButton.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIComboBox.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIControl.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIEditBox.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIEnum.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIImageBox.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIListBox.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIPageBar.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIScene.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\GUISystem\IGUIStaticText.h" />
@@ -57,10 +62,13 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\Button.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\Caret.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\ComboBox.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\CommonControl.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\Control.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\EditBox.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\GraphicWindowTextureUtility.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\IButtonImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\IComboBoxImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\IControlImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\IEditBoxImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\IImageBoxImp.cpp" />
