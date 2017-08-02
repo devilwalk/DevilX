@@ -1,5 +1,6 @@
 #pragma once
 #include "EditBox.h"
+#include "DropList.h"
 namespace NSDevilX
 {
 	namespace NSGUISystem
@@ -20,29 +21,19 @@ namespace NSDevilX
 				EMessage_EndTextChange
 			};
 		protected:
-			CStaticText * mTextControl;
-			CCaret * mCaret;
-			CGraphicWindowTextureUtility * mBackground;
-			UInt32 mCaretPosition;
-			Bool mPrepareFocus;
+			CEditBox * mEditBox;
+			CDropList * mDropList;
 		public:
 			CComboBox(const String & name,CControl * coordParent,CControl * orderParent);
 			~CComboBox();
-			CStaticText * getTextControl()const
+			CEditBox * getEditControl()const
 			{
-				return mTextControl;
+				return mEditBox;
 			}
-			Void setBackground(NSResourceSystem::IResource * resource);
-			NSResourceSystem::IResource * getBackground()const;
-			virtual Void setPrepareFocus(Bool focus) override;
-			virtual Void setFocus(Bool focus) override;
-			virtual Void onMouseButtonEvent(CWindow * window,EMouseButtonType buttonType,EMouseButtonEventType eventType,const CUInt2 & position) override;
-			virtual Void onCharEvent(CWindow * window,const CUTF16Char & ch) override;
-
-			// Í¨¹ý TMessageReceiver ¼Ì³Ð
-			virtual Void onMessage(ISystemImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
-		protected:
-			Void _updateListener(Bool preValue);
+			CDropList * getDropList()const
+			{
+				return mDropList;
+			}
 		};
 	}
 }

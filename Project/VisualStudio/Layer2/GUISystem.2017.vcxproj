@@ -24,6 +24,7 @@
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\ComboBox.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\CommonControl.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\Control.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\DropList.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\EditBox.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\Event.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\GraphicWindowTextureUtility.h" />
@@ -65,6 +66,7 @@
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\ComboBox.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\CommonControl.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\Control.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\DropList.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\EditBox.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\GraphicWindowTextureUtility.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\IButtonImp.cpp" />

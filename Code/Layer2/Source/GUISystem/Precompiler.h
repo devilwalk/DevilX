@@ -8,6 +8,7 @@
 #include "ComboBox.h"
 #include "CommonControl.h"
 #include "Control.h"
+#include "DropList.h"
 #include "EditBox.h"
 #include "Event.h"
 #include "GraphicWindowTextureUtility.h"
