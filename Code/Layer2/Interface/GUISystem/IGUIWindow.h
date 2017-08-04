@@ -4,6 +4,7 @@
 #include "IGUIButton.h"
 #include "IGUIEditBox.h"
 #include "IGUIPageBar.h"
+#include "IGUIComboBox.h"
 namespace NSDevilX
 {
 	namespace NSGUISystem
@@ -30,6 +31,8 @@ namespace NSDevilX
 			virtual IEditBox * getEditBox(UInt32 index)const=0;
 			virtual IPageBar * createPageBar(const String & name)=0;
 			virtual IPageBar * getPageBar(const String & name)const=0;
+			virtual IComboBox * createComboBox(const String & name)=0;
+			virtual IComboBox * getComboBox(const String & name)const=0;
 			virtual Void destroyControl(IControl * control)=0;
 		};
 	}

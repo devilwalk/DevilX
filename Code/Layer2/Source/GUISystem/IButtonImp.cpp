@@ -9,7 +9,8 @@ NSDevilX::NSGUISystem::IButtonImp::IButtonImp(const String & name,IWindowImp * w
 {
 	mControl=DEVILX_NEW IControlImp(IControlImp::EType_Button,DEVILX_NEW CButton(name,static_cast<IControlImp*>(window->queryInterface_IControl())->getControl(),static_cast<IControlImp*>(window->queryInterface_IControl())->getControl()),window);
 	mControl->getControl()->getEventWindow()->registerListener(this,CEvent::EType_MouseMove);
-	mTextProperty=DEVILX_NEW ITextPropertyImp(static_cast<CButton*>(mControl->getControl())->getCommonControl()->getTextControl()->getTextProperty());
+	mTextProperty=DEVILX_NEW ITextPropertyImp();
+	mTextProperty->add(static_cast<CButton*>(mControl->getControl())->getCommonControl()->getTextControl()->getTextProperty());
 }
 
 NSDevilX::NSGUISystem::IButtonImp::~IButtonImp()

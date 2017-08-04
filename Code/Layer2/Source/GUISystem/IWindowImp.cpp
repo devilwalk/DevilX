@@ -124,6 +124,8 @@ Void NSDevilX::NSGUISystem::IWindowImp::destroyControl(IControl * control)
 	case IControlImp::EType_ImageBox:mImageBoxes.destroy(control->getName());break;
 	case IControlImp::EType_PageBar:mPageBars.destroy(control->getName());break;
 	case IControlImp::EType_StaticText:mStaticTexts.destroy(control->getName());break;
+	case IControlImp::EType_ComboBox:mComboBoxs.destroy(control->getName());break;
+	default:assert(0);
 	}
 }
 
@@ -189,4 +191,18 @@ UInt32 NSDevilX::NSGUISystem::IWindowImp::getEditBoxCount() const
 IEditBox * NSDevilX::NSGUISystem::IWindowImp::getEditBox(UInt32 index) const
 {
 	return mEditBoxes.get(index);
+}
+
+IComboBox * NSDevilX::NSGUISystem::IWindowImp::createComboBox(const String & name)
+{
+	if(mComboBoxs.has(name))
+		return nullptr;
+	auto ret=DEVILX_NEW IComboBoxImp(name,this);
+	mComboBoxs.add(name,ret);
+	return ret;
+}
+
+IComboBox * NSDevilX::NSGUISystem::IWindowImp::getComboBox(const String & name) const
+{
+	return mComboBoxs.get(name);
 }

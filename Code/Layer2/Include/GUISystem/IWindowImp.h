@@ -1,4 +1,9 @@
 #pragma once
+#include "IButtonImp.h"
+#include "IImageBoxImp.h"
+#include "IEditBoxImp.h"
+#include "IPageBarImp.h"
+#include "IComboBoxImp.h"
 namespace NSDevilX
 {
 	namespace NSGUISystem
@@ -22,6 +27,7 @@ namespace NSDevilX
 			TNamedIndexResourcePtrContainer<IEditBoxImp> mEditBoxes;
 			TNamedIndexResourcePtrContainer<IStaticTextImp> mStaticTexts;
 			TNamedIndexResourcePtrContainer<IPageBarImp> mPageBars;
+			TNamedIndexResourcePtrContainer<IComboBoxImp> mComboBoxs;
 		public:
 			IWindowImp(const String & name,ISceneImp * scene,Bool isModule);
 			~IWindowImp();
@@ -59,6 +65,10 @@ namespace NSDevilX
 			virtual IButton * getButton(UInt32 index) const override;
 			virtual UInt32 getEditBoxCount() const override;
 			virtual IEditBox * getEditBox(UInt32 index) const override;
+
+			// Í¨¹ý IWindow ¼Ì³Ð
+			virtual IComboBox * createComboBox(const String & name) override;
+			virtual IComboBox * getComboBox(const String & name) const override;
 		};
 	}
 }

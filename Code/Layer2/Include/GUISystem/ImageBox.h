@@ -12,7 +12,7 @@ namespace NSDevilX
 		protected:
 			CGraphicWindowTextureUtility * mBackground;
 		public:
-			CImageBox(const String & name,CControl * parent);
+			CImageBox(const String & name,CControl * coordParent,CControl * orderParent);
 			~CImageBox();
 			Void setBackground(NSResourceSystem::IResource * resource);
 			NSResourceSystem::IResource * getBackground()const;

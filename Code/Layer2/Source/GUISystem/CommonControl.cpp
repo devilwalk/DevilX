@@ -7,7 +7,7 @@ NSDevilX::NSGUISystem::CCommonControl::CCommonControl(const String & name,CContr
 	,mTextControl(nullptr)
 	,mImageControl(nullptr)
 {
-	mImageControl=DEVILX_NEW CImageBox(name+"/ImageControl",this);
+	mImageControl=DEVILX_NEW CImageBox(name+"/ImageControl",this,this);
 	mTextControl=DEVILX_NEW CStaticText(name+"/TextControl",this,mImageControl);
 	getTextControl()->getTextProperty()->setColour(CFloatRGBA::sBlack);
 	getTextControl()->getLayer()->setOrder(getImageControl()->getLayer()->getOrder()+1);

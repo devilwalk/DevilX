@@ -7,7 +7,8 @@ NSDevilX::NSGUISystem::IStaticTextImp::IStaticTextImp(const String & name,IWindo
 {
 	mControl=DEVILX_NEW IControlImp(IControlImp::EType_StaticText,DEVILX_NEW CStaticText(name,static_cast<IControlImp*>(window->queryInterface_IControl())->getControl(),static_cast<IControlImp*>(window->queryInterface_IControl())->getControl()),window);
 
-	mTextProperty=DEVILX_NEW ITextPropertyImp(static_cast<CStaticText*>(mControl->getControl())->getTextProperty());
+	mTextProperty=DEVILX_NEW ITextPropertyImp();
+	mTextProperty->add(static_cast<CStaticText*>(mControl->getControl())->getTextProperty());
 }
 
 NSDevilX::NSGUISystem::IStaticTextImp::~IStaticTextImp()

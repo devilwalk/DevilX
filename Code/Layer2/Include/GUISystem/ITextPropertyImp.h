@@ -9,11 +9,13 @@ namespace NSDevilX
 			,public TBaseObject<ITextPropertyImp>
 		{
 		protected:
-			CTextProperty * const mProperty;
+			CTextProperty * mProperty;
+			TVector<CTextProperty*> mPropertys;
 		public:
-			ITextPropertyImp(CTextProperty * prop);
+			ITextPropertyImp();
 			~ITextPropertyImp();
-
+			Void add(CTextProperty * prop);
+			Void remove(CTextProperty * prop);
 			// Í¨¹ý ITextProperty ¼Ì³Ð
 			virtual Void setFontResource(NSResourceSystem::IResource * resource) override;
 			virtual NSResourceSystem::IResource * getFontResource() const override;

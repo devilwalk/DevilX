@@ -42,8 +42,9 @@ namespace NSDevilX
 			virtual IComboBoxItem * createItem()=0;
 			virtual IComboBoxItem * getItem(UInt32 index)const=0;
 			virtual Void destroyItem(IComboBoxItem * item)=0;
-			virtual Void setItemListHeight(UInt32 sizeInItems)=0;
-			virtual UInt32 getItemListHeight()const=0;
+			virtual Void setItemListShowSize(UInt32 sizeInItems)=0;
+			virtual UInt32 getItemListShowSize()const=0;
+			virtual ITextProperty * getItemTextProperty()const=0;
 			virtual Void setEventCallback(IComboBoxEventCallback * callback)=0;
 			virtual IComboBoxEventCallback * getEventCallback()const=0;
 		};
