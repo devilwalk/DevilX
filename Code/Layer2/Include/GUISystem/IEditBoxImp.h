@@ -9,7 +9,6 @@ namespace NSDevilX
 		class IEditBoxImp
 			:public IEditBox
 			,public TBaseObject<IEditBoxImp>
-			,public NSUISystem::IEventListener
 			,public TMessageReceiver<CEditBox>
 		{
 		protected:
@@ -32,9 +31,6 @@ namespace NSDevilX
 
 			// 通过 TMessageReceiver 继承
 			virtual Void onMessage(CEditBox * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
-
-			// 通过 IEventListener 继承
-			virtual Void onEvent(NSUISystem::IEvent * e) override;
 		};
 	}
 }

@@ -3,7 +3,7 @@ using namespace NSDevilX;
 using namespace NSGUISystem;
 
 NSDevilX::NSGUISystem::CStaticText::CStaticText(const String & name,CControl * coordParent,CControl * orderParent)
-	:CControl(name,coordParent,orderParent)
+	:CControl(name,coordParent,orderParent,False)
 	,mTextProperty(nullptr)
 {
 	mTextProperty=DEVILX_NEW CTextProperty;

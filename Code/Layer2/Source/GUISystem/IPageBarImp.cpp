@@ -8,7 +8,6 @@ NSDevilX::NSGUISystem::IPageBarImp::IPageBarImp(const String & name,IWindowImp *
 	,mEventCallback(nullptr)
 {
 	mControl=DEVILX_NEW IControlImp(IControlImp::EType_PageBar,DEVILX_NEW CPageBar(name,static_cast<IControlImp*>(window->queryInterface_IControl())->getControl(),static_cast<IControlImp*>(window->queryInterface_IControl())->getControl()),window);
-	mControl->getControl()->getEventWindow()->registerListener(this,CEvent::EType_MouseMove);
 
 	mTextProperty=DEVILX_NEW ITextPropertyImp();
 	mTextProperty->add(static_cast<CPageBar*>(mControl->getControl())->getTextProperty());
@@ -59,14 +58,4 @@ Void NSDevilX::NSGUISystem::IPageBarImp::setEventCallback(IPageBarEventCallback 
 IPageBarEventCallback * NSDevilX::NSGUISystem::IPageBarImp::getEventCallback() const
 {
 	return mEventCallback;
-}
-
-Void NSDevilX::NSGUISystem::IPageBarImp::onEvent(NSUISystem::IEvent * e)
-{
-	switch(e->getType())
-	{
-	case CEvent::EType_MouseMove:
-		static_cast<IWindowImp*>(queryInterface_IControl()->getParentWindow())->setPrepareFocusControl(static_cast<IControlImp*>(queryInterface_IControl()));
-		break;
-	}
 }

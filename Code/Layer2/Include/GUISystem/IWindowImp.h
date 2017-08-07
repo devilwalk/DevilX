@@ -19,8 +19,6 @@ namespace NSDevilX
 			NSUISystem::IEventScene * mEventScene;
 			Bool mIsModule;
 			IControlImp * mControl;
-			IControlImp * mPrepareFocusControl;
-			IControlImp * mFocusControl;
 			ISceneImp * const mScene;
 			TNamedIndexResourcePtrContainer<IButtonImp> mButtons;
 			TNamedIndexResourcePtrContainer<IImageBoxImp> mImageBoxes;
@@ -36,8 +34,6 @@ namespace NSDevilX
 				return mIsModule;
 			}
 			Void update();
-			Void setPrepareFocusControl(IControlImp * control);
-			Void setFocusControl(IControlImp * control);
 			// Í¨¹ý IWindow ¼Ì³Ð
 			virtual IControl * queryInterface_IControl() const override;
 			virtual IScene * getScene() const override;

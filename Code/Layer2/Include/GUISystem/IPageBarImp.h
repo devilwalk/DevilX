@@ -9,7 +9,6 @@ namespace NSDevilX
 		class IPageBarImp
 			:public IPageBar
 			,public TBaseObject<IPageBarImp>
-			,public NSUISystem::IEventListener
 		{
 		protected:
 			IControlImp * mControl;
@@ -28,9 +27,6 @@ namespace NSDevilX
 			virtual UInt32 getActivePageIndex() const override;
 			virtual Void setEventCallback(IPageBarEventCallback * callback) override;
 			virtual IPageBarEventCallback * getEventCallback() const override;
-
-			// Í¨¹ý IEventListener ¼Ì³Ð
-			virtual Void onEvent(NSUISystem::IEvent * e) override;
 		};
 	}
 }

@@ -8,8 +8,6 @@ NSDevilX::NSGUISystem::IWindowImp::IWindowImp(const String & name,ISceneImp * sc
 	,mIsModule(isModule)
 	,mEventScene(nullptr)
 	,mEventWindow(nullptr)
-	,mPrepareFocusControl(nullptr)
-	,mFocusControl(nullptr)
 {
 	mEventScene=NSUISystem::getSystem()->createEventScene(CStringConverter::toString(getScene()->getRenderViewport())+"/"+name);
 	mControl=DEVILX_NEW IControlImp(IControlImp::EType_Container,DEVILX_NEW CContainer(name,static_cast<ISceneImp*>(getScene())->getGraphicScene(),mEventScene),nullptr);
@@ -22,8 +20,6 @@ NSDevilX::NSGUISystem::IWindowImp::IWindowImp(const String & name,ISceneImp * sc
 
 NSDevilX::NSGUISystem::IWindowImp::~IWindowImp()
 {
-	setPrepareFocusControl(nullptr);
-	setFocusControl(nullptr);
 	mButtons.destroyAll();
 	mStaticTexts.destroyAll();
 	mImageBoxes.destroyAll();
@@ -36,37 +32,7 @@ NSDevilX::NSGUISystem::IWindowImp::~IWindowImp()
 
 Void NSDevilX::NSGUISystem::IWindowImp::update()
 {
-	CEvent e(CEvent::EType_MouseMove);
-	e.queryInterface_IElement()->setPosition(ISystemImp::getSingleton().getWindow()->getCursorPosition()/ISystemImp::getSingleton().getWindow()->getSize());
-	e.queryInterface_IElement()->setSize(CInt2::sOne/ISystemImp::getSingleton().getWindow()->getSize());
-	if(!mEventScene->route(&e))
-	{
-		setPrepareFocusControl(nullptr);
-	}
-}
-
-Void NSDevilX::NSGUISystem::IWindowImp::setPrepareFocusControl(IControlImp * control)
-{
-	if(control!=mPrepareFocusControl)
-	{
-		if(mPrepareFocusControl)
-			mPrepareFocusControl->setPrepareFocus(False);
-		mPrepareFocusControl=control;
-		if(mPrepareFocusControl)
-			mPrepareFocusControl->setPrepareFocus(True);
-	}
-}
-
-Void NSDevilX::NSGUISystem::IWindowImp::setFocusControl(IControlImp * control)
-{
-	if(control!=mFocusControl)
-	{
-		if(mFocusControl)
-			mFocusControl->setFocus(False);
-		mFocusControl=control;
-		if(mFocusControl)
-			mFocusControl->setFocus(True);
-	}
+	static_cast<CContainer*>(mControl->getControl())->update();
 }
 
 IControl * NSDevilX::NSGUISystem::IWindowImp::queryInterface_IControl() const

@@ -9,10 +9,6 @@ NSDevilX::NSGUISystem::CButton::CButton(const String & name,CControl * coordPare
 {
 	mCommonControl=DEVILX_NEW CCommonControl(name+"/CommonControl",this,this);
 	getCommonControl()->getImageControl()->setBackgroundColour(CFloatRGBA::sBlue);
-	auto event_window=getEventScene()->createWindow(name);
-	event_window->queryInterface_IElement()->setPosition(CFloat2::sZero);
-	event_window->queryInterface_IElement()->setSize(CFloat2::sOne);
-	_attachWindow(event_window);
 }
 
 NSDevilX::NSGUISystem::CButton::~CButton()

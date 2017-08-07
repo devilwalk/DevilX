@@ -10,10 +10,6 @@ NSDevilX::NSGUISystem::CDropListItem::CDropListItem(UInt32 index,CDropList * dro
 	,mAttached(False)
 {
 	mBackgroundControl=DEVILX_NEW CImageBox(getLayer()->getName()+"/BackgroundControl",this,this);
-	auto event_window=getEventScene()->createWindow(getLayer()->getName());
-	event_window->queryInterface_IElement()->setPosition(CFloat2::sZero);
-	event_window->queryInterface_IElement()->setSize(CFloat2::sOne);
-	_attachWindow(event_window);
 }
 
 NSDevilX::NSGUISystem::CDropListItem::~CDropListItem()

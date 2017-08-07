@@ -33,7 +33,7 @@ Void NSDevilX::NSGUISystem::CComboBoxItem::setBackground(NSResourceSystem::IReso
 }
 
 NSDevilX::NSGUISystem::CComboBox::CComboBox(const String & name,CControl * coordParent,CControl * orderParent)
-	:CControl(name,coordParent,orderParent)
+	:CControl(name,coordParent,orderParent,False)
 	,mItemShowStart(0)
 	,mEditBox(nullptr)
 	,mDropList(nullptr)

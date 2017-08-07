@@ -3,7 +3,7 @@ using namespace NSDevilX;
 using namespace NSGUISystem;
 
 NSDevilX::NSGUISystem::CCommonControl::CCommonControl(const String & name,CControl * coordParent,CControl * orderParent)
-	:CControl(name,coordParent,orderParent)
+	:CControl(name,coordParent,orderParent,False)
 	,mTextControl(nullptr)
 	,mImageControl(nullptr)
 {

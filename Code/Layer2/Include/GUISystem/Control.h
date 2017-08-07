@@ -3,11 +3,14 @@ namespace NSDevilX
 {
 	namespace NSGUISystem
 	{
+		class CContainer;
 		class CControl
+			:public NSUISystem::IEventListener
 		{
 		protected:
 			NSUISystem::IGraphicScene * const mGraphicScene;
 			NSUISystem::IEventScene * const mEventScene;
+			CContainer * const mContainer;
 			CControl * mCoordParent;
 			CControl * mOrderParent;
 			NSUISystem::IElement * mLayer;
@@ -15,7 +18,7 @@ namespace NSDevilX
 			NSUISystem::IEventWindow * mEventWindow;
 		public:
 			CControl(const String & name,NSUISystem::IGraphicScene * graphicScene,NSUISystem::IEventScene * eventScene);
-			CControl(const String & name,CControl * coordParent,CControl * orderParent);
+			CControl(const String & name,CControl * coordParent,CControl * orderParent,Bool createEventWindow=True);
 			virtual ~CControl();
 			NSUISystem::IGraphicScene * getGraphicScene()const
 			{
@@ -50,13 +53,27 @@ namespace NSDevilX
 			Void _attachWindow(NSUISystem::IEventWindow * window);
 			Void _destroyGraphicWindows();
 			Void _destroyEventWindow();
+
+			// Í¨¹ý IEventListener ¼Ì³Ð
+			virtual Void onEvent(NSUISystem::IEvent * e) override;
 		};
 		class CContainer
 			:public CControl
 			,public TBaseObject<CContainer>
 		{
+		protected:
+			TSet<CControl*> mPrepareFocusControls;
+			TSet<CControl*> mFocusControls;
 		public:
 			using CControl::CControl;
+			~CContainer();
+			Void update();
+			Void setPrepareFocusControl(CControl * control);
+			Void addPrepareFocusControl(CControl * control);
+			Void removePrepareFocusControl(CControl * control);
+			Void setFocusControl(CControl * control);
+			Void addFocusControl(CControl * control);
+			Void removeFocusControl(CControl * control);
 		};
 	}
 }

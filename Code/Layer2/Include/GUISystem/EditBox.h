@@ -16,7 +16,6 @@ namespace NSDevilX
 		public:
 			enum EMessage
 			{
-				EMessage_SetFocus,
 				EMessage_BeginTextChange,
 				EMessage_EndTextChange
 			};

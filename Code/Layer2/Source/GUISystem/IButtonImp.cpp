@@ -8,7 +8,6 @@ NSDevilX::NSGUISystem::IButtonImp::IButtonImp(const String & name,IWindowImp * w
 	,mEventCallback(nullptr)
 {
 	mControl=DEVILX_NEW IControlImp(IControlImp::EType_Button,DEVILX_NEW CButton(name,static_cast<IControlImp*>(window->queryInterface_IControl())->getControl(),static_cast<IControlImp*>(window->queryInterface_IControl())->getControl()),window);
-	mControl->getControl()->getEventWindow()->registerListener(this,CEvent::EType_MouseMove);
 	mTextProperty=DEVILX_NEW ITextPropertyImp();
 	mTextProperty->add(static_cast<CButton*>(mControl->getControl())->getCommonControl()->getTextControl()->getTextProperty());
 }
@@ -111,15 +110,5 @@ Void NSDevilX::NSGUISystem::IButtonImp::onMessage(ISystemImp * notifier,UInt32 m
 		}
 	}
 	break;
-	}
-}
-
-Void NSDevilX::NSGUISystem::IButtonImp::onEvent(NSUISystem::IEvent * e)
-{
-	switch(e->getType())
-	{
-	case CEvent::EType_MouseMove:
-		static_cast<IWindowImp*>(queryInterface_IControl()->getParentWindow())->setPrepareFocusControl(static_cast<IControlImp*>(queryInterface_IControl()));
-		break;
 	}
 }

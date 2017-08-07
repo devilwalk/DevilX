@@ -14,11 +14,6 @@ NSDevilX::NSGUISystem::CPageBar::CPageBar(const String & name,CControl * coordPa
 	background->setColour(CFloatRGBA::sBlue);
 	_attachWindow(background);
 
-	auto event_window=getEventScene()->createWindow(name);
-	event_window->queryInterface_IElement()->setPosition(CFloat2::sZero);
-	event_window->queryInterface_IElement()->setSize(CFloat2::sOne);
-	_attachWindow(event_window);
-
 	mTextProperty=DEVILX_NEW CTextProperty;
 	getTextProperty()->addListener(this,CTextProperty::EMessage_AddDirtyFlag);
 }

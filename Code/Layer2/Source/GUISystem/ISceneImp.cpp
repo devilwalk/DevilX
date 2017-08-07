@@ -56,8 +56,8 @@ Void NSDevilX::NSGUISystem::ISceneImp::setActiveWindow(IWindowImp * window)
 	{
 		if(mActiveWindow)
 		{
-			mActiveWindow->setPrepareFocusControl(nullptr);
-			mActiveWindow->setFocusControl(nullptr);
+			static_cast<CContainer*>(static_cast<IControlImp*>(mActiveWindow->queryInterface_IControl())->getControl())->setPrepareFocusControl(nullptr);
+			static_cast<CContainer*>(static_cast<IControlImp*>(mActiveWindow->queryInterface_IControl())->getControl())->setFocusControl(nullptr);
 		}
 		if(window)
 		{

@@ -13,10 +13,6 @@ NSDevilX::NSGUISystem::CEditBox::CEditBox(const String & name,CControl * coordPa
 	mCaret=DEVILX_NEW CCaret(name+"/Caret",this,getCommonControl()->getImageControl());
 	mCaret->getLayer()->setSize(CFloat2(0.01f,1.0f));
 	mCaret->getLayer()->setOrder(getCommonControl()->getImageControl()->getLayer()->getOrder()+1);
-	auto event_window=getEventScene()->createWindow(name);
-	event_window->queryInterface_IElement()->setPosition(CFloat2::sZero);
-	event_window->queryInterface_IElement()->setSize(CFloat2::sOne);
-	_attachWindow(event_window);
 }
 
 NSDevilX::NSGUISystem::CEditBox::~CEditBox()
@@ -46,7 +42,7 @@ Void NSDevilX::NSGUISystem::CEditBox::onMouseButtonEvent(CWindow * window,EMouse
 	if((EMouseButtonType_Left==buttonType)&&(EMouseButtonEventType_Up==eventType))
 	{
 		if(!mCaret->isEnable())
-			notify(EMessage_SetFocus);
+			setFocus(True);
 		TVector<CFloat2> char_positions;
 		Float last_char_right;
 		if(getCommonControl()->getTextControl()->getPositions(&char_positions,&last_char_right))

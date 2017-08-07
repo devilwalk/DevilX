@@ -3,7 +3,7 @@ using namespace NSDevilX;
 using namespace NSGUISystem;
 
 NSDevilX::NSGUISystem::CCaret::CCaret(const String & name,CControl * coordParent,CControl * orderParent)
-	:CControl(name,coordParent,orderParent)
+	:CControl(name,coordParent,orderParent,False)
 	,mEnable(False)
 {
 	auto background=getGraphicScene()->createWindow(name);

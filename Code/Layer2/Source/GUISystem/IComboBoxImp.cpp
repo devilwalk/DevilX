@@ -41,7 +41,6 @@ NSDevilX::NSGUISystem::IComboBoxImp::IComboBoxImp(const String & name,IWindowImp
 	,mEventCallback(nullptr)
 {
 	mControl=DEVILX_NEW IControlImp(IControlImp::EType_ComboBox,DEVILX_NEW CComboBox(name,static_cast<IControlImp*>(window->queryInterface_IControl())->getControl(),static_cast<IControlImp*>(window->queryInterface_IControl())->getControl()),window);
-	mControl->getControl()->getEventWindow()->registerListener(this,CEvent::EType_MouseMove);
 	mTextProperty=DEVILX_NEW ITextPropertyImp;
 	mTextProperty->add(static_cast<CComboBox*>(mControl->getControl())->getEditControl()->getCommonControl()->getTextControl()->getTextProperty());
 	mItemTextProperty=DEVILX_NEW ITextPropertyImp;
@@ -125,14 +124,4 @@ Void NSDevilX::NSGUISystem::IComboBoxImp::setEventCallback(IComboBoxEventCallbac
 IComboBoxEventCallback * NSDevilX::NSGUISystem::IComboBoxImp::getEventCallback() const
 {
 	return nullptr;
-}
-
-Void NSDevilX::NSGUISystem::IComboBoxImp::onEvent(NSUISystem::IEvent * e)
-{
-	switch(e->getType())
-	{
-	case CEvent::EType_MouseMove:
-		static_cast<IWindowImp*>(queryInterface_IControl()->getParentWindow())->setPrepareFocusControl(static_cast<IControlImp*>(queryInterface_IControl()));
-		break;
-	}
 }

@@ -9,7 +9,6 @@ namespace NSDevilX
 		class IButtonImp
 			:public IButton
 			,public TBaseObject<IButtonImp>
-			,public NSUISystem::IEventListener
 			,public TMessageReceiver<CButton>
 			,public TMessageReceiver<ISystemImp>
 		{
@@ -35,8 +34,6 @@ namespace NSDevilX
 			// 通过 TMessageReceiver 继承
 			virtual Void onMessage(CButton * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 			virtual Void onMessage(ISystemImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
-			// 通过 IEventListener 继承
-			virtual Void onEvent(NSUISystem::IEvent * e) override;
 		};
 	}
 }

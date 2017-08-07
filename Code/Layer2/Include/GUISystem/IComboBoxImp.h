@@ -25,7 +25,6 @@ namespace NSDevilX
 		class IComboBoxImp
 			:public IComboBox
 			,public TBaseObject<IComboBoxImp>
-			,public NSUISystem::IEventListener
 		{
 		protected:
 			TResourcePtrVector<IComboBoxItemImp> mItems;
@@ -52,9 +51,6 @@ namespace NSDevilX
 			virtual ITextProperty * getItemTextProperty() const override;
 			virtual Void setEventCallback(IComboBoxEventCallback * callback) override;
 			virtual IComboBoxEventCallback * getEventCallback() const override;
-
-			// Í¨¹ý IEventListener ¼Ì³Ð
-			virtual Void onEvent(NSUISystem::IEvent * e) override;
 		};
 	}
 }
