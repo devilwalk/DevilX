@@ -18,3 +18,10 @@ NSDevilX::NSGUISystem::CCommonControl::~CCommonControl()
 	DEVILX_DELETE(getImageControl());
 	DEVILX_DELETE(getTextControl());
 }
+
+Void NSDevilX::NSGUISystem::CCommonControl::setVisible(Bool visible)
+{
+	getImageControl()->setVisible(visible);
+	getTextControl()->setVisible(visible);
+	CControl::setVisible(visible);
+}

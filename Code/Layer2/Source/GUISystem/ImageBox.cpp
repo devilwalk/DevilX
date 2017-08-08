@@ -3,7 +3,7 @@ using namespace NSDevilX;
 using namespace NSGUISystem;
 
 NSDevilX::NSGUISystem::CImageBox::CImageBox(const String & name,CControl * coordParent,CControl * orderParent)
-	:CControl(name,coordParent,orderParent)
+	:CControl(name,coordParent,orderParent,False)
 	,mBackground(nullptr)
 {
 	auto background=getGraphicScene()->createWindow(name);

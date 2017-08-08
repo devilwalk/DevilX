@@ -82,8 +82,29 @@ Void NSDevilX::NSFightChess::CUIScript::_processElement(TiXmlElement * element,N
 		ctl->getTextProperty()->setColour(_getAttribute("Colour",element).get<CColour>());
 		if(element->Attribute("Background"))
 			ctl->setBackground(NSResourceSystem::getSystem()->createResource(_getAttribute("Background",element).get<String>(),_getAttribute("Background",element).get<String>()));
+		if(element->Attribute("ItemSize"))
+			ctl->setItemListShowSize(_getAttribute("ItemSize",element).get<UInt32>());
 		ctl->queryInterface_IControl()->setPosition(_getAttribute("Position",element).get<CFloat2>());
 		ctl->queryInterface_IControl()->setSize(_getAttribute("Size",element).get<CFloat2>());
+		if(!element->NoChildren())
+		{
+			auto items_text=element->FirstChild()->ToText();
+			assert(items_text);
+			auto str=items_text->ValueTStr();
+			CUTF8String utf8_text(&str[0],str.size());
+			while(utf8_text.has(';'))
+			{
+				CUTF8String item;
+				while(utf8_text.front()!=';')
+				{
+					item.push_back(utf8_text.front());
+					utf8_text.erase(utf8_text.begin());
+				}
+				utf8_text.erase(utf8_text.begin());
+				ctl->createItem()->setText(item);
+			}
+			ctl->createItem()->setText(utf8_text);
+		}
 		control=ctl->queryInterface_IControl();
 	}
 	else
@@ -127,6 +148,10 @@ CAny NSDevilX::NSFightChess::CUIScript::_getAttribute(const String & name,TiXmlE
 		{
 			return CFloatRGBA::sWhite;
 		}
+		else if(name==String("ItemSize"))
+		{
+			return 0;
+		}
 		else
 		{
 			assert(0);
@@ -162,6 +187,10 @@ Boolean NSDevilX::NSFightChess::CUIScript::_processAttribute(const String & name
 	else if(name==String("Text"))
 	{
 		ret=CAny(CUTF8String(reinterpret_cast<ConstBytePtr>(&value[0]),value.size()));
+	}
+	else if(name==String("ItemSize"))
+	{
+		ret=CAny(CStringConverter::toValue<UInt32>(value));
 	}
 	else
 	{

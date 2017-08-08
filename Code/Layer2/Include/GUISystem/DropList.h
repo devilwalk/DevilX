@@ -28,25 +28,12 @@ namespace NSDevilX
 			{
 				return mIndex;
 			}
-			Void set(CControl * control,Bool attach=True)
-			{
-				if(get())
-				{
-					get()->setCoordParent(nullptr);
-					get()->setOrderParent(nullptr);
-				}
-				mAttachedControl=control;
-				mAttached=attach;
-				if(get())
-				{
-					get()->setCoordParent(this);
-					get()->setOrderParent(mBackgroundControl);
-				}
-			}
+			Void set(CControl * control,Bool attach=True);
 			CControl * get()const
 			{
 				return mAttachedControl;
 			}
+			virtual Void setVisible(Bool visible) override;
 			virtual Void setPrepareFocus(Bool focus) override;
 			virtual Void onMouseButtonEvent(CWindow * window,EMouseButtonType buttonType,EMouseButtonEventType eventType,const CUInt2 & position) override;
 		};
@@ -80,6 +67,7 @@ namespace NSDevilX
 			{
 				return mSelectIndex;
 			}
+			virtual Void setVisible(Bool visible) override;
 		protected:
 			Float _getItemHeight()const
 			{

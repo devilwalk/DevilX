@@ -12,6 +12,7 @@ NSDevilX::NSUISystem::IGraphicWindowImp::IGraphicWindowImp(const String & name,I
 	mElement->addListener(this,IElementImp::EMessage_EndDerivedPositionChange);
 	mElement->addListener(this,IElementImp::EMessage_EndDerivedSizeChange);
 	mElement->addListener(this,IElementImp::EMessage_EndDerivedOrderChange);
+	mElement->addListener(this,IElementImp::EMessage_EndEnableChange);
 }
 
 NSDevilX::NSUISystem::IGraphicWindowImp::~IGraphicWindowImp()
@@ -81,6 +82,9 @@ Void NSDevilX::NSUISystem::IGraphicWindowImp::onMessage(IElementImp * notifier,U
 		break;
 	case IElementImp::EMessage_EndDerivedOrderChange:
 		mRenderOverlayElement->setOrder(notifier->getDerivedOrder());
+		break;
+	case IElementImp::EMessage_EndEnableChange:
+		mRenderOverlayElement->setEnable(notifier->getEnable());
 		break;
 	}
 }

@@ -48,10 +48,13 @@ Boolean NSDevilX::NSUISystem::IEventSceneImp::route(IEvent * e)
 	{
 		for(auto window:windows.second)
 		{
-			const auto window_aabb=DirectX::BoundingBox(CFloat3(window->queryInterface_IElement()->getDerivedPosition()+CFloat3(window->queryInterface_IElement()->getDerivedSize().x,window->queryInterface_IElement()->getDerivedSize().y,0.0f)*0.5f),CFloat3(CFloat3(window->queryInterface_IElement()->getDerivedSize().x,window->queryInterface_IElement()->getDerivedSize().y,0.0f)*0.5f));
-			if(event_aabb.Intersects(window_aabb))
+			if(window->queryInterface_IElement()->getEnable())
 			{
-				ordered_notify_windows.push_back(window);
+				const auto window_aabb=DirectX::BoundingBox(CFloat3(window->queryInterface_IElement()->getDerivedPosition()+CFloat3(window->queryInterface_IElement()->getDerivedSize().x,window->queryInterface_IElement()->getDerivedSize().y,0.0f)*0.5f),CFloat3(CFloat3(window->queryInterface_IElement()->getDerivedSize().x,window->queryInterface_IElement()->getDerivedSize().y,0.0f)*0.5f));
+				if(event_aabb.Intersects(window_aabb))
+				{
+					ordered_notify_windows.push_back(window);
+				}
 			}
 		}
 	}

@@ -12,6 +12,7 @@ NSDevilX::NSUISystem::IElementImp::IElementImp(const String & name)
 	,mDerivedOrder(0)
 	,mCoordParent(nullptr)
 	,mOrderParent(nullptr)
+	,mEnable(True)
 {}
 
 NSDevilX::NSUISystem::IElementImp::~IElementImp()
@@ -134,6 +135,21 @@ Int32 NSDevilX::NSUISystem::IElementImp::getOrder() const
 Int32 NSDevilX::NSUISystem::IElementImp::getDerivedOrder() const
 {
 	return mDerivedOrder;
+}
+
+Void NSDevilX::NSUISystem::IElementImp::setEnable(Bool enable)
+{
+	if(enable!=getEnable())
+	{
+		notify(EMessage_BeginEnableChange);
+		mEnable=enable;
+		notify(EMessage_EndEnableChange);
+	}
+}
+
+Bool NSDevilX::NSUISystem::IElementImp::getEnable() const
+{
+	return mEnable;
 }
 
 CFloat2 NSDevilX::NSUISystem::IElementImp::convertSize(const CFloat2 & size,ECoord fromCoord,ECoord toCoord) const

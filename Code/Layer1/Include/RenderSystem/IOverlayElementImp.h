@@ -13,6 +13,8 @@ namespace NSDevilX
 		public:
 			enum EMessage
 			{
+				EMessage_BeginEnableChange,
+				EMessage_EndEnableChange,
 				EMessage_BeginPositionChange,
 				EMessage_EndPositionChange,
 				EMessage_BeginSizeChange,
@@ -30,6 +32,7 @@ namespace NSDevilX
 			};
 		protected:
 			const String mName;
+			Bool mEnable;
 			CFloat2 mPosition;
 			CFloat2 mSize;
 			CFloat2 mUVs[4];
@@ -50,6 +53,8 @@ namespace NSDevilX
 				return mTextureUnitState;
 			}
 			// Í¨¹ý IOverlayElement ¼Ì³Ð
+			virtual Void setEnable(Bool enable) override;
+			virtual Bool getEnable() const override;
 			virtual const String & getName() const override;
 			virtual Void setPosition(const CFloat2 & position) override;
 			virtual const CFloat2 & getPosition() const override;

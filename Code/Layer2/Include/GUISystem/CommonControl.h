@@ -23,6 +23,7 @@ namespace NSDevilX
 			{
 				return mImageControl;
 			}
+			virtual Void setVisible(Bool visible) override;
 		};
 	}
 }

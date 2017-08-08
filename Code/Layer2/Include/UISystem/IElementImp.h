@@ -20,7 +20,9 @@ namespace NSDevilX
 				EMessage_BeginDerivedOrderChange,
 				EMessage_EndDerivedOrderChange,
 				EMessage_BeginDestruction,
-				EMessage_EndDestruction
+				EMessage_EndDestruction,
+				EMessage_BeginEnableChange,
+				EMessage_EndEnableChange
 			};
 		protected:
 			const String mName;
@@ -32,6 +34,7 @@ namespace NSDevilX
 			Int32 mDerivedOrder;
 			IElementImp * mCoordParent;
 			IElementImp * mOrderParent;
+			Bool mEnable;
 		public:
 			IElementImp(const String & name);
 			virtual ~IElementImp();
@@ -50,6 +53,8 @@ namespace NSDevilX
 			virtual Void setOrder(Int32 order) override;
 			virtual Int32 getOrder() const override;
 			virtual Int32 getDerivedOrder() const override;
+			virtual Void setEnable(Bool enable) override;
+			virtual Bool getEnable() const override;;
 			virtual CFloat2 convertSize(const CFloat2 & size,ECoord fromCoord,ECoord toCoord) const override;
 			virtual CFloat2 convertPosition(const CFloat2 & position,ECoord fromCoord,ECoord toCoord) const override;
 		protected:

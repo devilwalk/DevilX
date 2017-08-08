@@ -20,6 +20,31 @@ NSDevilX::NSGUISystem::CDropListItem::~CDropListItem()
 	}
 }
 
+Void NSDevilX::NSGUISystem::CDropListItem::set(CControl * control,Bool attach)
+{
+	if(get())
+	{
+		get()->setCoordParent(nullptr);
+		get()->setOrderParent(nullptr);
+	}
+	mAttachedControl=control;
+	mAttached=attach;
+	if(get())
+	{
+		get()->setCoordParent(this);
+		get()->setOrderParent(mBackgroundControl);
+		get()->setVisible(getVisible());
+	}
+}
+
+Void NSDevilX::NSGUISystem::CDropListItem::setVisible(Bool visible)
+{
+	if(get())
+		get()->setVisible(visible);
+	mBackgroundControl->setVisible(visible);
+	CControl::setVisible(visible);
+}
+
 Void NSDevilX::NSGUISystem::CDropListItem::setPrepareFocus(Bool focus)
 {
 	if(focus)
@@ -43,7 +68,7 @@ Void NSDevilX::NSGUISystem::CDropListItem::onMouseButtonEvent(CWindow * window,E
 }
 
 NSDevilX::NSGUISystem::CDropList::CDropList(const String & name,CControl * coordParent,CControl * orderParent)
-	:CControl(name,coordParent,orderParent)
+	:CControl(name,coordParent,orderParent,False)
 	,mSelectIndex(-1)
 {}
 
@@ -57,6 +82,7 @@ Void NSDevilX::NSGUISystem::CDropList::setSize(UInt32 size)
 		for(UInt32 i=getSize();i<size;++i)
 		{
 			auto item=DEVILX_NEW CDropListItem(i,this);
+			item->setVisible(getVisible());
 			item->addListener(this,CDropListItem::EMessage_Select);
 			mItems.push_back(item);
 		}
@@ -73,6 +99,15 @@ Void NSDevilX::NSGUISystem::CDropList::setSize(UInt32 size)
 		mItems[i]->getLayer()->setPosition(CFloat2(0.0f,_getItemHeight()*i));
 		mItems[i]->getLayer()->setSize(CFloat2(1.0f,_getItemHeight()));
 	}
+}
+
+Void NSDevilX::NSGUISystem::CDropList::setVisible(Bool visible)
+{
+	for(auto item:mItems)
+	{
+		item->setVisible(visible);
+	}
+	CControl::setVisible(visible);
 }
 
 Void NSDevilX::NSGUISystem::CDropList::onMessage(CDropListItem * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)

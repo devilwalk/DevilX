@@ -10,6 +10,7 @@ NSDevilX::NSGUISystem::CControl::CControl(const String & name,NSUISystem::IGraph
 	,mOrderParent(nullptr)
 	,mLayer(nullptr)
 	,mEventWindow(nullptr)
+	,mVisible(True)
 {
 	mLayer=NSUISystem::getSystem()->createLayer(name);
 	getLayer()->setSize(CFloat2::sOne);
@@ -23,6 +24,7 @@ NSDevilX::NSGUISystem::CControl::CControl(const String & name,CControl * coordPa
 	,mOrderParent(orderParent)
 	,mLayer(nullptr)
 	,mEventWindow(nullptr)
+	,mVisible(True)
 {
 	mLayer=NSUISystem::getSystem()->createLayer(name);
 	getLayer()->setSize(CFloat2::sOne);
@@ -57,10 +59,20 @@ Void NSDevilX::NSGUISystem::CControl::setOrderParent(CControl * control)
 	getLayer()->setOrderParent(getOrderParent()->getLayer());
 }
 
+Void NSDevilX::NSGUISystem::CControl::setVisible(Bool visible)
+{
+	mVisible=visible;
+	for(auto window:mGraphicWindows)
+		window->queryInterface_IElement()->setEnable(getVisible());
+	if(getEventWindow())
+		getEventWindow()->queryInterface_IElement()->setEnable(getVisible());
+}
+
 Void NSDevilX::NSGUISystem::CControl::_attachWindow(NSUISystem::IGraphicWindow * window)
 {
 	window->queryInterface_IElement()->setCoordParent(getLayer());
 	window->queryInterface_IElement()->setOrderParent(getLayer());
+	window->queryInterface_IElement()->setEnable(getVisible());
 	mGraphicWindows.push_back(window);
 }
 
@@ -69,6 +81,7 @@ Void NSDevilX::NSGUISystem::CControl::_attachWindow(NSUISystem::IEventWindow * w
 	_destroyEventWindow();
 	window->queryInterface_IElement()->setCoordParent(getLayer());
 	window->queryInterface_IElement()->setOrderParent(getLayer());
+	window->queryInterface_IElement()->setEnable(getVisible());
 	mEventWindow=window;
 }
 
@@ -121,10 +134,10 @@ Void NSDevilX::NSGUISystem::CContainer::setPrepareFocusControl(CControl * contro
 		if(ctrl!=control)
 		{
 			ctrl->setPrepareFocus(False);
-			++iter;
+			iter=mPrepareFocusControls.erase(iter);
 		}
 		else
-			iter=mPrepareFocusControls.erase(iter);
+			++iter;
 	}
 	if(control)
 		addPrepareFocusControl(control);
@@ -155,10 +168,10 @@ Void NSDevilX::NSGUISystem::CContainer::setFocusControl(CControl * control)
 		if(ctrl!=control)
 		{
 			ctrl->setFocus(False);
-			++iter;
+			iter=mFocusControls.erase(iter);
 		}
 		else
-			iter=mFocusControls.erase(iter);
+			++iter;
 	}
 	if(control)
 		addFocusControl(control);

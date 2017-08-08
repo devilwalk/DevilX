@@ -16,6 +16,7 @@ namespace NSDevilX
 			NSUISystem::IElement * mLayer;
 			TVector<NSUISystem::IGraphicWindow*> mGraphicWindows;
 			NSUISystem::IEventWindow * mEventWindow;
+			Bool mVisible;
 		public:
 			CControl(const String & name,NSUISystem::IGraphicScene * graphicScene,NSUISystem::IEventScene * eventScene);
 			CControl(const String & name,CControl * coordParent,CControl * orderParent,Bool createEventWindow=True);
@@ -46,6 +47,11 @@ namespace NSDevilX
 			{
 				return mEventWindow;
 			}
+			Bool getVisible()const
+			{
+				return mVisible;
+			}
+			virtual Void setVisible(Bool visible);
 			virtual Void setPrepareFocus(Bool focus){}
 			virtual Void setFocus(Bool focus){}
 		protected:

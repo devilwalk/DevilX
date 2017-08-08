@@ -10,6 +10,7 @@ NSDevilX::NSGUISystem::CEditBox::CEditBox(const String & name,CControl * coordPa
 	,mPrepareFocus(False)
 {
 	mCommonControl=DEVILX_NEW CCommonControl(name+"/CommonControl",this,this);
+	mCommonControl->getImageControl()->setBackgroundColour(CFloatRGB(0.8f));
 	mCaret=DEVILX_NEW CCaret(name+"/Caret",this,getCommonControl()->getImageControl());
 	mCaret->getLayer()->setSize(CFloat2(0.01f,1.0f));
 	mCaret->getLayer()->setOrder(getCommonControl()->getImageControl()->getLayer()->getOrder()+1);
@@ -42,7 +43,7 @@ Void NSDevilX::NSGUISystem::CEditBox::onMouseButtonEvent(CWindow * window,EMouse
 	if((EMouseButtonType_Left==buttonType)&&(EMouseButtonEventType_Up==eventType))
 	{
 		if(!mCaret->isEnable())
-			setFocus(True);
+			mContainer->setFocusControl(this);
 		TVector<CFloat2> char_positions;
 		Float last_char_right;
 		if(getCommonControl()->getTextControl()->getPositions(&char_positions,&last_char_right))

@@ -43,6 +43,7 @@ NSDevilX::NSGUISystem::IComboBoxImp::IComboBoxImp(const String & name,IWindowImp
 	mControl=DEVILX_NEW IControlImp(IControlImp::EType_ComboBox,DEVILX_NEW CComboBox(name,static_cast<IControlImp*>(window->queryInterface_IControl())->getControl(),static_cast<IControlImp*>(window->queryInterface_IControl())->getControl()),window);
 	mTextProperty=DEVILX_NEW ITextPropertyImp;
 	mTextProperty->add(static_cast<CComboBox*>(mControl->getControl())->getEditControl()->getCommonControl()->getTextControl()->getTextProperty());
+	getTextProperty()->setRowAlignMode(IEnum::ETextRowAlignMode_Left);
 	mItemTextProperty=DEVILX_NEW ITextPropertyImp;
 }
 
@@ -50,6 +51,7 @@ NSDevilX::NSGUISystem::IComboBoxImp::~IComboBoxImp()
 {
 	DEVILX_DELETE(mControl);
 	DEVILX_DELETE(mTextProperty);
+	DEVILX_DELETE(mItemTextProperty);
 }
 
 IControl * NSDevilX::NSGUISystem::IComboBoxImp::queryInterface_IControl() const
@@ -103,12 +105,12 @@ Void NSDevilX::NSGUISystem::IComboBoxImp::destroyItem(IComboBoxItem * item)
 
 Void NSDevilX::NSGUISystem::IComboBoxImp::setItemListShowSize(UInt32 sizeInItems)
 {
-	static_cast<CComboBox*>(mControl->getControl())->getDropList()->setSize(sizeInItems);
+	static_cast<CComboBox*>(mControl->getControl())->setItemListShowSize(sizeInItems);
 }
 
 UInt32 NSDevilX::NSGUISystem::IComboBoxImp::getItemListShowSize() const
 {
-	return static_cast<CComboBox*>(mControl->getControl())->getDropList()->getSize();
+	return static_cast<CComboBox*>(mControl->getControl())->getItemListShowSize();
 }
 
 ITextProperty * NSDevilX::NSGUISystem::IComboBoxImp::getItemTextProperty() const

@@ -86,6 +86,7 @@ Void NSDevilX::NSRenderSystem::NSD3D11::COverlayRenderable::addElement(IOverlayE
 	_updateElementPosition(element);
 	_updateElementTextureCoord(element);
 	_updateElementDiffuse(element);
+	element->addListener(static_cast<TMessageReceiver<IOverlayElementImp>*>(this),IOverlayElementImp::EMessage_EndEnableChange);
 	element->addListener(static_cast<TMessageReceiver<IOverlayElementImp>*>(this),IOverlayElementImp::EMessage_EndPositionChange);
 	element->addListener(static_cast<TMessageReceiver<IOverlayElementImp>*>(this),IOverlayElementImp::EMessage_EndSizeChange);
 	element->addListener(static_cast<TMessageReceiver<IOverlayElementImp>*>(this),IOverlayElementImp::EMessage_EndUVChange);
@@ -107,6 +108,7 @@ Void NSDevilX::NSRenderSystem::NSD3D11::COverlayRenderable::removeElement(IOverl
 	mGeometry->getInterfaceImp()->getVertexBuffer()->updatePositions(vertex_start,4);
 	mFrees.push_back(vertex_start);
 	mRectangles.erase(element);
+	element->removeListener(static_cast<TMessageReceiver<IOverlayElementImp>*>(this),IOverlayElementImp::EMessage_EndEnableChange);
 	element->removeListener(static_cast<TMessageReceiver<IOverlayElementImp>*>(this),IOverlayElementImp::EMessage_EndPositionChange);
 	element->removeListener(static_cast<TMessageReceiver<IOverlayElementImp>*>(this),IOverlayElementImp::EMessage_EndSizeChange);
 	element->removeListener(static_cast<TMessageReceiver<IOverlayElementImp>*>(this),IOverlayElementImp::EMessage_EndUVChange);
@@ -122,6 +124,7 @@ Void NSDevilX::NSRenderSystem::NSD3D11::COverlayRenderable::onMessage(IOverlayEl
 {
 	switch(message)
 	{
+	case IOverlayElementImp::EMessage_EndEnableChange:
 	case IOverlayElementImp::EMessage_EndPositionChange:
 	case IOverlayElementImp::EMessage_EndSizeChange:
 		_updateElementPosition(notifier);
@@ -150,12 +153,22 @@ Void NSDevilX::NSRenderSystem::NSD3D11::COverlayRenderable::onMessage(IColourUni
 Void NSDevilX::NSRenderSystem::NSD3D11::COverlayRenderable::_updateElementPosition(IOverlayElementImp * element)
 {
 	const auto vertex_start=mRectangles.get(element);
-	CFloat2 rel_pos=element->getPosition()*CFloat2(2.0f,-2.0f)-CFloat2(1.0f,-1.0f);
-	CFloat2 rel_size=element->getSize()*2.0f;
-	mPositions[vertex_start]=CFloat3(rel_pos.x,rel_pos.y,0.5f);
-	mPositions[vertex_start+1]=CFloat3(rel_pos.x+rel_size.x,rel_pos.y,0.5f);
-	mPositions[vertex_start+2]=CFloat3(rel_pos.x,rel_pos.y-rel_size.y,0.5f);
-	mPositions[vertex_start+3]=CFloat3(rel_pos.x+rel_size.x,rel_pos.y-rel_size.y,0.5f);
+	if(element->getEnable())
+	{
+		CFloat2 rel_pos=element->getPosition()*CFloat2(2.0f,-2.0f)-CFloat2(1.0f,-1.0f);
+		CFloat2 rel_size=element->getSize()*2.0f;
+		mPositions[vertex_start]=CFloat3(rel_pos.x,rel_pos.y,0.5f);
+		mPositions[vertex_start+1]=CFloat3(rel_pos.x+rel_size.x,rel_pos.y,0.5f);
+		mPositions[vertex_start+2]=CFloat3(rel_pos.x,rel_pos.y-rel_size.y,0.5f);
+		mPositions[vertex_start+3]=CFloat3(rel_pos.x+rel_size.x,rel_pos.y-rel_size.y,0.5f);
+	}
+	else
+	{
+		mPositions[vertex_start]=CFloat3(-1000.0f);
+		mPositions[vertex_start+1]=CFloat3(-1000.0f);
+		mPositions[vertex_start+2]=CFloat3(-1000.0f);
+		mPositions[vertex_start+3]=CFloat3(-1000.0f);
+	}
 	mGeometry->getInterfaceImp()->getVertexBuffer()->updatePositions(vertex_start,4);
 }
 

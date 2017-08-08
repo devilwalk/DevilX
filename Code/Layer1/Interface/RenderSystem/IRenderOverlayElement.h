@@ -11,6 +11,8 @@ namespace NSDevilX
 			virtual ~IOverlayElement(){}
 		public:
 			virtual const String & getName()const=0;
+			virtual Void setEnable(Bool enable)=0;
+			virtual Bool getEnable()const=0;
 			virtual Void setPosition(const CFloat2 & position)=0;
 			virtual const CFloat2 & getPosition()const=0;
 			virtual Void setSize(const CFloat2 & size)=0;

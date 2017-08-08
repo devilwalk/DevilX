@@ -4,6 +4,7 @@ using namespace NSRenderSystem;
 
 NSDevilX::NSRenderSystem::IOverlayElementImp::IOverlayElementImp(const String & name)
 	:mName(name)
+	,mEnable(True)
 	,mPosition(CFloat2::sZero)
 	,mSize(CFloat2::sZero)
 	,mOrder(0)
@@ -23,6 +24,21 @@ NSDevilX::NSRenderSystem::IOverlayElementImp::~IOverlayElementImp()
 	{
 		DEVILX_DELETE(static_cast<const IOverlayElementImp*>(this)->getTextureUnitState());
 	}
+}
+
+Void NSDevilX::NSRenderSystem::IOverlayElementImp::setEnable(Bool enable)
+{
+	if(enable!=getEnable())
+	{
+		notify(EMessage_BeginEnableChange);
+		mEnable=enable;
+		notify(EMessage_EndEnableChange);
+	}
+}
+
+Bool NSDevilX::NSRenderSystem::IOverlayElementImp::getEnable() const
+{
+	return mEnable;
 }
 
 const String & NSDevilX::NSRenderSystem::IOverlayElementImp::getName() const

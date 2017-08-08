@@ -32,6 +32,7 @@ namespace NSDevilX
 		class CComboBox
 			:public CControl
 			,public TBaseObject<CComboBox>
+			,public TMessageReceiver<CEditBox>
 			,public TMessageReceiver<CButton>
 			,public TMessageReceiver<CDropList>
 		{
@@ -72,6 +73,7 @@ namespace NSDevilX
 			UInt32 getItemListShowSize()const;
 
 			// Í¨¹ý TMessageReceiver ¼Ì³Ð
+			virtual Void onMessage(CEditBox * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 			virtual Void onMessage(CButton * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 			virtual Void onMessage(CDropList * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 		};
