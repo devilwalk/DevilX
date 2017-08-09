@@ -17,7 +17,7 @@ namespace NSDevilX
 			UInt32 mNextItemName;
 			CPageBarItem * mFocus;
 		public:
-			CPageBar(const String & name,CControl * coordParent,CControl * orderParent);
+			CPageBar(const String & name,CControl * coordParent);
 			~CPageBar();
 			CTextProperty * getTextProperty()const{ return mTextProperty; }
 			Void setPrepareFocusControl(CPageBarItem * item);

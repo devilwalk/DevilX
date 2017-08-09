@@ -83,6 +83,17 @@ namespace NSDevilX
 		}
 		virtual Void onMessage(NotifierT * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)=0;
 	};
+	template<>
+	class TMessageReceiver<CMessageNotifier>
+		:public CMessageReceiver
+	{
+	public:
+		TMessageReceiver()
+		{}
+		virtual ~TMessageReceiver()
+		{}
+		virtual Void onMessage(CMessageNotifier * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)=0;
+	};
 	class CMessageNotifier
 	{
 	public:

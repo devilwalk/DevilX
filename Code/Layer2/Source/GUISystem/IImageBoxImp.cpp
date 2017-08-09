@@ -5,7 +5,9 @@ using namespace NSGUISystem;
 NSDevilX::NSGUISystem::IImageBoxImp::IImageBoxImp(const String & name,IWindowImp * window)
 	:mControl(nullptr)
 {
-	mControl=DEVILX_NEW IControlImp(IControlImp::EType_ImageBox,DEVILX_NEW CImageBox(name,static_cast<IControlImp*>(window->queryInterface_IControl())->getControl(),static_cast<IControlImp*>(window->queryInterface_IControl())->getControl()),window);
+	auto internal_control=DEVILX_NEW CImageBox(name,static_cast<IControlImp*>(window->queryInterface_IControl())->getControl());
+	internal_control->setOrderParent(static_cast<IControlImp*>(window->queryInterface_IControl())->getControl());
+	mControl=DEVILX_NEW IControlImp(IControlImp::EType_ImageBox,internal_control,window);
 }
 
 NSDevilX::NSGUISystem::IImageBoxImp::~IImageBoxImp()

@@ -15,7 +15,7 @@ NSDevilX::NSGUISystem::ITextPropertyImp::~ITextPropertyImp()
 
 Void NSDevilX::NSGUISystem::ITextPropertyImp::add(CTextProperty * prop)
 {
-	mPropertys.push_back(prop);
+	mPropertys.insert(prop);
 	prop->copyFrom(mProperty);
 }
 

@@ -7,7 +7,9 @@ NSDevilX::NSGUISystem::IPageBarImp::IPageBarImp(const String & name,IWindowImp *
 	,mTextProperty(nullptr)
 	,mEventCallback(nullptr)
 {
-	mControl=DEVILX_NEW IControlImp(IControlImp::EType_PageBar,DEVILX_NEW CPageBar(name,static_cast<IControlImp*>(window->queryInterface_IControl())->getControl(),static_cast<IControlImp*>(window->queryInterface_IControl())->getControl()),window);
+	auto internal_control=DEVILX_NEW CPageBar(name,static_cast<IControlImp*>(window->queryInterface_IControl())->getControl());
+	internal_control->setOrderParent(static_cast<IControlImp*>(window->queryInterface_IControl())->getControl());
+	mControl=DEVILX_NEW IControlImp(IControlImp::EType_PageBar,internal_control,window);
 
 	mTextProperty=DEVILX_NEW ITextPropertyImp();
 	mTextProperty->add(static_cast<CPageBar*>(mControl->getControl())->getTextProperty());

@@ -7,7 +7,9 @@ NSDevilX::NSGUISystem::IEditBoxImp::IEditBoxImp(const String & name,IWindowImp *
 	,mTextProperty(nullptr)
 	,mEventCallback(nullptr)
 {
-	mControl=DEVILX_NEW IControlImp(IControlImp::EType_EditBox,DEVILX_NEW CEditBox(name,static_cast<IControlImp*>(window->queryInterface_IControl())->getControl(),static_cast<IControlImp*>(window->queryInterface_IControl())->getControl()),window);
+	auto internal_control=DEVILX_NEW CEditBox(name,static_cast<IControlImp*>(window->queryInterface_IControl())->getControl());
+	internal_control->setOrderParent(static_cast<IControlImp*>(window->queryInterface_IControl())->getControl());
+	mControl=DEVILX_NEW IControlImp(IControlImp::EType_EditBox,internal_control,window);
 	mTextProperty=DEVILX_NEW ITextPropertyImp();
 	mTextProperty->add(static_cast<CEditBox*>(mControl->getControl())->getCommonControl()->getTextControl()->getTextProperty());
 	getTextProperty()->setRowAlignMode(IEnum::ETextRowAlignMode_Left);

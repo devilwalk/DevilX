@@ -6,7 +6,13 @@ namespace NSDevilX
 		class CContainer;
 		class CControl
 			:public NSUISystem::IEventListener
+			,public TMessageReceiver<CMessageNotifier>
 		{
+		public:
+			enum EMessage
+			{
+				EMessage_NeedRefreshOrderParent
+			};
 		protected:
 			NSUISystem::IGraphicScene * const mGraphicScene;
 			NSUISystem::IEventScene * const mEventScene;
@@ -17,9 +23,10 @@ namespace NSDevilX
 			TVector<NSUISystem::IGraphicWindow*> mGraphicWindows;
 			NSUISystem::IEventWindow * mEventWindow;
 			Bool mVisible;
+			CMessageNotifier * mNotifier;
 		public:
 			CControl(const String & name,NSUISystem::IGraphicScene * graphicScene,NSUISystem::IEventScene * eventScene);
-			CControl(const String & name,CControl * coordParent,CControl * orderParent,Bool createEventWindow=True);
+			CControl(const String & name,CControl * coordParent,Bool createEventWindow=True);
 			virtual ~CControl();
 			NSUISystem::IGraphicScene * getGraphicScene()const
 			{
@@ -35,6 +42,7 @@ namespace NSDevilX
 				return mCoordParent;
 			}
 			Void setOrderParent(CControl * control);
+			Void setInternalOrderParent(CControl * control);
 			CControl * getOrderParent()const
 			{
 				return mOrderParent;
@@ -59,9 +67,12 @@ namespace NSDevilX
 			Void _attachWindow(NSUISystem::IEventWindow * window);
 			Void _destroyGraphicWindows();
 			Void _destroyEventWindow();
-
+			virtual Void _setOrderChild(CControl * control);
 			// 通过 IEventListener 继承
 			virtual Void onEvent(NSUISystem::IEvent * e) override;
+
+			// 通过 TMessageReceiver 继承
+			virtual Void onMessage(CMessageNotifier * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 		};
 		class CContainer
 			:public CControl

@@ -2,8 +2,8 @@
 using namespace NSDevilX;
 using namespace NSGUISystem;
 
-NSDevilX::NSGUISystem::CCaret::CCaret(const String & name,CControl * coordParent,CControl * orderParent)
-	:CControl(name,coordParent,orderParent,False)
+NSDevilX::NSGUISystem::CCaret::CCaret(const String & name,CControl * coordParent)
+	:CControl(name,coordParent,False)
 	,mEnable(False)
 {
 	auto background=getGraphicScene()->createWindow(name);
@@ -23,12 +23,12 @@ Void NSDevilX::NSGUISystem::CCaret::setEnable(Bool enable)
 		mEnable=enable;
 		if(mEnable)
 		{
-			ISystemImp::getSingleton().addListener(this,ISystemImp::EMessage_Update);
+			ISystemImp::getSingleton().addListener(static_cast<TMessageReceiver<ISystemImp>*>(this),ISystemImp::EMessage_Update);
 		}
 		else
 		{
 			_show(false);
-			ISystemImp::getSingleton().removeListener(this,ISystemImp::EMessage_Update);
+			ISystemImp::getSingleton().removeListener(static_cast<TMessageReceiver<ISystemImp>*>(this),ISystemImp::EMessage_Update);
 		}
 	}
 }
@@ -67,4 +67,9 @@ Void NSDevilX::NSGUISystem::CCaret::_show(Bool enable)
 	{
 		mGraphicWindows[0]->setColour(CFloatRGBA(CFloatRGBA::sZero));
 	}
+}
+
+Void NSDevilX::NSGUISystem::CCaret::_setOrderChild(CControl * control)
+{
+	assert(0);
 }

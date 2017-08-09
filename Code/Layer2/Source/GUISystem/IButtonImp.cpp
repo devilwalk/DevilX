@@ -7,7 +7,9 @@ NSDevilX::NSGUISystem::IButtonImp::IButtonImp(const String & name,IWindowImp * w
 	,mTextProperty(nullptr)
 	,mEventCallback(nullptr)
 {
-	mControl=DEVILX_NEW IControlImp(IControlImp::EType_Button,DEVILX_NEW CButton(name,static_cast<IControlImp*>(window->queryInterface_IControl())->getControl(),static_cast<IControlImp*>(window->queryInterface_IControl())->getControl()),window);
+	auto internal_control=DEVILX_NEW CButton(name,static_cast<IControlImp*>(window->queryInterface_IControl())->getControl());
+	internal_control->setOrderParent(static_cast<IControlImp*>(window->queryInterface_IControl())->getControl());
+	mControl=DEVILX_NEW IControlImp(IControlImp::EType_Button,internal_control,window);
 	mTextProperty=DEVILX_NEW ITextPropertyImp();
 	mTextProperty->add(static_cast<CButton*>(mControl->getControl())->getCommonControl()->getTextControl()->getTextProperty());
 }

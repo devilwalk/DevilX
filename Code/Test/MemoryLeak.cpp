@@ -120,7 +120,7 @@ int main()
 	return 0;
 }
 #endif
-#if 1
+#if 0
 int main()
 {
 	auto * render_surface=NSRenderSystem::getSystem()->createRenderableSurface("Test");
@@ -160,6 +160,11 @@ int main()
 			,mPosition(CFloat2(1000000.0f))
 			,mOrder(0)
 		{}
+		virtual Void setEnable(Bool){}
+		virtual Bool getEnable()const
+		{
+			return True;
+		}
 		virtual IElement * queryInterface_IElement() const override
 		{
 			return const_cast<SUIEvent*>(this);
@@ -172,11 +177,19 @@ int main()
 		{
 			return CStringConverter::sBlank;
 		}
-		virtual Void setParent(IElement * parent) override
+		virtual Void setCoordParent(IElement * parent) override
 		{
 
 		}
-		virtual IElement * getParent() const override
+		virtual IElement * getCoordParent() const override
+		{
+			return nullptr;
+		}
+		virtual Void setOrderParent(IElement * parent) override
+		{
+
+		}
+		virtual IElement * getOrderParent() const override
 		{
 			return nullptr;
 		}

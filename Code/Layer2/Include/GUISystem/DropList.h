@@ -17,7 +17,7 @@ namespace NSDevilX
 				EMessage_Select
 			};
 		protected:
-			CImageBox * mBackgroundControl;
+			CImageBox * mAlphaControl;
 			const UInt32 mIndex;
 			CControl * mAttachedControl;
 			Bool mAttached;
@@ -35,6 +35,8 @@ namespace NSDevilX
 			}
 			virtual Void setVisible(Bool visible) override;
 			virtual Void setPrepareFocus(Bool focus) override;
+		protected:
+			virtual Void _setOrderChild(CControl * control) override;
 			virtual Void onMouseButtonEvent(CWindow * window,EMouseButtonType buttonType,EMouseButtonEventType eventType,const CUInt2 & position) override;
 		};
 		class CDropList
@@ -52,7 +54,7 @@ namespace NSDevilX
 			TResourcePtrVector<CDropListItem> mItems;
 			UInt32 mSelectIndex;
 		public:
-			CDropList(const String & name,CControl * coordParent,CControl * orderParent);
+			CDropList(const String & name,CControl * coordParent);
 			~CDropList();
 			Void setSize(UInt32 size);
 			UInt32 getSize()const
@@ -73,7 +75,7 @@ namespace NSDevilX
 			{
 				return 1.0f/getSize();
 			}
-
+			virtual Void _setOrderChild(CControl * control) override;
 			// Í¨¹ý TMessageReceiver ¼Ì³Ð
 			virtual Void onMessage(CDropListItem * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 		};

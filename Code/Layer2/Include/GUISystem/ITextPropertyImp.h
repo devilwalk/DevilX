@@ -10,7 +10,7 @@ namespace NSDevilX
 		{
 		protected:
 			CTextProperty * mProperty;
-			TVector<CTextProperty*> mPropertys;
+			TSet<CTextProperty*> mPropertys;
 		public:
 			ITextPropertyImp();
 			~ITextPropertyImp();

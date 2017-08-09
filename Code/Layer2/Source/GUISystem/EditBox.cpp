@@ -2,18 +2,19 @@
 using namespace NSDevilX;
 using namespace NSGUISystem;
 
-NSDevilX::NSGUISystem::CEditBox::CEditBox(const String & name,CControl * coordParent,CControl * orderParent)
-	:CControl(name,coordParent,orderParent)
+NSDevilX::NSGUISystem::CEditBox::CEditBox(const String & name,CControl * coordParent)
+	:CControl(name,coordParent)
 	,mCommonControl(nullptr)
 	,mCaret(nullptr)
 	,mCaretPosition(0)
 	,mPrepareFocus(False)
 {
-	mCommonControl=DEVILX_NEW CCommonControl(name+"/CommonControl",this,this);
+	mCommonControl=DEVILX_NEW CCommonControl(name+"/CommonControl",this);
+	mCommonControl->setOrderParent(this);
 	mCommonControl->getImageControl()->setBackgroundColour(CFloatRGB(0.8f));
-	mCaret=DEVILX_NEW CCaret(name+"/Caret",this,getCommonControl()->getImageControl());
+	mCaret=DEVILX_NEW CCaret(name+"/Caret",this);
+	mCaret->setOrderParent(getCommonControl());
 	mCaret->getLayer()->setSize(CFloat2(0.01f,1.0f));
-	mCaret->getLayer()->setOrder(getCommonControl()->getImageControl()->getLayer()->getOrder()+1);
 }
 
 NSDevilX::NSGUISystem::CEditBox::~CEditBox()
@@ -127,12 +128,22 @@ Void NSDevilX::NSGUISystem::CEditBox::_updateListener(Bool preValue)
 		if(focus)
 		{
 			ISystemImp::getSingleton().getWindow()->registerEventListener(this);
-			ISystemImp::getSingleton().addListener(this,ISystemImp::EMessage_Update);
+			ISystemImp::getSingleton().addListener(static_cast<TMessageReceiver<ISystemImp>*>(this),ISystemImp::EMessage_Update);
 		}
 		else
 		{
 			ISystemImp::getSingleton().getWindow()->unregisterEventListener(this);
-			ISystemImp::getSingleton().removeListener(this,ISystemImp::EMessage_Update);
+			ISystemImp::getSingleton().removeListener(static_cast<TMessageReceiver<ISystemImp>*>(this),ISystemImp::EMessage_Update);
 		}
 	}
+}
+
+Void NSDevilX::NSGUISystem::CEditBox::_setOrderChild(CControl * control)
+{
+	if(control==mCommonControl)
+	{
+		CControl::_setOrderChild(control);
+	}
+	else
+		assert(0);
 }

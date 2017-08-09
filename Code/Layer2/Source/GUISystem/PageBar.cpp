@@ -2,8 +2,8 @@
 using namespace NSDevilX;
 using namespace NSGUISystem;
 
-NSDevilX::NSGUISystem::CPageBar::CPageBar(const String & name,CControl * coordParent,CControl * orderParent)
-	:CControl(name,coordParent,orderParent)
+NSDevilX::NSGUISystem::CPageBar::CPageBar(const String & name,CControl * coordParent)
+	:CControl(name,coordParent)
 	,mTextProperty(nullptr)
 	,mNextItemName(0)
 	,mFocus(nullptr)
@@ -15,7 +15,7 @@ NSDevilX::NSGUISystem::CPageBar::CPageBar(const String & name,CControl * coordPa
 	_attachWindow(background);
 
 	mTextProperty=DEVILX_NEW CTextProperty;
-	getTextProperty()->addListener(this,CTextProperty::EMessage_AddDirtyFlag);
+	getTextProperty()->addListener(static_cast<TMessageReceiver<CTextProperty>*>(this),CTextProperty::EMessage_AddDirtyFlag);
 }
 
 NSDevilX::NSGUISystem::CPageBar::~CPageBar()
@@ -38,7 +38,8 @@ Void NSDevilX::NSGUISystem::CPageBar::setPrepareFocusControl(CPageBarItem * item
 
 Void NSDevilX::NSGUISystem::CPageBar::addItem(const CUTF8String & text)
 {
-	auto item=DEVILX_NEW CPageBarItem(this->getLayer()->getName()+"/"+CStringConverter::toString(mNextItemName++),this,this);
+	auto item=DEVILX_NEW CPageBarItem(this->getLayer()->getName()+"/"+CStringConverter::toString(mNextItemName++),this);
+	item->setOrderParent(this);
 	item->getTextControl()->getTextProperty()->copyFrom(getTextProperty());
 	item->getTextControl()->setText(text);
 	mItems.push_back(item);

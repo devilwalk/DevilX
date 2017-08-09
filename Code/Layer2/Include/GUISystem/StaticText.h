@@ -23,7 +23,7 @@ namespace NSDevilX
 			CTextProperty * mTextProperty;
 			CUTF8String mText;
 		public:
-			CStaticText(const String & name,CControl * coordParent,CControl * orderParent);
+			CStaticText(const String & name,CControl * coordParent);
 			~CStaticText();
 			CTextProperty * getTextProperty()const
 			{

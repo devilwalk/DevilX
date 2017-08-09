@@ -11,25 +11,28 @@ NSDevilX::NSGUISystem::CControl::CControl(const String & name,NSUISystem::IGraph
 	,mLayer(nullptr)
 	,mEventWindow(nullptr)
 	,mVisible(True)
+	,mNotifier(nullptr)
 {
+	mNotifier=new CMessageNotifier;
 	mLayer=NSUISystem::getSystem()->createLayer(name);
 	getLayer()->setSize(CFloat2::sOne);
 }
 
-NSDevilX::NSGUISystem::CControl::CControl(const String & name,CControl * coordParent,CControl * orderParent,Bool createEventWindow)
+NSDevilX::NSGUISystem::CControl::CControl(const String & name,CControl * coordParent,Bool createEventWindow)
 	:mGraphicScene(coordParent->getGraphicScene())
 	,mEventScene(coordParent->getEventScene())
 	,mContainer(coordParent->mContainer)
-	,mCoordParent(coordParent)
-	,mOrderParent(orderParent)
+	,mCoordParent(nullptr)
+	,mOrderParent(nullptr)
 	,mLayer(nullptr)
 	,mEventWindow(nullptr)
 	,mVisible(True)
+	,mNotifier(nullptr)
 {
+	mNotifier=new CMessageNotifier;
 	mLayer=NSUISystem::getSystem()->createLayer(name);
 	getLayer()->setSize(CFloat2::sOne);
-	getLayer()->setCoordParent(getCoordParent()->getLayer());
-	getLayer()->setOrderParent(getOrderParent()->getLayer());
+	setCoordParent(coordParent);
 	if(createEventWindow)
 	{
 		auto event_window=getEventScene()->createWindow(name);
@@ -45,6 +48,7 @@ NSDevilX::NSGUISystem::CControl::~CControl()
 	_destroyGraphicWindows();
 	_destroyEventWindow();
 	NSUISystem::getSystem()->destroyLayer(mLayer);
+	delete mNotifier;
 }
 
 Void NSDevilX::NSGUISystem::CControl::setCoordParent(CControl * control)
@@ -55,8 +59,23 @@ Void NSDevilX::NSGUISystem::CControl::setCoordParent(CControl * control)
 
 Void NSDevilX::NSGUISystem::CControl::setOrderParent(CControl * control)
 {
-	mOrderParent=control;
-	getLayer()->setOrderParent(getOrderParent()->getLayer());
+	if(control!=mOrderParent)
+	{
+		if(mOrderParent)
+			mOrderParent->mNotifier->removeListener(this,EMessage_NeedRefreshOrderParent);
+		mOrderParent=control;
+		setInternalOrderParent(mOrderParent);
+		if(mOrderParent)
+			mOrderParent->mNotifier->addListener(this,EMessage_NeedRefreshOrderParent);
+	}
+}
+
+Void NSDevilX::NSGUISystem::CControl::setInternalOrderParent(CControl * control)
+{
+	if(control)
+		control->_setOrderChild(this);
+	else
+		getLayer()->setOrderParent(nullptr);
 }
 
 Void NSDevilX::NSGUISystem::CControl::setVisible(Bool visible)
@@ -101,12 +120,28 @@ Void NSDevilX::NSGUISystem::CControl::_destroyEventWindow()
 	}
 }
 
+Void NSDevilX::NSGUISystem::CControl::_setOrderChild(CControl * control)
+{
+	control->getLayer()->setOrderParent(getLayer());
+}
+
 Void NSDevilX::NSGUISystem::CControl::onEvent(NSUISystem::IEvent * e)
 {
 	switch(e->getType())
 	{
 	case CEvent::EType_MouseMove:
 		mContainer->setPrepareFocusControl(this);
+		break;
+	}
+}
+
+Void NSDevilX::NSGUISystem::CControl::onMessage(CMessageNotifier * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
+{
+	switch(message)
+	{
+	case EMessage_NeedRefreshOrderParent:
+		assert(mNotifier==notifier);
+		setInternalOrderParent(getOrderParent());
 		break;
 	}
 }

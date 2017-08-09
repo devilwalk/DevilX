@@ -3,14 +3,17 @@ namespace NSDevilX
 {
 	namespace NSGUISystem
 	{
+		class IComboBoxImp;
 		class IComboBoxItemImp
 			:public IComboBoxItem
 			,public TBaseObject<IComboBoxItemImp>
+			,public TMessageReceiver<CComboBoxItem>
 		{
 		protected:
 			CComboBoxItem * const mItem;
+			IComboBoxImp * const mComboBox;
 		public:
-			IComboBoxItemImp(CComboBoxItem * item);
+			IComboBoxItemImp(CComboBoxItem * item,IComboBoxImp * comboBox);
 			~IComboBoxItemImp();
 			CComboBoxItem * getItem()const
 			{
@@ -21,6 +24,9 @@ namespace NSDevilX
 			virtual const CUTF8String & getText() const override;
 			virtual Void setBackground(NSResourceSystem::IResource * resource) override;
 			virtual NSResourceSystem::IResource * getBackground() const override;
+
+			// Í¨¹ý TMessageReceiver ¼Ì³Ð
+			virtual Void onMessage(CComboBoxItem * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 		};
 		class IComboBoxImp
 			:public IComboBox

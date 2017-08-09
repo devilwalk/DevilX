@@ -3,13 +3,16 @@ using namespace NSDevilX;
 using namespace NSGUISystem;
 
 NSDevilX::NSGUISystem::CDropListItem::CDropListItem(UInt32 index,CDropList * dropList)
-	:CControl(dropList->getLayer()->getName()+"/Item/"+CStringConverter::toString(index),dropList,dropList)
-	,mBackgroundControl(nullptr)
+	:CControl(dropList->getLayer()->getName()+"/Item/"+CStringConverter::toString(index),dropList)
+	,mAlphaControl(nullptr)
 	,mIndex(index)
 	,mAttachedControl(nullptr)
 	,mAttached(False)
 {
-	mBackgroundControl=DEVILX_NEW CImageBox(getLayer()->getName()+"/BackgroundControl",this,this);
+	mAlphaControl=DEVILX_NEW CImageBox(getLayer()->getName()+"/AlphaControl",this);
+	mAlphaControl->setOrderParent(this);
+	mAlphaControl->setBackgroundColour(CFloatRGBA(0.0f,0.0f,1.0f,0.5f));
+	mAlphaControl->setVisible(False);
 }
 
 NSDevilX::NSGUISystem::CDropListItem::~CDropListItem()
@@ -18,12 +21,14 @@ NSDevilX::NSGUISystem::CDropListItem::~CDropListItem()
 	{
 		DEVILX_DELETE(get());
 	}
+	DEVILX_DELETE(mAlphaControl);
 }
 
 Void NSDevilX::NSGUISystem::CDropListItem::set(CControl * control,Bool attach)
 {
 	if(get())
 	{
+		mAlphaControl->setOrderParent(this);
 		get()->setCoordParent(nullptr);
 		get()->setOrderParent(nullptr);
 	}
@@ -31,8 +36,9 @@ Void NSDevilX::NSGUISystem::CDropListItem::set(CControl * control,Bool attach)
 	mAttached=attach;
 	if(get())
 	{
+		mAlphaControl->setOrderParent(get());
 		get()->setCoordParent(this);
-		get()->setOrderParent(mBackgroundControl);
+		get()->setOrderParent(this);
 		get()->setVisible(getVisible());
 	}
 }
@@ -41,7 +47,6 @@ Void NSDevilX::NSGUISystem::CDropListItem::setVisible(Bool visible)
 {
 	if(get())
 		get()->setVisible(visible);
-	mBackgroundControl->setVisible(visible);
 	CControl::setVisible(visible);
 }
 
@@ -49,13 +54,25 @@ Void NSDevilX::NSGUISystem::CDropListItem::setPrepareFocus(Bool focus)
 {
 	if(focus)
 	{
-		mBackgroundControl->setBackgroundColour(CFloatRGB::sBlue);
+		mAlphaControl->setVisible(True);
 		ISystemImp::getSingleton().getWindow()->registerEventListener(this);
 	}
 	else
 	{
-		mBackgroundControl->setBackgroundColour(CFloatRGB::sWhite);
+		mAlphaControl->setVisible(False);
 		ISystemImp::getSingleton().getWindow()->unregisterEventListener(this);
+	}
+}
+
+Void NSDevilX::NSGUISystem::CDropListItem::_setOrderChild(CControl * control)
+{
+	if((control==mAlphaControl)||(control==get()))
+	{
+		CControl::_setOrderChild(control);
+	}
+	else
+	{
+		assert(0);
 	}
 }
 
@@ -67,8 +84,8 @@ Void NSDevilX::NSGUISystem::CDropListItem::onMouseButtonEvent(CWindow * window,E
 	}
 }
 
-NSDevilX::NSGUISystem::CDropList::CDropList(const String & name,CControl * coordParent,CControl * orderParent)
-	:CControl(name,coordParent,orderParent,False)
+NSDevilX::NSGUISystem::CDropList::CDropList(const String & name,CControl * coordParent)
+	:CControl(name,coordParent,False)
 	,mSelectIndex(-1)
 {}
 
@@ -83,8 +100,9 @@ Void NSDevilX::NSGUISystem::CDropList::setSize(UInt32 size)
 		{
 			auto item=DEVILX_NEW CDropListItem(i,this);
 			item->setVisible(getVisible());
-			item->addListener(this,CDropListItem::EMessage_Select);
+			item->addListener(static_cast<TMessageReceiver<CDropListItem>*>(this),CDropListItem::EMessage_Select);
 			mItems.push_back(item);
+			item->setOrderParent(this);
 		}
 	}
 	else if(size<getSize())
@@ -108,6 +126,16 @@ Void NSDevilX::NSGUISystem::CDropList::setVisible(Bool visible)
 		item->setVisible(visible);
 	}
 	CControl::setVisible(visible);
+}
+
+Void NSDevilX::NSGUISystem::CDropList::_setOrderChild(CControl * control)
+{
+	if(mItems.has(static_cast<CDropListItem*>(control)))
+	{
+		CControl::_setOrderChild(control);
+	}
+	else
+		assert(0);
 }
 
 Void NSDevilX::NSGUISystem::CDropList::onMessage(CDropListItem * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)

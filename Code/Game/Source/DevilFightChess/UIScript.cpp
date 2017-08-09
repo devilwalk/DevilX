@@ -76,12 +76,13 @@ Void NSDevilX::NSFightChess::CUIScript::_processElement(TiXmlElement * element,N
 	{
 		auto ctl=guiWindow->createComboBox(_getAttribute("Name",element).get<String>());
 		ctl->getTextProperty()->setFontResource(CApp::getSingleton().getGame()->getFontManager()->getFontResource());
-		ctl->getItemTextProperty()->setFontResource(CApp::getSingleton().getGame()->getFontManager()->getFontResource());
 		if(element->Attribute("Text"))
 			ctl->setText(_getAttribute("Text",element).get<CUTF8String>());
 		ctl->getTextProperty()->setColour(_getAttribute("Colour",element).get<CColour>());
 		if(element->Attribute("Background"))
 			ctl->setBackground(NSResourceSystem::getSystem()->createResource(_getAttribute("Background",element).get<String>(),_getAttribute("Background",element).get<String>()));
+		ctl->getItemTextProperty()->setFontResource(CApp::getSingleton().getGame()->getFontManager()->getFontResource());
+		ctl->getItemTextProperty()->setColour(_getAttribute("Colour",element).get<CColour>());
 		if(element->Attribute("ItemSize"))
 			ctl->setItemListShowSize(_getAttribute("ItemSize",element).get<UInt32>());
 		ctl->queryInterface_IControl()->setPosition(_getAttribute("Position",element).get<CFloat2>());

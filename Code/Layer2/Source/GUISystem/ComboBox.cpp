@@ -10,11 +10,16 @@ NSDevilX::NSGUISystem::CComboBoxItem::~CComboBoxItem()
 
 Void NSDevilX::NSGUISystem::CComboBoxItem::setControl(CCommonControl * control)
 {
-	mControl=control;
-	if(mControl)
+	if(control!=mControl)
 	{
-		mControl->getTextControl()->setText(getText());
-		mControl->getImageControl()->setBackground(getBackground());
+		notify(EMessage_BeginControlChange);
+		mControl=control;
+		if(mControl)
+		{
+			mControl->getTextControl()->setText(getText());
+			mControl->getImageControl()->setBackground(getBackground());
+		}
+		notify(EMessage_EndControlChange);
 	}
 }
 
@@ -32,20 +37,23 @@ Void NSDevilX::NSGUISystem::CComboBoxItem::setBackground(NSResourceSystem::IReso
 		mControl->getImageControl()->setBackground(getBackground());
 }
 
-NSDevilX::NSGUISystem::CComboBox::CComboBox(const String & name,CControl * coordParent,CControl * orderParent)
-	:CControl(name,coordParent,orderParent,False)
+NSDevilX::NSGUISystem::CComboBox::CComboBox(const String & name,CControl * coordParent)
+	:CControl(name,coordParent,False)
 	,mItemShowStart(0)
 	,mEditBox(nullptr)
 	,mDropList(nullptr)
 	,mDropIcon(nullptr)
 {
-	mEditBox=DEVILX_NEW CEditBox(name+"/EditControl",this,this);
+	mEditBox=DEVILX_NEW CEditBox(name+"/EditControl",this);
+	mEditBox->setOrderParent(this);
 	mEditBox->getLayer()->setSize(CFloat2(0.95f,1.0f));
-	mDropList=DEVILX_NEW CDropList(name+"/DropListControl",this,this);
+	mDropList=DEVILX_NEW CDropList(name+"/DropListControl",this);
+	mDropList->setOrderParent(this);
 	mDropList->getLayer()->setPosition(CFloat2(0.0f,1.0f));
 	mDropList->getLayer()->setSize(CFloat2::sZero);
 	mDropList->setVisible(False);
-	mDropIcon=DEVILX_NEW CButton(name+"/DropIcon",this,this);
+	mDropIcon=DEVILX_NEW CButton(name+"/DropIcon",this);
+	mDropIcon->setOrderParent(this);
 	mDropIcon->getLayer()->setPosition(CFloat2(0.95f,0.15f));
 	mDropIcon->getLayer()->setSize(CFloat2(0.05f,0.7f));
 	mDropList->addListener(static_cast<TMessageReceiver<CDropList>*>(this),CDropList::EMessage_SelectIndexChange);
@@ -92,7 +100,7 @@ Void NSDevilX::NSGUISystem::CComboBox::setItemListShowSize(UInt32 sizeInItems)
 	{
 		for(UInt32 i=old_size;i<getItemListShowSize();++i)
 		{
-			auto control=DEVILX_NEW CCommonControl(getLayer()->getName()+"/ItemShow/"+CStringConverter::toString(i),this,this);
+			auto control=DEVILX_NEW CCommonControl(getLayer()->getName()+"/ItemShow/"+CStringConverter::toString(i),this);
 			mDropList->getItem(i)->set(control);
 			if(mItems.size()>i)
 			{
@@ -105,6 +113,19 @@ Void NSDevilX::NSGUISystem::CComboBox::setItemListShowSize(UInt32 sizeInItems)
 UInt32 NSDevilX::NSGUISystem::CComboBox::getItemListShowSize() const
 {
 	return mDropList->getSize();
+}
+
+Void NSDevilX::NSGUISystem::CComboBox::_setOrderChild(CControl * control)
+{
+	if((control==mEditBox)
+		||(control==mDropList)
+		||(control==mDropIcon)
+		)
+	{
+		CControl::_setOrderChild(control);
+	}
+	else
+		assert(0);
 }
 
 Void NSDevilX::NSGUISystem::CComboBox::onMessage(CEditBox * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)

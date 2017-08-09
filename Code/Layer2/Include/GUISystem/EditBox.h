@@ -25,7 +25,7 @@ namespace NSDevilX
 			UInt32 mCaretPosition;
 			Bool mPrepareFocus;
 		public:
-			CEditBox(const String & name,CControl * coordParent,CControl * orderParent);
+			CEditBox(const String & name,CControl * coordParent);
 			~CEditBox();
 			CCommonControl * getCommonControl()const
 			{
@@ -40,6 +40,7 @@ namespace NSDevilX
 			virtual Void onMessage(ISystemImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 		protected:
 			Void _updateListener(Bool preValue);
+			virtual Void _setOrderChild(CControl * control) override;
 		};
 	}
 }

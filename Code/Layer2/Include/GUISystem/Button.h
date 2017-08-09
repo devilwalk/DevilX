@@ -20,15 +20,18 @@ namespace NSDevilX
 			};
 		protected:
 			CCommonControl * mCommonControl;
+			CImageBox * mAlphaControl;
 			Bool mPressed;
 		public:
-			CButton(const String & name,CControl * coordParent,CControl * orderParent);
+			CButton(const String & name,CControl * coordParent);
 			~CButton();
 			CCommonControl * getCommonControl()const
 			{
 				return mCommonControl;
 			}
 			virtual Void setPrepareFocus(Bool focus) override;
+		protected:
+			virtual Void _setOrderChild(CControl * control) override;
 			virtual Void onMouseButtonEvent(CWindow * window,EMouseButtonType buttonType,EMouseButtonEventType eventType,const CUInt2 & position) override;
 		};
 	}

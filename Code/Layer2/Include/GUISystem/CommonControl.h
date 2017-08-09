@@ -13,7 +13,7 @@ namespace NSDevilX
 			CStaticText * mTextControl;
 			CImageBox * mImageControl;
 		public:
-			CCommonControl(const String & name,CControl * coordParent,CControl * orderParent);
+			CCommonControl(const String & name,CControl * coordParent);
 			virtual ~CCommonControl();
 			CStaticText * getTextControl()const
 			{
@@ -24,6 +24,8 @@ namespace NSDevilX
 				return mImageControl;
 			}
 			virtual Void setVisible(Bool visible) override;
+		protected:
+			virtual Void _setOrderChild(CControl * control) override;
 		};
 	}
 }

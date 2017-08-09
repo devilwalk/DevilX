@@ -2,8 +2,8 @@
 using namespace NSDevilX;
 using namespace NSGUISystem;
 
-NSDevilX::NSGUISystem::CPageBarItem::CPageBarItem(const String & name,CControl * coordParent,CControl * orderParent)
-	:CControl(name,coordParent,orderParent)
+NSDevilX::NSGUISystem::CPageBarItem::CPageBarItem(const String & name,CControl * coordParent)
+	:CControl(name,coordParent)
 	,mTextControl(nullptr)
 {
 	auto background=getGraphicScene()->createWindow(name+"/Background");
@@ -11,7 +11,8 @@ NSDevilX::NSGUISystem::CPageBarItem::CPageBarItem(const String & name,CControl *
 	background->queryInterface_IElement()->setSize(CFloat2::sOne);
 	background->setColour(CFloatRGBA::sBlue);
 	_attachWindow(background);
-	mTextControl=DEVILX_NEW CStaticText(name+"/TextControl",this,this);
+	mTextControl=DEVILX_NEW CStaticText(name+"/TextControl",this);
+	mTextControl->setOrderParent(this);
 
 	auto event_window=getEventScene()->createWindow(name);
 	event_window->queryInterface_IElement()->setPosition(CFloat2::sZero);
@@ -22,7 +23,7 @@ NSDevilX::NSGUISystem::CPageBarItem::CPageBarItem(const String & name,CControl *
 
 NSDevilX::NSGUISystem::CPageBarItem::~CPageBarItem()
 {
-	DEVILX_DELETE(getTextControl());
+	DEVILX_DELETE(mTextControl);
 }
 
 Void NSDevilX::NSGUISystem::CPageBarItem::setPrepareFocus(Bool focus)

@@ -2,15 +2,17 @@
 using namespace NSDevilX;
 using namespace NSGUISystem;
 
-NSDevilX::NSGUISystem::IComboBoxItemImp::IComboBoxItemImp(CComboBoxItem * item)
+NSDevilX::NSGUISystem::IComboBoxItemImp::IComboBoxItemImp(CComboBoxItem * item,IComboBoxImp * comboBox)
 	:mItem(item)
+	,mComboBox(comboBox)
 {
-
+	if(mItem->getControl())
+		static_cast<ITextPropertyImp*>(mComboBox->getItemTextProperty())->add(mItem->getControl()->getTextControl()->getTextProperty());
+	mItem->addListener(this,CComboBoxItem::EMessage_EndControlChange);
 }
 
 NSDevilX::NSGUISystem::IComboBoxItemImp::~IComboBoxItemImp()
 {
-	DEVILX_DELETE(mItem);
 }
 
 Void NSDevilX::NSGUISystem::IComboBoxItemImp::setText(const CUTF8String & text)
@@ -34,13 +36,26 @@ NSResourceSystem::IResource * NSDevilX::NSGUISystem::IComboBoxItemImp::getBackgr
 	return mItem->getBackground();
 }
 
+Void NSDevilX::NSGUISystem::IComboBoxItemImp::onMessage(CComboBoxItem * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
+{
+	switch(message)
+	{
+	case CComboBoxItem::EMessage_EndControlChange:
+		if(mItem->getControl())
+			static_cast<ITextPropertyImp*>(mComboBox->getItemTextProperty())->add(mItem->getControl()->getTextControl()->getTextProperty());
+		break;
+	}
+}
+
 NSDevilX::NSGUISystem::IComboBoxImp::IComboBoxImp(const String & name,IWindowImp * window)
 	:mControl(nullptr)
 	,mTextProperty(nullptr)
 	,mItemTextProperty(nullptr)
 	,mEventCallback(nullptr)
 {
-	mControl=DEVILX_NEW IControlImp(IControlImp::EType_ComboBox,DEVILX_NEW CComboBox(name,static_cast<IControlImp*>(window->queryInterface_IControl())->getControl(),static_cast<IControlImp*>(window->queryInterface_IControl())->getControl()),window);
+	auto internal_control=DEVILX_NEW CComboBox(name,static_cast<IControlImp*>(window->queryInterface_IControl())->getControl());
+	internal_control->setOrderParent(static_cast<IControlImp*>(window->queryInterface_IControl())->getControl());
+	mControl=DEVILX_NEW IControlImp(IControlImp::EType_ComboBox,internal_control,window);
 	mTextProperty=DEVILX_NEW ITextPropertyImp;
 	mTextProperty->add(static_cast<CComboBox*>(mControl->getControl())->getEditControl()->getCommonControl()->getTextControl()->getTextProperty());
 	getTextProperty()->setRowAlignMode(IEnum::ETextRowAlignMode_Left);
@@ -87,7 +102,7 @@ NSResourceSystem::IResource * NSDevilX::NSGUISystem::IComboBoxImp::getBackground
 
 IComboBoxItem * NSDevilX::NSGUISystem::IComboBoxImp::createItem()
 {
-	auto ret=DEVILX_NEW IComboBoxItemImp(static_cast<CComboBox*>(mControl->getControl())->createItem());
+	auto ret=DEVILX_NEW IComboBoxItemImp(static_cast<CComboBox*>(mControl->getControl())->createItem(),this);
 	mItems.push_back(ret);
 	return ret;
 }

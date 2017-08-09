@@ -2,26 +2,38 @@
 using namespace NSDevilX;
 using namespace NSGUISystem;
 
-NSDevilX::NSGUISystem::CCommonControl::CCommonControl(const String & name,CControl * coordParent,CControl * orderParent)
-	:CControl(name,coordParent,orderParent,False)
+NSDevilX::NSGUISystem::CCommonControl::CCommonControl(const String & name,CControl * coordParent)
+	:CControl(name,coordParent,False)
 	,mTextControl(nullptr)
 	,mImageControl(nullptr)
 {
-	mImageControl=DEVILX_NEW CImageBox(name+"/ImageControl",this,this);
-	mTextControl=DEVILX_NEW CStaticText(name+"/TextControl",this,mImageControl);
-	getTextControl()->getTextProperty()->setColour(CFloatRGBA::sBlack);
-	getTextControl()->getLayer()->setOrder(getImageControl()->getLayer()->getOrder()+1);
+	mImageControl=DEVILX_NEW CImageBox(name+"/ImageControl",this);
+	mImageControl->setOrderParent(this);
+	mTextControl=DEVILX_NEW CStaticText(name+"/TextControl",this);
+	mTextControl->setOrderParent(mImageControl);
+	mTextControl->getTextProperty()->setColour(CFloatRGBA::sBlack);
+	mTextControl->getLayer()->setOrder(mImageControl->getLayer()->getOrder()+1);
 }
 
 NSDevilX::NSGUISystem::CCommonControl::~CCommonControl()
 {
-	DEVILX_DELETE(getImageControl());
-	DEVILX_DELETE(getTextControl());
+	DEVILX_DELETE(mImageControl);
+	DEVILX_DELETE(mTextControl);
 }
 
 Void NSDevilX::NSGUISystem::CCommonControl::setVisible(Bool visible)
 {
-	getImageControl()->setVisible(visible);
-	getTextControl()->setVisible(visible);
+	mImageControl->setVisible(visible);
+	mTextControl->setVisible(visible);
 	CControl::setVisible(visible);
+}
+
+Void NSDevilX::NSGUISystem::CCommonControl::_setOrderChild(CControl * control)
+{
+	if(control==mImageControl)
+	{
+		CControl::_setOrderChild(control);
+	}
+	else
+		control->setInternalOrderParent(mTextControl);
 }
