@@ -6,9 +6,6 @@ NSDevilX::NSGUISystem::IComboBoxItemImp::IComboBoxItemImp(CComboBoxItem * item,I
 	:mItem(item)
 	,mComboBox(comboBox)
 {
-	if(mItem->getControl())
-		static_cast<ITextPropertyImp*>(mComboBox->getItemTextProperty())->add(mItem->getControl()->getTextControl()->getTextProperty());
-	mItem->addListener(this,CComboBoxItem::EMessage_EndControlChange);
 }
 
 NSDevilX::NSGUISystem::IComboBoxItemImp::~IComboBoxItemImp()
@@ -36,17 +33,6 @@ NSResourceSystem::IResource * NSDevilX::NSGUISystem::IComboBoxItemImp::getBackgr
 	return mItem->getBackground();
 }
 
-Void NSDevilX::NSGUISystem::IComboBoxItemImp::onMessage(CComboBoxItem * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
-{
-	switch(message)
-	{
-	case CComboBoxItem::EMessage_EndControlChange:
-		if(mItem->getControl())
-			static_cast<ITextPropertyImp*>(mComboBox->getItemTextProperty())->add(mItem->getControl()->getTextControl()->getTextProperty());
-		break;
-	}
-}
-
 NSDevilX::NSGUISystem::IComboBoxImp::IComboBoxImp(const String & name,IWindowImp * window)
 	:mControl(nullptr)
 	,mTextProperty(nullptr)
@@ -60,6 +46,8 @@ NSDevilX::NSGUISystem::IComboBoxImp::IComboBoxImp(const String & name,IWindowImp
 	mTextProperty->add(static_cast<CComboBox*>(mControl->getControl())->getEditControl()->getCommonControl()->getTextControl()->getTextProperty());
 	getTextProperty()->setRowAlignMode(IEnum::ETextRowAlignMode_Left);
 	mItemTextProperty=DEVILX_NEW ITextPropertyImp;
+	internal_control->addListener(this,CComboBox::EMessage_EndItemShowControlCreate);
+	internal_control->addListener(this,CComboBox::EMessage_BeginItemShowControlDestroy);
 }
 
 NSDevilX::NSGUISystem::IComboBoxImp::~IComboBoxImp()
@@ -141,4 +129,17 @@ Void NSDevilX::NSGUISystem::IComboBoxImp::setEventCallback(IComboBoxEventCallbac
 IComboBoxEventCallback * NSDevilX::NSGUISystem::IComboBoxImp::getEventCallback() const
 {
 	return nullptr;
+}
+
+Void NSDevilX::NSGUISystem::IComboBoxImp::onMessage(CComboBox * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
+{
+	switch(message)
+	{
+	case CComboBox::EMessage_EndItemShowControlCreate:
+		mItemTextProperty->add(static_cast<CCommonControl*>(data)->getTextControl()->getTextProperty());
+		break;
+	case CComboBox::EMessage_BeginItemShowControlDestroy:
+		mItemTextProperty->remove(static_cast<CCommonControl*>(data)->getTextControl()->getTextProperty());
+		break;
+	}
 }

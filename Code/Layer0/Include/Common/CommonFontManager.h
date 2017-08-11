@@ -28,5 +28,6 @@ namespace NSDevilX
 		~CFontManager();
 		Void reigsterFont(const String & fontName,const CMemoryStream * dataStream);
 		SChar get(const String & fontName,const CUTF8Char & ch,const CUInt2 & fontPixelSize=CUInt2(32));
+		CFontFace * getFace(const String & fontName,const CUInt2 & fontPixelSize=CUInt2(32))const;
 	};
 }

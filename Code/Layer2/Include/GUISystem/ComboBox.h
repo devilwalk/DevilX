@@ -9,14 +9,7 @@ namespace NSDevilX
 		class ISystemImp;
 		class CComboBoxItem
 			:public TBaseObject<CComboBoxItem>
-			,public CMessageNotifier
 		{
-		public:
-			enum EMessage
-			{
-				EMessage_BeginControlChange,
-				EMessage_EndControlChange
-			};
 		protected:
 			CUTF8String mText;
 			NSResourceSystem::IResource * mBackground;
@@ -25,10 +18,6 @@ namespace NSDevilX
 			CComboBoxItem();
 			~CComboBoxItem();
 			Void setControl(CCommonControl * control);
-			CCommonControl * getControl()const
-			{
-				return mControl;
-			}
 			Void setText(const CUTF8String & text);
 			const CUTF8String & getText()const
 			{
@@ -46,9 +35,19 @@ namespace NSDevilX
 			,public TMessageReceiver<CEditBox>
 			,public TMessageReceiver<CButton>
 			,public TMessageReceiver<CDropList>
+			,public CMessageNotifier
 		{
+		public:
+			enum EMessage
+			{
+				EMessage_BeginItemShowControlCreate,
+				EMessage_EndItemShowControlCreate,
+				EMessage_BeginItemShowControlDestroy,
+				EMessage_EndItemShowControlDestroy
+			};
 		protected:
 			TResourcePtrVector<CComboBoxItem> mItems;
+			TResourcePtrVector<CCommonControl> mDropListControls;
 			UInt32 mItemShowStart;
 			CEditBox * mEditBox;
 			CDropList * mDropList;
@@ -83,6 +82,7 @@ namespace NSDevilX
 			Void setItemListShowSize(UInt32 sizeInItems);
 			UInt32 getItemListShowSize()const;
 		protected:
+			Void _refreshItemControl();
 			virtual Void _setOrderChild(CControl * control) override;
 			// Í¨¹ý TMessageReceiver ¼Ì³Ð
 			virtual Void onMessage(CEditBox * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;

@@ -72,6 +72,11 @@ CImage * NSDevilX::NSResourceSystem::ISystemImp::getImage(ILoadedResource * reso
 	return ret;
 }
 
+CFontFace * NSDevilX::NSResourceSystem::ISystemImp::getFontFace(ILoadedResource * resource)
+{
+	return mFontManager->getFace(static_cast<IResourceImp*>(resource)->getName());
+}
+
 CFontManager::SChar NSDevilX::NSResourceSystem::ISystemImp::getChar(ILoadedResource * resource,const CUTF8Char & c)
 {
 	CFontManager::SChar ret;

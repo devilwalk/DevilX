@@ -34,6 +34,7 @@ namespace NSDevilX
 			virtual Void destroyResource(IResource * res) override;
 			virtual IResource * createOrRetrieveResource(const String & name,const String & filename) override;
 			virtual CImage * getImage(ILoadedResource * resource) override;
+			virtual CFontFace * getFontFace(ILoadedResource * resource) override;
 			virtual CFontManager::SChar getChar(ILoadedResource * resource,const CUTF8Char & c) override;
 			virtual NSRenderSystem::ITexture * getRenderTexture(ILoadedResource * resource) override;
 			virtual NSRenderSystem::ITexture * getRenderTexture(ILoadedResource * resource,const CUTF8Char & c) override;

@@ -16,6 +16,7 @@ namespace NSDevilX
 			virtual Void destroyResource(IResource * res)=0;
 			virtual IResource * createOrRetrieveResource(const String & name,const String & filename)=0;
 			virtual CImage * getImage(ILoadedResource * resource)=0;
+			virtual CFontFace * getFontFace(ILoadedResource * resource)=0;
 			virtual CFontManager::SChar getChar(ILoadedResource * resource,const CUTF8Char & c)=0;
 			virtual NSRenderSystem::ITexture * getRenderTexture(ILoadedResource * resource)=0;
 			virtual NSRenderSystem::ITexture * getRenderTexture(ILoadedResource * resource,const CUTF8Char & c)=0;

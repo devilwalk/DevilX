@@ -36,14 +36,6 @@ NSDevilX::CFontManager::SChar NSDevilX::CFontManager::get(const String & fontNam
 		faces.push_back(face);
 	}
 	ret.mGlyphMetrics=face->getGlyphMetrics(ch);
-	ret.mGlyphMetrics.height/=64;
-	ret.mGlyphMetrics.horiAdvance/=64;
-	ret.mGlyphMetrics.horiBearingX/=64;
-	ret.mGlyphMetrics.horiBearingY/=64;
-	ret.mGlyphMetrics.vertAdvance/=64;
-	ret.mGlyphMetrics.vertBearingX/=64;
-	ret.mGlyphMetrics.vertBearingY/=64;
-	ret.mGlyphMetrics.width/=64;
 	auto & imgs=mImages[src];
 	for(auto img:imgs)
 	{
@@ -60,4 +52,22 @@ NSDevilX::CFontManager::SChar NSDevilX::CFontManager::get(const String & fontNam
 	}
 	ret.mImage->getPixelRange(ch,&ret.mPixelStart,&ret.mPixelEnd);
 	return ret;
+}
+
+CFontFace * NSDevilX::CFontManager::getFace(const String & fontName,const CUInt2 & fontPixelSize) const
+{
+	auto src=mFonts.get(fontName);
+	if(!src)
+		return nullptr;
+	CFontFace * face=nullptr;
+	auto & faces=mFaces.get(src);
+	for(auto test:faces)
+	{
+		if(test->getFontPixelSize()==fontPixelSize)
+		{
+			face=test;
+			break;
+		}
+	}
+	return face;
 }

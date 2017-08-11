@@ -12,14 +12,12 @@ Void NSDevilX::NSGUISystem::CComboBoxItem::setControl(CCommonControl * control)
 {
 	if(control!=mControl)
 	{
-		notify(EMessage_BeginControlChange);
 		mControl=control;
 		if(mControl)
 		{
 			mControl->getTextControl()->setText(getText());
 			mControl->getImageControl()->setBackground(getBackground());
 		}
-		notify(EMessage_EndControlChange);
 	}
 }
 
@@ -80,9 +78,8 @@ Void NSDevilX::NSGUISystem::CComboBox::setBackground(NSResourceSystem::IResource
 CComboBoxItem * NSDevilX::NSGUISystem::CComboBox::createItem()
 {
 	auto ret=DEVILX_NEW CComboBoxItem();
-	if(getItemListShowSize()>mItems.size())
-		ret->setControl(static_cast<CCommonControl*>(mDropList->getItem(static_cast<UInt32>(mItems.size()))->get()));
 	mItems.push_back(ret);
+	_refreshItemControl();
 	return ret;
 }
 
@@ -94,25 +91,50 @@ Void NSDevilX::NSGUISystem::CComboBox::destroyItem(CComboBoxItem * item)
 Void NSDevilX::NSGUISystem::CComboBox::setItemListShowSize(UInt32 sizeInItems)
 {
 	const auto old_size=getItemListShowSize();
-	mDropList->getLayer()->setSize(CFloat2(1.0f,static_cast<Float>(sizeInItems)));
-	mDropList->setSize(sizeInItems);
 	if(old_size<sizeInItems)
 	{
-		for(UInt32 i=old_size;i<getItemListShowSize();++i)
+		for(UInt32 i=old_size;i<sizeInItems;++i)
 		{
+			notify(EMessage_BeginItemShowControlCreate);
 			auto control=DEVILX_NEW CCommonControl(getLayer()->getName()+"/ItemShow/"+CStringConverter::toString(i),this);
-			mDropList->getItem(i)->set(control);
-			if(mItems.size()>i)
-			{
-				mItems[i]->setControl(control);
-			}
+			mDropListControls.push_back(control);
+			notify(EMessage_EndItemShowControlCreate,control);
 		}
+	}
+	else
+	{
+		while(old_size>sizeInItems)
+		{
+			auto control=mDropListControls.back();
+			notify(EMessage_BeginItemShowControlDestroy,control);
+			DEVILX_DELETE(control);
+			mDropListControls.pop_back();
+			notify(EMessage_EndItemShowControlDestroy);
+		}
+	}
+	_refreshItemControl();
+	mDropList->getLayer()->setSize(CFloat2(1.0f,static_cast<Float>(sizeInItems)));
+	mDropList->setSize(sizeInItems);
+	for(UInt32 i=0;i<sizeInItems;++i)
+	{
+		mDropList->getItem(i)->set(mDropListControls[i],False);
 	}
 }
 
 UInt32 NSDevilX::NSGUISystem::CComboBox::getItemListShowSize() const
 {
-	return mDropList->getSize();
+	return static_cast<UInt32>(mDropListControls.size());
+}
+
+Void NSDevilX::NSGUISystem::CComboBox::_refreshItemControl()
+{
+	for(UInt32 i=0;i<mItems.size();++i)
+	{
+		if((i<mItemShowStart)||(i>=mItemShowStart+getItemListShowSize()))
+			mItems[i]->setControl(nullptr);
+		else
+			mItems[i]->setControl(mDropListControls[i-mItemShowStart]);
+	}
 }
 
 Void NSDevilX::NSGUISystem::CComboBox::_setOrderChild(CControl * control)

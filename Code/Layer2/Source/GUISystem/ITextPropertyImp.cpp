@@ -36,19 +36,6 @@ NSResourceSystem::IResource * NSDevilX::NSGUISystem::ITextPropertyImp::getFontRe
 	return mProperty->getFontResource();
 }
 
-Void NSDevilX::NSGUISystem::ITextPropertyImp::setFontSize(const CFloat2 & size)
-{
-	mProperty->setFontSize(size);
-	for(auto prop:mPropertys)
-		prop->setFontSize(size);
-}
-
-const CFloat2 & NSDevilX::NSGUISystem::ITextPropertyImp::getFontSize() const
-{
-	// TODO: 在此处插入 return 语句
-	return mProperty->getFontSize();
-}
-
 Void NSDevilX::NSGUISystem::ITextPropertyImp::setColour(const CColour & colour)
 {
 	mProperty->setColour(colour);

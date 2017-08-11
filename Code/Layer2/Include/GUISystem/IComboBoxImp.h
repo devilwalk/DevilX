@@ -7,7 +7,6 @@ namespace NSDevilX
 		class IComboBoxItemImp
 			:public IComboBoxItem
 			,public TBaseObject<IComboBoxItemImp>
-			,public TMessageReceiver<CComboBoxItem>
 		{
 		protected:
 			CComboBoxItem * const mItem;
@@ -24,13 +23,11 @@ namespace NSDevilX
 			virtual const CUTF8String & getText() const override;
 			virtual Void setBackground(NSResourceSystem::IResource * resource) override;
 			virtual NSResourceSystem::IResource * getBackground() const override;
-
-			// 通过 TMessageReceiver 继承
-			virtual Void onMessage(CComboBoxItem * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 		};
 		class IComboBoxImp
 			:public IComboBox
 			,public TBaseObject<IComboBoxImp>
+			,public TMessageReceiver<CComboBox>
 		{
 		protected:
 			TResourcePtrVector<IComboBoxItemImp> mItems;
@@ -57,6 +54,9 @@ namespace NSDevilX
 			virtual ITextProperty * getItemTextProperty() const override;
 			virtual Void setEventCallback(IComboBoxEventCallback * callback) override;
 			virtual IComboBoxEventCallback * getEventCallback() const override;
+
+			// 通过 TMessageReceiver 继承
+			virtual Void onMessage(CComboBox * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 		};
 	}
 }

@@ -20,7 +20,6 @@ namespace NSDevilX
 			};
 		protected:
 			NSResourceSystem::IResource * mFontResource;
-			CFloat2 mFontSize;
 			CFloatRGBA mColour;
 			IEnum::ETextRowAlignMode mRowAlignMode;
 			IEnum::ETextColumeAlignMode mColumeAlignMode;
@@ -32,11 +31,6 @@ namespace NSDevilX
 			NSResourceSystem::IResource * getFontResource() const
 			{
 				return mFontResource;
-			}
-			Void setFontSize(const CFloat2 & size);
-			const CFloat2 & getFontSize()const
-			{
-				return mFontSize;
 			}
 			Void setColour(const CColour & colour);
 			const CColour & getColour() const

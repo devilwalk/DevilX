@@ -20,8 +20,6 @@ Void NSDevilX::NSGUISystem::CStaticText::setText(const CUTF8String & text)
 	if(getText()!=text)
 	{
 		mText=text;
-		if(!getText().empty())
-			getTextProperty()->setFontSize(CFloat2(1.0f/getText().size(),1.0f));
 		addDirtyFlag(EDirtyFlag_Text);
 	}
 }
@@ -59,28 +57,7 @@ Boolean NSDevilX::NSGUISystem::CStaticText::getPositions(TVector<CFloat2>* posit
 	return true;
 }
 
-Boolean NSDevilX::NSGUISystem::CStaticText::_updateGraphicWindows()
-{
-	_destroyGraphicWindows();
-	TVector<CFloat2> positions;
-	auto loaded_resource=_calculateTextParameters(&positions);
-	if(nullptr==loaded_resource)
-		return false;
-	for(size_t i=0;i<getText().size();++i)
-	{
-		auto char_info=NSResourceSystem::getSystem()->getChar(loaded_resource,getText()[i]);
-		auto tex=NSResourceSystem::getSystem()->getRenderTexture(loaded_resource,getText()[i]);
-		auto window=getGraphicScene()->createWindow(getLayer()->getName()+"/"+CStringConverter::toString(i));
-		window->setColour(getTextProperty()->getColour());
-		window->setTexture(tex,char_info.mPixelStart,char_info.mPixelEnd);
-		window->queryInterface_IElement()->setPosition(positions[i]);
-		window->queryInterface_IElement()->setSize(getTextProperty()->getFontSize());
-		_attachWindow(window);
-	}
-	return true;
-}
-
-NSResourceSystem::ILoadedResource * NSDevilX::NSGUISystem::CStaticText::_calculateTextParameters(TVector<CFloat2> * positions,Float * lastCharRight)const
+NSResourceSystem::ILoadedResource * NSDevilX::NSGUISystem::CStaticText::_load() const
 {
 	if(!getTextProperty()->getFontResource())
 		return nullptr;
@@ -96,92 +73,157 @@ NSResourceSystem::ILoadedResource * NSDevilX::NSGUISystem::CStaticText::_calcula
 	};
 	SLoad load_call_back;
 	getTextProperty()->getFontResource()->load(&load_call_back,True);
-	if(positions||lastCharRight)
+	return load_call_back.mLoadedResource;
+}
+
+CFloat2 NSDevilX::NSGUISystem::CStaticText::_calcFontUnitSize() const
+{
+	auto res=_load();
+	auto font_face=NSResourceSystem::getSystem()->getFontFace(res);
+	UInt32 max_advance_width=0;
+	UInt32 max_advance_height=0;
+	CUTF8String line_text;
+	for(auto const & c:mText)
 	{
-		const auto & text=getText();
-		const UInt32 max_row_count=static_cast<UInt32>(1.0f/getTextProperty()->getFontSize().y);
-		TVector<TVector<UInt32> > text_indices;
-		TVector<Float> row_widths;
-		TVector<UInt32> row_indices;
-		Float row_width=0;
-		for(size_t i=0;i<text.size();++i)
+		if(c=='\r')
+			continue;
+		if(c=='\n')
 		{
-			const auto char_info=NSResourceSystem::getSystem()->getChar(load_call_back.mLoadedResource,text[i]);
-			const Float char_width=getTextProperty()->getFontSize().x*static_cast<Float>(char_info.mGlyphMetrics.horiAdvance)/char_info.mImage->getFontFace()->getFontPixelSize().x;
-			const Float new_row_width=row_width+char_width;
-			if(new_row_width>1.0f)
+			max_advance_width=std::max<>(max_advance_width,font_face->getTotalAdvanceWidth(line_text));
+			line_text.clear();
+		}
+		else
+		{
+			line_text.push_back(c);
+		}
+		max_advance_height=std::max<>(max_advance_height,static_cast<UInt32>(font_face->getGlyphMetrics(c).horiBearingY));
+	}
+	auto ret=CFloat2(1.0f,1.0f/_calcLineCount())/CUInt2(max_advance_width,max_advance_height);
+	return ret;
+}
+
+CFloat2 NSDevilX::NSGUISystem::CStaticText::_calcMaxFontSize() const
+{
+	Float size_y=1.0f/_calcLineCount();
+	Float size_x=1.0f/_calcMaxCharPerLine();
+	return CFloat2(size_x,size_y);
+}
+
+UInt32 NSDevilX::NSGUISystem::CStaticText::_calcLineCount() const
+{
+	UInt32 line_count=1;
+	for(auto const & c:mText)
+	{
+		if(c=='\n')
+		{
+			line_count++;
+		}
+	}
+	return line_count;
+}
+
+UInt32 NSDevilX::NSGUISystem::CStaticText::_calcMaxCharPerLine() const
+{
+	UInt32 max_char_per_line=0;
+	UInt32 char_per_line=0;
+	for(auto const & c:mText)
+	{
+		if(c=='\n')
+		{
+			max_char_per_line=std::max<>(max_char_per_line,char_per_line);
+			char_per_line=0;
+		}
+		++char_per_line;
+	}
+	max_char_per_line=std::max<>(max_char_per_line,char_per_line);
+	return max_char_per_line;
+}
+
+Boolean NSDevilX::NSGUISystem::CStaticText::_updateGraphicWindows()
+{
+	_destroyGraphicWindows();
+	TVector<CFloat2> positions;
+	auto loaded_resource=_calculateTextParameters(&positions);
+	if(nullptr==loaded_resource)
+		return false;
+	auto font_face=NSResourceSystem::getSystem()->getFontFace(loaded_resource);
+	const auto max_font_size=_calcMaxFontSize();
+	for(size_t i=0;i<getText().size();++i)
+	{
+		auto char_info=NSResourceSystem::getSystem()->getChar(loaded_resource,getText()[i]);
+		auto tex=NSResourceSystem::getSystem()->getRenderTexture(loaded_resource,getText()[i]);
+		auto window=getGraphicScene()->createWindow(getLayer()->getName()+"/"+CStringConverter::toString(i));
+		window->setColour(getTextProperty()->getColour());
+		window->setTexture(tex,char_info.mPixelStart,char_info.mPixelEnd);
+		window->queryInterface_IElement()->setPosition(positions[i]);
+		window->queryInterface_IElement()->setSize(CFloat2(max_font_size.x*char_info.mGlyphMetrics.horiAdvance/font_face->getBBox().xMax,max_font_size.y));
+		_attachWindow(window);
+	}
+	return true;
+}
+
+NSResourceSystem::ILoadedResource * NSDevilX::NSGUISystem::CStaticText::_calculateTextParameters(TVector<CFloat2> * positions,TVector<CFloat2> * sizes,Float * lastCharRight)const
+{
+	auto res=_load();
+	if(!res)
+		return nullptr;
+	auto font_face=NSResourceSystem::getSystem()->getFontFace(res);
+	if(positions||sizes||lastCharRight)
+	{
+		const auto font_unit_size=_calcFontUnitSize();
+		const auto & text=getText();
+		const auto max_font_size=_calcMaxFontSize();
+		TVector<TVector<UInt32> > text_indices;
+		TVector<UInt32> row_widths;
+		TVector<CUInt2> text_sizes;
+		CUTF8String line_text;
+		for(auto const & c:mText)
+		{
+			if(c=='\r')
+				continue;
+			if(c=='\n')
 			{
-				row_widths.push_back(row_width);
-				text_indices.push_back(row_indices);
-				row_indices.clear();
-				row_indices.push_back(static_cast<UInt32>(i));
-				row_width=char_width;
+				row_widths.push_back(font_face->getTotalAdvanceWidth(line_text));
+				line_text.clear();
 			}
 			else
 			{
-				row_indices.push_back(static_cast<UInt32>(i));
-				row_width=new_row_width;
+				line_text.push_back(c);
+				text_sizes.push_back(CUInt2(static_cast<UInt32>(font_face->getGlyphMetrics(c).horiAdvance),static_cast<UInt32>(font_face->getGlyphMetrics(c).horiBearingY+std::max<FT_Pos>(0,font_face->getGlyphMetrics(c).height-font_face->getGlyphMetrics(c).horiBearingY))));
 			}
 		}
-		if(!row_indices.empty())
+		if(!line_text.empty())
+			row_widths.push_back(font_face->getTotalAdvanceWidth(line_text));
+		CUInt2 offset=CUInt2::sZero;
+		for(size_t row=0;row<row_widths.size();++row)
 		{
-			row_widths.push_back(row_width);
-			text_indices.push_back(row_indices);
-		}
-		text_indices.resize(std::min<SizeT>(text_indices.size(),max_row_count));
-		CFloat2 offset=CFloat2::sZero;
-		for(size_t row=0;row<text_indices.size();++row)
-		{
-			const auto & indices=text_indices[row];
 			switch(getTextProperty()->getRowAlignMode())
 			{
 			case IEnum::ETextRowAlignMode_Center:
-				offset.x=(1.0f-row_widths[row])*0.5f;
+				offset.x=(font_face->getBBox().xMax-row_widths[row])/2;
 				break;
 			case IEnum::ETextRowAlignMode_Left:
-				offset.x=0.0f;
+				offset.x=0;
 				break;
 			case IEnum::ETextRowAlignMode_Right:
-			{
-				auto char_info=NSResourceSystem::getSystem()->getChar(load_call_back.mLoadedResource,text[indices[0]]);
-				offset.x=1.0f-static_cast<Float>(char_info.mGlyphMetrics.horiAdvance)/char_info.mImage->getFontFace()->getFontPixelSize().x/indices.size();
-			}
-			break;
-			}
-			switch(getTextProperty()->getColumeAlignMode())
-			{
-			case IEnum::ETextColumeAlignMode_Bottom:
-				offset.y=1.0f-(text_indices.size()-row)*getTextProperty()->getFontSize().y;
-				break;
-			case IEnum::ETextColumeAlignMode_Center:
-				offset.y=(1.0f-text_indices.size()*getTextProperty()->getFontSize().y)*0.5f;
-				break;
-			case IEnum::ETextColumeAlignMode_Top:
-				offset.y=row*getTextProperty()->getFontSize().y;
+				offset.x=font_face->getBBox().xMax-row_widths[row];
 				break;
 			}
-			Float base_line_in_pixel=0;
-			for(auto index:indices)
+			offset.y=row*font_face->getBBox().yMax;
+			if(positions)
 			{
-				auto char_info=NSResourceSystem::getSystem()->getChar(load_call_back.mLoadedResource,text[index]);
-				base_line_in_pixel=std::max<Float>(base_line_in_pixel,static_cast<Float>(char_info.mGlyphMetrics.height-char_info.mGlyphMetrics.horiBearingY)/char_info.mImage->getFontFace()->getFontPixelSize().y);
-			}
-			base_line_in_pixel+=offset.y;
-			for(auto index:indices)
-			{
-				auto char_info=NSResourceSystem::getSystem()->getChar(load_call_back.mLoadedResource,text[index]);
-				if(positions)
+				UInt32 sum_width=0;
+				for(auto index:text_indices[row])
 				{
-					auto x=offset.x+static_cast<Float>(char_info.mGlyphMetrics.horiBearingX)/char_info.mImage->getFontFace()->getFontPixelSize().x*getTextProperty()->getFontSize().x;
-					positions->push_back(CFloat2(x,-base_line_in_pixel+static_cast<Float>(char_info.mGlyphMetrics.height-char_info.mGlyphMetrics.horiBearingY)/char_info.mImage->getFontFace()->getFontPixelSize().y));
+					positions->push_back(CUInt2(offset.x+sum_width,offset.y)*font_unit_size);
+					sum_width+=text_sizes[index].x;
 				}
-				offset.x+=static_cast<Float>(char_info.mGlyphMetrics.horiAdvance)/char_info.mImage->getFontFace()->getFontPixelSize().x*getTextProperty()->getFontSize().x;
 			}
 		}
 		if(lastCharRight)
-			*lastCharRight=offset.x;
+			*lastCharRight=offset.x*font_unit_size.x;
 	}
-	return load_call_back.mLoadedResource;
+	return res;
 }
 
 Void NSDevilX::NSGUISystem::CStaticText::_preProcessDirtyFlagAdd(UInt32 flagIndex)
