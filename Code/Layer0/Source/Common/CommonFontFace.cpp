@@ -54,6 +54,16 @@ const FT_BBox & NSDevilX::CFontFace::getBBox()
 	return mBBox;
 }
 
+FT_BBox NSDevilX::CFontFace::getBBox(const CUTF8Char & ch) const
+{
+	FT_Load_Glyph(mFace,FT_Get_Char_Index(mFace,ch),FT_LOAD_DEFAULT|FT_LOAD_RENDER);
+	FT_Glyph glyph=nullptr;
+	FT_Get_Glyph(mFace->glyph,&glyph);
+	FT_BBox ret={0};
+	FT_Glyph_Get_CBox(glyph,0,&ret);
+	return ret;
+}
+
 UInt32 NSDevilX::CFontFace::getTotalAdvanceWidth(const CUTF8String & text) const
 {
 	UInt32 ret=0;

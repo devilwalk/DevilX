@@ -23,6 +23,7 @@ namespace NSDevilX
 		const FT_Glyph_Metrics & getGlyphMetrics(const CUTF8Char & ch)const;
 		FT_Bitmap render(const CUTF8Char & ch);
 		const FT_BBox & getBBox();
+		FT_BBox getBBox(const CUTF8Char & ch)const;
 		UInt32 getTotalAdvanceWidth(const CUTF8String & text)const;
 		Void getStartPositions(const CUTF8String & text,TVector<CUInt2> & startPositions);
 	};
