@@ -88,7 +88,7 @@ String NSDevilX::CDirectory::getSystemFontsDirectory()
 #elif DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_LINUX
 #error("not implement!!")
 #endif
-	return cleanPath(ret.c_str());
+	return cleanPath(ret.c_str())+"/Fonts";
 }
 
 String NSDevilX::CDirectory::getAbsolutePath(const String & path,String currentPath)

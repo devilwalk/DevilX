@@ -83,8 +83,38 @@ Void NSDevilX::CWindow::setSize(const CUInt2 & size)
 						case WM_IME_COMPOSITION:
 							break;
 						case WM_CHAR:
-							for(auto listener:listeners)
-								listener->onCharEvent(window,CUTF16Char(&wParam));
+							if(wParam<32)
+							{
+								auto char_key=wParam-1+'a';
+								CUTF16String str;
+								switch(char_key)
+								{
+								case 'v':
+									if(::OpenClipboard(nullptr))
+									{
+										auto handle=::GetClipboardData(CF_UNICODETEXT);
+										WString data=static_cast<WChar*>(GlobalLock(handle));
+										str=CUTF16String(&data[0],data.size()*sizeof(WChar));
+										GlobalUnlock(handle);
+										::CloseClipboard();
+									}
+									break;
+								case 'h':
+									str+=CUTF16Char(&wParam);
+									break;
+								}
+								for(auto const & c:str)
+								{
+									for(auto listener:listeners)
+										listener->onCharEvent(window,c);
+								}
+							}
+							else
+							{
+								const auto ch=CUTF16Char(&wParam);
+								for(auto listener:listeners)
+									listener->onCharEvent(window,ch);
+							}
 							break;
 						case WM_LBUTTONDOWN:
 							for(auto listener:listeners)

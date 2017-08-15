@@ -12,7 +12,6 @@ NSDevilX::NSGUISystem::CCommonControl::CCommonControl(const String & name,CContr
 	mTextControl=DEVILX_NEW CStaticText(name+"/TextControl",this);
 	mTextControl->setOrderParent(mImageControl);
 	mTextControl->getTextProperty()->setColour(CFloatRGBA::sBlack);
-	mTextControl->getLayer()->setOrder(mImageControl->getLayer()->getOrder()+1);
 }
 
 NSDevilX::NSGUISystem::CCommonControl::~CCommonControl()

@@ -36,8 +36,11 @@ Void NSDevilX::NSFightChess::CApp::run()
 	{
 		if(PeekMessage(&msg,static_cast<HWND>(mWindow->getHandle()),0,0,PM_REMOVE))
 		{
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
+			if(!TranslateAccelerator(static_cast<HWND>(mWindow->getHandle()),nullptr,&msg))
+			{
+				TranslateMessage(&msg);
+				DispatchMessage(&msg);
+			}
 		}
 		else
 		{

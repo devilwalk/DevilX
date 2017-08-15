@@ -74,6 +74,10 @@ CImage * NSDevilX::NSResourceSystem::ISystemImp::getImage(ILoadedResource * reso
 
 CFontFace * NSDevilX::NSResourceSystem::ISystemImp::getFontFace(ILoadedResource * resource)
 {
+	if(!mFontManager->getFace(static_cast<IResourceImp*>(resource)->getName()))
+	{
+		mFontManager->reigsterFont(static_cast<IResourceImp*>(resource)->getName(),static_cast<IResourceImp*>(resource)->getBuffer());
+	}
 	return mFontManager->getFace(static_cast<IResourceImp*>(resource)->getName());
 }
 

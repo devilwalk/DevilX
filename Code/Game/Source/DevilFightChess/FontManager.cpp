@@ -6,7 +6,7 @@ NSDevilX::NSFightChess::CFontManager::CFontManager()
 {
 	String font_file;
 #if DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_WINDOWS
-	font_file=CDirectory::getSystemFontsDirectory()+"/Fonts/simsun.ttc";
+	font_file=CDirectory::getSystemFontsDirectory()+"/msyh.ttc";
 #endif
 	mFontResource=NSResourceSystem::getSystem()->createResource("Font/Default",font_file);
 }

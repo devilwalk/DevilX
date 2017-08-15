@@ -39,8 +39,8 @@ Void NSDevilX::CFontImage::getPixelRange(const CUTF8Char & ch,CUInt2 * pixelStar
 			memset(&mPixels[(pixel_start_v+v)*getSize().x+pixel_start_u],0,mFontFace->getFontPixelSize().x*sizeof(mPixels[0]));
 		}
 		//align to left bottom
-		const UInt32 fill_pixel_start_v=pixel_start_v+(mFontFace->getFontPixelSize().y-bitmap.rows);
-		for(UInt32 v=0;v<bitmap.rows;++v)
+		const UInt32 fill_pixel_start_v=pixel_start_v+std::max<Int32>(mFontFace->getFontPixelSize().y-bitmap.rows,0);
+		for(UInt32 v=0;v<std::min<UInt32>(mFontFace->getFontPixelSize().y,bitmap.rows);++v)
 		{
 			for(UInt32 u=0;u<bitmap.width;++u)
 			{
@@ -49,11 +49,13 @@ Void NSDevilX::CFontImage::getPixelRange(const CUTF8Char & ch,CUInt2 * pixelStar
 				pixel_ref=font_img_pixel;
 			}
 		}
-		mCharPixelRanges[ch]=std::pair<CUInt2,CUInt2>(CUInt2(pixel_start_u,pixel_start_v),CUInt2(pixel_start_u,pixel_start_v)+mFontFace->getFontPixelSize()-CUInt2::sOne);
+		const CUInt2 pixel_start(pixel_start_u,fill_pixel_start_v);
+		const CUInt2 pixel_end(CUInt2(pixel_start_u,pixel_start_v)+CUInt2(bitmap.width,mFontFace->getFontPixelSize().y)-CUInt2::sOne);
+		mCharPixelRanges[ch]=std::pair<CUInt2,CUInt2>(pixel_start,pixel_end);
 		if(pixelStart)
-			*pixelStart=CUInt2(pixel_start_u,pixel_start_v);
+			*pixelStart=pixel_start;
 		if(pixelEnd)
-			*pixelEnd=CUInt2(pixel_start_u,pixel_start_v)+mFontFace->getFontPixelSize()-CUInt2::sOne;
+			*pixelEnd=pixel_end;
 		mDirty=dirtyIfCreate;
 	}
 }

@@ -2229,7 +2229,7 @@ void main()\r\n\
 	oColour=iDiffuse;\r\n\
 #if USE_DIFFUSE_TEXTURE||USE_FONT_TEXTURE\r\n\
 	#if USE_FONT_TEXTURE\r\n\
-	float4 diffuse_texture_colour=float4(float3(1.0),diffuse_texture_sampler.r);\r\n\
+	float4 diffuse_texture_colour=float4((float3)1.0,diffuse_texture_sampler.r);\r\n\
 	#else\r\n\
 	float4 diffuse_texture_colour=diffuse_texture_sampler;\r\n\
 	#endif\r\n\
@@ -2474,7 +2474,7 @@ struct SPixelShaderOutput\r\n\
 SPixelShaderOutput psMain(SVertexShaderOutput input)\r\n\
 {\r\n\
     SPixelShaderOutput output = (SPixelShaderOutput) 0;\r\n\
-#if USE_DIFFUSE_TEXTURE\r\n\
+#if USE_DIFFUSE_TEXTURE||USE_FONT_TEXTURE\r\n\
 	float4 diffuse_texture_sampler = gDiffuseTexture.Sample(gDiffuseSamplerState, input.mMainUV);\r\n\
 #endif\r\n\
 #define iDiffuse input.mDiffuse\r\n\
@@ -2482,7 +2482,7 @@ SPixelShaderOutput psMain(SVertexShaderOutput input)\r\n\
 	oColour=iDiffuse;\r\n\
 #if USE_DIFFUSE_TEXTURE||USE_FONT_TEXTURE\r\n\
 	#if USE_FONT_TEXTURE\r\n\
-	float4 diffuse_texture_colour=float4(float3(1.0),diffuse_texture_sampler.r);\r\n\
+	float4 diffuse_texture_colour=float4((float3)1.0,diffuse_texture_sampler.r);\r\n\
 	#else\r\n\
 	float4 diffuse_texture_colour=diffuse_texture_sampler;\r\n\
 	#endif\r\n\

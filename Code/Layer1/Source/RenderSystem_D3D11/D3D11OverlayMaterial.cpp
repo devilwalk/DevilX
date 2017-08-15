@@ -63,7 +63,18 @@ Void NSDevilX::NSRenderSystem::NSD3D11::COverlayMaterial::_updateShader()
 	}
 	mDomainShader=CSystemImp::getSingleton().getDomainShader(blob);*/
 
-	code_key="Overlay_PixelShader_"+CStringConverter::toString(mPSTextures.empty()?0:1);
+	code_key="Overlay_PixelShader";
+	if(!mPSTextures.empty())
+	{
+		if(static_cast<CTexture2D*>(mPSTextures[0])->getInterfaceImp()->getFormat()==IEnum::ETexture2DFormat_A8)
+		{
+			code_key+="_FontTexture";
+		}
+		else
+		{
+			code_key+="_DiffuseTexture";
+		}
+	}
 	blob=CSystemImp::getSingleton().getShaderCodeManager()->getCode(code_key);
 	if(nullptr==blob)
 	{
@@ -86,7 +97,14 @@ Void NSDevilX::NSRenderSystem::NSD3D11::COverlayMaterial::_updateShader()
 		CMacro def;
 		if(!mPSTextures.empty())
 		{
-			def.set("USE_DIFFUSE_TEXTURE");
+			if(static_cast<CTexture2D*>(mPSTextures[0])->getInterfaceImp()->getFormat()==IEnum::ETexture2DFormat_A8)
+			{
+				def.set("USE_FONT_TEXTURE");
+			}
+			else
+			{
+				def.set("USE_DIFFUSE_TEXTURE");
+			}
 			macro_list.push_back(def);
 		}
 		macro_list.push_back(CMacro());

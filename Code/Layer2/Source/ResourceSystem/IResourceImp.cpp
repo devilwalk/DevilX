@@ -7,6 +7,7 @@ NSDevilX::NSResourceSystem::IResourceImp::IResourceImp(const String & name,const
 	,mFile(file)
 	,mLoadState(ELoadState_Unload)
 	,mLoadThreadSyncGroupID(-1)
+	,mBuffer(nullptr)
 {}
 
 NSDevilX::NSResourceSystem::IResourceImp::~IResourceImp()

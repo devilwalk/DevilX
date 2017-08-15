@@ -31,6 +31,7 @@ namespace NSDevilX
 			{
 				return mCommonControl;
 			}
+			Void setText(const CUTF8String & text);
 			virtual Void setPrepareFocus(Bool focus) override;
 			virtual Void setFocus(Bool focus) override;
 			virtual Void onMouseButtonEvent(CWindow * window,EMouseButtonType buttonType,EMouseButtonEventType eventType,const CUInt2 & position) override;

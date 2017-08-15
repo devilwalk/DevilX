@@ -19,8 +19,15 @@ NSDevilX::NSGUISystem::CEditBox::CEditBox(const String & name,CControl * coordPa
 
 NSDevilX::NSGUISystem::CEditBox::~CEditBox()
 {
-	DEVILX_DELETE(getCommonControl());
+	DEVILX_DELETE(mCommonControl);
 	DEVILX_DELETE(mCaret);
+}
+
+Void NSDevilX::NSGUISystem::CEditBox::setText(const CUTF8String & text)
+{
+	notify(EMessage_BeginTextChange);
+	mCommonControl->getTextControl()->setText(text);
+	notify(EMessage_EndTextChange);
 }
 
 Void NSDevilX::NSGUISystem::CEditBox::setPrepareFocus(Bool focus)
@@ -47,7 +54,7 @@ Void NSDevilX::NSGUISystem::CEditBox::onMouseButtonEvent(CWindow * window,EMouse
 			mContainer->setFocusControl(this);
 		TVector<CFloat2> char_positions;
 		Float last_char_right;
-		if(getCommonControl()->getTextControl()->getPositions(&char_positions,&last_char_right))
+		if(mCommonControl->getTextControl()->getPositions(&char_positions,&last_char_right))
 		{
 			CFloat2 position_f=position/ISystemImp::getSingleton().getWindow()->getSize();
 			TList<NSUISystem::IElement*> parents;
@@ -79,7 +86,6 @@ Void NSDevilX::NSGUISystem::CEditBox::onCharEvent(CWindow * window,const CUTF16C
 {
 	if(False==mCaret->isEnable())
 		return;
-	notify(EMessage_BeginTextChange);
 	if(ch=='\b')
 	{
 		auto erase_pos=mCaretPosition;
@@ -88,7 +94,7 @@ Void NSDevilX::NSGUISystem::CEditBox::onCharEvent(CWindow * window,const CUTF16C
 			erase_pos=erase_pos-1;
 			auto text=getCommonControl()->getTextControl()->getText();
 			text.erase(text.begin()+erase_pos);
-			getCommonControl()->getTextControl()->setText(text);
+			setText(text);
 			--mCaretPosition;
 		}
 	}
@@ -96,11 +102,9 @@ Void NSDevilX::NSGUISystem::CEditBox::onCharEvent(CWindow * window,const CUTF16C
 	{
 		auto text=getCommonControl()->getTextControl()->getText();
 		text.insert(text.begin()+mCaretPosition,CUTF8Char(ch));
-		getCommonControl()->getTextControl()->setText(text);
+		setText(text);
 		++mCaretPosition;
 	}
-	getCommonControl()->getTextControl()->getLayer()->setSize(CFloat2(std::min<Float>(getCommonControl()->getTextControl()->getText().size()/20.0f,1.0f),1.0f));
-	notify(EMessage_EndTextChange);
 }
 
 Void NSDevilX::NSGUISystem::CEditBox::onMessage(ISystemImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)

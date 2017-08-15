@@ -121,6 +121,8 @@ Void NSDevilX::NSGUISystem::CDropList::setSize(UInt32 size)
 
 Void NSDevilX::NSGUISystem::CDropList::setVisible(Bool visible)
 {
+	if(!visible)
+		mSelectIndex=-1;
 	for(auto item:mItems)
 	{
 		item->setVisible(visible);

@@ -45,7 +45,7 @@ Void NSDevilX::NSFightChess::CLoginPageLogic::buttonLogic(NSGUISystem::IButton *
 		switch(e)
 		{
 		case NSGUISystem::IButtonEventCallback::EEvent::EEvent_Click:
-			CApp::getSingleton().getGame()->setModuleParameter("Login","mUsername",CApp::getSingleton().getGame()->getUIManager()->getPage(CUIPage::EType_Login)->getGUIWindow()->getEditBox("LoginPage/ComboBox_Username")->getText().toString());
+			CApp::getSingleton().getGame()->setModuleParameter("Login","mUsername",CApp::getSingleton().getGame()->getUIManager()->getPage(CUIPage::EType_Login)->getGUIWindow()->getComboBox("LoginPage/ComboBox_Username")->getText().toString());
 			CApp::getSingleton().getGame()->setModuleParameter("Login","mPassword",CApp::getSingleton().getGame()->getUIManager()->getPage(CUIPage::EType_Login)->getGUIWindow()->getEditBox("LoginPage/Edit_Password")->getText().toString());
 			CApp::getSingleton().getGame()->setModuleParameter("Login","mSuccessCallback",&onOK);
 			CApp::getSingleton().getGame()->startModule("Login");

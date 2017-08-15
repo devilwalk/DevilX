@@ -15,7 +15,7 @@ namespace NSDevilX
 					case IEnum::ETexture2DFormat_R8G8B8A8:
 						return DXGI_FORMAT_R8G8B8A8_UNORM;
 					case IEnum::ETexture2DFormat_A8:
-						return DXGI_FORMAT_A8_UNORM;
+						return DXGI_FORMAT_R8_UNORM;
 					case IEnum::ETexture2DFormat_BC1:
 						return DXGI_FORMAT_BC1_UNORM;
 					case IEnum::ETexture2DFormat_BC2:
@@ -44,7 +44,7 @@ namespace NSDevilX
 					{
 					case DXGI_FORMAT_R8G8B8A8_UNORM:
 						return 4*width;
-					case DXGI_FORMAT_A8_UNORM:
+					case DXGI_FORMAT_R8_UNORM:
 						return width;
 					default:
 						assert(0);

@@ -20,6 +20,7 @@ NSDevilX::NSGUISystem::IWindowImp::IWindowImp(const String & name,ISceneImp * sc
 
 NSDevilX::NSGUISystem::IWindowImp::~IWindowImp()
 {
+	DEVILX_DELETE(mControl);
 	mButtons.destroyAll();
 	mStaticTexts.destroyAll();
 	mImageBoxes.destroyAll();
@@ -27,7 +28,6 @@ NSDevilX::NSGUISystem::IWindowImp::~IWindowImp()
 	mPageBars.destroyAll();
 	mComboBoxs.destroyAll();
 	static_cast<ISceneImp*>(getScene())->getEventScene()->destroyWindow(mEventWindow);
-	DEVILX_DELETE(mControl);
 	NSUISystem::getSystem()->destroyEventScene(mEventScene);
 }
 

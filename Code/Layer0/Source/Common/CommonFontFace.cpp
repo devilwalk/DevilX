@@ -24,7 +24,7 @@ NSDevilX::CFontFace::~CFontFace()
 
 const FT_Glyph_Metrics & NSDevilX::CFontFace::getGlyphMetrics(const CUTF8Char & ch)const
 {
-	FT_Load_Glyph(mFace,FT_Get_Char_Index(mFace,ch),FT_LOAD_DEFAULT|FT_LOAD_RENDER);
+	FT_Load_Glyph(mFace,FT_Get_Char_Index(mFace,ch),FT_LOAD_DEFAULT);
 	return mFace->glyph->metrics;
 }
 
@@ -42,8 +42,8 @@ const FT_BBox & NSDevilX::CFontFace::getBBox()
 	{
 		for(FT_Long glyphs_index=0;glyphs_index<mFace->num_glyphs;++glyphs_index)
 		{
-			FT_Load_Glyph(mFace,glyphs_index,FT_LOAD_DEFAULT|FT_LOAD_RENDER);
-			if(mFace->glyph->bitmap.buffer&&mFace->glyph->metrics.horiAdvance>0&&mFace->glyph->metrics.horiBearingY>0)
+			FT_Load_Glyph(mFace,glyphs_index,FT_LOAD_DEFAULT);
+			if(mFace->glyph->metrics.horiAdvance>0&&mFace->glyph->metrics.horiBearingY>0)
 			{
 				mBBox.xMax=std::max<>(mBBox.xMax,mFace->glyph->metrics.horiAdvance);
 				mBBox.yMax=std::max<>(mBBox.yMax,mFace->glyph->metrics.horiBearingY);
@@ -56,11 +56,12 @@ const FT_BBox & NSDevilX::CFontFace::getBBox()
 
 FT_BBox NSDevilX::CFontFace::getBBox(const CUTF8Char & ch) const
 {
-	FT_Load_Glyph(mFace,FT_Get_Char_Index(mFace,ch),FT_LOAD_DEFAULT|FT_LOAD_RENDER);
+	FT_Load_Glyph(mFace,FT_Get_Char_Index(mFace,ch),FT_LOAD_DEFAULT);
 	FT_Glyph glyph=nullptr;
 	FT_Get_Glyph(mFace->glyph,&glyph);
 	FT_BBox ret={0};
 	FT_Glyph_Get_CBox(glyph,0,&ret);
+	FT_Done_Glyph(glyph);
 	return ret;
 }
 

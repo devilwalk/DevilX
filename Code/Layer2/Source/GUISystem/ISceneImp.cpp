@@ -50,7 +50,7 @@ Void NSDevilX::NSGUISystem::ISceneImp::update()
 
 Void NSDevilX::NSGUISystem::ISceneImp::setActiveWindow(IWindowImp * window)
 {
-	if(mActiveWindow&&mActiveWindow->isModule()&&(!window->isModule()))
+	if(mActiveWindow&&mActiveWindow->isModule()&&window&&(!window->isModule()))
 		return;
 	if(window!=mActiveWindow)
 	{
@@ -105,13 +105,22 @@ IWindow * NSDevilX::NSGUISystem::ISceneImp::getWindow(const String & name) const
 
 Void NSDevilX::NSGUISystem::ISceneImp::destroyWindow(IWindow * window)
 {
+	if(static_cast<IWindowImp*>(window)->isModule())
+		mOrderedModuleWindows.remove(static_cast<IWindowImp*>(window));
+	else
+		mOrderedWindows.remove(static_cast<IWindowImp*>(window));
 	if(mActiveWindow==window)
 	{
-		if(mActiveWindow->isModule())
-			mOrderedModuleWindows.remove(mActiveWindow);
+		setActiveWindow(nullptr);
+		if(mOrderedModuleWindows.empty())
+		{
+			if(!mOrderedWindows.empty())
+			{
+				setActiveWindow(mOrderedWindows.back());
+			}
+		}
 		else
-			mOrderedWindows.remove(mActiveWindow);
-		mActiveWindow=nullptr;
+			setActiveWindow(mOrderedModuleWindows.back());
 	}
 	mWindows.destroy(window->queryInterface_IControl()->getName());
 }

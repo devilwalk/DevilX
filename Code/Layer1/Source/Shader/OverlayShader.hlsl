@@ -32,7 +32,7 @@ struct SPixelShaderOutput
 SPixelShaderOutput psMain(SVertexShaderOutput input)
 {
     SPixelShaderOutput output = (SPixelShaderOutput) 0;
-#if USE_DIFFUSE_TEXTURE
+#if USE_DIFFUSE_TEXTURE||USE_FONT_TEXTURE
 	float4 diffuse_texture_sampler = gDiffuseTexture.Sample(gDiffuseSamplerState, input.mMainUV);
 #endif
 #define iDiffuse input.mDiffuse

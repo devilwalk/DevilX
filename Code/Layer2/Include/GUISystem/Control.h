@@ -59,6 +59,7 @@ namespace NSDevilX
 			{
 				return mVisible;
 			}
+			CUInt2 getSizeInPixel()const;
 			virtual Void setVisible(Bool visible);
 			virtual Void setPrepareFocus(Bool focus){}
 			virtual Void setFocus(Bool focus){}

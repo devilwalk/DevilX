@@ -78,6 +78,11 @@ Void NSDevilX::NSGUISystem::CControl::setInternalOrderParent(CControl * control)
 		getLayer()->setOrderParent(nullptr);
 }
 
+CUInt2 NSDevilX::NSGUISystem::CControl::getSizeInPixel() const
+{
+	return CUInt2(getLayer()->getDerivedSize()*ISystemImp::getSingleton().getWindow()->getSize());
+}
+
 Void NSDevilX::NSGUISystem::CControl::setVisible(Bool visible)
 {
 	mVisible=visible;
@@ -148,6 +153,8 @@ Void NSDevilX::NSGUISystem::CControl::onMessage(CMessageNotifier * notifier,UInt
 
 NSDevilX::NSGUISystem::CContainer::~CContainer()
 {
+	setPrepareFocusControl(nullptr);
+	setFocusControl(nullptr);
 }
 
 Void NSDevilX::NSGUISystem::CContainer::update()

@@ -170,7 +170,7 @@ Void NSDevilX::NSGUISystem::CComboBox::onMessage(CDropList * notifier,UInt32 mes
 	switch(message)
 	{
 	case CDropList::EMessage_SelectIndexChange:
-		getEditControl()->getCommonControl()->getTextControl()->setText(static_cast<CCommonControl*>(notifier->getItem(notifier->getSelectIndex())->get())->getTextControl()->getText());
+		getEditControl()->setText(static_cast<CCommonControl*>(notifier->getItem(notifier->getSelectIndex())->get())->getTextControl()->getText());
 		notifier->setVisible(False);
 		break;
 	}

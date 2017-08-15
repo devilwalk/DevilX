@@ -7,17 +7,17 @@ NSDevilX::NSGUISystem::CStaticText::CStaticText(const String & name,CControl * c
 	,mTextProperty(nullptr)
 {
 	mTextProperty=DEVILX_NEW CTextProperty;
-	getTextProperty()->addListener(static_cast<TMessageReceiver<CTextProperty>*>(this),CTextProperty::EMessage_AddDirtyFlag);
+	mTextProperty->addListener(static_cast<TMessageReceiver<CTextProperty>*>(this),CTextProperty::EMessage_AddDirtyFlag);
 }
 
 NSDevilX::NSGUISystem::CStaticText::~CStaticText()
 {
-	DEVILX_DELETE(getTextProperty());
+	DEVILX_DELETE(mTextProperty);
 }
 
 Void NSDevilX::NSGUISystem::CStaticText::setText(const CUTF8String & text)
 {
-	if(getText()!=text)
+	if(mText!=text)
 	{
 		mText=text;
 		addDirtyFlag(EDirtyFlag_Text);
@@ -26,19 +26,20 @@ Void NSDevilX::NSGUISystem::CStaticText::setText(const CUTF8String & text)
 
 Boolean NSDevilX::NSGUISystem::CStaticText::getPosition(UInt32 charIndex,CFloat2 * position) const
 {
-	if((getText().size()<charIndex)
+	if((mText.size()<charIndex)
 		||hasDirtyFlag(EDirtyFlag_Text))
 		return false;
 	else
 	{
 		if(position)
 		{
+			auto res=_load();
+			if(nullptr==res)
+				return false;
 			TVector<CFloat2> positions;
 			Float last_char_right;
-			auto loaded_resource=_calculateTextParameters(&positions,&last_char_right);
-			if(nullptr==loaded_resource)
-				return false;
-			if(getText().size()==charIndex)
+			_calculateTextParameters(&positions,nullptr,&last_char_right);
+			if(mText.size()==charIndex)
 				*position=CFloat2(last_char_right,0.0f);
 			else
 				*position=positions[charIndex];
@@ -51,15 +52,16 @@ Boolean NSDevilX::NSGUISystem::CStaticText::getPositions(TVector<CFloat2>* posit
 {
 	if(hasDirtyFlag(EDirtyFlag_Text))
 		return false;
-	auto loaded_resource=_calculateTextParameters(positions,lastCharRight);
-	if(nullptr==loaded_resource)
+	auto res=_load();
+	if(nullptr==res)
 		return false;
+	_calculateTextParameters(positions,nullptr,lastCharRight);
 	return true;
 }
 
 NSResourceSystem::ILoadedResource * NSDevilX::NSGUISystem::CStaticText::_load() const
 {
-	if(!getTextProperty()->getFontResource())
+	if(!mTextProperty->getFontResource())
 		return nullptr;
 	struct SLoad
 		:public NSResourceSystem::ILoadCallback
@@ -80,15 +82,36 @@ CFloat2 NSDevilX::NSGUISystem::CStaticText::_calcFontUnitSize() const
 {
 	auto res=_load();
 	auto font_face=NSResourceSystem::getSystem()->getFontFace(res);
-	auto ret=_calcMaxFontSize()/CUInt2(font_face->getBBox().xMax-font_face->getBBox().xMin,font_face->getBBox().yMax-font_face->getBBox().yMin);
-	return ret;
+	if(mText.empty())
+		return CFloat2::sZero;
+	else
+		return _calcValidateSize()/CUInt2(_calcMaxCharPerLine(),_calcLineCount())/CUInt2(font_face->getBBox().xMax-font_face->getBBox().xMin,font_face->getBBox().yMax-font_face->getBBox().yMin);
 }
 
-CFloat2 NSDevilX::NSGUISystem::CStaticText::_calcMaxFontSize() const
+CFloat2 NSDevilX::NSGUISystem::CStaticText::_calcValidateSize() const
 {
-	Float size_y=1.0f/_calcLineCount();
-	Float size_x=1.0f/_calcMaxCharPerLine();
-	return CFloat2(size_x,size_y);
+	auto res=_load();
+	auto font_face=NSResourceSystem::getSystem()->getFontFace(res);
+	if(mText.empty())
+		return CFloat2::sZero;
+	else
+	{
+		const auto max_char_per_line=_calcMaxCharPerLine();
+		const auto line_count=_calcLineCount();
+		const auto size_in_pixel=getSizeInPixel();
+		const auto scalar_best=(static_cast<Float>(font_face->getBBox().xMax-font_face->getBBox().xMin)*max_char_per_line)/((font_face->getBBox().yMax-font_face->getBBox().yMin)*line_count);
+		const auto scalar_current=static_cast<Float>(size_in_pixel.x)/size_in_pixel.y;
+		CFloat2 ret;
+		if(scalar_best>=scalar_current)
+		{
+			ret=CFloat2(1.0f,static_cast<Float>(size_in_pixel.x)/size_in_pixel.y/scalar_best);
+		}
+		else
+		{
+			ret=CFloat2(scalar_best*size_in_pixel.y/size_in_pixel.x,1.0f);
+		}
+		return ret;
+	}
 }
 
 UInt32 NSDevilX::NSGUISystem::CStaticText::_calcLineCount() const
@@ -124,36 +147,37 @@ UInt32 NSDevilX::NSGUISystem::CStaticText::_calcMaxCharPerLine() const
 Boolean NSDevilX::NSGUISystem::CStaticText::_updateGraphicWindows()
 {
 	_destroyGraphicWindows();
-	TVector<CFloat2> positions;
-	auto loaded_resource=_calculateTextParameters(&positions);
+	auto loaded_resource=_load();
 	if(nullptr==loaded_resource)
 		return false;
-	auto font_face=NSResourceSystem::getSystem()->getFontFace(loaded_resource);
-	const auto max_font_size=_calcMaxFontSize();
+	TVector<CFloat2> positions;
+	TVector<CFloat2> sizes;
+	_calculateTextParameters(&positions,&sizes);
 	for(size_t i=0;i<getText().size();++i)
 	{
 		auto char_info=NSResourceSystem::getSystem()->getChar(loaded_resource,getText()[i]);
 		auto tex=NSResourceSystem::getSystem()->getRenderTexture(loaded_resource,getText()[i]);
 		auto window=getGraphicScene()->createWindow(getLayer()->getName()+"/"+CStringConverter::toString(i));
-		window->setColour(getTextProperty()->getColour());
+		window->setColour(mTextProperty->getColour());
 		window->setTexture(tex,char_info.mPixelStart,char_info.mPixelEnd);
 		window->queryInterface_IElement()->setPosition(positions[i]);
-		window->queryInterface_IElement()->setSize(CFloat2(max_font_size.x*char_info.mGlyphMetrics.horiAdvance/font_face->getBBox().xMax,max_font_size.y));
+		window->queryInterface_IElement()->setSize(sizes[i]);
 		_attachWindow(window);
 	}
 	return true;
 }
 
-NSResourceSystem::ILoadedResource * NSDevilX::NSGUISystem::CStaticText::_calculateTextParameters(TVector<CFloat2> * positions,TVector<CFloat2> * sizes,Float * lastCharRight)const
+Void NSDevilX::NSGUISystem::CStaticText::_calculateTextParameters(TVector<CFloat2> * positions,TVector<CFloat2> * sizes,Float * lastCharRight)const
 {
 	auto res=_load();
 	if(!res)
-		return nullptr;
+		return;
 	auto font_face=NSResourceSystem::getSystem()->getFontFace(res);
 	if(positions||sizes||lastCharRight)
 	{
 		const auto font_unit_size=_calcFontUnitSize();
-		const auto max_font_size=_calcMaxFontSize();
+		const auto max_char_per_line=_calcMaxCharPerLine();
+		const auto max_line_width=max_char_per_line*(font_face->getBBox().xMax-font_face->getBBox().xMin);
 		TVector<TVector<UInt32> > text_indices;
 		TVector<UInt32> text_index;
 		TVector<UInt32> row_widths;
@@ -177,20 +201,49 @@ NSResourceSystem::ILoadedResource * NSDevilX::NSGUISystem::CStaticText::_calcula
 			}
 		}
 		if(!line_text.empty())
+		{
 			row_widths.push_back(font_face->getTotalAdvanceWidth(line_text));
+			text_indices.push_back(text_index);
+		}
+		const auto validate_size=_calcValidateSize();
+		CFloat2 fixed_offset=CFloat2::sZero;
+		switch(mTextProperty->getRowAlignMode())
+		{
+		case IEnum::ETextRowAlignMode_Center:
+			fixed_offset.x=(1.0f-validate_size.x)/2;
+			break;
+		case IEnum::ETextRowAlignMode_Left:
+			fixed_offset.x=0;
+			break;
+		case IEnum::ETextRowAlignMode_Right:
+			fixed_offset.x=1.0f-validate_size.x;
+			break;
+		}
+		switch(mTextProperty->getColumeAlignMode())
+		{
+		case IEnum::ETextRowAlignMode_Center:
+			fixed_offset.y=(1.0f-validate_size.y)/2;
+			break;
+		case IEnum::ETextColumeAlignMode_Top:
+			fixed_offset.y=0;
+			break;
+		case IEnum::ETextColumeAlignMode_Bottom:
+			fixed_offset.y=1.0f-validate_size.y;
+			break;
+		}
 		CUInt2 offset=CUInt2::sZero;
 		for(size_t row=0;row<row_widths.size();++row)
 		{
 			switch(getTextProperty()->getRowAlignMode())
 			{
 			case IEnum::ETextRowAlignMode_Center:
-				offset.x=(font_face->getBBox().xMax-row_widths[row])/2;
+				offset.x=(max_line_width-row_widths[row])/2;
 				break;
 			case IEnum::ETextRowAlignMode_Left:
 				offset.x=0;
 				break;
 			case IEnum::ETextRowAlignMode_Right:
-				offset.x=font_face->getBBox().xMax-row_widths[row];
+				offset.x=max_line_width-row_widths[row];
 				break;
 			}
 			offset.y=row*(font_face->getBBox().yMax-font_face->getBBox().yMin);
@@ -202,7 +255,7 @@ NSResourceSystem::ILoadedResource * NSDevilX::NSGUISystem::CStaticText::_calcula
 				for(auto index:text_indices[row])
 				{
 					auto const & metrics=font_face->getGlyphMetrics(mText[index]);
-					(*positions)[index]=CUInt2(offset.x+sum_width+metrics.horiBearingX,offset.y+(font_face->getBBox().yMax-metrics.horiBearingY))*font_unit_size;
+					(*positions)[index]=fixed_offset+CUInt2(offset.x+sum_width+metrics.horiBearingX,offset.y+(font_face->getBBox().yMax-metrics.horiBearingY))*font_unit_size;
 					sum_width+=metrics.horiAdvance;
 				}
 			}
@@ -217,8 +270,20 @@ NSResourceSystem::ILoadedResource * NSDevilX::NSGUISystem::CStaticText::_calcula
 				}
 			}
 		}
+		if(lastCharRight)
+		{
+			UInt32 sum_width=0;
+			if(!text_indices.empty())
+			{
+				for(auto index:text_indices[row_widths.size()-1])
+				{
+					auto const & metrics=font_face->getGlyphMetrics(mText[index]);
+					sum_width+=metrics.horiAdvance;
+				}
+			}
+			*lastCharRight=fixed_offset.x+sum_width*font_unit_size.x;
+		}
 	}
-	return res;
 }
 
 Void NSDevilX::NSGUISystem::CStaticText::_preProcessDirtyFlagAdd(UInt32 flagIndex)
@@ -242,24 +307,24 @@ Void NSDevilX::NSGUISystem::CStaticText::onMessage(ISystemImp * notifier,UInt32 
 	switch(message)
 	{
 	case ISystemImp::EMessage_Update:
-		if(getTextProperty()->hasDirtyFlag(CTextProperty::EDirtyFlag_Font)
+		if(mTextProperty->hasDirtyFlag(CTextProperty::EDirtyFlag_Font)
 			||hasDirtyFlag(EDirtyFlag_Text)
 			)
 		{
 			if(_updateGraphicWindows())
 			{
 				removeDirtyFlag(EDirtyFlag_Text);
-				getTextProperty()->removeDirtyFlag(CTextProperty::EDirtyFlag_Font);
-				getTextProperty()->removeDirtyFlag(CTextProperty::EDirtyFlag_Colour);
+				mTextProperty->removeDirtyFlag(CTextProperty::EDirtyFlag_Font);
+				mTextProperty->removeDirtyFlag(CTextProperty::EDirtyFlag_Colour);
 			}
 		}
-		else if(getTextProperty()->hasDirtyFlag(CTextProperty::EDirtyFlag_Colour))
+		else if(mTextProperty->hasDirtyFlag(CTextProperty::EDirtyFlag_Colour))
 		{
 			for(auto window:mGraphicWindows)
 				window->setColour(getTextProperty()->getColour());
-			getTextProperty()->removeDirtyFlag(CTextProperty::EDirtyFlag_Colour);
+			mTextProperty->removeDirtyFlag(CTextProperty::EDirtyFlag_Colour);
 		}
-		if(0==getTextProperty()->getDirtyFlag())
+		if(0==mTextProperty->getDirtyFlag())
 			removeDirtyFlag(EDirtyFlag_Property);
 		break;
 	}
