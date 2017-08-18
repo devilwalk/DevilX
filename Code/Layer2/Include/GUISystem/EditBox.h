@@ -40,6 +40,7 @@ namespace NSDevilX
 			// Í¨¹ý TMessageReceiver ¼Ì³Ð
 			virtual Void onMessage(ISystemImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 		protected:
+			Void _setText(const CUTF8String & text);
 			Void _updateListener(Bool preValue);
 			virtual Void _setOrderChild(CControl * control) override;
 		};

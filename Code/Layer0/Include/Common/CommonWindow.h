@@ -32,6 +32,7 @@ namespace NSDevilX
 	protected:
 		virtual ~CWindowEventListener(){}
 	public:
+		virtual Void onResize(CWindow * window)=0;
 		virtual Void onCharEvent(CWindow * window,const CUTF16Char & ch)=0;
 		virtual Void onMouseButtonEvent(CWindow * window,EMouseButtonType buttonType,EMouseButtonEventType eventType,const CUInt2 & position)=0;
 		virtual Void onMouseMoveEvent(CWindow * window,const CUInt2 & position)=0;
@@ -43,6 +44,8 @@ namespace NSDevilX
 	public:
 		virtual ~CDefaultWindowEventListener(){}
 	public:
+		virtual Void onResize(CWindow * window) override
+		{}
 		virtual Void onCharEvent(CWindow * window,const CUTF16Char & ch) override
 		{}
 		virtual Void onMouseButtonEvent(CWindow * window,EMouseButtonType buttonType,EMouseButtonEventType eventType,const CUInt2 & position) override

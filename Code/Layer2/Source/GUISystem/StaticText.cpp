@@ -8,11 +8,13 @@ NSDevilX::NSGUISystem::CStaticText::CStaticText(const String & name,CControl * c
 {
 	mTextProperty=DEVILX_NEW CTextProperty;
 	mTextProperty->addListener(static_cast<TMessageReceiver<CTextProperty>*>(this),CTextProperty::EMessage_AddDirtyFlag);
+	ISystemImp::getSingleton().getWindow()->registerEventListener(this);
 }
 
 NSDevilX::NSGUISystem::CStaticText::~CStaticText()
 {
 	DEVILX_DELETE(mTextProperty);
+	ISystemImp::getSingleton().getWindow()->unregisterEventListener(this);
 }
 
 Void NSDevilX::NSGUISystem::CStaticText::setText(const CUTF8String & text)
@@ -338,4 +340,9 @@ Void NSDevilX::NSGUISystem::CStaticText::onMessage(CTextProperty * notifier,UInt
 		addDirtyFlag(EDirtyFlag_Property);
 		break;
 	}
+}
+
+Void NSDevilX::NSGUISystem::CStaticText::onResize(CWindow * window)
+{
+	_updateGraphicWindows();
 }

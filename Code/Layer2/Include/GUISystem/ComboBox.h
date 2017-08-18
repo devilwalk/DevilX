@@ -1,6 +1,6 @@
 #pragma once
 #include "EditBox.h"
-#include "DropList.h"
+#include "List.h"
 #include "Button.h"
 namespace NSDevilX
 {
@@ -34,7 +34,7 @@ namespace NSDevilX
 			,public TBaseObject<CComboBox>
 			,public TMessageReceiver<CEditBox>
 			,public TMessageReceiver<CButton>
-			,public TMessageReceiver<CDropList>
+			,public TMessageReceiver<CList>
 			,public CMessageNotifier
 		{
 		public:
@@ -50,7 +50,7 @@ namespace NSDevilX
 			TResourcePtrVector<CCommonControl> mDropListControls;
 			UInt32 mItemShowStart;
 			CEditBox * mEditBox;
-			CDropList * mDropList;
+			CList * mDropList;
 			CButton * mDropIcon;
 		public:
 			CComboBox(const String & name,CControl * coordParent);
@@ -59,7 +59,7 @@ namespace NSDevilX
 			{
 				return mEditBox;
 			}
-			CDropList * getDropList()const
+			CList * getDropList()const
 			{
 				return mDropList;
 			}
@@ -87,7 +87,7 @@ namespace NSDevilX
 			// Í¨¹ý TMessageReceiver ¼Ì³Ð
 			virtual Void onMessage(CEditBox * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 			virtual Void onMessage(CButton * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
-			virtual Void onMessage(CDropList * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
+			virtual Void onMessage(CList * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 		};
 	}
 }

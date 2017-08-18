@@ -135,7 +135,7 @@
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\CommonControl.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\DropList.h">
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\List.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -212,7 +212,7 @@
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\CommonControl.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\DropList.cpp">
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\List.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

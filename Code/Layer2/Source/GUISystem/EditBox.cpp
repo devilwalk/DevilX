@@ -25,9 +25,8 @@ NSDevilX::NSGUISystem::CEditBox::~CEditBox()
 
 Void NSDevilX::NSGUISystem::CEditBox::setText(const CUTF8String & text)
 {
-	notify(EMessage_BeginTextChange);
-	mCommonControl->getTextControl()->setText(text);
-	notify(EMessage_EndTextChange);
+	_setText(text);
+	mCaretPosition=text.size();
 }
 
 Void NSDevilX::NSGUISystem::CEditBox::setPrepareFocus(Bool focus)
@@ -94,7 +93,7 @@ Void NSDevilX::NSGUISystem::CEditBox::onCharEvent(CWindow * window,const CUTF16C
 			erase_pos=erase_pos-1;
 			auto text=getCommonControl()->getTextControl()->getText();
 			text.erase(text.begin()+erase_pos);
-			setText(text);
+			_setText(text);
 			--mCaretPosition;
 		}
 	}
@@ -102,7 +101,7 @@ Void NSDevilX::NSGUISystem::CEditBox::onCharEvent(CWindow * window,const CUTF16C
 	{
 		auto text=getCommonControl()->getTextControl()->getText();
 		text.insert(text.begin()+mCaretPosition,CUTF8Char(ch));
-		setText(text);
+		_setText(text);
 		++mCaretPosition;
 	}
 }
@@ -122,6 +121,13 @@ Void NSDevilX::NSGUISystem::CEditBox::onMessage(ISystemImp * notifier,UInt32 mes
 	}
 	break;
 	}
+}
+
+Void NSDevilX::NSGUISystem::CEditBox::_setText(const CUTF8String & text)
+{
+	notify(EMessage_BeginTextChange);
+	mCommonControl->getTextControl()->setText(text);
+	notify(EMessage_EndTextChange);
 }
 
 Void NSDevilX::NSGUISystem::CEditBox::_updateListener(Bool preValue)

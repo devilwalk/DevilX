@@ -43,6 +43,10 @@ Void NSDevilX::CWindow::setSize(const CUInt2 & size)
 #if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
 				MoveWindow(static_cast<HWND>(getHandle()),getPosition().x,getPosition().y,getSize().x,getSize().y,FALSE);
 #endif
+				TVector<CWindowEventListener*> listeners;
+				listeners.insert(listeners.end(),mEventListeners.begin(),mEventListeners.end());
+				for(auto listener:listeners)
+					listener->onResize(this);
 			}
 			else
 			{

@@ -2,8 +2,8 @@
 using namespace NSDevilX;
 using namespace NSGUISystem;
 
-NSDevilX::NSGUISystem::CDropListItem::CDropListItem(UInt32 index,CDropList * dropList)
-	:CControl(dropList->getLayer()->getName()+"/Item/"+CStringConverter::toString(index),dropList)
+NSDevilX::NSGUISystem::CListItem::CListItem(UInt32 index,CList * list)
+	:CControl(list->getLayer()->getName()+"/Item/"+CStringConverter::toString(index),list)
 	,mAlphaControl(nullptr)
 	,mIndex(index)
 	,mAttachedControl(nullptr)
@@ -15,7 +15,7 @@ NSDevilX::NSGUISystem::CDropListItem::CDropListItem(UInt32 index,CDropList * dro
 	mAlphaControl->setVisible(False);
 }
 
-NSDevilX::NSGUISystem::CDropListItem::~CDropListItem()
+NSDevilX::NSGUISystem::CListItem::~CListItem()
 {
 	if(mAttached)
 	{
@@ -24,7 +24,7 @@ NSDevilX::NSGUISystem::CDropListItem::~CDropListItem()
 	DEVILX_DELETE(mAlphaControl);
 }
 
-Void NSDevilX::NSGUISystem::CDropListItem::set(CControl * control,Bool attach)
+Void NSDevilX::NSGUISystem::CListItem::set(CControl * control,Bool attach)
 {
 	if(get())
 	{
@@ -43,14 +43,14 @@ Void NSDevilX::NSGUISystem::CDropListItem::set(CControl * control,Bool attach)
 	}
 }
 
-Void NSDevilX::NSGUISystem::CDropListItem::setVisible(Bool visible)
+Void NSDevilX::NSGUISystem::CListItem::setVisible(Bool visible)
 {
 	if(get())
 		get()->setVisible(visible);
 	CControl::setVisible(visible);
 }
 
-Void NSDevilX::NSGUISystem::CDropListItem::setPrepareFocus(Bool focus)
+Void NSDevilX::NSGUISystem::CListItem::setPrepareFocus(Bool focus)
 {
 	if(focus)
 	{
@@ -64,7 +64,7 @@ Void NSDevilX::NSGUISystem::CDropListItem::setPrepareFocus(Bool focus)
 	}
 }
 
-Void NSDevilX::NSGUISystem::CDropListItem::_setOrderChild(CControl * control)
+Void NSDevilX::NSGUISystem::CListItem::_setOrderChild(CControl * control)
 {
 	if((control==mAlphaControl)||(control==get()))
 	{
@@ -76,7 +76,7 @@ Void NSDevilX::NSGUISystem::CDropListItem::_setOrderChild(CControl * control)
 	}
 }
 
-Void NSDevilX::NSGUISystem::CDropListItem::onMouseButtonEvent(CWindow * window,EMouseButtonType buttonType,EMouseButtonEventType eventType,const CUInt2 & position)
+Void NSDevilX::NSGUISystem::CListItem::onMouseButtonEvent(CWindow * window,EMouseButtonType buttonType,EMouseButtonEventType eventType,const CUInt2 & position)
 {
 	if(EMouseButtonType_Left==buttonType)
 	{
@@ -84,23 +84,24 @@ Void NSDevilX::NSGUISystem::CDropListItem::onMouseButtonEvent(CWindow * window,E
 	}
 }
 
-NSDevilX::NSGUISystem::CDropList::CDropList(const String & name,CControl * coordParent)
+NSDevilX::NSGUISystem::CList::CList(const String & name,CControl * coordParent,EType type)
 	:CControl(name,coordParent,False)
+	,mType(type)
 	,mSelectIndex(-1)
 {}
 
-NSDevilX::NSGUISystem::CDropList::~CDropList()
+NSDevilX::NSGUISystem::CList::~CList()
 {}
 
-Void NSDevilX::NSGUISystem::CDropList::setSize(UInt32 size)
+Void NSDevilX::NSGUISystem::CList::setSize(UInt32 size)
 {
 	if(size>getSize())
 	{
 		for(UInt32 i=getSize();i<size;++i)
 		{
-			auto item=DEVILX_NEW CDropListItem(i,this);
+			auto item=DEVILX_NEW CListItem(i,this);
 			item->setVisible(getVisible());
-			item->addListener(static_cast<TMessageReceiver<CDropListItem>*>(this),CDropListItem::EMessage_Select);
+			item->addListener(static_cast<TMessageReceiver<CListItem>*>(this),CListItem::EMessage_Select);
 			mItems.push_back(item);
 			item->setOrderParent(this);
 		}
@@ -112,14 +113,26 @@ Void NSDevilX::NSGUISystem::CDropList::setSize(UInt32 size)
 			mItems.destroy(getItem(getSize()-1));
 		}
 	}
-	for(UInt32 i=0;i<getSize();++i)
+	switch(mType)
 	{
-		mItems[i]->getLayer()->setPosition(CFloat2(0.0f,_getItemHeight()*i));
-		mItems[i]->getLayer()->setSize(CFloat2(1.0f,_getItemHeight()));
+	case EType_Row:
+		for(UInt32 i=0;i<getSize();++i)
+		{
+			mItems[i]->getLayer()->setPosition(CFloat2(_getItemSize()*i,0.0f));
+			mItems[i]->getLayer()->setSize(CFloat2(_getItemSize(),1.0f));
+		}
+		break;
+	case EType_Colume:
+		for(UInt32 i=0;i<getSize();++i)
+		{
+			mItems[i]->getLayer()->setPosition(CFloat2(0.0f,_getItemSize()*i));
+			mItems[i]->getLayer()->setSize(CFloat2(1.0f,_getItemSize()));
+		}
+		break;
 	}
 }
 
-Void NSDevilX::NSGUISystem::CDropList::setVisible(Bool visible)
+Void NSDevilX::NSGUISystem::CList::setVisible(Bool visible)
 {
 	if(!visible)
 		mSelectIndex=-1;
@@ -130,9 +143,9 @@ Void NSDevilX::NSGUISystem::CDropList::setVisible(Bool visible)
 	CControl::setVisible(visible);
 }
 
-Void NSDevilX::NSGUISystem::CDropList::_setOrderChild(CControl * control)
+Void NSDevilX::NSGUISystem::CList::_setOrderChild(CControl * control)
 {
-	if(mItems.has(static_cast<CDropListItem*>(control)))
+	if(mItems.has(static_cast<CListItem*>(control)))
 	{
 		CControl::_setOrderChild(control);
 	}
@@ -140,11 +153,11 @@ Void NSDevilX::NSGUISystem::CDropList::_setOrderChild(CControl * control)
 		assert(0);
 }
 
-Void NSDevilX::NSGUISystem::CDropList::onMessage(CDropListItem * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
+Void NSDevilX::NSGUISystem::CList::onMessage(CListItem * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
 {
 	switch(message)
 	{
-	case CDropListItem::EMessage_Select:
+	case CListItem::EMessage_Select:
 		if(notifier->getIndex()!=getSelectIndex())
 		{
 			mSelectIndex=notifier->getIndex();

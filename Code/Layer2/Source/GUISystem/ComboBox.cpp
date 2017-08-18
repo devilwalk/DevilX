@@ -45,7 +45,7 @@ NSDevilX::NSGUISystem::CComboBox::CComboBox(const String & name,CControl * coord
 	mEditBox=DEVILX_NEW CEditBox(name+"/EditControl",this);
 	mEditBox->setOrderParent(this);
 	mEditBox->getLayer()->setSize(CFloat2(0.95f,1.0f));
-	mDropList=DEVILX_NEW CDropList(name+"/DropListControl",this);
+	mDropList=DEVILX_NEW CList(name+"/DropListControl",this);
 	mDropList->setOrderParent(this);
 	mDropList->getLayer()->setPosition(CFloat2(0.0f,1.0f));
 	mDropList->getLayer()->setSize(CFloat2::sZero);
@@ -54,7 +54,7 @@ NSDevilX::NSGUISystem::CComboBox::CComboBox(const String & name,CControl * coord
 	mDropIcon->setOrderParent(this);
 	mDropIcon->getLayer()->setPosition(CFloat2(0.95f,0.15f));
 	mDropIcon->getLayer()->setSize(CFloat2(0.05f,0.7f));
-	mDropList->addListener(static_cast<TMessageReceiver<CDropList>*>(this),CDropList::EMessage_SelectIndexChange);
+	mDropList->addListener(static_cast<TMessageReceiver<CList>*>(this),CList::EMessage_SelectIndexChange);
 	mDropIcon->addListener(static_cast<TMessageReceiver<CButton>*>(this),CButton::EMessage_Click);
 }
 
@@ -165,11 +165,11 @@ Void NSDevilX::NSGUISystem::CComboBox::onMessage(CButton * notifier,UInt32 messa
 	}
 }
 
-Void NSDevilX::NSGUISystem::CComboBox::onMessage(CDropList * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
+Void NSDevilX::NSGUISystem::CComboBox::onMessage(CList * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
 {
 	switch(message)
 	{
-	case CDropList::EMessage_SelectIndexChange:
+	case CList::EMessage_SelectIndexChange:
 		getEditControl()->setText(static_cast<CCommonControl*>(notifier->getItem(notifier->getSelectIndex())->get())->getTextControl()->getText());
 		notifier->setVisible(False);
 		break;

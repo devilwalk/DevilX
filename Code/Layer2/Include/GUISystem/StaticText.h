@@ -12,6 +12,7 @@ namespace NSDevilX
 			,public TMessageReceiver<ISystemImp>
 			,public CDirtyFlagContainer
 			,public TMessageReceiver<CTextProperty>
+			,public CDefaultWindowEventListener
 		{
 		public:
 			enum EDirtyFlag
@@ -49,6 +50,7 @@ namespace NSDevilX
 			// Í¨¹ý TMessageReceiver ¼Ì³Ð
 			virtual Void onMessage(ISystemImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 			virtual Void onMessage(CTextProperty * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
+			virtual Void onResize(CWindow * window) override;
 		};
 	}
 }
