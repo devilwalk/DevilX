@@ -35,12 +35,12 @@ Void NSDevilX::NSFightChess::CMatchServer::onDataReceived(NSNetworkSystem::ILink
 {
 	if(mInvalidLinks.has(link))
 	{
+		mInvalidLinks.remove(link);
 		auto parsed_data=static_cast<const SConnectRequestAndResponse*>(data);
 		if((dataSizeInBytes==sizeof(SConnectRequestAndResponse))
 			&&(0==memcmp(parsed_data,&SConnectRequestAndResponse(),sizeof(SConnectRequestAndResponse)))
 			)
 		{
-			mInvalidLinks.remove(link);
 			mLinks.push_back(link);
 			link->addSendData(&SConnectRequestAndResponse(),sizeof(SConnectRequestAndResponse));
 		}

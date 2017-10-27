@@ -173,3 +173,13 @@ IComboBox * NSDevilX::NSGUISystem::IWindowImp::getComboBox(const String & name) 
 {
 	return mComboBoxs.get(name);
 }
+
+IListBox * NSDevilX::NSGUISystem::IWindowImp::createListBox(const String & name)
+{
+	return nullptr;
+}
+
+IListBox * NSDevilX::NSGUISystem::IWindowImp::getListBox(const String & name) const
+{
+	return nullptr;
+}

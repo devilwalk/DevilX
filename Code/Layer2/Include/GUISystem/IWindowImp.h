@@ -65,6 +65,10 @@ namespace NSDevilX
 			// 通过 IWindow 继承
 			virtual IComboBox * createComboBox(const String & name) override;
 			virtual IComboBox * getComboBox(const String & name) const override;
+
+			// 通过 IWindow 继承
+			virtual IListBox * createListBox(const String & name) override;
+			virtual IListBox * getListBox(const String & name) const override;
 		};
 	}
 }

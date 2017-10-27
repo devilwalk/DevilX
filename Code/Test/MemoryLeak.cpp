@@ -283,3 +283,121 @@ int main()
 	return 0;
 }
 #endif
+void main()
+{
+	NSDevilX::CUInt2 middle(255);
+	int half=256;
+	auto offset_y=half/2;
+	auto offset_x=static_cast<unsigned int>(sqrtf(3)*offset_y);
+	NSDevilX::CUInt2 red=middle-NSDevilX::CInt2(offset_x,offset_y);
+	NSDevilX::CUInt2 green=middle+NSDevilX::CInt2(0,half);
+	NSDevilX::CUInt2 blue=middle+NSDevilX::CInt2(offset_x,-offset_y);
+	NSDevilX::CFloat2 hsv_base_axis(NSDevilX::CFloat2::sUnitX);
+	FreeImage_Initialise();
+	auto bitmap=FreeImage_Allocate(512,512,32,0xff000000,0xff0000,0xff00);
+	if(bitmap)
+	{
+		for(unsigned int x=0;x<512;++x)
+		{
+			for(unsigned int y=0;y<512;++y)
+			{
+				CUInt2 pt(x,y);
+				auto length_to_middle=DirectX::XMVectorGetX(DirectX::XMVector2Length(pt-middle));
+				if(length_to_middle<=half)
+				{
+					RGBQUAD colour;
+					auto h=acosf(DirectX::XMVectorGetX(DirectX::XMVectorClamp(DirectX::XMVector2Dot(hsv_base_axis,DirectX::XMVector2Normalize(pt-middle)),-NSDevilX::CFloat2::sOne,NSDevilX::CFloat2::sOne)))*180.0f/3.1415926f;
+					if(x>=middle.x&&y<=middle.y)
+					{
+						h=360-h;
+					}
+					else if(x<=middle.x&&y<=middle.y)
+					{
+						h=360-h;
+					}
+					auto s=length_to_middle/half;
+					auto v=1.0f;
+					//hsv to rgb
+					if(0==s)
+						colour.rgbRed=colour.rgbGreen=colour.rgbBlue=static_cast<BYTE>(v*255);
+					else
+					{
+						h/=60;
+						auto hi=static_cast<int>(h);
+						auto f=h-hi;
+						auto p=v*(1-s);
+						auto q=v*(1-f*s);
+						auto t=v*(1-(1-f)*s);
+						switch(hi)
+						{
+						case 0:
+							colour.rgbRed=static_cast<BYTE>(v*255);
+							colour.rgbGreen=static_cast<BYTE>(t*255);
+							colour.rgbBlue=static_cast<BYTE>(p*255);
+							break;
+						case 1:
+							colour.rgbRed=static_cast<BYTE>(q*255);
+							colour.rgbGreen=static_cast<BYTE>(v*255);
+							colour.rgbBlue=static_cast<BYTE>(p*255);
+							break;
+						case 2:
+							colour.rgbRed=static_cast<BYTE>(p*255);
+							colour.rgbGreen=static_cast<BYTE>(v*255);
+							colour.rgbBlue=static_cast<BYTE>(t*255);
+							break;
+						case 3:
+							colour.rgbRed=static_cast<BYTE>(p*255);
+							colour.rgbGreen=static_cast<BYTE>(q*255);
+							colour.rgbBlue=static_cast<BYTE>(v*255);
+							break;
+						case 4:
+							colour.rgbRed=static_cast<BYTE>(t*255);
+							colour.rgbGreen=static_cast<BYTE>(p*255);
+							colour.rgbBlue=static_cast<BYTE>(v*255);
+							break;
+						case 5:
+							colour.rgbRed=static_cast<BYTE>(v*255);
+							colour.rgbGreen=static_cast<BYTE>(p*255);
+							colour.rgbBlue=static_cast<BYTE>(q*255);
+							break;
+						}
+					}
+					//auto r=NSDevilX::clamp<int>(2*half-static_cast<int>(DirectX::XMVectorGetX(DirectX::XMVector2Length(pt-red))),1,2*half-1);
+					//auto g=NSDevilX::clamp<int>(2*half-static_cast<int>(DirectX::XMVectorGetX(DirectX::XMVector2Length(pt-green))),1,2*half-1);
+					//auto b=NSDevilX::clamp<int>(2*half-static_cast<int>(DirectX::XMVectorGetX(DirectX::XMVector2Length(pt-blue))),1,2*half-1);
+					//float uniform_scalar=static_cast<float>(std::max<>(r,std::max<>(g,b)));
+					//colour.rgbRed=static_cast<BYTE>(powf(r/uniform_scalar,1.0f)*255);
+					//colour.rgbGreen=static_cast<BYTE>(powf(g/uniform_scalar,1.0f)*255);
+					//colour.rgbBlue=static_cast<BYTE>(powf(b/uniform_scalar,1.0f)*255);
+					colour.rgbReserved=0xff;
+					auto result=FreeImage_SetPixelColor(bitmap,x,y,&colour);
+					assert(result);
+				}
+			}
+		}
+		auto result=FreeImage_Save(FIF_PNG,bitmap,"d:/É«»·.png");
+		assert(result);
+		FreeImage_Unload(bitmap);
+	}
+	bitmap=FreeImage_Allocate(32,512,32,0xff000000,0xff0000,0xff00);
+	if(bitmap)
+	{
+		for(unsigned int x=0;x<32;++x)
+		{
+			for(unsigned int y=0;y<512;++y)
+			{
+				RGBQUAD colour;
+				colour.rgbRed=static_cast<BYTE>(255*y/511.0f);
+				colour.rgbGreen=static_cast<BYTE>(255*y/511.0f);
+				colour.rgbBlue=static_cast<BYTE>(255*y/511.0f);
+				colour.rgbReserved=0xff;
+				auto result=FreeImage_SetPixelColor(bitmap,x,y,&colour);
+				assert(result);
+			}
+		}
+		auto result=FreeImage_Save(FIF_PNG,bitmap,"d:/É«¿Ø.png");
+		assert(result);
+		FreeImage_Unload(bitmap);
+	}
+	FreeImage_DeInitialise();
+}

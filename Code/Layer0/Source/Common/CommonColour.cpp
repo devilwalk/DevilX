@@ -1,6 +1,12 @@
 #include "Precompiler.h"
 using namespace NSDevilX;
 
+NSDevilX::CColour::CColour()
+{}
+
+NSDevilX::CColour::~CColour()
+{}
+
 const NSDevilX::CFloatRGB NSDevilX::CFloatRGB::sBlack(0.0f,0.0f,0.0f);
 const NSDevilX::CFloatRGB NSDevilX::CFloatRGB::sWhite(1.0f,1.0f,1.0f);
 const NSDevilX::CFloatRGB NSDevilX::CFloatRGB::sRed(1.0f,0.0f,0.0f);
@@ -164,4 +170,51 @@ Float NSDevilX::CFloatAlpha::b() const
 Float NSDevilX::CFloatAlpha::a() const
 {
 	return mValue;
+}
+
+NSDevilX::CFloatHSV::CFloatHSV(UInt8 r,UInt8 g,UInt8 b)
+{}
+
+NSDevilX::CFloatHSV::CFloatHSV(const CColour & cpy)
+{}
+
+const CColour & NSDevilX::CFloatHSV::operator=(const CColour & cpy)
+{
+	// TODO: 在此处插入 return 语句
+	return *this;
+}
+
+Boolean NSDevilX::CFloatHSV::operator==(const CColour & test) const
+{
+	return Boolean();
+}
+
+Boolean NSDevilX::CFloatHSV::operator!=(const CColour & test) const
+{
+	return Boolean();
+}
+
+CColour::EType NSDevilX::CFloatHSV::type() const
+{
+	return EType_HSV;
+}
+
+Float NSDevilX::CFloatHSV::r() const
+{
+	return Float();
+}
+
+Float NSDevilX::CFloatHSV::g() const
+{
+	return Float();
+}
+
+Float NSDevilX::CFloatHSV::b() const
+{
+	return Float();
+}
+
+Float NSDevilX::CFloatHSV::a() const
+{
+	return Float();
 }

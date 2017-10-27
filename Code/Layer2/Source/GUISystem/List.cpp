@@ -2,10 +2,11 @@
 using namespace NSDevilX;
 using namespace NSGUISystem;
 
-NSDevilX::NSGUISystem::CListItem::CListItem(UInt32 index,CList * list)
-	:CControl(list->getLayer()->getName()+"/Item/"+CStringConverter::toString(index),list)
+NSDevilX::NSGUISystem::CListItem::CListItem(UInt32 rowIndex,UInt32 columeIndex,CList * list)
+	:CControl(list->getLayer()->getName()+"/Item/"+CStringConverter::toString(columeIndex)+","+CStringConverter::toString(rowIndex),list)
 	,mAlphaControl(nullptr)
-	,mIndex(index)
+	,mRowIndex(rowIndex)
+	,mColumeIndex(columeIndex)
 	,mAttachedControl(nullptr)
 	,mAttached(False)
 {
@@ -84,68 +85,71 @@ Void NSDevilX::NSGUISystem::CListItem::onMouseButtonEvent(CWindow * window,EMous
 	}
 }
 
-NSDevilX::NSGUISystem::CList::CList(const String & name,CControl * coordParent,EType type)
+NSDevilX::NSGUISystem::CList::CList(const String & name,CControl * coordParent)
 	:CControl(name,coordParent,False)
-	,mType(type)
-	,mSelectIndex(-1)
+	,mSelectRow(-1)
+	,mSelectColume(-1)
 {}
 
 NSDevilX::NSGUISystem::CList::~CList()
 {}
 
-Void NSDevilX::NSGUISystem::CList::setSize(UInt32 size)
+Void NSDevilX::NSGUISystem::CList::setSize(UInt32 rowSize,UInt32 columeSize)
 {
-	if(size>getSize())
+	rowSize=rowSize?rowSize:1;
+	columeSize=columeSize?columeSize:1;
+	mItems.resize(columeSize);
+	for(UInt32 colume=0;colume<getColumeSize();++colume)
 	{
-		for(UInt32 i=getSize();i<size;++i)
+		auto & items=mItems[colume];
+		items.resize(rowSize);
+		for(UInt32 row=0;row<getRowSize();++row)
 		{
-			auto item=DEVILX_NEW CListItem(i,this);
-			item->setVisible(getVisible());
-			item->addListener(static_cast<TMessageReceiver<CListItem>*>(this),CListItem::EMessage_Select);
-			mItems.push_back(item);
-			item->setOrderParent(this);
+			auto item=items[row];
+			if(!item)
+			{
+				item=DEVILX_NEW CListItem(row,colume,this);
+				items[row]=item;
+				item->setVisible(getVisible());
+				item->addListener(static_cast<TMessageReceiver<CListItem>*>(this),CListItem::EMessage_Select);
+				item->setOrderParent(this);
+			}
+			auto const & size=_getItemSize();
+			item->getLayer()->setPosition(size*CUInt2(colume,row));
+			item->getLayer()->setSize(size);
 		}
-	}
-	else if(size<getSize())
-	{
-		while(size<getSize())
-		{
-			mItems.destroy(getItem(getSize()-1));
-		}
-	}
-	switch(mType)
-	{
-	case EType_Row:
-		for(UInt32 i=0;i<getSize();++i)
-		{
-			mItems[i]->getLayer()->setPosition(CFloat2(_getItemSize()*i,0.0f));
-			mItems[i]->getLayer()->setSize(CFloat2(_getItemSize(),1.0f));
-		}
-		break;
-	case EType_Colume:
-		for(UInt32 i=0;i<getSize();++i)
-		{
-			mItems[i]->getLayer()->setPosition(CFloat2(0.0f,_getItemSize()*i));
-			mItems[i]->getLayer()->setSize(CFloat2(1.0f,_getItemSize()));
-		}
-		break;
 	}
 }
 
 Void NSDevilX::NSGUISystem::CList::setVisible(Bool visible)
 {
 	if(!visible)
-		mSelectIndex=-1;
-	for(auto item:mItems)
 	{
-		item->setVisible(visible);
+		mSelectRow=-1;
+		mSelectColume=-1;
+	}
+	for(auto const &items:mItems)
+	{
+		for(auto item:items)
+		{
+			item->setVisible(visible);
+		}
 	}
 	CControl::setVisible(visible);
 }
 
 Void NSDevilX::NSGUISystem::CList::_setOrderChild(CControl * control)
 {
-	if(mItems.has(static_cast<CListItem*>(control)))
+	auto is_child=false;
+	for(auto const &items:mItems)
+	{
+		if(items.has(static_cast<CListItem*>(control)))
+		{
+			is_child=true;
+			break;
+		}
+	}
+	if(is_child)
 	{
 		CControl::_setOrderChild(control);
 	}
@@ -158,9 +162,10 @@ Void NSDevilX::NSGUISystem::CList::onMessage(CListItem * notifier,UInt32 message
 	switch(message)
 	{
 	case CListItem::EMessage_Select:
-		if(notifier->getIndex()!=getSelectIndex())
+		if((notifier->getRowIndex()!=getSelectRow())||(notifier->getColumeIndex()!=getSelectColume()))
 		{
-			mSelectIndex=notifier->getIndex();
+			mSelectRow=notifier->getRowIndex();
+			mSelectColume=notifier->getColumeIndex();
 			notify(EMessage_SelectIndexChange);
 		}
 		break;

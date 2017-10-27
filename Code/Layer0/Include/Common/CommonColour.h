@@ -10,10 +10,11 @@ namespace NSDevilX
 		{
 			EType_Alpha,
 			EType_RGB,
-			EType_RGBA
+			EType_RGBA,
+			EType_HSV
 		};
-		CColour(){}
-		virtual ~CColour(){}
+		CColour();
+		virtual ~CColour();
 		virtual const CColour & operator=(const CColour & cpy)=0;
 		virtual Boolean operator==(const CColour & test)const=0;
 		virtual Boolean operator!=(const CColour & test)const=0;
@@ -113,6 +114,25 @@ namespace NSDevilX
 		CFloatRGBA(UInt8 r=0,UInt8 g=0,UInt8 b=0,UInt8 a=0);
 		CFloatRGBA(const CColour & cpy);
 		const CFloatRGBA & operator=(const CFloatRGBA & cpy);
+		virtual const CColour & operator=(const CColour & cpy) override;
+		virtual Boolean operator==(const CColour & test) const override;
+		virtual Boolean operator!=(const CColour & test) const override;
+		virtual EType type() const override;
+		virtual Float r() const override;
+		virtual Float g() const override;
+		virtual Float b() const override;
+		virtual Float a() const override;
+	};
+	class CFloatHSV
+		:public CFloat3
+		,public CColour
+		,public TBaseObject<CFloatHSV>
+	{
+	public:
+		using CFloat3::CFloat3;
+		using CFloat3::operator=;
+		CFloatHSV(UInt8 r=0,UInt8 g=0,UInt8 b=0);
+		CFloatHSV(const CColour & cpy);
 		virtual const CColour & operator=(const CColour & cpy) override;
 		virtual Boolean operator==(const CColour & test) const override;
 		virtual Boolean operator!=(const CColour & test) const override;

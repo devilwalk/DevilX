@@ -22,7 +22,6 @@ namespace NSDevilX
 			typedef Void editBoxLogic(NSGUISystem::IEditBox*,NSGUISystem::IEditBoxEventCallback::EEvent);
 		protected:
 			EType const mType;
-			EType mCallPage;
 			NSGUISystem::IWindow * mGUIWindow;
 			buttonLogic * mButtonLogic;
 			editBoxLogic * mEditBoxLogic;
@@ -39,11 +38,6 @@ namespace NSDevilX
 			}
 			Void setButtonLogic(buttonLogic * logic);
 			Void setEditBoxLogic(editBoxLogic * logic);
-			Void setCallPage(EType type);
-			EType getCallPage()const
-			{
-				return mCallPage;
-			}
 			// Í¨¹ý IButtonEventCallback ¼Ì³Ð
 			virtual Void onEvent(NSGUISystem::IButton * control,NSGUISystem::IButtonEventCallback::EEvent e) override;
 

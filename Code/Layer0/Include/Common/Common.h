@@ -25,6 +25,7 @@
 #include "CommonOctree.h"
 #include "CommonType.h"
 #include "ICommonUserDataContainerImp.h"
+#include "CommonMath.h"
 #include "CommonMatrix.h"
 #include "CommonMemoryAllocatorObjectTemplate.h"
 #include "CommonMemoryStream.h"

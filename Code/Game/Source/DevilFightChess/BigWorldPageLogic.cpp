@@ -33,7 +33,6 @@ Void NSDevilX::NSFightChess::CBigWorldPageLogic::buttonLogic(NSGUISystem::IButto
 		case NSGUISystem::IButtonEventCallback::EEvent::EEvent_Click:
 			CApp::getSingleton().getGame()->getUIManager()->destroyPage(CUIPage::EType_BigWorld);
 			auto page=CApp::getSingleton().getGame()->getUIManager()->createPage(CUIPage::EType_MatchServerConfig);
-			page->setCallPage(CUIPage::EType_BigWorld);
 			page->setButtonLogic(CMatchServerConfigPageLogic::buttonLogic);
 			break;
 		}
@@ -43,7 +42,7 @@ Void NSDevilX::NSFightChess::CBigWorldPageLogic::buttonLogic(NSGUISystem::IButto
 		switch(e)
 		{
 		case NSGUISystem::IButtonEventCallback::EEvent::EEvent_Click:
-			CApp::getSingleton().getGame()->stopModule("BigWorld");
+			CApp::getSingleton().getGame()->getUIManager()->destroyPage(CUIPage::EType_BigWorld);
 			break;
 		}
 	}

@@ -114,10 +114,10 @@ Void NSDevilX::NSGUISystem::CComboBox::setItemListShowSize(UInt32 sizeInItems)
 	}
 	_refreshItemControl();
 	mDropList->getLayer()->setSize(CFloat2(1.0f,static_cast<Float>(sizeInItems)));
-	mDropList->setSize(sizeInItems);
+	mDropList->setSize(sizeInItems,1);
 	for(UInt32 i=0;i<sizeInItems;++i)
 	{
-		mDropList->getItem(i)->set(mDropListControls[i],False);
+		mDropList->getItem(i,0)->set(mDropListControls[i],False);
 	}
 }
 
@@ -170,7 +170,7 @@ Void NSDevilX::NSGUISystem::CComboBox::onMessage(CList * notifier,UInt32 message
 	switch(message)
 	{
 	case CList::EMessage_SelectIndexChange:
-		getEditControl()->setText(static_cast<CCommonControl*>(notifier->getItem(notifier->getSelectIndex())->get())->getTextControl()->getText());
+		getEditControl()->setText(static_cast<CCommonControl*>(notifier->getItem(notifier->getSelectRow(),notifier->getSelectColume())->get())->getTextControl()->getText());
 		notifier->setVisible(False);
 		break;
 	}

@@ -24,6 +24,7 @@
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\ComboBox.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\CommonControl.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\Control.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\IListBoxImp.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\List.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\EditBox.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\Event.h" />
@@ -40,6 +41,7 @@
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\ISystemImp.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\ITextPropertyImp.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\IWindowImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\ListBox.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\PageBar.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\PageBarItem.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\GUISystem\StaticText.h" />
@@ -66,6 +68,7 @@
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\ComboBox.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\CommonControl.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\Control.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\IListBoxImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\List.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\EditBox.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\GraphicWindowTextureUtility.cpp" />
@@ -81,6 +84,7 @@
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\ISystemImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\ITextPropertyImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\IWindowImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\ListBox.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\PageBar.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\PageBarItem.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\GUISystem\Precompiler.cpp">

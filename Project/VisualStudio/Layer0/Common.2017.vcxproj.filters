@@ -207,6 +207,9 @@
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonUtility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonMath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonAnimationFrame.cpp">

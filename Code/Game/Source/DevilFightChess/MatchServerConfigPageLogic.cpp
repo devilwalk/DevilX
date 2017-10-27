@@ -19,7 +19,6 @@ Void NSDevilX::NSFightChess::CMatchServerConfigPageLogic::buttonLogic(NSGUISyste
 			auto server=CApp::getSingleton().getGame()->getMatchServerManager()->createServer(server_name);
 			auto password=CApp::getSingleton().getGame()->getUIManager()->getPage(CUIPage::EType_MatchServerConfig)->getGUIWindow()->getEditBox("MatchServerConfig/EditBox_Password")->getText().toString();
 			server->setPassword(password);
-			auto call_page_type=CApp::getSingleton().getGame()->getUIManager()->getPage(CUIPage::EType_MatchServerConfig)->getCallPage();
 			CApp::getSingleton().getGame()->getUIManager()->destroyPage(CUIPage::EType_MatchServerConfig);
 			auto page=CApp::getSingleton().getGame()->getUIManager()->createPage(CUIPage::EType_BigWorld);
 			page->setButtonLogic(CBigWorldPageLogic::buttonLogic);

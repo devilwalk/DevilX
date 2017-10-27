@@ -40,6 +40,7 @@
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonFunctionWorker.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonImage.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonLuaEngine.h" />
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonMath.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonMatrix.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonMemoryAllocatorObjectTemplate.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonMemoryStream.h" />
