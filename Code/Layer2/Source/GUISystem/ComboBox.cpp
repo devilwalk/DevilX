@@ -80,12 +80,15 @@ CComboBoxItem * NSDevilX::NSGUISystem::CComboBox::createItem()
 	auto ret=DEVILX_NEW CComboBoxItem();
 	mItems.push_back(ret);
 	_refreshItemControl();
+	_updateDropList();
 	return ret;
 }
 
 Void NSDevilX::NSGUISystem::CComboBox::destroyItem(CComboBoxItem * item)
 {
 	mItems.destroy(item);
+	_refreshItemControl();
+	_updateDropList();
 }
 
 Void NSDevilX::NSGUISystem::CComboBox::setItemListShowSize(UInt32 sizeInItems)
@@ -113,12 +116,7 @@ Void NSDevilX::NSGUISystem::CComboBox::setItemListShowSize(UInt32 sizeInItems)
 		}
 	}
 	_refreshItemControl();
-	mDropList->getLayer()->setSize(CFloat2(1.0f,static_cast<Float>(sizeInItems)));
-	mDropList->setSize(sizeInItems,1);
-	for(UInt32 i=0;i<sizeInItems;++i)
-	{
-		mDropList->getItem(i,0)->set(mDropListControls[i],False);
-	}
+	_updateDropList();
 }
 
 UInt32 NSDevilX::NSGUISystem::CComboBox::getItemListShowSize() const
@@ -134,6 +132,18 @@ Void NSDevilX::NSGUISystem::CComboBox::_refreshItemControl()
 			mItems[i]->setControl(nullptr);
 		else
 			mItems[i]->setControl(mDropListControls[i-mItemShowStart]);
+	}
+}
+
+Void NSDevilX::NSGUISystem::CComboBox::_updateDropList()
+{
+	auto item_list_show_size=getItemListShowSize();
+	item_list_show_size=std::min<>(item_list_show_size,static_cast<UInt32>(mItems.size())-mItemShowStart);
+	mDropList->getLayer()->setSize(CFloat2(1.0f,static_cast<Float>(item_list_show_size)));
+	mDropList->setSize(item_list_show_size,1);
+	for(UInt32 i=0;i<item_list_show_size;++i)
+	{
+		mDropList->getItem(i,0)->set(mDropListControls[i],False);
 	}
 }
 

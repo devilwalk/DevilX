@@ -54,7 +54,10 @@ NSDevilX::NSGUISystem::CControl::~CControl()
 Void NSDevilX::NSGUISystem::CControl::setCoordParent(CControl * control)
 {
 	mCoordParent=control;
-	getLayer()->setCoordParent(getCoordParent()->getLayer());
+	if(mCoordParent)
+		getLayer()->setCoordParent(getCoordParent()->getLayer());
+	else
+		getLayer()->setCoordParent(nullptr);
 }
 
 Void NSDevilX::NSGUISystem::CControl::setOrderParent(CControl * control)

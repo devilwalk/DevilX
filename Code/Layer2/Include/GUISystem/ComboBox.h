@@ -83,6 +83,7 @@ namespace NSDevilX
 			UInt32 getItemListShowSize()const;
 		protected:
 			Void _refreshItemControl();
+			Void _updateDropList();
 			virtual Void _setOrderChild(CControl * control) override;
 			// Í¨¹ý TMessageReceiver ¼Ì³Ð
 			virtual Void onMessage(CEditBox * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
