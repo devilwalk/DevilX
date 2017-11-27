@@ -154,7 +154,7 @@ Float NSDevilX::NSRenderSystem::ISpotLightPropertyImp::getRange() const
 
 void NSDevilX::NSRenderSystem::ISpotLightPropertyImp::setAngle(const CDegree & angle)
 {
-	if(angle!=getAngle())
+	if(angle!=mAngle)
 	{
 		notify(EMessage_BeginAngleChange);
 		mAngle=angle;
@@ -219,6 +219,7 @@ NSDevilX::NSRenderSystem::ILightImp::ILightImp(const String & name,IEnum::ELight
 	,mSceneElement(0)
 	,mDirectionLightProperty(0)
 	,mShadowEnable(False)
+	,mLightRenderModel(IEnum::ELightRenderModel_Basic)
 	,mVisibleElementsFrameIndex(0)
 {
 	mSceneElement=DEVILX_NEW ISceneElementImp(name,scene,this,ISceneElementImp::EContainerObjectType_Light);
@@ -347,7 +348,7 @@ IColourUnitState * NSDevilX::NSRenderSystem::ILightImp::getColourUnitState(IEnum
 
 Void NSDevilX::NSRenderSystem::ILightImp::setShadowEnable(Bool enable)
 {
-	if(enable!=getShadowEnable())
+	if(enable!=mShadowEnable)
 	{
 		notify(EMessage_BeginShadowEnableChange);
 		mShadowEnable=enable;
@@ -358,4 +359,19 @@ Void NSDevilX::NSRenderSystem::ILightImp::setShadowEnable(Bool enable)
 Bool NSDevilX::NSRenderSystem::ILightImp::getShadowEnable() const
 {
 	return mShadowEnable;
+}
+
+Void NSDevilX::NSRenderSystem::ILightImp::setRenderModel(IEnum::ELightRenderModel model)
+{
+	if(model!=mLightRenderModel)
+	{
+		notify(EMessage_BeginLightRenderModelChange);
+		mLightRenderModel=model;
+		notify(EMessage_EndLightRenderModelChange);
+	}
+}
+
+IEnum::ELightRenderModel NSDevilX::NSRenderSystem::ILightImp::getRenderModel() const
+{
+	return mLightRenderModel;
 }

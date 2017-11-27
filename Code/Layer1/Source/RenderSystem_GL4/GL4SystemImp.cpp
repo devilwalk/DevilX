@@ -86,7 +86,7 @@ NSDevilX::NSRenderSystem::NSGL4::CSystemImp::CSystemImp()
 		WGL_CONTEXT_MAJOR_VERSION_ARB,4,
 		WGL_CONTEXT_MINOR_VERSION_ARB,5,
 		WGL_CONTEXT_PROFILE_MASK_ARB,WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
-#ifdef DEVILX_DEBUG
+#if DEVILX_DEBUG
 		WGL_CONTEXT_FLAGS_ARB,WGL_CONTEXT_DEBUG_BIT_ARB,
 #endif
 		0
@@ -97,7 +97,7 @@ NSDevilX::NSRenderSystem::NSGL4::CSystemImp::CSystemImp()
 	DestroyWindow(wnd);
 #elif DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_X
 #endif
-#ifdef DEVILX_DEBUG
+#if DEVILX_DEBUG
 	glEnable(GL_DEBUG_OUTPUT);
 	CUtility::checkGLError();
 	glDebugMessageCallback([](GLenum source,GLenum type,GLuint id,GLenum serverity,GLsizei length,const GLchar *message,const GLvoid *userParam)

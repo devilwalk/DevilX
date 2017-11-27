@@ -5,7 +5,7 @@ NSDevilX::CUTF8Char::CUTF8Char(Int32 c)
 {
 	mCode=c;
 	_encode();
-#ifdef DEVILX_DEBUG
+#if DEVILX_DEBUG
 	CUTF16Char utf16_ch(mCode);
 	CUTF16String utf16_str;
 	utf16_str+=utf16_ch;
@@ -36,7 +36,7 @@ NSDevilX::CUTF8Char::CUTF8Char(ConstVoidPtr buffer)
 		mBuffer.push_back(c);
 	}
 	_decode();
-#ifdef DEVILX_DEBUG
+#if DEVILX_DEBUG
 	CUTF16Char utf16_ch(mCode);
 	CUTF16String utf16_str;
 	utf16_str+=utf16_ch;
@@ -192,7 +192,7 @@ NSDevilX::CUTF16Char::CUTF16Char(Int32 c,Bool bigEndian)
 {
 	mCode=c;
 	_encode();
-#ifdef DEVILX_DEBUG
+#if DEVILX_DEBUG
 	CUTF16String utf16_str;
 	utf16_str+=*this;
 	mDebug=utf16_str;
@@ -221,7 +221,7 @@ NSDevilX::CUTF16Char::CUTF16Char(ConstVoidPtr buffer,Bool bigEndian)
 		mBuffer.push_back(byte_buffer[3]);
 	}
 	_decode();
-#ifdef DEVILX_DEBUG
+#if DEVILX_DEBUG
 	CUTF16String utf16_str;
 	utf16_str+=*this;
 	mDebug=utf16_str;

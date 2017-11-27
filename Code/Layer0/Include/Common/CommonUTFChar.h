@@ -7,7 +7,7 @@ namespace NSDevilX
 	protected:
 		Int32 mCode;
 		TVector<Byte> mBuffer;
-#ifdef DEVILX_DEBUG
+#if DEVILX_DEBUG
 		WString mDebug;
 #endif
 	public:

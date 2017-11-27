@@ -62,5 +62,5 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CSceneImp::onMessage(ISceneImp * notifie
 Void NSDevilX::NSRenderSystem::NSD3D11::CSceneImp::_updateConstantBuffer(Byte * buffer)
 {
 	auto offset=mConstantBuffer->getDescription()->getConstantDesc("gAmbientColour").StartOffset;
-	memcpy(&buffer[offset],&getInterfaceImp()->getAmbientColour(),sizeof(CFloat3));
+	*reinterpret_cast<CFloat3*>(&buffer[offset])=getInterfaceImp()->getAmbientColour().rgb();
 }

@@ -117,7 +117,7 @@ NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::CSystemImp()
 	mDefaultSamplerDesc.MipLODBias=0.0f;
 	CreateDXGIFactory1(__uuidof(IDXGIFactory1),reinterpret_cast<VoidPtr*>(&mFactory));
 	UINT flag=0;
-#ifdef DEVILX_DEBUG
+#if DEVILX_DEBUG
 	flag|=D3D11_CREATE_DEVICE_DEBUG;
 #endif
 	D3D_FEATURE_LEVEL feature_levels[]=
@@ -186,7 +186,7 @@ NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::~CSystemImp()
 	mTransformers.destroyAll();
 	DEVILX_DELETE(mConstantBuffer);
 	mConstantBuffer=nullptr;
-#ifdef DEVILX_DEBUG
+#if DEVILX_DEBUG
 	getDebug()->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 	getDebug()->Release();
 #endif

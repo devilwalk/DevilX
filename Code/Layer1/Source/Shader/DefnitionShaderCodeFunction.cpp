@@ -132,6 +132,10 @@ float calcHemisphereLightFactor(float3 vertexToLightDirection,float3 worldNormal
 	float cos_the=dot(vertexToLightDirection,worldNormal);\r\n\
 	return cos_the*0.5+0.5;\r\n\
 }\r\n\
+float calcDefaultHemisphereLightFactor(float3 worldNormal)\r\n\
+{\r\n\
+	return calcHemisphereLightFactor(float3(0.0,1.0,0.0),worldNormal);\r\n\
+}\r\n\
 float calcLambertDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
 {\r\n\
 	return saturate(dot(vertexToLightDirection,worldNormal));\r\n\
@@ -384,6 +388,10 @@ float calcHemisphereLightFactor(float3 vertexToLightDirection,float3 worldNormal
 	float cos_the=dot(vertexToLightDirection,worldNormal);\r\n\
 	return cos_the*0.5+0.5;\r\n\
 }\r\n\
+float calcDefaultHemisphereLightFactor(float3 worldNormal)\r\n\
+{\r\n\
+	return calcHemisphereLightFactor(float3(0.0,1.0,0.0),worldNormal);\r\n\
+}\r\n\
 float calcLambertDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
 {\r\n\
 	return saturate(dot(vertexToLightDirection,worldNormal));\r\n\
@@ -619,6 +627,10 @@ float calcHemisphereLightFactor(float3 vertexToLightDirection,float3 worldNormal
 	float cos_the=dot(vertexToLightDirection,worldNormal);\r\n\
 	return cos_the*0.5+0.5;\r\n\
 }\r\n\
+float calcDefaultHemisphereLightFactor(float3 worldNormal)\r\n\
+{\r\n\
+	return calcHemisphereLightFactor(float3(0.0,1.0,0.0),worldNormal);\r\n\
+}\r\n\
 float calcLambertDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
 {\r\n\
 	return saturate(dot(vertexToLightDirection,worldNormal));\r\n\
@@ -823,6 +835,10 @@ float calcHemisphereLightFactor(float3 vertexToLightDirection,float3 worldNormal
 {\r\n\
 	float cos_the=dot(vertexToLightDirection,worldNormal);\r\n\
 	return cos_the*0.5+0.5;\r\n\
+}\r\n\
+float calcDefaultHemisphereLightFactor(float3 worldNormal)\r\n\
+{\r\n\
+	return calcHemisphereLightFactor(float3(0.0,1.0,0.0),worldNormal);\r\n\
 }\r\n\
 float calcLambertDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
 {\r\n\
@@ -1107,11 +1123,11 @@ void main()\r\n\
     float3 light_diffuse_colour = gSpotLightDiffuseColour;\r\n\
     float3 light_specular_colour = gSpotLightSpecularColour;\r\n\
 	    #endif\r\n\
-	float lighting_diffuse_factor = calcDiffuseFactor(vertex_to_light_direction, world_normal);\r\n\
+	float lighting_diffuse_factor = calcLambertDiffuseFactor(vertex_to_light_direction, world_normal);\r\n\
     float3 lighting_diffuse_colour = light_diffuse_colour * lighting_diffuse_factor;\r\n\
 	lighting_colour+=lighting_diffuse_colour;\r\n\
 		#if USE_SPECULAR\r\n\
-	float lighting_specular_factor=calcSpecularFactor(vertex_to_light_direction,world_normal,iWorldPosition,getCameraPosition());\r\n\
+	float lighting_specular_factor=calcBlinnPhongSpecularFactor(vertex_to_light_direction,world_normal,iWorldPosition,getCameraPosition());\r\n\
 	float3 lighting_specular_colour=lighting_diffuse_factor > 0.0?pow(lighting_specular_factor,gSpecularPower) * light_specular_colour:0.0;\r\n\
 	lighting_colour+=lighting_specular_colour;\r\n\
 		#endif\r\n\
@@ -1255,6 +1271,10 @@ float calcHemisphereLightFactor(float3 vertexToLightDirection,float3 worldNormal
 {\r\n\
 	float cos_the=dot(vertexToLightDirection,worldNormal);\r\n\
 	return cos_the*0.5+0.5;\r\n\
+}\r\n\
+float calcDefaultHemisphereLightFactor(float3 worldNormal)\r\n\
+{\r\n\
+	return calcHemisphereLightFactor(float3(0.0,1.0,0.0),worldNormal);\r\n\
 }\r\n\
 float calcLambertDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
 {\r\n\
@@ -1598,11 +1618,11 @@ SPixelShaderOutput psMain(SVertexShaderOutput input)\r\n\
     float3 light_diffuse_colour = gSpotLightDiffuseColour;\r\n\
     float3 light_specular_colour = gSpotLightSpecularColour;\r\n\
 	    #endif\r\n\
-	float lighting_diffuse_factor = calcDiffuseFactor(vertex_to_light_direction, world_normal);\r\n\
+	float lighting_diffuse_factor = calcLambertDiffuseFactor(vertex_to_light_direction, world_normal);\r\n\
     float3 lighting_diffuse_colour = light_diffuse_colour * lighting_diffuse_factor;\r\n\
 	lighting_colour+=lighting_diffuse_colour;\r\n\
 		#if USE_SPECULAR\r\n\
-	float lighting_specular_factor=calcSpecularFactor(vertex_to_light_direction,world_normal,iWorldPosition,getCameraPosition());\r\n\
+	float lighting_specular_factor=calcBlinnPhongSpecularFactor(vertex_to_light_direction,world_normal,iWorldPosition,getCameraPosition());\r\n\
 	float3 lighting_specular_colour=lighting_diffuse_factor > 0.0?pow(lighting_specular_factor,gSpecularPower) * light_specular_colour:0.0;\r\n\
 	lighting_colour+=lighting_specular_colour;\r\n\
 		#endif\r\n\
@@ -1748,6 +1768,10 @@ float calcHemisphereLightFactor(float3 vertexToLightDirection,float3 worldNormal
 {\r\n\
 	float cos_the=dot(vertexToLightDirection,worldNormal);\r\n\
 	return cos_the*0.5+0.5;\r\n\
+}\r\n\
+float calcDefaultHemisphereLightFactor(float3 worldNormal)\r\n\
+{\r\n\
+	return calcHemisphereLightFactor(float3(0.0,1.0,0.0),worldNormal);\r\n\
 }\r\n\
 float calcLambertDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
 {\r\n\
@@ -2137,6 +2161,10 @@ float calcHemisphereLightFactor(float3 vertexToLightDirection,float3 worldNormal
 	float cos_the=dot(vertexToLightDirection,worldNormal);\r\n\
 	return cos_the*0.5+0.5;\r\n\
 }\r\n\
+float calcDefaultHemisphereLightFactor(float3 worldNormal)\r\n\
+{\r\n\
+	return calcHemisphereLightFactor(float3(0.0,1.0,0.0),worldNormal);\r\n\
+}\r\n\
 float calcLambertDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
 {\r\n\
 	return saturate(dot(vertexToLightDirection,worldNormal));\r\n\
@@ -2366,6 +2394,10 @@ float calcHemisphereLightFactor(float3 vertexToLightDirection,float3 worldNormal
 {\r\n\
 	float cos_the=dot(vertexToLightDirection,worldNormal);\r\n\
 	return cos_the*0.5+0.5;\r\n\
+}\r\n\
+float calcDefaultHemisphereLightFactor(float3 worldNormal)\r\n\
+{\r\n\
+	return calcHemisphereLightFactor(float3(0.0,1.0,0.0),worldNormal);\r\n\
 }\r\n\
 float calcLambertDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
 {\r\n\
@@ -2622,6 +2654,10 @@ float calcHemisphereLightFactor(float3 vertexToLightDirection,float3 worldNormal
 	float cos_the=dot(vertexToLightDirection,worldNormal);\r\n\
 	return cos_the*0.5+0.5;\r\n\
 }\r\n\
+float calcDefaultHemisphereLightFactor(float3 worldNormal)\r\n\
+{\r\n\
+	return calcHemisphereLightFactor(float3(0.0,1.0,0.0),worldNormal);\r\n\
+}\r\n\
 float calcLambertDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
 {\r\n\
 	return saturate(dot(vertexToLightDirection,worldNormal));\r\n\
@@ -2842,6 +2878,10 @@ float calcHemisphereLightFactor(float3 vertexToLightDirection,float3 worldNormal
 {\r\n\
 	float cos_the=dot(vertexToLightDirection,worldNormal);\r\n\
 	return cos_the*0.5+0.5;\r\n\
+}\r\n\
+float calcDefaultHemisphereLightFactor(float3 worldNormal)\r\n\
+{\r\n\
+	return calcHemisphereLightFactor(float3(0.0,1.0,0.0),worldNormal);\r\n\
 }\r\n\
 float calcLambertDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
 {\r\n\

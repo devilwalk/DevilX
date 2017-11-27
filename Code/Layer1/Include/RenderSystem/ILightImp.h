@@ -130,6 +130,8 @@ namespace NSDevilX
 				EMessage_EndDestruction,
 				EMessage_BeginShadowEnableChange,
 				EMessage_EndShadowEnableChange,
+				EMessage_BeginLightRenderModelChange,
+				EMessage_EndLightRenderModelChange,
 				EMessage_BeginColourUnitStateCreate,
 				EMessage_EndColourUnitStateCreate
 			};
@@ -143,6 +145,7 @@ namespace NSDevilX
 				ISpotLightPropertyImp * mSpotLightProperty;
 			};
 			Bool mShadowEnable;
+			IEnum::ELightRenderModel mLightRenderModel;
 			TVector<IColourUnitStateImp*> mColourUnitStates;
 			TVector<IEntityImp*> mVisibleEntities;
 			TSharedReadData<UInt32> mVisibleElementsFrameIndex;
@@ -166,6 +169,8 @@ namespace NSDevilX
 			virtual IColourUnitState * getColourUnitState(IEnum::ELightColourUnitStateType type) override;
 			virtual Void setShadowEnable(Bool enable) override;
 			virtual Bool getShadowEnable() const override;
+			virtual Void setRenderModel(IEnum::ELightRenderModel model) override;
+			virtual IEnum::ELightRenderModel getRenderModel() const override;
 		protected:
 			~ILightImp();
 		};

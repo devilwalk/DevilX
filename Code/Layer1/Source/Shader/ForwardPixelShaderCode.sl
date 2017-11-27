@@ -50,11 +50,11 @@
     float3 light_diffuse_colour = gSpotLightDiffuseColour;
     float3 light_specular_colour = gSpotLightSpecularColour;
 	    #endif
-	float lighting_diffuse_factor = calcDiffuseFactor(vertex_to_light_direction, world_normal);
+	float lighting_diffuse_factor = calcLambertDiffuseFactor(vertex_to_light_direction, world_normal);
     float3 lighting_diffuse_colour = light_diffuse_colour * lighting_diffuse_factor;
 	lighting_colour+=lighting_diffuse_colour;
 		#if USE_SPECULAR
-	float lighting_specular_factor=calcSpecularFactor(vertex_to_light_direction,world_normal,iWorldPosition,getCameraPosition());
+	float lighting_specular_factor=calcBlinnPhongSpecularFactor(vertex_to_light_direction,world_normal,iWorldPosition,getCameraPosition());
 	float3 lighting_specular_colour=lighting_diffuse_factor > 0.0?pow(lighting_specular_factor,gSpecularPower) * light_specular_colour:0.0;
 	lighting_colour+=lighting_specular_colour;
 		#endif

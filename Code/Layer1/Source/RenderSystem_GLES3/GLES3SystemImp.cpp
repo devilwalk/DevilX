@@ -81,7 +81,7 @@ NSDevilX::NSRenderSystem::NSGLES3::CSystemImp::CSystemImp()
 	DestroyWindow(wnd);
 #elif DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_X
 #endif
-#ifdef DEVILX_DEBUG
+#if DEVILX_DEBUG
 	glEnable(GL_DEBUG_OUTPUT);
 	CUtility::checkGLError();
 #endif

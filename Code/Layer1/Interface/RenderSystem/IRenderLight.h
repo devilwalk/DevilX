@@ -43,6 +43,8 @@ namespace NSDevilX
 			virtual IColourUnitState * getColourUnitState(IEnum::ELightColourUnitStateType type)=0;
 			virtual Void setShadowEnable(Bool enable)=0;
 			virtual Bool getShadowEnable()const=0;
+			virtual Void setRenderModel(IEnum::ELightRenderModel model)=0;
+			virtual IEnum::ELightRenderModel getRenderModel()const=0;
 		};
 	}
 }

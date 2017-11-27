@@ -1,6 +1,6 @@
 #pragma once
-#if defined(DEBUG)||defined(_DEBUG)
-#define DEVILX_DEBUG
+#if (!defined(DEVILX_DEBUG))&&(defined(DEBUG)||defined(_DEBUG))
+#define DEVILX_DEBUG 1
 #endif
 #ifndef OUT
 #define OUT

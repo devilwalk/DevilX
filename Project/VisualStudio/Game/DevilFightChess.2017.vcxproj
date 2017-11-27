@@ -23,6 +23,7 @@
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Game</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <ProjectName>DevilFightChess</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -102,7 +103,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Common.2017.lib;InputSystem.2017.lib;InputSystem_DirectX.2017.lib;PhysicalSystem.2017.lib;PhysicalSystem_Bullet.2017.lib;RenderSystem.2017.lib;NetworkSystem.2017.lib;NetworkSystem_WindowsSocket.2017.lib;UISystem.2017.lib;GUISystem.2017.lib;ResourceSystem.2017.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Common.lib;InputSystem.lib;InputSystem_DirectX.lib;PhysicalSystem.lib;PhysicalSystem_Bullet.lib;RenderSystem.lib;NetworkSystem.lib;NetworkSystem_WindowsSocket.lib;UISystem.lib;GUISystem.lib;ResourceSystem.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent />
     <PreBuildEvent>
@@ -123,7 +124,7 @@ copy $(ProjectDir)..\..\..\Code\Game\Resource\DevilFightChess\* $(OutDir)Resourc
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Common.2017.lib;InputSystem.2017.lib;InputSystem_DirectX.2017.lib;PhysicalSystem.2017.lib;PhysicalSystem_Bullet.2017.lib;RenderSystem.2017.lib;NetworkSystem.2017.lib;NetworkSystem_WindowsSocket.2017.lib;UISystem.2017.lib;GUISystem.2017.lib;ResourceSystem.2017.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Common.lib;InputSystem.lib;InputSystem_DirectX.lib;PhysicalSystem.lib;PhysicalSystem_Bullet.lib;RenderSystem.lib;NetworkSystem.lib;NetworkSystem_WindowsSocket.lib;UISystem.lib;GUISystem.lib;ResourceSystem.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent />
     <PreBuildEvent>
@@ -150,7 +151,7 @@ copy $(ProjectDir)..\..\..\Code\Game\Resource\DevilFightChess\* $(OutDir)Resourc
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Common.2017.lib;InputSystem.2017.lib;InputSystem_DirectX.2017.lib;PhysicalSystem.2017.lib;PhysicalSystem_Bullet.2017.lib;RenderSystem.2017.lib;NetworkSystem.2017.lib;NetworkSystem_WindowsSocket.2017.lib;UISystem.2017.lib;GUISystem.2017.lib;ResourceSystem.2017.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Common.lib;InputSystem.lib;InputSystem_DirectX.lib;PhysicalSystem.lib;PhysicalSystem_Bullet.lib;RenderSystem.lib;NetworkSystem.lib;NetworkSystem_WindowsSocket.lib;UISystem.lib;GUISystem.lib;ResourceSystem.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent />
     <PreBuildEvent>
@@ -174,7 +175,7 @@ copy $(ProjectDir)..\..\..\Code\Game\Resource\DevilFightChess\* $(OutDir)Resourc
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Common.2017.lib;InputSystem.2017.lib;InputSystem_DirectX.2017.lib;PhysicalSystem.2017.lib;PhysicalSystem_Bullet.2017.lib;RenderSystem.2017.lib;NetworkSystem.2017.lib;NetworkSystem_WindowsSocket.2017.lib;UISystem.2017.lib;GUISystem.2017.lib;ResourceSystem.2017.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Common.lib;InputSystem.lib;InputSystem_DirectX.lib;PhysicalSystem.lib;PhysicalSystem_Bullet.lib;RenderSystem.lib;NetworkSystem.lib;NetworkSystem_WindowsSocket.lib;UISystem.lib;GUISystem.lib;ResourceSystem.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent />
     <PreBuildEvent>

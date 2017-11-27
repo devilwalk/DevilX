@@ -14,7 +14,7 @@ NSDevilX::NSCubeBlockSystem::CArea::SRenderable::~SRenderable()
 	if(mRenderable)
 	{
 		NSRenderSystem::getSystem()->queryInterface_IResourceManager()->destroyGeometry(mRenderable->getGeometry());
-		mArea->getEntity()->destroyRenderable(mRenderable);
+		mArea->getEntity()->destroySubEntity(mRenderable);
 	}
 }
 
@@ -22,7 +22,7 @@ Void NSDevilX::NSCubeBlockSystem::CArea::SRenderable::initialize()
 {
 	if(!mRenderable)
 	{
-		mRenderable=mArea->getEntity()->createRenderable(CStringConverter::toString(mMaterial));
+		mRenderable=mArea->getEntity()->createSubEntity(CStringConverter::toString(mMaterial));
 		mRenderable->setGeometry(NSRenderSystem::getSystem()->queryInterface_IResourceManager()->createGeometry(mArea->getEntity()->queryInterface_ISceneElement()->getName()+"/"+mRenderable->getName()));
 		mRenderable->getGeometry()->setVertexBuffer(sGeometry->getVertexBuffer());
 		mRenderable->queryInterface_IGeometryUsage()->setVertexCount(sGeometry->getVertexBuffer()->getCount());

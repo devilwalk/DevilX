@@ -18,7 +18,7 @@ namespace NSDevilX
 			public:
 				IRenderMaterialImp * const mMaterial;
 				CArea * const mArea;
-				NSRenderSystem::IEntityRenderable * mRenderable;
+				NSRenderSystem::ISubEntity * mRenderable;
 				TVector<UInt32> mIndicesFill;
 				TVector<UInt32> mIndices;
 				SRenderable(IRenderMaterialImp * material,CArea * area);

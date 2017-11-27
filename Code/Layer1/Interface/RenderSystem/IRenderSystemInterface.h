@@ -8,6 +8,7 @@
 #include "IRenderEnum.h"
 #include "IRenderGeometry.h"
 #include "IRenderLight.h"
+#include "IRenderMaterial.h"
 #include "IRenderOverlay.h"
 #include "IRenderOverlayElement.h"
 #include "IRenderQuery.h"

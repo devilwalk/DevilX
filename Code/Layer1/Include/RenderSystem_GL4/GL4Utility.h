@@ -18,7 +18,7 @@ namespace NSDevilX
 				};
 				static Void checkGLError()
 				{
-#ifdef DEVILX_DEBUG
+#if DEVILX_DEBUG
 					auto err=glGetError();
 					if(GL_NO_ERROR!=err)
 					{

@@ -82,6 +82,10 @@ float calcHemisphereLightFactor(float3 vertexToLightDirection,float3 worldNormal
 	float cos_the=dot(vertexToLightDirection,worldNormal);
 	return cos_the*0.5+0.5;
 }
+float calcDefaultHemisphereLightFactor(float3 worldNormal)
+{
+	return calcHemisphereLightFactor(float3(0.0,1.0,0.0),worldNormal);
+}
 float calcLambertDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)
 {
 	return saturate(dot(vertexToLightDirection,worldNormal));

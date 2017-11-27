@@ -37,7 +37,7 @@ GLuint NSDevilX::NSRenderSystem::NSGL4::CShaderManager::registerVertexShader(con
 			shader_log.resize(1024);
 			glGetShaderInfoLog(ret,1024,nullptr,&shader_log[0]);
 			CUtility::checkGLError();
-#ifdef DEVILX_DEBUG
+#if DEVILX_DEBUG
 #if DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_WINDOWS
 			OutputDebugStringA((key+" log:"+shader_log).c_str());
 			OutputDebugStringA("\r\n");
@@ -75,7 +75,7 @@ GLuint NSDevilX::NSRenderSystem::NSGL4::CShaderManager::registerPixelShader(cons
 			shader_log.resize(1024);
 			glGetShaderInfoLog(ret,1024,nullptr,&shader_log[0]);
 			CUtility::checkGLError();
-#ifdef DEVILX_DEBUG
+#if DEVILX_DEBUG
 #if DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_WINDOWS
 			OutputDebugStringA((key+" log:"+shader_log).c_str());
 			OutputDebugStringA("\r\n");

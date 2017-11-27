@@ -110,8 +110,18 @@ namespace NSDevilX
 			return *this; \
 		} \
 		const C##type1##x & operator=(const DirectX::XMUINT##x & value) \
-		{\
+		{ \
 			*this=DirectX::XMConvertVectorUIntToFloat(DirectX::XMLoadUInt##x(&value),0); \
+			return *this; \
+		} \
+		const C##type1##x & operator+=(DirectX::FXMVECTOR value) \
+		{ \
+			*this=*this+value; \
+			return *this; \
+		} \
+		const C##type1##x & operator-=(DirectX::FXMVECTOR value) \
+		{\
+			*this=*this-value; \
 			return *this; \
 		}
 #define END_CLASS };

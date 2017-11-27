@@ -4,7 +4,8 @@ using namespace NSCubeBlockWorld;
 
 NSDevilX::NSCubeBlockWorld::CSimpleTerrainGeneratorInstance::CSimpleTerrainGeneratorInstance(CSimpleTerrainGenertor * generator,ISceneManager * sceneManager)
 	:CTerrainGeneratorInstance(generator,sceneManager)
-{}
+{
+}
 
 NSDevilX::NSCubeBlockWorld::CSimpleTerrainGeneratorInstance::~CSimpleTerrainGeneratorInstance()
 {}
@@ -26,10 +27,13 @@ Boolean NSDevilX::NSCubeBlockWorld::CSimpleTerrainGeneratorInstance::generateChu
 NSDevilX::NSCubeBlockWorld::CSimpleTerrainGenertor::CSimpleTerrainGenertor()
 	:mName("Simple")
 {
+	auto render_material=CModule::getSingleton().getSystem()->createRenderMaterial("DefaultWhite");
+	render_material->setColour(CFloatRGB::sWhite);
 	auto block=CModule::getSingleton().getSystem()->createBlock("Simple");
 	for(auto face_index=0;face_index<6;++face_index)
 	{
 		auto face=block->getFace((NSCubeBlockSystem::IEnum::EBlockFaceType)face_index);
+		face->setRenderMaterial(render_material);
 	}
 }
 

@@ -93,7 +93,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
-      <AdditionalDependencies>Common.2017.lib;InputSystem.2017.lib;InputSystem_DirectX.2017.lib;PhysicalSystem.2017.lib;PhysicalSystem_Bullet.2017.lib;RenderSystem.2017.lib;NetworkSystem.2017.lib;NetworkSystem_WindowsSocket.2017.lib;Ungrouped.2017.lib;UISystem.2017.lib;TinyXML.lib;FreeImage.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Common.lib;InputSystem.lib;InputSystem_DirectX.lib;PhysicalSystem.lib;PhysicalSystem_Bullet.lib;RenderSystem.lib;NetworkSystem.lib;NetworkSystem_WindowsSocket.lib;Ungrouped.lib;UISystem.lib;TinyXML.lib;FreeImage.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -108,7 +108,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
-      <AdditionalDependencies>Common.2017.lib;InputSystem.2017.lib;InputSystem_DirectX.2017.lib;PhysicalSystem.2017.lib;PhysicalSystem_Bullet.2017.lib;RenderSystem.2017.lib;NetworkSystem.2017.lib;NetworkSystem_WindowsSocket.2017.lib;Ungrouped.2017.lib;UISystem.2017.lib;TinyXML.lib;FreeImage.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Common.lib;InputSystem.lib;InputSystem_DirectX.lib;PhysicalSystem.lib;PhysicalSystem_Bullet.lib;RenderSystem.lib;NetworkSystem.lib;NetworkSystem_WindowsSocket.lib;Ungrouped.lib;UISystem.lib;TinyXML.lib;FreeImage.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -127,7 +127,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
-      <AdditionalDependencies>Common.2017.lib;InputSystem.2017.lib;InputSystem_DirectX.2017.lib;PhysicalSystem.2017.lib;PhysicalSystem_Bullet.2017.lib;RenderSystem.2017.lib;NetworkSystem.2017.lib;NetworkSystem_WindowsSocket.2017.lib;Ungrouped.2017.lib;UISystem.2017.lib;TinyXML.lib;FreeImage.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Common.lib;InputSystem.lib;InputSystem_DirectX.lib;PhysicalSystem.lib;PhysicalSystem_Bullet.lib;RenderSystem.lib;NetworkSystem.lib;NetworkSystem_WindowsSocket.lib;Ungrouped.lib;UISystem.lib;TinyXML.lib;FreeImage.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -146,7 +146,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
-      <AdditionalDependencies>Common.2017.lib;InputSystem.2017.lib;InputSystem_DirectX.2017.lib;PhysicalSystem.2017.lib;PhysicalSystem_Bullet.2017.lib;RenderSystem.2017.lib;NetworkSystem.2017.lib;NetworkSystem_WindowsSocket.2017.lib;Ungrouped.2017.lib;UISystem.2017.lib;TinyXML.lib;FreeImage.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Common.lib;InputSystem.lib;InputSystem_DirectX.lib;PhysicalSystem.lib;PhysicalSystem_Bullet.lib;RenderSystem.lib;NetworkSystem.lib;NetworkSystem_WindowsSocket.lib;Ungrouped.lib;UISystem.lib;TinyXML.lib;FreeImage.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

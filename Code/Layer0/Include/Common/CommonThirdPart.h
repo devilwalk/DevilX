@@ -1,6 +1,6 @@
 #pragma once
 #include "CommonDefine.h"
-#ifdef DEVILX_DEBUG
+#if DEVILX_DEBUG && (!defined(DEVILX_UNUSE_VLD))
 #if DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_WINDOWS
 #include <vld.h>
 #endif
@@ -27,3 +27,4 @@
 #include "FreeType/freetype/freetype.h"
 #include FT_GLYPH_H
 #include "Lua/lua.hpp"
+#include "libnoise/noise.h"

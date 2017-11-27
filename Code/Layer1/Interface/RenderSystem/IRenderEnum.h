@@ -59,8 +59,33 @@ namespace NSDevilX
 			{
 				EEntityTextureUnitStateType_Diffuse,
 				EEntityTextureUnitStateType_Specular,
-				EEntityTextureUnitStateType_Normal,
-				EEntityTextureUnitStateType_Light
+				EEntityTextureUnitStateType_Normal
+			};
+			enum ECommonMaterialColourStateType
+			{
+				ECommonMaterialColourStateType_Alpha,
+				ECommonMaterialColourStateType_Emissive
+			};
+			enum ECommonMaterialTextureUnitStateType
+			{
+				ECommonMaterialTextureUnitStateType_Alpha,
+				ECommonMaterialTextureUnitStateType_Main
+			};
+			enum ELightMaterialColourStateType
+			{
+				ELightMaterialColourStateType_Diffuse,
+				ELightMaterialColourStateType_Specular
+			};
+			enum ELightMaterialTextureUnitStateType
+			{
+				ELightMaterialTextureUnitStateType_Specular,
+				ELightMaterialTextureUnitStateType_Normal,
+				ELightMaterialTextureUnitStateType_LightMask
+			};
+			enum EPhysicalBasedLightMaterialTextureUnitStateType
+			{
+				EPhysicalBasedLightMaterialTextureUnitStateType_Metallic,
+				EPhysicalBasedLightMaterialTextureUnitStateType_Roughness
 			};
 			enum ERenderableSurfaceFormat
 			{
@@ -99,6 +124,11 @@ namespace NSDevilX
 			{
 				ETextureCoord_0,
 				ETextureCoord_1
+			};
+			enum ELightRenderModel
+			{
+				ELightRenderModel_Basic,
+				ELightRenderModel_PhysicalBased
 			};
 		};
 	}

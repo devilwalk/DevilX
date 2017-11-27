@@ -23,7 +23,7 @@ NSDevilX::NSRenderSystem::NSGLES3::CProgram::CProgram(GLuint vertexShader,GLuint
 		shader_log.resize(1024);
 		glGetProgramInfoLog(getInternal(),1024,nullptr,&shader_log[0]);
 		CUtility::checkGLError();
-#ifdef DEVILX_DEBUG
+#if DEVILX_DEBUG
 #if DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_WINDOWS
 		OutputDebugStringA(("program log:"+shader_log).c_str());
 		OutputDebugStringA("\r\n");
