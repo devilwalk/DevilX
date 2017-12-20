@@ -1,7 +1,7 @@
 #pragma once
 #include "IRenderSceneElement.h"
 #include "IRenderEnum.h"
-#include "IRenderColourUnitState.h"
+#include "IRenderValueUnitState.h"
 namespace NSDevilX
 {
 	namespace NSRenderSystem
@@ -40,11 +40,10 @@ namespace NSDevilX
 			virtual IPointLightProperty * queryInterface_IPointLightProperty()const=0;
 			virtual ISpotLightProperty * queryInterface_ISpotLightProperty()const=0;
 			virtual IEnum::ELightType getType()const=0;
-			virtual IColourUnitState * getColourUnitState(IEnum::ELightColourUnitStateType type)=0;
+			virtual IColourUnitState * getDiffuseColourUnitState()=0;
+			virtual IColourUnitState * getSpecularColourUnitState()=0;
 			virtual Void setShadowEnable(Bool enable)=0;
 			virtual Bool getShadowEnable()const=0;
-			virtual Void setRenderModel(IEnum::ELightRenderModel model)=0;
-			virtual IEnum::ELightRenderModel getRenderModel()const=0;
 		};
 	}
 }

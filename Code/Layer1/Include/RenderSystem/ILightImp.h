@@ -130,10 +130,10 @@ namespace NSDevilX
 				EMessage_EndDestruction,
 				EMessage_BeginShadowEnableChange,
 				EMessage_EndShadowEnableChange,
-				EMessage_BeginLightRenderModelChange,
-				EMessage_EndLightRenderModelChange,
-				EMessage_BeginColourUnitStateCreate,
-				EMessage_EndColourUnitStateCreate
+				EMessage_BeginDiffuseCreate,
+				EMessage_EndDiffuseCreate,
+				EMessage_BeginSpecularCreate,
+				EMessage_EndSpecularCreate,
 			};
 		protected:
 			const IEnum::ELightType mType;
@@ -145,8 +145,8 @@ namespace NSDevilX
 				ISpotLightPropertyImp * mSpotLightProperty;
 			};
 			Bool mShadowEnable;
-			IEnum::ELightRenderModel mLightRenderModel;
-			TVector<IColourUnitStateImp*> mColourUnitStates;
+			DEVILX_R_CLASS_MEMBER(IColourUnitStateImp*,Diffuse);
+			DEVILX_R_CLASS_MEMBER(IColourUnitStateImp*,Specular);
 			TVector<IEntityImp*> mVisibleEntities;
 			TSharedReadData<UInt32> mVisibleElementsFrameIndex;
 		public:
@@ -156,21 +156,16 @@ namespace NSDevilX
 				return mVisibleEntities;
 			}
 			Void findVisibleObjectsMT();
-			IColourUnitStateImp * getColourUnitState(IEnum::ELightColourUnitStateType type)const
-			{
-				return (mColourUnitStates.size()>static_cast<UInt32>(type))?mColourUnitStates[type]:nullptr;
-			}
 			// Inherited via ILight
 			virtual ISceneElement * queryInterface_ISceneElement() const override;
 			virtual IDirectionLightProperty * queryInterface_IDirectionLightProperty() const override;
 			virtual IPointLightProperty * queryInterface_IPointLightProperty() const override;
 			virtual ISpotLightProperty * queryInterface_ISpotLightProperty() const override;
 			virtual IEnum::ELightType getType() const override;
-			virtual IColourUnitState * getColourUnitState(IEnum::ELightColourUnitStateType type) override;
+			virtual IColourUnitState * getDiffuseColourUnitState() override;
+			virtual IColourUnitState * getSpecularColourUnitState() override;
 			virtual Void setShadowEnable(Bool enable) override;
 			virtual Bool getShadowEnable() const override;
-			virtual Void setRenderModel(IEnum::ELightRenderModel model) override;
-			virtual IEnum::ELightRenderModel getRenderModel() const override;
 		protected:
 			~ILightImp();
 		};

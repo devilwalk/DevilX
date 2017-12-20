@@ -38,55 +38,6 @@ namespace NSDevilX
 				EOperationType_TriangleList,
 				EOperationType_TriangleStrip
 			};
-			enum ESkyColourUnitStateType
-			{
-
-			};
-			enum ELightColourUnitStateType
-			{
-				ELightColourUnitStateType_Diffuse,
-				ELightColourUnitStateType_Specular
-			};
-			enum EEntityColourUnitStateType
-			{
-				EEntityColourUnitStateType_Alpha,
-				EEntityColourUnitStateType_Ambient,
-				EEntityColourUnitStateType_Diffuse,
-				EEntityColourUnitStateType_Specular,
-				EEntityColourUnitStateType_Emissive
-			};
-			enum EEntityTextureUnitStateType
-			{
-				EEntityTextureUnitStateType_Diffuse,
-				EEntityTextureUnitStateType_Specular,
-				EEntityTextureUnitStateType_Normal
-			};
-			enum ECommonMaterialColourStateType
-			{
-				ECommonMaterialColourStateType_Alpha,
-				ECommonMaterialColourStateType_Emissive
-			};
-			enum ECommonMaterialTextureUnitStateType
-			{
-				ECommonMaterialTextureUnitStateType_Alpha,
-				ECommonMaterialTextureUnitStateType_Main
-			};
-			enum ELightMaterialColourStateType
-			{
-				ELightMaterialColourStateType_Diffuse,
-				ELightMaterialColourStateType_Specular
-			};
-			enum ELightMaterialTextureUnitStateType
-			{
-				ELightMaterialTextureUnitStateType_Specular,
-				ELightMaterialTextureUnitStateType_Normal,
-				ELightMaterialTextureUnitStateType_LightMask
-			};
-			enum EPhysicalBasedLightMaterialTextureUnitStateType
-			{
-				EPhysicalBasedLightMaterialTextureUnitStateType_Metallic,
-				EPhysicalBasedLightMaterialTextureUnitStateType_Roughness
-			};
 			enum ERenderableSurfaceFormat
 			{
 				ERenderableSurfaceFormat_R8G8B8A8
@@ -125,10 +76,25 @@ namespace NSDevilX
 				ETextureCoord_0,
 				ETextureCoord_1
 			};
-			enum ELightRenderModel
+			enum EMaterialAmbientModel
 			{
-				ELightRenderModel_Basic,
-				ELightRenderModel_PhysicalBased
+				EMaterialAmbientModel_None,
+				EMaterialAmbientModel_Constant,
+				EMaterialAmbientModel_Hemisphere,
+				EMaterialAmbientModel_SphericalHarmonics
+			};
+			enum EMaterialDiffuseModel
+			{
+				EMaterialDiffuseModel_None,
+				EMaterialDiffuseModel_Lambert,
+				EMaterialDiffuseModel_OrenNayar
+			};
+			enum EMaterialSpecularModel
+			{
+				EMaterialSpecularModel_None,
+				EMaterialSpecularModel_Phong,
+				EMaterialSpecularModel_BlinnPhong,
+				EMaterialSpecularModel_CookTorrance
 			};
 		};
 	}

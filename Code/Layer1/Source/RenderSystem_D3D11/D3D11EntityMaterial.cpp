@@ -10,7 +10,11 @@ NSDevilX::NSRenderSystem::NSD3D11::CEntityMaterial::CEntityMaterial(CSubEntityIm
 	SecureZeroMemory(&mTechniques[0],mTechniques.size()*sizeof(mTechniques[0]));
 	_refreshTechnique();
 	getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndAlphaTestValueChange);
-	getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndColourUnitStateCreate);
+	getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndAlphaColourCreate);
+	getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndDiffuseColourCreate);
+	getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndSpecularColourCreate);
+	getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndEmissiveColourCreate);
+	getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndSpecularPowerValueCreate);
 	getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndRenderableChange);
 	getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndQueriableChange);
 }
@@ -28,8 +32,20 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CEntityMaterial::onMessage(ISubEntityImp
 	case ISubEntityImp::EMessage_EndAlphaTestValueChange:
 		needUpdate();
 		break;
-	case ISubEntityImp::EMessage_EndColourUnitStateCreate:
-		static_cast<const ISubEntityImp*>(notifier)->getColourUnitState(*static_cast<IEnum::EEntityColourUnitStateType*>(data))->addListener(static_cast<TMessageReceiver<IColourUnitStateImp>*>(this),IColourUnitStateImp::EMessage_EndValueChange);
+	case ISubEntityImp::EMessage_EndAlphaColourCreate:
+		static_cast<const ISubEntityImp*>(notifier)->getAlphaColour()->addListener(static_cast<TMessageReceiver<IColourUnitStateImp>*>(this),IColourUnitStateImp::EMessage_EndValueChange);
+		break;
+	case ISubEntityImp::EMessage_EndDiffuseColourCreate:
+		static_cast<const ISubEntityImp*>(notifier)->getDiffuseColour()->addListener(static_cast<TMessageReceiver<IColourUnitStateImp>*>(this),IColourUnitStateImp::EMessage_EndValueChange);
+		break;
+	case ISubEntityImp::EMessage_EndSpecularColourCreate:
+		static_cast<const ISubEntityImp*>(notifier)->getSpecularColour()->addListener(static_cast<TMessageReceiver<IColourUnitStateImp>*>(this),IColourUnitStateImp::EMessage_EndValueChange);
+		break;
+	case ISubEntityImp::EMessage_EndEmissiveColourCreate:
+		static_cast<const ISubEntityImp*>(notifier)->getEmissiveColour()->addListener(static_cast<TMessageReceiver<IColourUnitStateImp>*>(this),IColourUnitStateImp::EMessage_EndValueChange);
+		break;
+	case ISubEntityImp::EMessage_EndSpecularPowerValueCreate:
+		static_cast<const ISubEntityImp*>(notifier)->getSpecularPowerValue()->addListener(static_cast<TMessageReceiver<IColourUnitStateImp>*>(this),IColourUnitStateImp::EMessage_EndValueChange);
 		break;
 	case ISubEntityImp::EMessage_EndRenderableChange:
 	case ISubEntityImp::EMessage_EndQueriableChange:
@@ -75,31 +91,45 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CEntityMaterial::onMessage(IColourUnitSt
 Void NSDevilX::NSRenderSystem::NSD3D11::CEntityMaterial::_updateConstantBuffer(Byte * buffer)
 {
 	auto offset=mConstantBuffer->getDescription()->getConstantDesc("gMainColour").StartOffset;
-	if(static_cast<const ISubEntityImp*>(getSubEntity()->getInterfaceImp())->getColourUnitState(IEnum::EEntityColourUnitStateType_Diffuse))
+	if(mSubEntity->getInterfaceImp()->getDiffuseColour())
 	{
-		*reinterpret_cast<CFloat3*>(&buffer[offset])=getSubEntity()->getInterfaceImp()->getColourUnitState(IEnum::EEntityColourUnitStateType_Diffuse)->getValue().rgb();
+		*reinterpret_cast<CFloat3*>(&buffer[offset])=mSubEntity->getInterfaceImp()->getDiffuseColour()->getValue().rgb();
 	}
 	else
 	{
 		*reinterpret_cast<CFloat3*>(&buffer[offset])=CFloat3::sZero;
 	}
 	offset=mConstantBuffer->getDescription()->getConstantDesc("gAlpha").StartOffset;
-	*reinterpret_cast<Float*>(&buffer[offset])=1.0f;
-	offset=mConstantBuffer->getDescription()->getConstantDesc("gSpecularColour").StartOffset;
-	if(static_cast<const ISubEntityImp*>(getSubEntity()->getInterfaceImp())->getColourUnitState(IEnum::EEntityColourUnitStateType_Specular))
+	if(mSubEntity->getInterfaceImp()->getAlphaColour())
 	{
-		*reinterpret_cast<CFloat3*>(&buffer[offset])=getSubEntity()->getInterfaceImp()->getColourUnitState(IEnum::EEntityColourUnitStateType_Specular)->getValue().rgb();
+		*reinterpret_cast<Float*>(&buffer[offset])=mSubEntity->getInterfaceImp()->getAlphaColour()->getValue().a();
+	}
+	else
+	{
+		*reinterpret_cast<Float*>(&buffer[offset])=1.0f;
+	}
+	offset=mConstantBuffer->getDescription()->getConstantDesc("gSpecularColour").StartOffset;
+	if(mSubEntity->getInterfaceImp()->getSpecularColour())
+	{
+		*reinterpret_cast<CFloat3*>(&buffer[offset])=mSubEntity->getInterfaceImp()->getSpecularColour()->getValue().rgb();
 	}
 	else
 	{
 		*reinterpret_cast<CFloat3*>(&buffer[offset])=CFloat3::sZero;
 	}
 	offset=mConstantBuffer->getDescription()->getConstantDesc("gSpecularPower").StartOffset;
-	*reinterpret_cast<Float*>(&buffer[offset])=10.0f;
-	offset=mConstantBuffer->getDescription()->getConstantDesc("gEmissiveColour").StartOffset;
-	if(static_cast<const ISubEntityImp*>(getSubEntity()->getInterfaceImp())->getColourUnitState(IEnum::EEntityColourUnitStateType_Emissive))
+	if(mSubEntity->getInterfaceImp()->getSpecularPowerUnitState())
 	{
-		*reinterpret_cast<CFloat3*>(&buffer[offset])=getSubEntity()->getInterfaceImp()->getColourUnitState(IEnum::EEntityColourUnitStateType_Emissive)->getValue().rgb();
+		*reinterpret_cast<Float*>(&buffer[offset])=mSubEntity->getInterfaceImp()->getSpecularPowerUnitState()->getValue();
+	}
+	else
+	{
+		*reinterpret_cast<Float*>(&buffer[offset])=10.0f;
+	}
+	offset=mConstantBuffer->getDescription()->getConstantDesc("gEmissiveColour").StartOffset;
+	if(mSubEntity->getInterfaceImp()->getEmissiveColour())
+	{
+		*reinterpret_cast<CFloat3*>(&buffer[offset])=mSubEntity->getInterfaceImp()->getEmissiveColour()->getValue().rgb();
 	}
 	else
 	{

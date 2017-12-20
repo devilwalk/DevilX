@@ -127,32 +127,16 @@ float3 getCameraRight(float4x4 viewMatrix)\r\n\
 	float3x3 rot=convert(viewMatrix);\r\n\
 	return rot[0];\r\n\
 }\r\n\
-float calcHemisphereLightFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
+float calcHemisphereAmbientFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
 {\r\n\
 	float cos_the=dot(vertexToLightDirection,worldNormal);\r\n\
 	return cos_the*0.5+0.5;\r\n\
 }\r\n\
-float calcDefaultHemisphereLightFactor(float3 worldNormal)\r\n\
+float calcDefaultHemisphereAmbientFactor(float3 worldNormal)\r\n\
 {\r\n\
-	return calcHemisphereLightFactor(float3(0.0,1.0,0.0),worldNormal);\r\n\
+	return calcHemisphereAmbientFactor(float3(0.0,1.0,0.0),worldNormal);\r\n\
 }\r\n\
-float calcLambertDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
-{\r\n\
-	return saturate(dot(vertexToLightDirection,worldNormal));\r\n\
-}\r\n\
-float calcPhongSpecularFactor(float3 lightToVertexDirection,float3 worldNormal,float3 worldPosition,float3 vertexToCameraDirection)\r\n\
-{\r\n\
-	float3 reflect_dir=reflect(lightToVertexDirection,worldNormal);\r\n\
-	float factor=saturate(dot(reflect_dir,vertexToCameraDirection));\r\n\
-	return factor;\r\n\
-}\r\n\
-float calcBlinnPhongSpecularFactor(float3 vertexToLightDirection,float3 worldNormal,float3 worldPosition,float3 vertexToCameraDirection)\r\n\
-{\r\n\
-	float3 half_vector = normalize(vertexToCameraDirection + vertexToLightDirection);\r\n\
-	float specular_factor = saturate(dot(half_vector, worldNormal));\r\n\
-	return specular_factor;\r\n\
-}\r\n\
-float3 calcSphericalHarmonicsLightFactor(float3 worldNormal)\r\n\
+float3 calcSphericalHarmonicsAmbientFactor(float3 worldNormal)\r\n\
 {\r\n\
 	const float c1=0.429043;\r\n\
 	const float c2=0.511664;\r\n\
@@ -180,11 +164,38 @@ float3 calcSphericalHarmonicsLightFactor(float3 worldNormal)\r\n\
 	+2.0*c2*l10*worldNormal.z;\r\n\
 	return factor;\r\n\
 }\r\n\
+float2 calcLambertLightModelFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
+{\r\n\
+	return float2(saturate(dot(vertexToLightDirection,worldNormal)),0.0);\r\n\
+}\r\n\
+float2 calcPhongLightModelFactor(float3 lightToVertexDirection,float3 worldNormal,float3 worldPosition,float3 vertexToCameraDirection)\r\n\
+{\r\n\
+	float diffuse_factor=saturate(dot(-lightToVertexDirection,worldNormal));\r\n\
+	float3 reflect_dir=reflect(lightToVertexDirection,worldNormal);\r\n\
+	float specular_factor=saturate(dot(reflect_dir,vertexToCameraDirection));\r\n\
+	return float2(diffuse_factor,specular_factor);\r\n\
+}\r\n\
+float2 calcBlinnPhongLightModelFactor(float3 vertexToLightDirection,float3 worldNormal,float3 worldPosition,float3 vertexToCameraDirection,float specularExponent)\r\n\
+{\r\n\
+	float diffuse_factor=saturate(dot(vertexToLightDirection,worldNormal));\r\n\
+	float3 half_vector = normalize(vertexToCameraDirection + vertexToLightDirection);\r\n\
+	float specular_factor = pow(saturate(dot(half_vector, worldNormal)),specularExponent);\r\n\
+	return float2(diffuse_factor,specular_factor);\r\n\
+}\r\n\
 //return 1意味着无衰减，return 0意味着完全衰减\r\n\
 float calcFalloffFactor(float current, float begin, float reciprocalRange)\r\n\
 {\r\n\
 	float factor=saturate((current - begin) * reciprocalRange);\r\n\
     return 1.0 - factor*factor;\r\n\
+}\r\n\
+float BRDF_D(float3 h)\r\n\
+{\r\n\
+}\r\n\
+float BRDF_G(l,v)\r\n\
+{\r\n\
+}\r\n\
+float BRDF_F(l,h)\r\n\
+{\r\n\
 }\r\n\
 float3 encodeNormal(float3 normal)\r\n\
 {\r\n\
@@ -383,32 +394,16 @@ float3 getCameraRight(float4x4 viewMatrix)\r\n\
 	float3x3 rot=convert(viewMatrix);\r\n\
 	return rot[0];\r\n\
 }\r\n\
-float calcHemisphereLightFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
+float calcHemisphereAmbientFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
 {\r\n\
 	float cos_the=dot(vertexToLightDirection,worldNormal);\r\n\
 	return cos_the*0.5+0.5;\r\n\
 }\r\n\
-float calcDefaultHemisphereLightFactor(float3 worldNormal)\r\n\
+float calcDefaultHemisphereAmbientFactor(float3 worldNormal)\r\n\
 {\r\n\
-	return calcHemisphereLightFactor(float3(0.0,1.0,0.0),worldNormal);\r\n\
+	return calcHemisphereAmbientFactor(float3(0.0,1.0,0.0),worldNormal);\r\n\
 }\r\n\
-float calcLambertDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
-{\r\n\
-	return saturate(dot(vertexToLightDirection,worldNormal));\r\n\
-}\r\n\
-float calcPhongSpecularFactor(float3 lightToVertexDirection,float3 worldNormal,float3 worldPosition,float3 vertexToCameraDirection)\r\n\
-{\r\n\
-	float3 reflect_dir=reflect(lightToVertexDirection,worldNormal);\r\n\
-	float factor=saturate(dot(reflect_dir,vertexToCameraDirection));\r\n\
-	return factor;\r\n\
-}\r\n\
-float calcBlinnPhongSpecularFactor(float3 vertexToLightDirection,float3 worldNormal,float3 worldPosition,float3 vertexToCameraDirection)\r\n\
-{\r\n\
-	float3 half_vector = normalize(vertexToCameraDirection + vertexToLightDirection);\r\n\
-	float specular_factor = saturate(dot(half_vector, worldNormal));\r\n\
-	return specular_factor;\r\n\
-}\r\n\
-float3 calcSphericalHarmonicsLightFactor(float3 worldNormal)\r\n\
+float3 calcSphericalHarmonicsAmbientFactor(float3 worldNormal)\r\n\
 {\r\n\
 	const float c1=0.429043;\r\n\
 	const float c2=0.511664;\r\n\
@@ -436,11 +431,38 @@ float3 calcSphericalHarmonicsLightFactor(float3 worldNormal)\r\n\
 	+2.0*c2*l10*worldNormal.z;\r\n\
 	return factor;\r\n\
 }\r\n\
+float2 calcLambertLightModelFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
+{\r\n\
+	return float2(saturate(dot(vertexToLightDirection,worldNormal)),0.0);\r\n\
+}\r\n\
+float2 calcPhongLightModelFactor(float3 lightToVertexDirection,float3 worldNormal,float3 worldPosition,float3 vertexToCameraDirection)\r\n\
+{\r\n\
+	float diffuse_factor=saturate(dot(-lightToVertexDirection,worldNormal));\r\n\
+	float3 reflect_dir=reflect(lightToVertexDirection,worldNormal);\r\n\
+	float specular_factor=saturate(dot(reflect_dir,vertexToCameraDirection));\r\n\
+	return float2(diffuse_factor,specular_factor);\r\n\
+}\r\n\
+float2 calcBlinnPhongLightModelFactor(float3 vertexToLightDirection,float3 worldNormal,float3 worldPosition,float3 vertexToCameraDirection,float specularExponent)\r\n\
+{\r\n\
+	float diffuse_factor=saturate(dot(vertexToLightDirection,worldNormal));\r\n\
+	float3 half_vector = normalize(vertexToCameraDirection + vertexToLightDirection);\r\n\
+	float specular_factor = pow(saturate(dot(half_vector, worldNormal)),specularExponent);\r\n\
+	return float2(diffuse_factor,specular_factor);\r\n\
+}\r\n\
 //return 1意味着无衰减，return 0意味着完全衰减\r\n\
 float calcFalloffFactor(float current, float begin, float reciprocalRange)\r\n\
 {\r\n\
 	float factor=saturate((current - begin) * reciprocalRange);\r\n\
     return 1.0 - factor*factor;\r\n\
+}\r\n\
+float BRDF_D(float3 h)\r\n\
+{\r\n\
+}\r\n\
+float BRDF_G(l,v)\r\n\
+{\r\n\
+}\r\n\
+float BRDF_F(l,h)\r\n\
+{\r\n\
 }\r\n\
 float3 encodeNormal(float3 normal)\r\n\
 {\r\n\
@@ -622,32 +644,16 @@ float3 getCameraRight(float4x4 viewMatrix)\r\n\
 	float3x3 rot=convert(viewMatrix);\r\n\
 	return rot[0];\r\n\
 }\r\n\
-float calcHemisphereLightFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
+float calcHemisphereAmbientFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
 {\r\n\
 	float cos_the=dot(vertexToLightDirection,worldNormal);\r\n\
 	return cos_the*0.5+0.5;\r\n\
 }\r\n\
-float calcDefaultHemisphereLightFactor(float3 worldNormal)\r\n\
+float calcDefaultHemisphereAmbientFactor(float3 worldNormal)\r\n\
 {\r\n\
-	return calcHemisphereLightFactor(float3(0.0,1.0,0.0),worldNormal);\r\n\
+	return calcHemisphereAmbientFactor(float3(0.0,1.0,0.0),worldNormal);\r\n\
 }\r\n\
-float calcLambertDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
-{\r\n\
-	return saturate(dot(vertexToLightDirection,worldNormal));\r\n\
-}\r\n\
-float calcPhongSpecularFactor(float3 lightToVertexDirection,float3 worldNormal,float3 worldPosition,float3 vertexToCameraDirection)\r\n\
-{\r\n\
-	float3 reflect_dir=reflect(lightToVertexDirection,worldNormal);\r\n\
-	float factor=saturate(dot(reflect_dir,vertexToCameraDirection));\r\n\
-	return factor;\r\n\
-}\r\n\
-float calcBlinnPhongSpecularFactor(float3 vertexToLightDirection,float3 worldNormal,float3 worldPosition,float3 vertexToCameraDirection)\r\n\
-{\r\n\
-	float3 half_vector = normalize(vertexToCameraDirection + vertexToLightDirection);\r\n\
-	float specular_factor = saturate(dot(half_vector, worldNormal));\r\n\
-	return specular_factor;\r\n\
-}\r\n\
-float3 calcSphericalHarmonicsLightFactor(float3 worldNormal)\r\n\
+float3 calcSphericalHarmonicsAmbientFactor(float3 worldNormal)\r\n\
 {\r\n\
 	const float c1=0.429043;\r\n\
 	const float c2=0.511664;\r\n\
@@ -675,11 +681,38 @@ float3 calcSphericalHarmonicsLightFactor(float3 worldNormal)\r\n\
 	+2.0*c2*l10*worldNormal.z;\r\n\
 	return factor;\r\n\
 }\r\n\
+float2 calcLambertLightModelFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
+{\r\n\
+	return float2(saturate(dot(vertexToLightDirection,worldNormal)),0.0);\r\n\
+}\r\n\
+float2 calcPhongLightModelFactor(float3 lightToVertexDirection,float3 worldNormal,float3 worldPosition,float3 vertexToCameraDirection)\r\n\
+{\r\n\
+	float diffuse_factor=saturate(dot(-lightToVertexDirection,worldNormal));\r\n\
+	float3 reflect_dir=reflect(lightToVertexDirection,worldNormal);\r\n\
+	float specular_factor=saturate(dot(reflect_dir,vertexToCameraDirection));\r\n\
+	return float2(diffuse_factor,specular_factor);\r\n\
+}\r\n\
+float2 calcBlinnPhongLightModelFactor(float3 vertexToLightDirection,float3 worldNormal,float3 worldPosition,float3 vertexToCameraDirection,float specularExponent)\r\n\
+{\r\n\
+	float diffuse_factor=saturate(dot(vertexToLightDirection,worldNormal));\r\n\
+	float3 half_vector = normalize(vertexToCameraDirection + vertexToLightDirection);\r\n\
+	float specular_factor = pow(saturate(dot(half_vector, worldNormal)),specularExponent);\r\n\
+	return float2(diffuse_factor,specular_factor);\r\n\
+}\r\n\
 //return 1意味着无衰减，return 0意味着完全衰减\r\n\
 float calcFalloffFactor(float current, float begin, float reciprocalRange)\r\n\
 {\r\n\
 	float factor=saturate((current - begin) * reciprocalRange);\r\n\
     return 1.0 - factor*factor;\r\n\
+}\r\n\
+float BRDF_D(float3 h)\r\n\
+{\r\n\
+}\r\n\
+float BRDF_G(l,v)\r\n\
+{\r\n\
+}\r\n\
+float BRDF_F(l,h)\r\n\
+{\r\n\
 }\r\n\
 float3 encodeNormal(float3 normal)\r\n\
 {\r\n\
@@ -831,32 +864,16 @@ float3 getCameraRight(float4x4 viewMatrix)\r\n\
 	float3x3 rot=convert(viewMatrix);\r\n\
 	return rot[0];\r\n\
 }\r\n\
-float calcHemisphereLightFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
+float calcHemisphereAmbientFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
 {\r\n\
 	float cos_the=dot(vertexToLightDirection,worldNormal);\r\n\
 	return cos_the*0.5+0.5;\r\n\
 }\r\n\
-float calcDefaultHemisphereLightFactor(float3 worldNormal)\r\n\
+float calcDefaultHemisphereAmbientFactor(float3 worldNormal)\r\n\
 {\r\n\
-	return calcHemisphereLightFactor(float3(0.0,1.0,0.0),worldNormal);\r\n\
+	return calcHemisphereAmbientFactor(float3(0.0,1.0,0.0),worldNormal);\r\n\
 }\r\n\
-float calcLambertDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
-{\r\n\
-	return saturate(dot(vertexToLightDirection,worldNormal));\r\n\
-}\r\n\
-float calcPhongSpecularFactor(float3 lightToVertexDirection,float3 worldNormal,float3 worldPosition,float3 vertexToCameraDirection)\r\n\
-{\r\n\
-	float3 reflect_dir=reflect(lightToVertexDirection,worldNormal);\r\n\
-	float factor=saturate(dot(reflect_dir,vertexToCameraDirection));\r\n\
-	return factor;\r\n\
-}\r\n\
-float calcBlinnPhongSpecularFactor(float3 vertexToLightDirection,float3 worldNormal,float3 worldPosition,float3 vertexToCameraDirection)\r\n\
-{\r\n\
-	float3 half_vector = normalize(vertexToCameraDirection + vertexToLightDirection);\r\n\
-	float specular_factor = saturate(dot(half_vector, worldNormal));\r\n\
-	return specular_factor;\r\n\
-}\r\n\
-float3 calcSphericalHarmonicsLightFactor(float3 worldNormal)\r\n\
+float3 calcSphericalHarmonicsAmbientFactor(float3 worldNormal)\r\n\
 {\r\n\
 	const float c1=0.429043;\r\n\
 	const float c2=0.511664;\r\n\
@@ -884,11 +901,38 @@ float3 calcSphericalHarmonicsLightFactor(float3 worldNormal)\r\n\
 	+2.0*c2*l10*worldNormal.z;\r\n\
 	return factor;\r\n\
 }\r\n\
+float2 calcLambertLightModelFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
+{\r\n\
+	return float2(saturate(dot(vertexToLightDirection,worldNormal)),0.0);\r\n\
+}\r\n\
+float2 calcPhongLightModelFactor(float3 lightToVertexDirection,float3 worldNormal,float3 worldPosition,float3 vertexToCameraDirection)\r\n\
+{\r\n\
+	float diffuse_factor=saturate(dot(-lightToVertexDirection,worldNormal));\r\n\
+	float3 reflect_dir=reflect(lightToVertexDirection,worldNormal);\r\n\
+	float specular_factor=saturate(dot(reflect_dir,vertexToCameraDirection));\r\n\
+	return float2(diffuse_factor,specular_factor);\r\n\
+}\r\n\
+float2 calcBlinnPhongLightModelFactor(float3 vertexToLightDirection,float3 worldNormal,float3 worldPosition,float3 vertexToCameraDirection,float specularExponent)\r\n\
+{\r\n\
+	float diffuse_factor=saturate(dot(vertexToLightDirection,worldNormal));\r\n\
+	float3 half_vector = normalize(vertexToCameraDirection + vertexToLightDirection);\r\n\
+	float specular_factor = pow(saturate(dot(half_vector, worldNormal)),specularExponent);\r\n\
+	return float2(diffuse_factor,specular_factor);\r\n\
+}\r\n\
 //return 1意味着无衰减，return 0意味着完全衰减\r\n\
 float calcFalloffFactor(float current, float begin, float reciprocalRange)\r\n\
 {\r\n\
 	float factor=saturate((current - begin) * reciprocalRange);\r\n\
     return 1.0 - factor*factor;\r\n\
+}\r\n\
+float BRDF_D(float3 h)\r\n\
+{\r\n\
+}\r\n\
+float BRDF_G(l,v)\r\n\
+{\r\n\
+}\r\n\
+float BRDF_F(l,h)\r\n\
+{\r\n\
 }\r\n\
 float3 encodeNormal(float3 normal)\r\n\
 {\r\n\
@@ -975,6 +1019,10 @@ CB_MEMBER float3 gSpecularColour;\r\n\
 CB_MEMBER float gSpecularPower;\r\n\
 CB_MEMBER float3 gEmissiveColour;\r\n\
 CB_MEMBER float gAlphaTestValue;\r\n\
+CB_MEMBER float gMetallic;\r\n\
+CB_MEMBER float gRoughness;\r\n\
+CB_MEMBER float gOrenNayar_A;\r\n\
+CB_MEMBER float gOrenNayar_B;\r\n\
 END_DECL\r\n\
 \r\n\
 \r\n\
@@ -1029,6 +1077,21 @@ END_DECL\r\n\
 #ifndef USE_SPOT_LIGHT\r\n\
 #define USE_SPOT_LIGHT 0\r\n\
 #endif\r\n\
+#ifndef USE_HEMISPHERE_AMBIENT\r\n\
+#define USE_HEMISPHERE_AMBIENT 0\r\n\
+#endif\r\n\
+#ifndef USE_SPHERICALHARMONICS_AMBIENT\r\n\
+#define USE_SPHERICALHARMONICS_AMBIENT 0\r\n\
+#endif\r\n\
+#ifndef USE_LAMBERT_LIGHT_MODEL\r\n\
+#define USE_LAMBERT_LIGHT_MODEL 0\r\n\
+#endif \r\n\
+#ifndef USE_PHONG_LIGHT_MODEL\r\n\
+#define USE_PHONG_LIGHT_MODEL 0\r\n\
+#endif \r\n\
+#ifndef USE_BLINNPHONG_LIGHT_MODEL\r\n\
+#define USE_BLINNPHONG_LIGHT_MODEL 0\r\n\
+#endif \r\n\
 #ifndef USE_DIFFUSE_TEXTURE\r\n\
 #define USE_DIFFUSE_TEXTURE 0\r\n\
 #endif\r\n\
@@ -1037,9 +1100,6 @@ END_DECL\r\n\
 #endif\r\n\
 #ifndef USE_ALPHA_TEST\r\n\
 #define USE_ALPHA_TEST 0\r\n\
-#endif\r\n\
-#ifndef USE_SPECULAR\r\n\
-#define USE_SPECULAR 0\r\n\
 #endif\r\n\
 \r\n\
 \r\n\
@@ -1123,14 +1183,17 @@ void main()\r\n\
     float3 light_diffuse_colour = gSpotLightDiffuseColour;\r\n\
     float3 light_specular_colour = gSpotLightSpecularColour;\r\n\
 	    #endif\r\n\
-	float lighting_diffuse_factor = calcLambertDiffuseFactor(vertex_to_light_direction, world_normal);\r\n\
-    float3 lighting_diffuse_colour = light_diffuse_colour * lighting_diffuse_factor;\r\n\
-	lighting_colour+=lighting_diffuse_colour;\r\n\
-		#if USE_SPECULAR\r\n\
-	float lighting_specular_factor=calcBlinnPhongSpecularFactor(vertex_to_light_direction,world_normal,iWorldPosition,getCameraPosition());\r\n\
-	float3 lighting_specular_colour=lighting_diffuse_factor > 0.0?pow(lighting_specular_factor,gSpecularPower) * light_specular_colour:0.0;\r\n\
-	lighting_colour+=lighting_specular_colour;\r\n\
+		#if USE_LAMBERT_LIGHT_MODEL\r\n\
+	float2 lighting_factor=calcLambertLightModelFactor(vertex_to_light_direction,world_normal);\r\n\
+		#elif USE_PHONG_LIGHT_MODEL\r\n\
+	float2 lighting_factor=calcPhongLightModelFactor(-vertex_to_light_direction,world_normal,iWorldPosition,normalize(getCameraPosition()-iWorldPosition));\r\n\
+		#elif USE_BLINNPHONG_LIGHT_MODEL\r\n\
+	float2 lighting_factor=calcBlinnPhongSpecularFactor(vertex_to_light_direction,world_normal,iWorldPosition,normalize(getCameraPosition()-iWorldPosition));\r\n\
 		#endif\r\n\
+    float3 lighting_diffuse_colour = light_diffuse_colour*lighting_factor.x;\r\n\
+	lighting_colour+=lighting_diffuse_colour;\r\n\
+	float3 lighting_specular_colour=lighting_factor.y*light_specular_colour;\r\n\
+	lighting_colour+=lighting_specular_colour;\r\n\
     oColour.rgb+=lighting_colour*lighting_falloff_factor*colour_diffuse_factor;\r\n\
 	#else\r\n\
 	oColour.rgb+=gAmbientColour*colour_diffuse_factor;\r\n\
@@ -1267,32 +1330,16 @@ float3 getCameraRight(float4x4 viewMatrix)\r\n\
 	float3x3 rot=convert(viewMatrix);\r\n\
 	return rot[0];\r\n\
 }\r\n\
-float calcHemisphereLightFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
+float calcHemisphereAmbientFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
 {\r\n\
 	float cos_the=dot(vertexToLightDirection,worldNormal);\r\n\
 	return cos_the*0.5+0.5;\r\n\
 }\r\n\
-float calcDefaultHemisphereLightFactor(float3 worldNormal)\r\n\
+float calcDefaultHemisphereAmbientFactor(float3 worldNormal)\r\n\
 {\r\n\
-	return calcHemisphereLightFactor(float3(0.0,1.0,0.0),worldNormal);\r\n\
+	return calcHemisphereAmbientFactor(float3(0.0,1.0,0.0),worldNormal);\r\n\
 }\r\n\
-float calcLambertDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
-{\r\n\
-	return saturate(dot(vertexToLightDirection,worldNormal));\r\n\
-}\r\n\
-float calcPhongSpecularFactor(float3 lightToVertexDirection,float3 worldNormal,float3 worldPosition,float3 vertexToCameraDirection)\r\n\
-{\r\n\
-	float3 reflect_dir=reflect(lightToVertexDirection,worldNormal);\r\n\
-	float factor=saturate(dot(reflect_dir,vertexToCameraDirection));\r\n\
-	return factor;\r\n\
-}\r\n\
-float calcBlinnPhongSpecularFactor(float3 vertexToLightDirection,float3 worldNormal,float3 worldPosition,float3 vertexToCameraDirection)\r\n\
-{\r\n\
-	float3 half_vector = normalize(vertexToCameraDirection + vertexToLightDirection);\r\n\
-	float specular_factor = saturate(dot(half_vector, worldNormal));\r\n\
-	return specular_factor;\r\n\
-}\r\n\
-float3 calcSphericalHarmonicsLightFactor(float3 worldNormal)\r\n\
+float3 calcSphericalHarmonicsAmbientFactor(float3 worldNormal)\r\n\
 {\r\n\
 	const float c1=0.429043;\r\n\
 	const float c2=0.511664;\r\n\
@@ -1320,11 +1367,38 @@ float3 calcSphericalHarmonicsLightFactor(float3 worldNormal)\r\n\
 	+2.0*c2*l10*worldNormal.z;\r\n\
 	return factor;\r\n\
 }\r\n\
+float2 calcLambertLightModelFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
+{\r\n\
+	return float2(saturate(dot(vertexToLightDirection,worldNormal)),0.0);\r\n\
+}\r\n\
+float2 calcPhongLightModelFactor(float3 lightToVertexDirection,float3 worldNormal,float3 worldPosition,float3 vertexToCameraDirection)\r\n\
+{\r\n\
+	float diffuse_factor=saturate(dot(-lightToVertexDirection,worldNormal));\r\n\
+	float3 reflect_dir=reflect(lightToVertexDirection,worldNormal);\r\n\
+	float specular_factor=saturate(dot(reflect_dir,vertexToCameraDirection));\r\n\
+	return float2(diffuse_factor,specular_factor);\r\n\
+}\r\n\
+float2 calcBlinnPhongLightModelFactor(float3 vertexToLightDirection,float3 worldNormal,float3 worldPosition,float3 vertexToCameraDirection,float specularExponent)\r\n\
+{\r\n\
+	float diffuse_factor=saturate(dot(vertexToLightDirection,worldNormal));\r\n\
+	float3 half_vector = normalize(vertexToCameraDirection + vertexToLightDirection);\r\n\
+	float specular_factor = pow(saturate(dot(half_vector, worldNormal)),specularExponent);\r\n\
+	return float2(diffuse_factor,specular_factor);\r\n\
+}\r\n\
 //return 1意味着无衰减，return 0意味着完全衰减\r\n\
 float calcFalloffFactor(float current, float begin, float reciprocalRange)\r\n\
 {\r\n\
 	float factor=saturate((current - begin) * reciprocalRange);\r\n\
     return 1.0 - factor*factor;\r\n\
+}\r\n\
+float BRDF_D(float3 h)\r\n\
+{\r\n\
+}\r\n\
+float BRDF_G(l,v)\r\n\
+{\r\n\
+}\r\n\
+float BRDF_F(l,h)\r\n\
+{\r\n\
 }\r\n\
 float3 encodeNormal(float3 normal)\r\n\
 {\r\n\
@@ -1411,6 +1485,10 @@ CB_MEMBER float3 gSpecularColour;\r\n\
 CB_MEMBER float gSpecularPower;\r\n\
 CB_MEMBER float3 gEmissiveColour;\r\n\
 CB_MEMBER float gAlphaTestValue;\r\n\
+CB_MEMBER float gMetallic;\r\n\
+CB_MEMBER float gRoughness;\r\n\
+CB_MEMBER float gOrenNayar_A;\r\n\
+CB_MEMBER float gOrenNayar_B;\r\n\
 END_DECL\r\n\
 \r\n\
 \r\n\
@@ -1465,6 +1543,21 @@ END_DECL\r\n\
 #ifndef USE_SPOT_LIGHT\r\n\
 #define USE_SPOT_LIGHT 0\r\n\
 #endif\r\n\
+#ifndef USE_HEMISPHERE_AMBIENT\r\n\
+#define USE_HEMISPHERE_AMBIENT 0\r\n\
+#endif\r\n\
+#ifndef USE_SPHERICALHARMONICS_AMBIENT\r\n\
+#define USE_SPHERICALHARMONICS_AMBIENT 0\r\n\
+#endif\r\n\
+#ifndef USE_LAMBERT_LIGHT_MODEL\r\n\
+#define USE_LAMBERT_LIGHT_MODEL 0\r\n\
+#endif \r\n\
+#ifndef USE_PHONG_LIGHT_MODEL\r\n\
+#define USE_PHONG_LIGHT_MODEL 0\r\n\
+#endif \r\n\
+#ifndef USE_BLINNPHONG_LIGHT_MODEL\r\n\
+#define USE_BLINNPHONG_LIGHT_MODEL 0\r\n\
+#endif \r\n\
 #ifndef USE_DIFFUSE_TEXTURE\r\n\
 #define USE_DIFFUSE_TEXTURE 0\r\n\
 #endif\r\n\
@@ -1473,9 +1566,6 @@ END_DECL\r\n\
 #endif\r\n\
 #ifndef USE_ALPHA_TEST\r\n\
 #define USE_ALPHA_TEST 0\r\n\
-#endif\r\n\
-#ifndef USE_SPECULAR\r\n\
-#define USE_SPECULAR 0\r\n\
 #endif\r\n\
 \r\n\
 \r\n\
@@ -1618,14 +1708,17 @@ SPixelShaderOutput psMain(SVertexShaderOutput input)\r\n\
     float3 light_diffuse_colour = gSpotLightDiffuseColour;\r\n\
     float3 light_specular_colour = gSpotLightSpecularColour;\r\n\
 	    #endif\r\n\
-	float lighting_diffuse_factor = calcLambertDiffuseFactor(vertex_to_light_direction, world_normal);\r\n\
-    float3 lighting_diffuse_colour = light_diffuse_colour * lighting_diffuse_factor;\r\n\
-	lighting_colour+=lighting_diffuse_colour;\r\n\
-		#if USE_SPECULAR\r\n\
-	float lighting_specular_factor=calcBlinnPhongSpecularFactor(vertex_to_light_direction,world_normal,iWorldPosition,getCameraPosition());\r\n\
-	float3 lighting_specular_colour=lighting_diffuse_factor > 0.0?pow(lighting_specular_factor,gSpecularPower) * light_specular_colour:0.0;\r\n\
-	lighting_colour+=lighting_specular_colour;\r\n\
+		#if USE_LAMBERT_LIGHT_MODEL\r\n\
+	float2 lighting_factor=calcLambertLightModelFactor(vertex_to_light_direction,world_normal);\r\n\
+		#elif USE_PHONG_LIGHT_MODEL\r\n\
+	float2 lighting_factor=calcPhongLightModelFactor(-vertex_to_light_direction,world_normal,iWorldPosition,normalize(getCameraPosition()-iWorldPosition));\r\n\
+		#elif USE_BLINNPHONG_LIGHT_MODEL\r\n\
+	float2 lighting_factor=calcBlinnPhongSpecularFactor(vertex_to_light_direction,world_normal,iWorldPosition,normalize(getCameraPosition()-iWorldPosition));\r\n\
 		#endif\r\n\
+    float3 lighting_diffuse_colour = light_diffuse_colour*lighting_factor.x;\r\n\
+	lighting_colour+=lighting_diffuse_colour;\r\n\
+	float3 lighting_specular_colour=lighting_factor.y*light_specular_colour;\r\n\
+	lighting_colour+=lighting_specular_colour;\r\n\
     oColour.rgb+=lighting_colour*lighting_falloff_factor*colour_diffuse_factor;\r\n\
 	#else\r\n\
 	oColour.rgb+=gAmbientColour*colour_diffuse_factor;\r\n\
@@ -1764,32 +1857,16 @@ float3 getCameraRight(float4x4 viewMatrix)\r\n\
 	float3x3 rot=convert(viewMatrix);\r\n\
 	return rot[0];\r\n\
 }\r\n\
-float calcHemisphereLightFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
+float calcHemisphereAmbientFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
 {\r\n\
 	float cos_the=dot(vertexToLightDirection,worldNormal);\r\n\
 	return cos_the*0.5+0.5;\r\n\
 }\r\n\
-float calcDefaultHemisphereLightFactor(float3 worldNormal)\r\n\
+float calcDefaultHemisphereAmbientFactor(float3 worldNormal)\r\n\
 {\r\n\
-	return calcHemisphereLightFactor(float3(0.0,1.0,0.0),worldNormal);\r\n\
+	return calcHemisphereAmbientFactor(float3(0.0,1.0,0.0),worldNormal);\r\n\
 }\r\n\
-float calcLambertDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
-{\r\n\
-	return saturate(dot(vertexToLightDirection,worldNormal));\r\n\
-}\r\n\
-float calcPhongSpecularFactor(float3 lightToVertexDirection,float3 worldNormal,float3 worldPosition,float3 vertexToCameraDirection)\r\n\
-{\r\n\
-	float3 reflect_dir=reflect(lightToVertexDirection,worldNormal);\r\n\
-	float factor=saturate(dot(reflect_dir,vertexToCameraDirection));\r\n\
-	return factor;\r\n\
-}\r\n\
-float calcBlinnPhongSpecularFactor(float3 vertexToLightDirection,float3 worldNormal,float3 worldPosition,float3 vertexToCameraDirection)\r\n\
-{\r\n\
-	float3 half_vector = normalize(vertexToCameraDirection + vertexToLightDirection);\r\n\
-	float specular_factor = saturate(dot(half_vector, worldNormal));\r\n\
-	return specular_factor;\r\n\
-}\r\n\
-float3 calcSphericalHarmonicsLightFactor(float3 worldNormal)\r\n\
+float3 calcSphericalHarmonicsAmbientFactor(float3 worldNormal)\r\n\
 {\r\n\
 	const float c1=0.429043;\r\n\
 	const float c2=0.511664;\r\n\
@@ -1817,11 +1894,38 @@ float3 calcSphericalHarmonicsLightFactor(float3 worldNormal)\r\n\
 	+2.0*c2*l10*worldNormal.z;\r\n\
 	return factor;\r\n\
 }\r\n\
+float2 calcLambertLightModelFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
+{\r\n\
+	return float2(saturate(dot(vertexToLightDirection,worldNormal)),0.0);\r\n\
+}\r\n\
+float2 calcPhongLightModelFactor(float3 lightToVertexDirection,float3 worldNormal,float3 worldPosition,float3 vertexToCameraDirection)\r\n\
+{\r\n\
+	float diffuse_factor=saturate(dot(-lightToVertexDirection,worldNormal));\r\n\
+	float3 reflect_dir=reflect(lightToVertexDirection,worldNormal);\r\n\
+	float specular_factor=saturate(dot(reflect_dir,vertexToCameraDirection));\r\n\
+	return float2(diffuse_factor,specular_factor);\r\n\
+}\r\n\
+float2 calcBlinnPhongLightModelFactor(float3 vertexToLightDirection,float3 worldNormal,float3 worldPosition,float3 vertexToCameraDirection,float specularExponent)\r\n\
+{\r\n\
+	float diffuse_factor=saturate(dot(vertexToLightDirection,worldNormal));\r\n\
+	float3 half_vector = normalize(vertexToCameraDirection + vertexToLightDirection);\r\n\
+	float specular_factor = pow(saturate(dot(half_vector, worldNormal)),specularExponent);\r\n\
+	return float2(diffuse_factor,specular_factor);\r\n\
+}\r\n\
 //return 1意味着无衰减，return 0意味着完全衰减\r\n\
 float calcFalloffFactor(float current, float begin, float reciprocalRange)\r\n\
 {\r\n\
 	float factor=saturate((current - begin) * reciprocalRange);\r\n\
     return 1.0 - factor*factor;\r\n\
+}\r\n\
+float BRDF_D(float3 h)\r\n\
+{\r\n\
+}\r\n\
+float BRDF_G(l,v)\r\n\
+{\r\n\
+}\r\n\
+float BRDF_F(l,h)\r\n\
+{\r\n\
 }\r\n\
 float3 encodeNormal(float3 normal)\r\n\
 {\r\n\
@@ -1908,6 +2012,10 @@ CB_MEMBER float3 gSpecularColour;\r\n\
 CB_MEMBER float gSpecularPower;\r\n\
 CB_MEMBER float3 gEmissiveColour;\r\n\
 CB_MEMBER float gAlphaTestValue;\r\n\
+CB_MEMBER float gMetallic;\r\n\
+CB_MEMBER float gRoughness;\r\n\
+CB_MEMBER float gOrenNayar_A;\r\n\
+CB_MEMBER float gOrenNayar_B;\r\n\
 END_DECL\r\n\
 \r\n\
 \r\n\
@@ -1962,6 +2070,21 @@ END_DECL\r\n\
 #ifndef USE_SPOT_LIGHT\r\n\
 #define USE_SPOT_LIGHT 0\r\n\
 #endif\r\n\
+#ifndef USE_HEMISPHERE_AMBIENT\r\n\
+#define USE_HEMISPHERE_AMBIENT 0\r\n\
+#endif\r\n\
+#ifndef USE_SPHERICALHARMONICS_AMBIENT\r\n\
+#define USE_SPHERICALHARMONICS_AMBIENT 0\r\n\
+#endif\r\n\
+#ifndef USE_LAMBERT_LIGHT_MODEL\r\n\
+#define USE_LAMBERT_LIGHT_MODEL 0\r\n\
+#endif \r\n\
+#ifndef USE_PHONG_LIGHT_MODEL\r\n\
+#define USE_PHONG_LIGHT_MODEL 0\r\n\
+#endif \r\n\
+#ifndef USE_BLINNPHONG_LIGHT_MODEL\r\n\
+#define USE_BLINNPHONG_LIGHT_MODEL 0\r\n\
+#endif \r\n\
 #ifndef USE_DIFFUSE_TEXTURE\r\n\
 #define USE_DIFFUSE_TEXTURE 0\r\n\
 #endif\r\n\
@@ -1970,9 +2093,6 @@ END_DECL\r\n\
 #endif\r\n\
 #ifndef USE_ALPHA_TEST\r\n\
 #define USE_ALPHA_TEST 0\r\n\
-#endif\r\n\
-#ifndef USE_SPECULAR\r\n\
-#define USE_SPECULAR 0\r\n\
 #endif\r\n\
 \r\n\
 \r\n\
@@ -2156,32 +2276,16 @@ float3 getCameraRight(float4x4 viewMatrix)\r\n\
 	float3x3 rot=convert(viewMatrix);\r\n\
 	return rot[0];\r\n\
 }\r\n\
-float calcHemisphereLightFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
+float calcHemisphereAmbientFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
 {\r\n\
 	float cos_the=dot(vertexToLightDirection,worldNormal);\r\n\
 	return cos_the*0.5+0.5;\r\n\
 }\r\n\
-float calcDefaultHemisphereLightFactor(float3 worldNormal)\r\n\
+float calcDefaultHemisphereAmbientFactor(float3 worldNormal)\r\n\
 {\r\n\
-	return calcHemisphereLightFactor(float3(0.0,1.0,0.0),worldNormal);\r\n\
+	return calcHemisphereAmbientFactor(float3(0.0,1.0,0.0),worldNormal);\r\n\
 }\r\n\
-float calcLambertDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
-{\r\n\
-	return saturate(dot(vertexToLightDirection,worldNormal));\r\n\
-}\r\n\
-float calcPhongSpecularFactor(float3 lightToVertexDirection,float3 worldNormal,float3 worldPosition,float3 vertexToCameraDirection)\r\n\
-{\r\n\
-	float3 reflect_dir=reflect(lightToVertexDirection,worldNormal);\r\n\
-	float factor=saturate(dot(reflect_dir,vertexToCameraDirection));\r\n\
-	return factor;\r\n\
-}\r\n\
-float calcBlinnPhongSpecularFactor(float3 vertexToLightDirection,float3 worldNormal,float3 worldPosition,float3 vertexToCameraDirection)\r\n\
-{\r\n\
-	float3 half_vector = normalize(vertexToCameraDirection + vertexToLightDirection);\r\n\
-	float specular_factor = saturate(dot(half_vector, worldNormal));\r\n\
-	return specular_factor;\r\n\
-}\r\n\
-float3 calcSphericalHarmonicsLightFactor(float3 worldNormal)\r\n\
+float3 calcSphericalHarmonicsAmbientFactor(float3 worldNormal)\r\n\
 {\r\n\
 	const float c1=0.429043;\r\n\
 	const float c2=0.511664;\r\n\
@@ -2209,11 +2313,38 @@ float3 calcSphericalHarmonicsLightFactor(float3 worldNormal)\r\n\
 	+2.0*c2*l10*worldNormal.z;\r\n\
 	return factor;\r\n\
 }\r\n\
+float2 calcLambertLightModelFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
+{\r\n\
+	return float2(saturate(dot(vertexToLightDirection,worldNormal)),0.0);\r\n\
+}\r\n\
+float2 calcPhongLightModelFactor(float3 lightToVertexDirection,float3 worldNormal,float3 worldPosition,float3 vertexToCameraDirection)\r\n\
+{\r\n\
+	float diffuse_factor=saturate(dot(-lightToVertexDirection,worldNormal));\r\n\
+	float3 reflect_dir=reflect(lightToVertexDirection,worldNormal);\r\n\
+	float specular_factor=saturate(dot(reflect_dir,vertexToCameraDirection));\r\n\
+	return float2(diffuse_factor,specular_factor);\r\n\
+}\r\n\
+float2 calcBlinnPhongLightModelFactor(float3 vertexToLightDirection,float3 worldNormal,float3 worldPosition,float3 vertexToCameraDirection,float specularExponent)\r\n\
+{\r\n\
+	float diffuse_factor=saturate(dot(vertexToLightDirection,worldNormal));\r\n\
+	float3 half_vector = normalize(vertexToCameraDirection + vertexToLightDirection);\r\n\
+	float specular_factor = pow(saturate(dot(half_vector, worldNormal)),specularExponent);\r\n\
+	return float2(diffuse_factor,specular_factor);\r\n\
+}\r\n\
 //return 1意味着无衰减，return 0意味着完全衰减\r\n\
 float calcFalloffFactor(float current, float begin, float reciprocalRange)\r\n\
 {\r\n\
 	float factor=saturate((current - begin) * reciprocalRange);\r\n\
     return 1.0 - factor*factor;\r\n\
+}\r\n\
+float BRDF_D(float3 h)\r\n\
+{\r\n\
+}\r\n\
+float BRDF_G(l,v)\r\n\
+{\r\n\
+}\r\n\
+float BRDF_F(l,h)\r\n\
+{\r\n\
 }\r\n\
 float3 encodeNormal(float3 normal)\r\n\
 {\r\n\
@@ -2390,32 +2521,16 @@ float3 getCameraRight(float4x4 viewMatrix)\r\n\
 	float3x3 rot=convert(viewMatrix);\r\n\
 	return rot[0];\r\n\
 }\r\n\
-float calcHemisphereLightFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
+float calcHemisphereAmbientFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
 {\r\n\
 	float cos_the=dot(vertexToLightDirection,worldNormal);\r\n\
 	return cos_the*0.5+0.5;\r\n\
 }\r\n\
-float calcDefaultHemisphereLightFactor(float3 worldNormal)\r\n\
+float calcDefaultHemisphereAmbientFactor(float3 worldNormal)\r\n\
 {\r\n\
-	return calcHemisphereLightFactor(float3(0.0,1.0,0.0),worldNormal);\r\n\
+	return calcHemisphereAmbientFactor(float3(0.0,1.0,0.0),worldNormal);\r\n\
 }\r\n\
-float calcLambertDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
-{\r\n\
-	return saturate(dot(vertexToLightDirection,worldNormal));\r\n\
-}\r\n\
-float calcPhongSpecularFactor(float3 lightToVertexDirection,float3 worldNormal,float3 worldPosition,float3 vertexToCameraDirection)\r\n\
-{\r\n\
-	float3 reflect_dir=reflect(lightToVertexDirection,worldNormal);\r\n\
-	float factor=saturate(dot(reflect_dir,vertexToCameraDirection));\r\n\
-	return factor;\r\n\
-}\r\n\
-float calcBlinnPhongSpecularFactor(float3 vertexToLightDirection,float3 worldNormal,float3 worldPosition,float3 vertexToCameraDirection)\r\n\
-{\r\n\
-	float3 half_vector = normalize(vertexToCameraDirection + vertexToLightDirection);\r\n\
-	float specular_factor = saturate(dot(half_vector, worldNormal));\r\n\
-	return specular_factor;\r\n\
-}\r\n\
-float3 calcSphericalHarmonicsLightFactor(float3 worldNormal)\r\n\
+float3 calcSphericalHarmonicsAmbientFactor(float3 worldNormal)\r\n\
 {\r\n\
 	const float c1=0.429043;\r\n\
 	const float c2=0.511664;\r\n\
@@ -2443,11 +2558,38 @@ float3 calcSphericalHarmonicsLightFactor(float3 worldNormal)\r\n\
 	+2.0*c2*l10*worldNormal.z;\r\n\
 	return factor;\r\n\
 }\r\n\
+float2 calcLambertLightModelFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
+{\r\n\
+	return float2(saturate(dot(vertexToLightDirection,worldNormal)),0.0);\r\n\
+}\r\n\
+float2 calcPhongLightModelFactor(float3 lightToVertexDirection,float3 worldNormal,float3 worldPosition,float3 vertexToCameraDirection)\r\n\
+{\r\n\
+	float diffuse_factor=saturate(dot(-lightToVertexDirection,worldNormal));\r\n\
+	float3 reflect_dir=reflect(lightToVertexDirection,worldNormal);\r\n\
+	float specular_factor=saturate(dot(reflect_dir,vertexToCameraDirection));\r\n\
+	return float2(diffuse_factor,specular_factor);\r\n\
+}\r\n\
+float2 calcBlinnPhongLightModelFactor(float3 vertexToLightDirection,float3 worldNormal,float3 worldPosition,float3 vertexToCameraDirection,float specularExponent)\r\n\
+{\r\n\
+	float diffuse_factor=saturate(dot(vertexToLightDirection,worldNormal));\r\n\
+	float3 half_vector = normalize(vertexToCameraDirection + vertexToLightDirection);\r\n\
+	float specular_factor = pow(saturate(dot(half_vector, worldNormal)),specularExponent);\r\n\
+	return float2(diffuse_factor,specular_factor);\r\n\
+}\r\n\
 //return 1意味着无衰减，return 0意味着完全衰减\r\n\
 float calcFalloffFactor(float current, float begin, float reciprocalRange)\r\n\
 {\r\n\
 	float factor=saturate((current - begin) * reciprocalRange);\r\n\
     return 1.0 - factor*factor;\r\n\
+}\r\n\
+float BRDF_D(float3 h)\r\n\
+{\r\n\
+}\r\n\
+float BRDF_G(l,v)\r\n\
+{\r\n\
+}\r\n\
+float BRDF_F(l,h)\r\n\
+{\r\n\
 }\r\n\
 float3 encodeNormal(float3 normal)\r\n\
 {\r\n\
@@ -2649,32 +2791,16 @@ float3 getCameraRight(float4x4 viewMatrix)\r\n\
 	float3x3 rot=convert(viewMatrix);\r\n\
 	return rot[0];\r\n\
 }\r\n\
-float calcHemisphereLightFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
+float calcHemisphereAmbientFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
 {\r\n\
 	float cos_the=dot(vertexToLightDirection,worldNormal);\r\n\
 	return cos_the*0.5+0.5;\r\n\
 }\r\n\
-float calcDefaultHemisphereLightFactor(float3 worldNormal)\r\n\
+float calcDefaultHemisphereAmbientFactor(float3 worldNormal)\r\n\
 {\r\n\
-	return calcHemisphereLightFactor(float3(0.0,1.0,0.0),worldNormal);\r\n\
+	return calcHemisphereAmbientFactor(float3(0.0,1.0,0.0),worldNormal);\r\n\
 }\r\n\
-float calcLambertDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
-{\r\n\
-	return saturate(dot(vertexToLightDirection,worldNormal));\r\n\
-}\r\n\
-float calcPhongSpecularFactor(float3 lightToVertexDirection,float3 worldNormal,float3 worldPosition,float3 vertexToCameraDirection)\r\n\
-{\r\n\
-	float3 reflect_dir=reflect(lightToVertexDirection,worldNormal);\r\n\
-	float factor=saturate(dot(reflect_dir,vertexToCameraDirection));\r\n\
-	return factor;\r\n\
-}\r\n\
-float calcBlinnPhongSpecularFactor(float3 vertexToLightDirection,float3 worldNormal,float3 worldPosition,float3 vertexToCameraDirection)\r\n\
-{\r\n\
-	float3 half_vector = normalize(vertexToCameraDirection + vertexToLightDirection);\r\n\
-	float specular_factor = saturate(dot(half_vector, worldNormal));\r\n\
-	return specular_factor;\r\n\
-}\r\n\
-float3 calcSphericalHarmonicsLightFactor(float3 worldNormal)\r\n\
+float3 calcSphericalHarmonicsAmbientFactor(float3 worldNormal)\r\n\
 {\r\n\
 	const float c1=0.429043;\r\n\
 	const float c2=0.511664;\r\n\
@@ -2702,11 +2828,38 @@ float3 calcSphericalHarmonicsLightFactor(float3 worldNormal)\r\n\
 	+2.0*c2*l10*worldNormal.z;\r\n\
 	return factor;\r\n\
 }\r\n\
+float2 calcLambertLightModelFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
+{\r\n\
+	return float2(saturate(dot(vertexToLightDirection,worldNormal)),0.0);\r\n\
+}\r\n\
+float2 calcPhongLightModelFactor(float3 lightToVertexDirection,float3 worldNormal,float3 worldPosition,float3 vertexToCameraDirection)\r\n\
+{\r\n\
+	float diffuse_factor=saturate(dot(-lightToVertexDirection,worldNormal));\r\n\
+	float3 reflect_dir=reflect(lightToVertexDirection,worldNormal);\r\n\
+	float specular_factor=saturate(dot(reflect_dir,vertexToCameraDirection));\r\n\
+	return float2(diffuse_factor,specular_factor);\r\n\
+}\r\n\
+float2 calcBlinnPhongLightModelFactor(float3 vertexToLightDirection,float3 worldNormal,float3 worldPosition,float3 vertexToCameraDirection,float specularExponent)\r\n\
+{\r\n\
+	float diffuse_factor=saturate(dot(vertexToLightDirection,worldNormal));\r\n\
+	float3 half_vector = normalize(vertexToCameraDirection + vertexToLightDirection);\r\n\
+	float specular_factor = pow(saturate(dot(half_vector, worldNormal)),specularExponent);\r\n\
+	return float2(diffuse_factor,specular_factor);\r\n\
+}\r\n\
 //return 1意味着无衰减，return 0意味着完全衰减\r\n\
 float calcFalloffFactor(float current, float begin, float reciprocalRange)\r\n\
 {\r\n\
 	float factor=saturate((current - begin) * reciprocalRange);\r\n\
     return 1.0 - factor*factor;\r\n\
+}\r\n\
+float BRDF_D(float3 h)\r\n\
+{\r\n\
+}\r\n\
+float BRDF_G(l,v)\r\n\
+{\r\n\
+}\r\n\
+float BRDF_F(l,h)\r\n\
+{\r\n\
 }\r\n\
 float3 encodeNormal(float3 normal)\r\n\
 {\r\n\
@@ -2874,32 +3027,16 @@ float3 getCameraRight(float4x4 viewMatrix)\r\n\
 	float3x3 rot=convert(viewMatrix);\r\n\
 	return rot[0];\r\n\
 }\r\n\
-float calcHemisphereLightFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
+float calcHemisphereAmbientFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
 {\r\n\
 	float cos_the=dot(vertexToLightDirection,worldNormal);\r\n\
 	return cos_the*0.5+0.5;\r\n\
 }\r\n\
-float calcDefaultHemisphereLightFactor(float3 worldNormal)\r\n\
+float calcDefaultHemisphereAmbientFactor(float3 worldNormal)\r\n\
 {\r\n\
-	return calcHemisphereLightFactor(float3(0.0,1.0,0.0),worldNormal);\r\n\
+	return calcHemisphereAmbientFactor(float3(0.0,1.0,0.0),worldNormal);\r\n\
 }\r\n\
-float calcLambertDiffuseFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
-{\r\n\
-	return saturate(dot(vertexToLightDirection,worldNormal));\r\n\
-}\r\n\
-float calcPhongSpecularFactor(float3 lightToVertexDirection,float3 worldNormal,float3 worldPosition,float3 vertexToCameraDirection)\r\n\
-{\r\n\
-	float3 reflect_dir=reflect(lightToVertexDirection,worldNormal);\r\n\
-	float factor=saturate(dot(reflect_dir,vertexToCameraDirection));\r\n\
-	return factor;\r\n\
-}\r\n\
-float calcBlinnPhongSpecularFactor(float3 vertexToLightDirection,float3 worldNormal,float3 worldPosition,float3 vertexToCameraDirection)\r\n\
-{\r\n\
-	float3 half_vector = normalize(vertexToCameraDirection + vertexToLightDirection);\r\n\
-	float specular_factor = saturate(dot(half_vector, worldNormal));\r\n\
-	return specular_factor;\r\n\
-}\r\n\
-float3 calcSphericalHarmonicsLightFactor(float3 worldNormal)\r\n\
+float3 calcSphericalHarmonicsAmbientFactor(float3 worldNormal)\r\n\
 {\r\n\
 	const float c1=0.429043;\r\n\
 	const float c2=0.511664;\r\n\
@@ -2927,11 +3064,38 @@ float3 calcSphericalHarmonicsLightFactor(float3 worldNormal)\r\n\
 	+2.0*c2*l10*worldNormal.z;\r\n\
 	return factor;\r\n\
 }\r\n\
+float2 calcLambertLightModelFactor(float3 vertexToLightDirection,float3 worldNormal)\r\n\
+{\r\n\
+	return float2(saturate(dot(vertexToLightDirection,worldNormal)),0.0);\r\n\
+}\r\n\
+float2 calcPhongLightModelFactor(float3 lightToVertexDirection,float3 worldNormal,float3 worldPosition,float3 vertexToCameraDirection)\r\n\
+{\r\n\
+	float diffuse_factor=saturate(dot(-lightToVertexDirection,worldNormal));\r\n\
+	float3 reflect_dir=reflect(lightToVertexDirection,worldNormal);\r\n\
+	float specular_factor=saturate(dot(reflect_dir,vertexToCameraDirection));\r\n\
+	return float2(diffuse_factor,specular_factor);\r\n\
+}\r\n\
+float2 calcBlinnPhongLightModelFactor(float3 vertexToLightDirection,float3 worldNormal,float3 worldPosition,float3 vertexToCameraDirection,float specularExponent)\r\n\
+{\r\n\
+	float diffuse_factor=saturate(dot(vertexToLightDirection,worldNormal));\r\n\
+	float3 half_vector = normalize(vertexToCameraDirection + vertexToLightDirection);\r\n\
+	float specular_factor = pow(saturate(dot(half_vector, worldNormal)),specularExponent);\r\n\
+	return float2(diffuse_factor,specular_factor);\r\n\
+}\r\n\
 //return 1意味着无衰减，return 0意味着完全衰减\r\n\
 float calcFalloffFactor(float current, float begin, float reciprocalRange)\r\n\
 {\r\n\
 	float factor=saturate((current - begin) * reciprocalRange);\r\n\
     return 1.0 - factor*factor;\r\n\
+}\r\n\
+float BRDF_D(float3 h)\r\n\
+{\r\n\
+}\r\n\
+float BRDF_G(l,v)\r\n\
+{\r\n\
+}\r\n\
+float BRDF_F(l,h)\r\n\
+{\r\n\
 }\r\n\
 float3 encodeNormal(float3 normal)\r\n\
 {\r\n\
@@ -2993,6 +3157,10 @@ CB_MEMBER float3 gSpecularColour;\r\n\
 CB_MEMBER float gSpecularPower;\r\n\
 CB_MEMBER float3 gEmissiveColour;\r\n\
 CB_MEMBER float gAlphaTestValue;\r\n\
+CB_MEMBER float gMetallic;\r\n\
+CB_MEMBER float gRoughness;\r\n\
+CB_MEMBER float gOrenNayar_A;\r\n\
+CB_MEMBER float gOrenNayar_B;\r\n\
 END_DECL\r\n\
 \r\n\
 #ifndef OUTPUT_MAIN_UV\r\n\

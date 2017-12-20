@@ -16,7 +16,7 @@ float3 getCameraRight()
 {
 	return getCameraRight(gViewMatrix);
 }
-float3 calcHemisphereLightColour(float3 worldNormal)
+float3 calcHemisphereAmbientFactor(float3 worldNormal)
 {
 	float3 factor=calcHemisphereLightFactor(-gSkyLightDirection,worldNormal);
 	return lerp(gGroundColour,gSkyColour,factor);

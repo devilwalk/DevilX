@@ -43,3 +43,4 @@
 #else
 	#define SAMPLE_TEXTURE(tex_name,uv) texture(g##tex_name##Texture,uv)
 #endif
+#define PI 3.1415926

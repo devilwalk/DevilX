@@ -106,7 +106,7 @@ std::string processInclude(const std::vector<std::string> & functions,const std:
 		auto include=ret.substr(include_left_index,include_right_index-include_left_index+1);
 		include=include.replace(include.find("."),1,1,'_');
 		auto include_function_index=std::find(functionNames.begin(),functionNames.end(),include)-functionNames.begin();
-		auto include_function=processInclude(functions,functionNames,include_function_index,includeStack,includeSet);
+		auto include_function=processInclude(functions,functionNames,static_cast<unsigned int>(include_function_index),includeStack,includeSet);
 		std::string new_function;
 		auto splite_index=ret.find("#include");
 		if(splite_index>0)

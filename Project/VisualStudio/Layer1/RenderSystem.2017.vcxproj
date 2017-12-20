@@ -23,11 +23,11 @@
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IBufferImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IBufferUsageImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\ICameraImp.h" />
-    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IColourUnitStateImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IGeometryImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IGeometryUsageImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IIndexBufferImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\ILightImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IMaterialImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\Include.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IOverlayElementImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\ISubEntityImp.h" />
@@ -43,6 +43,7 @@
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\ITextureImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\ITextureUnitStateImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\ITransformerImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IValueUnitStateImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IVertexBufferImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IViewportImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IVisibleAreaImp.h" />
@@ -51,12 +52,10 @@
     <ClInclude Include="..\..\..\Code\Layer1\Include\Shader\DefnitionShaderCodeFunction.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderBuffer.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderBufferUsage.h" />
-    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderMaterial.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderSubEntity.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderEntity.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderableSurface.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderCamera.h" />
-    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderColourUnitState.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderEnum.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderGeometry.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderGeometryUsage.h" />
@@ -75,6 +74,7 @@
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderTexture.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderTextureUnitState.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderTransformer.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderValueUnitState.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderVertexBuffer.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderViewport.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderVisibleArea.h" />
@@ -85,7 +85,6 @@
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IBufferImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IBufferUsageImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\ICameraImp.cpp" />
-    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IColourUnitStateImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IGeometryImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IGeometryUsageImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IIndexBufferImp.cpp" />

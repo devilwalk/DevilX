@@ -219,8 +219,9 @@ NSDevilX::NSRenderSystem::ILightImp::ILightImp(const String & name,IEnum::ELight
 	,mSceneElement(0)
 	,mDirectionLightProperty(0)
 	,mShadowEnable(False)
-	,mLightRenderModel(IEnum::ELightRenderModel_Basic)
 	,mVisibleElementsFrameIndex(0)
+	,mDiffuse(nullptr)
+	,mSpecular(nullptr)
 {
 	mSceneElement=DEVILX_NEW ISceneElementImp(name,scene,this,ISceneElementImp::EContainerObjectType_Light);
 	switch(mType)
@@ -333,18 +334,28 @@ IEnum::ELightType NSDevilX::NSRenderSystem::ILightImp::getType() const
 	return mType;
 }
 
-IColourUnitState * NSDevilX::NSRenderSystem::ILightImp::getColourUnitState(IEnum::ELightColourUnitStateType type)
+IColourUnitState * NSDevilX::NSRenderSystem::ILightImp::getDiffuseColourUnitState()
 {
-	if(static_cast<decltype(type)>(mColourUnitStates.size())<=type)
-		mColourUnitStates.resize(type+1);
-	if(!mColourUnitStates[type])
+	if(!mDiffuse)
 	{
-		notify(EMessage_BeginColourUnitStateCreate);
-		mColourUnitStates[type]=DEVILX_NEW IColourUnitStateImp();
-		notify(EMessage_EndColourUnitStateCreate,&type);
+		notify(EMessage_BeginDiffuseCreate);
+		mDiffuse=DEVILX_NEW IColourUnitStateImp();
+		notify(EMessage_EndDiffuseCreate);
 	}
-	return mColourUnitStates[type];
+	return mDiffuse;
 }
+
+IColourUnitState * NSDevilX::NSRenderSystem::ILightImp::getSpecularColourUnitState()
+{
+	if(!mSpecular)
+	{
+		notify(EMessage_BeginSpecularCreate);
+		mSpecular=DEVILX_NEW IColourUnitStateImp();
+		notify(EMessage_EndSpecularCreate);
+	}
+	return mSpecular;
+}
+
 
 Void NSDevilX::NSRenderSystem::ILightImp::setShadowEnable(Bool enable)
 {
@@ -359,19 +370,4 @@ Void NSDevilX::NSRenderSystem::ILightImp::setShadowEnable(Bool enable)
 Bool NSDevilX::NSRenderSystem::ILightImp::getShadowEnable() const
 {
 	return mShadowEnable;
-}
-
-Void NSDevilX::NSRenderSystem::ILightImp::setRenderModel(IEnum::ELightRenderModel model)
-{
-	if(model!=mLightRenderModel)
-	{
-		notify(EMessage_BeginLightRenderModelChange);
-		mLightRenderModel=model;
-		notify(EMessage_EndLightRenderModelChange);
-	}
-}
-
-IEnum::ELightRenderModel NSDevilX::NSRenderSystem::ILightImp::getRenderModel() const
-{
-	return mLightRenderModel;
 }

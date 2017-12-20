@@ -21,9 +21,6 @@
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderCamera.h">
       <Filter>Interface Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderColourUnitState.h">
-      <Filter>Interface Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderEnum.h">
       <Filter>Interface Files</Filter>
     </ClInclude>
@@ -82,9 +79,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\ICameraImp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IColourUnitStateImp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IGeometryImp.h">
@@ -198,15 +192,18 @@
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IBufferUsageImp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderMaterial.h">
+    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderValueUnitState.h">
       <Filter>Interface Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IMaterialImp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IValueUnitStateImp.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\ICameraImp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IColourUnitStateImp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IGeometryImp.cpp">

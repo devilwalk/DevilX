@@ -1,7 +1,7 @@
 #pragma once
 #include "ISceneElementImp.h"
 #include "IGeometryImp.h"
-#include "IColourUnitStateImp.h"
+#include "IValueUnitStateImp.h"
 #include "ITextureUnitStateImp.h"
 namespace NSDevilX
 {

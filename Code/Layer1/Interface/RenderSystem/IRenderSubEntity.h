@@ -3,7 +3,7 @@
 #include "IRenderGeometryUsage.h"
 #include "IRenderBuffer.h"
 #include "IRenderBufferUsage.h"
-#include "IRenderColourUnitState.h"
+#include "IRenderValueUnitState.h"
 #include "IRenderTextureUnitState.h"
 namespace NSDevilX
 {
@@ -29,10 +29,22 @@ namespace NSDevilX
 			virtual IBufferUsage * getQueryBufferUsage()const=0;
 			virtual Void setVisible(Bool visible)=0;
 			virtual Bool getVisible()const=0;
-			virtual IColourUnitState * getColourUnitState(IEnum::EEntityColourUnitStateType type)=0;
-			virtual ITextureUnitState * getTextureUnitState(IEnum::EEntityTextureUnitStateType type)=0;
-			virtual Void setLightEnable(Bool enable)=0;
-			virtual Bool getLightEnable()const=0;
+			virtual Void setAmbientModel(IEnum::EMaterialAmbientModel model)=0;
+			virtual IEnum::EMaterialAmbientModel getAmbientModel()const=0;
+			virtual Void setDiffuseModel(IEnum::EMaterialDiffuseModel model)=0;
+			virtual IEnum::EMaterialDiffuseModel getDiffuseModel()const=0;
+			virtual Void setSpecularModel(IEnum::EMaterialSpecularModel model)=0;
+			virtual IEnum::EMaterialSpecularModel getSpecularModel()const=0;
+			virtual IColourUnitState * getAlphaColourUnitState()=0;
+			virtual IColourUnitState * getEmissiveColourUnitState()=0;
+			virtual IColourUnitState * getDiffuseColourUnitState()=0;
+			virtual IColourUnitState * getSpecularColourUnitState()=0;
+			virtual ITextureUnitState * getDiffuseTextureUnitState()=0;
+			virtual ITextureUnitState * getSpecularTextureUnitState()=0;
+			virtual ITextureUnitState * getNormalTextureUnitState()=0;
+			virtual IFloatUnitState * getMetallicUnitState()=0;
+			virtual IFloatUnitState * getRoughnessUnitState()=0;
+			virtual IFloatUnitState * getSpecularPowerUnitState()=0;
 			virtual Void setAlphaTestValue(Float alpha)=0;
 			virtual Float getAlphaTestValue()const=0;
 			virtual Void setTransparentEnable(Bool enable)=0;

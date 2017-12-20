@@ -12,7 +12,19 @@ NSDevilX::NSRenderSystem::ISubEntityImp::ISubEntityImp(const String & name,IEnti
 	,mGeometry(nullptr)
 	,mGeometryUsage(nullptr)
 	,mVisible(True)
-	,mLightEnable(False)
+	,mAmbientModel(IEnum::EMaterialAmbientModel_None)
+	,mDiffuseModel(IEnum::EMaterialDiffuseModel_None)
+	,mSpecularModel(IEnum::EMaterialSpecularModel_None)
+	,mAlphaColour(nullptr)
+	,mDiffuseColour(nullptr)
+	,mSpecularColour(nullptr)
+	,mEmissiveColour(nullptr)
+	,mDiffuseTexture(nullptr)
+	,mSpecularTexture(nullptr)
+	,mNormalTexture(nullptr)
+	,mMetallicValue(nullptr)
+	,mRoughnessValue(nullptr)
+	,mSpecularPowerValue(nullptr)
 	,mAlphaTestValue(0)
 	,mTransparentEnable(False)
 {
@@ -21,10 +33,6 @@ NSDevilX::NSRenderSystem::ISubEntityImp::ISubEntityImp(const String & name,IEnti
 
 NSDevilX::NSRenderSystem::ISubEntityImp::~ISubEntityImp()
 {
-	for(auto cus:mColourUnitStates)
-		DEVILX_DELETE(cus);
-	for(auto tus:mTextureUnitStates)
-		DEVILX_DELETE(tus);
 	DEVILX_DELETE(mGeometryUsage);
 }
 
@@ -109,63 +117,6 @@ IGeometryUsage * NSDevilX::NSRenderSystem::ISubEntityImp::queryInterface_IGeomet
 	return mGeometryUsage;
 }
 
-IColourUnitStateImp * NSDevilX::NSRenderSystem::ISubEntityImp::getColourUnitState(IEnum::EEntityColourUnitStateType type) const
-{
-	if(static_cast<decltype(type)>(mColourUnitStates.size())>type)
-		return mColourUnitStates[type];
-	else
-		return nullptr;
-}
-
-ITextureUnitStateImp * NSDevilX::NSRenderSystem::ISubEntityImp::getTextureUnitState(IEnum::EEntityTextureUnitStateType type) const
-{
-	if(static_cast<decltype(type)>(mTextureUnitStates.size())>type)
-		return mTextureUnitStates[type];
-	else
-		return nullptr;
-}
-
-IColourUnitState * NSDevilX::NSRenderSystem::ISubEntityImp::getColourUnitState(IEnum::EEntityColourUnitStateType type)
-{
-	if(static_cast<decltype(type)>(mColourUnitStates.size())<=type)
-		mColourUnitStates.resize(type+1);
-	if(!mColourUnitStates[type])
-	{
-		notify(EMessage_BeginColourUnitStateCreate);
-		mColourUnitStates[type]=DEVILX_NEW IColourUnitStateImp();
-		notify(EMessage_EndColourUnitStateCreate,&type);
-	}
-	return mColourUnitStates[type];
-}
-
-Void NSDevilX::NSRenderSystem::ISubEntityImp::setLightEnable(Bool enable)
-{
-	if(enable!=getLightEnable())
-	{
-		notify(EMessage_BeginLightEnableChange);
-		mLightEnable=enable;
-		notify(EMessage_EndLightEnableChange);
-	}
-}
-
-Bool NSDevilX::NSRenderSystem::ISubEntityImp::getLightEnable() const
-{
-	return mLightEnable;
-}
-
-ITextureUnitState * NSDevilX::NSRenderSystem::ISubEntityImp::getTextureUnitState(IEnum::EEntityTextureUnitStateType type)
-{
-	if(static_cast<decltype(type)>(mTextureUnitStates.size())<=type)
-		mTextureUnitStates.resize(type+1);
-	if(!mTextureUnitStates[type])
-	{
-		notify(EMessage_BeginTextureUnitStateCreate);
-		mTextureUnitStates[type]=DEVILX_NEW ITextureUnitStateImp();
-		notify(EMessage_EndTextureUnitStateCreate,&type);
-	}
-	return mTextureUnitStates[type];
-}
-
 Void NSDevilX::NSRenderSystem::ISubEntityImp::setAlphaTestValue(Float alpha)
 {
 	if(alpha!=getAlphaTestValue())
@@ -231,4 +182,159 @@ Void NSDevilX::NSRenderSystem::ISubEntityImp::setGeometry(IGeometry * geometry)
 IGeometry * NSDevilX::NSRenderSystem::ISubEntityImp::getGeometry() const
 {
 	return mGeometry;
+}
+
+Void NSDevilX::NSRenderSystem::ISubEntityImp::setAmbientModel(IEnum::EMaterialAmbientModel model)
+{
+	if(model!=mAmbientModel)
+	{
+		notify(EMessage_BeginAmbientModelChange);
+		mAmbientModel=model;
+		notify(EMessage_EndAmbientModelChange);
+	}
+}
+
+IEnum::EMaterialAmbientModel NSDevilX::NSRenderSystem::ISubEntityImp::getAmbientModel() const
+{
+	return mAmbientModel;
+}
+
+Void NSDevilX::NSRenderSystem::ISubEntityImp::setDiffuseModel(IEnum::EMaterialDiffuseModel model)
+{
+	if(model!=mDiffuseModel)
+	{
+		notify(EMessage_BeginDiffuseModelChange);
+		mDiffuseModel=model;
+		notify(EMessage_EndDiffuseModelChange);
+	}
+}
+
+IEnum::EMaterialDiffuseModel NSDevilX::NSRenderSystem::ISubEntityImp::getDiffuseModel() const
+{
+	return mDiffuseModel;
+}
+
+Void NSDevilX::NSRenderSystem::ISubEntityImp::setSpecularModel(IEnum::EMaterialSpecularModel model)
+{
+	if(model!=mSpecularModel)
+	{
+		notify(EMessage_BeginSpecularModelChange);
+		mSpecularModel=model;
+		notify(EMessage_EndSpecularModelChange);
+	}
+}
+
+IEnum::EMaterialSpecularModel NSDevilX::NSRenderSystem::ISubEntityImp::getSpecularModel() const
+{
+	return mSpecularModel;
+}
+
+IColourUnitState * NSDevilX::NSRenderSystem::ISubEntityImp::getAlphaColourUnitState()
+{
+	if(!mAlphaColour)
+	{
+		notify(EMessage_BeginAlphaColourCreate);
+		mAlphaColour=DEVILX_NEW IColourUnitStateImp(CColour::EType_Alpha);
+		notify(EMessage_EndAlphaColourCreate);
+	}
+	return mAlphaColour;
+}
+
+IColourUnitState * NSDevilX::NSRenderSystem::ISubEntityImp::getEmissiveColourUnitState()
+{
+	if(!mEmissiveColour)
+	{
+		notify(EMessage_BeginEmissiveColourCreate);
+		mEmissiveColour=DEVILX_NEW IColourUnitStateImp(CColour::EType_RGB);
+		notify(EMessage_EndEmissiveColourCreate);
+	}
+	return mEmissiveColour;
+}
+
+IColourUnitState * NSDevilX::NSRenderSystem::ISubEntityImp::getDiffuseColourUnitState()
+{
+	if(!mDiffuseColour)
+	{
+		notify(EMessage_BeginDiffuseColourCreate);
+		mDiffuseColour=DEVILX_NEW IColourUnitStateImp(CColour::EType_RGB);
+		notify(EMessage_EndDiffuseColourCreate);
+	}
+	return mDiffuseColour;
+}
+
+IColourUnitState * NSDevilX::NSRenderSystem::ISubEntityImp::getSpecularColourUnitState()
+{
+	if(!mSpecularColour)
+	{
+		notify(EMessage_BeginSpecularColourCreate);
+		mSpecularColour=DEVILX_NEW IColourUnitStateImp(CColour::EType_RGB);
+		notify(EMessage_EndSpecularColourCreate);
+	}
+	return mSpecularColour;
+}
+
+ITextureUnitState * NSDevilX::NSRenderSystem::ISubEntityImp::getDiffuseTextureUnitState()
+{
+	if(!mDiffuseTexture)
+	{
+		notify(EMessage_BeginDiffuseTextureCreate);
+		mDiffuseTexture=DEVILX_NEW ITextureUnitStateImp();
+		notify(EMessage_EndDiffuseTextureCreate);
+	}
+	return mDiffuseTexture;
+}
+
+ITextureUnitState * NSDevilX::NSRenderSystem::ISubEntityImp::getSpecularTextureUnitState()
+{
+	if(!mSpecularTexture)
+	{
+		notify(EMessage_BeginSpecularTextureCreate);
+		mSpecularTexture=DEVILX_NEW ITextureUnitStateImp();
+		notify(EMessage_EndSpecularTextureCreate);
+	}
+	return mSpecularTexture;
+}
+
+ITextureUnitState * NSDevilX::NSRenderSystem::ISubEntityImp::getNormalTextureUnitState()
+{
+	if(!mNormalTexture)
+	{
+		notify(EMessage_BeginNormalTextureCreate);
+		mNormalTexture=DEVILX_NEW ITextureUnitStateImp();
+		notify(EMessage_EndNormalTextureCreate);
+	}
+	return mNormalTexture;
+}
+
+IFloatUnitState * NSDevilX::NSRenderSystem::ISubEntityImp::getMetallicUnitState()
+{
+	if(!mMetallicValue)
+	{
+		notify(EMessage_BeginMetallicValueCreate);
+		mMetallicValue=DEVILX_NEW IFloatUnitStateImp();
+		notify(EMessage_EndMetallicValueCreate);
+	}
+	return mMetallicValue;
+}
+
+IFloatUnitState * NSDevilX::NSRenderSystem::ISubEntityImp::getRoughnessUnitState()
+{
+	if(!mRoughnessValue)
+	{
+		notify(EMessage_BeginRoughnessValueCreate);
+		mRoughnessValue=DEVILX_NEW IFloatUnitStateImp();
+		notify(EMessage_EndRoughnessValueCreate);
+	}
+	return mRoughnessValue;
+}
+
+IFloatUnitState * NSDevilX::NSRenderSystem::ISubEntityImp::getSpecularPowerUnitState()
+{
+	if(!mSpecularPowerValue)
+	{
+		notify(EMessage_BeginSpecularPowerValueCreate);
+		mSpecularPowerValue=DEVILX_NEW IFloatUnitStateImp(10.0f);
+		notify(EMessage_EndSpecularPowerValueCreate);
+	}
+	return mSpecularPowerValue;
 }

@@ -1,6 +1,6 @@
 #pragma once
 #include "ITextureImp.h"
-#include "IColourUnitStateImp.h"
+#include "IValueUnitStateImp.h"
 namespace NSDevilX
 {
 	namespace NSRenderSystem

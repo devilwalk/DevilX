@@ -31,3 +31,12 @@
 #define DEVILX_BYTE_ORDER DEVILX_BYTE_ORDER_LITTLE_ENDIAN
 #elif DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_LINUX
 #endif
+
+#define DEVILX_R_CLASS_MEMBER(type,name) public: \
+type get##name()const{return m##name;} \
+protected: \
+type m##name
+#define DEVILX_R_CLASS_MEMBER_REF(type,name) public: \
+const type & get##name()const{return m##name;} \
+protected: \
+type m##name

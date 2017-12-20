@@ -10,8 +10,7 @@ ConstCharPtr CForwardPixelShaderCodeGenerator::msDefines[EFlag_Count]=
 	"USE_SPOT_LIGHT",
 	"USE_DIFFUSE_TEXTURE",
 	"USE_NORMAL_TEXTURE",
-	"USE_ALPHA_TEST",
-	"USE_SPECULAR"
+	"USE_ALPHA_TEST"
 };
 
 NSDevilX::NSRenderSystem::NSD3D11::CForwardPixelShaderCodeGenerator::CForwardPixelShaderCodeGenerator()
