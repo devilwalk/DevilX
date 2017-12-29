@@ -198,7 +198,7 @@ float calcOrenNayarDiffuseFactor(float a, float b, float nDotL, float nDotV, flo
     float cos_beita = max(cos_tha_i, cos_tha_o);
     if (cos_beita == 0)
         return 0.0;
-    float3 world_tangent = worldNormal + float3(1.0);
+    float3 world_tangent = worldNormal + float3(1.0,1.0,1.0);
     float3 world_binormal = normalize(cross(worldNormal, world_tangent));
     world_tangent = cross(world_binormal, worldNormal);
     float3 mat_to_tangent_space_colume_0 = world_tangent;

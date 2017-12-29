@@ -11,14 +11,24 @@ namespace NSDevilX
 			public:
 				enum EFlag
 				{
-					EFlag_UseLighting,
 					EFlag_UseDirectionLight,
 					EFlag_UsePointLight,
 					EFlag_UseSpotLight,
+					EFlag_UseConstantAmbientModel,
+					EFlag_UseHemisphereAmbientModel,
+					EFlag_UseSphericalHarmonicsAmbientModel,
+					EFlag_UseLambertDiffuseModel,
+					EFlag_UseOrenNayarDiffuseModel,
+					EFlag_UseMinnaertDiffuseModel,
+					EFlag_UseDisneyDiffuseModel,
+					EFlag_UsePhongSpecularModel,
+					EFlag_UseBlinnPhongSpecularModel,
+					EFlag_UseUE4SpecularModel,
+					EFlag_UseCookTorranceSpecularModel,
 					EFlag_UseDiffuseTexture,
 					EFlag_UseNormalTexture,
+					EFlag_UseSpecularTexture,
 					EFlag_UseAlphaTest,
-					EFlag_UseSpecular,
 					EFlag_Count
 				};
 				static ConstCharPtr msDefines[EFlag_Count];

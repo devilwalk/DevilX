@@ -87,14 +87,17 @@ namespace NSDevilX
 			{
 				EMaterialDiffuseModel_None,
 				EMaterialDiffuseModel_Lambert,
-				EMaterialDiffuseModel_OrenNayar
+				EMaterialDiffuseModel_OrenNayar,
+				EMaterialDiffuseModel_Minnaert,
+				EMaterialDiffuseModel_Disney
 			};
 			enum EMaterialSpecularModel
 			{
 				EMaterialSpecularModel_None,
 				EMaterialSpecularModel_Phong,
 				EMaterialSpecularModel_BlinnPhong,
-				EMaterialSpecularModel_CookTorrance
+				EMaterialSpecularModel_CookTorrance,
+				EMaterialSpecularModel_UE4
 			};
 		};
 	}

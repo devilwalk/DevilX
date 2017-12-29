@@ -84,14 +84,14 @@
 		#endif
     oColour.rgb+=lighting_colour*lighting_falloff_factor*colour_diffuse_factor;
 	#else//USE_DIRECTION_LIGHT||USE_POINT_LIGHT||USE_SPOT_LIGHT
-		#if USE_HEMISPHERE_AMBIENT
+		#if USE_CONSTANT_AMBIENT_MODEL
+	oColour.rgb+=gAmbientColour*colour_diffuse_factor;
+		#elif USE_HEMISPHERE_AMBIENT_MODEL
 	float3 world_normal=normalize(iWorldNormal);
 	oColour.rgb+=calcHemisphereAmbientFactor(world_normal)*gAmbientColour*colour_diffuse_factor;
-		#elif USE_SPHERICALHARMONICS_AMBIENT
+		#elif USE_SPHERICALHARMONICS_AMBIENT_MODEL
 	float3 world_normal=normalize(iWorldNormal);
 	oColour.rgb+=calcSphericalHarmonicsAmbientFactor(world_normal)*gAmbientColour*colour_diffuse_factor;
-		#else
-	oColour.rgb+=gAmbientColour*colour_diffuse_factor;
 		#endif
 	oColour.rgb+=colour_emissive;
 	#endif//USE_DIRECTION_LIGHT||USE_POINT_LIGHT||USE_SPOT_LIGHT

@@ -7,7 +7,13 @@ namespace NSDevilX
 		class CSceneLoader
 			:public ISceneLoader
 			,public TBaseObject<CSceneLoader>
+			,public CDirtyFlagContainer
 		{
+		public:
+			enum EDirtyFlag
+			{
+				EDirtyFlag_Load
+			};
 		protected:
 			const String & mName;
 			CSceneManager * const mSceneManager;
@@ -26,6 +32,10 @@ namespace NSDevilX
 			virtual const CInt3 & getChunkPosition() const override;
 			virtual Void setChunkRange(const CInt3 & range) override;
 			virtual const CInt3 & getChunkRange() const override;
+
+			virtual Boolean _process(UInt32 flagIndex,OUT Bool & needNextProcess) override;
+		protected:
+			Void _processLoad();
 		};
 	}
 }

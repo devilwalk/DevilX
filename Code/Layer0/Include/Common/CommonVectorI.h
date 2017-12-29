@@ -111,10 +111,6 @@ VECTOR_OPERATOR_FUNC(<,Less,4,INT,Int32,SInt)
 		{ \
 			*this=value; \
 		} \
-		C##type0##x(const DirectX::XMFLOAT##x & value) \
-		{ \
-			*this=value; \
-		} \
 		operator DirectX::XMVECTOR()const \
 		{ \
 			return DirectX::XMLoad##type2##x(this); \
@@ -137,11 +133,6 @@ VECTOR_OPERATOR_FUNC(<,Less,4,INT,Int32,SInt)
 		const C##type0##x & operator=(DirectX::FXMVECTOR value) \
 		{ \
 			DirectX::XMStore##type2##x(this,value); \
-			return *this; \
-		} \
-		const C##type0##x & operator=(const DirectX::XMFLOAT##x & value) \
-		{ \
-			*this=DirectX::XMConvertVectorFloatTo##type0(DirectX::XMLoadFloat##x(&value),0); \
 			return *this; \
 		} \
 		const C##type0##x & operator+=(DirectX::FXMVECTOR value) \

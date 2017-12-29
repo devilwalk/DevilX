@@ -146,8 +146,70 @@ NSDevilX::NSCubeBlockWorld::CSceneLoader::~CSceneLoader()
 
 Void NSDevilX::NSCubeBlockWorld::CSceneLoader::update()
 {
-	auto const new_loaded_range_min_vec=DirectX::XMVectorMax(getChunkPosition()-getChunkRange(),mSceneManager->getRange().getMin());
-	CInt3 new_loaded_range_max=DirectX::XMVectorMin(getChunkPosition()+getChunkRange(),mSceneManager->getRange().getMax());
+	process();
+}
+
+const String & NSDevilX::NSCubeBlockWorld::CSceneLoader::getName() const
+{
+	// TODO: insert return statement here
+	return mName;
+}
+
+Void NSDevilX::NSCubeBlockWorld::CSceneLoader::setChunkPosition(const CInt3 & position)
+{
+	if(position!=mPosition)
+	{
+		mPosition=position;
+		addDirtyFlag(EDirtyFlag_Load);
+	}
+}
+
+Void NSDevilX::NSCubeBlockWorld::CSceneLoader::setBlockPosition(const CInt3 & position)
+{
+	CInt3 block_position(position);
+	DirectX::XMVECTOR chunk_size_vec=CInt3(CSceneManager::sChunkSize);
+	DirectX::XMVECTOR value_offset_vec=CInt3((block_position.x<0)?-1:0,(block_position.y<0)?-1:0,(block_position.z<0)?-1:0);
+	CInt3 value_offset(value_offset_vec);
+	const DirectX::XMVECTOR chunk_pos_vec=CInt3((position-value_offset_vec)/chunk_size_vec)+value_offset_vec;
+	setChunkPosition(chunk_pos_vec);
+}
+
+const CInt3 & NSDevilX::NSCubeBlockWorld::CSceneLoader::getChunkPosition() const
+{
+	// TODO: insert return statement here
+	return mPosition;
+}
+
+Void NSDevilX::NSCubeBlockWorld::CSceneLoader::setChunkRange(const CInt3 & range)
+{
+	if(range!=mRange)
+	{
+		mRange=range;
+		addDirtyFlag(EDirtyFlag_Load);
+	}
+}
+
+const CInt3 & NSDevilX::NSCubeBlockWorld::CSceneLoader::getChunkRange() const
+{
+	// TODO: insert return statement here
+	return mRange;
+}
+
+Boolean NSDevilX::NSCubeBlockWorld::CSceneLoader::_process(UInt32 flagIndex,OUT Bool & needNextProcess)
+{
+	switch(flagIndex)
+	{
+	case EDirtyFlag_Load:
+		_processLoad();
+		return true;
+	}
+	return CDirtyFlagContainer::_process(flagIndex,needNextProcess);
+}
+
+Void NSDevilX::NSCubeBlockWorld::CSceneLoader::_processLoad()
+{
+	auto const new_loaded_range_min_vec=DirectX::XMVectorMax(mPosition-mRange,mSceneManager->getRange().getMin());
+	CInt3 new_loaded_range_max=DirectX::XMVectorMin(mPosition+mRange,mSceneManager->getRange().getMax());
 	DirectX::XMVECTOR const new_loaded_range_max_vec=new_loaded_range_max;
 	const CRange3I new_loaded_range(new_loaded_range_min_vec,new_loaded_range_max_vec);
 	TList<CRange3I*> need_to_loaded_ranges;
@@ -183,7 +245,7 @@ Void NSDevilX::NSCubeBlockWorld::CSceneLoader::update()
 	}
 	//过滤同步加载的chunk
 	Boolean need_sync_load=false;
-	const CRange3I sync_load_range(getChunkPosition()/*-CSInt3::sOne*/,getChunkPosition()/*+CSInt3::sOne*/);
+	const CRange3I sync_load_range(mPosition/*-CSInt3::sOne*/,mPosition/*+CSInt3::sOne*/);
 	TList<CRange3I*> temp_need_to_loaded_ranges;
 	for(auto range:need_to_loaded_ranges)
 	{
@@ -219,42 +281,4 @@ Void NSDevilX::NSCubeBlockWorld::CSceneLoader::update()
 		}
 	}
 	mLoadedRange=new_loaded_range;
-}
-
-const String & NSDevilX::NSCubeBlockWorld::CSceneLoader::getName() const
-{
-	// TODO: insert return statement here
-	return mName;
-}
-
-Void NSDevilX::NSCubeBlockWorld::CSceneLoader::setChunkPosition(const CInt3 & position)
-{
-	mPosition=position;
-}
-
-Void NSDevilX::NSCubeBlockWorld::CSceneLoader::setBlockPosition(const CInt3 & position)
-{
-	CInt3 block_position(position);
-	DirectX::XMVECTOR chunk_size_vec=CInt3(CSceneManager::sChunkSize);
-	DirectX::XMVECTOR value_offset_vec=CInt3((block_position.x<0)?-1:0,(block_position.y<0)?-1:0,(block_position.z<0)?-1:0);
-	CInt3 value_offset(value_offset_vec);
-	const DirectX::XMVECTOR chunk_pos_vec=CInt3((position-value_offset_vec)/chunk_size_vec)+value_offset_vec;
-	setChunkPosition(chunk_pos_vec);
-}
-
-const CInt3 & NSDevilX::NSCubeBlockWorld::CSceneLoader::getChunkPosition() const
-{
-	// TODO: insert return statement here
-	return mPosition;
-}
-
-Void NSDevilX::NSCubeBlockWorld::CSceneLoader::setChunkRange(const CInt3 & range)
-{
-	mRange=range;
-}
-
-const CInt3 & NSDevilX::NSCubeBlockWorld::CSceneLoader::getChunkRange() const
-{
-	// TODO: insert return statement here
-	return mRange;
 }

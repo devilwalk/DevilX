@@ -16,13 +16,13 @@ NSDevilX::NSRenderSystem::NSD3D11::CEntityForwardPass::CEntityForwardPass(CEntit
 	{
 	case CEnum::ETechniqueType_GBufferDS:
 		getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndAlphaTestEnableChange);
-		getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndColourUnitStateCreate);
 		break;
 	case CEnum::ETechniqueType_GBufferDL:
 		getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndAlphaTestEnableChange);
-		getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndLightEnableChange);
+		getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndAmbientModelChange);
+		getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndDiffuseModelChange);
+		getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndSpecularModelChange);
 		getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndTransparentEnableChange);
-		getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndColourUnitStateCreate);
 		break;
 	}
 	getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_BeginGeometryChange);
@@ -40,10 +40,13 @@ NSDevilX::NSRenderSystem::NSD3D11::CEntityForwardPass::CEntityForwardPass(CEnum:
 	_updateBlendState();
 	_updateDepthStencilState();
 	getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndAlphaTestEnableChange);
-	getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndLightEnableChange);
+	getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndAmbientModelChange);
+	getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndDiffuseModelChange);
+	getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndSpecularModelChange);
 	getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndTransparentEnableChange);
-	getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndColourUnitStateCreate);
-	getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndTextureUnitStateCreate);
+	getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndDiffuseTextureCreate);
+	getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndSpecularTextureCreate);
+	getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndNormalTextureCreate);
 	getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_BeginGeometryChange);
 	getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndGeometryChange);
 	_registerToIGeometryImp();
@@ -66,17 +69,22 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CEntityForwardPass::onMessage(ISubEntity
 	case ISubEntityImp::EMessage_EndAlphaTestEnableChange:
 		_updateShader();
 		break;
-	case ISubEntityImp::EMessage_EndLightEnableChange:
+	case ISubEntityImp::EMessage_EndAmbientModelChange:
+	case ISubEntityImp::EMessage_EndDiffuseModelChange:
+	case ISubEntityImp::EMessage_EndSpecularModelChange:
 		_updateShader();
 		break;
 	case ISubEntityImp::EMessage_EndTransparentEnableChange:
 		_updateBlendState();
 		break;
-	case ISubEntityImp::EMessage_EndColourUnitStateCreate:
-		_updateShader();
+	case ISubEntityImp::EMessage_EndDiffuseTextureCreate:
+		notifier->getDiffuseTexture()->addListener(static_cast<TMessageReceiver<ITextureUnitStateImp>*>(this),ITextureUnitStateImp::EMessage_EndTextureChange);
 		break;
-	case ISubEntityImp::EMessage_EndTextureUnitStateCreate:
-		static_cast<ITextureUnitStateImp*>(data)->addListener(static_cast<TMessageReceiver<ITextureUnitStateImp>*>(this),ITextureUnitStateImp::EMessage_EndTextureChange);
+	case ISubEntityImp::EMessage_EndSpecularTextureCreate:
+		notifier->getSpecularTexture()->addListener(static_cast<TMessageReceiver<ITextureUnitStateImp>*>(this),ITextureUnitStateImp::EMessage_EndTextureChange);
+		break;
+	case ISubEntityImp::EMessage_EndNormalTextureCreate:
+		notifier->getNormalTexture()->addListener(static_cast<TMessageReceiver<ITextureUnitStateImp>*>(this),ITextureUnitStateImp::EMessage_EndTextureChange);
 		break;
 	}
 }
@@ -105,70 +113,143 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CEntityForwardPass::_updateShader()
 {
 	if(nullptr==getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->getGeometry())
 		return;
-	const ISubEntityImp * const mat_imp=getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp();
-	switch(getTechnique()->getType())
+	switch(mForwardType)
 	{
-	case CEnum::ETechniqueType_Forward:
+	case CEnum::EForwardPassType_Ambient:_updateAmbientAndNoLightShader();break;
+	case CEnum::EForwardPassType_DirectionLight:
+	case CEnum::EForwardPassType_PointLight:
+	case CEnum::EForwardPassType_SpotLight:
+		if((getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->getDiffuseModel()!=IEnum::EMaterialDiffuseModel_None)||(getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->getSpecularModel()!=IEnum::EMaterialSpecularModel_None))
+			_updateLightShader();
+		break;
+	}
+	if(mVertexShader&&mPixelShader)
+		_updateTextures();
+}
+
+Void NSDevilX::NSRenderSystem::NSD3D11::CEntityForwardPass::_updateAmbientAndNoLightShader()
+{
+	const auto sub_entity_interface=getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp();
+	auto ambient_model=sub_entity_interface->getAmbientModel();
+	if((ambient_model!=IEnum::EMaterialAmbientModel_None)&&
+		((!sub_entity_interface->getGeometry()->getVertexBuffer()->getNormals())||(!sub_entity_interface->getGeometry()->getVertexBuffer()->getTextureCoords())))
 	{
-		CForwardVertexShaderGenerator vs_gen;
-		if(mat_imp->getLightEnable()&&(CEnum::EForwardPassType_Ambient!=getForwardType()))
+		ambient_model=IEnum::EMaterialAmbientModel_Constant;
+	}
+	CForwardVertexShaderGenerator vs_gen;
+	if((ambient_model==IEnum::EMaterialAmbientModel_Hemisphere)
+		||(ambient_model==IEnum::EMaterialAmbientModel_SphericalHarmonics)
+		)
+	{
+		vs_gen.addOutput(CForwardVertexShaderGenerator::EOutput_WorldNormal);
+		if(sub_entity_interface->getNormalTexture()&&sub_entity_interface->getNormalTexture()->getTexture())
 		{
-			vs_gen.addOutput(CForwardVertexShaderGenerator::EOutput_WorldNormal);
-			if((nullptr!=mat_imp->getColourUnitState(IEnum::EEntityColourUnitStateType_Specular))
-				||(CEnum::EForwardPassType_PointLight==getForwardType())
-				||(CEnum::EForwardPassType_SpotLight==getForwardType())
-				)
-			{
-				vs_gen.addOutput(CForwardVertexShaderGenerator::EOutput_WorldPosition);
-			}
-		}
-		if(getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->getGeometry()->getVertexBuffer()->getDiffuses())
-			vs_gen.addOutput(CForwardVertexShaderGenerator::EOutput_Diffuse);
-		if(getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->getGeometry()->getVertexBuffer()->getTextureCoords()
-			&&mat_imp->getTextureUnitState(IEnum::EEntityTextureUnitStateType_Diffuse)
-			&&mat_imp->getTextureUnitState(IEnum::EEntityTextureUnitStateType_Diffuse)->getTexture()
-			)
 			vs_gen.addOutput(CForwardVertexShaderGenerator::EOutput_MainUV);
-		mVertexShader=CSystemImp::getSingleton().getVertexShader(vs_gen.generateCode());
-		CForwardPixelShaderCodeGenerator ps_gen;
-		if(getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->getGeometry()->getVertexBuffer()->getTextureCoords()
-			&&mat_imp->getTextureUnitState(IEnum::EEntityTextureUnitStateType_Diffuse)
-			&&mat_imp->getTextureUnitState(IEnum::EEntityTextureUnitStateType_Diffuse)->getTexture()
-			)
+		}
+	}
+	if(sub_entity_interface->getGeometry()->getVertexBuffer()->getTextureCoords()&&sub_entity_interface->getDiffuseTexture()&&sub_entity_interface->getDiffuseTexture()->getTexture())
+	{
+		vs_gen.addOutput(CForwardVertexShaderGenerator::EOutput_MainUV);
+	}
+	if(sub_entity_interface->getGeometry()->getVertexBuffer()->getDiffuses())
+		vs_gen.addOutput(CForwardVertexShaderGenerator::EOutput_Diffuse);
+	mVertexShader=CSystemImp::getSingleton().getVertexShader(vs_gen.generateCode());
+	CForwardPixelShaderCodeGenerator ps_gen;
+	switch(ambient_model)
+	{
+	case IEnum::EMaterialAmbientModel_Constant:ps_gen.addFlag(CForwardPixelShaderCodeGenerator::EFlag_UseConstantAmbientModel);break;
+	case IEnum::EMaterialAmbientModel_Hemisphere:ps_gen.addFlag(CForwardPixelShaderCodeGenerator::EFlag_UseHemisphereAmbientModel);break;
+	case IEnum::EMaterialAmbientModel_SphericalHarmonics:ps_gen.addFlag(CForwardPixelShaderCodeGenerator::EFlag_UseSphericalHarmonicsAmbientModel);break;
+	}
+	if(sub_entity_interface->isAlphaTestEnable())
+	{
+		ps_gen.addFlag(CForwardPixelShaderCodeGenerator::EFlag_UseAlphaTest);
+	}
+	if(sub_entity_interface->getGeometry()->getVertexBuffer()->getTextureCoords()&&sub_entity_interface->getDiffuseTexture()&&sub_entity_interface->getDiffuseTexture()->getTexture())
+	{
+		ps_gen.addFlag(CForwardPixelShaderCodeGenerator::EFlag_UseDiffuseTexture);
+	}
+	auto macros=vs_gen.generateMacro();
+	mPixelShader=CSystemImp::getSingleton().getPixelShader(ps_gen.generateCode(&macros));
+}
+
+Void NSDevilX::NSRenderSystem::NSD3D11::CEntityForwardPass::_updateLightShader()
+{
+	const auto sub_entity_interface=getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp();
+	CForwardVertexShaderGenerator vs_gen;
+	vs_gen.addOutput(CForwardVertexShaderGenerator::EOutput_WorldNormal);
+	if(sub_entity_interface->getGeometry()->getVertexBuffer()->getTextureCoords())
+	{
+		if(((sub_entity_interface->getDiffuseTexture()&&sub_entity_interface->getDiffuseTexture()->getTexture())||
+			(sub_entity_interface->getNormalTexture()&&sub_entity_interface->getNormalTexture()->getTexture())))
+		{
+			vs_gen.addOutput(CForwardVertexShaderGenerator::EOutput_MainUV);
+		}
+		if((sub_entity_interface->getSpecularModel()!=IEnum::EMaterialSpecularModel_None)&&sub_entity_interface->getSpecularTexture()&&sub_entity_interface->getSpecularTexture()->getTexture())
+		{
+			vs_gen.addOutput(CForwardVertexShaderGenerator::EOutput_MainUV);
+		}
+	}
+	switch(sub_entity_interface->getDiffuseModel())
+	{
+	case IEnum::EMaterialDiffuseModel_OrenNayar:
+	case IEnum::EMaterialDiffuseModel_Minnaert:
+	case IEnum::EMaterialDiffuseModel_Disney:
+		vs_gen.addOutput(CForwardVertexShaderGenerator::EOutput_WorldPosition);
+		break;
+	}
+	switch(mForwardType)
+	{
+	case CEnum::EForwardPassType_PointLight:
+	case CEnum::EForwardPassType_SpotLight:vs_gen.addOutput(CForwardVertexShaderGenerator::EOutput_WorldPosition);break;
+	}
+	if(sub_entity_interface->getSpecularModel()!=IEnum::EMaterialSpecularModel_None)
+	{
+		vs_gen.addOutput(CForwardVertexShaderGenerator::EOutput_WorldPosition);
+	}
+	mVertexShader=CSystemImp::getSingleton().getVertexShader(vs_gen.generateCode());
+	CForwardPixelShaderCodeGenerator ps_gen;
+	switch(mForwardType)
+	{
+	case CEnum::EForwardPassType_DirectionLight:ps_gen.addFlag(CForwardPixelShaderCodeGenerator::EFlag_UseDirectionLight);break;
+	case CEnum::EForwardPassType_PointLight:ps_gen.addFlag(CForwardPixelShaderCodeGenerator::EFlag_UsePointLight);break;
+	case CEnum::EForwardPassType_SpotLight:ps_gen.addFlag(CForwardPixelShaderCodeGenerator::EFlag_UseSpotLight);break;
+	}
+	switch(sub_entity_interface->getDiffuseModel())
+	{
+	case IEnum::EMaterialDiffuseModel_Lambert:ps_gen.addFlag(CForwardPixelShaderCodeGenerator::EFlag_UseLambertDiffuseModel);break;
+	case IEnum::EMaterialDiffuseModel_OrenNayar:ps_gen.addFlag(CForwardPixelShaderCodeGenerator::EFlag_UseOrenNayarDiffuseModel);break;
+	case IEnum::EMaterialDiffuseModel_Minnaert:ps_gen.addFlag(CForwardPixelShaderCodeGenerator::EFlag_UseMinnaertDiffuseModel);break;
+	case IEnum::EMaterialDiffuseModel_Disney:ps_gen.addFlag(CForwardPixelShaderCodeGenerator::EFlag_UseDisneyDiffuseModel);break;
+	}
+	switch(sub_entity_interface->getSpecularModel())
+	{
+	case IEnum::EMaterialSpecularModel_Phong:ps_gen.addFlag(CForwardPixelShaderCodeGenerator::EFlag_UsePhongSpecularModel);break;
+	case IEnum::EMaterialSpecularModel_BlinnPhong:ps_gen.addFlag(CForwardPixelShaderCodeGenerator::EFlag_UseBlinnPhongSpecularModel);break;
+	case IEnum::EMaterialSpecularModel_UE4:ps_gen.addFlag(CForwardPixelShaderCodeGenerator::EFlag_UseUE4SpecularModel);break;
+	case IEnum::EMaterialSpecularModel_CookTorrance:ps_gen.addFlag(CForwardPixelShaderCodeGenerator::EFlag_UseCookTorranceSpecularModel);break;
+	}
+	if(sub_entity_interface->isAlphaTestEnable())
+	{
+		ps_gen.addFlag(CForwardPixelShaderCodeGenerator::EFlag_UseAlphaTest);
+	}
+	if(sub_entity_interface->getGeometry()->getVertexBuffer()->getTextureCoords())
+	{
+		if(sub_entity_interface->getDiffuseTexture()&&sub_entity_interface->getDiffuseTexture()->getTexture())
+		{
 			ps_gen.addFlag(CForwardPixelShaderCodeGenerator::EFlag_UseDiffuseTexture);
-		if(mat_imp->getLightEnable())
-		{
-			ps_gen.addFlag(CForwardPixelShaderCodeGenerator::EFlag_UseLighting);
-			if(CEnum::EForwardPassType_Ambient!=getForwardType())
-			{
-				switch(getForwardType())
-				{
-				case CEnum::EForwardPassType_DirectionLight:
-					ps_gen.addFlag(CForwardPixelShaderCodeGenerator::EFlag_UseDirectionLight);
-					break;
-				case CEnum::EForwardPassType_PointLight:
-					ps_gen.addFlag(CForwardPixelShaderCodeGenerator::EFlag_UsePointLight);
-					break;
-				case CEnum::EForwardPassType_SpotLight:
-					ps_gen.addFlag(CForwardPixelShaderCodeGenerator::EFlag_UseSpotLight);
-					break;
-				}
-				if(mat_imp->getColourUnitState(IEnum::EEntityColourUnitStateType_Specular))
-				{
-					ps_gen.addFlag(CForwardPixelShaderCodeGenerator::EFlag_UseSpecular);
-				}
-			}
 		}
-		if(mat_imp->isAlphaTestEnable())
+		if(sub_entity_interface->getNormalTexture()&&sub_entity_interface->getNormalTexture()->getTexture())
 		{
-			ps_gen.addFlag(CForwardPixelShaderCodeGenerator::EFlag_UseAlphaTest);
+			ps_gen.addFlag(CForwardPixelShaderCodeGenerator::EFlag_UseNormalTexture);
 		}
-		auto macros=vs_gen.generateMacro();
-		mPixelShader=CSystemImp::getSingleton().getPixelShader(ps_gen.generateCode(&macros));
+		if((sub_entity_interface->getSpecularModel()!=IEnum::EMaterialSpecularModel_None)&&sub_entity_interface->getSpecularTexture()&&sub_entity_interface->getSpecularTexture()->getTexture())
+		{
+			ps_gen.addFlag(CForwardPixelShaderCodeGenerator::EFlag_UseSpecularTexture);
+		}
 	}
-	break;
-	}
-	_updateTextures();
+	auto macros=vs_gen.generateMacro();
+	mPixelShader=CSystemImp::getSingleton().getPixelShader(ps_gen.generateCode(&macros));
 }
 
 Void NSDevilX::NSRenderSystem::NSD3D11::CEntityForwardPass::_updateTextures()
@@ -178,19 +259,19 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CEntityForwardPass::_updateTextures()
 	mPSTextures.clear();
 	if(0xffffffff!=getVertexShader()->getSlot("gDiffuseTexture"))
 	{
-		mVSTextures.push_back(CSystemImp::getSingleton().getTexture(static_cast<ITextureImp*>(mat_imp->getTextureUnitState(IEnum::EEntityTextureUnitStateType_Diffuse)->getTexture())));
+		mVSTextures.push_back(CSystemImp::getSingleton().getTexture(static_cast<ITextureImp*>(mat_imp->getDiffuseTexture()->getTexture())));
 	}
 	if(0xffffffff!=getVertexShader()->getSlot("gNormalTexture"))
 	{
-		mVSTextures.push_back(CSystemImp::getSingleton().getTexture(static_cast<ITextureImp*>(mat_imp->getTextureUnitState(IEnum::EEntityTextureUnitStateType_Normal)->getTexture())));
+		mVSTextures.push_back(CSystemImp::getSingleton().getTexture(static_cast<ITextureImp*>(mat_imp->getNormalTexture()->getTexture())));
 	}
 	if(0xffffffff!=getPixelShader()->getSlot("gDiffuseTexture"))
 	{
-		mPSTextures.push_back(CSystemImp::getSingleton().getTexture(static_cast<ITextureImp*>(mat_imp->getTextureUnitState(IEnum::EEntityTextureUnitStateType_Diffuse)->getTexture())));
+		mPSTextures.push_back(CSystemImp::getSingleton().getTexture(static_cast<ITextureImp*>(mat_imp->getDiffuseTexture()->getTexture())));
 	}
 	if(0xffffffff!=getPixelShader()->getSlot("gNormalTexture"))
 	{
-		mPSTextures.push_back(CSystemImp::getSingleton().getTexture(static_cast<ITextureImp*>(mat_imp->getTextureUnitState(IEnum::EEntityTextureUnitStateType_Normal)->getTexture())));
+		mPSTextures.push_back(CSystemImp::getSingleton().getTexture(static_cast<ITextureImp*>(mat_imp->getNormalTexture()->getTexture())));
 	}
 }
 

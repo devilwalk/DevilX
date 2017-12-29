@@ -18,6 +18,6 @@ float3 getCameraRight()
 }
 float3 calcHemisphereAmbientFactor(float3 worldNormal)
 {
-	float3 factor=calcHemisphereLightFactor(-gSkyLightDirection,worldNormal);
+    float3 factor = calcHemisphereAmbientFactor(-gSkyLightDirection, worldNormal);
 	return lerp(gGroundColour,gSkyColour,factor);
 }

@@ -13,8 +13,8 @@ NSDevilX::NSRenderSystem::NSD3D11::CEntityQueryPass::CEntityQueryPass(CEntityTec
 	_updateSamplerState();
 	getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndAlphaTestEnableChange);
 	getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndTransparentEnableChange);
-	getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndColourUnitStateCreate);
-	getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndTextureUnitStateCreate);
+	getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndAlphaColourCreate);
+	getTechnique()->getMaterial()->getSubEntity()->getInterfaceImp()->addListener(static_cast<TMessageReceiver<ISubEntityImp>*>(this),ISubEntityImp::EMessage_EndDiffuseTextureCreate);
 }
 
 NSDevilX::NSRenderSystem::NSD3D11::CEntityQueryPass::~CEntityQueryPass()
@@ -78,10 +78,10 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CEntityQueryPass::onMessage(ISubEntityIm
 	case ISubEntityImp::EMessage_EndTransparentEnableChange:
 		_updateBlendState();
 		break;
-	case ISubEntityImp::EMessage_EndColourUnitStateCreate:
+	case ISubEntityImp::EMessage_EndAlphaColourCreate:
 		_updateShader();
 		break;
-	case ISubEntityImp::EMessage_EndTextureUnitStateCreate:
+	case ISubEntityImp::EMessage_EndDiffuseTextureCreate:
 		static_cast<ITextureUnitStateImp*>(data)->addListener(static_cast<TMessageReceiver<ITextureUnitStateImp>*>(this),ITextureUnitStateImp::EMessage_EndTextureChange);
 		break;
 	}

@@ -26,11 +26,12 @@ Void NSDevilX::NSCubeBlockSystem::CArea::SRenderable::initialize()
 		mRenderable->setGeometry(NSRenderSystem::getSystem()->queryInterface_IResourceManager()->createGeometry(mArea->getEntity()->queryInterface_ISceneElement()->getName()+"/"+mRenderable->getName()));
 		mRenderable->getGeometry()->setVertexBuffer(sGeometry->getVertexBuffer());
 		mRenderable->queryInterface_IGeometryUsage()->setVertexCount(sGeometry->getVertexBuffer()->getCount());
-		mRenderable->setLightEnable(True);
+		mRenderable->setAmbientModel(NSRenderSystem::IEnum::EMaterialAmbientModel_Constant);
+		mRenderable->setDiffuseModel(NSRenderSystem::IEnum::EMaterialDiffuseModel_Lambert);
+		mRenderable->setSpecularModel(NSRenderSystem::IEnum::EMaterialSpecularModel_BlinnPhong);
 		if(mMaterial)
 		{
-			mRenderable->getColourUnitState(NSRenderSystem::IEnum::EEntityColourUnitStateType_Diffuse)->setValue(mMaterial->getColour());
-			mRenderable->getColourUnitState(NSRenderSystem::IEnum::EEntityColourUnitStateType_Ambient)->setValue(mMaterial->getColour());
+			mRenderable->getDiffuseColourUnitState()->setValue(mMaterial->getColour());
 		}
 	}
 }
@@ -40,8 +41,7 @@ Void NSDevilX::NSCubeBlockSystem::CArea::SRenderable::onMessage(IRenderMaterialI
 	switch(message)
 	{
 	case IRenderMaterialImp::EMessage_EndColourChange:
-		mRenderable->getColourUnitState(NSRenderSystem::IEnum::EEntityColourUnitStateType_Diffuse)->setValue(mMaterial->getColour());
-		mRenderable->getColourUnitState(NSRenderSystem::IEnum::EEntityColourUnitStateType_Ambient)->setValue(mMaterial->getColour());
+		mRenderable->getDiffuseColourUnitState()->setValue(mMaterial->getColour());
 		break;
 	}
 }

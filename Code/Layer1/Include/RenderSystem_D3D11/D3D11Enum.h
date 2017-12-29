@@ -31,8 +31,8 @@ namespace NSDevilX
 				};
 				enum EForwardPassType
 				{
-					EForwardPassType_Normal,
-					EForwardPassType_Ambient=EForwardPassType_Normal,
+					EForwardPassType_NoLight,
+					EForwardPassType_Ambient=EForwardPassType_NoLight,
 					EForwardPassType_DirectionLight,
 					EForwardPassType_PointLight,
 					EForwardPassType_SpotLight,

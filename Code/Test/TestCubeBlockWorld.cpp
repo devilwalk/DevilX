@@ -115,26 +115,25 @@ Void main()
 		mouse_listener->frameMove();
 		keyboard_listener->frameMove();
 
-		CInt2 cursor_pos=window.getCursorPosition();
 		auto delta_time=timer.getInMillisecond();
 		NSInputSystem::getSystem()->update();
 
 		if(NSInputSystem::IEnum::EButtonState_Pressed==keyboard->getButtonState(NSInputSystem::IEnum::EKeyType_W))
-			camera_node.setPosition(camera_node.getPosition()+camera_node.getDirection()*static_cast<Float>(delta_time)*0.001f*10);
+			camera_node.setPosition(camera_node.getPosition()+camera_node.getDirection()*static_cast<Float>(delta_time)*0.001f*10.0f);
 		if(NSInputSystem::IEnum::EButtonState_Pressed==keyboard->getButtonState(NSInputSystem::IEnum::EKeyType_S))
-			camera_node.setPosition(camera_node.getPosition()-camera_node.getDirection()*static_cast<Float>(delta_time)*0.001f*10);
+			camera_node.setPosition(camera_node.getPosition()-camera_node.getDirection()*static_cast<Float>(delta_time)*0.001f*10.0f);
 		if(NSInputSystem::IEnum::EButtonState_Pressed==keyboard->getButtonState(NSInputSystem::IEnum::EKeyType_A))
-			camera_node.setPosition(camera_node.getPosition()-camera_node.getRight()*static_cast<Float>(delta_time)*0.001f*10);
+			camera_node.setPosition(camera_node.getPosition()-camera_node.getRight()*static_cast<Float>(delta_time)*0.001f*10.0f);
 		if(NSInputSystem::IEnum::EButtonState_Pressed==keyboard->getButtonState(NSInputSystem::IEnum::EKeyType_D))
-			camera_node.setPosition(camera_node.getPosition()+camera_node.getRight()*static_cast<Float>(delta_time)*0.001f*10);
+			camera_node.setPosition(camera_node.getPosition()+camera_node.getRight()*static_cast<Float>(delta_time)*0.001f*10.0f);
 		if(NSInputSystem::IEnum::EButtonState_Pressed==keyboard->getButtonState(NSInputSystem::IEnum::EKeyType_SPACE))
 		{
 			++current_window_size_index;
 			current_window_size_index=current_window_size_index%(sizeof(window_size)/sizeof(UInt32));
 			window.setSize(CUInt2(window_size[current_window_size_index],window_size[current_window_size_index]));
 		}
-		yaw+=static_cast<Float>(mouse_listener->mAxisOffsets.x)*static_cast<Float>(delta_time)*0.001f*10;
-		pitch+=static_cast<Float>(mouse_listener->mAxisOffsets.y)*static_cast<Float>(delta_time)*0.001f*10;
+		yaw+=static_cast<Float>(mouse_listener->mAxisOffsets.x)*static_cast<Float>(delta_time)*0.001f*10.0f;
+		pitch+=static_cast<Float>(mouse_listener->mAxisOffsets.y)*static_cast<Float>(delta_time)*0.001f*10.0f;
 		pitch=std::max<Float>(pitch,-90.0f);
 		pitch=std::min<Float>(pitch,90.0f);
 		camera_node.setRotation(yaw,0,pitch);

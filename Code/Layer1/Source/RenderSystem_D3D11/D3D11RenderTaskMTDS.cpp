@@ -306,7 +306,8 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::CLightTask::pre
 			if(object->getSubEntity(i)->isRenderable())
 			{
 				auto renderable=static_cast<ISubEntityImp*>(object->getSubEntity(i))->getUserPointer<CSubEntityImp>(0);
-				if(renderable->getInterfaceImp()->getLightEnable())
+				if((renderable->getInterfaceImp()->getDiffuseModel()!=IEnum::EMaterialDiffuseModel_None)||
+					(renderable->getInterfaceImp()->getSpecularModel()!=IEnum::EMaterialSpecularModel_None))
 				{
 					renderable->renderForward(mLight,operation);
 					mSubmitConstantBuffers.insert(mSubmitConstantBuffers.end(),operation.mConstantBuffers.begin(),operation.mConstantBuffers.end());
@@ -358,7 +359,8 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::CLightTask::pro
 				if(object->getSubEntity(i)->isRenderable())
 				{
 					auto renderable=static_cast<ISubEntityImp*>(object->getSubEntity(i))->getUserPointer<CSubEntityImp>(0);
-					if(renderable->getInterfaceImp()->getLightEnable())
+					if((renderable->getInterfaceImp()->getDiffuseModel()!=IEnum::EMaterialDiffuseModel_None)||
+						(renderable->getInterfaceImp()->getSpecularModel()!=IEnum::EMaterialSpecularModel_None))
 					{
 						renderable->renderForward(mLight,operation);
 						for(auto cb:operation.mConstantBuffers)

@@ -28,6 +28,8 @@ namespace NSDevilX
 				virtual Void onMessage(ITextureUnitStateImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 			protected:
 				Void _updateShader();
+				Void _updateAmbientAndNoLightShader();
+				Void _updateLightShader();
 				Void _updateTextures();
 				Void _updateRasterizerState();
 				Void _updateBlendState();

@@ -149,19 +149,19 @@ void generatorCpp(const std::vector<std::string> & files)
 		std::string temp;
 		while(func_buf.find("\r\n")!=std::string::npos)
 		{
-			temp+=func_buf.substr(0,func_buf.find_first_of("\r\n"))+"\\r\\n\\\r\n";
+			temp+=func_buf.substr(0,func_buf.find_first_of("\r\n"))+"\\r\\n\"\r\n\"";
 			func_buf=func_buf.substr(func_buf.find_first_of("\r\n")+2);
 		}
 		temp+=func_buf;
 		func_buf=temp;
-		temp.clear();
-		while(func_buf.find("\"")!=std::string::npos)
-		{
-			temp+=func_buf.substr(0,func_buf.find_first_of("\""))+"\\\"";
-			func_buf=func_buf.substr(func_buf.find_first_of("\"")+1);
-		}
-		temp+=func_buf;
-		func_buf=temp;
+		//temp.clear();
+		//while(func_buf.find("\"")!=std::string::npos)
+		//{
+		//	temp+=func_buf.substr(0,func_buf.find_first_of("\""))+"\\\"";
+		//	func_buf=func_buf.substr(func_buf.find_first_of("\"")+1);
+		//}
+		//temp+=func_buf;
+		//func_buf=temp;
 		valid_functions.push_back(func_buf);
 		valid_function_names.push_back(function_names[i]);
 	}
