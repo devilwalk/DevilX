@@ -7,35 +7,27 @@ namespace NSDevilX
 		class CSceneLoader
 			:public ISceneLoader
 			,public TBaseObject<CSceneLoader>
-			,public CDirtyFlagContainer
 		{
-		public:
-			enum EDirtyFlag
-			{
-				EDirtyFlag_Load
-			};
 		protected:
 			const String & mName;
 			CSceneManager * const mSceneManager;
 			CThreadPool * mThreadPool;
 			CInt3 mPosition;
-			CInt3 mRange;
+			CUInt3 mSyncRange;
+			CUInt3 mAsyncRange;
 			CRange3I mLoadedRange;
 		public:
 			CSceneLoader(const String & name,CSceneManager * sceneManager);
 			~CSceneLoader();
-			Void update();
 			// Inherited via ISceneLoader
 			virtual const String & getName() const override;
 			virtual Void setChunkPosition(const CInt3 & position) override;
 			virtual Void setBlockPosition(const CInt3 & position) override;
 			virtual const CInt3 & getChunkPosition() const override;
-			virtual Void setChunkRange(const CInt3 & range) override;
-			virtual const CInt3 & getChunkRange() const override;
-
-			virtual Boolean _process(UInt32 flagIndex,OUT Bool & needNextProcess) override;
-		protected:
-			Void _processLoad();
+			virtual Void setSyncChunkRange(const CUInt3 & range) override;
+			virtual const CUInt3 & getSyncChunkRange() const override;
+			virtual Void setAsyncChunkRange(const CUInt3 & range) override;
+			virtual const CUInt3 & getAsyncChunkRange() const override;
 		};
 	}
 }

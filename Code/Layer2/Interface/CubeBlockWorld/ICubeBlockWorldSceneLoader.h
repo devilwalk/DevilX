@@ -12,8 +12,10 @@ namespace NSDevilX
 			virtual Void setChunkPosition(const CInt3 & position)=0;
 			virtual Void setBlockPosition(const CInt3 & position)=0;
 			virtual const CInt3 & getChunkPosition()const=0;
-			virtual Void setChunkRange(const CInt3 & range)=0;
-			virtual const CInt3 & getChunkRange()const=0;
+			virtual Void setSyncChunkRange(const CUInt3 & range)=0;
+			virtual const CUInt3 & getSyncChunkRange()const=0;
+			virtual Void setAsyncChunkRange(const CUInt3 & range)=0;
+			virtual const CUInt3 & getAsyncChunkRange()const=0;
 		};
 	}
 }

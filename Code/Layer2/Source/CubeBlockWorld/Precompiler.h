@@ -3,6 +3,7 @@
 #include "RenderSystem/IRenderSystemInterface.h"
 #include "CubeBlockSystem/ICubeBlockSystemInterface.h"
 #include "ICubeBlockWorldInterface.h"
+#include "Chunk.h"
 #include "SceneLoader.h"
 #include "SceneManager.h"
 #include "World.h"

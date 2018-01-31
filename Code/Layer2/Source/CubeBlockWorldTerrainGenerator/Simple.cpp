@@ -4,24 +4,50 @@ using namespace NSCubeBlockWorld;
 
 NSDevilX::NSCubeBlockWorld::CSimpleTerrainGeneratorInstance::CSimpleTerrainGeneratorInstance(CSimpleTerrainGenertor * generator,ISceneManager * sceneManager)
 	:CTerrainGeneratorInstance(generator,sceneManager)
+	,mBlock(nullptr)
 {
+	mBlock=CModule::getSingleton().getSystem()->getBlock("Simple");
 }
 
 NSDevilX::NSCubeBlockWorld::CSimpleTerrainGeneratorInstance::~CSimpleTerrainGeneratorInstance()
 {}
 
-NSCubeBlockSystem::IBlock * NSDevilX::NSCubeBlockWorld::CSimpleTerrainGeneratorInstance::generateBlock(const CInt3 & position)
+NSCubeBlockSystem::IBlock * NSDevilX::NSCubeBlockWorld::CSimpleTerrainGeneratorInstance::generateBlockMT(const CInt3 & position)
 {
-	return CModule::getSingleton().getSystem()->getBlock("Simple");
+	return mBlock;
 }
 
-Boolean NSDevilX::NSCubeBlockWorld::CSimpleTerrainGeneratorInstance::generateChunk(const CInt3 & position)
+UInt32 NSDevilX::NSCubeBlockWorld::CSimpleTerrainGeneratorInstance::generateChunkMT(const CInt3 & position,OUT CInt3 * blockPositions)
 {
-	const DirectX::XMVECTOR chunk_size_vec=mSceneManager->getChunkSize();
-	CInt3 start=DirectX::XMVectorMax(position*chunk_size_vec,mSceneManager->getRange().getMin());
-	CInt3 end=DirectX::XMVectorMin(start+chunk_size_vec-CInt3::sOne,mSceneManager->getRange().getMax());
-	mSceneManager->getScene()->setBlockMT(CRange3I(start,end),CModule::getSingleton().getSystem()->getBlock("Simple"));
-	return true;
+	CInt3 base_pos=position*mSceneManager->getChunkSize();
+	if(blockPositions)
+	{
+		UInt32 index=0;
+		for(UInt32 x=0;x<mSceneManager->getChunkSize().x;++x)
+		{
+			for(UInt32 y=0;y<mSceneManager->getChunkSize().y;++y)
+			{
+				if(base_pos.y+y>1)
+					break;
+				for(UInt32 z=0;z<mSceneManager->getChunkSize().z;++z)
+				{
+					blockPositions[index]=base_pos+CInt3(x,y,z);
+					++index;
+				}
+			}
+		}
+		return index;
+	}
+	else
+	{
+		UInt32 y=0;
+		for(;y<mSceneManager->getChunkSize().y;++y)
+		{
+			if(base_pos.y+y>1)
+				break;
+		}
+		return mSceneManager->getChunkSize().x*y*mSceneManager->getChunkSize().z;
+	}
 }
 
 NSDevilX::NSCubeBlockWorld::CSimpleTerrainGenertor::CSimpleTerrainGenertor()

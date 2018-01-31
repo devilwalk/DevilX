@@ -1,73 +1,201 @@
 #include "Precompiler.h"
 using namespace NSDevilX;
 using namespace NSCubeBlockWorld;
+namespace NSDevilX
+{
+	namespace NSCubeBlockWorld
+	{
+		namespace NSInternal
+		{
+			static Void loadFunc(CSceneManager * sm,const CInt3 & position,CSceneManager::SChunkState * state)
+			{
+				TVector<CInt3> block_positions;
+				auto num_pos=sm->getTerrainGenerator()->generateChunkMT(position,nullptr);
+				if(num_pos)
+				{
+					block_positions.resize(num_pos);
+					sm->getTerrainGenerator()->generateChunkMT(position,&block_positions[0]);
+					TMap<NSCubeBlockSystem::IBlock*,TVector<CInt3> > temp;
+					for(auto const & position:block_positions)
+					{
+						auto block=sm->getTerrainGenerator()->generateBlockMT(position);
+						if(block)
+						{
+							temp[block].push_back(position);
+						}
+					}
+					for(auto const & pair:temp)
+					{
+						auto & loads=state->mPreLoads[pair.first];
+						CRange3I::createRanges(pair.second,loads);
+					}
+				}
+				if(!state->mPreLoads.empty())
+					state->mState.write(CSceneManager::SChunkState::EState_PreLoaded);
+				else
+					state->mState.write(CSceneManager::SChunkState::EState_Loaded);
+			}
+			struct SLoadThreadParameter
+				:public TBaseObject<SLoadThreadParameter>
+			{
+				CSceneManager * const mSceneManager;
+				const CInt3 mPosition;
+				CSceneManager::SChunkState * mState;
+				SLoadThreadParameter(CSceneManager * sceneManager,const CInt3 & position,CSceneManager::SChunkState * state)
+					:mSceneManager(sceneManager)
+					,mPosition(position)
+					,mState(state)
+				{}
+			};
+			static Boolean loadThread(VoidPtr parameter)
+			{
+				SLoadThreadParameter * const loader_parameter=static_cast<SLoadThreadParameter*>(parameter);
+				CSceneManager * const scene_manager=loader_parameter->mSceneManager;
+				const CInt3 position=loader_parameter->mPosition;
+				CSceneManager::SChunkState * const state=loader_parameter->mState;
+				DEVILX_DELETE(loader_parameter);
+				loadFunc(scene_manager,position,state);
+				return true;
+			}
+		}
+	}
+}
 const CUInt3 NSDevilX::NSCubeBlockWorld::CSceneManager::sChunkSize(32);
 NSDevilX::NSCubeBlockWorld::CSceneManager::CSceneManager(const String & name,ITerrainGenerator * generator,NSRenderSystem::IScene * renderScene)
 	:mName(name)
+	,mLoadThreadPool(nullptr)
 	,mRenderScene(renderScene)
 	,mBlockScene(nullptr)
 	,mRange(CInt3(INT_MIN),CInt3(INT_MAX))
 {
+	mLoadThreadPool=DEVILX_NEW CThreadPool(4);
 	mTerrainGeneratorInstance=generator->createInstance(this);
 	mBlockScene=NSCubeBlockSystem::getSystem()->createScene(mRenderScene);
 }
 
 NSDevilX::NSCubeBlockWorld::CSceneManager::~CSceneManager()
-{}
+{
+	DEVILX_DELETE(mLoadThreadPool);
+}
 
 Void NSDevilX::NSCubeBlockWorld::CSceneManager::update()
 {
-	for(auto const & loader:mLoaders)
-		loader.second->update();
-}
-
-Void NSDevilX::NSCubeBlockWorld::CSceneManager::loadChunkMT(DirectX::FXMVECTOR positionVec)
-{
-	const DirectX::XMVECTOR chunk_size_vec=getChunkSize();
-	auto loaded=_getChunkLoaded(positionVec);
-	if(!loaded)
-		return;
-	auto & loaded_count=loaded->beginWrite();
-	if(0==loaded_count)
+	for(auto & load_pair:mChunkLoadStates)
 	{
-		if(!getTerrainGenerator()->generateChunk(positionVec))
+		auto & state=load_pair.second->mState.beginWrite();
+		if(SChunkState::EState_Loaded==state)
+			state=SChunkState::EState_Unloading;
+		else if(SChunkState::EState_PreLoaded==state)
 		{
-			CInt3 start=DirectX::XMVectorMin(positionVec*chunk_size_vec,getRange().getMax());
-			CInt3 end=DirectX::XMVectorMax(start+chunk_size_vec-CInt3::sOne,getRange().getMin());
-			for(auto x=start.x;x<=end.x;++x)
+			for(auto const & pair:load_pair.second->mPreLoads)
 			{
-				for(auto y=start.y;y<=end.y;++y)
+				for(auto const & range:pair.second)
 				{
-					for(auto z=start.z;z<=end.z;++z)
+					mBlockScene->setBlockMT(range,pair.first);
+				}
+			}
+			load_pair.second->mPreLoads.swap(decltype(load_pair.second->mPreLoads)());
+			state=SChunkState::EState_Loaded;
+		}
+		load_pair.second->mState.endWrite();
+	}
+	//sync prepare
+	for(auto const & loader_pair:mLoaders)
+	{
+		auto loader=loader_pair.second;
+		for(Int32 x=-static_cast<Int32>(loader->getSyncChunkRange().x);x<=static_cast<Int32>(loader->getSyncChunkRange().x);x++)
+		{
+			for(Int32 y=-static_cast<Int32>(loader->getSyncChunkRange().y);y<=static_cast<Int32>(loader->getSyncChunkRange().y);y++)
+			{
+				for(Int32 z=-static_cast<Int32>(loader->getSyncChunkRange().z);z<=static_cast<Int32>(loader->getSyncChunkRange().z);z++)
+				{
+					CInt3 chunk_pos=CInt3(x,y,z)+loader->getChunkPosition();
+					auto & state=mChunkLoadStates[chunk_pos];
+					if(state)
 					{
-						DirectX::XMVECTOR block_pos_vec=CInt3(x,y,z);
-						auto block=getTerrainGenerator()->generateBlock(block_pos_vec);
-						if(block)
-							getScene()->setBlockMT(block_pos_vec,block);
+					}
+					else
+					{
+						state=DEVILX_NEW SChunkState();
+						state->mState.write(SChunkState::EState_Prepare);
 					}
 				}
 			}
 		}
 	}
-	++loaded_count;
-	loaded->endWrite();
-}
-
-Void NSDevilX::NSCubeBlockWorld::CSceneManager::unloadChunkMT(DirectX::FXMVECTOR positionVec)
-{
-	const DirectX::XMVECTOR chunk_size_vec=getChunkSize();
-	auto loaded=_getChunkLoaded(positionVec);
-	if(!loaded)
-		return;
-	auto & loaded_count=loaded->beginWrite();
-	--loaded_count;
-	if(0==loaded_count)
+	//async load
+	TVector<CRange3I> async_loads;
+	for(auto const & loader_pair:mLoaders)
 	{
-		CInt3 start=DirectX::XMVectorMin(positionVec*chunk_size_vec,getRange().getMax());
-		CInt3 end=DirectX::XMVectorMax(start+chunk_size_vec-CInt3::sOne,getRange().getMin());
-		getScene()->setBlockMT(CRange3I(start,end),nullptr);
+		auto loader=loader_pair.second;
+		for(Int32 x=-static_cast<Int32>(loader->getAsyncChunkRange().x);x<=static_cast<Int32>(loader->getAsyncChunkRange().x);x++)
+		{
+			for(Int32 y=-static_cast<Int32>(loader->getAsyncChunkRange().y);y<=static_cast<Int32>(loader->getAsyncChunkRange().y);y++)
+			{
+				for(Int32 z=-static_cast<Int32>(loader->getAsyncChunkRange().z);z<=static_cast<Int32>(loader->getAsyncChunkRange().z);z++)
+				{
+					CInt3 chunk_pos(x,y,z);
+					auto & state=mChunkLoadStates[chunk_pos];
+					if(state)
+					{
+						if(SChunkState::EState_Unloading==state->mState)
+							state->mState.write(SChunkState::EState_Loaded);
+					}
+					else
+					{
+						state=DEVILX_NEW SChunkState();
+						state->mState.write(SChunkState::EState_Loading);
+						NSInternal::SLoadThreadParameter * param=DEVILX_NEW NSInternal::SLoadThreadParameter(this,chunk_pos,state);
+						mLoadThreadPool->submitMT(NSInternal::loadThread,param);
+					}
+				}
+			}
+		}
 	}
-	loaded->endWrite();
+	//sync load
+	for(auto const & loader_pair:mLoaders)
+	{
+		auto loader=loader_pair.second;
+		for(Int32 x=-static_cast<Int32>(loader->getSyncChunkRange().x);x<=static_cast<Int32>(loader->getSyncChunkRange().x);x++)
+		{
+			for(Int32 y=-static_cast<Int32>(loader->getSyncChunkRange().y);y<=static_cast<Int32>(loader->getSyncChunkRange().y);y++)
+			{
+				for(Int32 z=-static_cast<Int32>(loader->getSyncChunkRange().z);z<=static_cast<Int32>(loader->getSyncChunkRange().z);z++)
+				{
+					CInt3 chunk_pos=CInt3(x,y,z)+loader->getChunkPosition();
+					auto & state=mChunkLoadStates[chunk_pos];
+					if(SChunkState::EState_Unloading==state->mState)
+						state->mState.write(SChunkState::EState_Loaded);
+					else if(SChunkState::EState_Loading==state->mState)
+					{
+						CTimer::sleep(10);
+						z--;
+					}
+					else if(SChunkState::EState_Prepare==state->mState)
+					{
+						NSInternal::loadFunc(this,chunk_pos,state);
+					}
+				}
+			}
+		}
+	}
+	//unload
+	for(auto iter=mChunkLoadStates.begin();iter!=mChunkLoadStates.end();)
+	{
+		if(SChunkState::EState_Unloading==iter->second->mState)
+		{
+			const auto & chunk_pos=iter->first;
+			CRange3I block_range;
+			block_range.setMin(chunk_pos*CSceneManager::sChunkSize);
+			block_range.setMax(block_range.getMin()+CSceneManager::sChunkSize-CInt3::sOne);
+			mBlockScene->setBlockMT(block_range,nullptr);
+			iter=mChunkLoadStates.erase(iter);
+		}
+		else
+		{
+			++iter;
+		}
+	}
 }
 
 ITerrainGeneratorInstance * NSDevilX::NSCubeBlockWorld::CSceneManager::getTerrainGenerator() const
@@ -115,93 +243,4 @@ const CRange3I & NSDevilX::NSCubeBlockWorld::CSceneManager::getRange() const
 {
 	// TODO: insert return statement here
 	return mRange;
-}
-
-TSharedReadData<Int32>* NSDevilX::NSCubeBlockWorld::CSceneManager::_getChunkLoaded(DirectX::FXMVECTOR positionVec)
-{
-	const CInt3 chunk_pos(positionVec);
-	const DirectX::XMVECTOR block_pos_vec=positionVec*getChunkSize();
-	if(!getRange().contains(block_pos_vec))
-		return nullptr;
-	const DirectX::XMVECTOR chunk_size_vec=getChunkSize();
-	const DirectX::XMVECTOR value_offset_vec=CInt3((chunk_pos.x<0)?-1:0,(chunk_pos.y<0)?-1:0,(chunk_pos.z<0)?-1:0);
-	const CInt3 value_offset(value_offset_vec);
-	const DirectX::XMVECTOR chunk_pos_abs_vec=DirectX::XMVectorAbs(positionVec);
-	const CInt3 chunk_pos_abs(chunk_pos_abs_vec);
-	auto & chunk_loaded_xyz=mChunkLoadeds[value_offset.x+1][value_offset.y+1][value_offset.z+1];
-	chunk_loaded_xyz.lockRead();
-	Boolean need_resize=chunk_loaded_xyz.size()<=static_cast<UInt32>(chunk_pos_abs.x);
-	chunk_loaded_xyz.unLockRead();
-	if(need_resize)
-	{
-		chunk_loaded_xyz.lockWrite();
-		while(chunk_loaded_xyz.size()<=static_cast<UInt32>(chunk_pos_abs.x))
-			chunk_loaded_xyz.push_back(nullptr);
-		chunk_loaded_xyz.unLockWrite();
-	}
-	chunk_loaded_xyz.lockRead();
-	auto chunk_yz=chunk_loaded_xyz[chunk_pos_abs.x];
-	chunk_loaded_xyz.unLockRead();
-	if(!chunk_yz)
-	{
-		chunk_loaded_xyz.lockWrite();
-		auto & chunk_yz_ref=chunk_loaded_xyz[chunk_pos_abs.x];
-		if(!chunk_yz_ref)
-		{
-			chunk_yz_ref=DEVILX_NEW TVectorMT<TVectorMT<TSharedReadData<Int32>*>*>;
-		}
-		chunk_yz=chunk_yz_ref;
-		chunk_loaded_xyz.unLockWrite();
-	}
-
-	chunk_yz->lockRead();
-	need_resize=chunk_yz->size()<=static_cast<UInt32>(chunk_pos_abs.y);
-	chunk_yz->unLockRead();
-	if(need_resize)
-	{
-		chunk_yz->lockWrite();
-		while(chunk_yz->size()<=static_cast<UInt32>(chunk_pos_abs.y))
-			chunk_yz->push_back(nullptr);
-		chunk_yz->unLockWrite();
-	}
-	chunk_yz->lockRead();
-	auto chunk_z=(*chunk_yz)[chunk_pos_abs.y];
-	chunk_yz->unLockRead();
-	if(!chunk_z)
-	{
-		chunk_yz->lockWrite();
-		auto & chunk_z_ref=(*chunk_yz)[chunk_pos_abs.y];
-		if(!chunk_z_ref)
-		{
-			chunk_z_ref=DEVILX_NEW TVectorMT<TSharedReadData<Int32>*>;
-		}
-		chunk_z=chunk_z_ref;
-		chunk_yz->unLockWrite();
-	}
-
-	chunk_z->lockRead();
-	need_resize=chunk_z->size()<=static_cast<UInt32>(chunk_pos_abs.z);
-	chunk_z->unLockRead();
-	if(need_resize)
-	{
-		chunk_z->lockWrite();
-		while(chunk_z->size()<=static_cast<UInt32>(chunk_pos_abs.z))
-			chunk_z->push_back(nullptr);
-		chunk_z->unLockWrite();
-	}
-	chunk_z->lockRead();
-	auto loaded=(*chunk_z)[chunk_pos_abs.z];
-	chunk_z->unLockRead();
-	if(!loaded)
-	{
-		chunk_z->lockWrite();
-		auto & loaded_ref=(*chunk_z)[chunk_pos_abs.z];
-		if(!loaded_ref)
-		{
-			loaded_ref=DEVILX_NEW TSharedReadData<Int32>(0);
-		}
-		loaded=loaded_ref;
-		chunk_z->unLockWrite();
-	}
-	return loaded;
 }

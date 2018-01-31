@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\Code\Layer2\Include\CubeBlockWorld\Chunk.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\CubeBlockWorld\SceneLoader.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\CubeBlockWorld\SceneManager.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\CubeBlockWorld\World.h" />
@@ -31,6 +32,7 @@
     <ClInclude Include="..\..\..\Code\Layer2\Source\CubeBlockWorld\Precompiler.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Code\Layer2\Source\CubeBlockWorld\Chunk.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\CubeBlockWorld\Precompiler.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

@@ -48,6 +48,9 @@
     <ClInclude Include="..\..\..\Code\Layer2\Source\CubeBlockWorld\Precompiler.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer2\Include\CubeBlockWorld\Chunk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Layer2\Source\CubeBlockWorld\Precompiler.cpp">
@@ -60,6 +63,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Layer2\Source\CubeBlockWorld\World.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer2\Source\CubeBlockWorld\Chunk.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

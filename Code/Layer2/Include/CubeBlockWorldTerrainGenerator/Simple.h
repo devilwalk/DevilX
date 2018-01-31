@@ -10,13 +10,14 @@ namespace NSDevilX
 			,public TBaseObject<CSimpleTerrainGeneratorInstance>
 		{
 		protected:
+			NSCubeBlockSystem::IBlock * mBlock;
 		public:
 			CSimpleTerrainGeneratorInstance(CSimpleTerrainGenertor * generator,ISceneManager * sceneManager);
 			~CSimpleTerrainGeneratorInstance();
 
 			// Inherited via ITerrainGeneratorInstance
-			virtual NSCubeBlockSystem::IBlock * generateBlock(const CInt3 & position) override;
-			virtual Boolean generateChunk(const CInt3 & position) override;
+			virtual NSCubeBlockSystem::IBlock * generateBlockMT(const CInt3 & position) override;
+			virtual UInt32 generateChunkMT(const CInt3 & position,OUT CInt3 * blockPositions) override;
 		};
 		class CSimpleTerrainGenertor
 			:public ITerrainGenerator

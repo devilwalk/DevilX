@@ -96,10 +96,11 @@ Void main()
 	auto block_scene_manager=NSCubeBlockWorld::getWorld()->createSceneManager("Test",block_terrain_gen,render_scene);
 	block_scene_manager->setRange(CRange3I(CInt3(INT_MIN,INT_MIN,INT_MIN),CInt3(INT_MAX,0,INT_MAX)));
 	auto block_loader=block_scene_manager->createLoader("Test");
-	block_loader->setChunkRange(CInt3(1,1,1));
+	block_loader->setSyncChunkRange(CUInt3(1,1,1));
+	block_loader->setAsyncChunkRange(CUInt3(5,3,5));
 
 	CTransform3DNode camera_node;
-	camera_node.setPosition(CFloat3(0,1.0f,0));
+	camera_node.setPosition(CFloat3(0,10.0f,0));
 
 	CTimer timer;
 	auto yaw=0.0f;
@@ -140,7 +141,7 @@ Void main()
 
 		render_camera->queryInterface_ISceneElement()->getTransformer()->setPosition(camera_node.getDerivedPosition());
 		render_camera->queryInterface_ISceneElement()->getTransformer()->setOrientation(camera_node.getDerivedOrientation());
-		block_loader->setBlockPosition(CInt3(camera_node.getDerivedPosition())-CInt3::sUnitY*2);
+		block_loader->setBlockPosition(CInt3(camera_node.getDerivedPosition()));
 		NSCubeBlockWorld::getWorld()->update();
 		NSRenderSystem::getSystem()->update();
 
