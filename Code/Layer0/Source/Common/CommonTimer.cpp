@@ -12,6 +12,15 @@ SizeT NSDevilX::CTimer::getSystemTime()
 	return ret;
 }
 
+Void NSDevilX::CTimer::sleep(UInt32 milliseconds)
+{
+#if DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_WINDOWS
+	Sleep(milliseconds);
+#elif DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_LINUX
+	usleep(milliseconds);
+#endif
+}
+
 NSDevilX::CTimer::CTimer()
 	:mLastTime(0)
 	,mCurrentTime(0)

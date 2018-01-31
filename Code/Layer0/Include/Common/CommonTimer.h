@@ -13,6 +13,7 @@ namespace NSDevilX
 		long long mLastTime;
 	public:
 		static SizeT getSystemTime();
+		static Void sleep(UInt32 milliseconds);
 		CTimer();
 		~CTimer();
 		SizeT getInMillisecond(Bool updateLastTime=True);

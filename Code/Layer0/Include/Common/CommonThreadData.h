@@ -79,7 +79,7 @@ namespace NSDevilX
 		TSharedReadData()
 		{
 		}
-		TSharedReadData(T const & t)
+		explicit TSharedReadData(T const & t)
 		{
 			_get()=t;
 		}
@@ -107,7 +107,7 @@ namespace NSDevilX
 		TSharedReadObject()
 		{
 		}
-		TSharedReadObject(T const & t)
+		explicit TSharedReadObject(T const & t)
 		{
 			this->mData=DEVILX_NEW T(t);
 		}

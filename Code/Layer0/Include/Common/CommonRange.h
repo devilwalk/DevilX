@@ -195,9 +195,10 @@ namespace NSDevilX
 			range.setMin(DirectX::XMVectorMax(r0.getMin(),r1.getMin()));
 			range.setMax(DirectX::XMVectorMin(r0.getMax(),r1.getMax()));
 		}
-		template<class srcContainerT>
-		static Void createRanges(const srcContainerT & positions,OUT TList<CRange3I*> & ranges)
+		template<class srcContainerT,class dstContainerT>
+		static Void createRanges(const srcContainerT & positions,OUT dstContainerT & ranges)
 		{
+			TResourcePtrList<CRange3I> temp_ranges;
 			for(auto iter_pos=positions.begin(),end_pos=positions.end();end_pos!=iter_pos;++iter_pos)
 			{
 				auto const & position=*iter_pos;
@@ -205,21 +206,27 @@ namespace NSDevilX
 				Boolean need_merge_range=false;
 				do
 				{
-					for(auto iter_range=ranges.begin(),end_range=ranges.end();end_range!=iter_range;++iter_range)
+					need_merge_range=false;
+					for(auto iter_range=temp_ranges.begin(),end_range=temp_ranges.end();end_range!=iter_range;++iter_range)
 					{
 						auto range=*iter_range;
 						if(range->merge(merge_range))
 						{
-							memcpy(&merge_range,&range,sizeof(CRange3I));
+							merge_range.setMax(range->getMax());
+							merge_range.setMin(range->getMin());
 							DEVILX_DELETE range;
-							ranges.erase(iter_range);
+							temp_ranges.erase(iter_range);
 							need_merge_range=true;
 							break;
 						}
 					}
 				}
 				while(need_merge_range);
-				ranges.insert(ranges.end(),DEVILX_NEW CRange3I(merge_range));
+				temp_ranges.insert(temp_ranges.end(),DEVILX_NEW CRange3I(merge_range));
+			}
+			for(auto range:temp_ranges)
+			{
+				ranges.push_back(*range);
 			}
 		}
 		static Void eraseRange(const CRange3I & srcRange,const CRange3I & erasedRange,OUT TList<CRange3I*> & newRanges)
