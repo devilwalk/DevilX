@@ -53,12 +53,22 @@ namespace NSDevilX
 				return true;
 			}
 		}
+		Boolean mergeTest(const CRangeI & range)
+		{
+			assert(isValidate()&&range.isValidate());
+			if((getMin()-1>range.getMax())||(range.getMin()-1>getMax()))
+				return false;
+			else
+			{
+				return true;
+			}
+		}
 		UInt32 length()const
 		{
 			return static_cast<UInt32>(getMax()-getMin()+1);
 		}
 	};
-	class CRangesI
+	class COrderedRangesI
 		:public TList<CRangeI>
 	{
 	public:
@@ -73,32 +83,43 @@ namespace NSDevilX
 					push_front(range);
 				else
 				{
-					iterator iter=end();
-					for(iter=begin();end()!=iter;++iter)
+					//缩小范围
+					iterator iter_begin=begin();
+					iterator iter_end=begin();
+					for(auto iter=begin();end()!=iter;++iter)
+					{
+						auto & test=*iter;
+						if(test.getMin()<=range.getMin())
+						{
+							iter_begin=iter;
+						}
+						if(test.getMax()>=range.getMax())
+						{
+							iter_end=++iter;
+							break;
+						}
+					}
+					//在范围内尝试合并
+					Boolean merged=false;
+					for(auto iter=iter_begin;iter!=iter_end;++iter)
 					{
 						auto & test=*iter;
 						if(test.merge(range))
 						{
+							auto next_iter=++iter;
+							--iter;
+							COrderedRangesI next_ranges(next_iter,iter_end);
+							next_ranges.addRange(test);
+							erase(iter,iter_end);
+							insert(iter_end,next_ranges.begin(),next_ranges.end());
+							merged=true;
 							break;
 						}
 					}
-					if(end()==iter)
+					//不能合并说明范围只有两个
+					if(!merged)
 					{
-						for(iter=begin();end()!=iter;++iter)
-						{
-							auto & test=*iter;
-							if(test.getMin()>range.getMax())
-							{
-								insert(iter,range);
-								break;
-							}
-						}
-					}
-					else
-					{
-						auto test=*iter;
-						erase(iter);
-						addRange(test);
+						insert(iter_end,range);
 					}
 				}
 			}
@@ -107,6 +128,13 @@ namespace NSDevilX
 	class CRange3I
 		:public TBaseObject<CRange3I>
 	{
+	public:
+		enum EMergeResult
+		{
+			EMergeResult_Success,
+			EMergeResult_NearBy,
+			EMergeResult_Fail
+		};
 	protected:
 		CInt3 mMin;
 		CInt3 mMax;
@@ -154,7 +182,7 @@ namespace NSDevilX
 		{
 			return mMax;
 		}
-		Boolean merge(const CRange3I & range)
+		EMergeResult merge(const CRange3I & range,OUT CRange3I * mergedRange)const
 		{
 			assert(isValidate()&&range.isValidate());
 			const DirectX::XMVECTOR src_min_vec=getMin();
@@ -170,19 +198,32 @@ namespace NSDevilX
 			const auto new_max=DirectX::XMVectorMax(src_max_vec,dst_max_vec);
 			const CInt3 new_size=new_max-new_min+one_vec;
 			const auto new_volume=new_size.x*new_size.y*new_size.z;
-			if(new_volume==src_volume+dst_volume)
+			if(new_volume<=src_volume+dst_volume)
 			{
-				setMin(new_min);
-				setMax(new_max);
-				return true;
+				if(mergedRange)
+				{
+					mergedRange->setMin(new_min);
+					mergedRange->setMax(new_max);
+				}
+				return EMergeResult_Success;
 			}
 			else
-				return false;
+			{
+				CInt3 delta_size=new_size-(src_size+dst_size);
+				if((delta_size.x==0&&delta_size.y==0)||(delta_size.x==0&&delta_size.z==0)||(delta_size.z==0&&delta_size.y==0))
+					return EMergeResult_NearBy;
+				else
+					return EMergeResult_Fail;
+			}
 		}
-		Boolean contains(const CInt3 & blockPosition)const
+		EMergeResult merge(const CRange3I & range)
+		{
+			return merge(range,this);
+		}
+		Boolean contains(const CInt3 & position)const
 		{
 			assert(isValidate());
-			return (getMin()<=blockPosition)&&(getMax()>=blockPosition);
+			return (getMin()<=position)&&(getMax()>=position);
 		}
 		Boolean contains(const CRange3I & range)const
 		{
@@ -210,7 +251,7 @@ namespace NSDevilX
 					for(auto iter_range=temp_ranges.begin(),end_range=temp_ranges.end();end_range!=iter_range;++iter_range)
 					{
 						auto range=*iter_range;
-						if(range->merge(merge_range))
+						if(EMergeResult_Success==range->merge(merge_range))
 						{
 							merge_range.setMax(range->getMax());
 							merge_range.setMin(range->getMin());

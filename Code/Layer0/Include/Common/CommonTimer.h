@@ -6,13 +6,9 @@ namespace NSDevilX
 		:public TBaseObject<CTimer>
 	{
 	protected:
-#if DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_WINDOWS
-		long long mFrequency;
-#endif
-		long long mCurrentTime;
-		long long mLastTime;
+		tbb::tick_count mCurrentTime;
+		tbb::tick_count mLastTime;
 	public:
-		static SizeT getSystemTime();
 		static Void sleep(UInt32 milliseconds);
 		CTimer();
 		~CTimer();

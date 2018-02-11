@@ -210,6 +210,9 @@
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonMath.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonTreeContainer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonAnimationFrame.cpp">
@@ -252,9 +255,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonModule.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonNode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonReadWriteLocker.cpp">
@@ -306,6 +306,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonFontFace.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonTreeContainer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

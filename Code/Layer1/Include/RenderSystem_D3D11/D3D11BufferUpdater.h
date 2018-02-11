@@ -11,7 +11,7 @@ namespace NSDevilX
 			protected:
 				ID3D11Buffer * mBuffer;
 				const ConstVoidPtr * mSource;
-				const CRangesI * mDirtyRanges;
+				const COrderedRangesI * mDirtyRanges;
 			public:
 				CBufferUpdater();
 				~CBufferUpdater();
@@ -27,7 +27,7 @@ namespace NSDevilX
 				{
 					mSource=source;
 				}
-				Void setDirtyRanges(const CRangesI * dirtyRanges)
+				Void setDirtyRanges(const COrderedRangesI * dirtyRanges)
 				{
 					mDirtyRanges=dirtyRanges;
 				}

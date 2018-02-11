@@ -27,9 +27,9 @@ namespace NSDevilX
 				EType_IndexBuffer
 			};
 			struct SDirties
-				:public CRangesI
+				:public COrderedRangesI
 			{
-				using CRangesI::CRangesI;
+				using COrderedRangesI::COrderedRangesI;
 				Void addDirty(UInt32 offset,UInt32 count)
 				{
 					addRange(CRangeI(offset,count+offset-1));

@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\Common.h" />
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonTreeContainer.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonAllocator.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonAngle.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonAnimationFrame.h" />
@@ -103,7 +104,6 @@
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonMemoryTracker.cpp" />
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonMessageMode.cpp" />
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonModule.cpp" />
-    <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonNode.cpp" />
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonReadWriteLocker.cpp" />
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonSemaphore.cpp" />
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonSTLMT.cpp" />
@@ -112,6 +112,7 @@
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonThreadPool.cpp" />
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonTimer.cpp" />
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonTransformNode.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonTreeContainer.cpp" />
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonUTFChar.cpp" />
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonUTFString.cpp" />
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonVectorF.cpp" />

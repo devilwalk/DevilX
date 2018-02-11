@@ -1,10 +1,11 @@
 #pragma once
 #include "CommonNode.h"
 #include "CommonBounding.h"
+#include "CommonResourceContainer.h"
 namespace NSDevilX
 {
 	class CBoundingTreeNode
-		:public CNode
+		:public TNode<TResourcePtrVector<CBoundingTreeNode> >
 	{
 	protected:
 		DirectX::BoundingBox mBoundingBox;

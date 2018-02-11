@@ -6,7 +6,7 @@
 namespace NSDevilX
 {
 	class CTransform2DNode
-		:public CNode
+		:public TNode<TList<CTransform2DNode*> >
 	{
 	public:
 		enum EDirtyFlag
@@ -372,7 +372,7 @@ namespace NSDevilX
 		Void _update();
 	};
 	class CTransform3DNode
-		:public CNode
+		:public TNode<TList<CTransform3DNode*> >
 	{
 	public:
 		enum EDirtyFlag

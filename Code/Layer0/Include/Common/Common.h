@@ -3,6 +3,7 @@
 #include "CommonPlatformInclude.h"
 #include "CommonThirdPart.h"
 #include "CommonAllocator.h"
+
 #include "CommonAngle.h"
 #include "CommonAny.h"
 #include "CommonAnimationFrame.h"
@@ -53,6 +54,7 @@
 #include "CommonThreadType.h"
 #include "CommonTimer.h"
 #include "CommonTransformNode.h"
+#include "CommonTreeContainer.h"
 #include "CommonUserDataContainer.h"
 #include "CommonUTFChar.h"
 #include "CommonUTFString.h"
