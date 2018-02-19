@@ -27,4 +27,4 @@
 #include "FreeType/freetype/freetype.h"
 #include FT_GLYPH_H
 #include "Lua/lua.hpp"
-#include "libnoise/noise.h"
+#include "Noise/noise.h"
