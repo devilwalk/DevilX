@@ -96,8 +96,8 @@ Void main()
 	auto block_scene_manager=NSCubeBlockWorld::getWorld()->createSceneManager("Test",block_terrain_gen,render_scene);
 	block_scene_manager->setRange(CRange3I(CInt3(INT_MIN,INT_MIN,INT_MIN),CInt3(INT_MAX,0,INT_MAX)));
 	auto block_loader=block_scene_manager->createLoader("Test");
-	block_loader->setSyncChunkRange(CUInt3(1,1,1));
-	block_loader->setAsyncChunkRange(CUInt3(5,3,5));
+	//block_loader->setSyncChunkRange(CUInt3(1,1,1));
+	//block_loader->setAsyncChunkRange(CUInt3(5,3,5));
 
 	CTransform3DNode camera_node;
 	camera_node.setPosition(CFloat3(0,10.0f,0));

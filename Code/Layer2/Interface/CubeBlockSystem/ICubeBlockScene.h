@@ -9,9 +9,9 @@ namespace NSDevilX
 		protected:
 			virtual ~IScene(){}
 		public:
-			virtual Void setBlockMT(const CInt3 & position,IBlock * block)=0;
-			virtual Void setBlockMT(const CRange3I & range,IBlock * block)=0;
-			virtual IBlock * getBlockMT(const CInt3 & position)=0;
+			virtual Void setBlock(const CInt3 & position,IBlock * block)=0;
+			virtual Void setBlock(const CRange3I & range,IBlock * block)=0;
+			virtual IBlock * getBlock(const CInt3 & position)const=0;
 		};
 	}
 }

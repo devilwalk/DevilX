@@ -7,11 +7,10 @@
 #include "PhysicalSystem/IPhysicalSystemInterface.h"
 #include "RenderSystem/IRenderSystemInterface.h"
 #include "NetWorkSystem/INetworkSystemInterface.h"
-#include "CubeBlockSystem/ICubeBlockSystemInterface.h"
-#include "CubeBlockWorld/ICubeBlockWorldInterface.h"
 #include "UISystem/IUISystemInterface.h"
-//#pragma comment(lib,"RenderSystem_D3D11.2017.lib")
-#pragma comment(lib,"RenderSystem_GL4.2017.lib")
+#include "ResourceSystem/IResourceSystemInterface.h"
+#pragma comment(lib,"RenderSystem_D3D11.lib")
+//#pragma comment(lib,"RenderSystem_GL4.2017.lib")
 using namespace NSDevilX;
 class CPhysicalQueryResultReceiver
 	:public NSPhysicalSystem::IQueryResultReceiver
@@ -61,7 +60,7 @@ int main()
 	window.setSize(CUInt2(window_size[current_window_size_index],window_size[current_window_size_index]));
 	MSG msg={0};
 	auto render_scene=NSRenderSystem::getSystem()->createScene("Test",NSRenderSystem::IEnum::ESceneManagerAlgorithm_Simple);
-	render_scene->setAmbientColour(CFloatRGBA::sRed);
+	render_scene->setAmbientColour(CFloatRGB(CFloatRGBA::sRed*0.1f));
 	auto render_camera=render_scene->createCamera("Test");
 	render_camera->setNearClipPlane(1.0f);
 	render_camera->setFarClipPlane(1000.0f);
@@ -69,6 +68,8 @@ int main()
 	render_camera->queryInterface_IPerspectiveProperty()->setAspectRatio(1.0f);
 	render_camera->queryInterface_IPerspectiveProperty()->setFov(CDegree(45.0f));
 	auto render_direction_light=render_scene->createLight("Test_Direction",NSRenderSystem::IEnum::ELightType_Directional);
+	render_direction_light->getDiffuseColourUnitState()->setEnable(True);
+	render_direction_light->getDiffuseColourUnitState()->setValue(CFloatRGB::sWhite);
 	auto render_point_light=render_scene->createLight("Test_Point",NSRenderSystem::IEnum::ELightType_Point);
 	render_point_light->queryInterface_ISceneElement()->getTransformer()->setScale(CFloat3(20.0f));
 	render_point_light->queryInterface_ISceneElement()->getTransformer()->setPosition(CFloat3(0,10.0f,0));
@@ -98,9 +99,11 @@ int main()
 	auto render_sub_entity=render_entity->createSubEntity("0");
 	render_sub_entity->setQueriable(True);
 	render_sub_entity->setGeometry(render_geometry);
-	render_sub_entity->setLightEnable(False);
-	render_sub_entity->getColourUnitState(NSRenderSystem::IEnum::EEntityColourUnitStateType_Emissive)->setEnable(True);
-	render_sub_entity->getColourUnitState(NSRenderSystem::IEnum::EEntityColourUnitStateType_Emissive)->setValue(CFloatRGBA::sWhite);
+	render_sub_entity->setAmbientModel(NSRenderSystem::IEnum::EMaterialAmbientModel_None);
+	render_sub_entity->setDiffuseModel(NSRenderSystem::IEnum::EMaterialDiffuseModel_None);
+	render_sub_entity->setSpecularModel(NSRenderSystem::IEnum::EMaterialSpecularModel_None);
+	render_sub_entity->getEmissiveColourUnitState()->setEnable(True);
+	render_sub_entity->getEmissiveColourUnitState()->setValue(CFloatRGBA::sWhite);
 	render_sub_entity->setVisible(True);
 	UInt32 query_datas[]={666,666,666};
 	auto query_buffer=NSRenderSystem::getSystem()->queryInterface_IResourceManager()->createBuffer("Query");
@@ -110,31 +113,43 @@ int main()
 	render_sub_entity->queryInterface_IGeometryUsage()->setVertexCount(3);
 	auto render_visible_area=render_scene->createVisibleArea("Test_Entity");
 	render_visible_area->setBoundingBox(DirectX::BoundingBox(CFloat3::sZero,CFloat3(100.0f)));
-	render_visible_area->attachObject(render_entity->queryInterface_ISceneElement());
+	//render_visible_area->attachObject(render_entity->queryInterface_ISceneElement());
 
-	/*auto block_terrain_gen=NSCubeBlockWorld::getWorld()->getTerrainGenerator("Simple");
-	auto block_scene_manager=NSCubeBlockWorld::getWorld()->createSceneManager("Test",block_terrain_gen,render_scene);
-	block_scene_manager->setRange(CRange3I(CSInt3(INT_MIN,INT_MIN,INT_MIN),CSInt3(INT_MAX,0,INT_MAX)));
-	auto block_loader=block_scene_manager->createLoader("Test");
-	block_loader->setChunkRange(CSInt3(1,1,1));*/
+	auto fbx_res=NSResourceSystem::getSystem()->createOrRetrieveResource("Model","Resource/girlA.fbx");
+	fbx_res->load(nullptr,True);
+	auto render_geometry_model=NSResourceSystem::getSystem()->getRenderGeometry(fbx_res);
+	auto render_entity_model=render_scene->createEntity("Model");
+	render_entity_model->queryInterface_ISceneElement()->getTransformer()->setPosition(CFloat3(0,0,10.0f));
+	auto render_sub_entity_model=render_entity_model->createSubEntity("0");
+	render_sub_entity_model->setGeometry(render_geometry_model);
+	render_sub_entity_model->setAmbientModel(NSRenderSystem::IEnum::EMaterialAmbientModel_Constant);
+	render_sub_entity_model->setDiffuseModel(NSRenderSystem::IEnum::EMaterialDiffuseModel_Lambert);
+	render_sub_entity_model->getDiffuseColourUnitState()->setEnable(True);
+	render_sub_entity_model->getDiffuseColourUnitState()->setValue(CFloatRGB::sRed);
+	render_sub_entity_model->setSpecularModel(NSRenderSystem::IEnum::EMaterialSpecularModel_None);
+	render_sub_entity_model->setVisible(True);
+	render_sub_entity_model->queryInterface_IGeometryUsage()->setVertexCount(render_geometry_model->getVertexBuffer()->getCount());
+	render_sub_entity_model->queryInterface_IGeometryUsage()->setIndexCount(render_geometry_model->getIndexBuffer()->getCount());
+	render_visible_area->attachObject(render_entity_model->queryInterface_ISceneElement());
 
-	auto ui_graphic_scene=NSUISystem::getSystem()->createGraphicScene(render_viewport);
-	auto ui_graphic_window_lt=ui_graphic_scene->createWindow("Test_LT");
-	ui_graphic_window_lt->queryInterface_IElement()->setPosition(CFloat2::sZero);
-	ui_graphic_window_lt->queryInterface_IElement()->setSize(CFloat2(0.25f));
-	ui_graphic_window_lt->setColour(CFloatRGBA::sRed);
-	auto ui_graphic_window_rt=ui_graphic_scene->createWindow("Test_RT");
-	ui_graphic_window_rt->queryInterface_IElement()->setPosition(CFloat2(0.25f,0.0f));
-	ui_graphic_window_rt->queryInterface_IElement()->setSize(CFloat2(0.25f));
-	ui_graphic_window_rt->setColour(CFloatRGBA::sGreen);
-	auto ui_graphic_window_lb=ui_graphic_scene->createWindow("Test_LB");
-	ui_graphic_window_lb->queryInterface_IElement()->setPosition(CFloat2(0.0f,0.25f));
-	ui_graphic_window_lb->queryInterface_IElement()->setSize(CFloat2(0.25f));
-	ui_graphic_window_lb->setColour(CFloatRGBA::sBlue);
-	auto ui_graphic_window_rb=ui_graphic_scene->createWindow("Test_RB");
-	ui_graphic_window_rb->queryInterface_IElement()->setPosition(CFloat2(0.25f,0.25f));
-	ui_graphic_window_rb->queryInterface_IElement()->setSize(CFloat2(0.25f));
-	ui_graphic_window_rb->setColour(CFloatRGBA::sWhite);
+
+	//auto ui_graphic_scene=NSUISystem::getSystem()->createGraphicScene(render_viewport);
+	//auto ui_graphic_window_lt=ui_graphic_scene->createWindow("Test_LT");
+	//ui_graphic_window_lt->queryInterface_IElement()->setPosition(CFloat2::sZero);
+	//ui_graphic_window_lt->queryInterface_IElement()->setSize(CFloat2(0.25f));
+	//ui_graphic_window_lt->setColour(CFloatRGBA::sRed);
+	//auto ui_graphic_window_rt=ui_graphic_scene->createWindow("Test_RT");
+	//ui_graphic_window_rt->queryInterface_IElement()->setPosition(CFloat2(0.25f,0.0f));
+	//ui_graphic_window_rt->queryInterface_IElement()->setSize(CFloat2(0.25f));
+	//ui_graphic_window_rt->setColour(CFloatRGBA::sGreen);
+	//auto ui_graphic_window_lb=ui_graphic_scene->createWindow("Test_LB");
+	//ui_graphic_window_lb->queryInterface_IElement()->setPosition(CFloat2(0.0f,0.25f));
+	//ui_graphic_window_lb->queryInterface_IElement()->setSize(CFloat2(0.25f));
+	//ui_graphic_window_lb->setColour(CFloatRGBA::sBlue);
+	//auto ui_graphic_window_rb=ui_graphic_scene->createWindow("Test_RB");
+	//ui_graphic_window_rb->queryInterface_IElement()->setPosition(CFloat2(0.25f,0.25f));
+	//ui_graphic_window_rb->queryInterface_IElement()->setSize(CFloat2(0.25f));
+	//ui_graphic_window_rb->setColour(CFloatRGBA::sWhite);
 	struct SUIEvent
 		:public NSUISystem::IEvent
 		,public NSUISystem::IElement
@@ -164,11 +179,19 @@ int main()
 		{
 			return CStringConverter::sBlank;
 		}
-		virtual Void setParent(IElement * parent) override
+		virtual Void setCoordParent(IElement * parent) override
 		{
 
 		}
-		virtual IElement * getParent() const override
+		virtual IElement * getCoordParent() const override
+		{
+			return nullptr;
+		}
+		virtual Void setOrderParent(IElement * parent) override
+		{
+
+		}
+		virtual IElement * getOrderParent() const override
 		{
 			return nullptr;
 		}
@@ -214,6 +237,14 @@ int main()
 		virtual CFloat2 convertPosition(const CFloat2 & position,ECoord fromCoord,ECoord toCoord) const override
 		{
 			return CFloat2::sZero;
+		}
+		virtual Void setEnable(Bool enable) override
+		{
+
+		}
+		virtual Bool getEnable() const override
+		{
+			return True;
 		}
 	};
 	SUIEvent mouse_left_button_down_event(SUIEvent::EType_MouseLeftButtonDown);
@@ -294,13 +325,13 @@ int main()
 		NSPhysicalSystem::getSystem()->update();
 		physical_ray_query->execute();
 		if(NSInputSystem::IEnum::EButtonState_Pressed==keyboard->getButtonState(NSInputSystem::IEnum::EKeyType_W))
-			camera_node.setPosition(camera_node.getPosition()+camera_node.getDirection()*static_cast<Float>(delta_time)*0.001f*10);
+			camera_node.setPosition(camera_node.getPosition()+camera_node.getDirection()*static_cast<Float>(delta_time)*0.001f*10.0f);
 		if(NSInputSystem::IEnum::EButtonState_Pressed==keyboard->getButtonState(NSInputSystem::IEnum::EKeyType_S))
-			camera_node.setPosition(camera_node.getPosition()-camera_node.getDirection()*static_cast<Float>(delta_time)*0.001f*10);
+			camera_node.setPosition(camera_node.getPosition()-camera_node.getDirection()*static_cast<Float>(delta_time)*0.001f*10.0f);
 		if(NSInputSystem::IEnum::EButtonState_Pressed==keyboard->getButtonState(NSInputSystem::IEnum::EKeyType_A))
-			camera_node.setPosition(camera_node.getPosition()-camera_node.getRight()*static_cast<Float>(delta_time)*0.001f*10);
+			camera_node.setPosition(camera_node.getPosition()-camera_node.getRight()*static_cast<Float>(delta_time)*0.001f*10.0f);
 		if(NSInputSystem::IEnum::EButtonState_Pressed==keyboard->getButtonState(NSInputSystem::IEnum::EKeyType_D))
-			camera_node.setPosition(camera_node.getPosition()+camera_node.getRight()*static_cast<Float>(delta_time)*0.001f*10);
+			camera_node.setPosition(camera_node.getPosition()+camera_node.getRight()*static_cast<Float>(delta_time)*0.001f*10.0f);
 		if(NSInputSystem::IEnum::EButtonState_Pressed==keyboard->getButtonState(NSInputSystem::IEnum::EKeyType_SPACE))
 		{
 			++current_window_size_index;
@@ -318,8 +349,6 @@ int main()
 		}
 		if(NSInputSystem::IEnum::EButtonState_Pressed==mouse->getButtonState(NSInputSystem::IEnum::EMouseButtonType_Right))
 		{
-			//yaw+=mouse->getOffset().x*static_cast<Float>(delta_time)*0.001f*10;
-			//pitch+=mouse->getOffset().y*static_cast<Float>(delta_time)*0.001f*10;
 			pitch=std::max<Float>(pitch,-90.0f);
 			pitch=std::min<Float>(pitch,90.0f);
 			camera_node.setRotation(yaw,0,pitch);
@@ -332,8 +361,6 @@ int main()
 		}
 		render_camera->queryInterface_ISceneElement()->getTransformer()->setPosition(camera_node.getDerivedPosition());
 		render_camera->queryInterface_ISceneElement()->getTransformer()->setOrientation(camera_node.getDerivedOrientation());
-		//block_loader->setBlockPosition(CSInt3(camera_node.getDerivedPosition())-CSInt3::sUnitY*2);
-		//NSCubeBlockWorld::getWorld()->update();
 		NSRenderSystem::getSystem()->update();
 		NSNetworkSystem::getSystem()->update();
 
@@ -351,6 +378,7 @@ int main()
 	NSPhysicalSystem::getSystem()->shutdown();
 	NSRenderSystem::getSystem()->shutdown();
 	NSNetworkSystem::getSystem()->shutdown();
+	NSResourceSystem::getSystem()->shutdown();
 	DEVILX_TRACK_SHUTDOWN;
     return 0;
 }

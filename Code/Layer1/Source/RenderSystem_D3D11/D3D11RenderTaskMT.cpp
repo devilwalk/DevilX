@@ -122,10 +122,10 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CClearViewportTask::_updateConstantBuffe
 	for(auto i=0;i<8;++i)
 	{
 		auto offset=mConstantBuffer->getDescription()->getConstantDesc("gClearColour"+CStringConverter::toString(i)).StartOffset;
-		memcpy(&buffer[offset],&mClearColour[i],sizeof(CColour));
+		*reinterpret_cast<CFloatRGBA*>(&buffer[offset])=mClearColour[i];
 	}
 	auto offset=mConstantBuffer->getDescription()->getConstantDesc("gClearDepth").StartOffset;
-	memcpy(&buffer[offset],&mClearDepth,sizeof(Float));
+	*reinterpret_cast<Float*>(&buffer[offset])=mClearDepth;
 }
 
 NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::CRenderSceneForwardTask(CViewport * viewport)

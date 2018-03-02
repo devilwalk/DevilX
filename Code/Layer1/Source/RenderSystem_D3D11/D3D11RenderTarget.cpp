@@ -70,7 +70,7 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CRenderTarget::_updateConstantBuffer(Byt
 	UInt32 height=0;
 	getSize(width,height);
 	auto offset=mConstantBuffer->getDescription()->getConstantDesc("gRenderTargetSizeInPixel").StartOffset;
-	memcpy(&buffer[offset],&CFloat2(static_cast<Float>(width),static_cast<Float>(height)),sizeof(CFloat2));
+	*reinterpret_cast<CFloat2*>(&buffer[offset])=CFloat2(static_cast<Float>(width),static_cast<Float>(height));
 	offset=mConstantBuffer->getDescription()->getConstantDesc("gInverseRenderTargetSizeInPixel").StartOffset;
-	memcpy(&buffer[offset],&CFloat2(1.0f/width,1.0f/height),sizeof(CFloat2));
+	*reinterpret_cast<CFloat2*>(&buffer[offset])=CFloat2(1.0f/width,1.0f/height);
 }

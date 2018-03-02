@@ -11,6 +11,15 @@ namespace NSDevilX
 		{
 		public:
 			const static UInt32 sBlockSize=32;
+			struct SBlockRanges
+				:public TBaseObject<SBlockRanges>
+			{
+			public:
+				tbb::spin_mutex mOptimized;
+				TList<CRange3I*> mMergedRanges;
+				TList<CRange3I*> mMergeRanges;
+
+			};
 			struct SRenderable
 				:public TBaseObject<SRenderable>
 				,public TMessageReceiver<IRenderMaterialImp>
@@ -32,18 +41,23 @@ namespace NSDevilX
 			static NSRenderSystem::IGeometry * sGeometry;
 			const CInt3 mPosition;
 			ISceneImp * const mScene;
-			TMapMT<IBlockImp*,TListMT<CRange3I*>*> mBlocks;
+			TMap<IBlockImp*,SBlockRanges*> mBlocks;
 			NSRenderSystem::IEntity * mEntity;
 			NSRenderSystem::IVisibleArea * mVisibleArea;
 			TMapMT<IRenderMaterialImp*,SRenderable*> mRenderables;
 			std::atomic_bool mNeedFillRenderable;
 			std::atomic_bool mNeedUpdateRenderable;
 		public:
+			static DirectX::XMVECTOR calculateAreaPosition(const CInt3 & blockPosition);
 			CArea(const CInt3 & position,ISceneImp * scene);
 			~CArea();
 			const CInt3 & getPosition()const
 			{
 				return mPosition;
+			}
+			CRange3I getBlockRange()const
+			{
+				return CRange3I(getPosition()*sBlockSize,getPosition()*sBlockSize+sBlockSize-CInt3::sOne);
 			}
 			ISceneImp * getScene()const
 			{
@@ -53,9 +67,9 @@ namespace NSDevilX
 			{
 				return mEntity;
 			}
-			Void setBlockMT(const CInt3 & position,IBlockImp * block);
-			Void setBlockMT(const CRange3I & range,IBlockImp * block);
-			IBlockImp * getBlockMT(const CInt3 & position);
+			Void setBlock(const CInt3 & position,IBlockImp * block);
+			Void setBlock(const CRange3I & range,IBlockImp * block);
+			IBlockImp * getBlock(const CInt3 & position)const;
 			Void update(Bool & needNextProcess);
 		protected:
 			static Boolean _fillRenderableThreadFunction(VoidPtr parameter);

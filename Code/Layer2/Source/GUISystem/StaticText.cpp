@@ -35,8 +35,8 @@ Boolean NSDevilX::NSGUISystem::CStaticText::getPosition(UInt32 charIndex,CFloat2
 	{
 		if(position)
 		{
-			auto res=_load();
-			if(nullptr==res)
+			_load();
+			if(nullptr==mTextProperty->getFontResource())
 				return false;
 			TVector<CFloat2> positions;
 			Float last_char_right;
@@ -54,36 +54,24 @@ Boolean NSDevilX::NSGUISystem::CStaticText::getPositions(TVector<CFloat2>* posit
 {
 	if(hasDirtyFlag(EDirtyFlag_Text))
 		return false;
-	auto res=_load();
-	if(nullptr==res)
+	_load();
+	if(nullptr==mTextProperty->getFontResource())
 		return false;
 	_calculateTextParameters(positions,nullptr,lastCharRight);
 	return true;
 }
 
-NSResourceSystem::ILoadedResource * NSDevilX::NSGUISystem::CStaticText::_load() const
+Void NSDevilX::NSGUISystem::CStaticText::_load() const
 {
 	if(!mTextProperty->getFontResource())
-		return nullptr;
-	struct SLoad
-		:public NSResourceSystem::ILoadCallback
-		,public TBaseObject<SLoad>
-	{
-		NSResourceSystem::ILoadedResource * mLoadedResource;
-		virtual Void onLoaded(NSResourceSystem::ILoadedResource * resource) override
-		{
-			mLoadedResource=resource;
-		}
-	};
-	SLoad load_call_back;
-	getTextProperty()->getFontResource()->load(&load_call_back,True);
-	return load_call_back.mLoadedResource;
+		return;
+	getTextProperty()->getFontResource()->load(nullptr,True);
 }
 
 CFloat2 NSDevilX::NSGUISystem::CStaticText::_calcFontUnitSize() const
 {
-	auto res=_load();
-	auto font_face=NSResourceSystem::getSystem()->getFontFace(res);
+	_load();
+	auto font_face=NSResourceSystem::getSystem()->getFontFace(mTextProperty->getFontResource());
 	if(mText.empty())
 		return CFloat2::sZero;
 	else
@@ -92,8 +80,8 @@ CFloat2 NSDevilX::NSGUISystem::CStaticText::_calcFontUnitSize() const
 
 CFloat2 NSDevilX::NSGUISystem::CStaticText::_calcValidateSize() const
 {
-	auto res=_load();
-	auto font_face=NSResourceSystem::getSystem()->getFontFace(res);
+	_load();
+	auto font_face=NSResourceSystem::getSystem()->getFontFace(mTextProperty->getFontResource());
 	if(mText.empty())
 		return CFloat2::sZero;
 	else
@@ -149,16 +137,16 @@ UInt32 NSDevilX::NSGUISystem::CStaticText::_calcMaxCharPerLine() const
 Boolean NSDevilX::NSGUISystem::CStaticText::_updateGraphicWindows()
 {
 	_destroyGraphicWindows();
-	auto loaded_resource=_load();
-	if(nullptr==loaded_resource)
+	_load();
+	if(nullptr==mTextProperty->getFontResource())
 		return false;
 	TVector<CFloat2> positions;
 	TVector<CFloat2> sizes;
 	_calculateTextParameters(&positions,&sizes);
 	for(size_t i=0;i<getText().size();++i)
 	{
-		auto char_info=NSResourceSystem::getSystem()->getChar(loaded_resource,getText()[i]);
-		auto tex=NSResourceSystem::getSystem()->getRenderTexture(loaded_resource,getText()[i]);
+		auto char_info=NSResourceSystem::getSystem()->getChar(mTextProperty->getFontResource(),getText()[i]);
+		auto tex=NSResourceSystem::getSystem()->getRenderTexture(mTextProperty->getFontResource(),getText()[i]);
 		auto window=getGraphicScene()->createWindow(getLayer()->getName()+"/"+CStringConverter::toString(i));
 		window->setColour(mTextProperty->getColour());
 		window->setTexture(tex,char_info.mPixelStart,char_info.mPixelEnd);
@@ -171,10 +159,10 @@ Boolean NSDevilX::NSGUISystem::CStaticText::_updateGraphicWindows()
 
 Void NSDevilX::NSGUISystem::CStaticText::_calculateTextParameters(TVector<CFloat2> * positions,TVector<CFloat2> * sizes,Float * lastCharRight)const
 {
-	auto res=_load();
-	if(!res)
+	_load();
+	if(!mTextProperty->getFontResource())
 		return;
-	auto font_face=NSResourceSystem::getSystem()->getFontFace(res);
+	auto font_face=NSResourceSystem::getSystem()->getFontFace(mTextProperty->getFontResource());
 	if(positions||sizes||lastCharRight)
 	{
 		const auto font_unit_size=_calcFontUnitSize();

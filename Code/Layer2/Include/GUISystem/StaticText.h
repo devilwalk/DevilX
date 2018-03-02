@@ -38,7 +38,7 @@ namespace NSDevilX
 			Boolean getPosition(UInt32 charIndex,CFloat2 * position)const;
 			Boolean getPositions(TVector<CFloat2> * positions,Float * lastCharRight=nullptr)const;
 		protected:
-			NSResourceSystem::ILoadedResource * _load()const;
+			Void _load()const;
 			CFloat2 _calcFontUnitSize()const;
 			CFloat2 _calcValidateSize()const;
 			UInt32 _calcLineCount()const;

@@ -21,9 +21,12 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CLight::onMessage(ILightImp * notifier,U
 	switch(message)
 	{
 	case ILightImp::EMessage_EndDiffuseCreate:
+		getInterfaceImp()->getDiffuse()->addListener(static_cast<TMessageReceiver<IColourUnitStateImp>*>(this),IColourUnitStateImp::EMessage_EndValueChange);
+		getInterfaceImp()->getDiffuse()->addListener(static_cast<TMessageReceiver<IColourUnitStateImp>*>(this),IColourUnitStateImp::EMessage_EndEnableChange);
+		break;
 	case ILightImp::EMessage_EndSpecularCreate:
-		getInterfaceImp()->addListener(static_cast<TMessageReceiver<IColourUnitStateImp>*>(this),IColourUnitStateImp::EMessage_EndValueChange);
-		getInterfaceImp()->addListener(static_cast<TMessageReceiver<IColourUnitStateImp>*>(this),IColourUnitStateImp::EMessage_EndEnableChange);
+		getInterfaceImp()->getSpecular()->addListener(static_cast<TMessageReceiver<IColourUnitStateImp>*>(this),IColourUnitStateImp::EMessage_EndValueChange);
+		getInterfaceImp()->getSpecular()->addListener(static_cast<TMessageReceiver<IColourUnitStateImp>*>(this),IColourUnitStateImp::EMessage_EndEnableChange);
 		break;
 	}
 }
@@ -47,32 +50,32 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CLight::_updateConstantBuffer(Byte * buf
 	{
 		auto offset=mConstantBuffer->getDescription()->getConstantDesc("gDirectionLightDiffuseColour").StartOffset;
 		if(getInterfaceImp()->getDiffuse()&&getInterfaceImp()->getDiffuse()->getEnable())
-			memcpy(&buffer[offset],&getInterfaceImp()->getDiffuse()->getValue(),sizeof(CFloatRGB));
+			*reinterpret_cast<CFloat3*>(&buffer[offset])=static_cast<CFloatRGB>(getInterfaceImp()->getDiffuse()->getValue());
 		else
-			memcpy(&buffer[offset],&CFloatRGB::sBlack,sizeof(CFloatRGB));
+			*reinterpret_cast<CFloat3*>(&buffer[offset])=CFloatRGB::sBlack;
 		offset=mConstantBuffer->getDescription()->getConstantDesc("gDirectionLightSpecularColour").StartOffset;
 		if(getInterfaceImp()->getSpecular()&&getInterfaceImp()->getSpecular()->getEnable())
-			memcpy(&buffer[offset],&getInterfaceImp()->getSpecular()->getValue(),sizeof(CFloatRGB));
+			*reinterpret_cast<CFloat3*>(&buffer[offset])=static_cast<CFloatRGB>(getInterfaceImp()->getSpecular()->getValue());
 		else
-			memcpy(&buffer[offset],&CFloatRGB::sBlack,sizeof(CFloatRGB));
+			*reinterpret_cast<CFloat3*>(&buffer[offset])=CFloatRGB::sBlack;
 		offset=mConstantBuffer->getDescription()->getConstantDesc("gDirectionLightDirection").StartOffset;
-		memcpy(&buffer[offset],&static_cast<IDirectionLightPropertyImp*>(getInterfaceImp()->queryInterface_IDirectionLightProperty())->getDirectionMT(),sizeof(CFloat3));
+		*reinterpret_cast<CFloat3*>(&buffer[offset])=static_cast<IDirectionLightPropertyImp*>(getInterfaceImp()->queryInterface_IDirectionLightProperty())->getDirectionMT();
 	}
 	break;
 	case IEnum::ELightType_Point:
 	{
 		auto offset=mConstantBuffer->getDescription()->getConstantDesc("gPointLightDiffuseColour").StartOffset;
 		if(getInterfaceImp()->getDiffuse()&&getInterfaceImp()->getDiffuse()->getEnable())
-			memcpy(&buffer[offset],&getInterfaceImp()->getDiffuse()->getValue(),sizeof(CFloatRGB));
+			*reinterpret_cast<CFloat3*>(&buffer[offset])=static_cast<CFloatRGB>(getInterfaceImp()->getDiffuse()->getValue());
 		else
-			memcpy(&buffer[offset],&CFloatRGB::sBlack,sizeof(CFloatRGB));
+			*reinterpret_cast<CFloat3*>(&buffer[offset])=CFloatRGB::sBlack;
 		offset=mConstantBuffer->getDescription()->getConstantDesc("gPointLightSpecularColour").StartOffset;
 		if(getInterfaceImp()->getSpecular()&&getInterfaceImp()->getSpecular()->getEnable())
-			memcpy(&buffer[offset],&getInterfaceImp()->getSpecular()->getValue(),sizeof(CFloatRGB));
+			*reinterpret_cast<CFloat3*>(&buffer[offset])=static_cast<CFloatRGB>(getInterfaceImp()->getSpecular()->getValue());
 		else
-			memcpy(&buffer[offset],&CFloatRGB::sBlack,sizeof(CFloatRGB));
+			*reinterpret_cast<CFloat3*>(&buffer[offset])=CFloatRGB::sBlack;
 		offset=mConstantBuffer->getDescription()->getConstantDesc("gPointLightPosition").StartOffset;
-		memcpy(&buffer[offset],&getInterfaceImp()->queryInterface_ISceneElement()->getTransformer()->getPosition(),sizeof(CFloat3));
+		*reinterpret_cast<CFloat3*>(&buffer[offset])=getInterfaceImp()->queryInterface_ISceneElement()->getTransformer()->getPosition();
 		offset=mConstantBuffer->getDescription()->getConstantDesc("gPointLightReciprocalRange").StartOffset;
 		*reinterpret_cast<Float*>(&buffer[offset])=1.0f/getInterfaceImp()->queryInterface_IPointLightProperty()->getRange();
 		offset=mConstantBuffer->getDescription()->getConstantDesc("gPointLightStartFallOffDistance").StartOffset;
@@ -83,18 +86,18 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CLight::_updateConstantBuffer(Byte * buf
 	{
 		auto offset=mConstantBuffer->getDescription()->getConstantDesc("gSpotLightDiffuseColour").StartOffset;
 		if(getInterfaceImp()->getDiffuse()&&getInterfaceImp()->getDiffuse()->getEnable())
-			memcpy(&buffer[offset],&getInterfaceImp()->getDiffuse()->getValue(),sizeof(CFloatRGB));
+			*reinterpret_cast<CFloat3*>(&buffer[offset])=static_cast<CFloatRGB>(getInterfaceImp()->getDiffuse()->getValue());
 		else
-			memcpy(&buffer[offset],&CFloatRGB::sBlack,sizeof(CFloatRGB));
+			*reinterpret_cast<CFloat3*>(&buffer[offset])=CFloatRGB::sBlack;
 		offset=mConstantBuffer->getDescription()->getConstantDesc("gSpotLightSpecularColour").StartOffset;
 		if(getInterfaceImp()->getSpecular()&&getInterfaceImp()->getSpecular()->getEnable())
-			memcpy(&buffer[offset],&getInterfaceImp()->getSpecular()->getValue(),sizeof(CFloatRGB));
+			*reinterpret_cast<CFloat3*>(&buffer[offset])=static_cast<CFloatRGB>(getInterfaceImp()->getSpecular()->getValue());
 		else
-			memcpy(&buffer[offset],&CFloatRGB::sBlack,sizeof(CFloatRGB));
+			*reinterpret_cast<CFloat3*>(&buffer[offset])=CFloatRGB::sBlack;
 		offset=mConstantBuffer->getDescription()->getConstantDesc("gSpotLightPosition").StartOffset;
-		memcpy(&buffer[offset],&getInterfaceImp()->queryInterface_ISceneElement()->getTransformer()->getPosition(),sizeof(CFloat3));
+		*reinterpret_cast<CFloat3*>(&buffer[offset])=getInterfaceImp()->queryInterface_ISceneElement()->getTransformer()->getPosition();
 		offset=mConstantBuffer->getDescription()->getConstantDesc("gSpotLightDirection").StartOffset;
-		memcpy(&buffer[offset],&static_cast<ISpotLightPropertyImp*>(getInterfaceImp()->queryInterface_ISpotLightProperty())->getDirectionMT(),sizeof(CFloat3));
+		*reinterpret_cast<CFloat3*>(&buffer[offset])=static_cast<ISpotLightPropertyImp*>(getInterfaceImp()->queryInterface_ISpotLightProperty())->getDirectionMT();
 		offset=mConstantBuffer->getDescription()->getConstantDesc("gSpotLightReciprocalRange").StartOffset;
 		*reinterpret_cast<Float*>(&buffer[offset])=1.0f/getInterfaceImp()->queryInterface_ISpotLightProperty()->getRange();
 		offset=mConstantBuffer->getDescription()->getConstantDesc("gSpotLightStartFallOffDistance").StartOffset;

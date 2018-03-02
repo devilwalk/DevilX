@@ -87,6 +87,7 @@ namespace NSDevilX
 		using CFloat3::operator=;
 		CFloatRGB(UInt8 r=0,UInt8 g=0,UInt8 b=0);
 		CFloatRGB(const CColour & cpy);
+		const CFloatRGB & operator=(const CFloatRGB & cpy);
 		virtual const CColour & operator=(const CColour & cpy) override;
 		virtual Boolean operator==(const CColour & test) const override;
 		virtual Boolean operator!=(const CColour & test) const override;

@@ -17,18 +17,20 @@ Boolean NSDevilX::CFileStreamReader::setPosition(UInt32 position)
 	return ret;
 }
 
+UInt32 NSDevilX::CFileStreamReader::getPosition() const
+{
+	return static_cast<UInt32>(const_cast<CFileStreamReader*>(this)->mStream.tellg());
+}
+
 Boolean NSDevilX::CFileStreamReader::move(Int32 offset)
 {
 	return setPosition(static_cast<Int32>(mStream.tellg())+offset);
 }
 
-Boolean NSDevilX::CFileStreamReader::process(UInt32 sizeInBytes,OUT VoidPtr dst)
+UInt32 NSDevilX::CFileStreamReader::process(UInt32 sizeInBytes,OUT VoidPtr dst)
 {
 	mStream.read(reinterpret_cast<Char*>(dst),sizeInBytes);
-	if(mStream.gcount()==sizeInBytes)
-		return true;
-	else
-		return false;
+	return static_cast<UInt32>(mStream.gcount());
 }
 
 NSDevilX::CFileStreamWriter::CFileStreamWriter(CFileStream * stream)
@@ -45,15 +47,20 @@ Boolean NSDevilX::CFileStreamWriter::setPosition(UInt32 position)
 	return true;
 }
 
+UInt32 NSDevilX::CFileStreamWriter::getPosition() const
+{
+	return static_cast<UInt32>(const_cast<CFileStreamWriter*>(this)->mStream.tellp());
+}
+
 Boolean NSDevilX::CFileStreamWriter::move(Int32 offset)
 {
 	return setPosition(static_cast<Int32>(mStream.tellp())+offset);
 }
 
-Boolean NSDevilX::CFileStreamWriter::process(ConstVoidPtr src,UInt32 sizeInBytes)
+UInt32 NSDevilX::CFileStreamWriter::process(ConstVoidPtr src,UInt32 sizeInBytes)
 {
 	mStream.write(reinterpret_cast<ConstCharPtr>(src),sizeInBytes);
-	return true;
+	return sizeInBytes;
 }
 
 NSDevilX::CFileStream::CFileStream(const String & fullName)

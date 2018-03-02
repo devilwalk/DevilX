@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\Common.h" />
-    <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonTreeContainer.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonAllocator.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonAngle.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonAnimationFrame.h" />
@@ -48,6 +47,7 @@
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonMemoryTracker.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonMessageMode.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonModule.h" />
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonTreeContainer.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonUtility.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonNode.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonOctree.h" />

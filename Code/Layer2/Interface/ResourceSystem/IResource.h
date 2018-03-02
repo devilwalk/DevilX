@@ -4,19 +4,12 @@ namespace NSDevilX
 	namespace NSResourceSystem
 	{
 		class IResource;
-		class ILoadedResource
-		{
-		protected:
-			virtual ~ILoadedResource(){}
-		public:
-			virtual IResource * queryInterface_IResource()const=0;
-		};
 		class ILoadCallback
 		{
 		protected:
 			virtual ~ILoadCallback(){}
 		public:
-			virtual Void onLoaded(ILoadedResource * resource)=0;
+			virtual Void onLoaded(IResource * resource)=0;
 		};
 		class IResource
 		{

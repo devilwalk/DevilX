@@ -41,7 +41,7 @@ Boolean NSDevilX::NSRenderSystem::NSD3D11::CViewport::isFullViewport() const
 Void NSDevilX::NSRenderSystem::NSD3D11::CViewport::_updateConstantBuffer(Byte * buffer)
 {
 	auto offset=mConstantBuffer->getDescription()->getConstantDesc("gViewportSizeInPixel").StartOffset;
-	memcpy(&buffer[offset],&CFloat2(static_cast<Float>(getInternal().Width),static_cast<Float>(getInternal().Height)),sizeof(CFloat2));
+	*reinterpret_cast<CFloat2*>(&buffer[offset])=CFloat2(static_cast<Float>(getInternal().Width),static_cast<Float>(getInternal().Height));
 	offset=mConstantBuffer->getDescription()->getConstantDesc("gInverseViewportSizeInPixel").StartOffset;
-	memcpy(&buffer[offset],&CFloat2(1.0f/getInternal().Width,1.0f/getInternal().Height),sizeof(CFloat2));
+	*reinterpret_cast<CFloat2*>(&buffer[offset])=CFloat2(1.0f/getInternal().Width,1.0f/getInternal().Height);
 }

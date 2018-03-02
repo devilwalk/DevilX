@@ -22,15 +22,23 @@ NSDevilX::CFloatRGB::CFloatRGB(const CColour & cpy)
 	:CFloat3(cpy.r(),cpy.g(),cpy.b())
 {}
 
+const CFloatRGB & NSDevilX::CFloatRGB::operator=(const CFloatRGB & cpy)
+{
+	*this=CFloat3(cpy.r(),cpy.g(),cpy.b());
+	return *this;
+}
+
 const CColour & NSDevilX::CFloatRGB::operator=(const CColour & cpy)
 {
 	*this=CFloat3(cpy.r(),cpy.g(),cpy.b());
 	return *this;
 }
+
 Boolean NSDevilX::CFloatRGB::operator==(const CColour & test) const
 {
 	return *this==CFloat3(test.r(),test.g(),test.b());
 }
+
 Boolean NSDevilX::CFloatRGB::operator!=(const CColour & test) const
 {
 	return *this!=CFloat3(test.r(),test.g(),test.b());

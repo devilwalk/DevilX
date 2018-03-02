@@ -12,7 +12,7 @@ namespace NSDevilX
 		protected:
 			NSRenderSystem::IScene * mRenderScene;
 			const Bool mSelfRenderScene;
-			TVectorMT<TVectorMT<TVectorMT<CArea*>*>*> mAreas[2][2][2];
+			C3DTreeContainer mAreas;
 		public:
 			ISceneImp(NSRenderSystem::IScene * renderScene=nullptr);
 			~ISceneImp();
@@ -21,12 +21,9 @@ namespace NSDevilX
 				return mRenderScene;
 			}
 			Void update();
-			virtual Void setBlockMT(const CInt3 & position,IBlock * block) override;
-			virtual Void setBlockMT(const CRange3I & range,IBlock * block) override;
-			virtual IBlock * getBlockMT(const CInt3 & position) override;
-		protected:
-			CArea * _createOrRetrieveAreaMT(decltype(mAreas[0][0][0]) & areas,DirectX::FXMVECTOR absPositionVec,DirectX::FXMVECTOR positionVec);
-			Void _setBlockToAreaMT(const CRange3I & range,IBlockImp * block);
+			virtual Void setBlock(const CInt3 & position,IBlock * block) override;
+			virtual Void setBlock(const CRange3I & range,IBlock * block) override;
+			virtual IBlock * getBlock(const CInt3 & position) const override;
 		};
 	}
 }

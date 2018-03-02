@@ -339,7 +339,7 @@ IColourUnitState * NSDevilX::NSRenderSystem::ILightImp::getDiffuseColourUnitStat
 	if(!mDiffuse)
 	{
 		notify(EMessage_BeginDiffuseCreate);
-		mDiffuse=DEVILX_NEW IColourUnitStateImp();
+		mDiffuse=DEVILX_NEW IColourUnitStateImp(CColour::EType_RGB);
 		notify(EMessage_EndDiffuseCreate);
 	}
 	return mDiffuse;
@@ -350,7 +350,7 @@ IColourUnitState * NSDevilX::NSRenderSystem::ILightImp::getSpecularColourUnitSta
 	if(!mSpecular)
 	{
 		notify(EMessage_BeginSpecularCreate);
-		mSpecular=DEVILX_NEW IColourUnitStateImp();
+		mSpecular=DEVILX_NEW IColourUnitStateImp(CColour::EType_RGB);
 		notify(EMessage_EndSpecularCreate);
 	}
 	return mSpecular;

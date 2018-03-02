@@ -15,8 +15,9 @@ namespace NSDevilX
 
 		// Inherited via CDataStreamReader
 		virtual Boolean setPosition(UInt32 position) override;
+		virtual UInt32 getPosition() const override;
 		virtual Boolean move(Int32 offset) override;
-		virtual Boolean process(UInt32 sizeInBytes,OUT VoidPtr dst) override;
+		virtual UInt32 process(UInt32 sizeInBytes,OUT VoidPtr dst) override;
 	};
 	class CMemoryStreamWriter
 		:public CDataStreamWriter
@@ -30,8 +31,9 @@ namespace NSDevilX
 
 		// Inherited via CDataStreamWriter
 		virtual Boolean setPosition(UInt32 position) override;
+		virtual UInt32 getPosition() const override;
 		virtual Boolean move(Int32 offset) override;
-		virtual Boolean process(ConstVoidPtr src,UInt32 sizeInBytes) override;
+		virtual UInt32 process(ConstVoidPtr src,UInt32 sizeInBytes) override;
 	};
 	class CMemoryStream
 		:public CDataStream

@@ -85,7 +85,7 @@ namespace NSDevilX
 				{
 					//ËõĞ¡·¶Î§
 					iterator iter_begin=begin();
-					iterator iter_end=begin();
+					iterator iter_end=end();
 					for(auto iter=begin();end()!=iter;++iter)
 					{
 						auto & test=*iter;

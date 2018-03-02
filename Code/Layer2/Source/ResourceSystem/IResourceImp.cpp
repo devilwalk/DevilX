@@ -78,11 +78,6 @@ Boolean NSDevilX::NSResourceSystem::IResourceImp::isLoaded() const
 	return mLoadState==ELoadState_Loaded;
 }
 
-IResource * NSDevilX::NSResourceSystem::IResourceImp::queryInterface_IResource() const
-{
-	return const_cast<IResourceImp*>(this);
-}
-
 Void NSDevilX::NSResourceSystem::IResourceImp::_updateLoadState()
 {
 	if(ELoadState_Loading==mLoadState)

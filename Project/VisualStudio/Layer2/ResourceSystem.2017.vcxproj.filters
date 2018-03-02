@@ -39,6 +39,12 @@
     <ClInclude Include="..\..\..\Code\Layer2\Include\ResourceSystem\IOFunction.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer2\Include\ResourceSystem\FBXProcesser.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer2\Include\ResourceSystem\GeometryProvider.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Layer2\Source\ResourceSystem\ISystemImp.cpp">
@@ -48,6 +54,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Layer2\Source\ResourceSystem\IResourceImp.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer2\Source\ResourceSystem\FBXProcesser.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

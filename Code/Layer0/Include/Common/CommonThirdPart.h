@@ -24,7 +24,8 @@
 #include "FreeImage/FreeImage.h"
 #pragma warning(pop)
 #include "FreeType/ft2build.h"
-#include "FreeType/freetype/freetype.h"
+#include FT_FREETYPE_H
 #include FT_GLYPH_H
 #include "Lua/lua.hpp"
 #include "Noise/noise.h"
+#include "FBX/fbxsdk.h"

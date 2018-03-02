@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\Code\Layer2\Include\ResourceSystem\FBXProcesser.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Include\ResourceSystem\GeometryProvider.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\ResourceSystem\IOFunction.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\ResourceSystem\IResourceImp.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\ResourceSystem\ISystemImp.h" />
@@ -28,6 +30,7 @@
     <ClInclude Include="..\..\..\Code\Layer2\Source\ResourceSystem\Precompiler.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Code\Layer2\Source\ResourceSystem\FBXProcesser.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\ResourceSystem\IResourceImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\ResourceSystem\ISystemImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\ResourceSystem\Precompiler.cpp">

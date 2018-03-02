@@ -1,4 +1,6 @@
 #pragma once
+#include "IResourceImp.h"
+#include "FBXProcesser.h"
 namespace NSDevilX
 {
 	namespace NSResourceSystem
@@ -18,6 +20,7 @@ namespace NSDevilX
 			CThreadPool * mIOPool;
 			CFontManager * mFontManager;
 			TNamedResourcePtrMap<IResourceImp> mResources;
+			TResourcePtrMap<IResourceImp*,CFBXProcesser> mFBXResources;
 		public:
 			ISystemImp();
 			~ISystemImp();
@@ -33,12 +36,20 @@ namespace NSDevilX
 			virtual IResource * getResource(const String & name) const override;
 			virtual Void destroyResource(IResource * res) override;
 			virtual IResource * createOrRetrieveResource(const String & name,const String & filename) override;
-			virtual CImage * getImage(ILoadedResource * resource) override;
-			virtual CFontFace * getFontFace(ILoadedResource * resource) override;
-			virtual CFontManager::SChar getChar(ILoadedResource * resource,const CUTF8Char & c) override;
-			virtual NSRenderSystem::ITexture * getRenderTexture(ILoadedResource * resource) override;
-			virtual NSRenderSystem::ITexture * getRenderTexture(ILoadedResource * resource,const CUTF8Char & c) override;
-			virtual NSRenderSystem::IGeometry * getRenderGeometry(ILoadedResource * resource) override;
+			virtual Void getImage(IResource * resource,IGetImageCallback * callback,Bool sync) override;
+			virtual Void getFontFace(IResource * resource,IGetFontFaceCallback * callback,Bool sync) override;
+			virtual Void getChar(IResource * resource,const CUTF8Char & c,IGetCharCallback * callback,Bool sync) override;
+			virtual Void getRenderTexture(IResource * resource,IGetRenderTextureCallback * callback,Bool sync) override;
+			virtual Void getRenderTexture(IResource * resource,const CUTF8Char & c,IGetRenderTextureCallback * callback,Bool sync) override;
+			virtual Void getRenderGeometry(IResource * resource,IGetRenderGeometryCallback * callback,Bool sync) override;
+
+			// Í¨¹ý ISystem ¼Ì³Ð
+			virtual CImage * getImage(IResource * resource) override;
+			virtual CFontFace * getFontFace(IResource * resource) override;
+			virtual CFontManager::SChar getChar(IResource * resource,const CUTF8Char & c) override;
+			virtual NSRenderSystem::ITexture * getRenderTexture(IResource * resource) override;
+			virtual NSRenderSystem::ITexture * getRenderTexture(IResource * resource,const CUTF8Char & c) override;
+			virtual NSRenderSystem::IGeometry * getRenderGeometry(IResource * resource) override;
 		};
 	}
 }

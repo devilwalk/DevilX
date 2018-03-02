@@ -57,7 +57,7 @@ namespace NSDevilX
 			ITerrainGeneratorInstance * mTerrainGeneratorInstance;
 			CRange3I mRange;
 			TNamedResourcePtrMap<CSceneLoader> mLoaders;
-			TMap<CInt3,SChunkState*,SInt3Comparator> mChunkLoadStates;
+			TResourcePtrMap<CInt3,SChunkState,SInt3Comparator> mChunkLoadStates;
 		public:
 			CSceneManager(const String & name,ITerrainGenerator * generator,NSRenderSystem::IScene * renderScene);
 			~CSceneManager();

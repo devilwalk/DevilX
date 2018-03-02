@@ -17,20 +17,25 @@ Boolean NSDevilX::CMemoryStreamReader::setPosition(UInt32 position)
 	return ret;
 }
 
+UInt32 NSDevilX::CMemoryStreamReader::getPosition() const
+{
+	return mPosition;
+}
+
 Boolean NSDevilX::CMemoryStreamReader::move(Int32 offset)
 {
 	return setPosition(mPosition+offset);
 }
 
-Boolean NSDevilX::CMemoryStreamReader::process(UInt32 sizeInBytes,OUT VoidPtr dst)
+UInt32 NSDevilX::CMemoryStreamReader::process(UInt32 sizeInBytes,OUT VoidPtr dst)
 {
-	Boolean ret=CDataStreamReader::mStream->getSize()>=mPosition+sizeInBytes;
-	if(ret)
+	sizeInBytes=std::min<>(sizeInBytes,CDataStreamReader::mStream->getSize()-mPosition);
+	if(sizeInBytes)
 	{
 		memcpy(static_cast<CharPtr>(dst),&static_cast<CMemoryStream*>(mStream)->getData()[mPosition],sizeInBytes);
 		move(static_cast<Int32>(sizeInBytes));
 	}
-	return ret;
+	return sizeInBytes;
 }
 
 NSDevilX::CMemoryStreamWriter::CMemoryStreamWriter(CMemoryStream * stream)
@@ -47,18 +52,23 @@ Boolean NSDevilX::CMemoryStreamWriter::setPosition(UInt32 position)
 	return true;
 }
 
+UInt32 NSDevilX::CMemoryStreamWriter::getPosition() const
+{
+	return mPosition;
+}
+
 Boolean NSDevilX::CMemoryStreamWriter::move(Int32 offset)
 {
 	return setPosition(mPosition+offset);
 }
 
-Boolean NSDevilX::CMemoryStreamWriter::process(ConstVoidPtr src,UInt32 sizeInBytes)
+UInt32 NSDevilX::CMemoryStreamWriter::process(ConstVoidPtr src,UInt32 sizeInBytes)
 {
 	if((mPosition+sizeInBytes)>mStream->getSize())
 		static_cast<CMemoryStream*>(mStream)->getData().resize(mPosition+sizeInBytes);
 	memcpy(&static_cast<CMemoryStream*>(mStream)->getData()[mPosition],src,sizeInBytes);
 	move(static_cast<Int32>(sizeInBytes));
-	return true;
+	return sizeInBytes;
 }
 
 NSDevilX::CMemoryStream::CMemoryStream()

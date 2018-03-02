@@ -7,7 +7,6 @@ namespace NSDevilX
 		class IResourceImp
 			:public TBaseObject<IResourceImp>
 			,public IResource
-			,public ILoadedResource
 			,public TMessageReceiver<ISystemImp>
 			,public CUserDataContainer
 		{
@@ -38,9 +37,6 @@ namespace NSDevilX
 			virtual const String & getFileName() const override;
 			virtual Void load(ILoadCallback * callback,Bool sync) override;
 			virtual Boolean isLoaded() const override;
-
-			// Í¨¹ý ILoadedResource ¼Ì³Ð
-			virtual IResource * queryInterface_IResource() const override;
 		protected:
 			Void _updateLoadState();
 
