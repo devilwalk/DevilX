@@ -41,7 +41,8 @@ namespace NSDevilX
 			virtual Void getChar(IResource * resource,const CUTF8Char & c,IGetCharCallback * callback,Bool sync) override;
 			virtual Void getRenderTexture(IResource * resource,IGetRenderTextureCallback * callback,Bool sync) override;
 			virtual Void getRenderTexture(IResource * resource,const CUTF8Char & c,IGetRenderTextureCallback * callback,Bool sync) override;
-			virtual Void getRenderGeometry(IResource * resource,IGetRenderGeometryCallback * callback,Bool sync) override;
+			virtual NSRenderSystem::IEntity * getRenderEntity(IResource * resource,NSRenderSystem::IScene * scene) override;
+			virtual Void getRenderEntity(IResource * resource,NSRenderSystem::IEntity * entity,IGetRenderEntityCallback * callback,Bool sync) override;
 
 			// Í¨¹ý ISystem ¼Ì³Ð
 			virtual CImage * getImage(IResource * resource) override;
@@ -49,7 +50,6 @@ namespace NSDevilX
 			virtual CFontManager::SChar getChar(IResource * resource,const CUTF8Char & c) override;
 			virtual NSRenderSystem::ITexture * getRenderTexture(IResource * resource) override;
 			virtual NSRenderSystem::ITexture * getRenderTexture(IResource * resource,const CUTF8Char & c) override;
-			virtual NSRenderSystem::IGeometry * getRenderGeometry(IResource * resource) override;
 		};
 	}
 }

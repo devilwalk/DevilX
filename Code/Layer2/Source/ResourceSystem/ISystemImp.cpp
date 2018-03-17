@@ -253,15 +253,24 @@ Void NSDevilX::NSResourceSystem::ISystemImp::getRenderTexture(IResource * resour
 	getChar(resource,c,char_callback,sync);
 }
 
-Void NSDevilX::NSResourceSystem::ISystemImp::getRenderGeometry(IResource * resource,IGetRenderGeometryCallback * callback,Bool sync)
+NSRenderSystem::IEntity * NSDevilX::NSResourceSystem::ISystemImp::getRenderEntity(IResource * resource,NSRenderSystem::IScene * scene)
+{
+	NSRenderSystem::IEntity * ret=scene->createEntity(resource->getName());
+	getRenderEntity(resource,ret,nullptr,True);
+	return ret;
+}
+
+Void NSDevilX::NSResourceSystem::ISystemImp::getRenderEntity(IResource * resource,NSRenderSystem::IEntity * entity,IGetRenderEntityCallback * callback,Bool sync)
 {
 	struct SLoadCallback
 		:public ILoadCallback
 		,public TBaseObject<SLoadCallback>
 	{
-		IGetRenderGeometryCallback * const mCallback;
-		SLoadCallback(IGetRenderGeometryCallback * retCallback)
+		IGetRenderEntityCallback * const mCallback;
+		NSRenderSystem::IEntity * const mEntity;
+		SLoadCallback(IGetRenderEntityCallback * retCallback,NSRenderSystem::IEntity * entity)
 			:mCallback(retCallback)
+			,mEntity(entity)
 		{}
 		virtual Void onLoaded(IResource * resource) override
 		{
@@ -271,34 +280,13 @@ Void NSDevilX::NSResourceSystem::ISystemImp::getRenderGeometry(IResource * resou
 				processer=DEVILX_NEW CFBXProcesser(static_cast<IResourceImp*>(resource));
 				ISystemImp::getSingleton().mFBXResources.add(static_cast<IResourceImp*>(resource),processer);
 			}
-			auto geo=NSRenderSystem::getSystem()->queryInterface_IResourceManager()->createGeometry(resource->getName());
-			geo->getVertexBuffer()->setCount(processer->getVertexCount());
-			auto positions=static_cast<CFloat3*>(DEVILX_ALLOC(sizeof(CFloat3)*geo->getVertexBuffer()->getCount()));
-			processer->getPositions(positions);
-			geo->getVertexBuffer()->setPositions(positions);
-			auto normals=static_cast<CFloat3*>(DEVILX_ALLOC(sizeof(CFloat3)*geo->getVertexBuffer()->getCount()));
-			if(processer->getNormals(normals))
-				geo->getVertexBuffer()->setNormals(normals);
-			else
-				DEVILX_FREE(normals);
-			auto uv=static_cast<CFloat2*>(DEVILX_ALLOC(sizeof(CFloat2)*geo->getVertexBuffer()->getCount()));
-			if(processer->getUVs(uv))
-				geo->getVertexBuffer()->setTextureCoords(uv);
-			else
-				DEVILX_FREE(uv);
-			auto index_count=processer->getIndexCount();
-			if(index_count)
-			{
-				geo->getIndexBuffer()->setCount(index_count);
-				auto indices=static_cast<UInt32*>(DEVILX_ALLOC(sizeof(UInt32)*index_count));
-				processer->getIndices(indices);
-				geo->getIndexBuffer()->setIndices(indices);
-			}
-			mCallback->onLoaded(geo);
+			processer->process(mEntity);
+			if(mCallback)
+				mCallback->onLoaded();
 			DEVILX_DELETE(this);
 		}
 	};
-	auto load_callback=DEVILX_NEW SLoadCallback(callback);
+	auto load_callback=DEVILX_NEW SLoadCallback(callback,entity);
 	resource->load(load_callback,sync);
 }
 
@@ -404,26 +392,5 @@ NSRenderSystem::ITexture * NSDevilX::NSResourceSystem::ISystemImp::getRenderText
 	};
 	STextureCallback callback(ret);
 	getRenderTexture(resource,c,&callback,True);
-	return ret;
-}
-
-NSRenderSystem::IGeometry * NSDevilX::NSResourceSystem::ISystemImp::getRenderGeometry(IResource * resource)
-{
-	NSRenderSystem::IGeometry * ret=nullptr;
-	struct SGeometryCallback
-		:public IGetRenderGeometryCallback
-		,public TBaseObject<SGeometryCallback>
-	{
-		NSRenderSystem::IGeometry * & mRef;
-		SGeometryCallback(NSRenderSystem::IGeometry * & ref)
-			:mRef(ref)
-		{}
-		virtual Void onLoaded(NSRenderSystem::IGeometry * tex) override
-		{
-			mRef=tex;
-		}
-	};
-	SGeometryCallback callback(ret);
-	getRenderGeometry(resource,&callback,True);
 	return ret;
 }

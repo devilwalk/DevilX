@@ -32,12 +32,12 @@ namespace NSDevilX
 		public:
 			virtual Void onLoaded(NSRenderSystem::ITexture * texture)=0;
 		};
-		class IGetRenderGeometryCallback
+		class IGetRenderEntityCallback
 		{
 		protected:
-			virtual ~IGetRenderGeometryCallback(){}
+			virtual ~IGetRenderEntityCallback(){}
 		public:
-			virtual Void onLoaded(NSRenderSystem::IGeometry * geometry)=0;
+			virtual Void onLoaded()=0;
 		};
 		class ISystem
 		{
@@ -60,8 +60,8 @@ namespace NSDevilX
 			virtual Void getRenderTexture(IResource * resource,IGetRenderTextureCallback * callback,Bool sync=False)=0;
 			virtual NSRenderSystem::ITexture * getRenderTexture(IResource * resource,const CUTF8Char & c)=0;
 			virtual Void getRenderTexture(IResource * resource,const CUTF8Char & c,IGetRenderTextureCallback * callback,Bool sync=False)=0;
-			virtual NSRenderSystem::IGeometry * getRenderGeometry(IResource * resource)=0;
-			virtual Void getRenderGeometry(IResource * resource,IGetRenderGeometryCallback * callback,Bool sync=False)=0;
+			virtual NSRenderSystem::IEntity * getRenderEntity(IResource * resource,NSRenderSystem::IScene * scene)=0;
+			virtual Void getRenderEntity(IResource * resource,NSRenderSystem::IEntity * entity,IGetRenderEntityCallback * callback,Bool sync=False)=0;
 		};
 		ISystem * getSystem();
 	}

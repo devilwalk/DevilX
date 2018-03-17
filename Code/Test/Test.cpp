@@ -117,19 +117,9 @@ int main()
 
 	auto fbx_res=NSResourceSystem::getSystem()->createOrRetrieveResource("Model","Resource/girlA.fbx");
 	fbx_res->load(nullptr,True);
-	auto render_geometry_model=NSResourceSystem::getSystem()->getRenderGeometry(fbx_res);
-	auto render_entity_model=render_scene->createEntity("Model");
+	auto render_entity_model=NSResourceSystem::getSystem()->getRenderEntity(fbx_res,render_scene);	
 	render_entity_model->queryInterface_ISceneElement()->getTransformer()->setPosition(CFloat3(0,0,10.0f));
 	auto render_sub_entity_model=render_entity_model->createSubEntity("0");
-	render_sub_entity_model->setGeometry(render_geometry_model);
-	render_sub_entity_model->setAmbientModel(NSRenderSystem::IEnum::EMaterialAmbientModel_Constant);
-	render_sub_entity_model->setDiffuseModel(NSRenderSystem::IEnum::EMaterialDiffuseModel_Lambert);
-	render_sub_entity_model->getDiffuseColourUnitState()->setEnable(True);
-	render_sub_entity_model->getDiffuseColourUnitState()->setValue(CFloatRGB::sRed);
-	render_sub_entity_model->setSpecularModel(NSRenderSystem::IEnum::EMaterialSpecularModel_None);
-	render_sub_entity_model->setVisible(True);
-	render_sub_entity_model->queryInterface_IGeometryUsage()->setVertexCount(render_geometry_model->getVertexBuffer()->getCount());
-	render_sub_entity_model->queryInterface_IGeometryUsage()->setIndexCount(render_geometry_model->getIndexBuffer()->getCount());
 	render_visible_area->attachObject(render_entity_model->queryInterface_ISceneElement());
 
 

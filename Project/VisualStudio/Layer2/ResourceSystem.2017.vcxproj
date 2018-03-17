@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\Layer2\Include\ResourceSystem\FBXProcesser.h" />
-    <ClInclude Include="..\..\..\Code\Layer2\Include\ResourceSystem\GeometryProvider.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\ResourceSystem\IOFunction.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\ResourceSystem\IResourceImp.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\ResourceSystem\ISystemImp.h" />
