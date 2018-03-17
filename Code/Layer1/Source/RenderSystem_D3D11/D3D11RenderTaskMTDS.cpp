@@ -70,6 +70,19 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CRenderTask::prepare()
 Void NSDevilX::NSRenderSystem::NSD3D11::CRenderTask::process()
 {
 	CSystemImp::getSingleton().getRenderTaskThreadPool()->waitMT(mThreadSyncGroupID);
+	_process();
+}
+
+Void NSDevilX::NSRenderSystem::NSD3D11::CRenderTask::postProcess()
+{}
+
+Boolean NSDevilX::NSRenderSystem::NSD3D11::CRenderTask::_needSubmit() const
+{
+	return true;
+}
+
+Void NSDevilX::NSRenderSystem::NSD3D11::CRenderTask::_process()
+{
 	if(mTasks.empty())
 	{
 		if(mCommandList)
@@ -87,14 +100,6 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CRenderTask::process()
 				task->process();
 		}
 	}
-}
-
-Void NSDevilX::NSRenderSystem::NSD3D11::CRenderTask::postProcess()
-{}
-
-Boolean NSDevilX::NSRenderSystem::NSD3D11::CRenderTask::_needSubmit() const
-{
-	return true;
 }
 
 Void NSDevilX::NSRenderSystem::NSD3D11::CRenderTask::clearState()
@@ -375,10 +380,11 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::CLightTask::pro
 	}
 	else
 	{
+		CSystemImp::getSingleton().getRenderTaskThreadPool()->waitMT(mThreadSyncGroupID);
 		for(auto cb:mSubmitConstantBuffers)
 			cb->submit();
-		CRenderTask::process();
 		mSubmitConstantBuffers.clear();
+		CRenderTask::_process();
 	}
 }
 
@@ -443,8 +449,9 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::prepare()
 
 Void NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::process()
 {
+	CSystemImp::getSingleton().getRenderTaskThreadPool()->waitMT(mThreadSyncGroupID);
 	mViewport->setupMT(CSystemImp::getSingleton().getImmediateContext());
-	CRenderTask::process();
+	CRenderTask::_process();
 }
 
 NSDevilX::NSRenderSystem::NSD3D11::CQuerySceneTask::CQuerySceneTask(CViewport * viewport)
@@ -508,10 +515,11 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CQuerySceneTask::prepare()
 
 Void NSDevilX::NSRenderSystem::NSD3D11::CQuerySceneTask::process()
 {
+	CSystemImp::getSingleton().getRenderTaskThreadPool()->waitMT(mThreadSyncGroupID);
 	for(auto cb:mSubmitConstantBuffers)
 		cb->submit();
-	CRenderTask::process();
 	mSubmitConstantBuffers.clear();
+	CRenderTask::_process();
 }
 
 Boolean NSDevilX::NSRenderSystem::NSD3D11::CQuerySceneTask::_needSubmit() const

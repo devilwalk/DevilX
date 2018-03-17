@@ -34,6 +34,7 @@ namespace NSDevilX
 				Void clearState();
 			protected:
 				virtual Boolean _needSubmit()const;
+				virtual Void _process();
 			};
 			class CClearViewportTask
 				:public CRenderTask
