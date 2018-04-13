@@ -115,12 +115,24 @@ int main()
 	render_visible_area->setBoundingBox(DirectX::BoundingBox(CFloat3::sZero,CFloat3(100.0f)));
 	//render_visible_area->attachObject(render_entity->queryInterface_ISceneElement());
 
+	auto render_entity_model=render_scene->createEntity("render_entity_model");
 	auto fbx_res=NSResourceSystem::getSystem()->createOrRetrieveResource("Model","Resource/girlA.fbx");
-	fbx_res->load(nullptr,True);
-	auto render_entity_model=NSResourceSystem::getSystem()->getRenderEntity(fbx_res,render_scene);	
-	render_entity_model->queryInterface_ISceneElement()->getTransformer()->setPosition(CFloat3(0,0,10.0f));
-	auto render_sub_entity_model=render_entity_model->createSubEntity("0");
-	render_visible_area->attachObject(render_entity_model->queryInterface_ISceneElement());
+	struct SGetRenderEntityCallback
+		:public NSResourceSystem::IGetRenderEntityCallback
+		,public TBaseObject<SGetRenderEntityCallback>
+	{
+		NSRenderSystem::IEntity * mEntity;
+		NSRenderSystem::IVisibleArea * mVisibleArea;
+		virtual Void onLoaded() override
+		{
+			mEntity->queryInterface_ISceneElement()->getTransformer()->setPosition(CFloat3(0,0,10.0f));
+			mVisibleArea->attachObject(mEntity->queryInterface_ISceneElement());
+		}
+	};
+	SGetRenderEntityCallback get_entity_call_back;
+	get_entity_call_back.mEntity=render_entity_model;
+	get_entity_call_back.mVisibleArea=render_visible_area;
+	NSResourceSystem::getSystem()->getRenderEntity(fbx_res,render_entity_model,&get_entity_call_back);
 
 
 	//auto ui_graphic_scene=NSUISystem::getSystem()->createGraphicScene(render_viewport);
@@ -353,6 +365,7 @@ int main()
 		render_camera->queryInterface_ISceneElement()->getTransformer()->setOrientation(camera_node.getDerivedOrientation());
 		NSRenderSystem::getSystem()->update();
 		NSNetworkSystem::getSystem()->update();
+		NSResourceSystem::getSystem()->update();
 
 		ui_event_scene->route(&mouse_left_button_down_event);
 		ui_event_scene->route(&mouse_right_button_down_event);

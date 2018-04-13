@@ -36,10 +36,28 @@
     <ClInclude Include="..\..\..\Code\Layer2\Include\ResourceSystem\IResourceImp.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer2\Include\ResourceSystem\IOFunction.h">
+    <ClInclude Include="..\..\..\Code\Layer2\Include\ResourceSystem\FBXProcesser.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer2\Include\ResourceSystem\FBXProcesser.h">
+    <ClInclude Include="..\..\..\Code\Layer2\Include\ResourceSystem\ImageResource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer2\Include\ResourceSystem\FBXResource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer2\Interface\ResourceSystem\IResourceEnum.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer2\Include\ResourceSystem\CommonFileResource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer2\Include\ResourceSystem\FBXRenderProcesser.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer2\Include\ResourceSystem\Resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer2\Include\ResourceSystem\FBXCommonProcesser.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -54,6 +72,24 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Layer2\Source\ResourceSystem\FBXProcesser.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer2\Source\ResourceSystem\ImageResource.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer2\Source\ResourceSystem\FBXResource.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer2\Source\ResourceSystem\CommonFileResource.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer2\Source\ResourceSystem\FBXRenderProcesser.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer2\Source\ResourceSystem\Resource.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer2\Source\ResourceSystem\FBXCommonProcesser.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

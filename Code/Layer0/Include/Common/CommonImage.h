@@ -21,8 +21,10 @@ namespace NSDevilX
 	public:
 		static Void convertRGB8ToRGBA8(const Byte * src,Byte * dst,UInt32 pixelCount);
 		static Void convertRGBA8ToRGB8(const Byte * src,Byte * dst,UInt32 pixelCount);
-		CImage(CDataStream * dataStream);
+		CImage();
+		CImage(const CDataStream & dataStream);
 		~CImage();
+		Void load(const CDataStream & dataStream);
 		EPixelType getPixelType()const
 		{
 			return mPixelType;
@@ -44,7 +46,5 @@ namespace NSDevilX
 			return &mPixels[0];
 		}
 		CImage * convert(EPixelType type)const;
-	protected:
-		CImage();
 	};
 }

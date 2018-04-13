@@ -1,13 +1,13 @@
 #pragma once
 #include "FBXResource.h"
-#include "FBXCommonProcesser.h"
-#include "FBXRenderProcesser.h"
 namespace NSDevilX
 {
 	namespace NSResourceSystem
 	{
-		class CFBXProcesser
-			:public TBaseObject<CFBXProcesser>
+		class CFBXProcesser;
+		class CFBXRenderProcesser
+			:public TBaseObject<CFBXRenderProcesser>
+			,public CResource
 		{
 		public:
 			struct SVertex
@@ -29,6 +29,14 @@ namespace NSDevilX
 				fbxsdk::FbxVector2 mUV1;
 				TVector<SSkinInfo> mSkinInfos;
 				fbxsdk::FbxSurfaceLambert * mMaterial;
+				SVertex()
+					:mPosition(0)
+					,mNormal(0)
+					,mTangent(0)
+					,mUV0(0,0)
+					,mUV1(0,0)
+					,mMaterial(nullptr)
+				{}
 				Boolean operator==(const SVertex & vertex)const
 				{
 					auto ret=(mPosition==vertex.mPosition)&&
@@ -48,20 +56,22 @@ namespace NSDevilX
 					return ret;
 				}
 			};
+			struct SMeshInfo
+				:public TBaseObject<SMeshInfo>
+			{
+				TVector<SVertex> mVertices;
+				TVector<UInt32> mIndices;
+				fbxsdk::FbxSurfaceLambert * mMaterials;
+			};
 		protected:
-			CFBXResource*const mResource;
-			CFBXCommonProcesser * mCommonProcesser;
-			CFBXRenderProcesser * mRenderProcesser;
-			TVector<SVertex> mVertices;
-			TVector<fbxsdk::FbxCluster*> mClusters;
-			TVector<fbxsdk::FbxSurfaceLambert*> mMaterials;
+			CFBXProcesser*mFBXProcesser;
+			TVector<SMeshInfo> mMeshes;
 		public:
-			CFBXProcesser(CFBXResource * res);
-			~CFBXProcesser();
-			CFBXResource * getFBXResource()const{ return mResource; }
-			CFBXCommonProcesser * getCommonProcesser()const{ return mCommonProcesser; }
-			// 通过 CGeometryProvider 继承
-			Void process(NSRenderSystem::IEntity * entity,Bool sync=False);
+			CFBXRenderProcesser(CFBXProcesser * processer);
+			~CFBXRenderProcesser();
+			const decltype(mMeshes) & getMeshes()const{ return mMeshes; }
+			// 通过 CResource 继承
+			virtual Boolean _loadImpMT() override;
 		};
 	}
 }

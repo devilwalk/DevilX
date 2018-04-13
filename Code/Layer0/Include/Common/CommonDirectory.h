@@ -16,6 +16,8 @@ namespace NSDevilX
 		static String getSystemFontsDirectory();
 		static String getAbsolutePath(const String & path,String currentPath="");
 		static Void create(const String & fullName);
+		static String getDirectoryName(const String & name);
+		static String getExtensionName(const String & name);
 		CDirectory(const String & name,CDirectory * parent=nullptr)
 			:mName(name)
 			,mParent(parent)

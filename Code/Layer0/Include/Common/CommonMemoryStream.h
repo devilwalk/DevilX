@@ -55,7 +55,7 @@ namespace NSDevilX
 		{
 			return mData;
 		}
-
+		Void load(CFileStream * stream);
 		// Inherited via CDataStream
 		virtual CDataStreamReader * createReader() const override;
 		virtual Void destroyReader(CDataStreamReader * reader) const override;

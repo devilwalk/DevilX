@@ -1,47 +1,33 @@
 #pragma once
+#include "Resource.h"
 namespace NSDevilX
 {
 	namespace NSResourceSystem
 	{
 		class ISystemImp;
 		class IResourceImp
-			:public TBaseObject<IResourceImp>
-			,public IResource
-			,public TMessageReceiver<ISystemImp>
-			,public CUserDataContainer
+			:public IResource
+			,public CResource
 		{
-		public:
-			enum ELoadState
-			{
-				ELoadState_Unload,
-				ELoadState_Loading,
-				ELoadState_Loaded
-			};
 		protected:
 			const String mName;
-			const String mFile;
-			ELoadState mLoadState;
-			TVector<ILoadCallback*> mLoadCallbacks;
-			Int32 mLoadThreadSyncGroupID;
-			TSharedReadData<CMemoryStream*> mBuffer;
 		public:
-			IResourceImp(const String & name,const String & file);
-			~IResourceImp();
-			Void setDataStreamMT(CMemoryStream * stream);
-			CMemoryStream * getBuffer()
-			{
-				return mBuffer;
-			}
+			IResourceImp(const String & name);
+			virtual ~IResourceImp();
 			// 通过 IResource 继承
 			virtual const String & getName() const override;
-			virtual const String & getFileName() const override;
 			virtual Void load(ILoadCallback * callback,Bool sync) override;
 			virtual Boolean isLoaded() const override;
+		};
+		class CFileResource
+			:public IResourceImp
+		{
 		protected:
-			Void _updateLoadState();
-
-			// 通过 TMessageReceiver 继承
-			virtual Void onMessage(ISystemImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
+			const String mFile;
+		public:
+			CFileResource(const String & name,const String & file);
+			virtual ~CFileResource();
+			const String & getFileName()const{ return mFile; }
 		};
 	}
 }

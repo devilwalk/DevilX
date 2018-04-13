@@ -76,14 +76,19 @@ NSDevilX::CMemoryStream::CMemoryStream()
 
 NSDevilX::CMemoryStream::CMemoryStream(CFileStream * stream)
 {
+	load(stream);
+}
+
+NSDevilX::CMemoryStream::~CMemoryStream()
+{}
+
+Void NSDevilX::CMemoryStream::load(CFileStream * stream)
+{
 	mData.resize(stream->getSize());
 	CDataStreamReader * reader=stream->createReader();
 	reader->process(stream->getSize(),&mData[0]);
 	stream->destroyReader(reader);
 }
-
-NSDevilX::CMemoryStream::~CMemoryStream()
-{}
 
 CDataStreamReader * NSDevilX::CMemoryStream::createReader() const
 {

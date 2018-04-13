@@ -19,17 +19,28 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\Code\Layer2\Include\ResourceSystem\FBXCommonProcesser.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\ResourceSystem\FBXProcesser.h" />
-    <ClInclude Include="..\..\..\Code\Layer2\Include\ResourceSystem\IOFunction.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Include\ResourceSystem\FBXRenderProcesser.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Include\ResourceSystem\FBXResource.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Include\ResourceSystem\CommonFileResource.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Include\ResourceSystem\ImageResource.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\ResourceSystem\IResourceImp.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Include\ResourceSystem\ISystemImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Include\ResourceSystem\Resource.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\ResourceSystem\IResource.h" />
+    <ClInclude Include="..\..\..\Code\Layer2\Interface\ResourceSystem\IResourceEnum.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\ResourceSystem\IResourceSystem.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Interface\ResourceSystem\IResourceSystemInterface.h" />
     <ClInclude Include="..\..\..\Code\Layer2\Source\ResourceSystem\Precompiler.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Code\Layer2\Source\ResourceSystem\FBXCommonProcesser.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\ResourceSystem\FBXProcesser.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer2\Source\ResourceSystem\FBXRenderProcesser.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer2\Source\ResourceSystem\FBXResource.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer2\Source\ResourceSystem\CommonFileResource.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer2\Source\ResourceSystem\ImageResource.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\ResourceSystem\IResourceImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\ResourceSystem\ISystemImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer2\Source\ResourceSystem\Precompiler.cpp">
@@ -38,6 +49,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer2\Source\ResourceSystem\Resource.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F43877F7-806A-49AF-AC38-72CFF8A43E22}</ProjectGuid>

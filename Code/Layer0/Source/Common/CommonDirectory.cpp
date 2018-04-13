@@ -133,6 +133,49 @@ Void NSDevilX::CDirectory::create(const String & fullName)
 	}
 }
 
+String NSDevilX::CDirectory::getDirectoryName(const String & name)
+{
+	auto clean_path=cleanPath(name);
+#if DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_WINDOWS
+	WIN32_FIND_DATAA wfd;
+	auto handle=::FindFirstFileA(clean_path.c_str(),&wfd);
+	if(INVALID_HANDLE_VALUE!=handle)
+	{
+		::FindClose(handle);
+		if(wfd.dwFileAttributes&FILE_ATTRIBUTE_DIRECTORY)
+			return clean_path;
+	}
+#elif DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_LINUX
+#error("not implement!!")
+#endif
+	auto index=clean_path.find_last_of('/');
+	if(index!=String::npos)
+	{
+		clean_path=clean_path.substr(0,index);
+	}
+	else
+	{
+		clean_path="";
+	}
+	return clean_path;
+}
+
+String NSDevilX::CDirectory::getExtensionName(const String & name)
+{
+	auto pos=name.find_last_of('.');
+	if(String::npos==pos)
+		return "";
+	else
+	{
+		auto ext=name.substr(pos+1);
+		for(auto & c:ext)
+		{
+			c=tolower(c);
+		}
+		return ext;
+	}
+}
+
 Boolean NSDevilX::CDirectory::hasDirectory(const String & name) const
 {
 	Boolean ret=false;

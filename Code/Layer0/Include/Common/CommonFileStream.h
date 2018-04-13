@@ -41,16 +41,17 @@ namespace NSDevilX
 		,public TBaseObject<CFileStream>
 	{
 	protected:
-		const String mFullName;
+		String mFullName;
 		UInt32 mSizeInBytes;
 	public:
+		CFileStream();
 		CFileStream(const String & fullName);
 		~CFileStream();
 		const String & getFullName()const
 		{
 			return mFullName;
 		}
-
+		Void load(const String & fullName);
 		// Inherited via CDataStream
 		virtual UInt32 getSize() const override;
 		virtual CDataStreamReader * createReader() const override;

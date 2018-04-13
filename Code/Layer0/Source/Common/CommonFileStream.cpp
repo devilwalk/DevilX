@@ -63,17 +63,28 @@ UInt32 NSDevilX::CFileStreamWriter::process(ConstVoidPtr src,UInt32 sizeInBytes)
 	return sizeInBytes;
 }
 
+NSDevilX::CFileStream::CFileStream()
+	:mSizeInBytes(0)
+{
+}
+
 NSDevilX::CFileStream::CFileStream(const String & fullName)
 	:mFullName(fullName)
 	,mSizeInBytes(0)
 {
-	std::ifstream stream(getFullName().c_str(),std::ios::binary|std::ios::in);
-	stream.seekg(0,stream.end);
-	mSizeInBytes=static_cast<UInt32>(stream.tellg());
+	load(fullName);
 }
 
 NSDevilX::CFileStream::~CFileStream()
 {}
+
+Void NSDevilX::CFileStream::load(const String & fullName)
+{
+	mFullName=fullName;
+	std::ifstream stream(getFullName().c_str(),std::ios::binary|std::ios::in);
+	stream.seekg(0,stream.end);
+	mSizeInBytes=static_cast<UInt32>(stream.tellg());
+}
 
 UInt32 NSDevilX::CFileStream::getSize() const
 {

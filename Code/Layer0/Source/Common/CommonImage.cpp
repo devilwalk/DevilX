@@ -34,24 +34,39 @@ Void NSDevilX::CImage::convertRGBA8ToRGB8(const Byte * src,Byte * dst,UInt32 pix
 #endif
 	}
 }
-
+static Int32 freeimage_count=0;
 NSDevilX::CImage::CImage()
 	:mPixelType(EPixelType_Unknown)
 	,mBPP(0)
 	,mWidth(0)
 	,mHeight(0)
-{}
+{
+	if(!freeimage_count++)
+		FreeImage_Initialise();
+}
 
-NSDevilX::CImage::CImage(CDataStream * dataStream)
+NSDevilX::CImage::CImage(const CDataStream & dataStream)
 	:mPixelType(EPixelType_Unknown)
 	,mBPP(0)
 	,mWidth(0)
 	,mHeight(0)
 {
-	FreeImage_Initialise();
+	if(!freeimage_count++)
+		FreeImage_Initialise();
+	load(dataStream);
+}
+
+NSDevilX::CImage::~CImage()
+{
+	if(!(--freeimage_count))
+		FreeImage_DeInitialise();
+}
+
+Void NSDevilX::CImage::load(const CDataStream & dataStream)
+{
 	TVector<Byte> src;
-	src.resize(dataStream->getSize());
-	CDataStreamReader * reader=dataStream->createReader();
+	src.resize(dataStream.getSize());
+	CDataStreamReader * reader=dataStream.createReader();
 	reader->process(static_cast<UInt32>(src.size()),&src[0]);
 	FIMEMORY * mem=FreeImage_OpenMemory(&src[0],static_cast<UInt32>(src.size()));
 	FREE_IMAGE_FORMAT fmat=FreeImage_GetFileTypeFromMemory(mem);
@@ -135,11 +150,6 @@ NSDevilX::CImage::CImage(CDataStream * dataStream)
 	}
 	FreeImage_Unload(bmp);
 	FreeImage_CloseMemory(mem);
-	FreeImage_DeInitialise();
-}
-
-NSDevilX::CImage::~CImage()
-{
 }
 
 CImage * NSDevilX::CImage::convert(EPixelType type) const

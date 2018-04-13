@@ -2,24 +2,12 @@
 using namespace NSDevilX;
 using namespace NSResourceSystem;
 
-NSDevilX::NSResourceSystem::IResourceImp::IResourceImp(const String & name,const String & file)
+NSDevilX::NSResourceSystem::IResourceImp::IResourceImp(const String & name)
 	:mName(name)
-	,mFile(file)
-	,mLoadState(ELoadState_Unload)
-	,mLoadThreadSyncGroupID(-1)
-	,mBuffer(nullptr)
 {}
 
 NSDevilX::NSResourceSystem::IResourceImp::~IResourceImp()
 {
-	if(-1!=mLoadThreadSyncGroupID)
-		ISystemImp::getSingleton().getIOPool()->waitMT(mLoadThreadSyncGroupID);
-	DEVILX_DELETE(getBuffer());
-}
-
-Void NSDevilX::NSResourceSystem::IResourceImp::setDataStreamMT(CMemoryStream * stream)
-{
-	mBuffer.write(stream);
 }
 
 const String & NSDevilX::NSResourceSystem::IResourceImp::getName() const
@@ -28,83 +16,36 @@ const String & NSDevilX::NSResourceSystem::IResourceImp::getName() const
 	return mName;
 }
 
-const String & NSDevilX::NSResourceSystem::IResourceImp::getFileName() const
-{
-	// TODO: 在此处插入 return 语句
-	return mFile;
-}
-
 Void NSDevilX::NSResourceSystem::IResourceImp::load(ILoadCallback * callback,Bool sync)
 {
-	_updateLoadState();
-	switch(mLoadState)
+	struct SCallbackWrapper
+		:public CResource::SLoadCallback
+		,public TBaseObject<SCallbackWrapper>
 	{
-	case ELoadState_Unload:
-		mLoadThreadSyncGroupID=ISystemImp::getSingleton().getIOPool()->nextSyncGroupID();
-		ISystemImp::getSingleton().getIOPool()->submitMT(IOFunction,this,mLoadThreadSyncGroupID);
-		if(False==sync)
-			ISystemImp::getSingleton().addListener(this,ISystemImp::EMessage_Update);
-		if(callback)
-			mLoadCallbacks.push_back(callback);
-		mLoadState=ELoadState_Loading;
-		break;
-	case ELoadState_Loading:
-		if(callback)
-			mLoadCallbacks.push_back(callback);
-		break;
-	case ELoadState_Loaded:
-		if(callback)
-			callback->onLoaded(this);
-		break;
-	}
-	if(sync)
-	{
-		if(!isLoaded())
+		ILoadCallback * const mCallback;
+		SCallbackWrapper(ILoadCallback * callback)
+			:mCallback(callback)
+		{}
+		Void onLoaded(CResource * res) override final
 		{
-			Sleep(10);
-			load(nullptr,True);
+			mCallback->onLoaded(static_cast<IResourceImp*>(res));
+			DEVILX_DELETE(this);
 		}
-		else
-		{
-			for(auto callback:mLoadCallbacks)
-				callback->onLoaded(this);
-			mLoadCallbacks.clear();
-		}
-	}
+	};
+	CResource::load(DEVILX_NEW SCallbackWrapper(callback),sync);
 }
 
 Boolean NSDevilX::NSResourceSystem::IResourceImp::isLoaded() const
 {
-	return mLoadState==ELoadState_Loaded;
+	return CResource::isLoaded();
 }
 
-Void NSDevilX::NSResourceSystem::IResourceImp::_updateLoadState()
+NSDevilX::NSResourceSystem::CFileResource::CFileResource(const String & name,const String & file)
+	:IResourceImp(name)
+	,mFile(file)
 {
-	if(ELoadState_Loading==mLoadState)
-	{
-		auto buffer=mBuffer.beginRead();
-		if(buffer)
-		{
-			mLoadState=ELoadState_Loaded;
-			mLoadThreadSyncGroupID=-1;
-		}
-		mBuffer.endRead();
-	}
 }
 
-Void NSDevilX::NSResourceSystem::IResourceImp::onMessage(ISystemImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
+NSDevilX::NSResourceSystem::CFileResource::~CFileResource()
 {
-	switch(message)
-	{
-	case ISystemImp::EMessage_Update:
-		_updateLoadState();
-		if(isLoaded())
-		{
-			for(auto callback:mLoadCallbacks)
-				callback->onLoaded(this);
-			mLoadCallbacks.clear();
-			ISystemImp::getSingleton().removeListener(this,ISystemImp::EMessage_Update);
-		}
-		break;
-	}
 }

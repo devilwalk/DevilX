@@ -16,6 +16,7 @@ NSDevilX::NSResourceSystem::ISystemImp::ISystemImp()
 
 NSDevilX::NSResourceSystem::ISystemImp::~ISystemImp()
 {
+	mResourceByFileNameList.clear();
 	DEVILX_DELETE(getIOPool());
 	DEVILX_DELETE(mFontManager);
 }
@@ -30,13 +31,35 @@ Void NSDevilX::NSResourceSystem::ISystemImp::shutdown()
 	DEVILX_DELETE(this);
 }
 
-IResource * NSDevilX::NSResourceSystem::ISystemImp::createResource(const String & name,const String & filename)
+IResource * NSDevilX::NSResourceSystem::ISystemImp::createResource(const String & name,const String & filename,IEnum::EResourceType type)
 {
-	if(mResources.has(name))
-		return nullptr;
-	auto ret=DEVILX_NEW IResourceImp(name,filename);
-	mResources.add(name,ret);
-	return ret;
+	IResourceImp * res=nullptr;
+	assert(!getResource(name)&&!getResourceByFileName(filename));
+	switch(type)
+	{
+	case IEnum::EResourceType_Image:
+		res=DEVILX_NEW CImageResource(name,filename);
+		break;
+	case IEnum::EResourceType_FBX:
+		res=DEVILX_NEW CFBXResource(name,filename);
+		break;
+	case IEnum::EResourceType_CommonFile:
+		res=DEVILX_NEW CCommonFileResource(name,filename);
+		break;
+	}
+	if(!res)
+	{
+		auto ext=CDirectory::getExtensionName(filename);
+		if(ext=="fbx")
+			res=DEVILX_NEW CFBXResource(name,filename);
+		else if((ext=="jpg")||(ext=="png")||(ext=="bmp")||(ext=="dds")||(ext=="jpeg"))
+			res=DEVILX_NEW CImageResource(name,filename);
+		else
+			res=DEVILX_NEW CCommonFileResource(name,filename);
+	}
+	mResources.add(name,res);
+	mResourceByFileNameList.add(filename,res);
+	return res;
 }
 
 IResource * NSDevilX::NSResourceSystem::ISystemImp::getResource(const String & name) const
@@ -44,18 +67,27 @@ IResource * NSDevilX::NSResourceSystem::ISystemImp::getResource(const String & n
 	return mResources.get(name);
 }
 
+IResource * NSDevilX::NSResourceSystem::ISystemImp::getResourceByFileName(const String & filename) const
+{
+	return mResourceByFileNameList.get(filename);
+}
+
 Void NSDevilX::NSResourceSystem::ISystemImp::destroyResource(IResource * res)
 {
 	return mResources.destroy(res->getName());
 }
 
-IResource * NSDevilX::NSResourceSystem::ISystemImp::createOrRetrieveResource(const String & name,const String & filename)
+IResource * NSDevilX::NSResourceSystem::ISystemImp::createOrRetrieveResource(const String & name,const String & filename,IEnum::EResourceType type)
 {
 	auto ret=getResource(name);
 	if(!ret)
 	{
 		auto fullname=CDirectory::getAbsolutePath(filename,CDirectory::getApplicationDirectory());
-		ret=createResource(name,fullname);
+		ret=createResource(name,fullname,type);
+	}
+	else if(type!=IEnum::EResourceType_Unknown)
+	{
+		assert(type==ret->getType());
 	}
 	return ret;
 }
@@ -72,16 +104,7 @@ Void NSDevilX::NSResourceSystem::ISystemImp::getImage(IResource * resource,IGetI
 		{}
 		virtual Void onLoaded(IResource * resource) override
 		{
-			CImage * ret=nullptr;
-			if(static_cast<IResourceImp*>(resource)->hasUserData("CImage"))
-			{
-				ret=static_cast<IResourceImp*>(resource)->getUserData("CImage").get<CImage*>();
-			}
-			else
-			{
-				ret=DEVILX_NEW CImage(static_cast<IResourceImp*>(resource)->getBuffer());
-				static_cast<IResourceImp*>(resource)->setUserData("CImage",ret);
-			}
+			CImage * ret=static_cast<CImageResource*>(resource)->getImage();
 			mCallback->onLoaded(ret);
 			DEVILX_DELETE(this);
 		}
@@ -102,9 +125,9 @@ Void NSDevilX::NSResourceSystem::ISystemImp::getFontFace(IResource * resource,IG
 		{}
 		virtual Void onLoaded(IResource * resource) override
 		{
-			if(!ISystemImp::getSingleton().mFontManager->getFace(static_cast<IResourceImp*>(resource)->getName()))
+			if(!ISystemImp::getSingleton().mFontManager->getFace(static_cast<CCommonFileResource*>(resource)->getName()))
 			{
-				ISystemImp::getSingleton().mFontManager->reigsterFont(static_cast<IResourceImp*>(resource)->getName(),static_cast<IResourceImp*>(resource)->getBuffer());
+				ISystemImp::getSingleton().mFontManager->reigsterFont(static_cast<CCommonFileResource*>(resource)->getName(),&static_cast<CCommonFileResource*>(resource)->getMemoryStream());
 			}
 			mCallback->onLoaded(ISystemImp::getSingleton().mFontManager->getFace(static_cast<IResourceImp*>(resource)->getName()));
 			DEVILX_DELETE(this);
@@ -129,16 +152,16 @@ Void NSDevilX::NSResourceSystem::ISystemImp::getChar(IResource * resource,const 
 		virtual Void onLoaded(IResource * resource) override
 		{
 			CFontManager::SChar ret;
-			if(!static_cast<IResourceImp*>(resource)->hasUserData("CFontImage"))
+			if(!static_cast<CCommonFileResource*>(resource)->hasUserData("CFontImage"))
 			{
-				ret=ISystemImp::getSingleton().mFontManager->get(static_cast<IResourceImp*>(resource)->getName(),mChar);
+				ret=ISystemImp::getSingleton().mFontManager->get(static_cast<CCommonFileResource*>(resource)->getName(),mChar);
 				if(!ret.mImage)
 				{
-					ISystemImp::getSingleton().mFontManager->reigsterFont(static_cast<IResourceImp*>(resource)->getName(),static_cast<IResourceImp*>(resource)->getBuffer());
+					ISystemImp::getSingleton().mFontManager->reigsterFont(static_cast<CCommonFileResource*>(resource)->getName(),&static_cast<CCommonFileResource*>(resource)->getMemoryStream());
 				}
-				static_cast<IResourceImp*>(resource)->setUserData("CFontImage",ret.mImage);
+				static_cast<CCommonFileResource*>(resource)->setUserData("CFontImage",ret.mImage);
 			}
-			ret=ISystemImp::getSingleton().mFontManager->get(static_cast<IResourceImp*>(resource)->getName(),mChar);
+			ret=ISystemImp::getSingleton().mFontManager->get(static_cast<CCommonFileResource*>(resource)->getName(),mChar);
 			mCallback->onLoaded(ret);
 			DEVILX_DELETE(this);
 		}
@@ -153,9 +176,9 @@ Void NSDevilX::NSResourceSystem::ISystemImp::getRenderTexture(IResource * resour
 		:public IGetImageCallback
 		,public TBaseObject<SImageCallback>
 	{
-		IResourceImp * const mResource;
+		CImageResource * const mResource;
 		IGetRenderTextureCallback * const mCallback;
-		SImageCallback(IResourceImp * res,IGetRenderTextureCallback * textureCallback)
+		SImageCallback(CImageResource * res,IGetRenderTextureCallback * textureCallback)
 			:mResource(res)
 			,mCallback(textureCallback)
 		{}
@@ -186,71 +209,46 @@ Void NSDevilX::NSResourceSystem::ISystemImp::getRenderTexture(IResource * resour
 			DEVILX_DELETE(this);
 		}
 	};
-	SImageCallback * img_callback=DEVILX_NEW SImageCallback(static_cast<IResourceImp*>(resource),callback);
+	SImageCallback * img_callback=DEVILX_NEW SImageCallback(static_cast<CImageResource*>(resource),callback);
 	getImage(resource,img_callback,sync);
 }
 
-Void NSDevilX::NSResourceSystem::ISystemImp::getRenderTexture(IResource * resource,const CUTF8Char & c,IGetRenderTextureCallback * callback,Bool sync)
+Void NSDevilX::NSResourceSystem::ISystemImp::getRenderTexture(IResource * fontResource,const CUTF8Char & c,IGetRenderTextureCallback * callback,Bool sync)
 {
-	struct SImageCallback
-		:public IGetImageCallback
-		,public TBaseObject<SImageCallback>
+	struct SCharCallback
+		:public IGetCharCallback
+		,public TBaseObject<SCharCallback>
 	{
-		IResourceImp * const mResource;
-		CFontManager::SChar mCharInfo;
+		CCommonFileResource * const mResource;
 		IGetRenderTextureCallback * const mCallback;
-		SImageCallback(IResourceImp * res,const CFontManager::SChar & ch,IGetRenderTextureCallback * textureCallback)
-			:mResource(res)
-			,mCharInfo(ch)
-			,mCallback(textureCallback)
+		SCharCallback(CCommonFileResource * resource,IGetRenderTextureCallback * callback)
+			:mResource(resource)
+			,mCallback(callback)
 		{}
-		virtual Void onLoaded(CImage * img) override
+		virtual Void onLoaded(const CFontManager::SChar & ch) override
 		{
-			NSRenderSystem::ITexture * ret=nullptr;
-			if(mResource->hasUserData("NSRenderSystem::ITexture"))
+			const auto tex_name="FontTexture/"+CStringConverter::toString(ch.mImage);
+			auto ret=NSRenderSystem::getSystem()->queryInterface_IResourceManager()->getTexture(tex_name);
+			if(!ret)
 			{
-				ret=mResource->getUserData("NSRenderSystem::ITexture").get<NSRenderSystem::ITexture*>();
-			}
-			else
-			{
-				ret=NSRenderSystem::getSystem()->queryInterface_IResourceManager()->createTexture("FontTexture/"+CStringConverter::toString(mCharInfo.mImage),NSRenderSystem::IEnum::ETextureType_2D);
+				ret=NSRenderSystem::getSystem()->queryInterface_IResourceManager()->createTexture(tex_name,NSRenderSystem::IEnum::ETextureType_2D);
 				ret->queryInterface_ITexture2DWritable()->setArraySize(1);
 				ret->queryInterface_ITexture2DWritable()->setFormat(NSRenderSystem::IEnum::ETexture2DFormat_A8);
 				ret->queryInterface_ITexture2DWritable()->setMipmapCount(0);
-				ret->queryInterface_ITexture2DWritable()->setSize(mCharInfo.mImage->getSize().x,mCharInfo.mImage->getSize().y);
-				ret->queryInterface_ITexture2DWritable()->setPixels(mCharInfo.mImage->getPixels(),0);
-				mResource->setUserData("NSRenderSystem::ITexture",ret);
+				ret->queryInterface_ITexture2DWritable()->setSize(ch.mImage->getSize().x,ch.mImage->getSize().y);
+				ret->queryInterface_ITexture2DWritable()->setPixels(ch.mImage->getPixels(),0);
 			}
-			if(mCharInfo.mImage->isDirty())
+			if(ch.mImage->isDirty())
 			{
 				ret->queryInterface_ITexture2DWritable()->updatePixels(0,0);
-				mCharInfo.mImage->setDirty(False);
+				ch.mImage->setDirty(False);
 			}
 			mCallback->onLoaded(ret);
 			DEVILX_DELETE(this);
 		}
 	};
-	struct SCharCallback
-		:public IGetCharCallback
-		,public TBaseObject<SCharCallback>
-	{
-		IResourceImp * const mResource;
-		IGetRenderTextureCallback * const mCallback;
-		const Bool mSync;
-		SCharCallback(IResourceImp * resource,IGetRenderTextureCallback * callback,Bool sync)
-			:mResource(resource)
-			,mCallback(callback)
-			,mSync(sync)
-		{}
-		virtual Void onLoaded(const CFontManager::SChar & ch) override
-		{
-			SImageCallback * img_callback=DEVILX_NEW SImageCallback(mResource,ch,mCallback);
-			ISystemImp::getSingleton().getImage(mResource,img_callback,mSync);
-			DEVILX_DELETE(this);
-		}
-	};
-	SCharCallback * char_callback=DEVILX_NEW SCharCallback(static_cast<IResourceImp*>(resource),callback,sync);
-	getChar(resource,c,char_callback,sync);
+	SCharCallback * char_callback=DEVILX_NEW SCharCallback(static_cast<CCommonFileResource*>(fontResource),callback);
+	getChar(fontResource,c,char_callback,sync);
 }
 
 NSRenderSystem::IEntity * NSDevilX::NSResourceSystem::ISystemImp::getRenderEntity(IResource * resource,NSRenderSystem::IScene * scene)
@@ -274,11 +272,11 @@ Void NSDevilX::NSResourceSystem::ISystemImp::getRenderEntity(IResource * resourc
 		{}
 		virtual Void onLoaded(IResource * resource) override
 		{
-			auto processer=ISystemImp::getSingleton().mFBXResources.get(static_cast<IResourceImp*>(resource));
+			auto processer=ISystemImp::getSingleton().mFBXResources.get(static_cast<CFBXResource*>(resource));
 			if(!processer)
 			{
-				processer=DEVILX_NEW CFBXProcesser(static_cast<IResourceImp*>(resource));
-				ISystemImp::getSingleton().mFBXResources.add(static_cast<IResourceImp*>(resource),processer);
+				processer=DEVILX_NEW CFBXProcesser(static_cast<CFBXResource*>(resource));
+				ISystemImp::getSingleton().mFBXResources.add(static_cast<CFBXResource*>(resource),processer);
 			}
 			processer->process(mEntity);
 			if(mCallback)
