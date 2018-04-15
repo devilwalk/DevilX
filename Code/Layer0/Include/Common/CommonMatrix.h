@@ -52,6 +52,10 @@ namespace NSDevilX
 		}
 #define END_CLASS };
 	BEGIN_MATRIX_CLASS(4)
+	const CFloat4 colume(UInt32 index)const
+	{
+		return CFloat4(m[0][index],m[1][index],m[2][index],m[3][index]);
+	}
 	END_CLASS
 #undef BEGIN_VECTOR_CLASS
 #undef END_CLASS

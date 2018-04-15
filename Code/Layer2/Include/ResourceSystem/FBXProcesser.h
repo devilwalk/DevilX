@@ -60,8 +60,11 @@ namespace NSDevilX
 			~CFBXProcesser();
 			CFBXResource * getFBXResource()const{ return mResource; }
 			CFBXCommonProcesser * getCommonProcesser()const{ return mCommonProcesser; }
+			CFBXRenderProcesser * getRenderProcesser()const{ return mRenderProcesser; }
 			// Í¨¹ý CGeometryProvider ¼Ì³Ð
 			Void process(NSRenderSystem::IEntity * entity,Bool sync=False);
+		protected:
+			Void _process(NSRenderSystem::IEntity * entity);
 		};
 	}
 }

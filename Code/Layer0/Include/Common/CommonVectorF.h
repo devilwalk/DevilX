@@ -166,6 +166,32 @@ namespace NSDevilX
 	{
 		*this=DirectX::XMVector4Normalize(*this);
 	}
+	Float & operator[](SizeT index)
+	{
+		switch(index)
+		{
+		case 0:return x;
+		case 1:return y;
+		case 2:return z;
+		case 3:return w;
+		default:
+			assert(false);
+			return x;
+		}
+	}
+	Float operator[](SizeT index)const
+	{
+		switch(index)
+		{
+		case 0:return x;
+		case 1:return y;
+		case 2:return z;
+		case 3:return w;
+		default:
+			assert(false);
+			return x;
+		}
+	}
 	END_CLASS
 	BEGIN_VECTOR_CLASS(DirectX::PackedVector,HALF,Half,2)
 	CHalf2(Float value=0.0f)

@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\Enum.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IBufferImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IBufferOperator_SkeletonAnimationImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IBufferUsageImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\ICameraImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IGeometryImp.h" />
@@ -50,6 +51,7 @@
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IWindowImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\SceneManager.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\Shader\DefnitionShaderCodeFunction.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderBufferOperator_SkeletonAnimation.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderBuffer.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderBufferUsage.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderSubEntity.h" />
@@ -83,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IBufferImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IBufferOperator_SkeletonAnimationImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IBufferUsageImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\ICameraImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IGeometryImp.cpp" />
@@ -120,7 +123,7 @@
     <ProjectGuid>{6370D2B2-ABDA-4A54-BCCB-9FB75368E79C}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>RenderSystem</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
     <ProjectName>RenderSystem</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />

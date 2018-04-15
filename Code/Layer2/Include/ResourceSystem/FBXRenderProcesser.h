@@ -28,24 +28,21 @@ namespace NSDevilX
 				fbxsdk::FbxVector2 mUV0;
 				fbxsdk::FbxVector2 mUV1;
 				TVector<SSkinInfo> mSkinInfos;
-				fbxsdk::FbxSurfaceLambert * mMaterial;
 				SVertex()
 					:mPosition(0)
 					,mNormal(0)
 					,mTangent(0)
-					,mUV0(0,0)
-					,mUV1(0,0)
-					,mMaterial(nullptr)
+					,mUV0(-1,-1)
+					,mUV1(-1,-1)
 				{}
 				Boolean operator==(const SVertex & vertex)const
 				{
-					auto ret=(mPosition==vertex.mPosition)&&
+					auto ret=((mPosition==vertex.mPosition)&&
 						(mNormal==vertex.mNormal)&&
 						(mTangent==vertex.mTangent)&&
 						(mUV0==vertex.mUV0)&&
 						(mUV1==vertex.mUV1)&&
-						(mSkinInfos.size()==vertex.mSkinInfos.size())&&
-						(mMaterial==vertex.mMaterial);
+						(mSkinInfos.size()==vertex.mSkinInfos.size()));
 					if(ret)
 					{
 						for(size_t i=0,count=mSkinInfos.size();i<count;++i)
@@ -55,13 +52,33 @@ namespace NSDevilX
 					}
 					return ret;
 				}
+				Boolean hasNormal()const
+				{
+					return mNormal!=fbxsdk::FbxVector4(0);
+				}
+				Boolean hasTangent()const
+				{
+					return mTangent!=fbxsdk::FbxVector4(0);
+				}
+				Boolean hasUV0()const
+				{
+					return mUV0!=fbxsdk::FbxVector2(-1,-1);
+				}
+				Boolean hasUV1()const
+				{
+					return mUV1!=fbxsdk::FbxVector2(-1,-1);
+				}
+				Boolean hasSkin()const
+				{
+					return !mSkinInfos.empty();
+				}
 			};
 			struct SMeshInfo
 				:public TBaseObject<SMeshInfo>
 			{
 				TVector<SVertex> mVertices;
 				TVector<UInt32> mIndices;
-				fbxsdk::FbxSurfaceLambert * mMaterials;
+				fbxsdk::FbxSurfaceLambert * mMaterial;
 			};
 		protected:
 			CFBXProcesser*mFBXProcesser;

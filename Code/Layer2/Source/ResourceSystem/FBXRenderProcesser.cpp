@@ -306,85 +306,15 @@ namespace NSDevilX
 					}
 				}
 			}
-			static Void processMaterial(fbxsdk::FbxMesh * mesh,const TVector<TVector<Int32> > & polygonKeys,OUT TVector<CFBXRenderProcesser::SVertex> & vertices)
+			static fbxsdk::FbxSurfaceLambert * processMaterial(fbxsdk::FbxMesh * mesh)
 			{
+				fbxsdk::FbxSurfaceLambert * ret=nullptr;
 				assert(mesh->GetElementMaterialCount()<=1);
 				for(auto element_material_index=0;element_material_index<mesh->GetElementMaterialCount();++element_material_index)
 				{
 					auto element_material=mesh->GetElementMaterial(element_material_index);
 					switch(element_material->GetMappingMode())
 					{
-						//case fbxsdk::FbxLayerElement::eByControlPoint:
-						//	switch(element_material->GetReferenceMode())
-						//	{
-						//	case fbxsdk::FbxLayerElement::eIndex:
-						//	case fbxsdk::FbxLayerElement::eIndexToDirect:
-						//		assert(element_material->GetIndexArray().GetCount()==mesh->GetControlPointsCount());
-						//		for(auto i=0;i<element_material->GetIndexArray().GetCount();++i)
-						//		{
-						//			auto material=mesh->GetNode()->GetMaterial(i);
-						//			for(auto key:polygonKeys[i])
-						//			{
-						//				Int32 polygon_index;
-						//				Int32 vertex_index;
-						//				NSInternal::parsePolygonKey(key,polygon_index,vertex_index);
-						//				vertices[polygon_index*3+vertex_index].mMaterial.mLambert=dynamic_cast<fbxsdk::FbxSurfaceLambert*>(material);
-						//				vertices[polygon_index*3+vertex_index].mMaterial.mPhong=dynamic_cast<fbxsdk::FbxSurfacePhong*>(material);
-						//			}
-						//		}
-						//		break;
-						//	default:
-						//		assert(false);
-						//	}
-						//	break;
-						//case fbxsdk::FbxLayerElement::eByPolygonVertex:
-						//	switch(element_material->GetReferenceMode())
-						//	{
-						//	case fbxsdk::FbxLayerElement::eIndex:
-						//	case fbxsdk::FbxLayerElement::eIndexToDirect:
-						//		assert(element_material->GetIndexArray().GetCount()==mesh->GetPolygonVertexCount());
-						//		for(auto i=0;i<element_material->GetIndexArray().GetCount();++i)
-						//		{
-						//			auto material=mesh->GetNode()->GetMaterial(i);
-						//			vertices[i].mMaterial.mLambert=dynamic_cast<fbxsdk::FbxSurfaceLambert*>(material);
-						//			vertices[i].mMaterial.mPhong=dynamic_cast<fbxsdk::FbxSurfacePhong*>(material);
-						//		}
-						//		break;
-						//	default:
-						//		assert(false);
-						//	}
-						//	break;
-					case fbxsdk::FbxLayerElement::eByPolygon:
-						switch(element_material->GetReferenceMode())
-						{
-						case fbxsdk::FbxLayerElement::eIndex:
-						case fbxsdk::FbxLayerElement::eIndexToDirect:
-							assert(element_material->GetIndexArray().GetCount()==mesh->GetPolygonCount());
-							for(auto i=0;i<element_material->GetIndexArray().GetCount();++i)
-							{
-								auto material=mesh->GetNode()->GetMaterial(element_material->GetIndexArray()[i]);
-								if(material->GetClassId().Is(fbxsdk::FbxSurfacePhong::ClassId))
-								{
-									for(auto vertex_index=0;vertex_index<3;++vertex_index)
-									{
-										auto index=i*3+vertex_index;
-										vertices[index].mMaterial=static_cast<fbxsdk::FbxSurfacePhong*>(material);
-									}
-								}
-								else if(material->GetClassId().Is(fbxsdk::FbxSurfaceLambert::ClassId))
-								{
-									for(auto vertex_index=0;vertex_index<3;++vertex_index)
-									{
-										auto index=i*3+vertex_index;
-										vertices[index].mMaterial=static_cast<fbxsdk::FbxSurfaceLambert*>(material);
-									}
-								}
-							}
-							break;
-						default:
-							assert(false);
-						}
-						break;
 					case fbxsdk::FbxLayerElement::eAllSame:
 						switch(element_material->GetReferenceMode())
 						{
@@ -392,21 +322,7 @@ namespace NSDevilX
 						case fbxsdk::FbxLayerElement::eIndexToDirect:
 							assert(element_material->GetIndexArray().GetCount()==1);
 							{
-								auto material=mesh->GetNode()->GetMaterial(element_material->GetIndexArray()[0]);
-								if(material->GetClassId().Is(fbxsdk::FbxSurfacePhong::ClassId))
-								{
-									for(auto & vertex:vertices)
-									{
-										vertex.mMaterial=static_cast<fbxsdk::FbxSurfacePhong*>(material);
-									}
-								}
-								else if(material->GetClassId().Is(fbxsdk::FbxSurfaceLambert::ClassId))
-								{
-									for(auto & vertex:vertices)
-									{
-										vertex.mMaterial=static_cast<fbxsdk::FbxSurfaceLambert*>(material);
-									}
-								}
+								ret=static_cast<fbxsdk::FbxSurfaceLambert*>(mesh->GetNode()->GetMaterial(element_material->GetIndexArray()[0]));
 							}
 							break;
 						default:
@@ -417,6 +333,7 @@ namespace NSDevilX
 						assert(false);
 					}
 				}
+				return ret;
 			}
 		}
 	}
@@ -448,6 +365,7 @@ Boolean NSDevilX::NSResourceSystem::CFBXRenderProcesser::_loadImpMT()
 		NSInternal::processTangents(mesh,polygon_keys_by_control_point_index,vertices);
 		NSInternal::processUV0s(mesh,polygon_keys_by_control_point_index,vertices);
 		NSInternal::processSkin(mesh,polygon_keys_by_control_point_index,vertices);
+		mesh_info.mMaterial=NSInternal::processMaterial(mesh);
 
 		{//fill indices
 			TVector<SVertex> new_vertices;

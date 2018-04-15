@@ -55,7 +55,7 @@
     <ProjectGuid>{F43877F7-806A-49AF-AC38-72CFF8A43E22}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Layer1</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
     <ProjectName>ResourceSystem</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />

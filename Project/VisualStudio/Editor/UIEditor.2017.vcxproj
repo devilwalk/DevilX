@@ -22,7 +22,7 @@
     <ProjectGuid>{641B7340-AF01-4A78-B736-2A4D17CFD6C2}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>UIEditor</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
     <ProjectName>UIEditor</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />

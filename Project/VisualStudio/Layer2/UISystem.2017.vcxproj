@@ -54,7 +54,7 @@
     <ProjectGuid>{BFC5FA51-9ACC-4611-BC5D-8054C6D6EFAC}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Project</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
     <ProjectName>UISystem</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />

@@ -23,7 +23,7 @@
     <ProjectGuid>{512AC93F-6D44-46C2-B310-FC0A566D6378}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>TestCubeBlockWorld</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
     <ProjectName>TestCubeBlockWorld</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
