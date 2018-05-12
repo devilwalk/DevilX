@@ -213,6 +213,12 @@
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonTreeContainer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonCommandQueue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonAnimationFrame.cpp">
@@ -309,6 +315,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonTreeContainer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonCommandQueue.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -21,6 +21,11 @@ Boolean NSDevilX::CPointerQueueMT::empty()
 	return static_cast<tbb::concurrent_bounded_queue<VoidPtr>*>(mInternalQueue)->empty();
 }
 
+SizeT NSDevilX::CPointerQueueMT::size()
+{
+	return static_cast<tbb::concurrent_bounded_queue<VoidPtr>*>(mInternalQueue)->size();
+}
+
 Void NSDevilX::CPointerQueueMT::_push(VoidPtr data)
 {
 	static_cast<tbb::concurrent_bounded_queue<VoidPtr>*>(mInternalQueue)->push(data);

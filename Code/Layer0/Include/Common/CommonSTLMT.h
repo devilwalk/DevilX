@@ -132,6 +132,7 @@ namespace NSDevilX
 		}
 		Void clear();
 		Boolean empty();
+		SizeT size();
 	protected:
 		Void _push(VoidPtr data);
 		VoidPtr _pop();

@@ -10,7 +10,6 @@ namespace NSDevilX
 	typedef TFunctionWorker<Boolean> CThreadFunctionWorker;
 	class CSemaphorePool
 		:public TBaseObject<CSemaphorePool>
-		,public TSingletonEx<CSemaphorePool>
 	{
 	protected:
 		CPointerQueueMT mFreeWorkerPool;
@@ -42,13 +41,14 @@ namespace NSDevilX
 		};
 		typedef TVector<SThread*> ThreadList;
 	protected:
+		CSemaphorePool*mSemaphorePool;
 		ThreadList mThreadList;
 		CPointerQueueMT mFreeWorkerPool;
 		TMapMT<Int32,CSemaphoreGroupWait*> mSemaphoreGroupWaits;
-		std::atomic<Int32> mNextSyncGroupID;
+		Int32 mNextSyncGroupID;
 		volatile Bool mExit;
 	public:
-		CThreadPool(UInt32 maxThreadCount);
+		CThreadPool(UInt32 maxThreadCount,CSemaphorePool * semaphorePool=nullptr);
 		~CThreadPool();
 		Int32 nextSyncGroupID();
 		Void submitMT(CThreadFunctionWorker::WorkFunction func,VoidPtr parameter,Int32 syncGroupID=-1);
