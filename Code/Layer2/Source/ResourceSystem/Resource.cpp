@@ -31,10 +31,7 @@ Void NSDevilX::NSResourceSystem::CResource::load(SLoadCallback * callback,Bool s
 				auto write_value=static_cast<CResource::ELoadState*>(DEVILX_ALLOC(sizeof(CResource::ELoadState)));
 				*write_value=CResource::ELoadState_Loaded;
 				res->mReplacedLoadStateMT.write(write_value);
-				return true;
 			}
-			else
-				return false;
 		}
 		,this,mLoadThreadSyncGroupID);
 		if(False==sync)

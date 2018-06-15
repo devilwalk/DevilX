@@ -2,6 +2,22 @@
 using namespace NSDevilX;
 using namespace NSCubeBlockSystem;
 
+namespace NSDevilX
+{
+	namespace NSCubeBlockSystem
+	{
+		namespace NSInternal
+		{
+			static Boolean optimizeBlockRange(VoidPtr parameter)
+			{
+				auto ranges=static_cast<CArea::SBlockRanges*>(parameter);
+
+				return true;
+			}
+		}
+	}
+}
+
 NSDevilX::NSCubeBlockSystem::CArea::SRenderable::SRenderable(IRenderMaterialImp * material,CArea * area)
 	:mMaterial(material)
 	,mArea(area)
@@ -47,6 +63,16 @@ Void NSDevilX::NSCubeBlockSystem::CArea::SRenderable::onMessage(IRenderMaterialI
 }
 
 NSRenderSystem::IGeometry * NSDevilX::NSCubeBlockSystem::CArea::sGeometry=nullptr;
+DirectX::XMVECTOR NSDevilX::NSCubeBlockSystem::CArea::calculateAreaPosition(const CInt3 & blockPosition)
+{
+	const DirectX::XMVECTOR position_vec=blockPosition;
+	DirectX::XMVECTOR area_size_vec=CInt3(CArea::sBlockSize);
+	DirectX::XMVECTOR value_offset_vec=CInt3((blockPosition.x<0)?-1:0,(blockPosition.y<0)?-1:0,(blockPosition.z<0)?-1:0);
+	CInt3 value_offset(value_offset_vec);
+	const DirectX::XMVECTOR area_pos_vec=position_vec/area_size_vec+value_offset_vec;
+	return area_pos_vec;
+}
+
 NSDevilX::NSCubeBlockSystem::CArea::CArea(const CInt3 & position,ISceneImp * scene)
 	:mPosition(position)
 	,mScene(scene)
@@ -71,10 +97,11 @@ NSDevilX::NSCubeBlockSystem::CArea::~CArea()
 	mScene->getRenderScene()->destroyEntity(mEntity);
 }
 
-Void NSDevilX::NSCubeBlockSystem::CArea::setBlockMT(const CInt3 & position,IBlockImp * block)
+Void NSDevilX::NSCubeBlockSystem::CArea::setBlock(const CInt3 & position,IBlockImp * block)
 {
 	assert(position>=CInt3::sZero);
 	assert(position<CInt3(sBlockSize));
+	setBlock(CRange3I(position,position),block);
 	if(block)
 	{
 		auto ranges=_getRangesMT(block);
@@ -98,7 +125,7 @@ Void NSDevilX::NSCubeBlockSystem::CArea::setBlockMT(const CInt3 & position,IBloc
 				for(auto iter=ranges->begin(),end=ranges->end();end!=iter;++iter)
 				{
 					auto test=*iter;
-					if(test->merge(merge_range))
+					if(CRange3I::EMergeResult_Success==test->merge(merge_range))
 					{
 						merge_range.setMin(test->getMin());
 						merge_range.setMax(test->getMax());
@@ -152,104 +179,43 @@ Void NSDevilX::NSCubeBlockSystem::CArea::setBlockMT(const CInt3 & position,IBloc
 	}
 }
 
-Void NSDevilX::NSCubeBlockSystem::CArea::setBlockMT(const CRange3I & range,IBlockImp * block)
+Void NSDevilX::NSCubeBlockSystem::CArea::setBlock(const CRange3I & range,IBlockImp * block)
 {
 	assert(range.getMin()>=CInt3::sZero);
 	assert(range.getMax()<CInt3(sBlockSize));
-	if(block)
+	auto & ranges=mBlocks[block];
+	if(!ranges)
+		ranges=DEVILX_NEW SBlockRanges;
+	Boolean can_merge=false;
+	ranges->mOptimized.beginRead();
+	for(auto test_range:ranges->mRanges)
 	{
-		auto ranges=_getRangesMT(block);
-		ranges->lockWrite();
-		Boolean need_merge=true;
-		for(auto iter=ranges->begin(),end=ranges->end();end!=iter;++iter)
+		if((!test_range->contains(range))&&CRange3I::EMergeResult_Success==test_range->merge(range,nullptr))
 		{
-			auto test=*iter;
-			if(test->contains(range))
-			{
-				need_merge=false;
-				break;
-			}
-		}
-		if(need_merge)
-		{
-			CRange3I merge_range(range);
-			do
-			{
-				need_merge=false;
-				for(auto iter=ranges->begin(),end=ranges->end();end!=iter;++iter)
-				{
-					auto test=*iter;
-					if(test->merge(merge_range))
-					{
-						merge_range.setMin(test->getMin());
-						merge_range.setMax(test->getMax());
-						DEVILX_DELETE test;
-						ranges->erase(iter);
-						need_merge=true;
-						break;
-					}
-				}
-			}
-			while(need_merge);
-			ranges->push_back(DEVILX_NEW CRange3I(merge_range));
-			mNeedFillRenderable=true;
-		}
-		ranges->unLockWrite();
-	}
-	else
-	{
-		TMap<TListMT<CRange3I*>*,TList<CRange3I*> > dst_ranges;
-		mBlocks.lockRead();
-		for(auto const & block_pair:mBlocks)
-		{
-			auto ranges=block_pair.second;
-			ranges->lockWrite();
-			for(auto iter=ranges->begin(),end=ranges->end();end!=iter;)
-			{
-				auto test=*iter;
-				CRange3I intersect(CInt3::sZero,CInt3::sZero);
-				CRange3I::createIntersection(*test,range,intersect);
-				if(intersect.getMax()>=intersect.getMin())
-				{
-					dst_ranges[ranges].push_back(test);
-					iter=ranges->erase(iter);
-				}
-				else
-				{
-					++iter;
-				}
-			}
-			ranges->unLockWrite();
-		}
-		mBlocks.unLockRead();
-		for(auto const & ranges_pair:dst_ranges)
-		{
-			auto ranges_key=ranges_pair.first;
-			auto const & ranges_value=ranges_pair.second;
-			for(auto dst_range:ranges_value)
-			{
-				CRange3I intersect(CInt3::sZero,CInt3::sZero);
-				CRange3I::createIntersection(*dst_range,range,intersect);
-				TList<CRange3I*> new_ranges;
-				CRange3I::eraseRange(*dst_range,intersect,new_ranges);
-				ranges_key->lockWrite();
-				ranges_key->insert(ranges_key->end(),new_ranges.begin(),new_ranges.end());
-				mNeedFillRenderable=true;
-				ranges_key->unLockWrite();
-			}
+			can_merge=true;
+			break;
 		}
 	}
+	ranges->mOptimized.endRead();
+
+	auto & ref=ranges->mOptimized.beginWrite();
+	ranges->mRanges.push_back(DEVILX_NEW CRange3I(range));
+	if(can_merge)
+	{
+		ref=False;
+		ISystemImp::getSingleton().getRenderableThreadPool()->submitMT(NSInternal::optimizeBlockRange,ranges);
+	}
+	ranges->mOptimized.endWrite();
 }
 
-IBlockImp * NSDevilX::NSCubeBlockSystem::CArea::getBlockMT(const CInt3 & position)
+IBlockImp * NSDevilX::NSCubeBlockSystem::CArea::getBlock(const CInt3 & position) const
 {
 	IBlockImp * ret=nullptr;
-	mBlocks.lockRead();
 	for(auto const & block_pair:mBlocks)
 	{
 		auto ranges=block_pair.second;
-		ranges->lockRead();
-		for(auto range:*ranges)
+		ranges->mOptimized.beginRead();
+		for(auto range:ranges->mRanges)
 		{
 			if(range->contains(position))
 			{
@@ -257,11 +223,10 @@ IBlockImp * NSDevilX::NSCubeBlockSystem::CArea::getBlockMT(const CInt3 & positio
 				break;
 			}
 		}
-		ranges->unLockRead();
+		ranges->mOptimized.endRead();
 		if(ret)
 			break;
 	}
-	mBlocks.unLockRead();
 	return ret;
 }
 

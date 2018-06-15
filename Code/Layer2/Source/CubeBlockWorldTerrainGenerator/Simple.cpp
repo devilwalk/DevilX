@@ -27,7 +27,7 @@ UInt32 NSDevilX::NSCubeBlockWorld::CSimpleTerrainGeneratorInstance::generateChun
 		{
 			for(UInt32 y=0;y<mSceneManager->getChunkSize().y;++y)
 			{
-				if(base_pos.y+y>1)
+				if(base_pos.y+static_cast<Int32>(y)>1)
 					break;
 				for(UInt32 z=0;z<mSceneManager->getChunkSize().z;++z)
 				{
@@ -43,7 +43,7 @@ UInt32 NSDevilX::NSCubeBlockWorld::CSimpleTerrainGeneratorInstance::generateChun
 		UInt32 y=0;
 		for(;y<mSceneManager->getChunkSize().y;++y)
 		{
-			if(base_pos.y+y>1)
+			if(base_pos.y+static_cast<Int32>(y)>1)
 				break;
 		}
 		return mSceneManager->getChunkSize().x*y*mSceneManager->getChunkSize().z;

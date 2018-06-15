@@ -14,6 +14,7 @@ NSDevilX::NSResourceSystem::CFBXProcesser::CFBXProcesser(CFBXResource * res)
 NSDevilX::NSResourceSystem::CFBXProcesser::~CFBXProcesser()
 {
 	DEVILX_DELETE(mCommonProcesser);
+	DEVILX_DELETE(mRenderProcesser);
 }
 
 Void NSDevilX::NSResourceSystem::CFBXProcesser::process(NSRenderSystem::IEntity * entity,Bool sync)
@@ -33,7 +34,41 @@ Void NSDevilX::NSResourceSystem::CFBXProcesser::process(NSRenderSystem::IEntity 
 		{}
 		virtual Void onLoaded(CResource * res) override final
 		{
+			TVector<IResourceImp*> res_list;
+			for(SizeT i=0;i<mProcesser->getRenderProcesser()->getMeshes().size();++i)
+			{
+				auto & mesh=mProcesser->getRenderProcesser()->getMeshes()[i];
+				assert(mesh.mMaterial->Diffuse.GetSrcObjectCount<fbxsdk::FbxTexture>()<=1);
+				if(mesh.mMaterial->Diffuse.GetSrcObject<fbxsdk::FbxTexture>())
+				{
+					IResourceImp * res=nullptr;
+					if(mesh.mMaterial->Diffuse.GetSrcObject<fbxsdk::FbxTexture>()->GetClassId()==fbxsdk::FbxFileTexture::ClassId)
+					{
+						auto file_tex=mesh.mMaterial->Diffuse.GetSrcObject<fbxsdk::FbxFileTexture>();
+						if(file_tex->GetFileName())
+						{
+							res=static_cast<IResourceImp*>(ISystemImp::getSingleton().createOrRetrieveResource(file_tex->GetFileName(),file_tex->GetFileName()));
+						}
+						else if(file_tex->GetRelativeFileName())
+						{
+							String abs_path=CDirectory::getDirectoryName(CDirectory::getAbsolutePath(mProcesser->getFBXResource()->getFileName()));
+							abs_path+=file_tex->GetRelativeFileName();
+							res=static_cast<IResourceImp*>(ISystemImp::getSingleton().createOrRetrieveResource(abs_path,abs_path));
+						}
+					}
+					else if(mesh.mMaterial->Diffuse.GetSrcObject<fbxsdk::FbxTexture>()->GetClassId()==fbxsdk::FbxLayeredTexture::ClassId)
+					{
+						assert(false);
+					}
+					else if(mesh.mMaterial->Diffuse.GetSrcObject<fbxsdk::FbxTexture>()->GetClassId()==fbxsdk::FbxProceduralTexture::ClassId)
+					{
+						assert(false);
+					}
+					res_list.push_back(res);
+				}
+			}
 			mProcesser->_process(mEntity);
+			DEVILX_DELETE(this);
 		}
 	};
 	struct SCommonCallback
@@ -50,15 +85,16 @@ Void NSDevilX::NSResourceSystem::CFBXProcesser::process(NSRenderSystem::IEntity 
 		{}
 		virtual Void onLoaded(CResource * res) override final
 		{
-			mProcesser->getRenderProcesser()->load(&SRenderCallback(mProcesser,mSync,mEntity),mSync);
+			mProcesser->getRenderProcesser()->load(DEVILX_NEW SRenderCallback(mProcesser,mSync,mEntity),mSync);
+			DEVILX_DELETE(this);
 		}
 	};
-	mCommonProcesser->load(&SCommonCallback(this,sync,entity),sync);
+	mCommonProcesser->load(DEVILX_NEW SCommonCallback(this,sync,entity),sync);
 }
 
 Void NSDevilX::NSResourceSystem::CFBXProcesser::_process(NSRenderSystem::IEntity * entity)
 {
-	for(auto i=0;i<mRenderProcesser->getMeshes().size();++i)
+	for(SizeT i=0;i<mRenderProcesser->getMeshes().size();++i)
 	{
 		auto & mesh=mRenderProcesser->getMeshes()[i];
 		auto geo=NSRenderSystem::getSystem()->queryInterface_IResourceManager()->createGeometry(entity->queryInterface_ISceneElement()->getName()+CStringConverter::toString(i));

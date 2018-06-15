@@ -29,9 +29,9 @@ namespace NSDevilX
 				fbxsdk::FbxVector2 mUV1;
 				TVector<SSkinInfo> mSkinInfos;
 				SVertex()
-					:mPosition(0)
-					,mNormal(0)
-					,mTangent(0)
+					:mPosition(0,0,0,0)
+					,mNormal(0,0,0,0)
+					,mTangent(0,0,0,0)
 					,mUV0(-1,-1)
 					,mUV1(-1,-1)
 				{}
@@ -54,11 +54,11 @@ namespace NSDevilX
 				}
 				Boolean hasNormal()const
 				{
-					return mNormal!=fbxsdk::FbxVector4(0);
+					return mNormal!=fbxsdk::FbxVector4(0,0,0,0);
 				}
 				Boolean hasTangent()const
 				{
-					return mTangent!=fbxsdk::FbxVector4(0);
+					return mTangent!=fbxsdk::FbxVector4(0,0,0,0);
 				}
 				Boolean hasUV0()const
 				{

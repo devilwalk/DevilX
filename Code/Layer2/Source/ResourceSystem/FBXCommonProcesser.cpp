@@ -58,7 +58,7 @@ Boolean NSDevilX::NSResourceSystem::CFBXCommonProcesser::_loadImpMT()
 								}
 							};
 							SFindIf find_if_func(cluster);
-							if(mBones.end()==std::find_if(mBones.begin(),mBones.begin(),find_if_func))
+							if(mBones.end()==std::find_if(mBones.begin(),mBones.end(),find_if_func))
 							{
 								mBones.push_back(SBone(cluster));
 							}

@@ -38,6 +38,6 @@ Boolean NSDevilX::NSResourceSystem::CFBXResource::_loadImpMT()
 	converter.RemoveBadPolygonsFromMeshes(mScene);
 	converter.SplitMeshesPerMaterial(mScene,true);
 	converter.Triangulate(mScene,true);
-	fbxsdk::FbxAxisSystem::DirectX.ConvertScene(mScene);
+	//fbxsdk::FbxAxisSystem::DirectX.ConvertScene(mScene);
 	return true;
 }

@@ -33,12 +33,13 @@ namespace NSDevilX
 			static Void processPositions(fbxsdk::FbxMesh * mesh,OUT TVector<CFBXRenderProcesser::SVertex> & vertices)
 			{
 				fbxsdk::FbxAMatrix geo_transform(fbxsdk::FbxVector4(mesh->GetNode()->GeometricTranslation.Get()),fbxsdk::FbxVector4(mesh->GetNode()->GeometricRotation.Get()),fbxsdk::FbxVector4(mesh->GetNode()->GeometricScaling.Get()));
+				const auto global_transform=mesh->GetNode()->EvaluateGlobalTransform();
 				for(auto polygon_index=0;polygon_index<mesh->GetPolygonCount();++polygon_index)
 				{
 					assert(3==mesh->GetPolygonSize(polygon_index));
 					for(auto vertex_index=0;vertex_index<3;++vertex_index)
 					{
-						vertices[polygon_index*3+vertex_index].mPosition=(mesh->GetNode()->EvaluateGlobalTransform()*geo_transform).MultT(mesh->GetControlPointAt(mesh->GetPolygonVertex(polygon_index,vertex_index)));
+						vertices[polygon_index*3+vertex_index].mPosition=(global_transform*geo_transform).MultT(mesh->GetControlPointAt(mesh->GetPolygonVertex(polygon_index,vertex_index)));
 					}
 				}
 			}

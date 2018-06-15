@@ -116,7 +116,7 @@ int main()
 	//render_visible_area->attachObject(render_entity->queryInterface_ISceneElement());
 
 	auto render_entity_model=render_scene->createEntity("render_entity_model");
-	auto fbx_res=NSResourceSystem::getSystem()->createOrRetrieveResource("Model","Resource/girlA.fbx");
+	auto fbx_res=NSResourceSystem::getSystem()->createOrRetrieveResource("Model","Resource/Avatar_girl_hair_A_RAF(Avatar_girl_animation).fbx");
 	struct SGetRenderEntityCallback
 		:public NSResourceSystem::IGetRenderEntityCallback
 		,public TBaseObject<SGetRenderEntityCallback>
@@ -125,7 +125,7 @@ int main()
 		NSRenderSystem::IVisibleArea * mVisibleArea;
 		virtual Void onLoaded() override
 		{
-			mEntity->queryInterface_ISceneElement()->getTransformer()->setPosition(CFloat3(0,0,10.0f));
+			mEntity->queryInterface_ISceneElement()->getTransformer()->setPosition(CFloat3(0,0,8.0f));
 			mVisibleArea->attachObject(mEntity->queryInterface_ISceneElement());
 		}
 	};
@@ -366,6 +366,7 @@ int main()
 		NSRenderSystem::getSystem()->update();
 		NSNetworkSystem::getSystem()->update();
 		NSResourceSystem::getSystem()->update();
+		CCommonManager::getSingleton().update();
 
 		ui_event_scene->route(&mouse_left_button_down_event);
 		ui_event_scene->route(&mouse_right_button_down_event);
@@ -382,6 +383,7 @@ int main()
 	NSRenderSystem::getSystem()->shutdown();
 	NSNetworkSystem::getSystem()->shutdown();
 	NSResourceSystem::getSystem()->shutdown();
+	CCommonManager::getSingleton().shutdown();
 	DEVILX_TRACK_SHUTDOWN;
     return 0;
 }
