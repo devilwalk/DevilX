@@ -3,6 +3,7 @@
 #include "CommonPlatformInclude.h"
 #include "CommonThirdPart.h"
 #include "CommonAllocator.h"
+#include "ICoreSystemInterface.h"
 
 #include "CommonAngle.h"
 #include "CommonAny.h"
@@ -21,7 +22,6 @@
 #include "CommonFontFace.h"
 #include "CommonFontImage.h"
 #include "CommonFontManager.h"
-#include "CommonFunctionWorker.h"
 #include "CommonImage.h"
 #include "CommonLuaEngine.h"
 #include "CommonOctree.h"
@@ -43,7 +43,6 @@
 #include "CommonReadWriteLocker.h"
 #include "CommonReferenceObject.h"
 #include "CommonResourceContainer.h"
-#include "CommonSemaphore.h"
 #include "CommonSingleton.h"
 #include "CommonSTL.h"
 #include "CommonSTLMT.h"

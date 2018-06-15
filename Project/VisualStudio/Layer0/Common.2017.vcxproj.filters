@@ -60,9 +60,6 @@
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonFileStream.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonFunctionWorker.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonImage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -117,9 +114,6 @@
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonResourceContainer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonSemaphore.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonSingleton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -139,9 +133,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonThirdPart.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonThread.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonThreadData.h">
@@ -266,16 +257,10 @@
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonReadWriteLocker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonSemaphore.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonSTLMT.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonStringUtility.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonThread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonThreadPool.cpp">

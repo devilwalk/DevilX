@@ -20,16 +20,17 @@
 #else
 #define DEVILX_NEW new
 #define DEVILX_DELETE delete
-#define DEVILX_ALLOC(sizeInBytes) NSDevilX::allocateBytes(sizeInBytes)
-#define DEVILX_FREE(address) NSDevilX::deallocateBytes(address)
+#define DEVILX_ALLOC(sizeInBytes) NSDevilX::NSCore::getSystem()->getMemoryManager()->allocateBytes(sizeInBytes)
+#define DEVILX_FREE(address) NSDevilX::NSCore::getSystem()->getMemoryManager()->deallocateBytes(address)
+#define DEVILX_ALIGNED_ALLOC(sizeInBytes,alignment) NSDevilX::NSCore::getSystem()->getMemoryManager()->alignedAllocateBytes(sizeInBytes,alignment)
+#define DEVILX_ALIGNED_FREE(address) NSDevilX::NSCore::getSystem()->getMemoryManager()->alignedDeallocateBytes(address)
 #define DEVILX_TRACK_SHUTDOWN
 #endif
 #define DEVILX_SAFE_DELETE(x) DEVILX_DELETE(x);x=0;
 #define DEVILX_BYTE_ORDER_LITTLE_ENDIAN 0
 #define DEVILX_BYTE_ORDER_BIG_ENDIAN 1
-#if DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_WINDOWS
+#if defined(_M_IX86)||defined(_M_X64)
 #define DEVILX_BYTE_ORDER DEVILX_BYTE_ORDER_LITTLE_ENDIAN
-#elif DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_LINUX
 #endif
 
 #define DEVILX_R_CLASS_MEMBER(type,name) public: \

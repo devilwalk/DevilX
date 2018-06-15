@@ -38,7 +38,6 @@
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonFontFace.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonFontImage.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonFontManager.h" />
-    <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonFunctionWorker.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonImage.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonLuaEngine.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonManager.h" />
@@ -64,7 +63,6 @@
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonReadWriteLocker.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonReferenceObject.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonResourceContainer.h" />
-    <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonSemaphore.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonSingleton.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonSTD.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonSTL.h" />
@@ -72,7 +70,6 @@
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonStringConverter.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonStringUtility.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonThirdPart.h" />
-    <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonThread.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonThreadData.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonThreadManager.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Common\CommonThreadPool.h" />
@@ -109,10 +106,8 @@
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonMessageMode.cpp" />
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonModule.cpp" />
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonReadWriteLocker.cpp" />
-    <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonSemaphore.cpp" />
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonSTLMT.cpp" />
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonStringUtility.cpp" />
-    <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonThread.cpp" />
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonThreadPool.cpp" />
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonTimer.cpp" />
     <ClCompile Include="..\..\..\Code\Layer0\Source\Common\CommonTransformNode.cpp" />
@@ -197,7 +192,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>freetype.lib;FreeImage.lib;TinyXML.lib;tbb.lib;tbbmalloc.lib;imm32.lib;libnoise.lib</AdditionalDependencies>
+      <AdditionalDependencies>freetype.lib;FreeImage.lib;TinyXML.lib;imm32.lib;libnoise.lib;tbb.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -211,7 +206,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>freetype.lib;FreeImage.lib;TinyXML.lib;tbb.lib;tbbmalloc.lib;imm32.lib;libnoise.lib</AdditionalDependencies>
+      <AdditionalDependencies>freetype.lib;FreeImage.lib;TinyXML.lib;imm32.lib;libnoise.lib;tbb.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -229,7 +224,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>freetype.lib;FreeImage.lib;TinyXML.lib;tbb.lib;tbbmalloc.lib;imm32.lib;libnoise.lib</AdditionalDependencies>
+      <AdditionalDependencies>freetype.lib;FreeImage.lib;TinyXML.lib;imm32.lib;libnoise.lib;tbb.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -247,7 +242,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>freetype.lib;FreeImage.lib;TinyXML.lib;tbb.lib;tbbmalloc.lib;imm32.lib;libnoise.lib</AdditionalDependencies>
+      <AdditionalDependencies>freetype.lib;FreeImage.lib;TinyXML.lib;imm32.lib;libnoise.lib;tbb.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

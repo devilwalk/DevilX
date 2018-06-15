@@ -6,8 +6,8 @@ namespace NSDevilX
 		:public TBaseObject<CTimer>
 	{
 	protected:
-		tbb::tick_count mCurrentTime;
-		tbb::tick_count mLastTime;
+		double mCurrentTime;
+		double mLastTime;
 	public:
 		static Void sleep(UInt32 milliseconds);
 		CTimer();

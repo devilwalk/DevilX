@@ -8,11 +8,10 @@ namespace NSDevilX
 		{
 			namespace NSInternal
 			{
-				static Boolean threadFunction(VoidPtr parameter)
+				static Void threadFunction(VoidPtr parameter)
 				{
 					auto task=static_cast<CRenderTask*>(parameter);
 					task->prepare();
-					return true;
 				}
 			}
 		}

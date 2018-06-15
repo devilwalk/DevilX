@@ -5,7 +5,7 @@ namespace NSDevilX
 	class CReadWriteLocker
 	{
 	protected:
-		VoidPtr mInternalLocker;
+		NSCore::IReadWriteLock * mInternalLocker;
 	public:
 		CReadWriteLocker();
 		explicit CReadWriteLocker(const CReadWriteLocker & cpy);

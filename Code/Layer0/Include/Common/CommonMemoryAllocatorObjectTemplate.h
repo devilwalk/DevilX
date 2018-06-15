@@ -5,21 +5,17 @@
 #include "CommonAllocator.h"
 namespace NSDevilX
 {
-	extern VoidPtr allocateBytes(SizeT sizeInBytes);
-	extern Void deallocateBytes(VoidPtr address);
-	extern VoidPtr alignedAllocateBytes(SizeT sizeInBytes,SizeT alignment);
-	extern Void alignedDeallocateBytes(VoidPtr address);
 	template<class T>
 	class TMemoryAllocatorObject
 	{
 	public:
 		VoidPtr operator new(SizeT sizeInBytes)
 		{
-			return allocateBytes(sizeInBytes);
+			return NSCore::getSystem()->getMemoryManager()->allocateBytes(sizeInBytes);
 		}
 		Void operator delete(VoidPtr address)
 		{
-			deallocateBytes(address);
+			NSCore::getSystem()->getMemoryManager()->deallocateBytes(address);
 		}
 		VoidPtr operator new[](SizeT sizeInBytes);
 		Void operator delete[](VoidPtr address);

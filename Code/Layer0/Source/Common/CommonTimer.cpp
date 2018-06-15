@@ -3,16 +3,12 @@ using namespace NSDevilX;
 
 Void NSDevilX::CTimer::sleep(UInt32 milliseconds)
 {
-#if DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_WINDOWS
-	Sleep(milliseconds);
-#elif DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_LINUX
-	usleep(milliseconds);
-#endif
+	NSCore::getSystem()->getThreadManager()->sleep(milliseconds);
 }
 
 NSDevilX::CTimer::CTimer()
-	:mLastTime(tbb::tick_count::now())
-	,mCurrentTime(tbb::tick_count::now())
+	:mLastTime(NSCore::getSystem()->getTimeNowInSeconds())
+	,mCurrentTime(NSCore::getSystem()->getTimeNowInSeconds())
 {
 }
 
@@ -24,12 +20,12 @@ SizeT NSDevilX::CTimer::getInMillisecond(Bool updateLastTime)
 	if(updateLastTime)
 		_updateLastTime();
 	_updateCurrentTime();
-	return static_cast<SizeT>((mCurrentTime-mLastTime).seconds()*1000);
+	return static_cast<SizeT>((mCurrentTime-mLastTime)*1000);
 }
 
 Void NSDevilX::CTimer::_updateCurrentTime()
 {
-	mCurrentTime=tbb::tick_count::now();
+	mCurrentTime=NSCore::getSystem()->getTimeNowInSeconds();
 }
 
 Void NSDevilX::CTimer::_updateLastTime()

@@ -1,42 +1,42 @@
 #include "Precompiler.h"
 using namespace NSDevilX;
 NSDevilX::CReadWriteLocker::CReadWriteLocker()
-	:mInternalLocker(0)
+	:mInternalLocker(nullptr)
 {
-	mInternalLocker=new tbb::interface5::reader_writer_lock();
+	mInternalLocker=NSCore::getSystem()->getThreadManager()->createReadWriteLock();
 }
 
 NSDevilX::CReadWriteLocker::~CReadWriteLocker()
 {
-	delete static_cast<tbb::interface5::reader_writer_lock*>(mInternalLocker);
+	NSCore::getSystem()->getThreadManager()->destroyReadWriteLock(mInternalLocker);
 }
 
 Void NSDevilX::CReadWriteLocker::lockRead()
 {
-	static_cast<tbb::interface5::reader_writer_lock*>(mInternalLocker)->lock_read();
+	mInternalLocker->lockRead();
 }
 
 Void NSDevilX::CReadWriteLocker::lockWrite()
 {
-	static_cast<tbb::interface5::reader_writer_lock*>(mInternalLocker)->lock();
+	mInternalLocker->lockWrite();
 }
 
 Boolean NSDevilX::CReadWriteLocker::tryLockRead()
 {
-	return static_cast<tbb::interface5::reader_writer_lock*>(mInternalLocker)->try_lock_read();
+	return mInternalLocker->tryLockRead();
 }
 
 Boolean NSDevilX::CReadWriteLocker::tryLockWrite()
 {
-	return static_cast<tbb::interface5::reader_writer_lock*>(mInternalLocker)->try_lock();
+	return mInternalLocker->tryLockWrite();
 }
 
 Void NSDevilX::CReadWriteLocker::unLockRead()
 {
-	return static_cast<tbb::interface5::reader_writer_lock*>(mInternalLocker)->unlock();
+	return mInternalLocker->unLockRead();
 }
 
 Void NSDevilX::CReadWriteLocker::unLockWrite()
 {
-	return static_cast<tbb::interface5::reader_writer_lock*>(mInternalLocker)->unlock();
+	return mInternalLocker->unLockWrite();
 }

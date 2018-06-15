@@ -9,14 +9,12 @@ namespace NSDevilX
 		,public TBaseObject<CCommonManager>
 	{
 	protected:
-		CSemaphorePool*mSemaphorePool;
 		CThreadPool*mThreadPool;
 		CCommandQueue*mCommandQueue;
 	public:
 		CCommonManager();
 		~CCommonManager();
 
-		CSemaphorePool * getSemaphorePool()const{ return mSemaphorePool; }
 		CThreadPool * getThreadPool()const{ return mThreadPool; }
 		CCommandQueue * getCommandQueue()const{ return mCommandQueue; }
 		Void initialize();
