@@ -1,5 +1,4 @@
 #pragma once
-#include "MatchMapGridRenderMaterial.h"
 namespace NSDevilX
 {
 	namespace NSFightChess
@@ -11,28 +10,20 @@ namespace NSDevilX
 		public:
 			enum EMessage
 			{
-				EMessage_BeginRenderMaterialChange,
-				EMessage_EndRenderMaterialChange
 			};
 		protected:
-			const UInt16 mRowIndex;
-			const UInt16 mColumnIndex;
-			CMatchMapGridRenderMaterial * mRenderMaterial;
+			const UInt8 mRowIndex;
+			const UInt8 mColumnIndex;
 		public:
-			CMatchMapGrid(UInt16 rowIndex,UInt16 columnIndex);
+			CMatchMapGrid(UInt8 rowIndex,UInt8 columnIndex);
 			~CMatchMapGrid();
-			UInt16 getRowIndex()const
+			UInt8 getRowIndex()const
 			{
 				return mRowIndex;
 			}
-			UInt16 getColumeIndex()const
+			UInt8 getColumeIndex()const
 			{
 				return mColumnIndex;
-			}
-			Void setRenderMaterial(CMatchMapGridRenderMaterial * material);
-			CMatchMapGridRenderMaterial * getRenderMaterial()const
-			{
-				return mRenderMaterial;
 			}
 		};
 	}

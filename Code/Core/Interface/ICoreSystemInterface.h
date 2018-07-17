@@ -9,8 +9,11 @@
 #endif
 #include "ICoreBuffer.h"
 #include "ICoreDevice.h"
+#include "ICoreDirectory.h"
 #include "ICoreEnum.h"
+#include "ICoreFile.h"
 #include "ICoreFileManager.h"
+#include "ICoreFileProcesser.h"
 #include "ICoreMemoryManager.h"
 #include "ICoreReadWriteLock.h"
 #include "ICoreResource.h"

@@ -1,6 +1,7 @@
 #pragma once
 #include "IRenderableSurface.h"
 #include "IRenderBuffer.h"
+#include "IRenderBufferOperator_SkeletonAnimation.h"
 #include "IRenderBufferUsage.h"
 #include "IRenderCamera.h"
 #include "IRenderEntity.h"

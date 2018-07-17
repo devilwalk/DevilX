@@ -1,4 +1,5 @@
 #pragma once
+#include "IRenderBufferOperator_SkeletonAnimation.h"
 namespace NSDevilX
 {
 	namespace NSRenderSystem
@@ -8,6 +9,7 @@ namespace NSDevilX
 		protected:
 			virtual ~IBuffer(){}
 		public:
+			virtual IBufferOperator_SkeletonAnimation * queryInterface_IBufferOperator_SkeletonAnimation()=0;
 			virtual const String & getName()const=0;
 			virtual Void setSize(UInt32 sizeInBytes)=0;
 			virtual UInt32 getSize()const=0;

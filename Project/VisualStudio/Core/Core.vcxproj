@@ -109,8 +109,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\Code\Core\Include\Any.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\Constant.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\FileManager.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\FunctionWorker.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\IDirectoryImp.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\IFileImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\ISemaphoreImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\IThreadImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\IThreadPoolImp.h" />
@@ -118,9 +122,12 @@
     <ClInclude Include="..\..\..\Code\Core\Include\Define.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\MemoryManager.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\MemoryTracker.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\Node.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\PathUtility.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\PlatformDefine.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\PlatformInclude.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\IReadWriteLockImp.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\ResourceContainer.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\SemaphoreGroup.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\Singleton.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\STD.h" />
@@ -131,10 +138,17 @@
     <ClInclude Include="..\..\..\Code\Core\Include\ThreadManager.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\ThreadType.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\Type.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\UTFChar.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\UTFString.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreBuffer.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreDevice.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreDirectory.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreEnum.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreFile.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreFileManager.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreFileProcesser.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreNetworkService.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreNetworkManager.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreMemoryManager.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreReadWriteLock.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreResource.h" />
@@ -147,9 +161,13 @@
     <ClInclude Include="..\..\..\Code\Core\Source\Precompiler.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Code\Core\Source\FileManager.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\ICoreMemoryManager.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\ICoreSystem.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\ICoreThreadManager.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\ICoreFileManager.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\IDirectoryImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\IFileImp.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\ISemaphoreImp.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\IThreadImp.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\IThreadPoolImp.cpp" />
@@ -165,6 +183,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Core\Source\IReadWriteLockImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\UTFChar.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\UTFString.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

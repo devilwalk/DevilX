@@ -1,6 +1,9 @@
 #include "Defines.sl"
 DECL_CB(cbObjectTransform)
-CB_MEMBER float4x4 gWorldMatrix;
+CB_MEMBER float4 gWorldMatrix[3];
+END_DECL
+DECL_CB(cbObjectAnimation)
+CB_MEMBER float4 gSkeletonAnimationMatrix[4096];
 END_DECL
 DECL_CB(cbObjectMaterial)
 CB_MEMBER float3 gMainColour;

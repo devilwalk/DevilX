@@ -11,6 +11,7 @@ namespace NSDevilX
 			public:
 				enum EOutput
 				{
+					EOutput_SkeletonAnimation,
 					EOutput_WorldPosition,
 					EOutput_WorldNormal,
 					EOutput_WorldTangent,

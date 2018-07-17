@@ -1,6 +1,5 @@
 #pragma once
 #include "MatchMapGrid.h"
-#include "MatchTerrain2D.h"
 namespace NSDevilX
 {
 	namespace NSFightChess
@@ -11,7 +10,6 @@ namespace NSDevilX
 		{
 		protected:
 			CMatchScene * const mScene;
-			CMatchTerrain2D * mTerrain2D;
 			TVector<TResourcePtrVector<CMatchMapGrid> > mGrids;
 		public:
 			CMatchMap(UInt16 row,UInt16 column,CMatchScene * scene);
@@ -35,6 +33,9 @@ namespace NSDevilX
 			{
 				return mGrids[columnIndex][rowIndex];
 			}
+
+			Void setEntity(CMatchEntity * entity,CMatchMapGrid * grid);
+			Void moveEntity(CMatchEntity * entity,CMatchMapGrid * grid);
 		};
 	}
 }

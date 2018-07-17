@@ -84,25 +84,10 @@
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchScene.h">
       <Filter>Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchTerrain2D.h">
-      <Filter>Include</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchMap.h">
       <Filter>Include</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchMapGrid.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchMapGridRenderMaterial.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchMapGridRenderMaterial2D.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchMapGridRenderMaterial3D.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchMapGridRenderMaterialManager.h">
       <Filter>Include</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchView.h">
@@ -139,6 +124,27 @@
       <Filter>Include</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\GameLogic.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchTerrain2D.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchTerrain2DChunk.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchTerrain2DChunkRenderMaterial.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchTerrain3DChunkRenderMaterial.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchTerrainChunkRenderMaterial.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchTerrainChunkRenderMaterialManager.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Game\Include\DevilFightChess\MatchMouse_Display2D.h">
       <Filter>Include</Filter>
     </ClInclude>
   </ItemGroup>
@@ -197,12 +203,6 @@
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchMap.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchMapGridRenderMaterial.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchMapGridRenderMaterialManager.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchView.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -210,9 +210,6 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\Match.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchMapGridRenderMaterial2D.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchServerManager.cpp">
@@ -237,6 +234,18 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\GameLogic.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchTerrainChunkRenderMaterial.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchTerrainChunkRenderMaterialManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchTerrain2DChunkRenderMaterial.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Game\Source\DevilFightChess\MatchTerrain2DChunk.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

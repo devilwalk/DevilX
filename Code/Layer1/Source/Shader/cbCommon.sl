@@ -12,12 +12,12 @@ CB_MEMBER float2 gViewportSizeInPixel;
 CB_MEMBER float2 gInverseViewportSizeInPixel;
 END_DECL
 DECL_CB(cbCamera)
-CB_MEMBER float4x4 gViewMatrix;
-CB_MEMBER float4x4 gInverseViewMatrix;
-CB_MEMBER float4x4 gProjectionMatrix;
-CB_MEMBER float4x4 gInverseProjectionMatrix;
-CB_MEMBER float4x4 gViewProjectionMatrix;
-CB_MEMBER float4x4 gInverseViewProjectionMatrix;
+CB_MEMBER float4 gViewMatrix[3];
+CB_MEMBER float4 gInverseViewMatrix[4];
+CB_MEMBER float4 gProjectionMatrix[4];
+CB_MEMBER float4 gInverseProjectionMatrix[4];
+CB_MEMBER float4 gViewProjectionMatrix[4];
+CB_MEMBER float4 gInverseViewProjectionMatrix[4];
 CB_MEMBER float gFarDistance;
 CB_MEMBER float gInverseFarDistance;
 END_DECL

@@ -5,7 +5,7 @@ namespace NSDevilX
 {
 	namespace NSCore
 	{
-		class DLLAPI ISystem
+		class ISystem
 		{
 		protected:
 			~ISystem(){}

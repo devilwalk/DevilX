@@ -34,5 +34,7 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CTransformerImp::onMessage(ITransformerI
 Void NSDevilX::NSRenderSystem::NSD3D11::CTransformerImp::_updateConstantBuffer(Byte * buffer)
 {
 	auto offset=mConstantBuffer->getDescription()->getConstantDesc("gWorldMatrix").StartOffset;
-	*reinterpret_cast<CMatrix4F*>(&buffer[offset])=getInterfaceImp()->getTransformMT();
+	*reinterpret_cast<CFloat4*>(&buffer[offset])=getInterfaceImp()->getTransformMT().colume(0);
+	*reinterpret_cast<CFloat4*>(&buffer[offset+sizeof(CFloat4)])=getInterfaceImp()->getTransformMT().colume(1);
+	*reinterpret_cast<CFloat4*>(&buffer[offset+sizeof(CFloat4)*2])=getInterfaceImp()->getTransformMT().colume(2);
 }

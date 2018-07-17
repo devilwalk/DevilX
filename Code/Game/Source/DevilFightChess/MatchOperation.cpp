@@ -2,9 +2,10 @@
 using namespace NSDevilX;
 using namespace NSFightChess;
 
-NSDevilX::NSFightChess::CMatchOperation2D::CMatchOperation2D()
+NSDevilX::NSFightChess::CMatchOperation2D::CMatchOperation2D(CMatchView2D * view)
 	:mMouse(nullptr)
 	,mKeyboard(nullptr)
+	,mView(view)
 {
 	for(UInt32 physical_device_index=0;physical_device_index<NSInputSystem::getSystem()->getPhysicalDeviceManager()->getDeviceCount();++physical_device_index)
 	{
@@ -35,8 +36,18 @@ Void NSDevilX::NSFightChess::CMatchOperation2D::addFrameData(NSInputSystem::IMou
 	switch(data->getEvent())
 	{
 	case NSInputSystem::IEnum::EMouseEventType_Move:
-
-		break;
+	{
+		CUInt2 mouse_position=mView->getSizeInPixel()/2+mouse->getPosition();
+		if((mouse_position.x<10)&&(mouse_position.x>0))
+			mView->move(CMatchView2D::EMoveType_Left);
+		else if((mView->getSizeInPixel().x-mouse_position.x<10)&&(mView->getSizeInPixel().x-mouse_position.x>0))
+			mView->move(CMatchView2D::EMoveType_Right);
+		if((mouse_position.y<10)&&(mouse_position.y>0))
+			mView->move(CMatchView2D::EMoveType_Down);
+		else if((mView->getSizeInPixel().y-mouse_position.y<10)&&(mView->getSizeInPixel().y-mouse_position.y>0))
+			mView->move(CMatchView2D::EMoveType_Up);
+	}
+	break;
 	}
 }
 

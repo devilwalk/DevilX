@@ -48,7 +48,6 @@
 #include "CommonSTLMT.h"
 #include "CommonStringConverter.h"
 #include "CommonStringUtility.h"
-#include "CommonThread.h"
 #include "CommonThreadData.h"
 #include "CommonThreadManager.h"
 #include "CommonThreadPool.h"

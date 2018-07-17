@@ -2,6 +2,9 @@
 #include "FunctionsEx.sl"
 #include "cbObject.sl"
 #include "cbLight.sl"
+#ifndef SKELETON_ANIMATION
+#define SKELETON_ANIMATION 0
+#endif
 #ifndef OUTPUT_WORLD_POSITION
 #define OUTPUT_WORLD_POSITION 0
 #endif

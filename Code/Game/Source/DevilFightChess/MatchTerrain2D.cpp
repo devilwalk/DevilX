@@ -98,7 +98,7 @@ UInt32 NSDevilX::NSFightChess::CMatchTerrain2D::_calculateIndexStart(UInt16 rowI
 	return grid_index*6;
 }
 
-Void NSDevilX::NSFightChess::CMatchTerrain2D::onMessage(CMatchMapGrid * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
+Void NSDevilX::NSFightChess::CMatchTerrain2D::onMessage(CMatchTerrain2DChunk * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
 {
 	switch(message)
 	{

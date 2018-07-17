@@ -4,6 +4,7 @@ using namespace NSRenderSystem;
 using namespace NSD3D11;
 ConstCharPtr CForwardVertexShaderGenerator::msDefines[EOutput_Count]=
 {
+	"SKELETON_ANIMATION",
 	"OUTPUT_WORLD_POSITION",
 	"OUTPUT_WORLD_NORMAL",
 	"OUTPUT_WORLD_TANGENT",

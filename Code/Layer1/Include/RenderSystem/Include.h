@@ -2,6 +2,7 @@
 #include "IRenderSystemInterface.h"
 #include "Enum.h"
 #include "IBufferImp.h"
+#include "IBufferOperator_SkeletonAnimationImp.h"
 #include "IBufferUsageImp.h"
 #include "ICameraImp.h"
 #include "IEntityImp.h"

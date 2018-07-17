@@ -1,4 +1,5 @@
 #pragma once
+#include "MatchView.h"
 namespace NSDevilX
 {
 	namespace NSFightChess
@@ -11,8 +12,9 @@ namespace NSDevilX
 		protected:
 			NSInputSystem::IMouse * mMouse;
 			NSInputSystem::IKeyboard * mKeyboard;
+			CMatchView2D * const mView;
 		public:
-			CMatchOperation2D();
+			CMatchOperation2D(CMatchView2D * view);
 			~CMatchOperation2D();
 
 			// Í¨¹ý IMouseListener ¼Ì³Ð

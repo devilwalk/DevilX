@@ -5,7 +5,6 @@
 #include "UIManager.h"
 #include "Module.h"
 #include "MatchServerManager.h"
-#include "MatchMapGridRenderMaterialManager.h"
 namespace NSDevilX
 {
 	namespace NSFightChess
@@ -13,6 +12,21 @@ namespace NSDevilX
 		class CGame
 			:public TBaseObject<CGame>
 		{
+		public:
+			struct SModule
+			{
+				CModule * mModule;
+				Bool mActived;
+				SModule(CModule * mod=nullptr)
+					:mModule(mod)
+					,mActived(False)
+				{}
+				~SModule()
+				{
+					if(mModule)
+						DEVILX_DELETE(mModule);
+				}
+			};
 		protected:
 			NSRenderSystem::IViewport * mViewport;
 			CGameLogic * mLogic;
@@ -20,10 +34,8 @@ namespace NSDevilX
 			CFontManager * mFontManager;
 			CUIManager * mUIManager;
 			CMatchServerManager * mMatchServerManager;
-			CMatchMapGridRenderMaterialManager * mMatchMapGridRenderMaterialManager;
 			NSGUISystem::IScene * mGUIScene;
-			TSet<CModule*> mActiveModules;
-			TNamedResourcePtrMap<CModule> mModules;
+			TNamedResourcePtrMap<SModule> mModules;
 		public:
 			CGame();
 			~CGame();
@@ -46,10 +58,6 @@ namespace NSDevilX
 			CMatchServerManager * getMatchServerManager()const
 			{
 				return mMatchServerManager;
-			}
-			CMatchMapGridRenderMaterialManager * getMatchMapGridRenderMaterialManager()const
-			{
-				return mMatchMapGridRenderMaterialManager;
 			}
 			NSGUISystem::IScene * getGUIScene()const
 			{

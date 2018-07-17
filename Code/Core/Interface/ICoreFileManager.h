@@ -1,4 +1,6 @@
 #pragma once
+#include "ICoreDirectory.h"
+#include "ICoreFile.h"
 namespace NSDevilX
 {
 	namespace NSCore
@@ -6,11 +8,10 @@ namespace NSDevilX
 		class DLLAPI IFileManager
 		{
 		protected:
-			~IFileManager(){}
+			~IFileManager();
 		public:
-			const char * getCurrentDirectory();
-			const char * getApplicationDirectory();
-			const char * getSystemFontsDirectory();
+			IDirectory * getRootDirectory()const;
+			IDirectory * getApplicationDirectory()const;
 		};
 	}
 }

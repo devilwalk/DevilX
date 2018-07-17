@@ -3,15 +3,15 @@ namespace NSDevilX
 {
 	namespace NSFightChess
 	{
-		class CMatchMapGridRenderMaterial2D
-			:public TBaseObject<CMatchMapGridRenderMaterial2D>
+		class CMatchTerrain2DChunkRenderMaterial
+			:public TBaseObject<CMatchTerrain2DChunkRenderMaterial>
 		{
 		protected:
 			NSRenderSystem::ITexture * mTexture;
 			CFloatRGBA mColour;
 		public:
-			CMatchMapGridRenderMaterial2D();
-			~CMatchMapGridRenderMaterial2D();
+			CMatchTerrain2DChunkRenderMaterial();
+			~CMatchTerrain2DChunkRenderMaterial();
 			Void setTexture(const String & filename);
 			NSRenderSystem::ITexture * getTexture()const
 			{

@@ -5,6 +5,8 @@ using namespace NSFightChess;
 NSDevilX::NSFightChess::CMatchMap::CMatchMap(UInt16 row,UInt16 column,CMatchScene * scene)
 	:mScene(scene)
 {
+	row=std::min<UInt16>(row,256);
+	column=std::min<UInt16>(column,256);
 	mGrids.resize(column);
 	for(UInt16 colume_index=0;colume_index<column;++colume_index)
 	{

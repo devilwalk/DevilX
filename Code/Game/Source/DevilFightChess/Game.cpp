@@ -42,36 +42,34 @@ Void NSDevilX::NSFightChess::CGame::initialize()
 
 Void NSDevilX::NSFightChess::CGame::registerModule(CModule * mod)
 {
-	mModules.add(mod->getName(),mod);
+	mModules.add(mod->getName(),DEVILX_NEW SModule(mod));
 }
 
 Void NSDevilX::NSFightChess::CGame::setModuleParameter(const String & moduleName,const String & name,const CAny & parameter)
 {
 	auto mod=mModules.get(moduleName);
-	mod->setParameter(name,parameter);
+	mod->mModule->setParameter(name,parameter);
 }
 
 Void NSDevilX::NSFightChess::CGame::startModule(const String & moduleName)
 {
-	auto mod=mModules.get(moduleName);
-	mActiveModules.insert(mod);
-	mod->start();
+	auto mod=mModules[moduleName];
+	mod->mActived=True;
+	mod->mModule->start();
 }
 
 Void NSDevilX::NSFightChess::CGame::stopModule(const String & moduleName)
 {
-	auto mod=mModules.get(moduleName);
-	mod->stop();
-	mActiveModules.erase(mod);
+	auto mod=mModules[moduleName];
+	mod->mModule->stop();
+	mod->mActived=False;
 }
 
 Void NSDevilX::NSFightChess::CGame::update()
 {
-	TVector<CModule*> modules;
-	for(auto mod:mActiveModules)
-		modules.push_back(mod);
-	for(auto mod:modules)
-		mod->update();
+	for(auto const & mod:mModules)
+		if(mod.second->mActived)
+			mod.second->mModule->update();
 }
 
 Void NSDevilX::NSFightChess::CGame::messageBox(const CUTF8String & msg)

@@ -14,6 +14,10 @@ struct SVertexShaderInput
 #if OUTPUT_DIFFUSE
     float4 mDiffuse : DIFFUSE;
 #endif
+#if SKELETON_ANIMATION
+	float4 mBlendWeight : BLENDWEIGHT;
+	int4 mBlendIndex : BLENDINDICES;
+#endif
 };
 struct SVertexShaderOutput
 {
@@ -42,6 +46,8 @@ SVertexShaderOutput vsMain(SVertexShaderInput input)
 #define iTangent input.mTangent
 #define iMainUV input.mMainUV
 #define iDiffuse input.mDiffuse
+#define iBlendWeight input.mBlendWeight
+#define iBlendIndex input.mBlendIndex
 #define oPosition output.mPosition
 #define oWorldPosition output.mWorldPosition
 #define oWorldNormal output.mWorldNormal
