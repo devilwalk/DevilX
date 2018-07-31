@@ -6,17 +6,24 @@ namespace NSDevilX
 	{
 		class CNetworkAcceptor
 			:public TBaseObject<CNetworkAcceptor>
+			,public CMessageNotifier
 		{
+		public:
+			enum EMessage
+			{
+				EMessage_NewConnection
+			};
 		protected:
-			CSocket mSocketV4;
-			CSocket mSocketV6;
 			asio::ip::tcp::acceptor mInternalV4;
 			asio::ip::tcp::acceptor mInternalV6;
+			TVector<asio::ip::tcp::socket*> mConnectedSockets;
 		public:
-			CNetworkAcceptor(unsigned short port);
+			CNetworkAcceptor(UInt16 port);
 			~CNetworkAcceptor();
+			UInt16 getPort()const{ return mInternalV4.local_endpoint().port(); }
 		protected:
-			static void _acceptHandler(const asio::error_code& error);
+			Void _acceptV4();
+			Void _acceptV6();
 		};
 	}
 }

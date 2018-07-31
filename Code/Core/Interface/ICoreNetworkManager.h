@@ -17,10 +17,13 @@ namespace NSDevilX
 		protected:
 			~INetworkManager(){}
 		public:
-			virtual INetworkConnection * createConnection(const std::string & endPointIP,unsigned short endPointPort,unsigned short localPort = -1,const std::string & localIP =std::string(""));
-			virtual void sendTo(const void * data,size_t sizeInBytes,const std::string & endPointIP,unsigned short endPointPort,unsigned short localPort=-1,const std::string & localIP=std::string(""));
-			virtual void addListener(INetworkManagerListener * listener);
-			virtual void removeListener(INetworkManagerListener * listener);
+			INetworkConnection*createConnection(const std::string & endPointIP,unsigned short endPointPort,unsigned short localPort=-1,const std::string & localIP=std::string(""));
+			void destroyConnection(INetworkConnection * connection);
+			void addListeningPort(unsigned short port);
+			void removeListeningPort(unsigned short port);
+			void sendTo(const void * data,size_t sizeInBytes,const std::string & endPointIP,unsigned short endPointPort,unsigned short localPort=-1,const std::string & localIP=std::string(""));
+			void addListener(INetworkManagerListener * listener);
+			void removeListener(INetworkManagerListener * listener);
 		};
 	}
 }

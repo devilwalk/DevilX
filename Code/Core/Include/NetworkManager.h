@@ -1,4 +1,5 @@
 #pragma once
+#include "NetworkAcceptor.h"
 namespace NSDevilX
 {
 	namespace NSCore
@@ -9,6 +10,7 @@ namespace NSDevilX
 		{
 		protected:
 			asio::io_context mIOService;
+			TResourcePtrMap<UInt16,CNetworkAcceptor> mAcceptors;
 		public:
 			CNetworkManager();
 			~CNetworkManager();
@@ -17,6 +19,9 @@ namespace NSDevilX
 			{
 				return mIOService;
 			}
+			CNetworkAcceptor * createAcceptor(UInt16 port);
+			CNetworkAcceptor * getAcceptor(UInt16 port)const{ return mAcceptors.get(port); }
+			Void removeListeningPort(CNetworkAcceptor * acceptor);
 		};
 	}
 }

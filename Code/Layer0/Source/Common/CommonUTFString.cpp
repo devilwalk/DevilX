@@ -1,7 +1,7 @@
 #include "Precompiler.h"
 using namespace NSDevilX;
 
-NSDevilX::CUTF8String::CUTF8String(const TUTFString<CUTF16Char> & src)
+NSDevilX::CUTF8String::CUTF8String(const TVector<CUTF16Char> & src)
 {
 	for(const auto & c:src)
 	{
@@ -9,7 +9,7 @@ NSDevilX::CUTF8String::CUTF8String(const TUTFString<CUTF16Char> & src)
 	}
 }
 
-NSDevilX::CUTF8String::operator TUTFString<CUTF16Char>() const
+NSDevilX::CUTF8String::operator TVector<CUTF16Char>() const
 {
 	TUTFString<CUTF16Char> ret;
 	for(auto const & c:*this)
@@ -17,6 +17,19 @@ NSDevilX::CUTF8String::operator TUTFString<CUTF16Char>() const
 		ret+=CUTF16Char(c);
 	}
 	return ret;
+}
+
+NSDevilX::CUTF8String::operator WString() const
+{
+	return CUTF16String(*this);
+}
+
+NSDevilX::CUTF16String::CUTF16String(const TVector<CUTF8Char> & src)
+{
+	for(const auto & c:src)
+	{
+		(*this)+=CUTF16Char(static_cast<Int32>(c));
+	}
 }
 
 NSDevilX::CUTF16String::CUTF16String(ConstVoidPtr utf16Buffer,SizeT sizeInBytes,Bool bigEndian)
@@ -56,6 +69,16 @@ NSDevilX::CUTF16String::operator WString() const
 			assert(c.getBuffer().size()==4);
 			ret.push_back(*(p+1));
 		}
+	}
+	return ret;
+}
+
+NSDevilX::CUTF16String::operator TVector<CUTF8Char>() const
+{
+	TUTFString<CUTF8Char> ret;
+	for(auto const & c:*this)
+	{
+		ret+=CUTF8Char(c);
 	}
 	return ret;
 }

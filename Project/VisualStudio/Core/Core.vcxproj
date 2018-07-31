@@ -115,6 +115,7 @@
     <ClInclude Include="..\..\..\Code\Core\Include\FunctionWorker.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\IDirectoryImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\IFileImp.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\INetworkConnectionImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\ISemaphoreImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\IThreadImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\IThreadPoolImp.h" />
@@ -122,6 +123,7 @@
     <ClInclude Include="..\..\..\Code\Core\Include\Define.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\MemoryManager.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\MemoryTracker.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\MessageMode.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\NetworkAcceptor.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\NetworkManager.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\Node.h" />
@@ -172,10 +174,12 @@
     <ClCompile Include="..\..\..\Code\Core\Source\ICoreFileManager.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\IDirectoryImp.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\IFileImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\INetworkConnectionImp.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\ISemaphoreImp.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\IThreadImp.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\IThreadPoolImp.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\MemoryManager.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\MessageMode.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\NetworkAcceptor.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\NetworkManager.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\SemaphoreGroup.cpp" />

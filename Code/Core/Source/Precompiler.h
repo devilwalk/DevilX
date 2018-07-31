@@ -12,6 +12,7 @@
 #include "FunctionWorker.h"
 #include "MemoryAllocatorObjectTemplate.h"
 #include "MemoryTracker.h"
+#include "MessageMode.h"
 #include "Node.h"
 #include "PathUtility.h"
 #include "ResourceContainer.h"
