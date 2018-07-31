@@ -16,7 +16,7 @@ namespace NSDevilX
 
 			// Í¨¹ý IDirectory ¼Ì³Ð
 			virtual IDirectory * getParent() const override;
-			virtual std::string getPath(const std::string & relativePath) const override;
+			virtual std::string getPath() const override;
 			virtual IDirectory * createSubDirectory(const std::string & name) override;
 			virtual size_t getNumSubDirectory() const override;
 			virtual IDirectory * getSubDirectory(size_t index) const override;

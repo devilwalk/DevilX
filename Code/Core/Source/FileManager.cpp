@@ -104,7 +104,7 @@ NSDevilX::NSCore::IFileImp * NSDevilX::NSCore::CFileManager::createFile(const WS
 		error_msg.resize(4096);
 		FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM,nullptr,error,LANG_USER_DEFAULT,&error_msg[0],static_cast<DWORD>(error_msg.size()),nullptr);
 		OutputDebugString(error_msg.c_str());
-		return;
+		return nullptr;
 #endif
 	}
 	else

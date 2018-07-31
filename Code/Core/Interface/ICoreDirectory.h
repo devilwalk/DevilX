@@ -10,7 +10,7 @@ namespace NSDevilX
 			virtual ~IDirectory(){}
 		public:
 			virtual IDirectory * getParent()const=0;
-			virtual std::string getPath(const std::string & relativePath)const=0;
+			virtual std::string getPath()const=0;
 			virtual IDirectory * createSubDirectory(const std::string & name)=0;
 			virtual size_t getNumSubDirectory()const=0;
 			virtual IDirectory * getSubDirectory(size_t index)const=0;

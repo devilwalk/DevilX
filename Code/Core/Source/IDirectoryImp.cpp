@@ -17,7 +17,7 @@ IDirectory * NSDevilX::NSCore::IDirectoryImp::getParent() const
 	return CFileManager::getSingleton().getDirectory(parent_path);
 }
 
-std::string NSDevilX::NSCore::IDirectoryImp::getPath(const std::string & relativePath) const
+std::string NSDevilX::NSCore::IDirectoryImp::getPath() const
 {
 	return mPath.toString().c_str();
 }

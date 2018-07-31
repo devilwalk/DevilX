@@ -1,4 +1,5 @@
 #pragma once
+#include "UTFString.h"
 namespace NSDevilX
 {
 	namespace NSCore
@@ -18,11 +19,11 @@ namespace NSDevilX
 					{
 						indices.push_back(i);
 					}
-					if(c=="\\"||c=="/")
+					if(c=='\\'||c=='/')
 						skip=false;
 				}
 				TVector<TChar> ret;
-				ret.reserve(indices.size())
+				ret.reserve(indices.size());
 				for(SizeT i=indices.size()-1;i>=0;--i)
 				{
 					ret.push_back(path[indices[i]]);
@@ -46,6 +47,27 @@ namespace NSDevilX
 			static CUTF16String getParent(const CUTF16String & path)
 			{
 				return CUTF16String(getParent<CUTF16Char>(path));
+			}
+
+			template<typename TChar>
+			static TVector<TChar> getRelative(const TVector<TChar> & path,const TVector<TChar> & relative)
+			{
+				if(relative.empty())
+					return path;
+				TVector<TVector<TChar> > relative_dirs;
+				auto temp=relative;
+				while(!temp.empty())
+				{
+					relative_dirs.push_back(temp);
+					temp=getParent(temp);
+				}
+				TVector<TVector<TChar> > dirs;
+				temp=path;
+				while(!temp.empty())
+				{
+					dirs.push_back(temp);
+					temp=getParent(temp);
+				}
 			}
 		};
 	}

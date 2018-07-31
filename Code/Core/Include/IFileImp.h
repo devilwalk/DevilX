@@ -13,6 +13,21 @@ namespace NSDevilX
 		public:
 			IFileImp(const CUTF8String & path);
 			~IFileImp();
+
+			virtual IDirectory * getDirectory() const override;
+
+
+			virtual std::string getPath() const override;
+
+
+			virtual size_t getSize() const override;
+
+
+			virtual IFileProcesser * retrieveProcesser() override;
+
+
+			virtual void releaseProcesser(IFileProcesser * processer) override;
+
 		};
 	}
 }

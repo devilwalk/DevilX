@@ -39,20 +39,20 @@ namespace NSDevilX
 			TUTFString operator +(const TUTFChar & ch)const
 			{
 				auto ret=*this;
-				push_back(ch);
+				ret.push_back(ch);
 				return ret;
 			}
 			TUTFString operator +(const TUTFString & text)const
 			{
 				auto ret=*this;
-				insert(ret.mString.end(),text.mString.begin(),text.mString.end());
+				ret.insert(ret.end(),text.begin(),text.end());
 				return ret;
 			}
 			TUTFString operator -(SizeT count)const
 			{
 				auto ret=*this;
 				while(count--)
-					pop_back();
+					ret.pop_back();
 				return ret;
 			}
 			TUTFString & operator +=(const TUTFChar & ch)
