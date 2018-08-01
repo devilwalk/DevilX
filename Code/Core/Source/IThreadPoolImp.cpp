@@ -55,7 +55,7 @@ Void NSDevilX::NSCore::IThreadPoolImp::setMaxThreadCount(UInt32 count)
 
 UInt32 NSDevilX::NSCore::IThreadPoolImp::getMaxThreadCount() const
 {
-	return mThreadList.size();
+	return static_cast<UInt32>(mThreadList.size());
 }
 
 Void NSDevilX::NSCore::IThreadPoolImp::submit(WorkFunction func,VoidPtr parameter,Int32 syncGroupID)

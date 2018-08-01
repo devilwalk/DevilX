@@ -7,21 +7,32 @@ namespace NSDevilX
 		class CNetworkManager
 			:public TSingletonEx<CNetworkManager>
 			,public TBaseObject<CNetworkManager>
+			,public CMessageNotifier
 		{
+		public:
+			enum EMessage
+			{
+				EMessage_UnprocessedConnection
+			};
 		protected:
-			asio::io_context mIOService;
+			asio::io_context mIOContext;
 			TResourcePtrMap<UInt16,CNetworkAcceptor> mAcceptors;
+			TResourcePtrList<INetworkConnectionImp> mUnprocessedConnections;
+			INetworkConnectionImp * mCurrentNotifyUnprocessedConnection;
 		public:
 			CNetworkManager();
 			~CNetworkManager();
 
-			asio::io_context & getIOService()
+			asio::io_context & getIOContext()
 			{
-				return mIOService;
+				return mIOContext;
 			}
+			Void update();
 			CNetworkAcceptor * createAcceptor(UInt16 port);
 			CNetworkAcceptor * getAcceptor(UInt16 port)const{ return mAcceptors.get(port); }
-			Void removeListeningPort(CNetworkAcceptor * acceptor);
+			Void destroyAcceptor(CNetworkAcceptor * acceptor);
+			Void createConnection(const std::string & endPointIP,unsigned short endPointPort,unsigned short localPort,const std::string & localIP);
+			Void destroyConnection(INetworkConnectionImp * connection);
 		};
 	}
 }
