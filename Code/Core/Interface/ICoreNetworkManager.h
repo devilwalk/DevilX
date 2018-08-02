@@ -19,8 +19,8 @@ namespace NSDevilX
 		public:
 			void createConnection(const std::string & endPointIP,UInt16 endPointPort,UInt16 localPort=-1,const std::string & localIP=std::string(""));
 			void destroyConnection(INetworkConnection * connection);
-			void addListeningPort(UInt16 port);
-			void removeListeningPort(UInt16 port);
+			void addListeningPort(UInt16 localPort,const std::string & localIP=std::string(""));
+			void removeListeningPort(UInt16 localPort,const std::string & localIP=std::string(""));
 			void sendTo(ConstVoidPtr data,SizeT sizeInBytes,const std::string & endPointIP,UInt16 endPointPort,UInt16 localPort=-1,const std::string & localIP=std::string(""));
 			void addListener(INetworkManagerListener * listener);
 			void removeListener(INetworkManagerListener * listener);

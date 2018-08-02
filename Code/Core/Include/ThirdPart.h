@@ -1,14 +1,4 @@
 #pragma once
-#if DEVILX_DEBUG && (!defined(DEVILX_UNUSE_VLD))
-#if DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_WINDOWS
-#include <vld.h>
-#endif
-#define _XM_NO_INTRINSICS_
-#endif
-#include "DirectXMath/DirectXMath.h"
-#include "DirectXMath/DirectXPackedVector.h"
-#include "DirectXMath/DirectXColors.h"
-#include "DirectXMath/DirectXCollision.h"
 #define __TBB_SOURCE_DIRECTLY_INCLUDED 1
 #include "TBB/tbb/tbb_allocator.h"
 #include "TBB/tbb/scalable_allocator.h"

@@ -6,14 +6,15 @@ namespace NSDevilX
 {
 	namespace NSCore
 	{
-		template<typename T>
+		template<typename T,class TAllocator=DevilXAllocator<T> >
 		class TVectorMT
-			:public TVector<T>
+			:public TVector<T,TAllocator>
 			,public IReadWriteLockImp
+			,public TBaseObject<TVectorMT<T,TAllocator> >
 		{
 		public:
-			using TVector<T>::TVector;
-			using TVector<T>::operator=;
+			using TVector<T,TAllocator>::TVector;
+			using TVector<T,TAllocator>::operator=;
 			Void pushBackMT(T const & t)
 			{
 				lockWrite();
@@ -27,14 +28,15 @@ namespace NSDevilX
 				unLockWrite();
 			}
 		};
-		template<typename T>
+		template<typename T,class TAllocator=DevilXAllocator<T> >
 		class TListMT
-			:public TList<T>
+			:public TList<T,TAllocator>
 			,public IReadWriteLockImp
+			,public TBaseObject<TListMT<T,TAllocator> >
 		{
 		public:
-			using TList<T>::TList;
-			using TList<T>::operator=;
+			using TList<T,TAllocator>::TList;
+			using TList<T,TAllocator>::operator=;
 			Void pushBackMT(T const & t)
 			{
 				lockWrite();
@@ -54,14 +56,15 @@ namespace NSDevilX
 				unLockWrite();
 			}
 		};
-		template<typename T,typename SortfuncT=std::less<T> >
+		template<typename T,typename SortfuncT=std::less<T>,class TAllocator=DevilXAllocator<T> >
 		class TSetMT
-			:public TSet<T,SortfuncT>
+			:public TSet<T,SortfuncT,TAllocator>
 			,public IReadWriteLockImp
+			,public TBaseObject<TSetMT<T,SortfuncT,TAllocator> >
 		{
 		public:
-			using TSet<T,SortfuncT>::TSet;
-			using TSet<T,SortfuncT>::operator=;
+			using TSet<T,SortfuncT,TAllocator>::TSet;
+			using TSet<T,SortfuncT,TAllocator>::operator=;
 			Void insertMT(T const & t)
 			{
 				lockWrite();
@@ -75,10 +78,11 @@ namespace NSDevilX
 				unLockWrite();
 			}
 		};
-		template<typename KeyT,typename ValueT,typename SortfuncT=std::less<KeyT> >
+		template<typename KeyT,typename ValueT,typename SortfuncT=std::less<KeyT>,class TAllocator=DevilXAllocator<T> >
 		class TMapMT
-			:public TMap<KeyT,ValueT,SortfuncT>
+			:public TMap<KeyT,ValueT,SortfuncT,TAllocator>
 			,public IReadWriteLockImp
+			,public TBaseObject<TMapMT<T,ValueT,SortfuncT,TAllocator> >
 		{
 		public:
 			Void addMT(KeyT const & key,ValueT const & value)

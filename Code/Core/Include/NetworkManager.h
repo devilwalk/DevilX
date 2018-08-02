@@ -16,7 +16,7 @@ namespace NSDevilX
 			};
 		protected:
 			asio::io_context mIOContext;
-			TResourcePtrMap<UInt16,CNetworkAcceptor> mAcceptors;
+			TNamedResourcePtrMap<CNetworkAcceptor> mAcceptors;
 			TResourcePtrList<INetworkConnectionImp> mUnprocessedConnections;
 			INetworkConnectionImp * mCurrentNotifyUnprocessedConnection;
 		public:
@@ -28,8 +28,12 @@ namespace NSDevilX
 				return mIOContext;
 			}
 			Void update();
-			CNetworkAcceptor * createAcceptor(UInt16 port);
-			CNetworkAcceptor * getAcceptor(UInt16 port)const{ return mAcceptors.get(port); }
+			static String makeAcceptKey(UInt16 localPort,const String & localIP="")
+			{
+				return localIP+":"+CStringUtility::toString(localPort);
+			}
+			CNetworkAcceptor * createAcceptor(UInt16 localPort,const String & localIP="");
+			CNetworkAcceptor * getAcceptor(UInt16 localPort,const String & localIP="")const{ return mAcceptors.get(makeAcceptKey(localPort,localIP)); }
 			Void destroyAcceptor(CNetworkAcceptor * acceptor);
 			Void createConnection(const std::string & endPointIP,UInt16 endPointPort,UInt16 localPort,const std::string & localIP);
 			Void destroyConnection(INetworkConnectionImp * connection);

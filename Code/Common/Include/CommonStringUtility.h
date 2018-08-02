@@ -4,37 +4,44 @@ namespace NSDevilX
 	class CStringUtility
 	{
 	public:
-		static Void split(ConstCharPtr text,ConstCharPtr splitKey,OUT std::vector<std::string> & ret)
+		template<class TReturn,class TAllocator=std::allocator<Char> >
+		static Void split(const std::basic_string<Char,std::char_traits<Char>,TAllocator> & text,const basic_string<Char,std::char_traits<Char>,TAllocator> & splitKey,OUT TReturn & ret)
 		{
-			std::string copy=text;
-			while(std::string::npos!=copy.find(splitKey))
+			auto copy=text;
+			while(std::basic_string<Char,std::char_traits<Char>,TAllocator>::npos!=copy.find(splitKey))
 			{
 				ret.push_back(copy.substr(0,copy.find_first_of(splitKey)));
 				copy=copy.substr(copy.find_first_of(splitKey)+1);
 			}
 			ret.push_back(copy);
 		}
-		template<typename T>
-		static ConstCharPtr toString(T t)
+		template<typename T,class TAllocator=std::allocator<Char> >
+		static std::basic_string<Char,std::char_traits<Char>,TAllocator> & toString(T t,OUT std::basic_string<Char,std::char_traits<Char>,TAllocator> & ret)
 		{
-			std::string ret;
-			std::stringstream ss;
+			std::basic_stringstream<Char,std::char_traits<Char>,TAllocator> ss;
 			ss<<t;
 			ss>>ret;
-			return ret.c_str();
+			return ret;
 		}
-		template<typename T>
-		static T toValue(ConstCharPtr text)
+		template<typename T,class TAllocator=std::allocator<Char> >
+		static std::basic_string<Char,std::char_traits<Char>,TAllocator> toString(T t)
+		{
+			std::basic_string<Char,std::char_traits<Char>,TAllocator> ret;
+			return toString(t,ret);
+		}
+		template<typename T,class TAllocator=std::allocator<Char> >
+		static T toValue(const std::basic_string<Char,std::char_traits<Char>,TAllocator> & text)
 		{
 			T ret;
-			std::stringstream ss;
+			std::basic_stringstream<Char,std::char_traits<Char>,TAllocator> ss;
 			ss<<text;
 			ss>>ret;
 			return ret;
 		}
-		static ConstCharPtr toString(const CFloat4 & value)
+		template<class TAllocator=std::allocator<Char> >
+		static std::basic_string<Char,std::char_traits<Char>,TAllocator> toString(const CFloat4 & value)
 		{
-			std::string ret;
+			std::basic_string<Char,std::char_traits<Char>,TAllocator> ret;
 			ret+=toString(value.x);
 			ret+=",";
 			ret+=toString(value.y);
@@ -42,63 +49,71 @@ namespace NSDevilX
 			ret+=toString(value.z);
 			ret+=",";
 			ret+=toString(value.w);
-			return ret.c_str();
+			return ret;
 		}
-		static ConstCharPtr toString(const CFloat3 & value)
+		template<class TAllocator=std::allocator<Char> >
+		static std::basic_string<Char,std::char_traits<Char>,TAllocator> toString(const CFloat3 & value)
 		{
-			std::string ret;
+			std::basic_string<Char,std::char_traits<Char>,TAllocator> ret;
 			ret+=toString(value.x);
 			ret+=",";
 			ret+=toString(value.y);
 			ret+=",";
 			ret+=toString(value.z);
-			return ret.c_str();
+			return ret;
 		}
-		static ConstCharPtr toString(const CFloat2 & value)
+		template<class TAllocator=std::allocator<Char> >
+		static std::basic_string<Char,std::char_traits<Char>,TAllocator> toString(const CFloat2 & value)
 		{
-			std::string ret;
+			std::basic_string<Char,std::char_traits<Char>,TAllocator> ret;
 			ret+=toString(value.x);
 			ret+=",";
 			ret+=toString(value.y);
-			return ret.c_str();
+			return ret;
 		}
-		static Void toValue(ConstCharPtr str,CFloat4 & ret)
+		template<class TAllocator=std::allocator<Char> >
+		static Void toValue(const std::basic_string<Char,std::char_traits<Char>,TAllocator> & str,OUT CFloat4 & ret)
 		{
-			std::vector<std::string> values;
+			std::vector<std::basic_string<Char,std::char_traits<Char>,TAllocator> > values;
 			split(str,",",values);
 			ret.x=toValue<Float>(values[0].c_str());
 			ret.y=toValue<Float>(values[1].c_str());
 			ret.z=toValue<Float>(values[2].c_str());
 			ret.w=toValue<Float>(values[3].c_str());
 		}
-		static Void toValue(ConstCharPtr str,CFloat3 & ret)
+		template<class TAllocator=std::allocator<Char> >
+		static Void toValue(const std::basic_string<Char,std::char_traits<Char>,TAllocator> & str,CFloat3 & ret)
 		{
-			std::vector<std::string> values;
+			std::vector<std::basic_string<Char,std::char_traits<Char>,TAllocator> > values;
 			split(str,",",values);
 			ret.x=toValue<Float>(values[0].c_str());
 			ret.y=toValue<Float>(values[1].c_str());
 			ret.z=toValue<Float>(values[2].c_str());
 		}
-		static Void toValue(ConstCharPtr str,CFloat2 & ret)
+		template<class TAllocator=std::allocator<Char> >
+		static Void toValue(const std::basic_string<Char,std::char_traits<Char>,TAllocator> & str,CFloat2 & ret)
 		{
-			std::vector<std::string> values;
+			std::vector<std::basic_string<Char,std::char_traits<Char>,TAllocator> > values;
 			split(str,",",values);
 			ret.x=toValue<Float>(values[0].c_str());
 			ret.y=toValue<Float>(values[1].c_str());
 		}
-		static CFloat4 toFloat4(ConstCharPtr str)
+		template<class TAllocator=std::allocator<Char> >
+		static CFloat4 toFloat4(const std::basic_string<Char,std::char_traits<Char>,TAllocator> & str)
 		{
 			CFloat4 ret;
 			toValue(str,ret);
 			return ret;
 		}
-		static CFloat3 toFloat3(ConstCharPtr str)
+		template<class TAllocator=std::allocator<Char> >
+		static CFloat3 toFloat3(const std::basic_string<Char,std::char_traits<Char>,TAllocator> & str)
 		{
 			CFloat3 ret;
 			toValue(str,ret);
 			return ret;
 		}
-		static CFloat2 toFloat2(ConstCharPtr str)
+		template<class TAllocator=std::allocator<Char> >
+		static CFloat2 toFloat2(const std::basic_string<Char,std::char_traits<Char>,TAllocator> & str)
 		{
 			CFloat2 ret;
 			toValue(str,ret);
