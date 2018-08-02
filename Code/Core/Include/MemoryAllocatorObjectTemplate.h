@@ -41,9 +41,9 @@ namespace NSDevilX
 #define DEVILX_ALLOCATOR_TBB 1
 #define DEVILX_ALLOCATOR DEVILX_ALLOCATOR_TBB
 #if DEVILX_ALLOCATOR==DEVILX_ALLOCATOR_STANDER
-#define TAllocator std::allocator
+#define DevilXAllocator std::allocator
 #elif DEVILX_ALLOCATOR==DEVILX_ALLOCATOR_TBB
-#define TAllocator tbb::tbb_allocator
+#define DevilXAllocator tbb::tbb_allocator
 #endif
 	}
 }

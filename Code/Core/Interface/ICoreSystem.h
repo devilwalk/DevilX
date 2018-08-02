@@ -13,7 +13,7 @@ namespace NSDevilX
 			void shutdown();
 			IThreadManager*getThreadManager()const;
 			IMemoryManager*getMemoryManager()const;
-			double getTimeNowInSeconds()const;
+			DoubleFloat getTimeNowInSeconds()const;
 		};
 		DLLAPI ISystem*getSystem();
 	}

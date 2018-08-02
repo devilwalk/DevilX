@@ -15,13 +15,12 @@ NSDevilX::NSCore::IFileImp::~IFileImp()
 
 NSDevilX::NSCore::IDirectory * NSDevilX::NSCore::IFileImp::getDirectory() const
 {
-	auto path=CPathUtility::getParent(mPath);
-	return CFileManager::getSingleton().getDirectory(path);
+	return CFileManager::getSingleton().getDirectory(CUTF8String(CPathUtility::getParent(mPath)));
 }
 
-std::string NSDevilX::NSCore::IFileImp::getPath() const
+NSDevilX::CUTF8String NSDevilX::NSCore::IFileImp::getPath() const
 {
-	return mPath.toString().c_str();
+	return mPath;
 }
 
 size_t NSDevilX::NSCore::IFileImp::getSize() const

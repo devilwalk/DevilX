@@ -13,19 +13,17 @@ NSDevilX::NSCore::IDirectoryImp::~IDirectoryImp()
 
 IDirectory * NSDevilX::NSCore::IDirectoryImp::getParent() const
 {
-	auto && parent_path=CPathUtility::getParent(mPath);
-	return CFileManager::getSingleton().getDirectory(parent_path);
+	return CFileManager::getSingleton().getDirectory(CUTF8String(CPathUtility::getParent(mPath)));
 }
 
-std::string NSDevilX::NSCore::IDirectoryImp::getPath() const
+NSDevilX::CUTF8String NSDevilX::NSCore::IDirectoryImp::getPath() const
 {
-	return mPath.toString().c_str();
+	return mPath;
 }
 
-IDirectory * NSDevilX::NSCore::IDirectoryImp::createSubDirectory(const std::string & name)
+IDirectory * NSDevilX::NSCore::IDirectoryImp::createSubDirectory(const NSDevilX::CUTF8String & name)
 {
-	auto utf8_name=CUTF8String(&name[0],name.size());
-	return CFileManager::getSingleton().createDirectory(CUTF8String(mPath+"/"+utf8_name));
+	return CFileManager::getSingleton().createDirectory(CUTF8String(mPath+"/"+name));
 }
 
 size_t NSDevilX::NSCore::IDirectoryImp::getNumSubDirectory() const
@@ -38,13 +36,13 @@ IDirectory * NSDevilX::NSCore::IDirectoryImp::getSubDirectory(size_t index) cons
 	return CFileManager::getSingleton().getSubDirectory(mPath,index);
 }
 
-IDirectory * NSDevilX::NSCore::IDirectoryImp::getSubDirectory(const std::string & name) const
+IDirectory * NSDevilX::NSCore::IDirectoryImp::getSubDirectory(const NSDevilX::CUTF8String & name) const
 {
 	auto utf8_name=CUTF8String(&name[0],name.size());
 	return CFileManager::getSingleton().getDirectory(CUTF8String(mPath+"/"+utf8_name));
 }
 
-IFile * NSDevilX::NSCore::IDirectoryImp::createFile(const std::string & name)
+IFile * NSDevilX::NSCore::IDirectoryImp::createFile(const NSDevilX::CUTF8String & name)
 {
 	auto utf8_name=CUTF8String(&name[0],name.size());
 	return CFileManager::getSingleton().createFile(CUTF8String(mPath+"/"+utf8_name));
@@ -60,7 +58,7 @@ IFile * NSDevilX::NSCore::IDirectoryImp::getFile(size_t index) const
 	return CFileManager::getSingleton().getFile(mPath,index);
 }
 
-IFile * NSDevilX::NSCore::IDirectoryImp::getFile(const std::string & name) const
+IFile * NSDevilX::NSCore::IDirectoryImp::getFile(const NSDevilX::CUTF8String & name) const
 {
 	auto utf8_name=CUTF8String(&name[0],name.size());
 	return CFileManager::getSingleton().getFile(CUTF8String(mPath+"/"+utf8_name));

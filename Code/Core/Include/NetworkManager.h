@@ -31,7 +31,7 @@ namespace NSDevilX
 			CNetworkAcceptor * createAcceptor(UInt16 port);
 			CNetworkAcceptor * getAcceptor(UInt16 port)const{ return mAcceptors.get(port); }
 			Void destroyAcceptor(CNetworkAcceptor * acceptor);
-			Void createConnection(const std::string & endPointIP,unsigned short endPointPort,unsigned short localPort,const std::string & localIP);
+			Void createConnection(const std::string & endPointIP,UInt16 endPointPort,UInt16 localPort,const std::string & localIP);
 			Void destroyConnection(INetworkConnectionImp * connection);
 		};
 	}

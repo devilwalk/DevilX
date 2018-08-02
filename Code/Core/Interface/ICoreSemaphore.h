@@ -8,8 +8,8 @@ namespace NSDevilX
 		protected:
 			virtual ~ISemaphore(){}
 		public:
-			virtual void notify()=0;
-			virtual void wait(unsigned int timeOut=-1)=0;
+			virtual Void notify()=0;
+			virtual Void wait(UInt32 timeOut=-1)=0;
 		};
 	}
 }

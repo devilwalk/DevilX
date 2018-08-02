@@ -7,6 +7,7 @@
 #endif
 #elif defined(GCC)
 #endif
+#include "Common.h"
 #include "ICoreBuffer.h"
 #include "ICoreDevice.h"
 #include "ICoreDirectory.h"

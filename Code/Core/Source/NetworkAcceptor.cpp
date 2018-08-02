@@ -12,7 +12,7 @@ NSDevilX::NSCore::CNetworkAcceptor::~CNetworkAcceptor()
 {
 }
 
-NSDevilX::NSCore::Void NSDevilX::NSCore::CNetworkAcceptor::_acceptV4()
+NSDevilX::Void NSDevilX::NSCore::CNetworkAcceptor::_acceptV4()
 {
 	std::shared_ptr<asio::ip::tcp::socket> s(new asio::ip::tcp::socket(CNetworkManager::getSingleton().getIOContext()));
 	mInternalV4.async_accept(*s,[s,this](const asio::error_code& error)
@@ -26,7 +26,7 @@ NSDevilX::NSCore::Void NSDevilX::NSCore::CNetworkAcceptor::_acceptV4()
 	);
 }
 
-NSDevilX::NSCore::Void NSDevilX::NSCore::CNetworkAcceptor::_acceptV6()
+NSDevilX::Void NSDevilX::NSCore::CNetworkAcceptor::_acceptV6()
 {
 	std::shared_ptr<asio::ip::tcp::socket> s(new asio::ip::tcp::socket(CNetworkManager::getSingleton().getIOContext()));
 	mInternalV6.async_accept(*s,[s,this](const asio::error_code& error)

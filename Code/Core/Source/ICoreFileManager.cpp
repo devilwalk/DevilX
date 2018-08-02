@@ -16,7 +16,7 @@ IDirectory * NSDevilX::NSCore::IFileManager::getApplicationDirectory() const
 	return nullptr;
 }
 
-NSDevilX::NSCore::IDirectory * NSDevilX::NSCore::IFileManager::createOrRetrieveDirectory(const std::string & path)
+NSDevilX::NSCore::IDirectory * NSDevilX::NSCore::IFileManager::createOrRetrieveDirectory(const NSDevilX::CUTF8String & path)
 {
 	auto utf_path=CUTF8String(&path[0],path.size());
 	auto ret=CFileManager::getSingleton().getDirectory(utf_path);
@@ -27,13 +27,13 @@ NSDevilX::NSCore::IDirectory * NSDevilX::NSCore::IFileManager::createOrRetrieveD
 	return ret;
 }
 
-NSDevilX::NSCore::IDirectory * NSDevilX::NSCore::IFileManager::getDirectory(const std::string & path) const
+NSDevilX::NSCore::IDirectory * NSDevilX::NSCore::IFileManager::getDirectory(const NSDevilX::CUTF8String & path) const
 {
 	auto utf_path=CUTF8String(&path[0],path.size());
 	return CFileManager::getSingleton().getDirectory(utf_path);
 }
 
-NSDevilX::NSCore::IFile * NSDevilX::NSCore::IFileManager::createOrRetrieveFile(const std::string & path)
+NSDevilX::NSCore::IFile * NSDevilX::NSCore::IFileManager::createOrRetrieveFile(const NSDevilX::CUTF8String & path)
 {
 	auto utf_path=CUTF8String(&path[0],path.size());
 	auto ret=CFileManager::getSingleton().getFile(utf_path);
@@ -44,7 +44,7 @@ NSDevilX::NSCore::IFile * NSDevilX::NSCore::IFileManager::createOrRetrieveFile(c
 	return ret;
 }
 
-NSDevilX::NSCore::IFile * NSDevilX::NSCore::IFileManager::getFile(const std::string & path)
+NSDevilX::NSCore::IFile * NSDevilX::NSCore::IFileManager::getFile(const NSDevilX::CUTF8String & path)
 {
 	auto utf_path=CUTF8String(&path[0],path.size());
 	return CFileManager::getSingleton().getFile(utf_path);

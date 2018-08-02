@@ -77,13 +77,13 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile />
     <Link>
-      <AdditionalDependencies>TinyXML.lib;FreeImage.lib;freetype.lib;libfbxsdk-mt.lib;tbb.lib;tbbmalloc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Common.lib;TinyXML.lib;FreeImage.lib;freetype.lib;libfbxsdk-mt.lib;tbb.lib;tbbmalloc.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile />
     <Link>
-      <AdditionalDependencies>TinyXML.lib;FreeImage.lib;freetype.lib;libfbxsdk-mt.lib;tbb.lib;tbbmalloc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Common.lib;TinyXML.lib;FreeImage.lib;freetype.lib;libfbxsdk-mt.lib;tbb.lib;tbbmalloc.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -94,7 +94,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>TinyXML.lib;FreeImage.lib;freetype.lib;libfbxsdk-mt.lib;tbb.lib;tbbmalloc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Common.lib;TinyXML.lib;FreeImage.lib;freetype.lib;libfbxsdk-mt.lib;tbb.lib;tbbmalloc.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -105,12 +105,10 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>TinyXML.lib;FreeImage.lib;freetype.lib;libfbxsdk-mt.lib;tbb.lib;tbbmalloc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Common.lib;TinyXML.lib;FreeImage.lib;freetype.lib;libfbxsdk-mt.lib;tbb.lib;tbbmalloc.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Code\Core\Include\Any.h" />
-    <ClInclude Include="..\..\..\Code\Core\Include\Constant.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\FileManager.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\FunctionWorker.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\IDirectoryImp.h" />
@@ -120,20 +118,13 @@
     <ClInclude Include="..\..\..\Code\Core\Include\IThreadImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\IThreadPoolImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\MemoryAllocatorObjectTemplate.h" />
-    <ClInclude Include="..\..\..\Code\Core\Include\Define.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\MemoryManager.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\MemoryTracker.h" />
-    <ClInclude Include="..\..\..\Code\Core\Include\MessageMode.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\NetworkAcceptor.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\NetworkManager.h" />
-    <ClInclude Include="..\..\..\Code\Core\Include\Node.h" />
-    <ClInclude Include="..\..\..\Code\Core\Include\PathUtility.h" />
-    <ClInclude Include="..\..\..\Code\Core\Include\PlatformDefine.h" />
-    <ClInclude Include="..\..\..\Code\Core\Include\PlatformInclude.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\IReadWriteLockImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\ResourceContainer.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\SemaphoreGroup.h" />
-    <ClInclude Include="..\..\..\Code\Core\Include\Singleton.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\Socket.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\STD.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\STL.h" />
@@ -142,8 +133,6 @@
     <ClInclude Include="..\..\..\Code\Core\Include\ThirdPart.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\ThreadManager.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\ThreadType.h" />
-    <ClInclude Include="..\..\..\Code\Core\Include\Type.h" />
-    <ClInclude Include="..\..\..\Code\Core\Include\UTFChar.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\UTFString.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreBuffer.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreDevice.h" />
@@ -179,7 +168,6 @@
     <ClCompile Include="..\..\..\Code\Core\Source\IThreadImp.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\IThreadPoolImp.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\MemoryManager.cpp" />
-    <ClCompile Include="..\..\..\Code\Core\Source\MessageMode.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\NetworkAcceptor.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\NetworkManager.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\SemaphoreGroup.cpp" />
@@ -194,7 +182,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Core\Source\IReadWriteLockImp.cpp" />
-    <ClCompile Include="..\..\..\Code\Core\Source\UTFChar.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\UTFString.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

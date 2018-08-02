@@ -1,26 +1,15 @@
 #pragma once
 #include "STD.h"
-#include "PlatformInclude.h"
 #include "ThirdPart.h"
 #include "ICoreSystemInterface.h"
 
-#include "Constant.h"
-#include "Define.h"
-#include "Type.h"
-
-#include "Any.h"
 #include "FunctionWorker.h"
 #include "MemoryAllocatorObjectTemplate.h"
 #include "MemoryTracker.h"
-#include "MessageMode.h"
-#include "Node.h"
-#include "PathUtility.h"
 #include "ResourceContainer.h"
-#include "Singleton.h"
 #include "STL.h"
 #include "STLMT.h"
 #include "ThreadType.h"
-#include "UTFChar.h"
 #include "UTFString.h"
 
 #include "IDirectoryImp.h"

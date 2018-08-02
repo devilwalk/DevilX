@@ -1,5 +1,4 @@
 #pragma once
-#include "Singleton.h"
 namespace NSDevilX
 {
 	namespace NSCore

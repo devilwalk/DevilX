@@ -13,14 +13,14 @@ namespace NSDevilX
 			~IThreadManager();
 		public:
 			IReadWriteLock*createReadWriteLock();
-			void destroyReadWriteLock(IReadWriteLock*lock);
+			Void destroyReadWriteLock(IReadWriteLock*lock);
 			ISemaphore*createSemaphore();
-			void destroySemaphore(ISemaphore*semaphore);
+			Void destroySemaphore(ISemaphore*semaphore);
 			IThreadPool*createThreadPool();
-			void destroyThreadPool(IThreadPool*pool);
+			Void destroyThreadPool(IThreadPool*pool);
 			IThread * createThread();
-			void destroyThread(IThread * thread);
-			void sleep(unsigned int timeInMilliseconds);
+			Void destroyThread(IThread * thread);
+			void sleep(UInt32 timeInMilliseconds);
 		};
 	}
 }

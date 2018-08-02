@@ -6,11 +6,11 @@ namespace NSDevilX
 		class IThread
 		{
 		public:
-			typedef void(*WorkFunction)(void*);
+			typedef Void(*WorkFunction)(VoidPtr);
 		protected:
 			virtual ~IThread(){}
 		public:
-			virtual void startup(WorkFunction function,void*parameters)=0;
+			virtual void startup(WorkFunction function,VoidPtr parameters)=0;
 			virtual void finish()=0;
 		};
 	}

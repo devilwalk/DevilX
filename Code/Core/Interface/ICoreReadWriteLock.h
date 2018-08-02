@@ -8,12 +8,12 @@ namespace NSDevilX
 		protected:
 			virtual ~IReadWriteLock(){}
 		public:
-			virtual void lockRead()=0;
-			virtual void lockWrite()=0;
-			virtual bool tryLockRead()=0;
-			virtual bool tryLockWrite()=0;
-			virtual void unLockRead()=0;
-			virtual void unLockWrite()=0;
+			virtual Void lockRead()=0;
+			virtual Void lockWrite()=0;
+			virtual Boolean tryLockRead()=0;
+			virtual Boolean tryLockWrite()=0;
+			virtual Void unLockRead()=0;
+			virtual Void unLockWrite()=0;
 		};
 	}
 }

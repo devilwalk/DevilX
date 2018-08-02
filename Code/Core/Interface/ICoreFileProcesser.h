@@ -10,12 +10,12 @@ namespace NSDevilX
 			virtual ~IFileProcesser(){}
 		public:
 			virtual IFile * getFile()const=0;
-			virtual void setReadOffset(size_t sizeInBytes)=0;
+			virtual void setReadOffset(SizeT sizeInBytes)=0;
 			virtual size_t getReadOffset()const=0;
-			virtual size_t readBytes(void * dst,size_t sizeInBytes)=0;
-			virtual void setWriteOffset(size_t sizeInBytes)=0;
+			virtual size_t readBytes(SizeT sizeInBytes,OUT VoidPtr dst)=0;
+			virtual void setWriteOffset(SizeT sizeInBytes)=0;
 			virtual size_t getWriteOffset()const=0;
-			virtual void writeBytes(const void * bytes,size_t sizeInBytes)=0;
+			virtual void writeBytes(ConstVoidPtr bytes,SizeT sizeInBytes)=0;
 		};
 	}
 }

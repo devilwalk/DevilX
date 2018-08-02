@@ -46,7 +46,7 @@ NSDevilX::NSCore::CNetworkAcceptor * NSDevilX::NSCore::CNetworkManager::createAc
 	return ret;
 }
 
-NSDevilX::NSCore::Void NSDevilX::NSCore::CNetworkManager::destroyAcceptor(CNetworkAcceptor * acceptor)
+NSDevilX::Void NSDevilX::NSCore::CNetworkManager::destroyAcceptor(CNetworkAcceptor * acceptor)
 {
 	mAcceptors.destroy(acceptor->getPort());
 }

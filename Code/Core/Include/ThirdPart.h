@@ -1,5 +1,4 @@
 #pragma once
-#include "Define.h"
 #if DEVILX_DEBUG && (!defined(DEVILX_UNUSE_VLD))
 #if DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_WINDOWS
 #include <vld.h>

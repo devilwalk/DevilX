@@ -1,6 +1,5 @@
 #pragma once
 #include "ThreadType.h"
-#include "Singleton.h"
 #include "SemaphoreGroup.h"
 namespace NSDevilX
 {

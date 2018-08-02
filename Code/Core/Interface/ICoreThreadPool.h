@@ -6,15 +6,15 @@ namespace NSDevilX
 		class IThreadPool
 		{
 		public:
-			typedef void(*WorkFunction)(void*);
+			typedef Void(*WorkFunction)(VoidPtr);
 		protected:
 			virtual ~IThreadPool(){}
 		public:
-			virtual void setMaxThreadCount(unsigned int count)=0;
-			virtual unsigned int getMaxThreadCount()const=0;
-			virtual void submit(WorkFunction func,void*parameter,int syncGroupID=-1)=0;
-			virtual void doNextWork(bool wait=false)=0;
-			virtual void wait(int syncGroupID)=0;
+			virtual Void setMaxThreadCount(UInt32 count)=0;
+			virtual UInt32 getMaxThreadCount()const=0;
+			virtual Void submit(WorkFunction func,VoidPtr parameter,Int32 syncGroupID=-1)=0;
+			virtual Void doNextWork(Boolean wait=false)=0;
+			virtual Void wait(Int32 syncGroupID)=0;
 		};
 	}
 }

@@ -12,10 +12,10 @@ namespace NSDevilX
 		public:
 			IDirectory * getRootDirectory()const;
 			IDirectory * getApplicationDirectory()const;
-			IDirectory * createOrRetrieveDirectory(const std::string & path);
-			IDirectory * getDirectory(const std::string & path)const;
-			IFile * createOrRetrieveFile(const std::string & path);
-			IFile * getFile(const std::string & path);
+			IDirectory * createOrRetrieveDirectory(const CUTF8String & path);
+			IDirectory * getDirectory(const CUTF8String & path)const;
+			IFile * createOrRetrieveFile(const CUTF8String & path);
+			IFile * getFile(const CUTF8String & path);
 		};
 	}
 }

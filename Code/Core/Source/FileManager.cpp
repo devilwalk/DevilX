@@ -131,7 +131,7 @@ IFileImp * NSDevilX::NSCore::CFileManager::getFile(const WString & path)
 	return ret;
 }
 
-NSDevilX::NSCore::Void NSDevilX::NSCore::CFileManager::deleteFile(const WString & path)
+NSDevilX::Void NSDevilX::NSCore::CFileManager::deleteFile(const WString & path)
 {
 #if DEVILX_OPERATING_SYSTEM == DEVILX_OPERATING_SYSTEM_WINDOWS
 	if(!DeleteFileW(path.c_str()))
@@ -149,7 +149,7 @@ NSDevilX::NSCore::Void NSDevilX::NSCore::CFileManager::deleteFile(const WString 
 	mFiles.destroy(path);
 }
 
-NSDevilX::NSCore::SizeT NSDevilX::NSCore::CFileManager::getNumFile(const WString & path) const
+NSDevilX::SizeT NSDevilX::NSCore::CFileManager::getNumFile(const WString & path) const
 {
 	TVector<WString> files;
 	_findFiles(path,files);
@@ -202,7 +202,7 @@ Void NSDevilX::NSCore::CFileManager::_findSubDirectories(const WString & path,OU
 #endif
 }
 
-NSDevilX::NSCore::Boolean NSDevilX::NSCore::CFileManager::_findFile(const WString & path) const
+NSDevilX::Boolean NSDevilX::NSCore::CFileManager::_findFile(const WString & path) const
 {
 	Boolean ret=false;
 #if DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_WINDOWS
@@ -213,7 +213,7 @@ NSDevilX::NSCore::Boolean NSDevilX::NSCore::CFileManager::_findFile(const WStrin
 	return ret;
 }
 
-NSDevilX::NSCore::Void NSDevilX::NSCore::CFileManager::_findFiles(const WString & path,OUT TVector<WString> & outFiles) const
+NSDevilX::Void NSDevilX::NSCore::CFileManager::_findFiles(const WString & path,OUT TVector<WString> & outFiles) const
 {
 #if DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_WINDOWS
 	::WIN32_FIND_DATAW find_data;

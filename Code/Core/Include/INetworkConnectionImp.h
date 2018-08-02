@@ -18,7 +18,7 @@ namespace NSDevilX
 			virtual unsigned short getMyPort() const override;
 			virtual std::string getEndPointIP() const override;
 			virtual unsigned short getEndPointPort() const override;
-			virtual void send(const void * data,size_t sizeInBytes) override;
+			virtual void send(ConstVoidPtr data,SizeT sizeInBytes) override;
 			virtual void addListener(IINetworkConnectionListener * listener) override;
 			virtual void removeListener(IINetworkConnectionListener * listener) override;
 		};

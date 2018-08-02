@@ -1,6 +1,5 @@
 #include "Precompiler.h"
 using namespace NSDevilX;
-using namespace NSCore;
 CMessageSource::CMessageSource(UInt32 message,CMessageNotifier * notifier)
 	:mMessage(message)
 	,mNotifier(notifier)
@@ -38,7 +37,7 @@ CMessageSource::~CMessageSource()
 		delete(mListenerList[1-mCurrentListenerListIndex]);
 	}
 }
-UInt32 CMessageSource::getMessage() const
+UInt32 NSDevilX::CMessageSource::getMessage() const
 {
 	return mMessage;
 }
@@ -88,13 +87,13 @@ Void CMessageSource::onListenerDestruction(CMessageListener * listener)
 {
 	removeListener(listener,False);
 }
-CMessageSource::ListenerList & CMessageSource::_getCurrentListenerList()
+CMessageSource::ListenerList & NSDevilX::CMessageSource::_getCurrentListenerList()
 {
 	if(!mListenerList[mCurrentListenerListIndex])
 		mListenerList[mCurrentListenerListIndex]=new ListenerList;
 	return *mListenerList[mCurrentListenerListIndex];
 }
-CMessageSource::ListenerList & CMessageSource::_getNextListenerList()
+CMessageSource::ListenerList & NSDevilX::CMessageSource::_getNextListenerList()
 {
 	if(!mListenerList[1-mCurrentListenerListIndex])
 		mListenerList[1-mCurrentListenerListIndex]=new ListenerList;
@@ -124,11 +123,11 @@ CMessageListener::~CMessageListener()
 	}
 	delete(mSourceList);
 }
-Void CMessageListener::addSource(CMessageSource * source)
+Void NSDevilX::CMessageListener::addSource(CMessageSource * source)
 {
 	_getSourceList().push_back(source);
 }
-Void CMessageListener::removeSource(CMessageSource * source)
+Void NSDevilX::CMessageListener::removeSource(CMessageSource * source)
 {
 	_getSourceList().remove(source);
 }
@@ -141,7 +140,7 @@ Void CMessageListener::onMessage(CMessageSource * source,VoidPtr data,Bool & nee
 	mReceiver->onMessage(source->getNotifier(),source->getMessage(),data,needNextProcess);
 }
 
-CMessageListener::SourceList & CMessageListener::_getSourceList()
+CMessageListener::SourceList & NSDevilX::CMessageListener::_getSourceList()
 {
 	// TODO: insert return statement here
 	if(!mSourceList)
@@ -149,11 +148,11 @@ CMessageListener::SourceList & CMessageListener::_getSourceList()
 	return *mSourceList;
 }
 
-CMessageReceiver::CMessageReceiver()
+NSDevilX::CMessageReceiver::CMessageReceiver()
 	:mListenerList(nullptr)
 {}
 
-CMessageReceiver::~CMessageReceiver()
+NSDevilX::CMessageReceiver::~CMessageReceiver()
 {
 	if(mListenerList)
 	{
@@ -163,7 +162,7 @@ CMessageReceiver::~CMessageReceiver()
 	}
 }
 
-CMessageListener * CMessageReceiver::getListener(UInt32 message)
+CMessageListener * NSDevilX::CMessageReceiver::getListener(UInt32 message)
 {
 	if(_getListenerList().size()<=message)
 		_getListenerList().resize(message+1);
@@ -172,12 +171,12 @@ CMessageListener * CMessageReceiver::getListener(UInt32 message)
 	return _getListenerList()[message];
 }
 
-Boolean CMessageReceiver::hasListener(UInt32 message) const
+Boolean NSDevilX::CMessageReceiver::hasListener(UInt32 message) const
 {
 	return mListenerList&&(nullptr!=_getListenerList()[message]);
 }
 
-CMessageReceiver::ListenerList & CMessageReceiver::_getListenerList()
+CMessageReceiver::ListenerList & NSDevilX::CMessageReceiver::_getListenerList()
 {
 	// TODO: insert return statement here
 	if(!mListenerList)
@@ -185,18 +184,18 @@ CMessageReceiver::ListenerList & CMessageReceiver::_getListenerList()
 	return *mListenerList;
 }
 
-const CMessageReceiver::ListenerList & CMessageReceiver::_getListenerList() const
+const CMessageReceiver::ListenerList & NSDevilX::CMessageReceiver::_getListenerList() const
 {
 	// TODO: insert return statement here
 	return *mListenerList;
 }
 
-CMessageNotifier::CMessageNotifier()
+NSDevilX::CMessageNotifier::CMessageNotifier()
 	:mSourceList(nullptr)
 {
 }
 
-CMessageNotifier::~CMessageNotifier()
+NSDevilX::CMessageNotifier::~CMessageNotifier()
 {
 	if(mSourceList)
 	{
@@ -206,12 +205,12 @@ CMessageNotifier::~CMessageNotifier()
 	}
 }
 
-Void CMessageNotifier::addListener(CMessageReceiver * receiver,UInt32 message,Bool checkRepeat)
+Void NSDevilX::CMessageNotifier::addListener(CMessageReceiver * receiver,UInt32 message,Bool checkRepeat)
 {
 	_getOrCreateSource(message)->addListener(receiver->getListener(message),checkRepeat);
 }
 
-Void CMessageNotifier::removeListener(CMessageReceiver * receiver,UInt32 message)
+Void NSDevilX::CMessageNotifier::removeListener(CMessageReceiver * receiver,UInt32 message)
 {
 	if(
 		(!_getSource(message))
@@ -221,7 +220,7 @@ Void CMessageNotifier::removeListener(CMessageReceiver * receiver,UInt32 message
 	_getSourceList()[message]->removeListener(receiver->getListener(message));
 }
 
-Void CMessageNotifier::notify(UInt32 message,VoidPtr data)const
+Void NSDevilX::CMessageNotifier::notify(UInt32 message,VoidPtr data)const
 {
 	if(!_getSource(message))
 	{
@@ -230,7 +229,7 @@ Void CMessageNotifier::notify(UInt32 message,VoidPtr data)const
 	_getSource(message)->notify(data);
 }
 
-CMessageSource * CMessageNotifier::_getOrCreateSource(UInt32 message)
+CMessageSource * NSDevilX::CMessageNotifier::_getOrCreateSource(UInt32 message)
 {
 	if(_getSourceList().size()<=message)
 		_getSourceList().resize(message+1);
@@ -239,7 +238,7 @@ CMessageSource * CMessageNotifier::_getOrCreateSource(UInt32 message)
 	return _getSourceList()[message];
 }
 
-CMessageSource * CMessageNotifier::_getSource(UInt32 message) const
+CMessageSource * NSDevilX::CMessageNotifier::_getSource(UInt32 message) const
 {
 	if((!mSourceList)||(_getSourceList().size()<=message))
 		return nullptr;
@@ -247,7 +246,7 @@ CMessageSource * CMessageNotifier::_getSource(UInt32 message) const
 		return _getSourceList()[message];
 }
 
-CMessageNotifier::SourceList & CMessageNotifier::_getSourceList()
+CMessageNotifier::SourceList & NSDevilX::CMessageNotifier::_getSourceList()
 {
 	// TODO: insert return statement here
 	if(!mSourceList)
@@ -255,7 +254,7 @@ CMessageNotifier::SourceList & CMessageNotifier::_getSourceList()
 	return *mSourceList;
 }
 
-const CMessageNotifier::SourceList & CMessageNotifier::_getSourceList() const
+const CMessageNotifier::SourceList & NSDevilX::CMessageNotifier::_getSourceList() const
 {
 	// TODO: insert return statement here
 	return *mSourceList;

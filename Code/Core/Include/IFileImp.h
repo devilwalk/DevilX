@@ -1,4 +1,5 @@
 #pragma once
+#include "UTFString.h"
 namespace NSDevilX
 {
 	namespace NSCore
@@ -17,10 +18,10 @@ namespace NSDevilX
 			virtual IDirectory * getDirectory() const override;
 
 
-			virtual std::string getPath() const override;
+			virtual NSDevilX::CUTF8String getPath() const override;
 
 
-			virtual size_t getSize() const override;
+			virtual SizeT getSize() const override;
 
 
 			virtual IFileProcesser * retrieveProcesser() override;

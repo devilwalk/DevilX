@@ -19,7 +19,7 @@ namespace NSDevilX
 
 			// Í¨¹ý ISemaphore ¼Ì³Ð
 			virtual void notify() override;
-			virtual void wait(unsigned int timeOut) override;
+			virtual void wait(UInt32 timeOut) override;
 		};
 	}
 }

@@ -1,20 +1,20 @@
 #include "Precompiler.h"
 using namespace NSDevilX;
-using namespace NSCore;
 
-NSDevilX::NSCore::CUTF8Char::CUTF8Char(Int32 c)
+NSDevilX::CUTF8Char::CUTF8Char(Int32 c)
 {
 	mCode=c;
 	_encode();
 #if DEVILX_DEBUG
 	CUTF16Char utf16_ch(mCode);
-	CUTF16String utf16_str;
+	TUTFString<CUTF16Char> utf16_str;
 	utf16_str+=utf16_ch;
-	mDebug=utf16_str;
+	mDebug.resize(utf16_str.size());
+	memcpy(&mDebug[0],&utf16_str[0],utf16_str.size()*2);
 #endif
 }
 
-NSDevilX::NSCore::CUTF8Char::CUTF8Char(ConstVoidPtr buffer)
+NSDevilX::CUTF8Char::CUTF8Char(ConstVoidPtr buffer)
 {
 	const auto byte_buffer=static_cast<ConstBytePtr>(buffer);
 	auto c=byte_buffer[0];
@@ -39,13 +39,14 @@ NSDevilX::NSCore::CUTF8Char::CUTF8Char(ConstVoidPtr buffer)
 	_decode();
 #if DEVILX_DEBUG
 	CUTF16Char utf16_ch(mCode);
-	CUTF16String utf16_str;
+	TUTFString<CUTF16Char> utf16_str;
 	utf16_str+=utf16_ch;
-	mDebug=utf16_str;
+	mDebug.resize(utf16_str.size());
+	memcpy(&mDebug[0],&utf16_str[0],utf16_str.size()*2);
 #endif
 }
 
-Void NSDevilX::NSCore::CUTF8Char::_decode()
+Void NSDevilX::CUTF8Char::_decode()
 {
 	auto c=mBuffer[0];
 	if(c&0x80)
@@ -79,7 +80,7 @@ Void NSDevilX::NSCore::CUTF8Char::_decode()
 	}
 }
 
-Void NSDevilX::NSCore::CUTF8Char::_encode()
+Void NSDevilX::CUTF8Char::_encode()
 {
 	const auto uint_code=*reinterpret_cast<UInt32*>(&mCode);
 	//0xxxxxxx
@@ -188,19 +189,20 @@ Void NSDevilX::NSCore::CUTF8Char::_encode()
 	}
 }
 
-NSDevilX::NSCore::CUTF16Char::CUTF16Char(Int32 c,Bool bigEndian)
+NSDevilX::CUTF16Char::CUTF16Char(Int32 c,Bool bigEndian)
 	:mBigEndian(bigEndian)
 {
 	mCode=c;
 	_encode();
 #if DEVILX_DEBUG
-	CUTF16String utf16_str;
+	TUTFString<CUTF16Char> utf16_str;
 	utf16_str+=*this;
-	mDebug=utf16_str;
+	mDebug.resize(utf16_str.size());
+	memcpy(&mDebug[0],&utf16_str[0],utf16_str.size()*2);
 #endif
 }
 
-NSDevilX::NSCore::CUTF16Char::CUTF16Char(ConstVoidPtr buffer,Bool bigEndian)
+NSDevilX::CUTF16Char::CUTF16Char(ConstVoidPtr buffer,Bool bigEndian)
 	:mBigEndian(bigEndian)
 {
 	const auto byte_buffer=static_cast<ConstBytePtr>(buffer);
@@ -223,13 +225,14 @@ NSDevilX::NSCore::CUTF16Char::CUTF16Char(ConstVoidPtr buffer,Bool bigEndian)
 	}
 	_decode();
 #if DEVILX_DEBUG
-	CUTF16String utf16_str;
+	TUTFString<CUTF16Char> utf16_str;
 	utf16_str+=*this;
-	mDebug=utf16_str;
+	mDebug.resize(utf16_str.size());
+	memcpy(&mDebug[0],&utf16_str[0],utf16_str.size()*2);
 #endif
 }
 
-Void NSDevilX::NSCore::CUTF16Char::_decode()
+Void NSDevilX::CUTF16Char::_decode()
 {
 	UInt16 first_uint16;
 	if(isBigEndian())
@@ -258,7 +261,7 @@ Void NSDevilX::NSCore::CUTF16Char::_decode()
 	}
 }
 
-Void NSDevilX::NSCore::CUTF16Char::_encode()
+Void NSDevilX::CUTF16Char::_encode()
 {
 	auto uint_code=*reinterpret_cast<UInt32*>(&mCode);
 	if(uint_code<=0xffff)

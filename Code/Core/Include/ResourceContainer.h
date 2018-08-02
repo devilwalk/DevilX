@@ -1,5 +1,4 @@
 #pragma once
-#include "Type.h"
 #include "STL.h"
 #include "STLMT.h"
 namespace NSDevilX

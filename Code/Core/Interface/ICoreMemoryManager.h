@@ -8,10 +8,10 @@ namespace NSDevilX
 		protected:
 			~IMemoryManager();
 		public:
-			void * allocateBytes(size_t sizeInBytes);
-			void deallocateBytes(void * address);
-			void * alignedAllocateBytes(size_t sizeInBytes,size_t alignment);
-			void alignedDeallocateBytes(void * address);
+			void * allocateBytes(SizeT sizeInBytes);
+			void deallocateBytes(VoidPtr address);
+			void * alignedAllocateBytes(SizeT sizeInBytes,SizeT alignment);
+			void alignedDeallocateBytes(VoidPtr address);
 		};
 	}
 }
