@@ -10,8 +10,8 @@ namespace NSDevilX
 			,public TMemoryAllocatorObject<CFileManager>
 		{
 		protected:
-			TResourcePtrMap<WString,IDirectoryImp> mDirectories;
-			TResourcePtrMap<WString,IFileImp> mFiles;
+			TResourcePtrMap(WString,IDirectoryImp) mDirectories;
+			TResourcePtrMap(WString,IFileImp) mFiles;
 		public:
 			CFileManager();
 			~CFileManager();

@@ -5,7 +5,7 @@ namespace NSDevilX
 	{
 	public:
 		template<class TReturn,class TAllocator=std::allocator<Char> >
-		static Void split(const std::basic_string<Char,std::char_traits<Char>,TAllocator> & text,const basic_string<Char,std::char_traits<Char>,TAllocator> & splitKey,OUT TReturn & ret)
+		static Void split(const std::basic_string<Char,std::char_traits<Char>,TAllocator> & text,const std::basic_string<Char,std::char_traits<Char>,TAllocator> & splitKey,OUT TReturn & ret)
 		{
 			auto copy=text;
 			while(std::basic_string<Char,std::char_traits<Char>,TAllocator>::npos!=copy.find(splitKey))

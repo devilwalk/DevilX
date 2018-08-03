@@ -78,11 +78,11 @@ namespace NSDevilX
 				unLockWrite();
 			}
 		};
-		template<typename KeyT,typename ValueT,typename SortfuncT=std::less<KeyT>,class TAllocator=DevilXAllocator<T> >
+		template<typename KeyT,typename ValueT,typename SortfuncT=std::less<KeyT>,class TAllocator=DevilXAllocator<std::pair<KeyT,ValueT> > >
 		class TMapMT
 			:public TMap<KeyT,ValueT,SortfuncT,TAllocator>
 			,public IReadWriteLockImp
-			,public TBaseObject<TMapMT<T,ValueT,SortfuncT,TAllocator> >
+			,public TBaseObject<TMapMT<KeyT,ValueT,SortfuncT,TAllocator> >
 		{
 		public:
 			Void addMT(KeyT const & key,ValueT const & value)

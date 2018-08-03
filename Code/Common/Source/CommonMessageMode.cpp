@@ -4,11 +4,7 @@ CMessageSource::CMessageSource(UInt32 message,CMessageNotifier * notifier)
 	:mMessage(message)
 	,mNotifier(notifier)
 	,mNotifyListenersWhenDestruction(True)
-	,mCurrentListenerListIndex(0)
-	,mNotifing(nullptr)
 {
-	mListenerList[0]=nullptr;
-	mListenerList[1]=nullptr;
 }
 CMessageSource::~CMessageSource()
 {
@@ -20,10 +16,9 @@ CMessageSource::~CMessageSource()
 		{
 			for(auto listener:_getCurrentListenerList())
 			{
-				listener->onSourceDestruction(this);
+				static_cast<CMessageListener*>(listener)->onSourceDestruction(this);
 			}
 		}
-		delete(mListenerList[mCurrentListenerListIndex]);
 	}
 	if(mListenerList[1-mCurrentListenerListIndex])
 	{
@@ -31,10 +26,9 @@ CMessageSource::~CMessageSource()
 		{
 			for(auto listener:_getNextListenerList())
 			{
-				listener->onSourceDestruction(this);
+				static_cast<CMessageListener*>(listener)->onSourceDestruction(this);
 			}
 		}
-		delete(mListenerList[1-mCurrentListenerListIndex]);
 	}
 }
 UInt32 NSDevilX::CMessageSource::getMessage() const
@@ -43,61 +37,22 @@ UInt32 NSDevilX::CMessageSource::getMessage() const
 }
 Void CMessageSource::addListener(CMessageListener * listener,Bool checkRepeat)
 {
-	if(checkRepeat&&_getCurrentListenerList().has(listener))
-		return;
-	_getCurrentListenerList().push_back(listener);
-	listener->addSource(this);
+	if(CObserverSource::addListener(listener,checkRepeat))
+		listener->addSource(this);
 }
 Void CMessageSource::removeListener(CMessageListener * listener,Bool removeSource)
 {
-	if(mNotifing)
-	{
-		if(mNotifing==listener)
-		{
-			_getNextListenerList().pop_back();
-		}
-		else
-		{
-			if(!_getCurrentListenerList().remove(listener))
-			{
-				_getNextListenerList().remove(listener);
-			}
-		}
-	}
-	else
-		_getCurrentListenerList().remove(listener);
+	CObserverSource::removeListener(listener);
 	if(removeSource)
 		listener->removeSource(this);
-}
-Void CMessageSource::notify(VoidPtr data)
-{
-	//一定要避免在通知里把自己删除的情况
-	Bool need_next_process=True;
-	while(need_next_process&&(!_getCurrentListenerList().empty()))
-	{
-		mNotifing=_getCurrentListenerList().back();
-		_getCurrentListenerList().pop_back();
-		_getNextListenerList().push_back(mNotifing);
-		mNotifing->onMessage(this,data,need_next_process);
-	}
-	mCurrentListenerListIndex=1-mCurrentListenerListIndex;
-	mNotifing=nullptr;
 }
 Void CMessageSource::onListenerDestruction(CMessageListener * listener)
 {
 	removeListener(listener,False);
 }
-CMessageSource::ListenerList & NSDevilX::CMessageSource::_getCurrentListenerList()
+Void NSDevilX::CMessageSource::_notify(VoidPtr data,Bool & needNextProcess)
 {
-	if(!mListenerList[mCurrentListenerListIndex])
-		mListenerList[mCurrentListenerListIndex]=new ListenerList;
-	return *mListenerList[mCurrentListenerListIndex];
-}
-CMessageSource::ListenerList & NSDevilX::CMessageSource::_getNextListenerList()
-{
-	if(!mListenerList[1-mCurrentListenerListIndex])
-		mListenerList[1-mCurrentListenerListIndex]=new ListenerList;
-	return *mListenerList[1-mCurrentListenerListIndex];
+	static_cast<CMessageListener*>(mNotifing)->onMessage(this,data,needNextProcess);
 }
 CMessageNotifier * CMessageSource::getNotifier()const
 {

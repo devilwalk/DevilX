@@ -15,9 +15,9 @@ namespace NSDevilX
 		typedef String TString;
 		typedef StringStream TStringStream;
 #endif
-#define TDevilXVector(TValue) NSDevilX::TVector<TValue,DevilXAllocator<TValue> >
-#define TDevilXList(TValue) NSDevilX::TList<TValue,DevilXAllocator<TValue> >
-#define TDevilXSet(TValue,TSortFunc) NSDevilX::TSet<TValue,TSortFunc,DevilXAllocator<TValue> >
-#define TDevilXMap(TKey,TValue,TSortFunc) NSDevilX::TMap<TKey,TValue,TSortFunc,DevilXAllocator<std::pair<const TKey,TValue> > >
+#define TVector(TValue) NSDevilX::TVector<TValue,DevilXAllocator<TValue> >
+#define TList(TValue) NSDevilX::TList<TValue,DevilXAllocator<TValue> >
+#define TSet(TValue,TSortFunc) NSDevilX::TSet<TValue,TSortFunc,DevilXAllocator<TValue> >
+#define TMap(TKey,TValue,TSortFunc) NSDevilX::TMap<TKey,TValue,TSortFunc,DevilXAllocator<std::pair<const TKey,TValue> > >
 	}
 }

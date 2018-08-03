@@ -3,26 +3,27 @@
 #include "CommonSTL.h"
 namespace NSDevilX
 {
-	class CUserDataContainer
+	template<class TStringAllocator=std::allocator<Char>,class TAllocator1=std::allocator<std::pair<const std::basic_string<Char,std::char_traits<Char>,TStringAllocator>,CAny> >,class TAllocator2=std::allocator<std::pair<ConstVoidPtr,CAny> >,class TAllocator3=std::allocator<VoidPtr> >
+	class TUserDataContainer
 	{
 	public:
-		typedef TMap<ConstCharPtr,CAny> Anys;
-		typedef TMap<ConstVoidPtr,CAny> Anys2;
-		typedef TVector<VoidPtr> Pointers;
+		typedef TMap<const std::basic_string<Char,std::char_traits<Char>,TStringAllocator>,CAny,std::less<std::basic_string<Char,std::char_traits<Char>,TStringAllocator> >,TAllocator1> Anys;
+		typedef TMap<ConstVoidPtr,CAny,std::less<ConstVoidPtr>,TAllocator2> Anys2;
+		typedef TVector<VoidPtr,TAllocator3> Pointers;
 	protected:
 		Anys * mAnys;
 		Anys2 * mAnys2;
 		Pointers * mPointers;
 	public:
-		CUserDataContainer():mAnys(nullptr),mAnys2(nullptr),mPointers(nullptr)
+		TUserDataContainer():mAnys(nullptr),mAnys2(nullptr),mPointers(nullptr)
 		{}
-		virtual ~CUserDataContainer()
+		virtual ~TUserDataContainer()
 		{
 			delete(mAnys);
 			delete(mAnys2);
 			delete(mPointers);
 		}
-		Void setUserData(ConstCharPtr name,const CAny & userAny)
+		Void setUserData(const std::basic_string<Char,std::char_traits<Char>,TStringAllocator> & name,const CAny & userAny)
 		{
 			_createAny();
 			(*mAnys)[name]=userAny;
@@ -32,14 +33,14 @@ namespace NSDevilX
 			_createAny2();
 			(*mAnys2)[key]=userAny;
 		}
-		Void setUserPointer(Pointers::size_type index,VoidPtr pointer)
+		Void setUserPointer(typename Pointers::size_type index,VoidPtr pointer)
 		{
 			_createPointers();
 			if(mPointers->size()<=index)
 				mPointers->resize(index+1);
 			(*mPointers)[index]=pointer;
 		}
-		const CAny & getUserData(ConstCharPtr name)const
+		const CAny & getUserData(const std::basic_string<Char,std::char_traits<Char>,TStringAllocator> & name)const
 		{
 			assert(mAnys);
 			return mAnys->get(name);
@@ -50,12 +51,12 @@ namespace NSDevilX
 			return mAnys2->get(key);
 		}
 		template<typename T>
-		T * getUserPointer(Pointers::size_type index)const
+		T * getUserPointer(typename Pointers::size_type index)const
 		{
 			assert(mPointers);
 			return static_cast<T*>((*mPointers)[index]);
 		}
-		Boolean hasUserData(ConstCharPtr name)const
+		Boolean hasUserData(const std::basic_string<Char,std::char_traits<Char>,TStringAllocator> & name)const
 		{
 			return mAnys&&mAnys->has(name);
 		}
@@ -63,11 +64,11 @@ namespace NSDevilX
 		{
 			return mAnys2&&mAnys2->has(key);
 		}
-		Boolean hasUserPointer(Pointers::size_type index)const
+		Boolean hasUserPointer(typename Pointers::size_type index)const
 		{
 			return mPointers&&(mPointers->size()>index);
 		}
-		Void removeUserData(ConstCharPtr name)
+		Void removeUserData(const std::basic_string<Char,std::char_traits<Char>,TStringAllocator> & name)
 		{
 			if(mAnys)
 			{
@@ -98,4 +99,5 @@ namespace NSDevilX
 				mPointers=new Pointers;
 		}
 	};
+	typedef TUserDataContainer<> CUserDataContainer;
 }

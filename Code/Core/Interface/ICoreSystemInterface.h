@@ -17,6 +17,7 @@
 #include "ICoreFileProcesser.h"
 #include "ICoreMemoryManager.h"
 #include "ICoreNetworkConnection.h"
+#include "ICoreNetworkHost.h"
 #include "ICoreNetworkManager.h"
 #include "ICoreReadWriteLock.h"
 #include "ICoreResource.h"

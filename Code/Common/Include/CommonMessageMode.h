@@ -3,21 +3,93 @@
 #include "CommonSTL.h"
 namespace NSDevilX
 {
+	class CObserverSource
+	{
+	public:
+		typedef TList<VoidPtr> ListenerList;
+	protected:
+		VoidPtr mNotifing;
+		ListenerList * mListenerList[2];
+		UInt32 mCurrentListenerListIndex;
+	public:
+		CObserverSource()
+		{
+			mListenerList[0]=nullptr;
+			mListenerList[1]=nullptr;
+		}
+		virtual ~CObserverSource()
+		{	//不允许在通知的时候被删除
+			assert(nullptr==mNotifing);
+			delete(mListenerList[mCurrentListenerListIndex]);
+			delete(mListenerList[1-mCurrentListenerListIndex]);
+		}
+		Boolean addListener(VoidPtr listener,Bool checkRepeat=True)
+		{
+			if(checkRepeat&&_getCurrentListenerList().has(listener))
+				return false;
+			_getCurrentListenerList().push_back(listener);
+			return true;
+		}
+		Void removeListener(VoidPtr listener)
+		{
+			if(mNotifing)
+			{
+				if(mNotifing==listener)
+				{
+					_getNextListenerList().pop_back();
+				}
+				else
+				{
+					if(!_getCurrentListenerList().remove(listener))
+					{
+						_getNextListenerList().remove(listener);
+					}
+				}
+			}
+			else
+				_getCurrentListenerList().remove(listener);
+		}
+		Void notify(VoidPtr data)
+		{
+			//一定要避免在通知里把自己删除的情况
+			Bool need_next_process=True;
+			while(need_next_process&&(!_getCurrentListenerList().empty()))
+			{
+				mNotifing=_getCurrentListenerList().back();
+				_getCurrentListenerList().pop_back();
+				_getNextListenerList().push_back(mNotifing);
+				_notify(data,need_next_process);
+			}
+			mCurrentListenerListIndex=1-mCurrentListenerListIndex;
+			mNotifing=nullptr;
+		}
+	protected:
+		ListenerList&_getCurrentListenerList()
+		{
+			if(!mListenerList[mCurrentListenerListIndex])
+				mListenerList[mCurrentListenerListIndex]=new ListenerList;
+			return *mListenerList[mCurrentListenerListIndex];
+		}
+		ListenerList & _getNextListenerList()
+		{
+			if(!mListenerList[1-mCurrentListenerListIndex])
+				mListenerList[1-mCurrentListenerListIndex]=new ListenerList;
+			return *mListenerList[1-mCurrentListenerListIndex];
+		}
+		virtual Void _notify(VoidPtr data,Bool & needNextProcess)=0;
+	};
+
 	class CMessageSource;
 	class CMessageListener;
 	class CMessageNotifier;
 	class CMessageReceiver;
 	class CMessageSource
+		:public CObserverSource
 	{
-	public:
-		typedef TList<CMessageListener*> ListenerList;
 	protected:
 		CMessageNotifier * const mNotifier;
-		CMessageListener * mNotifing;
-		ListenerList * mListenerList[2];
 		Bool mNotifyListenersWhenDestruction:1;
-		UInt32 mCurrentListenerListIndex:1;
-		const UInt32 mMessage:30;
+		const UInt32 mMessage:31;
 	public:
 		CMessageSource(UInt32 message,CMessageNotifier * notifier);
 		~CMessageSource();
@@ -25,11 +97,9 @@ namespace NSDevilX
 		CMessageNotifier * getNotifier()const;
 		Void addListener(CMessageListener * listener,Bool checkRepeat=True);
 		Void removeListener(CMessageListener * listener,Bool removeSource=True);
-		Void notify(VoidPtr data);
 		Void onListenerDestruction(CMessageListener * listener);
 	protected:
-		ListenerList & _getCurrentListenerList();
-		ListenerList & _getNextListenerList();
+		virtual Void _notify(VoidPtr data,Bool & needNextProcess) override;
 	};
 	class CMessageListener
 	{

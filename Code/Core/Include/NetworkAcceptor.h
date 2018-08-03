@@ -1,26 +1,26 @@
 #pragma once
-#include "Socket.h"
 namespace NSDevilX
 {
 	namespace NSCore
 	{
 		class CNetworkAcceptor
 			:public TBaseObject<CNetworkAcceptor>
+			,public CMessageNotifier
 		{
 		public:
+			enum EMessage
+			{
+				EMessage_NewConnection
+			};
 		protected:
-			asio::ip::tcp::acceptor mInternalV4;
-			asio::ip::tcp::acceptor mInternalV6;
-			TVector<std::shared_ptr<asio::ip::tcp::socket> > mConnectedSockets;
+			asio::ip::tcp::acceptor mInternal;
 		public:
-			CNetworkAcceptor(UInt16 port);
+			CNetworkAcceptor(const String & ip,UInt16 port);
 			~CNetworkAcceptor();
-			UInt16 getPort()const{ return mInternalV4.local_endpoint().port(); }
-			decltype(mConnectedSockets) const & getConnectedSockets()const{ return mConnectedSockets; }
-			decltype(mConnectedSockets) & getConnectedSocketsRef(){ return mConnectedSockets; }
+			UInt16 getPort()const{ return mInternal.local_endpoint().port(); }
+			Void start();
 		protected:
-			Void _acceptV4();
-			Void _acceptV6();
+			Void _accept();
 		};
 	}
 }

@@ -8,9 +8,9 @@ namespace NSDevilX
 			,public TBaseObject<INetworkConnectionImp>
 		{
 		protected:
-			std::shared_ptr<asio::ip::tcp::socket> mSocket;
+			asio::ip::tcp::socket * const mSocket;
 		public:
-			INetworkConnectionImp(std::shared_ptr<asio::ip::tcp::socket> s);
+			INetworkConnectionImp(asio::ip::tcp::socket * s);
 			~INetworkConnectionImp();
 
 			// Í¨¹ý INetworkConnection ¼Ì³Ð

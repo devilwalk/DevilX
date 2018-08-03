@@ -141,13 +141,16 @@
     <ClInclude Include="..\..\..\Code\Core\Include\NetworkAcceptor.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Include\Socket.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\Core\Include\INetworkConnectionImp.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Core\Include\UTFString.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreNetworkHost.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\INetworkHostImp.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -212,13 +215,13 @@
     <ClCompile Include="..\..\..\Code\Core\Source\NetworkAcceptor.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\Source\Socket.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Code\Core\Source\INetworkConnectionImp.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Core\Source\UTFString.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\INetworkHostImp.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

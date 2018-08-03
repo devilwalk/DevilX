@@ -45,5 +45,7 @@ namespace NSDevilX
 #elif DEVILX_ALLOCATOR==DEVILX_ALLOCATOR_TBB
 #define DevilXAllocator tbb::tbb_allocator
 #endif
+#define DevilXStringAllocator DevilXAllocator<Char>
+#define DevilXWStringAllocator DevilXAllocator<WChar>
 	}
 }

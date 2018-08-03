@@ -105,7 +105,7 @@ namespace NSDevilX
 			return 0<this->erase(t);
 		}
 	};
-	template<typename KeyT,typename ValueT,class SortfuncT=std::less<KeyT>,class TAllocator=std::allocator<std::pair<const KeyT,ValueT> > >
+	template<typename KeyT,typename ValueT,class SortfuncT=std::less<KeyT>,class TAllocator=std::allocator<std::pair<KeyT,ValueT> > >
 	class TMap
 		:public std::map<KeyT,ValueT,SortfuncT,TAllocator>
 	{

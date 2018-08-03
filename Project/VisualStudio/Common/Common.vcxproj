@@ -35,6 +35,7 @@
     <ClInclude Include="..\..\..\Code\Common\Include\CommonPlatformInclude.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonRange.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonRay.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonResourceContainer.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonSingleton.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonSTD.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonSTL.h" />

@@ -2,13 +2,14 @@
 using namespace NSDevilX;
 using namespace NSCore;
 
-NSDevilX::NSCore::INetworkConnectionImp::INetworkConnectionImp(std::shared_ptr<asio::ip::tcp::socket> s)
+NSDevilX::NSCore::INetworkConnectionImp::INetworkConnectionImp(asio::ip::tcp::socket * s)
 	:mSocket(s)
 {
 }
 
 NSDevilX::NSCore::INetworkConnectionImp::~INetworkConnectionImp()
 {
+	delete mSocket;
 }
 
 std::string NSDevilX::NSCore::INetworkConnectionImp::getMyIP() const

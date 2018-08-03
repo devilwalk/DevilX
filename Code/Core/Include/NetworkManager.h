@@ -1,5 +1,5 @@
 #pragma once
-#include "NetworkAcceptor.h"
+#include "INetworkHostImp.h"
 namespace NSDevilX
 {
 	namespace NSCore
@@ -7,18 +7,12 @@ namespace NSDevilX
 		class CNetworkManager
 			:public TSingletonEx<CNetworkManager>
 			,public TBaseObject<CNetworkManager>
-			,public CMessageNotifier
 		{
 		public:
-			enum EMessage
-			{
-				EMessage_UnprocessedConnection
-			};
 		protected:
 			asio::io_context mIOContext;
-			TNamedResourcePtrMap<CNetworkAcceptor> mAcceptors;
-			TResourcePtrList<INetworkConnectionImp> mUnprocessedConnections;
-			INetworkConnectionImp * mCurrentNotifyUnprocessedConnection;
+			TNamedResourcePtrMap(INetworkHostImp) mHosts;
+			TResourcePtrSet(INetworkConnectionImp) mConnections;
 		public:
 			CNetworkManager();
 			~CNetworkManager();
@@ -27,15 +21,21 @@ namespace NSDevilX
 			{
 				return mIOContext;
 			}
-			Void update();
-			static String makeAcceptKey(UInt16 localPort,const String & localIP="")
+			INetworkHostImp * createOrRetrieveHost(const String & ip);
+			INetworkConnectionImp * createConnection(asio::ip::tcp::socket * s);
+			template<typename TCallback>
+			Void createConnection(const String & endPointIP,UInt16 endPointPort,const String & hostIP,UInt16 hostPort,TCallback callback)
 			{
-				return localIP+":"+CStringUtility::toString(localPort);
+				std::auto_ptr<asio::ip::tcp::socket> s(new asio::ip::tcp::socket(CNetworkManager::getSingleton().getIOContext(),asio::ip::tcp::endpoint(asio::ip::make_address(hostIP.c_str()),hostPort)));
+				asio::ip::tcp::endpoint remote_end_point(asio::ip::make_address(endPointIP.c_str()),endPointPort);
+				s->async_connect(remote_end_point,[&s,callback,this](const asio::error_code& error)
+				{
+					if(!error)
+					{
+						callback(createConnection(s.release()));
+					}
+				});
 			}
-			CNetworkAcceptor * createAcceptor(UInt16 localPort,const String & localIP="");
-			CNetworkAcceptor * getAcceptor(UInt16 localPort,const String & localIP="")const{ return mAcceptors.get(makeAcceptKey(localPort,localIP)); }
-			Void destroyAcceptor(CNetworkAcceptor * acceptor);
-			Void createConnection(const std::string & endPointIP,UInt16 endPointPort,UInt16 localPort,const std::string & localIP);
 			Void destroyConnection(INetworkConnectionImp * connection);
 		};
 	}

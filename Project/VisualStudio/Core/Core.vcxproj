@@ -114,6 +114,7 @@
     <ClInclude Include="..\..\..\Code\Core\Include\IDirectoryImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\IFileImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\INetworkConnectionImp.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\INetworkHostImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\ISemaphoreImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\IThreadImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\IThreadPoolImp.h" />
@@ -125,7 +126,6 @@
     <ClInclude Include="..\..\..\Code\Core\Include\IReadWriteLockImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\ResourceContainer.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\SemaphoreGroup.h" />
-    <ClInclude Include="..\..\..\Code\Core\Include\Socket.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\STD.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\STL.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\STLMT.h" />
@@ -152,6 +152,7 @@
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreThread.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreThreadPool.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreThreadManager.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreNetworkHost.h" />
     <ClInclude Include="..\..\..\Code\Core\Source\Precompiler.h" />
   </ItemGroup>
   <ItemGroup>
@@ -164,6 +165,7 @@
     <ClCompile Include="..\..\..\Code\Core\Source\IDirectoryImp.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\IFileImp.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\INetworkConnectionImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\INetworkHostImp.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\ISemaphoreImp.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\IThreadImp.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\IThreadPoolImp.cpp" />
@@ -171,7 +173,6 @@
     <ClCompile Include="..\..\..\Code\Core\Source\NetworkAcceptor.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\NetworkManager.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\SemaphoreGroup.cpp" />
-    <ClCompile Include="..\..\..\Code\Core\Source\Socket.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\System.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\ThreadManager.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\MemoryTracker.cpp" />
