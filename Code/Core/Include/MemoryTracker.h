@@ -35,13 +35,5 @@ namespace NSDevilX
 			Void allocate(VoidPtr address,size_t size,ConstCharPtr fileName,ConstCharPtr functionName,UInt32 lineNumber);
 			Void deallocate(VoidPtr address,ConstCharPtr fileName,ConstCharPtr functionName,UInt32 lineNumber);
 		};
-		template<class T>
-		class TObjectMemoryTracker
-		{
-		protected:
-		public:
-			TObjectMemoryTracker();
-			~TObjectMemoryTracker();
-		};
 	}
 }

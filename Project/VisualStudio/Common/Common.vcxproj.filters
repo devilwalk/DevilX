@@ -117,6 +117,30 @@
     <ClInclude Include="..\..\..\Code\Common\Include\CommonResourceContainer.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonBounding.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonNode.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonOctree.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonBoundingTreeNode.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonTransformNode.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonTreeContainer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonCommandQueue.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonReferenceObject.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Common\Source\CommonColour.cpp">
@@ -138,6 +162,18 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Common\Source\Precompiler.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Common\Source\CommonTransformNode.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Common\Source\CommonTreeContainer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Common\Source\CommonCommandQueue.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Common\Source\CommonBounding.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

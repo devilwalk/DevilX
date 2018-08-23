@@ -189,7 +189,7 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CClearViewportTask::_updateConstantBuffe
 {
 	for(auto i=0;i<8;++i)
 	{
-		auto offset=mConstantBuffer->getDescription()->getConstantDesc("gClearColour"+CStringConverter::toString(i)).StartOffset;
+		auto offset=mConstantBuffer->getDescription()->getConstantDesc("gClearColour"+toString(i)).StartOffset;
 		*reinterpret_cast<CFloatRGBA*>(&buffer[offset])=mClearColour[i];
 	}
 	auto offset=mConstantBuffer->getDescription()->getConstantDesc("gClearDepth").StartOffset;
@@ -205,7 +205,7 @@ NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::CAmbientTask::~CAmbi
 
 Void NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::CAmbientTask::process()
 {
-	TVector<CSubEntityImp*> solid_renderables,transparent_renderables;
+	TVector(CSubEntityImp*) solid_renderables,transparent_renderables;
 	for(auto object:mViewport->getCamera()->getInterfaceImp()->getVisibleEntities())
 	{
 		for(UInt32 i=0;i<object->getSubEntityCount();++i)
@@ -220,7 +220,7 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::CAmbientTask::p
 			}
 		}
 	}
-	TVector<CConstantBuffer*> common_constant_buffers;
+	TVector(CConstantBuffer*) common_constant_buffers;
 	if(auto cb=CSystemImp::getSingleton().getConstantBufferMT())
 	{
 		cb->submit();
@@ -276,7 +276,7 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::CLightTask::pre
 		return;
 	mLight->getInterfaceImp()->findVisibleObjectsMT();
 	mViewport->setupMT(mContext);
-	TVector<CConstantBuffer*> common_constant_buffers;
+	TVector(CConstantBuffer*) common_constant_buffers;
 	if(auto cb=CSystemImp::getSingleton().getConstantBufferMT())
 	{
 		common_constant_buffers.push_back(cb);
@@ -329,7 +329,7 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::CLightTask::pro
 {
 	if(mLight->getInterfaceImp()->getType()==IEnum::ELightType_Directional)
 	{
-		TVector<CConstantBuffer*> common_constant_buffers;
+		TVector(CConstantBuffer*) common_constant_buffers;
 		if(auto cb=CSystemImp::getSingleton().getConstantBufferMT())
 		{
 			cb->submit();
@@ -466,7 +466,7 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CQuerySceneTask::prepare()
 {
 	mViewport->getCamera()->getInterfaceImp()->findVisibleObjectsMT();
 	mViewport->setupMT(mContext);
-	TVector<CConstantBuffer*> common_constant_buffers;
+	TVector(CConstantBuffer*) common_constant_buffers;
 	if(auto cb=CSystemImp::getSingleton().getConstantBufferMT())
 	{
 		common_constant_buffers.push_back(cb);

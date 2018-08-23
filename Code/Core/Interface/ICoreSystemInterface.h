@@ -8,9 +8,8 @@
 #elif defined(GCC)
 #endif
 #include "Common.h"
-#include "ICoreBuffer.h"
-#include "ICoreDevice.h"
 #include "ICoreDirectory.h"
+#include "ICoreDirectXManager.h"
 #include "ICoreEnum.h"
 #include "ICoreFile.h"
 #include "ICoreFileManager.h"
@@ -26,3 +25,4 @@
 #include "ICoreThread.h"
 #include "ICoreThreadManager.h"
 #include "ICoreThreadPool.h"
+#include "ICoreTimer.h"

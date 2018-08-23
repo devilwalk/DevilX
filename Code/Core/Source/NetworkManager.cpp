@@ -4,11 +4,19 @@ using namespace NSCore;
 
 NSDevilX::NSCore::CNetworkManager::CNetworkManager()
 {
-	mIOContext.run();
+	asio::ip::tcp::resolver r(mIOContext);
+	auto iter=r.resolve(asio::ip::host_name(),"");
+	const asio::ip::tcp::resolver::iterator end;
+	while(iter!=end)
+	{
+		asio::ip::tcp::endpoint endpoint=*iter++;
+		mHostIPs.push_back(endpoint.address().to_string());
+	}
 }
 
 NSDevilX::NSCore::CNetworkManager::~CNetworkManager()
 {
+	mConnections.destroyAll();
 	mHosts.destroyAll();
 }
 
@@ -17,15 +25,15 @@ INetworkHostImp * NSDevilX::NSCore::CNetworkManager::createOrRetrieveHost(const 
 	INetworkHostImp * ret=mHosts.get(ip);
 	if(!ret)
 	{
-		ret=new INetworkHostImp(ip);
+		ret=DEVILX_NEW INetworkHostImp(ip);
 		mHosts.add(ip,ret);
 	}
 	return ret;
 }
 
-INetworkConnectionImp * NSDevilX::NSCore::CNetworkManager::createConnection(asio::ip::tcp::socket * s)
+INetworkConnectionImp * NSDevilX::NSCore::CNetworkManager::createConnection(INetworkHostImp * host,asio::ip::tcp::socket * s)
 {
-	auto connection = new INetworkConnectionImp(s);
+	auto connection =DEVILX_NEW INetworkConnectionImp(host,s);
 	mConnections.insert(connection);
 	return connection;
 }

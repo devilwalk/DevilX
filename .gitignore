@@ -77,3 +77,14 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+/Code/Common/Include/BulletPhysics
+/Code/Common/Include/DirectXMath
+/Code/Common/Include/FBX
+/Code/Common/Include/FreeImage
+/Code/Common/Include/FreeType
+/Code/Common/Include/Lua
+/Code/Common/Include/Noise
+/Code/Common/Include/tbb
+/Code/Common/Include/tinyxml
+/Code/Common/Include/ASIO
+/Code/Common/Include/boost

@@ -1,4 +1,5 @@
 #pragma once
+#include "Utility.h"
 #include "IInputEnum.h"
 #include "IInputPhysicalDevice.h"
 #include "IInputPhysicalDeviceManager.h"

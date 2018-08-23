@@ -36,7 +36,7 @@ namespace NSDevilX
 			ITransformerImp * mTransformer;
 			DirectX::BoundingBox mLocalAABB;
 			DirectX::BoundingBox mWorldAABB;
-			TSet<ISceneElementImp*> mObjects;
+			TSet(ISceneElementImp*) mObjects;
 		public:
 			IVisibleAreaImp(const String & name,ISceneImp * scene);
 			virtual ~IVisibleAreaImp();

@@ -6,7 +6,7 @@ namespace NSDevilX
 	namespace NSCore
 	{
 		class CFileManager
-			:public TSingletonEx<CFileManager>
+			:public TSingleton<CFileManager>
 			,public TMemoryAllocatorObject<CFileManager>
 		{
 		protected:
@@ -30,9 +30,9 @@ namespace NSDevilX
 			IFileImp * getFile(const WString & path,SizeT index);
 		protected:
 			Boolean _findDirectory(const WString & path)const;
-			Void _findSubDirectories(const WString & path,OUT TVector<WString> & outSubDirectorys)const;
+			Void _findSubDirectories(const WString & path,OUT TVector(WString) & outSubDirectorys)const;
 			Boolean _findFile(const WString & path)const;
-			Void _findFiles(const WString & path,OUT TVector<WString> & outFiles)const;
+			Void _findFiles(const WString & path,OUT TVector(WString) & outFiles)const;
 		};
 	}
 }

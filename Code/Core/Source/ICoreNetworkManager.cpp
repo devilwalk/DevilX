@@ -2,26 +2,27 @@
 using namespace NSDevilX;
 using namespace NSCore;
 
-std::vector<std::string> NSDevilX::NSCore::INetworkManager::getHostIPs() const
+SizeT NSDevilX::NSCore::INetworkManager::getNumHostIPs() const
 {
-	std::vector<std::string> ret;
-	asio::ip::tcp::resolver r(CNetworkManager::getSingleton().getIOContext());
-	auto iter=r.resolve(asio::ip::host_name(),"");
-	const asio::ip::tcp::resolver::iterator end;
-	while(iter!=end)
-	{
-		asio::ip::tcp::endpoint endpoint=*iter++;
-		ret.push_back(endpoint.address().to_string());
-	}
-	return ret;
+	return CNetworkManager::getSingleton().getHostIPs().size();
 }
 
-INetworkHost * NSDevilX::NSCore::INetworkManager::createOrRetrieveHost(const std::string & ip)
+ConstCharPtr NSDevilX::NSCore::INetworkManager::getHostIP(SizeT index) const
 {
-	return CNetworkManager::getSingleton().createOrRetrieveHost(String(ip.begin(),ip.end()));
+	return CNetworkManager::getSingleton().getHostIPs()[index].c_str();
+}
+
+INetworkHost * NSDevilX::NSCore::INetworkManager::createOrRetrieveHost(ConstCharPtr ip)
+{
+	return CNetworkManager::getSingleton().createOrRetrieveHost(ip);
 }
 
 void NSDevilX::NSCore::INetworkManager::destroyConnection(INetworkConnection * connection)
 {
 	CNetworkManager::getSingleton().destroyConnection(static_cast<INetworkConnectionImp*>(connection));
+}
+
+Void NSDevilX::NSCore::INetworkManager::update()
+{
+	CNetworkManager::getSingleton().getIOContext().poll();
 }

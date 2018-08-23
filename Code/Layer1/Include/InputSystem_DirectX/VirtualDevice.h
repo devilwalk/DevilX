@@ -27,8 +27,8 @@ namespace NSDevilX
 				,public TBaseObject<CMouse>
 			{
 			protected:
-				TVector<SMouseFrameDataImp*> mFrameDatas;
-				TResourcePtrVector<SMouseFrameDataImp> mFrameDatasPool;
+				TVector(SMouseFrameDataImp*) mFrameDatas;
+				TResourcePtrVector(SMouseFrameDataImp) mFrameDatasPool;
 				DIDEVICEOBJECTDATA mLastData;
 			public:
 				CMouse(IVirtualDeviceImp * device);
@@ -55,8 +55,8 @@ namespace NSDevilX
 				,public TBaseObject<CKeyboard>
 			{
 			protected:
-				TVector<SKeyboardFrameDataImp*> mFrameDatas;
-				TResourcePtrVector<SKeyboardFrameDataImp> mFrameDatasPool;
+				TVector(SKeyboardFrameDataImp*) mFrameDatas;
+				TResourcePtrVector(SKeyboardFrameDataImp) mFrameDatasPool;
 				std::array<DIDEVICEOBJECTDATA,256> mLastData;
 			public:
 				CKeyboard(IVirtualDeviceImp * device);

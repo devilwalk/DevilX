@@ -21,12 +21,13 @@ namespace NSDevilX
 					,mThread(nullptr)
 					,mExit(False)
 				{
-					mThread=new std::thread(IThreadPoolImp::threadFunction,this);
+					mThread=DEVILX_TYPED_ALLOC(std::thread,1);
+					mThread->std::thread::thread(IThreadPoolImp::threadFunction,this);
 				}
 				~SThread()
 				{
 					mThread->join();
-					delete mThread;
+					DEVILX_OBJECT_DELETE(mThread);
 				}
 			};
 		protected:

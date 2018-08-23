@@ -30,7 +30,7 @@ namespace NSDevilX
 					mOutputs|=1<<output;
 				}
 				ID3DBlob * generateCode()const;
-				TVector<D3D_SHADER_MACRO> generateMacro()const;
+				TVector(D3D_SHADER_MACRO) generateMacro()const;
 			protected:
 				Boolean _hasOutput(EOutput output)const
 				{

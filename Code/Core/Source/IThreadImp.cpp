@@ -12,14 +12,17 @@ NSDevilX::NSCore::IThreadImp::~IThreadImp()
 	if(!mThread->joinable())
 		mThread->join();
 	mThread->detach();
-	delete mThread;
+	DEVILX_OBJECT_DELETE(mThread);
 }
 
 Void NSDevilX::NSCore::IThreadImp::startup(WorkFunction function,VoidPtr parameters)
 {
 	if(mThread)
 		mThread->detach();
-	mThread=new std::thread(function,new SContext(this,parameters));
+	auto context=DEVILX_TYPED_ALLOC(SContext,1);
+	context->SContext::SContext(this,parameters);
+	mThread=DEVILX_TYPED_ALLOC(std::thread,1);
+	mThread->std::thread::thread(function,context);
 }
 
 Void NSDevilX::NSCore::IThreadImp::finish()

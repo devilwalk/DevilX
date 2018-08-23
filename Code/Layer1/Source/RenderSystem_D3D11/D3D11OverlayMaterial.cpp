@@ -78,7 +78,7 @@ Void NSDevilX::NSRenderSystem::NSD3D11::COverlayMaterial::_updateShader()
 	blob=CSystemImp::getSingleton().getShaderCodeManager()->getCode(code_key);
 	if(nullptr==blob)
 	{
-		TVector<D3D_SHADER_MACRO> macro_list;
+		TVector(D3D_SHADER_MACRO) macro_list;
 		class CMacro
 			:public D3D_SHADER_MACRO
 		{

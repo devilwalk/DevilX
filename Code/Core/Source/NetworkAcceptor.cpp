@@ -18,12 +18,19 @@ Void NSDevilX::NSCore::CNetworkAcceptor::start()
 
 NSDevilX::Void NSDevilX::NSCore::CNetworkAcceptor::_accept()
 {
-	std::auto_ptr<asio::ip::tcp::socket> s(new asio::ip::tcp::socket(CNetworkManager::getSingleton().getIOContext()));
-	mInternal.async_accept(*s,[&](const asio::error_code& error)
+	auto s=DEVILX_TYPED_ALLOC(asio::ip::tcp::socket,1);
+	s->asio::basic_stream_socket<asio::ip::tcp>::basic_stream_socket(CNetworkManager::getSingleton().getIOContext());
+	mInternal.async_accept(*s,[s,this](const asio::error_code& error)
 	{
 		if(!error)
 		{
-			notify(EMessage_NewConnection,&s);
+			notify(EMessage_NewConnection,s);
+		}
+		else
+		{
+#ifdef _MSC_VER
+			OutputDebugStringA(("\r\nCNetworkAcceptor::_accept:"+error.message()+"\r\n").c_str());
+#endif
 		}
 		_accept();
 	}

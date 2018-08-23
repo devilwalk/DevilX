@@ -11,9 +11,15 @@ namespace NSDevilX
 		using std::vector<T,TAllocator>::operator=;
 		TVector()
 		{}
-		TVector(const std::vector<T,TAllocator> & cpy)
-			:std::vector<T,TAllocator>(cpy)
+		template<class TAllocator2>
+		TVector(const std::vector<T,TAllocator2> & cpy)
+			:std::vector<T,TAllocator>(cpy.begin(),cpy.end())
 		{}
+		template<class TAllocator2>
+		operator std::vector<T,TAllocator2>()const
+		{
+			return std::vector<T,TAllocator2>(this->begin(),this->end());
+		}
 		typename std::vector<T,TAllocator>::const_iterator find(T const & t)const
 		{
 			return std::find(this->begin(),this->end(),t);
@@ -41,6 +47,16 @@ namespace NSDevilX
 	public:
 		using std::list<T,TAllocator>::list;
 		using std::list<T,TAllocator>::operator=;
+		TList(){}
+		template<class TAllocator2>
+		TList(const std::list<T,TAllocator2> & cpy)
+			:std::list<T,TAllocator>(cpy.begin(),cpy.end())
+		{}
+		template<class TAllocator2>
+		operator std::list<T,TAllocator2>()const
+		{
+			return std::list<T,TAllocator2>(this->begin(),this->end());
+		}
 		const T & operator[](SizeT index)const
 		{
 			auto iter=this->begin();
@@ -82,6 +98,16 @@ namespace NSDevilX
 	public:
 		using std::set<T,SortfuncT,TAllocator>::set;
 		using std::set<T,SortfuncT,TAllocator>::operator=;
+		TSet() {}
+		template<class TAllocator2>
+		TSet(const std::set<T,SortfuncT,TAllocator2> & cpy)
+			:std::set<T,SortfuncT,TAllocator>(cpy.begin(),cpy.end())
+		{}
+		template<class TAllocator2>
+		operator std::set<T,SortfuncT,TAllocator2>()const
+		{
+			return std::set<T,SortfuncT,TAllocator2>(this->begin(),this->end());
+		}
 		Boolean has(T const & t)const
 		{
 			return this->find(t)!=this->end();
@@ -113,6 +139,16 @@ namespace NSDevilX
 		using std::map<KeyT,ValueT,SortfuncT,TAllocator>::map;
 		using std::map<KeyT,ValueT,SortfuncT,TAllocator>::operator[];
 		using std::map<KeyT,ValueT,SortfuncT,TAllocator>::operator=;
+		TMap() {}
+		template<class TAllocator2>
+		TMap(const std::map<KeyT,ValueT,SortfuncT,TAllocator2> & cpy)
+			:std::map<KeyT,ValueT,SortfuncT,TAllocator>(cpy.begin(),cpy.end())
+		{}
+		template<class TAllocator2>
+		operator std::map<KeyT,ValueT,SortfuncT,TAllocator2>()const
+		{
+			return std::map<KeyT,ValueT,SortfuncT,TAllocator2>(this->begin(),this->end());
+		}
 		Boolean has(KeyT const & key)const
 		{
 			return this->find(key)!=this->end();

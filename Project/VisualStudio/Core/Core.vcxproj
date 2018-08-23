@@ -77,13 +77,13 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile />
     <Link>
-      <AdditionalDependencies>Common.lib;TinyXML.lib;FreeImage.lib;freetype.lib;libfbxsdk-mt.lib;tbb.lib;tbbmalloc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Common.lib;TinyXML.lib;FreeImage.lib;freetype.lib;libfbxsdk-mt.lib;tbb.lib;tbbmalloc.lib;dxgi.lib;d3d9.lib;d3d10.lib;d3d11.lib;d3d12.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile />
     <Link>
-      <AdditionalDependencies>Common.lib;TinyXML.lib;FreeImage.lib;freetype.lib;libfbxsdk-mt.lib;tbb.lib;tbbmalloc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Common.lib;TinyXML.lib;FreeImage.lib;freetype.lib;libfbxsdk-mt.lib;tbb.lib;tbbmalloc.lib;dxgi.lib;d3d9.lib;d3d10.lib;d3d11.lib;d3d12.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -94,7 +94,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>Common.lib;TinyXML.lib;FreeImage.lib;freetype.lib;libfbxsdk-mt.lib;tbb.lib;tbbmalloc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Common.lib;TinyXML.lib;FreeImage.lib;freetype.lib;libfbxsdk-mt.lib;tbb.lib;tbbmalloc.lib;dxgi.lib;d3d9.lib;d3d10.lib;d3d11.lib;d3d12.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -105,10 +105,12 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>Common.lib;TinyXML.lib;FreeImage.lib;freetype.lib;libfbxsdk-mt.lib;tbb.lib;tbbmalloc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Common.lib;TinyXML.lib;FreeImage.lib;freetype.lib;libfbxsdk-mt.lib;tbb.lib;tbbmalloc.lib;dxgi.lib;d3d9.lib;d3d10.lib;d3d11.lib;d3d12.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\Code\Core\Include\Define.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\DirectXManager.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\FileManager.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\FunctionWorker.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\IDirectoryImp.h" />
@@ -118,6 +120,7 @@
     <ClInclude Include="..\..\..\Code\Core\Include\ISemaphoreImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\IThreadImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\IThreadPoolImp.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\ITimerImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\MemoryAllocatorObjectTemplate.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\MemoryManager.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\MemoryTracker.h" />
@@ -135,7 +138,7 @@
     <ClInclude Include="..\..\..\Code\Core\Include\ThreadType.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\UTFString.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreBuffer.h" />
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreDevice.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreDirectXManager.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreDirectory.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreEnum.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreFile.h" />
@@ -153,10 +156,13 @@
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreThreadPool.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreThreadManager.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreNetworkHost.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreTimer.h" />
     <ClInclude Include="..\..\..\Code\Core\Source\Precompiler.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Code\Core\Source\DirectXManager.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\FileManager.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\ICoreDirectXManager.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\ICoreMemoryManager.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\ICoreNetworkManager.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\ICoreSystem.cpp" />
@@ -169,6 +175,7 @@
     <ClCompile Include="..\..\..\Code\Core\Source\ISemaphoreImp.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\IThreadImp.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\IThreadPoolImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\ITimerImp.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\MemoryManager.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\NetworkAcceptor.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\NetworkManager.cpp" />

@@ -8,7 +8,7 @@ namespace NSDevilX
 			namespace NSInternal
 			{
 				template<class TInterface,class TDesc>
-				TInterface * getState(const TDesc & desc,const TVector<TInterface*> & states)
+				TInterface * getState(const TDesc & desc,const TVector(TInterface*) & states)
 				{
 					TInterface * ret=nullptr;
 					TDesc d;
@@ -24,7 +24,7 @@ namespace NSDevilX
 					return ret;
 				}
 				template<class TInterface,class TDesc>
-				TInterface * getState1(const TDesc & desc,const TVector<TInterface*> & states)
+				TInterface * getState1(const TDesc & desc,const TVector(TInterface*) & states)
 				{
 					TInterface * ret=nullptr;
 					TDesc d;
@@ -57,7 +57,6 @@ NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::CSystemImp()
 	:CConstantBufferContainer("cbSystem")
 	,mRenderTaskThreadPool(nullptr)
 	,mShaderCodeManager(nullptr)
-	,mFactory(nullptr)
 	,mConstantBufferDescriptionManager(nullptr)
 	,mShaderModelType(CEnum::EShaderModelType_4_1)
 	,mOverlayMaterialManager(nullptr)
@@ -115,7 +114,6 @@ NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::CSystemImp()
 	mDefaultSamplerDesc.MaxLOD=FLT_MAX;
 	mDefaultSamplerDesc.MinLOD=-FLT_MAX;
 	mDefaultSamplerDesc.MipLODBias=0.0f;
-	CreateDXGIFactory1(__uuidof(IDXGIFactory1),reinterpret_cast<VoidPtr*>(&mFactory));
 	UINT flag=0;
 #if DEVILX_DEBUG
 	flag|=D3D11_CREATE_DEVICE_DEBUG;
@@ -191,8 +189,6 @@ NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::~CSystemImp()
 	getDebug()->Release();
 #endif
 	auto ref_count=mImmediateContext->Release();
-	assert(0==ref_count);
-	ref_count=mFactory->Release();
 	assert(0==ref_count);
 	ref_count=mDevice->Release();
 	assert(0==ref_count);
@@ -289,7 +285,7 @@ ID3D11InputLayout * NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::getInputLayou
 			default:
 				assert(0);
 			}
-			hlsl+=" inputParameter"+CStringConverter::toString(i)+":"+descs[i].SemanticName+CStringConverter::toString(descs[i].SemanticIndex)+",";
+			hlsl+=" inputParameter"+toString(i)+":"+descs[i].SemanticName+toString(descs[i].SemanticIndex)+",";
 		}
 		hlsl+="out float4 outputParameter:SV_Position){outputParameter=1;}";
 		CComPtr<ID3DBlob> code;

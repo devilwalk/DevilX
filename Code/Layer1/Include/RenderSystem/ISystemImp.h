@@ -38,9 +38,9 @@ namespace NSDevilX
 			Float mFrameTimeInSecond;
 			CDefinitionShader * mDefinitionShader;
 			IResourceManagerImp * mResourceManager;
-			TRefResourcePtrMap<CWindow*,IWindowImp> mWindows;
-			TNamedRefResourcePtrMap<IRenderableSurfaceImp> mRenderableSurfaces;
-			TNamedRefResourcePtrMap<ISceneImp> mScenes;
+			TRefResourcePtrMap(CWindow*,IWindowImp) mWindows;
+			TNamedRefResourcePtrMap(IRenderableSurfaceImp) mRenderableSurfaces;
+			TNamedRefResourcePtrMap(ISceneImp) mScenes;
 		public:
 			ISystemImp();
 			~ISystemImp();

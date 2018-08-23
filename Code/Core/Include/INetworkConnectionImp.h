@@ -3,24 +3,40 @@ namespace NSDevilX
 {
 	namespace NSCore
 	{
+		class INetworkHostImp;
 		class INetworkConnectionImp
 			:public INetworkConnection
 			,public TBaseObject<INetworkConnectionImp>
+			,public CMessageNotifier
 		{
-		protected:
-			asio::ip::tcp::socket * const mSocket;
 		public:
-			INetworkConnectionImp(asio::ip::tcp::socket * s);
+			enum EMessage
+			{
+				EMessage_BeginDestruction,
+				EMessage_EndDestruction
+			};
+		protected:
+			INetworkHostImp*const mHost;
+			asio::ip::tcp::socket * const mSocket;
+			Bool mValidate;
+			TVector(Byte) mReceives;
+			TVector(Byte) mReceiveTemp;
+		public:
+			INetworkConnectionImp(INetworkHostImp * host,asio::ip::tcp::socket * s);
 			~INetworkConnectionImp();
 
 			// Í¨¹ý INetworkConnection ¼Ì³Ð
-			virtual std::string getMyIP() const override;
-			virtual unsigned short getMyPort() const override;
-			virtual std::string getEndPointIP() const override;
-			virtual unsigned short getEndPointPort() const override;
+			virtual Boolean isValidate() const override;
+			virtual INetworkHost * getHost() const override;
+			virtual UInt16 getHostPort() const override;
+			virtual ConstCharPtr getEndPointIP() const override;
+			virtual UInt16 getEndPointPort() const override;
 			virtual void send(ConstVoidPtr data,SizeT sizeInBytes) override;
-			virtual void addListener(IINetworkConnectionListener * listener) override;
-			virtual void removeListener(IINetworkConnectionListener * listener) override;
+			virtual ConstVoidPtr getReceivedData() const override;
+			virtual SizeT getReceivedSizeInBytes() const override;
+			virtual Void received(SizeT sizeInBytes) override;
+		protected:
+			static Void _read(INetworkConnectionImp * connection,const asio::error_code& error,std::size_t bytes_transferred);
 		};
 	}
 }

@@ -10,7 +10,7 @@ namespace NSDevilX
 			{
 			protected:
 				ID3DBlob * const mCode;
-				TMap<const String,UInt32> mResourceSlots;
+				TMap(const String,UInt32) mResourceSlots;
 			public:
 				CShader(ID3DBlob * code);
 				virtual ~CShader();
@@ -27,7 +27,7 @@ namespace NSDevilX
 			{
 			protected:
 				ID3D11InputLayout * mInputLayout;
-				TVector<D3D11_INPUT_ELEMENT_DESC> mInputElementDescs;
+				TVector(D3D11_INPUT_ELEMENT_DESC) mInputElementDescs;
 				UInt8 mInputSlots[CEnum::EVertexBufferType_Count];
 			public:
 				CVertexShader(ID3DBlob * code);

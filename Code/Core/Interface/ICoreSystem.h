@@ -1,19 +1,26 @@
 #pragma once
 #include "ICoreMemoryManager.h"
 #include "ICoreThreadManager.h"
+#include "ICoreNetworkManager.h"
+#include "ICoreDirectXManager.h"
+#include "ICoreTimer.h"
 namespace NSDevilX
 {
 	namespace NSCore
 	{
-		class ISystem
+		class DLLAPI ISystem
+			:public CUserDataContainer
 		{
 		protected:
-			~ISystem(){}
+			~ISystem();
 		public:
 			void shutdown();
 			IThreadManager*getThreadManager()const;
 			IMemoryManager*getMemoryManager()const;
-			DoubleFloat getTimeNowInSeconds()const;
+			INetworkManager * getNetworkManager()const;
+			IDirectXManager * getDirectXManager()const;
+			ITimer * createTimer()const;
+			Void destroyTimer(ITimer * timer)const;
 		};
 		DLLAPI ISystem*getSystem();
 	}

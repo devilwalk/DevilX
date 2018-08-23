@@ -45,11 +45,11 @@ namespace NSDevilX
 			const String mName;
 			CSceneManager * mManager;
 			CFloatRGBA mAmbientColour;
-			TNamedRefResourcePtrMap<ICameraImp> mCameras;
-			TNamedRefResourcePtrMap<ILightImp> mLights;
-			TNamedRefResourcePtrMap<IEntityImp> mEntities;
-			TNamedResourcePtrMap<IVisibleAreaImp> mVisibleAreas;
-			TNamedRefResourcePtrMap<ISkyImp> mSkys;
+			TNamedRefResourcePtrMap(ICameraImp) mCameras;
+			TNamedRefResourcePtrMap(ILightImp) mLights;
+			TNamedRefResourcePtrMap(IEntityImp) mEntities;
+			TNamedResourcePtrMap(IVisibleAreaImp) mVisibleAreas;
+			TNamedRefResourcePtrMap(ISkyImp) mSkys;
 		public:
 			ISceneImp(const String & name,IEnum::ESceneManagerAlgorithm algorithm);
 			CSceneManager * getManager()const

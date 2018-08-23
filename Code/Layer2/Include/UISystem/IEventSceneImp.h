@@ -11,8 +11,8 @@ namespace NSDevilX
 		{
 		protected:
 			const String mName;
-			TNamedResourcePtrMap<IEventWindowImp> mWindows;
-			TMap<Int32,TSet<IEventWindowImp*> > mOrderedWindows;
+			TNamedResourcePtrMap(IEventWindowImp) mWindows;
+			TMap(Int32,TSet(IEventWindowImp*)) mOrderedWindows;
 		public:
 			IEventSceneImp(const String & name);
 			~IEventSceneImp();

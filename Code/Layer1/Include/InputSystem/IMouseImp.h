@@ -40,7 +40,7 @@ namespace NSDevilX
 			CInt3 mPosition;
 			ButtonStateList mButtonStateList;
 			IMouseListener * mListener;
-			TVector<SMouseFrameDataImp*> mFrameDatas;
+			TVector(SMouseFrameDataImp*) mFrameDatas;
 		public:
 			IMouseImp(const String & name,IPhysicalDeviceImp * physicalDevice,CWindow * window);
 			virtual ~IMouseImp();

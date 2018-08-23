@@ -9,7 +9,7 @@ NSDevilX::NSRenderSystem::NSD3D11::COverlayRenderable::COverlayRenderable(COverl
 	,mManager(manager)
 	,mGeometry(nullptr)
 {
-	mGeometry=CSystemImp::getSingleton().getGeometry(static_cast<IGeometryImp*>(ISystemImp::getSingleton().queryInterface_IResourceManager()->createGeometry("Internal/OverlayRenderable/"+CStringConverter::toString(reinterpret_cast<SizeT>(this)))));
+	mGeometry=CSystemImp::getSingleton().getGeometry(static_cast<IGeometryImp*>(ISystemImp::getSingleton().queryInterface_IResourceManager()->createGeometry("Internal/OverlayRenderable/"+toString(reinterpret_cast<SizeT>(this)))));
 }
 
 NSDevilX::NSRenderSystem::NSD3D11::COverlayRenderable::~COverlayRenderable()

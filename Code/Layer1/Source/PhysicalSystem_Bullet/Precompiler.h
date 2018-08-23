@@ -1,6 +1,4 @@
 #pragma once
-#include "Common.h"
-#include "IPhysicalSystemInterface.h"
 #include "Include.h"
 #define BT_NO_SIMD_OPERATOR_OVERLOADS
 #include "btBulletCollisionCommon.h"

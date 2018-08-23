@@ -25,7 +25,7 @@ namespace NSDevilX
 		protected:
 			const String mName;
 			IGeometryImp * mGeometry;
-			TNamedIndexResourcePtrContainer<ISubMeshImp> mSubMeshes;
+			TNamedIndexResourcePtrContainer(ISubMeshImp) mSubMeshes;
 		public:
 			IMeshImp(const String & name);
 			~IMeshImp();

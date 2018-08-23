@@ -23,8 +23,8 @@ namespace NSDevilX
 				EMessage_EndGeometryDestroy
 			};
 		protected:
-			TNamedResourcePtrMap<IMeshImp> mMeshes;
-			TNamedResourcePtrMap<IGeometryImp> mGeometrys;
+			TNamedResourcePtrMap(IMeshImp) mMeshes;
+			TNamedResourcePtrMap(IGeometryImp) mGeometrys;
 		public:
 			IResourceManagerImp();
 			~IResourceManagerImp();

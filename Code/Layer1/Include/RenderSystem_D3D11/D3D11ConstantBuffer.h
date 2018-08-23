@@ -13,7 +13,7 @@ namespace NSDevilX
 			{
 			protected:
 				CConstantBufferDescription * const mDescription;
-				TVector<Byte> mCache;
+				TVector(Byte) mCache;
 				TSharedReadData<Bool> mNeedUpdate;
 			public:
 				CConstantBuffer(CConstantBufferDescription * description);

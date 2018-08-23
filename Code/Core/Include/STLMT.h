@@ -10,7 +10,6 @@ namespace NSDevilX
 		class TVectorMT
 			:public TVector<T,TAllocator>
 			,public IReadWriteLockImp
-			,public TBaseObject<TVectorMT<T,TAllocator> >
 		{
 		public:
 			using TVector<T,TAllocator>::TVector;
@@ -32,7 +31,6 @@ namespace NSDevilX
 		class TListMT
 			:public TList<T,TAllocator>
 			,public IReadWriteLockImp
-			,public TBaseObject<TListMT<T,TAllocator> >
 		{
 		public:
 			using TList<T,TAllocator>::TList;
@@ -60,7 +58,6 @@ namespace NSDevilX
 		class TSetMT
 			:public TSet<T,SortfuncT,TAllocator>
 			,public IReadWriteLockImp
-			,public TBaseObject<TSetMT<T,SortfuncT,TAllocator> >
 		{
 		public:
 			using TSet<T,SortfuncT,TAllocator>::TSet;
@@ -82,7 +79,6 @@ namespace NSDevilX
 		class TMapMT
 			:public TMap<KeyT,ValueT,SortfuncT,TAllocator>
 			,public IReadWriteLockImp
-			,public TBaseObject<TMapMT<KeyT,ValueT,SortfuncT,TAllocator> >
 		{
 		public:
 			Void addMT(KeyT const & key,ValueT const & value)

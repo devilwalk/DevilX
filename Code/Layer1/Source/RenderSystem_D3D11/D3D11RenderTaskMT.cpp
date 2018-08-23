@@ -203,7 +203,7 @@ NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::CAmbientTask::~CAmbi
 
 Void NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::CAmbientTask::process()
 {
-	TVector<CRenderable*> solid_renderables,transparent_renderables,sky_solid_renderables,sky_transparent_renderables;
+	TVector(CRenderable*) solid_renderables,transparent_renderables,sky_solid_renderables,sky_transparent_renderables;
 	for(auto object:mViewport->getCamera()->getInterfaceImp()->getVisibleRenderableObjects())
 	{
 		for(UInt32 i=0;i<object->getRenderableCount();++i)
@@ -225,7 +225,7 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::CAmbientTask::p
 			}
 		}
 	}
-	TVector<CConstantBuffer*> common_constant_buffers;
+	TVector(CConstantBuffer*) common_constant_buffers;
 	if(auto cb=CSystemImp::getSingleton().getConstantBufferMT())
 	{
 		cb->submit();
@@ -297,7 +297,7 @@ NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::CLightTask::~CLightT
 Void NSDevilX::NSRenderSystem::NSD3D11::CRenderSceneForwardTask::CLightTask::process()
 {
 	mLight->getInterfaceImp()->findVisibleObjectsMT();
-	TVector<CConstantBuffer*> common_constant_buffers;
+	TVector(CConstantBuffer*) common_constant_buffers;
 	if(auto cb=CSystemImp::getSingleton().getConstantBufferMT())
 	{
 		cb->submit();

@@ -10,7 +10,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Core\Interface;$(SolutionDir)..\..\Code\Layer0\Include;$(SolutionDir)..\..\Code\Layer0\Include\Common;$(SolutionDir)..\..\Code\Layer0\Include\FreeType;$(SolutionDir)..\..\Code\Layer0\Include\FBX;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Common\Interface;$(SolutionDir)..\..\Code\Common\Include\FreeType;$(SolutionDir)..\..\Code\Common\Include\FBX;$(SolutionDir)..\..\Code\Common\Include;$(SolutionDir)..\..\Code\Core\Interface;$(SolutionDir)..\..\Code\Layer0\Include;$(SolutionDir)..\..\Code\Layer0\Include\Utility;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <WarningLevel>Level3</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <SDLCheck>true</SDLCheck>
@@ -31,7 +31,7 @@
     </Link>
     <Lib>
       <AdditionalLibraryDirectories>$(OutDir);C:\Program Files (x86)\Visual Leak Detector\lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Core.lib</AdditionalDependencies>
+      <AdditionalDependencies>Common.lib;Core.lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup />

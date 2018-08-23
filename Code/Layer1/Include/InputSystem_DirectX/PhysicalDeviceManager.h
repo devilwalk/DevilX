@@ -9,7 +9,7 @@ namespace NSDevilX
 				:public TBaseObject<CPhysicalDeviceManager>
 			{
 			public:
-				typedef TMap<IPhysicalDeviceImp*,DIDEVICEINSTANCE> Devices;
+				typedef TMap(IPhysicalDeviceImp*,DIDEVICEINSTANCE) Devices;
 			protected:
 				Devices mDevices;
 			public:

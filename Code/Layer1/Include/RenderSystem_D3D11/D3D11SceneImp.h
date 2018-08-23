@@ -15,9 +15,9 @@ namespace NSDevilX
 				,public CConstantBufferContainer
 			{
 			protected:
-				TResourcePtrMap<IEntityImp*const,CEntityImp> mEntities;
-				TResourcePtrMap<ICameraImp*const,CCamera> mCameras;
-				TResourcePtrMap<ILightImp*const,CLight> mLights;
+				TResourcePtrMap(IEntityImp*const,CEntityImp) mEntities;
+				TResourcePtrMap(ICameraImp*const,CCamera) mCameras;
+				TResourcePtrMap(ILightImp*const,CLight) mLights;
 			public:
 				CSceneImp(ISceneImp * interfaceImp);
 				~CSceneImp();

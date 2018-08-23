@@ -8,7 +8,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Common\Interface;$(SolutionDir)..\..\Code\Common\Include;$(SolutionDir)..\..\Code\Core\Interface;$(SolutionDir)..\..\Code\Core\Include;$(SolutionDir)..\..\Code\Core\Include\Dependency;$(SolutionDir)..\..\Code\Core\Include\Dependency\FreeType;$(SolutionDir)..\..\Code\Core\Include\Dependency\FBX;$(SolutionDir)..\..\Code\Core\Include\Dependency\ASIO;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Common\Interface;$(SolutionDir)..\..\Code\Common\Include\FreeType;$(SolutionDir)..\..\Code\Common\Include\FBX;$(SolutionDir)..\..\Code\Common\Include\ASIO;$(SolutionDir)..\..\Code\Common\Include;$(SolutionDir)..\..\Code\Core\Interface;$(SolutionDir)..\..\Code\Core\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <WarningLevel>Level3</WarningLevel>
       <TreatWarningAsError>false</TreatWarningAsError>
       <SDLCheck>false</SDLCheck>

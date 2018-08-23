@@ -12,7 +12,7 @@ namespace NSDevilX
 			{
 			protected:
 				CViewport * const mViewport;
-				TVector<CRenderTask*> mTasks;
+				TVector(CRenderTask*) mTasks;
 			public:
 				CRenderTask(CViewport * viewport);
 				virtual ~CRenderTask();
@@ -106,7 +106,7 @@ namespace NSDevilX
 					virtual Void process() override;
 				};
 			protected:
-				TVector<CLightTask*> mLightTaskPool;
+				TVector(CLightTask*) mLightTaskPool;
 			public:
 				CRenderSceneForwardTask(CViewport * viewport);
 				~CRenderSceneForwardTask();

@@ -1,4 +1,5 @@
 #pragma once
+#include "Utility.h"
 #include "IPhysicalEntity.h"
 #include "IPhysicalEnum.h"
 #include "IPhysicalMesh.h"

@@ -1,6 +1,6 @@
 #pragma once
-#include "INetworkClient.h"
+#include "Utility.h"
 #include "INetworkEnum.h"
 #include "INetworkLink.h"
-#include "INetworkServer.h"
+#include "INetworkPeer.h"
 #include "INetworkSystem.h"

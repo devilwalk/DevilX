@@ -19,12 +19,12 @@ namespace NSDevilX
 				const CFloat4 mScissorRectParameter;
 				COverlayManager * const mManager;
 				CGeometryImp * mGeometry;
-				TVector<CFloat3> mPositions;
-				TVector<CFloat2> mUVs;
-				TVector<RGBA> mDiffuses;
-				TVector<UInt32> mIndices;
-				TList<UInt32> mFrees;
-				TMap<IOverlayElementImp*,UInt32> mRectangles;
+				TVector(CFloat3) mPositions;
+				TVector(CFloat2) mUVs;
+				TVector(RGBA) mDiffuses;
+				TVector(UInt32) mIndices;
+				TList(UInt32) mFrees;
+				TMap(IOverlayElementImp*,UInt32) mRectangles;
 			public:
 				COverlayRenderable(COverlayMaterial * material,const CFloat2 & scissorRectPosition,const CFloat2 & scissorRectSize,COverlayManager * manager);
 				~COverlayRenderable();

@@ -137,9 +137,9 @@ namespace NSDevilX
 			CMatrix4F mViewMatrix;
 			DirectX::BoundingFrustum mFrustum;
 			CPlaneBoundedVolume mPlaneBoundedVolume;
-			TVector<ILightImp*> mVisibleLights;
-			TVector<ICameraImp*> mVisibleCameras;
-			TVector<IEntityImp*> mVisibleEntities;
+			TVector(ILightImp*) mVisibleLights;
+			TVector(ICameraImp*) mVisibleCameras;
+			TVector(IEntityImp*) mVisibleEntities;
 			TSharedReadData<UInt32> mVisibleObjectsFrameIndex;
 		public:
 			ICameraImp(const String & name,ISceneImp * scene);

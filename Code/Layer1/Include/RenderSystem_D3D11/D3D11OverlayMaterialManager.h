@@ -10,7 +10,7 @@ namespace NSDevilX
 				:public TBaseObject<COverlayMaterialManager>
 			{
 			protected:
-				TResourcePtrList<COverlayMaterial> mMaterials;
+				TResourcePtrList(COverlayMaterial) mMaterials;
 			public:
 				COverlayMaterialManager();
 				~COverlayMaterialManager();

@@ -5,12 +5,12 @@ using namespace NSCore;
 NSDevilX::NSCore::CThreadManager::CThreadManager()
 	:mSemaphorePool(nullptr)
 {
-	mSemaphorePool=new CSemaphorePool;
+	mSemaphorePool=DEVILX_NEW CSemaphorePool;
 }
 
 NSDevilX::NSCore::CThreadManager::~CThreadManager()
 {
-	delete mSemaphorePool;
+	DEVILX_DELETE(mSemaphorePool);
 }
 
 ThreadID NSDevilX::NSCore::CThreadManager::getCurrentThreadID()

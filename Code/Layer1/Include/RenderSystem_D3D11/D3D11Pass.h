@@ -17,14 +17,14 @@ namespace NSDevilX
 				ID3D11RasterizerState1 * mRasterizerState;
 				ID3D11BlendState1 * mBlendState;
 				ID3D11DepthStencilState * mDepthState;
-				TVector<CTexture*> mVSTextures;
-				TVector<CTexture*> mHSTextures;
-				TVector<CTexture*> mDSTextures;
-				TVector<CTexture*> mPSTextures;
-				TVector<ID3D11SamplerState*> mVSSamplerStates;
-				TVector<ID3D11SamplerState*> mHSSamplerStates;
-				TVector<ID3D11SamplerState*> mDSSamplerStates;
-				TVector<ID3D11SamplerState*> mPSSamplerStates;
+				TVector(CTexture*) mVSTextures;
+				TVector(CTexture*) mHSTextures;
+				TVector(CTexture*) mDSTextures;
+				TVector(CTexture*) mPSTextures;
+				TVector(ID3D11SamplerState*) mVSSamplerStates;
+				TVector(ID3D11SamplerState*) mHSSamplerStates;
+				TVector(ID3D11SamplerState*) mDSSamplerStates;
+				TVector(ID3D11SamplerState*) mPSSamplerStates;
 			public:
 				CPass();
 				virtual ~CPass();

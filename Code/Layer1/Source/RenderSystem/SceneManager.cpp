@@ -37,7 +37,7 @@ IEnum::ESceneManagerAlgorithm NSDevilX::NSRenderSystem::CSimpleSceneManager::get
 	return IEnum::ESceneManagerAlgorithm_Simple;
 }
 
-Void NSDevilX::NSRenderSystem::CSimpleSceneManager::findVisibleObjects(const CPlaneBoundedVolume & bound,TVector<ISceneElementImp*> & visibleObjects) const
+Void NSDevilX::NSRenderSystem::CSimpleSceneManager::findVisibleObjects(const CPlaneBoundedVolume & bound,TVector(ISceneElementImp*) & visibleObjects) const
 {
 	for(auto area:mElements)
 	{
@@ -51,7 +51,7 @@ Void NSDevilX::NSRenderSystem::CSimpleSceneManager::findVisibleObjects(const CPl
 	}
 }
 
-Void NSDevilX::NSRenderSystem::CSimpleSceneManager::findVisibleObjects(const DirectX::BoundingSphere & bound,TVector<ISceneElementImp*>& visibleObjects) const
+Void NSDevilX::NSRenderSystem::CSimpleSceneManager::findVisibleObjects(const DirectX::BoundingSphere & bound,TVector(ISceneElementImp*)& visibleObjects) const
 {
 	for(auto area:mElements)
 	{

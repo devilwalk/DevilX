@@ -31,14 +31,14 @@ namespace NSDevilX
 			Void destroyMT(ValueT * value)
 			{
 				eraseMT(value);
-				delete value;
+				DEVILX_DELETE(value);
 			}
 			Void destroyAllMT()
 			{
 				this->lockWrite();
 				for(auto res:*this)
 				{
-					delete res;
+					DEVILX_DELETE(res);
 				}
 				this->clear();
 				this->unLockWrite();
@@ -58,14 +58,14 @@ namespace NSDevilX
 			Void destroyMT(ValueT * value)
 			{
 				eraseMT(value);
-				delete value;
+				DEVILX_DELETE(value);
 			}
 			Void destroyAllMT()
 			{
 				this->lockWrite();
 				for(auto res:*this)
 				{
-					delete res;
+					DEVILX_DELETE(res);
 				}
 				this->clear();
 				this->unLockWrite();
@@ -115,7 +115,7 @@ namespace NSDevilX
 			Void destroy(const KeyT & key)
 			{
 				auto iter=this->find(key);
-				delete iter->second;
+				DEVILX_DELETE(iter->second);
 				this->erase(iter);
 			}
 			Void destroyMT(const KeyT & key)
@@ -128,7 +128,7 @@ namespace NSDevilX
 			{
 				for(auto res:*this)
 				{
-					delete res.second;
+					DEVILX_DELETE(res.second);
 				}
 				this->clear();
 			}

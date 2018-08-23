@@ -30,7 +30,7 @@ namespace NSDevilX
 				,public CTexture
 			{
 			protected:
-				TSet<UInt32> mDirtyContentSubTextureKeys;
+				TSet(UInt32) mDirtyContentSubTextureKeys;
 			public:
 				CTexture2D(ITexture2DImp * interfaceImp);
 				// Inherited via TInterfaceObject

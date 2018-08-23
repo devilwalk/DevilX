@@ -12,7 +12,7 @@ namespace NSDevilX
 			IBufferImp*const mBuffer;
 			const CMatrix4F * mTransforms;
 			UInt32 mTransformCount;
-			TVector<Byte> mDatas;
+			TVector(Byte) mDatas;
 		public:
 			IBufferOperator_SkeletonAnimationImp(IBufferImp * buffer);
 			~IBufferOperator_SkeletonAnimationImp();

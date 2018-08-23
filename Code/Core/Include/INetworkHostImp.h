@@ -1,5 +1,6 @@
 #pragma once
 #include "NetworkAcceptor.h"
+#include "INetworkConnectionImp.h"
 namespace NSDevilX
 {
 	namespace NSCore
@@ -8,6 +9,7 @@ namespace NSDevilX
 			:public TBaseObject<INetworkHostImp>
 			,public INetworkHost
 			,public TMessageReceiver<CNetworkAcceptor>
+			,public TMessageReceiver<INetworkConnectionImp>
 		{
 		protected:
 			const String mIP;
@@ -18,14 +20,15 @@ namespace NSDevilX
 			~INetworkHostImp();
 
 			// Í¨¹ý INetworkHost ¼Ì³Ð
-			virtual std::string getIP() const override;
+			virtual ConstCharPtr getIP() const override;
 			virtual Void addListeningPort(UInt16 port) override;
 			virtual Void removeListeningPort(UInt16 port) override;
-			virtual Void createOrRetrieveConnection(const std::string & endPointIP,UInt16 endPointPort,UInt16 hostPort=0) override;
+			virtual Void createOrRetrieveConnection(ConstCharPtr endPointIP,UInt16 endPointPort,UInt16 hostPort=0) override;
 			virtual SizeT getNumConnections() const override;
 			virtual INetworkConnection * getConnection(SizeT index) const override;
 
 			virtual Void onMessage(CNetworkAcceptor * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
+			virtual Void onMessage(INetworkConnectionImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 		};
 	}
 }

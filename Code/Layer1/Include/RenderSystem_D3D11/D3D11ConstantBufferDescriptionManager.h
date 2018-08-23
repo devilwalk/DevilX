@@ -10,7 +10,7 @@ namespace NSDevilX
 				:public TBaseObject<CConstantBufferDescriptionManager>
 			{
 			protected:
-				TNamedResourcePtrMap<CConstantBufferDescription> mDescriptions;
+				TNamedResourcePtrMap(CConstantBufferDescription) mDescriptions;
 			public:
 				CConstantBufferDescriptionManager();
 				~CConstantBufferDescriptionManager();

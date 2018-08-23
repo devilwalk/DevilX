@@ -21,7 +21,7 @@ namespace NSDevilX
 			};
 		protected:
 			ISceneElementImp * mSceneElement;
-			TNamedIndexRefResourcePtrContainer<ISubEntityImp> mSubEntities;
+			TNamedIndexRefResourcePtrContainer(ISubEntityImp) mSubEntities;
 		public:
 			IEntityImp(const String & name,ISceneImp * scene);
 			// Inherited via IRenderableObject

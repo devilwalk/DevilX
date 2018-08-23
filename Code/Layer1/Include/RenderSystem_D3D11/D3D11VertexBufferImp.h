@@ -12,7 +12,7 @@ namespace NSDevilX
 				,public CReferenceObject
 			{
 			protected:
-				TRefResourcePtrVector<CBufferImp> mBuffers;
+				TRefResourcePtrVector(CBufferImp) mBuffers;
 			public:
 				CVertexBufferImp(IVertexBufferImp * interfaceImp);
 				decltype(mBuffers) const & getBuffers()const

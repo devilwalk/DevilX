@@ -11,7 +11,7 @@ namespace NSDevilX
 			public:
 				typedef ConstCharPtr (getShaderCodeFunction)();
 			protected:
-				TMap<const String,ID3DBlob*> mCodes;
+				TMap(const String,ID3DBlob*) mCodes;
 			public:
 				CShaderCodeManager();
 				~CShaderCodeManager();

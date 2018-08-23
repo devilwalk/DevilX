@@ -2,11 +2,14 @@
 using namespace NSDevilX;
 using namespace NSCore;
 
+NSDevilX::NSCore::ISystem::~ISystem()
+{
+}
+
 void NSDevilX::NSCore::ISystem::shutdown()
 {
-	delete CSystem::getSingletonPtr();
-	ISystem::~ISystem();
-	CMemoryManager::getSingleton().deallocateBytes(this);
+	DEVILX_DELETE(CSystem::getSingletonPtr());
+	delete CMemoryManager::getSingletonPtr();
 }
 
 IMemoryManager * NSDevilX::NSCore::ISystem::getMemoryManager() const
@@ -14,9 +17,24 @@ IMemoryManager * NSDevilX::NSCore::ISystem::getMemoryManager() const
 	return CSystem::getSingleton().getMemoryManager();
 }
 
-double NSDevilX::NSCore::ISystem::getTimeNowInSeconds() const
+INetworkManager * NSDevilX::NSCore::ISystem::getNetworkManager() const
 {
-	return tbb::tick_count::now().resolution();
+	return CSystem::getSingleton().getNetworkManager();
+}
+
+IDirectXManager * NSDevilX::NSCore::ISystem::getDirectXManager() const
+{
+	return CSystem::getSingleton().getDirectXManager();
+}
+
+ITimer * NSDevilX::NSCore::ISystem::createTimer() const
+{
+	return CSystem::getSingleton().createTimer();
+}
+
+Void NSDevilX::NSCore::ISystem::destroyTimer(ITimer * timer) const
+{
+	CSystem::getSingleton().destroyTimer(static_cast<ITimerImp*>(timer));
 }
 
 IThreadManager * NSDevilX::NSCore::ISystem::getThreadManager() const
@@ -26,5 +44,7 @@ IThreadManager * NSDevilX::NSCore::ISystem::getThreadManager() const
 
 DLLAPI ISystem * NSDevilX::NSCore::getSystem()
 {
+	if(!CSystem::getSingletonPtr())
+		DEVILX_NEW CSystem;
 	return CSystem::getSingleton().getSystem();
 }

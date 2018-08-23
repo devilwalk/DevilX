@@ -11,9 +11,9 @@ namespace NSDevilX
 			,public TSingletonEx<ISystemImp>
 		{
 		protected:
-			TNamedResourcePtrMap<IEventSceneImp> mEventScenes;
-			TResourcePtrMap<NSRenderSystem::IViewport*,IGraphicSceneImp> mGraphicScenes;
-			TNamedResourcePtrMap<IElementImp> mLayers;
+			TNamedResourcePtrMap(IEventSceneImp) mEventScenes;
+			TResourcePtrMap(NSRenderSystem::IViewport*,IGraphicSceneImp) mGraphicScenes;
+			TNamedResourcePtrMap(IElementImp) mLayers;
 		public:
 			ISystemImp();
 			~ISystemImp();

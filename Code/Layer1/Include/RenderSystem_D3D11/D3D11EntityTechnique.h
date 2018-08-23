@@ -13,7 +13,7 @@ namespace NSDevilX
 			protected:
 				CEnum::ETechniqueType const mType;
 				CEntityMaterial * const mMaterial;
-				TVector<CEntityPass*> mPasses;
+				TVector(CEntityPass*) mPasses;
 			public:
 				CEntityTechnique(CEnum::ETechniqueType type,CEntityMaterial * material);
 				virtual ~CEntityTechnique();

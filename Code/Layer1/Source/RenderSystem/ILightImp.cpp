@@ -284,7 +284,7 @@ Void NSDevilX::NSRenderSystem::ILightImp::findVisibleObjectsMT()
 	auto & frame_index=mVisibleElementsFrameIndex.beginWrite();
 	if(ISystemImp::getSingleton().getFrameIndex()!=frame_index)
 	{
-		TVector<ISceneElementImp*> temp;
+		TVector(ISceneElementImp*) temp;
 		switch(getType())
 		{
 		case IEnum::ELightType_Point:

@@ -29,7 +29,7 @@ namespace NSDevilX
 				struct SInputLayout
 					:public TBaseObject<SInputLayout>
 				{
-					TVector<D3D11_INPUT_ELEMENT_DESC> mDescs;
+					TVector(D3D11_INPUT_ELEMENT_DESC) mDescs;
 					ID3D11InputLayout * mInternal;
 					~SInputLayout()
 					{
@@ -43,7 +43,6 @@ namespace NSDevilX
 				};
 			protected:
 				CEnum::EShaderModelType mShaderModelType;
-				IDXGIFactory1 * mFactory;
 				ID3D11Device1 * mDevice;
 				ID3D11DeviceContext1 * mImmediateContext;
 				ID3D11Debug * mDebug;
@@ -53,38 +52,34 @@ namespace NSDevilX
 				COverlayMaterialManager * mOverlayMaterialManager;
 				D3D_FEATURE_LEVEL mSupport;
 				CClearViewportShader * mClearViewportShader;
-				TResourcePtrVector<SInputLayout> mInputLayouts;
-				TMap<UInt32,TResourcePtrVector<CDepthStencil> > mDepthStencils;
-				TResourcePtrMap<ID3DBlob*,CShader> mShaders;
-				TCOMResourcePtrVector<ID3D11RasterizerState1> mRasterizerStates;
-				TCOMResourcePtrVector<ID3D11BlendState1> mBlendStates;
-				TCOMResourcePtrVector<ID3D11DepthStencilState> mDepthStencilStates;
-				TCOMResourcePtrVector<ID3D11SamplerState> mSamplerStates;
-				TResourcePtrMap<IWindowImp*const,CWindowImp> mWindows;
-				TResourcePtrMap<IRenderableSurfaceImp*const,CRenderableSurfaceImp> mRenderableSurfaces;
-				TResourcePtrMap<ISceneImp*const,CSceneImp> mScenes;
-				TRefResourcePtrMap<IGeometryImp*const,CGeometryImp> mGeometrys;
-				TRefResourcePtrMap<ITexture2DImp*const,CTexture2D> mTexture2Ds;
-				TRefResourcePtrMap<IVertexBufferImp*const,CVertexBufferImp> mVertexBuffers;
-				TRefResourcePtrMap<IIndexBufferImp*const,CIndexBufferImp> mIndexBuffers;
-				TRefResourcePtrMap<IBufferImp*const,CBufferImp> mBuffers;
-				TResourcePtrMap<ITransformerImp*,CTransformerImp> mTransformers;
+				TResourcePtrVector(SInputLayout) mInputLayouts;
+				TMap(UInt32,TResourcePtrVector<CDepthStencil>) mDepthStencils;
+				TResourcePtrMap(ID3DBlob*,CShader) mShaders;
+				TCOMResourcePtrVector(ID3D11RasterizerState1) mRasterizerStates;
+				TCOMResourcePtrVector(ID3D11BlendState1) mBlendStates;
+				TCOMResourcePtrVector(ID3D11DepthStencilState) mDepthStencilStates;
+				TCOMResourcePtrVector(ID3D11SamplerState) mSamplerStates;
+				TResourcePtrMap(IWindowImp*const,CWindowImp) mWindows;
+				TResourcePtrMap(IRenderableSurfaceImp*const,CRenderableSurfaceImp) mRenderableSurfaces;
+				TResourcePtrMap(ISceneImp*const,CSceneImp) mScenes;
+				TRefResourcePtrMap(IGeometryImp*const,CGeometryImp) mGeometrys;
+				TRefResourcePtrMap(ITexture2DImp*const,CTexture2D) mTexture2Ds;
+				TRefResourcePtrMap(IVertexBufferImp*const,CVertexBufferImp) mVertexBuffers;
+				TRefResourcePtrMap(IIndexBufferImp*const,CIndexBufferImp) mIndexBuffers;
+				TRefResourcePtrMap(IBufferImp*const,CBufferImp) mBuffers;
+				TResourcePtrMap(ITransformerImp*,CTransformerImp) mTransformers;
 				D3D11_RASTERIZER_DESC1 mDefaultRasterizerStateDesc;
 				D3D11_BLEND_DESC1 mDefaultBlendStateDesc;
 				D3D11_DEPTH_STENCIL_DESC mDefaultDepthStencilDesc;
 				D3D11_SAMPLER_DESC mDefaultSamplerDesc;
-				TResourcePtrMap<ConstVoidPtr,Void> mInstanceByInternals;
-				TResourcePtrMap<const IUnknown*,Void> mInstanceByCOMInternals;
+				TResourcePtrMap(ConstVoidPtr,Void) mInstanceByInternals;
+				TResourcePtrMap(const IUnknown*,Void) mInstanceByCOMInternals;
 			public:
 				CSystemImp();
 				~CSystemImp();
 				CEnum::EShaderModelType getShaderModelType()const
 				{
 					return mShaderModelType;
-				}
-				IDXGIFactory1 * getDXGIFactory()const
-				{
-					return mFactory;
 				}
 				ID3D11Device1 * getDevice()const
 				{

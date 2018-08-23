@@ -32,10 +32,10 @@ namespace NSDevilX
 				EMessage_IndexBufferDestroy
 			};
 		protected:
-			TNamedRefResourcePtrMap<IGeometryImp> mGeometrys;
-			TNamedRefResourcePtrMap<ITextureImp> mTextures;
-			TNamedRefResourcePtrMap<IBufferImp> mBuffers;
-			TRefResourcePtrSet<IBufferImp> mInternalBuffers;
+			TNamedRefResourcePtrMap(IGeometryImp) mGeometrys;
+			TNamedRefResourcePtrMap(ITextureImp) mTextures;
+			TNamedRefResourcePtrMap(IBufferImp) mBuffers;
+			TRefResourcePtrSet(IBufferImp) mInternalBuffers;
 			CNameGenerator mInternalBufferNameGenerator;
 		public:
 			IResourceManagerImp();

@@ -1,4 +1,5 @@
 #pragma once
+#include "IPhysicalSystemInterface.h"
 #include "IEntityImp.h"
 #include "IGeometryImp.h"
 #include "IMeshImp.h"

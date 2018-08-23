@@ -11,7 +11,7 @@ namespace NSDevilX
 			protected:
 				String mNameInShader;
 				D3D11_SHADER_BUFFER_DESC mDescription;
-				TMap<const String,const D3D11_SHADER_VARIABLE_DESC> mConstantDescriptions;
+				TMap(const String,const D3D11_SHADER_VARIABLE_DESC) mConstantDescriptions;
 			public:
 				CConstantBufferDescription(ID3D11ShaderReflectionConstantBuffer * reflection);
 				~CConstantBufferDescription();

@@ -61,7 +61,7 @@ namespace NSDevilX
 			UInt32 mMipmapCount;
 			UInt32 mRealMipmapCount;
 			UInt32 mArraySize;
-			TResourcePtrMap<UInt32,SSubTexture> mSubTextures;
+			TResourcePtrMap(UInt32,SSubTexture) mSubTextures;
 		public:
 			ITexture2DImp(const String & name);
 			static UInt32 encodeSubTextureKey(UInt32 mipmapLevel,UInt32 arrayIndex)

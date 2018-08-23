@@ -6,14 +6,16 @@ namespace NSDevilX
 		class IEnum
 		{
 		public:
-			enum EDeviceType
+			enum EGPUDeviceType
 			{
-				EDeviceType_Compute
-			};
-			enum EComputeDeviceType
-			{
-				EComputeDeviceType_CPU,
-				EComputeDeviceType_GPU
+				EGPUDeviceType_GL,
+				EGPUDeviceType_GLES,
+				EGPUDeviceType_Vulkan,
+				EGPUDeviceType_CL,
+				EGPUDeviceType_D3D9,
+				EGPUDeviceType_D3D10,
+				EGPUDeviceType_D3D11,
+				EGPUDeviceType_D3D12,
 			};
 			enum EResourceLocationType
 			{

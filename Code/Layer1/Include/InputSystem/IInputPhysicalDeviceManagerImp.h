@@ -9,7 +9,7 @@ namespace NSDevilX
 			,public TBaseObject<IPhysicalDeviceManagerImp>
 		{
 		public:
-			typedef TVector<IPhysicalDeviceImp*> DeviceList;
+			typedef TVector(IPhysicalDeviceImp*) DeviceList;
 		protected:
 			DeviceList mDeviceList;
 		public:

@@ -1,4 +1,5 @@
 #pragma once
+#include "IInputSystemInterface.h"
 #include "IInputPhysicalDeviceImp.h"
 #include "IInputPhysicalDeviceManagerImp.h"
 #include "IInputSystemImp.h"

@@ -15,7 +15,7 @@ namespace NSDevilX
 				ID3D11DeviceContext1 * mContext;
 				ID3D11CommandList * mCommandList;
 				UInt32 mThreadSyncGroupID;
-				TResourcePtrVector<CRenderTask> mTasks;
+				TResourcePtrVector(CRenderTask) mTasks;
 			public:
 				CRenderTask(CViewport * viewport);
 				virtual ~CRenderTask();
@@ -108,7 +108,7 @@ namespace NSDevilX
 					};
 				protected:
 					CLight * mLight;
-					TVector<CConstantBuffer*> mSubmitConstantBuffers;
+					TVector(CConstantBuffer*) mSubmitConstantBuffers;
 				public:
 					CLightTask(CLight * light,CViewport * viewport);
 					~CLightTask();
@@ -120,7 +120,7 @@ namespace NSDevilX
 					virtual Void process() override;
 				};
 			protected:
-				TVector<CLightTask*> mLightTaskPool;
+				TVector(CLightTask*) mLightTaskPool;
 			public:
 				CRenderSceneForwardTask(CViewport * viewport);
 				~CRenderSceneForwardTask();
@@ -143,8 +143,8 @@ namespace NSDevilX
 					{}
 				};
 			protected:
-				TVector<CConstantBuffer*> mSubmitConstantBuffers;
-				TVector<SQuery> mQueries;
+				TVector(CConstantBuffer*) mSubmitConstantBuffers;
+				TVector(SQuery) mQueries;
 			public:
 				CQuerySceneTask(CViewport * viewport);
 				~CQuerySceneTask();
@@ -202,8 +202,8 @@ namespace NSDevilX
 					}
 				};
 			protected:
-				TMap<SizeT,SQuery> mQueries;
-				TSet<UInt32> mQueryResults;
+				TMap(SizeT,SQuery) mQueries;
+				TSet(UInt32) mQueryResults;
 			public:
 				CQueryTask(CViewport * viewport);
 				~CQueryTask();

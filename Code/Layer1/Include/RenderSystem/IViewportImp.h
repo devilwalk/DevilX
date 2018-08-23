@@ -50,9 +50,9 @@ namespace NSDevilX
 			UInt32 mOrder;
 			Int32 mTechnique;
 			CFloatRGBA mClearColour;
-			TNamedResourcePtrMap<IOverlayElementImp> mOverlayElements;
-			TNamedResourcePtrMap<IQueryImp> mQueries;
-			TVector<UInt32> mQueryDatas;
+			TNamedResourcePtrMap(IOverlayElementImp) mOverlayElements;
+			TNamedResourcePtrMap(IQueryImp) mQueries;
+			TVector(UInt32) mQueryDatas;
 		public:
 			IViewportImp(const String & name,IRenderTargetImp * rt);
 			IRenderTargetImp * getRenderTarget()const

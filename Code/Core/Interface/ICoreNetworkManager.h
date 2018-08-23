@@ -10,9 +10,11 @@ namespace NSDevilX
 		protected:
 			~INetworkManager(){}
 		public:
-			std::vector<std::string> getHostIPs()const;
-			INetworkHost * createOrRetrieveHost(const std::string & ip);
+			SizeT getNumHostIPs()const;
+			ConstCharPtr getHostIP(SizeT index)const;
+			INetworkHost * createOrRetrieveHost(ConstCharPtr ip);
 			Void destroyConnection(INetworkConnection * connection);
+			Void update();
 		};
 	}
 }

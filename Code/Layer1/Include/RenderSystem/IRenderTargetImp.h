@@ -20,8 +20,8 @@ namespace NSDevilX
 				EMessage_BeginClearColourChange,
 				EMessage_EndClearColourChange
 			};
-			typedef TNamedIndexRefResourcePtrContainer<IViewportImp> Viewports;
-			typedef TMap<UInt32,TSet<SizeT> > Orders;
+			typedef TNamedIndexRefResourcePtrContainer(IViewportImp) Viewports;
+			typedef TMap(UInt32,TSet(SizeT)) Orders;
 		protected:
 			Viewports mViewports;
 			Orders mOrders;

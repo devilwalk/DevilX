@@ -23,7 +23,7 @@ namespace NSDevilX
 		protected:
 			Bool mExit;
 			IResourceManagerImp * mResourceManager;
-			TNamedResourcePtrMap<ISceneImp> mScenes;
+			TNamedResourcePtrMap(ISceneImp) mScenes;
 		public:
 			ISystemImp();
 			~ISystemImp();

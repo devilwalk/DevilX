@@ -41,7 +41,7 @@ namespace NSDevilX
 				{
 					mFlags|=1<<flag;
 				}
-				ID3DBlob * generateCode(const TVector<D3D_SHADER_MACRO> * extensionMacros=nullptr)const;
+				ID3DBlob * generateCode(const TVector(D3D_SHADER_MACRO) * extensionMacros=nullptr)const;
 			protected:
 				Boolean _hasFlag(EFlag flag)const
 				{

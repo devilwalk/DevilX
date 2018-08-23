@@ -22,25 +22,33 @@
     <ClInclude Include="..\..\..\Code\Common\Include\Common.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonAngle.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonAny.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonBounding.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonBoundingTreeNode.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonColour.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonCommandQueue.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonConstant.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonDefine.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonDirtyFlagContainer.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonMath.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonMatrix.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonMessageMode.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonNode.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonOctree.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonPathUtility.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonPlane.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonPlatformDefine.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonPlatformInclude.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonRange.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonRay.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonReferenceObject.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonResourceContainer.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonSingleton.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonSTD.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonSTL.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonStringUtility.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonThirdPart.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonTransformNode.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonTreeContainer.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonType.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonUserDataContainer.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonUTFChar.h" />
@@ -54,9 +62,13 @@
     <ClInclude Include="..\..\..\Code\Common\Source\Precompiler.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Code\Common\Source\CommonBounding.cpp" />
     <ClCompile Include="..\..\..\Code\Common\Source\CommonColour.cpp" />
+    <ClCompile Include="..\..\..\Code\Common\Source\CommonCommandQueue.cpp" />
     <ClCompile Include="..\..\..\Code\Common\Source\CommonMatrix.cpp" />
     <ClCompile Include="..\..\..\Code\Common\Source\CommonMessageMode.cpp" />
+    <ClCompile Include="..\..\..\Code\Common\Source\CommonTransformNode.cpp" />
+    <ClCompile Include="..\..\..\Code\Common\Source\CommonTreeContainer.cpp" />
     <ClCompile Include="..\..\..\Code\Common\Source\CommonUTFChar.cpp" />
     <ClCompile Include="..\..\..\Code\Common\Source\CommonVectorF.cpp" />
     <ClCompile Include="..\..\..\Code\Common\Source\CommonVectorI.cpp" />

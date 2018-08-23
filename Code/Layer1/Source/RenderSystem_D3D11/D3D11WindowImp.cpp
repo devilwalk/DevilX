@@ -24,7 +24,7 @@ NSDevilX::NSRenderSystem::NSD3D11::CWindowImp::CWindowImp(IWindowImp * interface
 	desc.SampleDesc.Quality=0;
 	desc.SwapEffect=DXGI_SWAP_EFFECT_DISCARD;
 	desc.Windowed=TRUE;
-	CSystemImp::getSingleton().getDXGIFactory()->CreateSwapChain(CSystemImp::getSingleton().getDevice(),&desc,&mSwapChain);
+	NSCore::getSystem()->getDirectXManager()->getDXGIFactory()->CreateSwapChain(CSystemImp::getSingleton().getDevice(),&desc,&mSwapChain);
 	getSwapChain()->GetBuffer(0,__uuidof(ID3D11Texture2D),reinterpret_cast<VoidPtr*>(&mRenderTargetResource));
 	CComPtr<ID3D11RenderTargetView> temp_internal;
 	CSystemImp::getSingleton().getDevice()->CreateRenderTargetView(mRenderTargetResource,nullptr,&temp_internal);

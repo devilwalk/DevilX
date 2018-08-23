@@ -33,9 +33,6 @@
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreSystem.h">
       <Filter>Interface</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreDevice.h">
-      <Filter>Interface</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreMemoryManager.h">
       <Filter>Interface</Filter>
     </ClInclude>
@@ -153,6 +150,21 @@
     <ClInclude Include="..\..\..\Code\Core\Include\INetworkHostImp.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreDirectXManager.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\DirectXManager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\Define.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreTimer.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\ITimerImp.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Core\Source\Precompiler.cpp">
@@ -222,6 +234,15 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Core\Source\INetworkHostImp.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\ICoreDirectXManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\DirectXManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\ITimerImp.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

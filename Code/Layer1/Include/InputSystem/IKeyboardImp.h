@@ -27,7 +27,7 @@ namespace NSDevilX
 		protected:
 			KeyStateList mKeyStateList;
 			IKeyboardListener * mListener;
-			TVector<SKeyboardFrameDataImp*> mFrameDatas;
+			TVector(SKeyboardFrameDataImp*) mFrameDatas;
 		public:
 			IKeyboardImp(const String & name,IPhysicalDeviceImp * physicalDevice,CWindow * window);
 			virtual ~IKeyboardImp();

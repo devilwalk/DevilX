@@ -1,6 +1,5 @@
 #pragma once
-#include "IClientImp.h"
 #include "ILinkImp.h"
-#include "IServerImp.h"
+#include "IPeerImp.h"
 #include "ISystemImp.h"
 #include "Protocol.h"

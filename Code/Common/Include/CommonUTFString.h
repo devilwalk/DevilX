@@ -14,8 +14,9 @@ namespace NSDevilX
 		TUTFString()
 		{
 		}
-		TUTFString(const std::vector<TUTFChar,TAllocator> & cpy)
-			:TVector<TUTFChar,TAllocator>(cpy)
+		template<class TAllocator2=std::allocator<TUTFChar> >
+		TUTFString(const std::vector<TUTFChar,TAllocator2> & cpy)
+			:TVector<TUTFChar,TAllocator>(cpy.begin(),cpy.end())
 		{
 		}
 		TUTFString(ConstVoidPtr utfCharBuffer,SizeT sizeInBytes)

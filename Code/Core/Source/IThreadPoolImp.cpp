@@ -21,13 +21,13 @@ NSDevilX::NSCore::IThreadPoolImp::~IThreadPoolImp()
 	setMaxThreadCount(0);
 	for(auto waiter:mSemaphoreGroups)
 	{
-		delete waiter.second;
+		DEVILX_DELETE(waiter.second);
 	}
 	while(!mFreeWorkerPool.empty())
 	{
 		CFunctionWorker * worker;
 		mFreeWorkerPool.pop(worker);
-		delete worker;
+		DEVILX_DELETE(worker);
 	}
 }
 
@@ -35,7 +35,7 @@ Void NSDevilX::NSCore::IThreadPoolImp::setMaxThreadCount(UInt32 count)
 {
 	if(mThreadList.size()<count)
 	{
-		mThreadList.push_back(new SThread(this));
+		mThreadList.push_back(DEVILX_NEW SThread(this));
 	}
 	else if(mThreadList.size()>count)
 	{
@@ -46,7 +46,7 @@ Void NSDevilX::NSCore::IThreadPoolImp::setMaxThreadCount(UInt32 count)
 		}
 		for(auto thread:mThreadList)
 		{
-			delete thread;
+			DEVILX_DELETE(thread);
 		}
 		mThreadList.clear();
 		setMaxThreadCount(count);
@@ -63,17 +63,17 @@ Void NSDevilX::NSCore::IThreadPoolImp::submit(WorkFunction func,VoidPtr paramete
 	CFunctionWorker * worker=nullptr;
 	if(syncGroupID>=0)
 	{
-		worker=new CFunctionWorker(func,parameter,CThreadManager::getSingleton().getSemaphorePool()->popSemaphore());
+		worker=DEVILX_NEW CFunctionWorker(func,parameter,CThreadManager::getSingleton().getSemaphorePool()->popSemaphore());
 		mSemaphoreGroups.lockWrite();
 		auto & group_wait=mSemaphoreGroups[syncGroupID];
 		if(nullptr==group_wait)
-			group_wait=new CSemaphoreGroup();
+			group_wait=DEVILX_NEW CSemaphoreGroup();
 		mSemaphoreGroups.unLockWrite();
 		group_wait->addSemaphore(worker->getSemaphore());
 	}
 	else
 	{
-		worker=new CFunctionWorker(func,parameter);
+		worker=DEVILX_NEW CFunctionWorker(func,parameter);
 	}
 	mFreeWorkerPool.push(worker);
 }

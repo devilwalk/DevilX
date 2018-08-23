@@ -20,27 +20,31 @@ NSDevilX::NSCore::CMemoryTracker::~CMemoryTracker()
 
 Void NSDevilX::NSCore::CMemoryTracker::allocate(VoidPtr address,size_t size,ConstCharPtr fileName,ConstCharPtr functionName,UInt32 lineNumber)
 {
-	mRecordChunkListLocker.lockRead();
-	assert(mRecordChunkList.find(address)==mRecordChunkList.end());
-	mRecordChunkListLocker.unLockRead();
 	mRecordChunkListLocker.lockWrite();
-	mRecordChunkList[address]=new STrackerChunk(address,size,fileName,functionName,lineNumber,CThreadManager::getSingleton().getCurrentThreadID());
+	assert(mRecordChunkList.find(address)==mRecordChunkList.end());
+	mRecordChunkList[address]=new STrackerChunk(address,size,fileName,functionName,lineNumber,CThreadManager::getCurrentThreadID());
 	mRecordChunkListLocker.unLockWrite();
 }
 
 Void NSDevilX::NSCore::CMemoryTracker::deallocate(VoidPtr address,ConstCharPtr fileName,ConstCharPtr functionName,UInt32 lineNumber)
 {
-	mRecordChunkListLocker.lockRead();
-	assert(mRecordChunkList.find(address)!=mRecordChunkList.end());
-	STrackerChunk * chunk=mRecordChunkList[address];
-	mRecordChunkListLocker.unLockRead();
 	mRecordChunkListLocker.lockWrite();
-	mRecordChunkList.erase(address);
+	STrackerChunk * chunk=nullptr;
+	if(mRecordChunkList.find(address)!=mRecordChunkList.end())
+	{
+		chunk=mRecordChunkList[address];
+		mRecordChunkList.erase(address);
+	}
 	mRecordChunkListLocker.unLockWrite();
-	mFreeChunkListLocker.lockRead();
-	assert(mFreeChunkList.find(chunk)==mFreeChunkList.end());
-	mFreeChunkListLocker.unLockRead();
-	mFreeChunkListLocker.lockWrite();
-	mFreeChunkList[chunk]=new STrackerChunk(address,chunk->mSize,fileName,functionName,lineNumber,CThreadManager::getSingleton().getCurrentThreadID());
-	mFreeChunkListLocker.unLockWrite();
+	if(chunk)
+	{
+		if(fileName)
+		{
+			mFreeChunkListLocker.lockWrite();
+			mFreeChunkList[chunk]=new STrackerChunk(address,chunk->mSize,fileName,functionName,lineNumber,CThreadManager::getCurrentThreadID());
+			mFreeChunkListLocker.unLockWrite();
+		}
+		else
+			delete chunk;
+	}
 }

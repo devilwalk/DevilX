@@ -28,18 +28,20 @@ namespace NSDevilX
 			using TMemoryAllocatorObject<T>::operator delete;
 			VoidPtr operator new(SizeT sizeInBytes,ConstCharPtr file,ConstCharPtr function,UInt32 line)
 			{
-				VoidPtr ret=operator new(sizeInBytes);
-				getDefaultMemoryTracker()->allocate(ret,sizeInBytes,file,function,line);
-				return ret;
+				return CMemoryManager::getSingleton().allocateBytes(sizeInBytes,file,function,line);
 			}
 			Void operator delete(VoidPtr address,ConstCharPtr file,ConstCharPtr function,UInt32 line)
 			{
-				operator delete(address);
+				assert(0);
 			}
 		};
 #define DEVILX_ALLOCATOR_STANDER 0
 #define DEVILX_ALLOCATOR_TBB 1
+#if DEVILX_DEBUG
+#define DEVILX_ALLOCATOR DEVILX_ALLOCATOR_STANDER
+#else
 #define DEVILX_ALLOCATOR DEVILX_ALLOCATOR_TBB
+#endif
 #if DEVILX_ALLOCATOR==DEVILX_ALLOCATOR_STANDER
 #define DevilXAllocator std::allocator
 #elif DEVILX_ALLOCATOR==DEVILX_ALLOCATOR_TBB

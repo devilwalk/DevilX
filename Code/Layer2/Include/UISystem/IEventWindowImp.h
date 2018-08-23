@@ -32,7 +32,7 @@ namespace NSDevilX
 		protected:
 			IElementImp * mElement;
 			SEventNotifier mEventNotifier;
-			TResourcePtrMap<IEventListener*,SEventListener> mEventListeners;
+			TResourcePtrMap(IEventListener*,SEventListener) mEventListeners;
 		public:
 			IEventWindowImp(const String & name);
 			virtual ~IEventWindowImp();

@@ -9,7 +9,7 @@ namespace NSDevilX
 	typedef unsigned int UInt32;
 	typedef long long Int64;
 	typedef unsigned long long UInt64;
-	typedef size_t SizeT;
+	typedef std::size_t SizeT;
 	typedef float Float;
 	typedef double DoubleFloat;
 	typedef void Void;

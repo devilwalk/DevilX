@@ -1,4 +1,5 @@
 #pragma once
+#include "Utility.h"
 #include "IRenderableSurface.h"
 #include "IRenderBuffer.h"
 #include "IRenderBufferOperator_SkeletonAnimation.h"

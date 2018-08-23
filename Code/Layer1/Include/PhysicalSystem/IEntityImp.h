@@ -29,7 +29,7 @@ namespace NSDevilX
 			IMeshImp * mMesh;
 			ITransformerImp * mTransformer;
 			Bool mOutsideTransformer;
-			TResourcePtrMap<ISubMeshImp*,ISubEntityImp> mSubEntitys;
+			TResourcePtrMap(ISubMeshImp*,ISubEntityImp) mSubEntitys;
 		public:
 			IEntityImp(const String & name,ISceneImp * scene);
 			~IEntityImp();

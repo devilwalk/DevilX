@@ -17,7 +17,7 @@ namespace NSDevilX
 			protected:
 				CSceneImp * const mScene;
 				CTransformerImp * mTransformer;
-				TResourcePtrMap<ISubEntityImp*const,CSubEntityImp> mSubEntities;
+				TResourcePtrMap(ISubEntityImp*const,CSubEntityImp) mSubEntities;
 			public:
 				CEntityImp(IEntityImp * interfaceImp);
 				virtual ~CEntityImp();

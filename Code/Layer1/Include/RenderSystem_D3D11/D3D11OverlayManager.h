@@ -15,7 +15,7 @@ namespace NSDevilX
 			{
 			protected:
 				CViewportImp * const mViewport;
-				TMap<Int32,TResourcePtrList<COverlayRenderable> > mRenderables;
+				TMap(Int32,TResourcePtrList(COverlayRenderable)) mRenderables;
 			public:
 				COverlayManager(CViewportImp * viewport);
 				~COverlayManager();

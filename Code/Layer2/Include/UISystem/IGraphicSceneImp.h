@@ -10,7 +10,7 @@ namespace NSDevilX
 		{
 		protected:
 			NSRenderSystem::IViewport * const mViewport;
-			TNamedResourcePtrMap<IGraphicWindowImp> mWindows;
+			TNamedResourcePtrMap(IGraphicWindowImp) mWindows;
 		public:
 			IGraphicSceneImp(NSRenderSystem::IViewport * viewport);
 			~IGraphicSceneImp();

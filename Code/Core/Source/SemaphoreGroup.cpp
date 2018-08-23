@@ -11,7 +11,7 @@ NSDevilX::NSCore::CSemaphorePool::~CSemaphorePool()
 	while(!mFreeWorkerPool.empty())
 	{
 		mFreeWorkerPool.pop(ret);
-		delete ret;
+		DEVILX_DELETE(ret);
 	}
 }
 
@@ -20,7 +20,7 @@ ISemaphoreImp * NSDevilX::NSCore::CSemaphorePool::popSemaphore()
 	ISemaphoreImp * ret=nullptr;
 	if(mFreeWorkerPool.empty())
 	{
-		ret=new ISemaphoreImp();
+		ret=DEVILX_NEW ISemaphoreImp();
 	}
 	else
 	{

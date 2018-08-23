@@ -1,4 +1,5 @@
 #pragma once
+#include "Utility.h"
 #include "IUIElement.h"
 #include "IUIEnum.h"
 #include "IUIEvent.h"

@@ -147,7 +147,7 @@ namespace NSDevilX
 			Bool mShadowEnable;
 			DEVILX_R_CLASS_MEMBER(IColourUnitStateImp*,Diffuse);
 			DEVILX_R_CLASS_MEMBER(IColourUnitStateImp*,Specular);
-			TVector<IEntityImp*> mVisibleEntities;
+			TVector(IEntityImp*) mVisibleEntities;
 			TSharedReadData<UInt32> mVisibleElementsFrameIndex;
 		public:
 			ILightImp(const String & name,IEnum::ELightType type,ISceneImp * scene);

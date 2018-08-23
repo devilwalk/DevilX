@@ -14,7 +14,7 @@ namespace NSDevilX
 			{
 			protected:
 				CDepthStencil * mDepthStencil;
-				TResourcePtrMap<IViewportImp*const,CViewportImp> mViewports;
+				TResourcePtrMap(IViewportImp*const,CViewportImp) mViewports;
 			public:
 				CRenderTargetImp(ID3D11RenderTargetView * rt);
 				virtual ~CRenderTargetImp();

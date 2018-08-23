@@ -37,7 +37,7 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CRenderOperation::process()
 			mContext->VSSetConstantBuffers(slot,1,&temp);
 		}
 	}
-	TVector<ID3D11ShaderResourceView*> srvs;
+	TVector(ID3D11ShaderResourceView*) srvs;
 	if(!mPass->getVSTextures().empty())
 	{
 		for(auto texture:mPass->getVSTextures())

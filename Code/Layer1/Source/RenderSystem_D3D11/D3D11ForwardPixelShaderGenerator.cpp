@@ -31,17 +31,17 @@ NSDevilX::NSRenderSystem::NSD3D11::CForwardPixelShaderCodeGenerator::CForwardPix
 NSDevilX::NSRenderSystem::NSD3D11::CForwardPixelShaderCodeGenerator::~CForwardPixelShaderCodeGenerator()
 {}
 
-ID3DBlob * NSDevilX::NSRenderSystem::NSD3D11::CForwardPixelShaderCodeGenerator::generateCode(const TVector<D3D_SHADER_MACRO> * extensionMacros) const
+ID3DBlob * NSDevilX::NSRenderSystem::NSD3D11::CForwardPixelShaderCodeGenerator::generateCode(const TVector(D3D_SHADER_MACRO) * extensionMacros) const
 {
 	String code_key="Forward_PixelShader_";
 	for(auto i=0;i<EFlag_Count;++i)
 	{
-		code_key+=CStringConverter::toString(_hasFlag(*reinterpret_cast<EFlag*>(&i))?1:0);
+		code_key+=toString(_hasFlag(*reinterpret_cast<EFlag*>(&i))?1:0);
 	}
 	ID3DBlob * ret=CSystemImp::getSingleton().getShaderCodeManager()->getCode(code_key);
 	if(nullptr==ret)
 	{
-		TVector<D3D_SHADER_MACRO> macro_list;
+		TVector(D3D_SHADER_MACRO) macro_list;
 		if(extensionMacros)
 			macro_list=*extensionMacros;
 		class CMacro
