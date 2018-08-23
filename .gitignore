@@ -88,3 +88,6 @@ $RECYCLE.BIN/
 /Code/Common/Include/tinyxml
 /Code/Common/Include/ASIO
 /Code/Common/Include/boost
+/Bin
+/Project/VisualStudio/Intermediate
+/Project/VisualStudio/.vs
