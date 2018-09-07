@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\Utility.h" />
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilityAnimationFrame.h" />
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilityBinaryFile.h" />
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilityDataStream.h" />
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilityDefine.h" />
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilityDirectory.h" />
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilityDirtyFlagContainerMT.h" />
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilityFileStream.h" />
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilityFontFace.h" />
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilityFontImage.h" />
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilityFontManager.h" />
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilityImage.h" />
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilityLuaEngine.h" />
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilityManager.h" />
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilityMemoryAllocatorObjectTemplate.h" />
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilityMemoryStream.h" />
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilityMemoryTracker.h" />
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilityModule.h" />
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilityReadWriteLocker.h" />
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilityResourceContainer.h" />
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilitySTL.h" />
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilitySTLMT.h" />
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilityThirdPart.h" />
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilityThreadData.h" />
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilityThreadManager.h" />
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilityThreadPool.h" />
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilityThreadType.h" />
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilityTimer.h" />
+    <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilityWindow.h" />
+    <ClInclude Include="..\..\..\Code\Layer0\Source\Utility\Precompiler.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\Code\Layer0\Source\Utility\UtilityAnimationFrame.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer0\Source\Utility\UtilityBinaryFile.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer0\Source\Utility\UtilityDataStream.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer0\Source\Utility\UtilityDirectory.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer0\Source\Utility\UtilityFileStream.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer0\Source\Utility\UtilityFontFace.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer0\Source\Utility\UtilityFontImage.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer0\Source\Utility\UtilityFontManager.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer0\Source\Utility\UtilityImage.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer0\Source\Utility\UtilityLuaEngine.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer0\Source\Utility\UtilityManager.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer0\Source\Utility\UtilityMemoryStream.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer0\Source\Utility\UtilityMemoryTracker.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer0\Source\Utility\UtilityModule.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer0\Source\Utility\UtilityReadWriteLocker.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer0\Source\Utility\UtilitySTLMT.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer0\Source\Utility\UtilityThreadPool.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer0\Source\Utility\UtilityTimer.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer0\Source\Utility\UtilityWindow.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer0\Source\Utility\Precompiler.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{F0D5FFC1-43A4-4786-8A8A-7A4935E48C4E}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Common</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <ProjectName>Utility</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="Layer0_Debug.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="Layer0_Release.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="Layer0_Debug.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="Layer0_Release.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>freetype.lib;FreeImage.lib;TinyXML.lib;imm32.lib;libnoise.lib;tbb.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>freetype.lib;FreeImage.lib;TinyXML.lib;imm32.lib;libnoise.lib;tbb.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>freetype.lib;FreeImage.lib;TinyXML.lib;imm32.lib;libnoise.lib;tbb.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>freetype.lib;FreeImage.lib;TinyXML.lib;imm32.lib;libnoise.lib;tbb.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
