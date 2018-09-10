@@ -91,3 +91,5 @@ $RECYCLE.BIN/
 /Bin
 /Project/VisualStudio/Intermediate
 /Project/VisualStudio/.vs
+/Project/VisualStudio/Core/Core.vcxproj.user
+/Project/VisualStudio/Test/Test.2017.vcxproj.user
