@@ -70,6 +70,7 @@ Void NSDevilX::CImage::load(const CDataStream & dataStream)
 	reader->process(static_cast<UInt32>(src.size()),&src[0]);
 	FIMEMORY * mem=FreeImage_OpenMemory(&src[0],static_cast<UInt32>(src.size()));
 	FREE_IMAGE_FORMAT fmat=FreeImage_GetFileTypeFromMemory(mem);
+	assert(fmat==FIF_PNG);
 	FIBITMAP * bmp=FreeImage_LoadFromMemory(fmat,mem);
 	mBPP=FreeImage_GetBPP(bmp);
 	UInt32 sibpp=std::max<UInt32>(mBPP/8,1);

@@ -21,16 +21,18 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\Enum.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IBufferImp.h" />
-    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IBufferOperator_SkeletonAnimationImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IBufferUsageImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\ICameraImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IGeometryImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IGeometryUsageImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IGPUProgramImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IIndexBufferImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\ILightImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IMaterialImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\Include.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IOverlayElementImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IPassImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IRenderableImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\ISubEntityImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IEntityImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IQueryImp.h" />
@@ -41,6 +43,7 @@
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\ISceneImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\ISkyImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\ISystemImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\ITechniqueImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\ITextureImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\ITextureUnitStateImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\ITransformerImp.h" />
@@ -51,9 +54,16 @@
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IWindowImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\SceneManager.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\Shader\DefnitionShaderCodeFunction.h" />
-    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderBufferOperator_SkeletonAnimation.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderable.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderBuffer.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderBufferUsage.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderMaterial.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderPass.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderPipelineState.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderProgram.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderProgramBufferLayout.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderSamplerState.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderShader.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderSubEntity.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderEntity.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderableSurface.h" />
@@ -73,6 +83,7 @@
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderSystem.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderSystemInterface.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderTarget.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderTechnique.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderTexture.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderTextureUnitState.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderTransformer.h" />
@@ -85,13 +96,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IBufferImp.cpp" />
-    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IBufferOperator_SkeletonAnimationImp.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IBufferUsageImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\ICameraImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IGeometryImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IGeometryUsageImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IGPUProgramImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IIndexBufferImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\ILightImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IOverlayElementImp.cpp" />

@@ -201,11 +201,44 @@
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IValueUnitStateImp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderBufferOperator_SkeletonAnimation.h">
+    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderMaterial.h">
       <Filter>Interface Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IBufferOperator_SkeletonAnimationImp.h">
+    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderTechnique.h">
+      <Filter>Interface Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderPass.h">
+      <Filter>Interface Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderPipelineState.h">
+      <Filter>Interface Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderable.h">
+      <Filter>Interface Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\ITechniqueImp.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IGPUProgramImp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IPassImp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IRenderableImp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderProgram.h">
+      <Filter>Interface Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderProgramBufferLayout.h">
+      <Filter>Interface Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderSamplerState.h">
+      <Filter>Interface Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderShader.h">
+      <Filter>Interface Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -293,7 +326,7 @@
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IBufferUsageImp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IBufferOperator_SkeletonAnimationImp.cpp">
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IGPUProgramImp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

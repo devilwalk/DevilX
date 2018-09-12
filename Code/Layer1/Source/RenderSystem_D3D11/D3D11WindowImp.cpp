@@ -10,7 +10,7 @@ NSDevilX::NSRenderSystem::NSD3D11::CWindowImp::CWindowImp(IWindowImp * interface
 {
 	DXGI_SWAP_CHAIN_DESC desc;
 	desc.BufferCount=2;
-	desc.BufferDesc.Format=DXGI_FORMAT_R8G8B8A8_UNORM;
+	desc.BufferDesc.Format=DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 	desc.BufferDesc.Height=getInterfaceImp()->getWindow()->getSize().y;
 	desc.BufferDesc.RefreshRate.Denominator=1;
 	desc.BufferDesc.RefreshRate.Numerator=60;
@@ -66,7 +66,7 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CWindowImp::_resize()
 	getInternal()->setRTView(0,nullptr);
 	mRenderTargetResource->Release();
 	CSystemImp::getSingleton().getImmediateContext()->ClearState();
-	getSwapChain()->ResizeBuffers(2,0,0,DXGI_FORMAT_R8G8B8A8_UNORM,0);
+	getSwapChain()->ResizeBuffers(2,0,0,DXGI_FORMAT_R8G8B8A8_UNORM_SRGB,0);
 	getSwapChain()->GetBuffer(0,__uuidof(ID3D11Texture2D),reinterpret_cast<VoidPtr*>(&mRenderTargetResource));
 	CComPtr<ID3D11RenderTargetView> rt;
 	CSystemImp::getSingleton().getDevice()->CreateRenderTargetView(mRenderTargetResource,nullptr,&rt);

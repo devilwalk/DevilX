@@ -1,5 +1,4 @@
 #pragma once
-#include "IBufferOperator_SkeletonAnimationImp.h"
 namespace NSDevilX
 {
 	namespace NSRenderSystem
@@ -43,7 +42,6 @@ namespace NSDevilX
 			UInt32 mSizeInBytes;
 			IBufferImp::SDirties mDirties;
 
-			IBufferOperator_SkeletonAnimationImp * mSkeletonAnimationOperator;
 		public:
 			IBufferImp(const String & name,EType type=EType_VertexBuffer);
 			EType getType()const
@@ -59,7 +57,6 @@ namespace NSDevilX
 				return mDirties;
 			}
 			// Í¨¹ý IBuffer ¼Ì³Ð
-			virtual IBufferOperator_SkeletonAnimation * queryInterface_IBufferOperator_SkeletonAnimation() override;
 			virtual const String & getName() const override;
 			virtual Void setSize(UInt32 sizeInBytes) override;
 			virtual UInt32 getSize() const override;

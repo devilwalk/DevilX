@@ -99,6 +99,54 @@ namespace NSDevilX
 				EMaterialSpecularModel_CookTorrance,
 				EMaterialSpecularModel_UE4
 			};
+			enum EShaderType
+			{
+				EShaderType_VS,
+				EShaderType_PS,
+				EShaderType_GS,
+				EShaderType_CS
+			};
+			enum EShaderCodeType
+			{
+				EShaderCodeType_HLSL_6_0,
+				EShaderCodeType_HLSL_5_0,
+				EShaderCodeType_HLSL_4_0,
+				EShaderCodeType_GLSL_4_5,
+				EShaderCodeType_GLSLES_3_2
+			};
+			enum EProgramResourceType
+			{
+				EProgramResourceType_Unknown,
+				EProgramResourceType_ConstantBuffer,
+				EProgramResourceType_TextureBuffer,
+				EProgramResourceType_Texture,
+				EProgramResourceType_Sampler
+			};
+			enum EAutoGPUPropgramParameterDataSource
+			{
+				EAutoGPUPropgramParameterDataSource_WorldMatrix_Coloume_0,
+				EAutoGPUPropgramParameterDataSource_WorldMatrix_Coloume_1,
+				EAutoGPUPropgramParameterDataSource_WorldMatrix_Coloume_2,
+				EAutoGPUPropgramParameterDataSource_ViewMatrix_Coloume_0,
+				EAutoGPUPropgramParameterDataSource_ViewMatrix_Coloume_1,
+				EAutoGPUPropgramParameterDataSource_ViewMatrix_Coloume_2,
+				EAutoGPUPropgramParameterDataSource_ProjectionMatrix_Coloume_0,
+				EAutoGPUPropgramParameterDataSource_ProjectionMatrix_Coloume_1,
+				EAutoGPUPropgramParameterDataSource_ProjectionMatrix_Coloume_2,
+				EAutoGPUPropgramParameterDataSource_ProjectionMatrix_Coloume_4,
+				EAutoGPUPropgramParameterDataSource_WorldViewMatrix_Coloume_0,
+				EAutoGPUPropgramParameterDataSource_WorldViewMatrix_Coloume_1,
+				EAutoGPUPropgramParameterDataSource_WorldViewMatrix_Coloume_2,
+				EAutoGPUPropgramParameterDataSource_WorldViewMatrix_Coloume_3,
+				EAutoGPUPropgramParameterDataSource_ViewProjectionMatrix_Coloume_0,
+				EAutoGPUPropgramParameterDataSource_ViewProjectionMatrix_Coloume_1,
+				EAutoGPUPropgramParameterDataSource_ViewProjectionMatrix_Coloume_2,
+				EAutoGPUPropgramParameterDataSource_ViewProjectionMatrix_Coloume_3,
+				EAutoGPUPropgramParameterDataSource_WorldViewProjectionMatrix_Coloume_0,
+				EAutoGPUPropgramParameterDataSource_WorldViewProjectionMatrix_Coloume_1,
+				EAutoGPUPropgramParameterDataSource_WorldViewProjectionMatrix_Coloume_2,
+				EAutoGPUPropgramParameterDataSource_WorldViewProjectionMatrix_Coloume_3
+			};
 		};
 	}
 }

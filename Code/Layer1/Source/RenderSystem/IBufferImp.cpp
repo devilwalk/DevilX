@@ -7,19 +7,10 @@ NSDevilX::NSRenderSystem::IBufferImp::IBufferImp(const String & name,EType type)
 	,mType(type)
 	,mDatas(nullptr)
 	,mSizeInBytes(0)
-	,mSkeletonAnimationOperator(nullptr)
 {}
 
 NSDevilX::NSRenderSystem::IBufferImp::~IBufferImp()
 {
-	DEVILX_DELETE(mSkeletonAnimationOperator);
-}
-
-IBufferOperator_SkeletonAnimation * NSDevilX::NSRenderSystem::IBufferImp::queryInterface_IBufferOperator_SkeletonAnimation()
-{
-	if(!mSkeletonAnimationOperator)
-		mSkeletonAnimationOperator=DEVILX_NEW IBufferOperator_SkeletonAnimationImp(this);
-	return mSkeletonAnimationOperator;
 }
 
 const String & NSDevilX::NSRenderSystem::IBufferImp::getName() const
