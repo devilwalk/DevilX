@@ -3,6 +3,7 @@
 #include "IRenderPipelineState.h"
 #include "IRenderTexture.h"
 #include "IRenderProgram.h"
+#include "IRenderSamplerState.h"
 namespace NSDevilX
 {
 	namespace NSRenderSystem
@@ -19,6 +20,7 @@ namespace NSDevilX
 			virtual IPipelineState * getPipelineState()const=0;
 			virtual Void setProgramResource(IProgram * program,IEnum::EProgramResourceType resourceType,SizeT resourceIndex,IBuffer * buffer)=0;
 			virtual Void setProgramResource(IProgram * program,SizeT resourceIndex,ITexture * texture)=0;
+			virtual Void setProgramResource(IProgram * program,SizeT resourceIndex,ISamplerState * state)=0;
 		};
 	}
 }

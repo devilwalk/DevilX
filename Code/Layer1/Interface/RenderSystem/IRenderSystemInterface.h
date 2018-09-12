@@ -20,6 +20,7 @@
 #include "IRenderProgram.h"
 #include "IRenderProgramBufferLayout.h"
 #include "IRenderResourceManager.h"
+#include "IRenderSamplerState.h"
 #include "IRenderScene.h"
 #include "IRenderSceneElement.h"
 #include "IRenderShader.h"

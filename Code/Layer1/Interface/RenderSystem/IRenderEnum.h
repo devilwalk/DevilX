@@ -147,6 +147,64 @@ namespace NSDevilX
 				EAutoGPUPropgramParameterDataSource_WorldViewProjectionMatrix_Coloume_2,
 				EAutoGPUPropgramParameterDataSource_WorldViewProjectionMatrix_Coloume_3
 			};
+			enum ESamplerFilter
+			{
+				ESamplerFilter_MIN_MAG_MIP_POINT,
+				ESamplerFilter_MIN_MAG_POINT_MIP_LINEAR,
+				ESamplerFilter_MIN_POINT_MAG_LINEAR_MIP_POINT,
+				ESamplerFilter_MIN_POINT_MAG_MIP_LINEAR,
+				ESamplerFilter_MIN_LINEAR_MAG_MIP_POINT,
+				ESamplerFilter_MIN_LINEAR_MAG_POINT_MIP_LINEAR,
+				ESamplerFilter_MIN_MAG_LINEAR_MIP_POINT,
+				ESamplerFilter_MIN_MAG_MIP_LINEAR,
+				ESamplerFilter_ANISOTROPIC,
+				ESamplerFilter_COMPARISON_MIN_MAG_MIP_POINT,
+				ESamplerFilter_COMPARISON_MIN_MAG_POINT_MIP_LINEAR,
+				ESamplerFilter_COMPARISON_MIN_POINT_MAG_LINEAR_MIP_POINT,
+				ESamplerFilter_COMPARISON_MIN_POINT_MAG_MIP_LINEAR,
+				ESamplerFilter_COMPARISON_MIN_LINEAR_MAG_MIP_POINT,
+				ESamplerFilter_COMPARISON_MIN_LINEAR_MAG_POINT_MIP_LINEAR,
+				ESamplerFilter_COMPARISON_MIN_MAG_LINEAR_MIP_POINT,
+				ESamplerFilter_COMPARISON_MIN_MAG_MIP_LINEAR,
+				ESamplerFilter_COMPARISON_ANISOTROPIC,
+				ESamplerFilter_MINIMUM_MIN_MAG_MIP_POINT,
+				ESamplerFilter_MINIMUM_MIN_MAG_POINT_MIP_LINEAR,
+				ESamplerFilter_MINIMUM_MIN_POINT_MAG_LINEAR_MIP_POINT,
+				ESamplerFilter_MINIMUM_MIN_POINT_MAG_MIP_LINEAR,
+				ESamplerFilter_MINIMUM_MIN_LINEAR_MAG_MIP_POINT,
+				ESamplerFilter_MINIMUM_MIN_LINEAR_MAG_POINT_MIP_LINEAR,
+				ESamplerFilter_MINIMUM_MIN_MAG_LINEAR_MIP_POINT,
+				ESamplerFilter_MINIMUM_MIN_MAG_MIP_LINEAR,
+				ESamplerFilter_MINIMUM_ANISOTROPIC,
+				ESamplerFilter_MAXIMUM_MIN_MAG_MIP_POINT,
+				ESamplerFilter_MAXIMUM_MIN_MAG_POINT_MIP_LINEAR,
+				ESamplerFilter_MAXIMUM_MIN_POINT_MAG_LINEAR_MIP_POINT,
+				ESamplerFilter_MAXIMUM_MIN_POINT_MAG_MIP_LINEAR,
+				ESamplerFilter_MAXIMUM_MIN_LINEAR_MAG_MIP_POINT,
+				ESamplerFilter_MAXIMUM_MIN_LINEAR_MAG_POINT_MIP_LINEAR,
+				ESamplerFilter_MAXIMUM_MIN_MAG_LINEAR_MIP_POINT,
+				ESamplerFilter_MAXIMUM_MIN_MAG_MIP_LINEAR,
+				ESamplerFilter_MAXIMUM_ANISOTROPIC
+			};
+			enum ETextureAddressMode
+			{
+				ETextureAddressMode_WRAP,
+				ETextureAddressMode_MIRROR,
+				ETextureAddressMode_CLAMP,
+				ETextureAddressMode_BORDER,
+				ETextureAddressMode_MIRROR_ONCE
+			};
+			enum EComparisonFunction
+			{
+				EComparisonFunction_NEVER,
+				EComparisonFunction_LESS,
+				EComparisonFunction_EQUAL,
+				EComparisonFunction_LESS_EQUAL,
+				EComparisonFunction_GREATER,
+				EComparisonFunction_NOT_EQUAL,
+				EComparisonFunction_GREATER_EQUAL,
+				EComparisonFunction_ALWAYS
+			};
 		};
 	}
 }
