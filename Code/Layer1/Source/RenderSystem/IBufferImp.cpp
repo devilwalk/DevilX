@@ -54,6 +54,32 @@ Void NSDevilX::NSRenderSystem::IBufferImp::updateData(UInt32 offsetInBytes,UInt3
 	addDirtyFlag(EDirtyFlag_Datas);
 }
 
+Void NSDevilX::NSRenderSystem::IBufferImp::bind(UInt32 offsetInBytes,IEnum::EAutoPropgramParameterDataSource source)
+{
+	auto iter=std::find_if(mAutoProgramParameterBinds.begin(),mAutoProgramParameterBinds.end(),[offsetInBytes](const SAutoProgramParameterBind * test)
+	{
+		return test->mOffset==offsetInBytes;
+	});
+	if(mAutoProgramParameterBinds.end()==iter)
+	{
+		mAutoProgramParameterBinds.push_back(DEVILX_NEW SAutoProgramParameterBind(offsetInBytes,source));
+	}
+	else
+	{
+		auto bind=*iter;
+		bind->mSource=source;
+	}
+}
+
+Void NSDevilX::NSRenderSystem::IBufferImp::unbind(UInt32 offsetInBytes)
+{
+	auto iter=std::find_if(mAutoProgramParameterBinds.begin(),mAutoProgramParameterBinds.end(),[offsetInBytes](const SAutoProgramParameterBind * test)
+	{
+		return test->mOffset==offsetInBytes;
+	});
+	mAutoProgramParameterBinds.destroy(*iter);
+}
+
 Void NSDevilX::NSRenderSystem::IBufferImp::_preProcessDirtyFlagAdd(UInt32 flagIndex)
 {
 	notify(EMessage_BeginDirtyFlagAdd);

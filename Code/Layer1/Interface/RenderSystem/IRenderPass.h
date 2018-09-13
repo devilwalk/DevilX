@@ -15,12 +15,11 @@ namespace NSDevilX
 			virtual ~IPass(){ }
 		public:
 			virtual ITechnique * getTechnique()const=0;
-			virtual SizeT getIndex()const=0;
 			virtual Void setPipelineState(IPipelineState * state)=0;
 			virtual IPipelineState * getPipelineState()const=0;
-			virtual Void setProgramResource(IProgram * program,IEnum::EProgramResourceType resourceType,SizeT resourceIndex,IBuffer * buffer)=0;
-			virtual Void setProgramResource(IProgram * program,SizeT resourceIndex,ITexture * texture)=0;
-			virtual Void setProgramResource(IProgram * program,SizeT resourceIndex,ISamplerState * state)=0;
+			virtual Void setProgramResource(IProgram * program,IEnum::EProgramResourceType resourceType,UInt32 resourceIndex,IBuffer * buffer)=0;
+			virtual Void setProgramResource(IProgram * program,UInt32 resourceIndex,ITexture * texture)=0;
+			virtual Void setProgramResource(IProgram * program,UInt32 resourceIndex,ISamplerState * state)=0;
 		};
 	}
 }

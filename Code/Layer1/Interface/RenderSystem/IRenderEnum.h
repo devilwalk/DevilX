@@ -122,30 +122,30 @@ namespace NSDevilX
 				EProgramResourceType_Texture,
 				EProgramResourceType_Sampler
 			};
-			enum EAutoGPUPropgramParameterDataSource
+			enum EAutoPropgramParameterDataSource
 			{
-				EAutoGPUPropgramParameterDataSource_WorldMatrix_Coloume_0,
-				EAutoGPUPropgramParameterDataSource_WorldMatrix_Coloume_1,
-				EAutoGPUPropgramParameterDataSource_WorldMatrix_Coloume_2,
-				EAutoGPUPropgramParameterDataSource_ViewMatrix_Coloume_0,
-				EAutoGPUPropgramParameterDataSource_ViewMatrix_Coloume_1,
-				EAutoGPUPropgramParameterDataSource_ViewMatrix_Coloume_2,
-				EAutoGPUPropgramParameterDataSource_ProjectionMatrix_Coloume_0,
-				EAutoGPUPropgramParameterDataSource_ProjectionMatrix_Coloume_1,
-				EAutoGPUPropgramParameterDataSource_ProjectionMatrix_Coloume_2,
-				EAutoGPUPropgramParameterDataSource_ProjectionMatrix_Coloume_4,
-				EAutoGPUPropgramParameterDataSource_WorldViewMatrix_Coloume_0,
-				EAutoGPUPropgramParameterDataSource_WorldViewMatrix_Coloume_1,
-				EAutoGPUPropgramParameterDataSource_WorldViewMatrix_Coloume_2,
-				EAutoGPUPropgramParameterDataSource_WorldViewMatrix_Coloume_3,
-				EAutoGPUPropgramParameterDataSource_ViewProjectionMatrix_Coloume_0,
-				EAutoGPUPropgramParameterDataSource_ViewProjectionMatrix_Coloume_1,
-				EAutoGPUPropgramParameterDataSource_ViewProjectionMatrix_Coloume_2,
-				EAutoGPUPropgramParameterDataSource_ViewProjectionMatrix_Coloume_3,
-				EAutoGPUPropgramParameterDataSource_WorldViewProjectionMatrix_Coloume_0,
-				EAutoGPUPropgramParameterDataSource_WorldViewProjectionMatrix_Coloume_1,
-				EAutoGPUPropgramParameterDataSource_WorldViewProjectionMatrix_Coloume_2,
-				EAutoGPUPropgramParameterDataSource_WorldViewProjectionMatrix_Coloume_3
+				EAutoPropgramParameterDataSource_WorldMatrix_Coloume_0,
+				EAutoPropgramParameterDataSource_WorldMatrix_Coloume_1,
+				EAutoPropgramParameterDataSource_WorldMatrix_Coloume_2,
+				EAutoPropgramParameterDataSource_ViewMatrix_Coloume_0,
+				EAutoPropgramParameterDataSource_ViewMatrix_Coloume_1,
+				EAutoPropgramParameterDataSource_ViewMatrix_Coloume_2,
+				EAutoPropgramParameterDataSource_ProjectionMatrix_Coloume_0,
+				EAutoPropgramParameterDataSource_ProjectionMatrix_Coloume_1,
+				EAutoPropgramParameterDataSource_ProjectionMatrix_Coloume_2,
+				EAutoPropgramParameterDataSource_ProjectionMatrix_Coloume_4,
+				EAutoPropgramParameterDataSource_WorldViewMatrix_Coloume_0,
+				EAutoPropgramParameterDataSource_WorldViewMatrix_Coloume_1,
+				EAutoPropgramParameterDataSource_WorldViewMatrix_Coloume_2,
+				EAutoPropgramParameterDataSource_WorldViewMatrix_Coloume_3,
+				EAutoPropgramParameterDataSource_ViewProjectionMatrix_Coloume_0,
+				EAutoPropgramParameterDataSource_ViewProjectionMatrix_Coloume_1,
+				EAutoPropgramParameterDataSource_ViewProjectionMatrix_Coloume_2,
+				EAutoPropgramParameterDataSource_ViewProjectionMatrix_Coloume_3,
+				EAutoPropgramParameterDataSource_WorldViewProjectionMatrix_Coloume_0,
+				EAutoPropgramParameterDataSource_WorldViewProjectionMatrix_Coloume_1,
+				EAutoPropgramParameterDataSource_WorldViewProjectionMatrix_Coloume_2,
+				EAutoPropgramParameterDataSource_WorldViewProjectionMatrix_Coloume_3
 			};
 			enum ESamplerFilter
 			{

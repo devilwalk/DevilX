@@ -46,6 +46,7 @@
 #include "D3D11Resource.h"
 #include "D3D11Shader.h"
 #include "D3D11ShaderCodeManager.h"
+#include "D3D11ShaderImp.h"
 #include "D3D11SkyImp.h"
 #include "D3D11SubEntityImp.h"
 #include "D3D11SystemImp.h"

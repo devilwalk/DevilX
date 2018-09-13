@@ -24,7 +24,7 @@ namespace NSDevilX
 			virtual IBuffer * createBuffer(const String & name)=0;
 			virtual IBuffer * getBuffer(const String & name)const=0;
 			virtual Void destroyBuffer(IBuffer * buffer)=0;
-			virtual IShader * createShader(const String & name,IEnum::EShaderType type,IEnum::EShaderCodeType codeType,const String & code)=0;
+			virtual IShader * createShader(const String & name)=0;
 			virtual IShader * getShader(const String & name)const=0;
 			virtual Void destroyShader(IShader * shader)=0;
 			virtual IProgram * createProgram(const String & name)=0;

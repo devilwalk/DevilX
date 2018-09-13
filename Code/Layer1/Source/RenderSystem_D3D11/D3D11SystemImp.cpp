@@ -158,6 +158,9 @@ NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::CSystemImp()
 	static_cast<IResourceManagerImp*>(ISystemImp::getSingleton().queryInterface_IResourceManager())->addListener(static_cast<TMessageReceiver<IResourceManagerImp>*>(this),IResourceManagerImp::EMessage_IndexBufferDestroy);
 	static_cast<IResourceManagerImp*>(ISystemImp::getSingleton().queryInterface_IResourceManager())->addListener(static_cast<TMessageReceiver<IResourceManagerImp>*>(this),IResourceManagerImp::EMessage_EndBufferCreate);
 	static_cast<IResourceManagerImp*>(ISystemImp::getSingleton().queryInterface_IResourceManager())->addListener(static_cast<TMessageReceiver<IResourceManagerImp>*>(this),IResourceManagerImp::EMessage_BeginBufferDestroy);
+	static_cast<IResourceManagerImp*>(ISystemImp::getSingleton().queryInterface_IResourceManager())->addListener(static_cast<TMessageReceiver<IResourceManagerImp>*>(this),IResourceManagerImp::EMessage_CreateShader);
+	static_cast<IResourceManagerImp*>(ISystemImp::getSingleton().queryInterface_IResourceManager())->addListener(static_cast<TMessageReceiver<IResourceManagerImp>*>(this),IResourceManagerImp::EMessage_CreateProgram);
+	static_cast<IResourceManagerImp*>(ISystemImp::getSingleton().queryInterface_IResourceManager())->addListener(static_cast<TMessageReceiver<IResourceManagerImp>*>(this),IResourceManagerImp::EMessage_CreatePipelineState);
 }
 
 NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::~CSystemImp()
@@ -515,6 +518,8 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::onMessage(IResourceManagerIm
 		break;
 	case IResourceManagerImp::EMessage_BeginBufferCreate:
 		mBuffers.destroy(static_cast<IBufferImp*>(data));
+		break;
+	case IResourceManagerImp::EMessage_CreateShader:
 		break;
 	}
 }

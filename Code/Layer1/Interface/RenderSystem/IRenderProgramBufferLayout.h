@@ -8,8 +8,8 @@ namespace NSDevilX
 		protected:
 			virtual ~IProgramBufferLayout(){ }
 		public:
-			virtual SizeT getOffset(const String & name)const=0;
-			virtual SizeT getSize(const String & name)const=0;
+			virtual UInt32 getOffset(const String & name)const=0;
+			virtual UInt32 getSize(const String & name)const=0;
 		};
 	}
 }

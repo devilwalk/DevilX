@@ -6,6 +6,40 @@ namespace NSDevilX
 {
 	namespace NSRenderSystem
 	{
+		class IShaderImp
+			:public IShader
+		{
+		protected:
+			String mName;
+		public:
+			virtual ~IShaderImp(){ }
+			Void setName(const String & name)
+			{
+				mName=name;
+			}
+			virtual const String & getName() const override final
+			{
+				return mName;
+			}
+		};
+		class IProgramImp
+			:public IProgram
+		{
+		protected:
+			String mName;
+		public:
+			virtual ~IProgramImp()
+			{
+			}
+			Void setName(const String & name)
+			{
+				mName=name;
+			}
+			virtual const String & getName() const override final
+			{
+				return mName;
+			}
+		};
 		class IResourceManagerImp
 			:public IResourceManager
 			,public TBaseObject<IResourceManagerImp>
@@ -29,13 +63,18 @@ namespace NSDevilX
 				EMessage_VertexBufferCreate,
 				EMessage_VertexBufferDestroy,
 				EMessage_IndexBufferCreate,
-				EMessage_IndexBufferDestroy
+				EMessage_IndexBufferDestroy,
+				EMessage_CreateShader,
+				EMessage_CreateProgram,
+				EMessage_CreatePipelineState
 			};
 		protected:
 			TNamedRefResourcePtrMap(IGeometryImp) mGeometrys;
 			TNamedRefResourcePtrMap(ITextureImp) mTextures;
 			TNamedRefResourcePtrMap(IBufferImp) mBuffers;
 			TRefResourcePtrSet(IBufferImp) mInternalBuffers;
+			TNamedResourcePtrMap(IShaderImp) mShaders;
+			TNamedResourcePtrMap(IProgramImp) mPrograms;
 			CNameGenerator mInternalBufferNameGenerator;
 		public:
 			IResourceManagerImp();
@@ -72,6 +111,20 @@ namespace NSDevilX
 			virtual IBuffer * createBuffer(const String & name) override;
 			virtual IBuffer * getBuffer(const String & name) const override;
 			virtual Void destroyBuffer(IBuffer * buffer) override;
+
+			// Í¨¹ý IResourceManager ¼Ì³Ð
+			virtual IShader * createShader(const String & name) override;
+			virtual IShader * getShader(const String & name) const override;
+			virtual Void destroyShader(IShader * shader) override;
+			virtual IProgram * createProgram(const String & name) override;
+			virtual IProgram * getProgram(const String & name) const override;
+			virtual Void destroyProgram(IProgram * program) override;
+			virtual IPipelineState * createPipelineState(const String & name) override;
+			virtual IPipelineState * getPipelineState(const String & name) const override;
+			virtual Void destroyPipelineState(IPipelineState * state) override;
+			virtual IMaterial * createMaterial(const String & name) override;
+			virtual IMaterial * getMaterial() const override;
+			virtual Void destroyMaterial(IMaterial * material) override;
 		};
 	}
 }

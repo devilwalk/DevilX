@@ -35,13 +35,23 @@ namespace NSDevilX
 					addRange(CRangeI(offset,count+offset-1));
 				}
 			};
+			struct SAutoProgramParameterBind
+				:public TBaseObject<SAutoProgramParameterBind>
+			{
+				UInt32 mOffset;
+				IEnum::EAutoPropgramParameterDataSource mSource;
+				SAutoProgramParameterBind(UInt32 offsetInBytes,IEnum::EAutoPropgramParameterDataSource source)
+					:mOffset(offsetInBytes)
+					,mSource(source)
+				{ }
+			};
 		protected:
 			const String mName;
 			const EType mType;
 			ConstVoidPtr mDatas;
 			UInt32 mSizeInBytes;
 			IBufferImp::SDirties mDirties;
-
+			TResourcePtrVector(SAutoProgramParameterBind) mAutoProgramParameterBinds;
 		public:
 			IBufferImp(const String & name,EType type=EType_VertexBuffer);
 			EType getType()const
@@ -63,6 +73,8 @@ namespace NSDevilX
 			virtual Void setDatas(ConstVoidPtr datas) override;
 			virtual ConstVoidPtr getDatas() const override;
 			virtual Void updateData(UInt32 offsetInBytes=0,UInt32 sizeInBytes=0) override;
+			virtual Void bind(UInt32 offsetInBytes,IEnum::EAutoPropgramParameterDataSource source) override;
+			virtual Void unbind(UInt32 offsetInBytes) override;
 		protected:
 			~IBufferImp();
 			virtual Void _preProcessDirtyFlagAdd(UInt32 flagIndex) override;

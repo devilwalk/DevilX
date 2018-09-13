@@ -91,3 +91,77 @@ Void NSDevilX::NSRenderSystem::IResourceManagerImp::destroyBuffer(IBuffer * buff
 	mBuffers.destroy(buffer->getName());
 	notify(EMessage_EndBufferDestroy);
 }
+
+IShader * NSDevilX::NSRenderSystem::IResourceManagerImp::createShader(const String & name)
+{
+	IShaderImp * ret=nullptr;
+	notify(EMessage_CreateShader,&ret);
+	if(ret)
+	{
+		ret->setName(name);
+		mShaders.add(name,ret);
+	}
+	return ret;
+}
+
+IShader * NSDevilX::NSRenderSystem::IResourceManagerImp::getShader(const String & name) const
+{
+	return mShaders.get(name);
+}
+
+Void NSDevilX::NSRenderSystem::IResourceManagerImp::destroyShader(IShader * shader)
+{
+	mShaders.destroy(shader->getName());
+}
+
+IProgram * NSDevilX::NSRenderSystem::IResourceManagerImp::createProgram(const String & name)
+{
+	IProgramImp * ret=nullptr;
+	notify(EMessage_CreateProgram,&ret);
+	if(ret)
+	{
+		ret->setName(name);
+		mPrograms.add(name,ret);
+	}
+	return ret;
+}
+
+IProgram * NSDevilX::NSRenderSystem::IResourceManagerImp::getProgram(const String & name) const
+{
+	return mPrograms.get(name);
+}
+
+Void NSDevilX::NSRenderSystem::IResourceManagerImp::destroyProgram(IProgram * program)
+{
+	mPrograms.destroy(program->getName());
+}
+
+IPipelineState * NSDevilX::NSRenderSystem::IResourceManagerImp::createPipelineState(const String & name)
+{
+	return nullptr;
+}
+
+IPipelineState * NSDevilX::NSRenderSystem::IResourceManagerImp::getPipelineState(const String & name) const
+{
+	return nullptr;
+}
+
+Void NSDevilX::NSRenderSystem::IResourceManagerImp::destroyPipelineState(IPipelineState * state)
+{
+	return Void();
+}
+
+IMaterial * NSDevilX::NSRenderSystem::IResourceManagerImp::createMaterial(const String & name)
+{
+	return nullptr;
+}
+
+IMaterial * NSDevilX::NSRenderSystem::IResourceManagerImp::getMaterial() const
+{
+	return nullptr;
+}
+
+Void NSDevilX::NSRenderSystem::IResourceManagerImp::destroyMaterial(IMaterial * material)
+{
+	return Void();
+}
