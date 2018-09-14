@@ -102,14 +102,15 @@ namespace NSDevilX
 			enum EShaderType
 			{
 				EShaderType_VS,
-				EShaderType_PS,
 				EShaderType_GS,
+				EShaderType_PS,
 				EShaderType_CS
 			};
 			enum EShaderCodeType
 			{
-				EShaderCodeType_HLSL_6_0,
+				EShaderCodeType_HLSL_5_1,
 				EShaderCodeType_HLSL_5_0,
+				EShaderCodeType_HLSL_4_1,
 				EShaderCodeType_HLSL_4_0,
 				EShaderCodeType_GLSL_4_5,
 				EShaderCodeType_GLSLES_3_2

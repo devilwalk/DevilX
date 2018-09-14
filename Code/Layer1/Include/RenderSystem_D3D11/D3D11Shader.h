@@ -45,24 +45,6 @@ namespace NSDevilX
 					return mInputSlots;
 				}
 			};
-			class CHullShader
-				:public CShader
-				,public TBaseObject<CHullShader>
-				,public TCOMInternalObject<ID3D11HullShader>
-			{
-			public:
-				CHullShader(ID3DBlob * code);
-				~CHullShader();
-			};
-			class CDomainShader
-				:public CShader
-				,public TBaseObject<CDomainShader>
-				,public TCOMInternalObject<ID3D11DomainShader>
-			{
-			public:
-				CDomainShader(ID3DBlob * code);
-				~CDomainShader();
-			};
 			class CPixelShader
 				:public CShader
 				,public TBaseObject<CPixelShader>

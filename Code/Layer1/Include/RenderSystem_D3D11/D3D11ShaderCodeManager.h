@@ -15,7 +15,7 @@ namespace NSDevilX
 			public:
 				CShaderCodeManager();
 				~CShaderCodeManager();
-				ID3DBlob * registerShader(const String & key,const String & code,CEnum::EShaderType type,CEnum::EShaderModelType modeType,const D3D_SHADER_MACRO * macros=nullptr);
+				ID3DBlob * registerShader(const String & key,const String & code,IEnum::EShaderType type,IEnum::EShaderCodeType codeType,const D3D_SHADER_MACRO * macros=nullptr);
 				ID3DBlob * getCode(const String & key)const
 				{
 					return mCodes.has(key)?mCodes.get(key):nullptr;

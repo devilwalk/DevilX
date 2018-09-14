@@ -12,7 +12,7 @@ NSDevilX::NSRenderSystem::NSD3D11::CShaderCodeManager::~CShaderCodeManager()
 		code_pair.second->Release();
 }
 
-ID3DBlob * NSDevilX::NSRenderSystem::NSD3D11::CShaderCodeManager::registerShader(const String & key,const String & code,CEnum::EShaderType type,CEnum::EShaderModelType modeType,const D3D_SHADER_MACRO * macros)
+ID3DBlob * NSDevilX::NSRenderSystem::NSD3D11::CShaderCodeManager::registerShader(const String & key,const String & code,IEnum::EShaderType type,IEnum::EShaderCodeType codeType,const D3D_SHADER_MACRO * macros)
 {
 	ID3DBlob * ret=nullptr;
 	UINT flag=0;
@@ -21,24 +21,22 @@ ID3DBlob * NSDevilX::NSRenderSystem::NSD3D11::CShaderCodeManager::registerShader
 #else
 	flag=D3DCOMPILE_SKIP_VALIDATION|D3DCOMPILE_OPTIMIZATION_LEVEL3;
 #endif
-	String entry;
 	String target;
 	switch(type)
 	{
-	case CEnum::EShaderType_VertexShader:entry="vsMain";target="vs_";break;
-	case CEnum::EShaderType_HullShader:entry="hsMain";target="hs_";break;
-	case CEnum::EShaderType_DomainShader:entry="dsMain";target="ds_";break;
-	case CEnum::EShaderType_PixelShader:entry="psMain";target="ps_";break;
-	case CEnum::EShaderType_ComputeShader:entry="csMain";target="cs_";break;
+	case IEnum::EShaderType_VS:target="vs_";break;
+	case IEnum::EShaderType_PS:target="ps_";break;
+	case IEnum::EShaderType_CS:target="cs_";break;
+	case IEnum::EShaderType_GS:target="gs_";break;
 	}
 	String real_code="#define DEVILX_HLSL_VERSION ";
-	switch(modeType)
+	switch(codeType)
 	{
-	case CEnum::EShaderModelType_4_1:
+	case IEnum::EShaderCodeType_HLSL_4_0:
 		target+="4_1";
 		real_code+="410";
 		break;
-	case CEnum::EShaderModelType_5:
+	case IEnum::EShaderCodeType_HLSL_5_0:
 		target+="5_0";
 		real_code+="500";
 		break;
@@ -54,7 +52,7 @@ ID3DBlob * NSDevilX::NSRenderSystem::NSD3D11::CShaderCodeManager::registerShader
 	}
 	real_code+=code;
 	CComPtr<ID3DBlob> error;
-	D3DCompile(&real_code[0],real_code.size(),nullptr,nullptr,nullptr,entry.c_str(),target.c_str(),flag,0,&ret,&error);
+	D3DCompile(&real_code[0],real_code.size(),nullptr,nullptr,nullptr,"main",target.c_str(),flag,0,&ret,&error);
 	if(error.p)
 	{
 		OutputDebugStringA(static_cast<LPCSTR>(error->GetBufferPointer()));

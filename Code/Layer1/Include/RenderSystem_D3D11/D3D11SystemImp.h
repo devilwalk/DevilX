@@ -42,7 +42,6 @@ namespace NSDevilX
 					EMessage_EndFrame
 				};
 			protected:
-				CEnum::EShaderModelType mShaderModelType;
 				ID3D11Device1 * mDevice;
 				ID3D11DeviceContext1 * mImmediateContext;
 				ID3D11Debug * mDebug;
@@ -77,10 +76,6 @@ namespace NSDevilX
 			public:
 				CSystemImp();
 				~CSystemImp();
-				CEnum::EShaderModelType getShaderModelType()const
-				{
-					return mShaderModelType;
-				}
 				ID3D11Device1 * getDevice()const
 				{
 					return mDevice;

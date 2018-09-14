@@ -219,9 +219,6 @@
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\ITechniqueImp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IGPUProgramImp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IPassImp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -239,6 +236,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderShader.h">
       <Filter>Interface Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IShaderImp.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -326,7 +326,13 @@
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IBufferUsageImp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IGPUProgramImp.cpp">
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IMaterialImp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\ITechniqueImp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IPassImp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -168,6 +168,9 @@
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11BufferImp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11ShaderImp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11Camera.cpp">
@@ -306,6 +309,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11BufferImp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11ShaderImp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

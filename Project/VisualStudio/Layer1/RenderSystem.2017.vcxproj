@@ -25,7 +25,6 @@
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\ICameraImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IGeometryImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IGeometryUsageImp.h" />
-    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IGPUProgramImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IIndexBufferImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\ILightImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IMaterialImp.h" />
@@ -33,6 +32,7 @@
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IOverlayElementImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IPassImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IRenderableImp.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IShaderImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\ISubEntityImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IEntityImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem\IQueryImp.h" />
@@ -100,10 +100,11 @@
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\ICameraImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IGeometryImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IGeometryUsageImp.cpp" />
-    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IGPUProgramImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IIndexBufferImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\ILightImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IMaterialImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IOverlayElementImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IPassImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\ISubEntityImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IEntityImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\IQueryImp.cpp" />
@@ -114,6 +115,7 @@
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\ISceneImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\ISkyImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\ISystemImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\ITechniqueImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\ITextureImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\ITextureUnitStateImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem\ITransformerImp.cpp" />

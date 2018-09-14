@@ -58,7 +58,6 @@ NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::CSystemImp()
 	,mRenderTaskThreadPool(nullptr)
 	,mShaderCodeManager(nullptr)
 	,mConstantBufferDescriptionManager(nullptr)
-	,mShaderModelType(CEnum::EShaderModelType_4_1)
 	,mOverlayMaterialManager(nullptr)
 {
 	DEVILX_NEW ISystemImp();
@@ -127,12 +126,6 @@ NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::CSystemImp()
 	CComPtr<ID3D11Device> dev;
 	CComPtr<ID3D11DeviceContext> context;
 	D3D11CreateDevice(nullptr,D3D_DRIVER_TYPE_HARDWARE,nullptr,flag,feature_levels,sizeof(feature_levels)/sizeof(feature_levels[0]),D3D11_SDK_VERSION,&dev,&mSupport,&context);
-	switch(mSupport)
-	{
-	case D3D_FEATURE_LEVEL_10_1:mShaderModelType=CEnum::EShaderModelType_4_1;break;
-	case D3D_FEATURE_LEVEL_11_0:
-	case D3D_FEATURE_LEVEL_11_1:mShaderModelType=CEnum::EShaderModelType_5;break;
-	}
 	dev->QueryInterface(__uuidof(ID3D11Device1),reinterpret_cast<VoidPtr*>(&mDevice));
 	context->QueryInterface(__uuidof(ID3D11DeviceContext1),reinterpret_cast<VoidPtr*>(&mImmediateContext));
 	mDevice->QueryInterface(__uuidof(ID3D11Debug),reinterpret_cast<VoidPtr*>(&mDebug));
@@ -520,6 +513,9 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::onMessage(IResourceManagerIm
 		mBuffers.destroy(static_cast<IBufferImp*>(data));
 		break;
 	case IResourceManagerImp::EMessage_CreateShader:
+		*static_cast<IShaderImp**>(data)=DEVILX_NEW CShaderImp();
+		break;
+	case IResourceManagerImp::EMessage_CreateProgram:
 		break;
 	}
 }
