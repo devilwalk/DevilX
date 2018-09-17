@@ -9,6 +9,7 @@ namespace NSDevilX
 		protected:
 			virtual ~ISamplerState(){}
 		public:
+			virtual const String & getName()const=0;
 			virtual Void setFilter(IEnum::ESamplerFilter filter)=0;
 			virtual IEnum::ESamplerFilter getFilter()const=0;
 			virtual Void setTextureAddressModeU(IEnum::ETextureAddressMode mode)=0;
@@ -24,7 +25,7 @@ namespace NSDevilX
 			virtual Void setComparisonFunction(IEnum::EComparisonFunction func)=0;
 			virtual IEnum::EComparisonFunction getComparisonFunction()const=0;
 			virtual Void setBorderColour(const CColour & colour)=0;
-			virtual const CColour & getBorderColour()const=0;
+			virtual Void getBorderColour(OUT CColour & colour)const=0;
 			virtual Void setMinLOD(Float value)=0;
 			virtual Float getMinLOD()const=0;
 			virtual Void setMaxLOD(Float value)=0;

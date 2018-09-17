@@ -136,21 +136,6 @@ Void NSDevilX::NSRenderSystem::IResourceManagerImp::destroyProgram(IProgram * pr
 	mPrograms.destroy(program->getName());
 }
 
-IPipelineState * NSDevilX::NSRenderSystem::IResourceManagerImp::createPipelineState(const String & name)
-{
-	return nullptr;
-}
-
-IPipelineState * NSDevilX::NSRenderSystem::IResourceManagerImp::getPipelineState(const String & name) const
-{
-	return nullptr;
-}
-
-Void NSDevilX::NSRenderSystem::IResourceManagerImp::destroyPipelineState(IPipelineState * state)
-{
-	return Void();
-}
-
 IMaterial * NSDevilX::NSRenderSystem::IResourceManagerImp::createMaterial(const String & name)
 {
 	return nullptr;
@@ -164,4 +149,26 @@ IMaterial * NSDevilX::NSRenderSystem::IResourceManagerImp::getMaterial() const
 Void NSDevilX::NSRenderSystem::IResourceManagerImp::destroyMaterial(IMaterial * material)
 {
 	return Void();
+}
+
+ISamplerState * NSDevilX::NSRenderSystem::IResourceManagerImp::createSamplerState(const String & name)
+{
+	ISamplerStateImp * ret=nullptr;
+	notify(EMessage_CreateSamplerState,&ret);
+	if(ret)
+	{
+		ret->setName(name);
+		mSamplerStates.add(name,ret);
+	}
+	return ret;
+}
+
+ISamplerState * NSDevilX::NSRenderSystem::IResourceManagerImp::getSamplerState(const String & name) const
+{
+	return mSamplerStates.get(name);
+}
+
+Void NSDevilX::NSRenderSystem::IResourceManagerImp::destroySamplerState(const String & name)
+{
+	return mSamplerStates.destroy(name);
 }

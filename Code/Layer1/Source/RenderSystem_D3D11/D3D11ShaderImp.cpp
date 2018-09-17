@@ -14,6 +14,19 @@ NSDevilX::NSRenderSystem::NSD3D11::CShaderImp::~CShaderImp()
 {
 }
 
+CProgramBufferLayoutImp * NSDevilX::NSRenderSystem::NSD3D11::CShaderImp::getBufferLayout(const String & name)
+{
+	auto ret=mBufferLayout.get(name);
+	if((!ret)&&(mShader->getSlot(name)!=static_cast<UInt32>(-1)))
+	{
+		CComPtr<ID3D11ShaderReflection> reflection;
+		D3DReflect(mShader->getBlob()->GetBufferPointer(),mShader->getBlob()->GetBufferSize(),__uuidof(ID3D11ShaderReflection),reinterpret_cast<VoidPtr*>(&reflection));	
+		ret=DEVILX_NEW CProgramBufferLayoutImp(reflection->GetConstantBufferByName(name.c_str()));
+		mBufferLayout.add(name,ret);
+	}
+	return ret;
+}
+
 Boolean NSDevilX::NSRenderSystem::NSD3D11::CShaderImp::compile(IEnum::EShaderType type,IEnum::EShaderCodeType codeType,const String & code)
 {
 	mType=type;
@@ -51,6 +64,7 @@ NSDevilX::NSRenderSystem::NSD3D11::CProgramImp::~CProgramImp()
 Void NSDevilX::NSRenderSystem::NSD3D11::CProgramImp::setShader(IEnum::EShaderType type,IShader * shader)
 {
 	mShaders[type]=static_cast<CShaderImp*>(shader);
+	_rebuildResourceNames();
 }
 
 IShader * NSDevilX::NSRenderSystem::NSD3D11::CProgramImp::getShader(IEnum::EShaderType type) const
@@ -76,12 +90,16 @@ IEnum::EProgramResourceType NSDevilX::NSRenderSystem::NSD3D11::CProgramImp::getR
 				switch(input_bind_desc.Type)
 				{
 				case D3D_SIT_CBUFFER:
+					ret=IEnum::EProgramResourceType_ConstantBuffer;
 					break;
 				case D3D_SIT_TBUFFER:
+					ret=IEnum::EProgramResourceType_TextureBuffer;
 					break;
 				case  D3D_SIT_TEXTURE:
+					ret=IEnum::EProgramResourceType_Texture;
 					break;
 				case D3D_SIT_SAMPLER:
+					ret=IEnum::EProgramResourceType_Sampler;
 					break;
 				}
 			}
@@ -92,10 +110,74 @@ IEnum::EProgramResourceType NSDevilX::NSRenderSystem::NSD3D11::CProgramImp::getR
 
 UInt32 NSDevilX::NSRenderSystem::NSD3D11::CProgramImp::getResourceLocation(const String & name) const
 {
-	return UInt32();
+	auto iter=mResourceNames.find(name);
+	if(mResourceNames.end()==iter)
+		return -1;
+	else
+		return iter-mResourceNames.begin();
 }
 
 IProgramBufferLayout * NSDevilX::NSRenderSystem::NSD3D11::CProgramImp::getBufferLayout(UInt32 resourceLocation) const
 {
-	return nullptr;
+	CProgramBufferLayoutImp * ret=nullptr;
+	for(auto s:mShaders)
+	{
+		if(s&&(ret=s->getBufferLayout(mResourceNames[resourceLocation])))
+		{
+			break;
+		}
+	}
+	return ret;
+}
+
+Void NSDevilX::NSRenderSystem::NSD3D11::CProgramImp::_rebuildResourceNames()
+{
+	mResourceNames.clear();
+	for(auto shader:mShaders)
+	{
+		if(shader)
+		{
+			for(auto & res:shader->getShader()->getResourceSlots())
+			{
+				if(!mResourceNames.has(res.first))
+				{
+					mResourceNames.push_back(res.first);
+				}
+			}
+		}
+	}
+}
+
+NSDevilX::NSRenderSystem::NSD3D11::CProgramBufferLayoutImp::CProgramBufferLayoutImp(ID3D11ShaderReflectionConstantBuffer * internalObj)
+{
+	setInternal(internalObj);
+}
+
+NSDevilX::NSRenderSystem::NSD3D11::CProgramBufferLayoutImp::~CProgramBufferLayoutImp()
+{}
+
+UInt32 NSDevilX::NSRenderSystem::NSD3D11::CProgramBufferLayoutImp::getOffset(const String & name) const
+{
+	CComPtr<ID3D11ShaderReflectionVariable> var=getInternal()->GetVariableByName(name.c_str());
+	if(var.p)
+	{
+		D3D11_SHADER_VARIABLE_DESC desc;
+		var->GetDesc(&desc);
+		return desc.StartOffset;
+	}
+	else
+		return -1;
+}
+
+UInt32 NSDevilX::NSRenderSystem::NSD3D11::CProgramBufferLayoutImp::getSize(const String & name) const
+{
+	CComPtr<ID3D11ShaderReflectionVariable> var=getInternal()->GetVariableByName(name.c_str());
+	if(var.p)
+	{
+		D3D11_SHADER_VARIABLE_DESC desc;
+		var->GetDesc(&desc);
+		return desc.Size;
+	}
+	else
+		return -1;
 }

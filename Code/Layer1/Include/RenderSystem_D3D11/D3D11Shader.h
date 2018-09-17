@@ -19,6 +19,10 @@ namespace NSDevilX
 					return mCode;
 				}
 				UInt32 getSlot(const String & name)const;
+				decltype(mResourceSlots) const & getResourceSlots()const
+				{
+					return mResourceSlots;
+				}
 			};
 			class CVertexShader
 				:public CShader

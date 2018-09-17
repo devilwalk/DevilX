@@ -153,7 +153,7 @@ NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::CSystemImp()
 	static_cast<IResourceManagerImp*>(ISystemImp::getSingleton().queryInterface_IResourceManager())->addListener(static_cast<TMessageReceiver<IResourceManagerImp>*>(this),IResourceManagerImp::EMessage_BeginBufferDestroy);
 	static_cast<IResourceManagerImp*>(ISystemImp::getSingleton().queryInterface_IResourceManager())->addListener(static_cast<TMessageReceiver<IResourceManagerImp>*>(this),IResourceManagerImp::EMessage_CreateShader);
 	static_cast<IResourceManagerImp*>(ISystemImp::getSingleton().queryInterface_IResourceManager())->addListener(static_cast<TMessageReceiver<IResourceManagerImp>*>(this),IResourceManagerImp::EMessage_CreateProgram);
-	static_cast<IResourceManagerImp*>(ISystemImp::getSingleton().queryInterface_IResourceManager())->addListener(static_cast<TMessageReceiver<IResourceManagerImp>*>(this),IResourceManagerImp::EMessage_CreatePipelineState);
+	static_cast<IResourceManagerImp*>(ISystemImp::getSingleton().queryInterface_IResourceManager())->addListener(static_cast<TMessageReceiver<IResourceManagerImp>*>(this),IResourceManagerImp::EMessage_CreateSamplerState);
 }
 
 NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::~CSystemImp()
@@ -366,28 +366,6 @@ CVertexShader * NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::getVertexShader(I
 	return dynamic_cast<CVertexShader*>(ret);
 }
 
-CHullShader * NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::getHullShader(ID3DBlob * code)
-{
-	auto * ret=mShaders[code];
-	if(nullptr==ret)
-	{
-		ret=DEVILX_NEW CHullShader(code);
-		mShaders[code]=ret;
-	}
-	return dynamic_cast<CHullShader*>(ret);
-}
-
-CDomainShader * NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::getDomainShader(ID3DBlob * code)
-{
-	auto * ret=mShaders[code];
-	if(nullptr==ret)
-	{
-		ret=DEVILX_NEW CDomainShader(code);
-		mShaders[code]=ret;
-	}
-	return dynamic_cast<CDomainShader*>(ret);
-}
-
 CPixelShader * NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::getPixelShader(ID3DBlob * code)
 {
 	auto * ret=mShaders[code];
@@ -516,6 +494,10 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::onMessage(IResourceManagerIm
 		*static_cast<IShaderImp**>(data)=DEVILX_NEW CShaderImp();
 		break;
 	case IResourceManagerImp::EMessage_CreateProgram:
+		*static_cast<IProgramImp**>(data)=DEVILX_NEW CProgramImp();
+		break;
+	case IResourceManagerImp::EMessage_CreateSamplerState:
+		*static_cast<ISamplerStateImp**>(data)=DEVILX_NEW CSamplerStateImp();
 		break;
 	}
 }

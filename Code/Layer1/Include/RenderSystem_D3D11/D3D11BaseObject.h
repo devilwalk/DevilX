@@ -40,6 +40,8 @@ namespace NSDevilX
 			class TInternalObject
 			{
 			public:
+				typedef InternalT* InternalType;
+			public:
 				TInternalObject()
 					:mInternal(nullptr)
 				{}
@@ -71,6 +73,8 @@ namespace NSDevilX
 			template<class InternalT>
 			class TCOMInternalObject
 			{
+			public:
+				typedef InternalT* InternalType;
 			public:
 				TCOMInternalObject()
 					:mInternal(nullptr)

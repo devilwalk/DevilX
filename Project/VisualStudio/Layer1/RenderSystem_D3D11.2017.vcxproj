@@ -182,6 +182,7 @@
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11OverlayMaterialManager.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11OverlayRenderable.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11EntityForwardPass.h" />
+    <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11SamplerStateImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11ShaderImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11SubEntityImp.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Include\RenderSystem_D3D11\D3D11EntityImp.h" />
@@ -233,6 +234,7 @@
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11OverlayMaterialManager.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11OverlayRenderable.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11EntityForwardPass.cpp" />
+    <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11SamplerStateImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11ShaderImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11SubEntityImp.cpp" />
     <ClCompile Include="..\..\..\Code\Layer1\Source\RenderSystem_D3D11\D3D11EntityImp.cpp" />

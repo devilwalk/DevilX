@@ -59,7 +59,6 @@
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderBufferUsage.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderMaterial.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderPass.h" />
-    <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderPipelineState.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderProgram.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderProgramBufferLayout.h" />
     <ClInclude Include="..\..\..\Code\Layer1\Interface\RenderSystem\IRenderSamplerState.h" />

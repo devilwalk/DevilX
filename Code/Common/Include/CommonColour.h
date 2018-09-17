@@ -46,10 +46,30 @@ namespace NSDevilX
 		{
 			return CFloat4(r(),g(),b(),a());
 		}
-		virtual Float r()const=0;
-		virtual Float g()const=0;
-		virtual Float b()const=0;
-		virtual Float a()const=0;
+		virtual Float r()const
+		{
+			return 0;
+		}
+		virtual Float g()const
+		{
+			return 0;
+		}
+		virtual Float b()const
+		{
+			return 0;
+		}
+		virtual Float a()const
+		{
+			return 0;
+		}
+		virtual Void setRed(float value)
+		{}
+		virtual Void setGreen(float value)
+		{}
+		virtual Void setBlue(float value)
+		{}
+		virtual Void setAlpha(float value)
+		{}
 	};
 	class CFloatAlpha
 		:public CColour
@@ -68,6 +88,7 @@ namespace NSDevilX
 		virtual Float g() const override;
 		virtual Float b() const override;
 		virtual Float a() const override;
+		virtual Void setAlpha(float value) override;
 	};
 	class CFloatRGB
 		:public CFloat3
@@ -93,6 +114,9 @@ namespace NSDevilX
 		virtual Float g() const override;
 		virtual Float b() const override;
 		virtual Float a() const override;
+		virtual Void setRed(float value) override;
+		virtual Void setGreen(float value) override;
+		virtual Void setBlue(float value) override;
 	};
 	class CFloatRGBA
 		:public CFloat4
@@ -119,6 +143,10 @@ namespace NSDevilX
 		virtual Float g() const override;
 		virtual Float b() const override;
 		virtual Float a() const override;
+		virtual Void setRed(float value) override;
+		virtual Void setGreen(float value) override;
+		virtual Void setBlue(float value) override;
+		virtual Void setAlpha(float value) override;
 	};
 	class CFloatHSV
 		:public CFloat3
@@ -137,5 +165,8 @@ namespace NSDevilX
 		virtual Float g() const override;
 		virtual Float b() const override;
 		virtual Float a() const override;
+		virtual Void setRed(float value) override;
+		virtual Void setGreen(float value) override;
+		virtual Void setBlue(float value) override;
 	};
 }

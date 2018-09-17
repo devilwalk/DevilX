@@ -6,6 +6,19 @@ namespace NSDevilX
 	{
 		namespace NSD3D11
 		{
+			class CProgramBufferLayoutImp
+				:public IProgramBufferLayout
+				,public TCOMInternalObject<ID3D11ShaderReflectionConstantBuffer>
+				,public TBaseObject<CProgramBufferLayoutImp>
+			{
+			public:
+				CProgramBufferLayoutImp(ID3D11ShaderReflectionConstantBuffer * internalObj);
+				~CProgramBufferLayoutImp();
+
+				// 通过 IProgramBufferLayout 继承
+				virtual UInt32 getOffset(const String & name) const override;
+				virtual UInt32 getSize(const String & name) const override;
+			};
 			class CShaderImp
 				:public IShaderImp
 				,public TBaseObject<CShaderImp>
@@ -14,6 +27,7 @@ namespace NSDevilX
 				IEnum::EShaderType mType;
 				IEnum::EShaderCodeType mCodeType;
 				CShader * mShader;
+				TNamedResourcePtrMap(CProgramBufferLayoutImp) mBufferLayout;
 			public:
 				CShaderImp();
 				~CShaderImp();
@@ -21,6 +35,7 @@ namespace NSDevilX
 				{
 					return mShader;
 				}
+				CProgramBufferLayoutImp * getBufferLayout(const String & name);
 				// 通过 IShaderImp 继承
 				virtual Boolean compile(IEnum::EShaderType type,IEnum::EShaderCodeType codeType,const String & code) override;
 				virtual IEnum::EShaderType getType() const override;
@@ -32,6 +47,7 @@ namespace NSDevilX
 			{
 			protected:
 				std::array<CShaderImp*,5> mShaders;
+				TVector(const String) mResourceNames;
 			public:
 				CProgramImp();
 				~CProgramImp();
@@ -42,6 +58,9 @@ namespace NSDevilX
 				virtual IEnum::EProgramResourceType getResourceType(const String & name) const override;
 				virtual UInt32 getResourceLocation(const String & name) const override;
 				virtual IProgramBufferLayout * getBufferLayout(UInt32 resourceLocation) const override;
+
+			protected:
+				Void _rebuildResourceNames();
 			};
 		}
 	}

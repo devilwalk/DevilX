@@ -44,6 +44,7 @@
 #include "D3D11RenderTargetImp.h"
 #include "D3D11RenderTask.h"
 #include "D3D11Resource.h"
+#include "D3D11SamplerStateImp.h"
 #include "D3D11Shader.h"
 #include "D3D11ShaderCodeManager.h"
 #include "D3D11ShaderImp.h"

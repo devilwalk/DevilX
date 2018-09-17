@@ -115,8 +115,6 @@ namespace NSDevilX
 				ID3D11DepthStencilState * getDepthStencilState(const D3D11_DEPTH_STENCIL_DESC & desc);
 				ID3D11SamplerState * getSamplerState(const D3D11_SAMPLER_DESC & desc);
 				CVertexShader * getVertexShader(ID3DBlob * code);
-				CHullShader * getHullShader(ID3DBlob * code);
-				CDomainShader * getDomainShader(ID3DBlob * code);
 				CPixelShader * getPixelShader(ID3DBlob * code);
 				CSceneImp * getScene(ISceneImp * interfaceImp)const
 				{
