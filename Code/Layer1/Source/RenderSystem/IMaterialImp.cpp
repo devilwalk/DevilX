@@ -19,14 +19,18 @@ const String & NSDevilX::NSRenderSystem::IMaterialImp::getName() const
 
 ITechnique * NSDevilX::NSRenderSystem::IMaterialImp::createTechnique(const String & name)
 {
+	assert(!mTechniques.has(name));
+	auto ret=DEVILX_NEW ITechniqueImp(name,this);
+	mTechniques.add(name,ret);
+	return ret;
 }
 
 ITechnique * NSDevilX::NSRenderSystem::IMaterialImp::getTechnique(const String & name)
 {
-	return nullptr;
+	return mTechniques.get(name);
 }
 
 Void NSDevilX::NSRenderSystem::IMaterialImp::destroyTechnique(ITechnique * tech)
 {
-	return Void();
+	return mTechniques.destroy(tech->getName());
 }

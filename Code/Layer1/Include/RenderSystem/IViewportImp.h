@@ -1,6 +1,7 @@
 #pragma once
 #include "IOverlayElementImp.h"
 #include "IQueryImp.h"
+#include "RenderTask.h"
 namespace NSDevilX
 {
 	namespace NSRenderSystem
@@ -50,6 +51,7 @@ namespace NSDevilX
 			UInt32 mOrder;
 			Int32 mTechnique;
 			CFloatRGBA mClearColour;
+			CRenderTaskRoot * mRenderTask;
 			TNamedResourcePtrMap(IOverlayElementImp) mOverlayElements;
 			TNamedResourcePtrMap(IQueryImp) mQueries;
 			TVector(UInt32) mQueryDatas;

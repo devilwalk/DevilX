@@ -3,32 +3,18 @@ using namespace NSDevilX;
 using namespace NSRenderSystem;
 using namespace NSD3D11;
 
-NSDevilX::NSRenderSystem::NSD3D11::CRenderTargetImp::CRenderTargetImp(ID3D11RenderTargetView * rt)
-	:mDepthStencil(nullptr)
+NSDevilX::NSRenderSystem::NSD3D11::CColourSurfaceImp::CColourSurfaceImp()
 {
-	setInternal(DEVILX_NEW CRenderTarget());
-	getInternal()->setRTView(0,rt);
 }
 
-NSDevilX::NSRenderSystem::NSD3D11::CRenderTargetImp::~CRenderTargetImp()
+NSDevilX::NSRenderSystem::NSD3D11::CColourSurfaceImp::~CColourSurfaceImp()
 {
-	DEVILX_DELETE(getInternal());
 }
 
-Void NSDevilX::NSRenderSystem::NSD3D11::CRenderTargetImp::prepare()
+NSDevilX::NSRenderSystem::NSD3D11::CDepthStencilSurfaceImp::CDepthStencilSurfaceImp()
 {
-	for(auto const & viewport_pairs:mViewports)
-	{
-		auto viewport=viewport_pairs.second;
-		viewport->prepare();
-	}
 }
 
-Void NSDevilX::NSRenderSystem::NSD3D11::CRenderTargetImp::render()
+NSDevilX::NSRenderSystem::NSD3D11::CDepthStencilSurfaceImp::~CDepthStencilSurfaceImp()
 {
-	for(auto const & viewport_pairs:mViewports)
-	{
-		auto viewport=viewport_pairs.second;
-		viewport->render();
-	}
 }

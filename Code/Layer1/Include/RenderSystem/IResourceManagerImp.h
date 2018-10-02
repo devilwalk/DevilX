@@ -1,7 +1,6 @@
 #pragma once
 #include "IGeometryImp.h"
 #include "ITextureImp.h"
-#include "IBufferImp.h"
 namespace NSDevilX
 {
 	namespace NSRenderSystem
@@ -9,12 +8,11 @@ namespace NSDevilX
 		template<class TInterface>
 		class TResource
 			:public TInterface
+			,public CReferenceObject
 		{
 		protected:
 			String mName;
 		public:
-			virtual ~IShaderImp()
-			{}
 			Void setName(const String & name)
 			{
 				mName=name;
@@ -23,7 +21,12 @@ namespace NSDevilX
 			{
 				return mName;
 			}
+		protected:
+			virtual ~TResource()
+			{
+			}
 		};
+		typedef TResource<IBuffer> IBufferImp;
 		typedef TResource<IShader> IShaderImp;
 		typedef TResource<IProgram> IProgramImp;
 		typedef TResource<ISamplerState> ISamplerStateImp;
@@ -43,14 +46,9 @@ namespace NSDevilX
 				EMessage_EndTextureCreate,
 				EMessage_BeginTextureDestroy,
 				EMessage_EndTextureDestroy,
-				EMessage_BeginBufferCreate,
-				EMessage_EndBufferCreate,
 				EMessage_BeginBufferDestroy,
 				EMessage_EndBufferDestroy,
-				EMessage_VertexBufferCreate,
-				EMessage_VertexBufferDestroy,
-				EMessage_IndexBufferCreate,
-				EMessage_IndexBufferDestroy,
+				EMessage_CreateBuffer,
 				EMessage_CreateShader,
 				EMessage_CreateProgram,
 				EMessage_CreateSamplerState
@@ -60,9 +58,9 @@ namespace NSDevilX
 			TNamedRefResourcePtrMap(ITextureImp) mTextures;
 			TNamedRefResourcePtrMap(IBufferImp) mBuffers;
 			TRefResourcePtrSet(IBufferImp) mInternalBuffers;
-			TNamedResourcePtrMap(IShaderImp) mShaders;
-			TNamedResourcePtrMap(IProgramImp) mPrograms;
-			TNamedResourcePtrMap(ISamplerStateImp) mSamplerStates;
+			TNamedRefResourcePtrMap(IShaderImp) mShaders;
+			TNamedRefResourcePtrMap(IProgramImp) mPrograms;
+			TNamedRefResourcePtrMap(ISamplerStateImp) mSamplerStates;
 			CNameGenerator mInternalBufferNameGenerator;
 		public:
 			IResourceManagerImp();

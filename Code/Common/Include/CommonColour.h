@@ -60,7 +60,7 @@ namespace NSDevilX
 		}
 		virtual Float a()const
 		{
-			return 0;
+			return 1.0;
 		}
 		virtual Void setRed(float value)
 		{}

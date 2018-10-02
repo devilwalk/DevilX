@@ -12,6 +12,7 @@ namespace NSDevilX
 			const String mName;
 			IMaterialImp * const mMaterial;
 			String mSchemeName;
+			TResourcePtrVector(IPassImp) mPasses;
 		public:
 			ITechniqueImp(const String & name,IMaterialImp * material);
 			~ITechniqueImp();
@@ -20,7 +21,7 @@ namespace NSDevilX
 			virtual IMaterial * getMaterial() const override;
 			virtual const String & getName() const override;
 			virtual Void setSchemeName(const String & name) override;
-			virtual const String getSchemeName() const override;
+			virtual const String & getSchemeName() const override;
 			virtual IPass * createPass() override;
 			virtual IPass * getPass(UInt32 index) const override;
 			virtual Void destroyPass(IPass * pass) override;

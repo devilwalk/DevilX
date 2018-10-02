@@ -69,12 +69,14 @@ ITexture * NSDevilX::NSRenderSystem::IResourceManagerImp::getTexture(const Strin
 
 IBuffer * NSDevilX::NSRenderSystem::IResourceManagerImp::createBuffer(const String & name)
 {
-	if(mBuffers.has(name))
-		return nullptr;
-	notify(EMessage_BeginBufferCreate);
-	IBufferImp * ret=DEVILX_NEW IBufferImp(name);
-	mBuffers[name]=ret;
-	notify(EMessage_EndBufferCreate,ret);
+	assert(!mBuffers.has(name));
+	IBufferImp * ret=nullptr;
+	notify(EMessage_CreateBuffer,&ret);
+	if(ret)
+	{
+		ret->setName(name);
+		mBuffers.add(name,ret);
+	}
 	return ret;
 }
 
@@ -85,8 +87,7 @@ IBuffer * NSDevilX::NSRenderSystem::IResourceManagerImp::getBuffer(const String 
 
 Void NSDevilX::NSRenderSystem::IResourceManagerImp::destroyBuffer(IBuffer * buffer)
 {
-	if(!mBuffers.has(buffer->getName()))
-		return;
+	assert(mBuffers.has(buffer->getName()));
 	notify(EMessage_BeginBufferDestroy,static_cast<IBufferImp*>(buffer));
 	mBuffers.destroy(buffer->getName());
 	notify(EMessage_EndBufferDestroy);
@@ -94,6 +95,7 @@ Void NSDevilX::NSRenderSystem::IResourceManagerImp::destroyBuffer(IBuffer * buff
 
 IShader * NSDevilX::NSRenderSystem::IResourceManagerImp::createShader(const String & name)
 {
+	assert(!mShaders.has(name));
 	IShaderImp * ret=nullptr;
 	notify(EMessage_CreateShader,&ret);
 	if(ret)
@@ -116,6 +118,7 @@ Void NSDevilX::NSRenderSystem::IResourceManagerImp::destroyShader(IShader * shad
 
 IProgram * NSDevilX::NSRenderSystem::IResourceManagerImp::createProgram(const String & name)
 {
+	assert(!mPrograms.has(name));
 	IProgramImp * ret=nullptr;
 	notify(EMessage_CreateProgram,&ret);
 	if(ret)
@@ -153,6 +156,7 @@ Void NSDevilX::NSRenderSystem::IResourceManagerImp::destroyMaterial(IMaterial * 
 
 ISamplerState * NSDevilX::NSRenderSystem::IResourceManagerImp::createSamplerState(const String & name)
 {
+	assert(!mSamplerStates.has(name));
 	ISamplerStateImp * ret=nullptr;
 	notify(EMessage_CreateSamplerState,&ret);
 	if(ret)

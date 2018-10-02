@@ -6,7 +6,6 @@ namespace NSDevilX
 	{
 		namespace NSD3D11
 		{
-			class CRenderTarget;
 			class CViewport
 				:public TBaseObject<CViewport>
 				,public CConstantBufferContainer

@@ -7,9 +7,11 @@ NSDevilX::NSRenderSystem::ISystemImp::ISystemImp()
 	,mFrameTimeInSecond(0.0f)
 	,mFrameIndex(0)
 	,mDefinitionShader(nullptr)
+	,mRenderTaskThreadPool(nullptr)
 {
 	mDefinitionShader=DEVILX_NEW CDefinitionShader;
 	mResourceManager=DEVILX_NEW IResourceManagerImp;
+	mRenderTaskThreadPool=DEVILX_NEW CThreadPool(4);
 }
 
 NSDevilX::NSRenderSystem::ISystemImp::~ISystemImp()
@@ -18,6 +20,7 @@ NSDevilX::NSRenderSystem::ISystemImp::~ISystemImp()
 	notify(EMessage_Destruction);
 	DEVILX_DELETE(mResourceManager);
 	DEVILX_DELETE(mDefinitionShader);
+	DEVILX_DELETE(mRenderTaskThreadPool);
 }
 
 Void NSDevilX::NSRenderSystem::ISystemImp::shutdown()

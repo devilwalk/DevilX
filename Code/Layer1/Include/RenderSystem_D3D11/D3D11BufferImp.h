@@ -8,23 +8,20 @@ namespace NSDevilX
 		{
 			class CSystemImp;
 			class CBufferImp
-				:public TInterfaceObject<IBufferImp>
+				:public CBuffer
 				,public TCOMInternalObject<ID3D11Buffer>
-				,public TBaseObject<CBufferImp>
-				,public TMessageReceiver<CSystemImp>
+				,public TBaseObject<CBuffer>
 				,public CReferenceObject
 			{
 			protected:
-				CBufferUpdater * mBuffer;
 			public:
-				CBufferImp(IBufferImp * interfaceImp);
-
-			protected:
+				CBufferImp();
 				~CBufferImp();
-				Void _update();
-				// Í¨¹ý TInterfaceObject ¼Ì³Ð
-				virtual Void onMessage(IBufferImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
-				virtual Void onMessage(CSystemImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
+
+				virtual Void initialize(IEnum::EBufferType type,UInt32 sizeInBytes,UInt32 flag=IEnum::EBufferFlag_GPURead,ConstVoidPtr data=nullptr) override;
+				virtual Void updateData(ConstVoidPtr data,UInt32 offsetInBytes=0,UInt32 sizeInBytes=0) override;
+				virtual Void bind(UInt32 offsetInBytes,IEnum::EAutoPropgramParameterDataSource source) override;
+				virtual Void unbind(UInt32 offsetInBytes) override;
 			};
 		}
 	}

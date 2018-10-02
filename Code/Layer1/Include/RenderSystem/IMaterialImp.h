@@ -9,6 +9,7 @@ namespace NSDevilX
 		{
 		protected:
 			const String mName;
+			TNamedResourcePtrMap(ITechniqueImp) mTechniques;
 		public:
 			IMaterialImp(const String & name);
 			virtual ~IMaterialImp();

@@ -11,11 +11,14 @@ NSDevilX::NSRenderSystem::IViewportImp::IViewportImp(const String & name,IRender
 	,mHeight(1.0f)
 	,mOrder(100)
 	,mTechnique(IEnum::ERenderTechnique_Forward)
+	,mRenderTask(nullptr)
 {
+	mRenderTask=DEVILX_NEW CRenderTaskRoot;
 }
 
 NSDevilX::NSRenderSystem::IViewportImp::~IViewportImp()
 {
+	DEVILX_DELETE(mRenderTask);
 }
 
 Boolean NSDevilX::NSRenderSystem::IViewportImp::isFullViewport() const

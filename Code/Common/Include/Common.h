@@ -25,6 +25,7 @@
 #include "CommonPlane.h"
 #include "CommonRange.h"
 #include "CommonRay.h"
+#include "CommonRect.h"
 #include "CommonReferenceObject.h"
 #include "CommonResourceContainer.h"
 #include "CommonSingleton.h"

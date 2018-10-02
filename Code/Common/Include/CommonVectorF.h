@@ -179,7 +179,7 @@ namespace NSDevilX
 			return x;
 		}
 	}
-	Float operator[](SizeT index)const
+	const Float & operator[](SizeT index)const
 	{
 		switch(index)
 		{

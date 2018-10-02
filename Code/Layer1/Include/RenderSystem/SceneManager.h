@@ -1,43 +1,36 @@
 #pragma once
-#include "ISceneElementImp.h"
+#include "VisibleArea.h"
 namespace NSDevilX
 {
 	namespace NSRenderSystem
 	{
-		class ISceneImp;
 		class CSceneManager
-			:public TMessageReceiver<ISceneImp>
 		{
-		protected:
-			ISceneImp * const mScene;
 		public:
-			CSceneManager(ISceneImp * scene);
+			CSceneManager();
 			virtual ~CSceneManager();
 			virtual IEnum::ESceneManagerAlgorithm getAlgorithm()const=0;
-			virtual Void findVisibleObjects(const CPlaneBoundedVolume & bound,TVector(ISceneElementImp*) & visibleObjects)const=0;
-			virtual Void findVisibleObjects(const DirectX::BoundingSphere & bound,TVector(ISceneElementImp*) & visibleObjects)const=0;
-			// Inherited via TMessageReceiver
-			virtual Void onMessage(ISceneImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
-		protected:
-			virtual Void _addElement(IVisibleAreaImp * element)=0;
-			virtual Void _removeElement(IVisibleAreaImp * element)=0;
+			virtual Void addVisibleArea(CVisibleArea * area)=0;
+			virtual Void removeVisibleAra(CVisibleArea * area)=0;
+			virtual Void findVisibleObjects(const CPlaneBoundedVolume & bound,TVector(CVisibleArea*) & visibleObjects,UInt32 mask=-1)const=0;
+			virtual Void findVisibleObjects(const DirectX::BoundingSphere & bound,TVector(CVisibleArea*) & visibleObjects,UInt32 mask=-1)const=0;
 		};
 		class CSimpleSceneManager
 			:public CSceneManager
 			,public TBaseObject<CSimpleSceneManager>
 		{
 		protected:
-			TSet(IVisibleAreaImp*) mElements;
+			TSet(CVisibleArea*) mElements;
 		public:
-			CSimpleSceneManager(ISceneImp * scene);
+			CSimpleSceneManager();
 			~CSimpleSceneManager();
 
 			// Inherited via CSceneManager
 			virtual IEnum::ESceneManagerAlgorithm getAlgorithm() const override;
-			virtual Void findVisibleObjects(const CPlaneBoundedVolume & bound,TVector(ISceneElementImp*) & visibleObjects) const override;
-			virtual Void findVisibleObjects(const DirectX::BoundingSphere & bound,TVector(ISceneElementImp*) & visibleObjects) const override;
-			virtual Void _addElement(IVisibleAreaImp * element) override;
-			virtual Void _removeElement(IVisibleAreaImp * element) override;
+			virtual Void findVisibleObjects(const CPlaneBoundedVolume & bound,TVector(CVisibleArea*) & visibleObjects,UInt32 mask=-1) const override;
+			virtual Void findVisibleObjects(const DirectX::BoundingSphere & bound,TVector(CVisibleArea*) & visibleObjects,UInt32 mask=-1) const override;
+			virtual Void addVisibleArea(CVisibleArea * area) override;
+			virtual Void removeVisibleAra(CVisibleArea * area) override;
 		};
 	}
 }

@@ -11,6 +11,7 @@
 #include <d3d11_4.h>
 #include <d3d12.h>
 #include <atlcomcli.h>
+#include <d3dcompiler.h>
 #elif DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_LINUX
 #include <dlfcn.h>
 #include <endian.h>

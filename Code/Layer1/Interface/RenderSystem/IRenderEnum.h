@@ -17,7 +17,8 @@ namespace NSDevilX
 			{
 				ERenderTechnique_Forward,
 				ERenderTechnique_DeferredShading,
-				ERenderTechnique_DeferredLighting
+				ERenderTechnique_DeferredLighting,
+				ERenderTechnique_Custom
 			};
 			enum ELightType
 			{
@@ -37,6 +38,20 @@ namespace NSDevilX
 				EOperationType_LineStrip,
 				EOperationType_TriangleList,
 				EOperationType_TriangleStrip
+			};
+			enum EBufferType
+			{
+				EBufferType_VertexBuffer,
+				EBufferType_IndexBuffer,
+				EBufferType_ConstantBuffer,
+				EBufferType_ShaderResource
+			};
+			enum EBufferFlag
+			{
+				EBufferFlag_GPUWrite=1,
+				EBufferFlag_GPURead=1<<1,
+				EBufferFlag_CPUWrite=1<<2,
+				EBufferFlag_StreamOutput=(1<<3)|EBufferFlag_GPUWrite
 			};
 			enum ERenderableSurfaceFormat
 			{
@@ -205,6 +220,46 @@ namespace NSDevilX
 				EComparisonFunction_NOT_EQUAL,
 				EComparisonFunction_GREATER_EQUAL,
 				EComparisonFunction_ALWAYS
+			};
+			enum EVertexElementFormat
+			{
+				EVertexElementFormat_Float,
+				EVertexElementFormat_Float2,
+				EVertexElementFormat_Float3,
+				EVertexElementFormat_Float4,
+				EVertexElementFormat_UInt,
+				EVertexElementFormat_UInt2,
+				EVertexElementFormat_UInt3,
+				EVertexElementFormat_UInt4,
+				EVertexElementFormat_Int,
+				EVertexElementFormat_Int2,
+				EVertexElementFormat_Int3,
+				EVertexElementFormat_Int4,
+				EVertexElementFormat_XYZW8,
+				EVertexElementFormat_Half,
+				EVertexElementFormat_Half2,
+				EVertexElementFormat_Half3,
+				EVertexElementFormat_Half4
+			};
+			enum EIndexFormat
+			{
+				EIndexFormat_16,
+				EIndexFormat_32
+			};
+			enum EColourSurfaceFormat
+			{
+				EColourSurfaceFormat_RGBA8,
+				EColourSurfaceFormat_RGBA16,
+				EColourSurfaceFormat_RGBA32,
+				EColourSurfaceFormat_RGBA16F,
+				EColourSurfaceFormat_RGBA32F,
+				EColourSurfaceFormat_RGB10A2
+			};
+			enum EDepthStencilSurfaceFormat
+			{
+				EDepthStencilSurfaceFormat_D24S8,
+				EDepthStencilSurfaceFormat_D32,
+				EDepthStencilSurfaceFormat_D16
 			};
 		};
 	}

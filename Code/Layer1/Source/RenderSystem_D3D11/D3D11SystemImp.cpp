@@ -145,12 +145,8 @@ NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::CSystemImp()
 	static_cast<IResourceManagerImp*>(ISystemImp::getSingleton().queryInterface_IResourceManager())->addListener(static_cast<TMessageReceiver<IResourceManagerImp>*>(this),IResourceManagerImp::EMessage_BeginGeometryDestroy);
 	static_cast<IResourceManagerImp*>(ISystemImp::getSingleton().queryInterface_IResourceManager())->addListener(static_cast<TMessageReceiver<IResourceManagerImp>*>(this),IResourceManagerImp::EMessage_EndTextureCreate);
 	static_cast<IResourceManagerImp*>(ISystemImp::getSingleton().queryInterface_IResourceManager())->addListener(static_cast<TMessageReceiver<IResourceManagerImp>*>(this),IResourceManagerImp::EMessage_BeginTextureDestroy);
-	static_cast<IResourceManagerImp*>(ISystemImp::getSingleton().queryInterface_IResourceManager())->addListener(static_cast<TMessageReceiver<IResourceManagerImp>*>(this),IResourceManagerImp::EMessage_VertexBufferCreate);
-	static_cast<IResourceManagerImp*>(ISystemImp::getSingleton().queryInterface_IResourceManager())->addListener(static_cast<TMessageReceiver<IResourceManagerImp>*>(this),IResourceManagerImp::EMessage_VertexBufferDestroy);
-	static_cast<IResourceManagerImp*>(ISystemImp::getSingleton().queryInterface_IResourceManager())->addListener(static_cast<TMessageReceiver<IResourceManagerImp>*>(this),IResourceManagerImp::EMessage_IndexBufferCreate);
-	static_cast<IResourceManagerImp*>(ISystemImp::getSingleton().queryInterface_IResourceManager())->addListener(static_cast<TMessageReceiver<IResourceManagerImp>*>(this),IResourceManagerImp::EMessage_IndexBufferDestroy);
-	static_cast<IResourceManagerImp*>(ISystemImp::getSingleton().queryInterface_IResourceManager())->addListener(static_cast<TMessageReceiver<IResourceManagerImp>*>(this),IResourceManagerImp::EMessage_EndBufferCreate);
 	static_cast<IResourceManagerImp*>(ISystemImp::getSingleton().queryInterface_IResourceManager())->addListener(static_cast<TMessageReceiver<IResourceManagerImp>*>(this),IResourceManagerImp::EMessage_BeginBufferDestroy);
+	static_cast<IResourceManagerImp*>(ISystemImp::getSingleton().queryInterface_IResourceManager())->addListener(static_cast<TMessageReceiver<IResourceManagerImp>*>(this),IResourceManagerImp::EMessage_CreateBuffer);
 	static_cast<IResourceManagerImp*>(ISystemImp::getSingleton().queryInterface_IResourceManager())->addListener(static_cast<TMessageReceiver<IResourceManagerImp>*>(this),IResourceManagerImp::EMessage_CreateShader);
 	static_cast<IResourceManagerImp*>(ISystemImp::getSingleton().queryInterface_IResourceManager())->addListener(static_cast<TMessageReceiver<IResourceManagerImp>*>(this),IResourceManagerImp::EMessage_CreateProgram);
 	static_cast<IResourceManagerImp*>(ISystemImp::getSingleton().queryInterface_IResourceManager())->addListener(static_cast<TMessageReceiver<IResourceManagerImp>*>(this),IResourceManagerImp::EMessage_CreateSamplerState);
@@ -472,23 +468,8 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::onMessage(IResourceManagerIm
 			break;
 		}
 		break;
-	case IResourceManagerImp::EMessage_VertexBufferCreate:
-		mVertexBuffers[static_cast<IVertexBufferImp*>(data)]=DEVILX_NEW CVertexBufferImp(static_cast<IVertexBufferImp*>(data));
-		break;
-	case IResourceManagerImp::EMessage_VertexBufferDestroy:
-		mVertexBuffers.destroy(static_cast<IVertexBufferImp*>(data));
-		break;
-	case IResourceManagerImp::EMessage_IndexBufferCreate:
-		mIndexBuffers[static_cast<IIndexBufferImp*>(data)]=DEVILX_NEW CIndexBufferImp(static_cast<IIndexBufferImp*>(data));
-		break;
-	case IResourceManagerImp::EMessage_IndexBufferDestroy:
-		mIndexBuffers.destroy(static_cast<IIndexBufferImp*>(data));
-		break;
-	case IResourceManagerImp::EMessage_EndBufferCreate:
-		mBuffers[static_cast<IBufferImp*>(data)]=DEVILX_NEW CBufferImp(static_cast<IBufferImp*>(data));
-		break;
-	case IResourceManagerImp::EMessage_BeginBufferCreate:
-		mBuffers.destroy(static_cast<IBufferImp*>(data));
+	case IResourceManagerImp::EMessage_CreateBuffer:
+		*static_cast<IBufferImp**>(data)=DEVILX_NEW CBufferImp();
 		break;
 	case IResourceManagerImp::EMessage_CreateShader:
 		*static_cast<IShaderImp**>(data)=DEVILX_NEW CShaderImp();
@@ -509,4 +490,24 @@ Void NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::_updateConstantBuffer(Byte *
 	offset=mConstantBuffer->getDescription()->getConstantDesc("gInverseFrameTimeInSeconds").StartOffset;
 	*reinterpret_cast<Float*>(&buffer[offset])=1.0f/ISystemImp::getSingleton().getFrameTimeInSecond();
 
+}
+
+CBuffer * NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::createBuffer()
+{
+	return DEVILX_NEW CBufferImp;
+}
+
+CShader * NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::createShader()
+{
+	return nullptr;
+}
+
+CProgram * NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::createProgram()
+{
+	return nullptr;
+}
+
+Void NSDevilX::NSRenderSystem::NSD3D11::CSystemImp::destroy(CResource * res)
+{
+	dynamic_cast<CReferenceObject*>(res)->release();
 }

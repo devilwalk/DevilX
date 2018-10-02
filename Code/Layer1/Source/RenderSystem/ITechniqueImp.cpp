@@ -27,26 +27,28 @@ Void NSDevilX::NSRenderSystem::ITechniqueImp::setSchemeName(const String & name)
 {
 	if(name!=mSchemeName)
 	{
-
+		mSchemeName=name;
 	}
 }
 
-const String NSDevilX::NSRenderSystem::ITechniqueImp::getSchemeName() const
+const String & NSDevilX::NSRenderSystem::ITechniqueImp::getSchemeName() const
 {
-	return String();
+	return mSchemeName;
 }
 
 IPass * NSDevilX::NSRenderSystem::ITechniqueImp::createPass()
 {
-	return nullptr;
+	auto ret=DEVILX_NEW IPassImp(this);
+	mPasses.push_back(ret);
+	return ret;
 }
 
 IPass * NSDevilX::NSRenderSystem::ITechniqueImp::getPass(UInt32 index) const
 {
-	return nullptr;
+	return mPasses[index];
 }
 
 Void NSDevilX::NSRenderSystem::ITechniqueImp::destroyPass(IPass * pass)
 {
-	return Void();
+	return mPasses.destroy(static_cast<IPassImp*>(pass));
 }

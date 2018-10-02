@@ -36,6 +36,7 @@ namespace NSDevilX
 			Bool mExit;
 			UInt32 mFrameIndex;
 			Float mFrameTimeInSecond;
+			CThreadPool * mRenderTaskThreadPool;
 			CDefinitionShader * mDefinitionShader;
 			IResourceManagerImp * mResourceManager;
 			TRefResourcePtrMap(CWindow*,IWindowImp) mWindows;
@@ -59,6 +60,10 @@ namespace NSDevilX
 			CDefinitionShader * getDefinitionShader()const
 			{
 				return mDefinitionShader;
+			}
+			CThreadPool * getRenderTaskThreadPool()const
+			{
+				return mRenderTaskThreadPool;
 			}
 			// Inherited via ISystem
 			virtual Void shutdown() override;

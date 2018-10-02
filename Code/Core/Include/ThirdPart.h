@@ -20,3 +20,11 @@
 #include "FBX/fbxsdk.h"
 #define ASIO_STANDALONE
 #include "asio.hpp"
+#include "GL/glew.h"
+#if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
+#include "GL/wglew.h"
+#include "GL/wglext.h"
+#elif DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_X
+#include "GL/glxew.h";
+#include "GL/glxext.h";
+#endif

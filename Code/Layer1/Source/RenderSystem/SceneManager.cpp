@@ -2,31 +2,15 @@
 using namespace NSDevilX;
 using namespace NSRenderSystem;
 
-NSDevilX::NSRenderSystem::CSceneManager::CSceneManager(ISceneImp * scene)
-	:mScene(scene)
+NSDevilX::NSRenderSystem::CSceneManager::CSceneManager()
 {
-	mScene->addListener(this,ISceneImp::EMessage_EndVisibleAreaCreate);
-	mScene->addListener(this,ISceneImp::EMessage_BeginVisibleAreaDestroy);
 }
 
 NSDevilX::NSRenderSystem::CSceneManager::~CSceneManager()
 {}
 
-Void NSDevilX::NSRenderSystem::CSceneManager::onMessage(ISceneImp * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess)
-{
-	switch(message)
-	{
-	case ISceneImp::EMessage_EndVisibleAreaCreate:
-		_addElement(static_cast<IVisibleAreaImp*>(data));
-		break;
-	case ISceneImp::EMessage_BeginVisibleAreaDestroy:
-		_removeElement(static_cast<IVisibleAreaImp*>(data));
-		break;
-	}
-}
-
-NSDevilX::NSRenderSystem::CSimpleSceneManager::CSimpleSceneManager(ISceneImp * scene)
-	:CSceneManager(scene)
+NSDevilX::NSRenderSystem::CSimpleSceneManager::CSimpleSceneManager()
+	:CSceneManager()
 {}
 
 NSDevilX::NSRenderSystem::CSimpleSceneManager::~CSimpleSceneManager()
@@ -37,40 +21,34 @@ IEnum::ESceneManagerAlgorithm NSDevilX::NSRenderSystem::CSimpleSceneManager::get
 	return IEnum::ESceneManagerAlgorithm_Simple;
 }
 
-Void NSDevilX::NSRenderSystem::CSimpleSceneManager::findVisibleObjects(const CPlaneBoundedVolume & bound,TVector(ISceneElementImp*) & visibleObjects) const
+Void NSDevilX::NSRenderSystem::CSimpleSceneManager::findVisibleObjects(const CPlaneBoundedVolume & bound,TVector(CVisibleArea*) & visibleObjects,UInt32 mask) const
 {
 	for(auto area:mElements)
 	{
-		if(DirectX::DISJOINT!=bound.contains(area->getWorldBoundingBox()))
+		if(area->hasMask(mask)&&(DirectX::DISJOINT!=bound.contains(area->getBoundingBox())))
 		{
-			for(auto obj:area->getAttachedObjects())
-			{
-				visibleObjects.push_back(obj);
-			}
+			visibleObjects.push_back(area);
 		}
 	}
 }
 
-Void NSDevilX::NSRenderSystem::CSimpleSceneManager::findVisibleObjects(const DirectX::BoundingSphere & bound,TVector(ISceneElementImp*)& visibleObjects) const
+Void NSDevilX::NSRenderSystem::CSimpleSceneManager::findVisibleObjects(const DirectX::BoundingSphere & bound,TVector(CVisibleArea*)& visibleObjects,UInt32 mask) const
 {
 	for(auto area:mElements)
 	{
-		if(bound.Intersects(area->getWorldBoundingBox()))
+		if(area->hasMask(mask)&&bound.Intersects(area->getBoundingBox()))
 		{
-			for(auto obj:area->getAttachedObjects())
-			{
-				visibleObjects.push_back(obj);
-			}
+			visibleObjects.push_back(area);
 		}
 	}
 }
 
-Void NSDevilX::NSRenderSystem::CSimpleSceneManager::_addElement(IVisibleAreaImp * element)
+Void NSDevilX::NSRenderSystem::CSimpleSceneManager::addVisibleArea(CVisibleArea * area)
 {
-	mElements.insert(element);
+	mElements.insert(area);
 }
 
-Void NSDevilX::NSRenderSystem::CSimpleSceneManager::_removeElement(IVisibleAreaImp * element)
+Void NSDevilX::NSRenderSystem::CSimpleSceneManager::removeVisibleAra(CVisibleArea * area)
 {
-	mElements.erase(element);
+	mElements.erase(area);
 }

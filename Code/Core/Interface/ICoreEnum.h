@@ -6,21 +6,22 @@ namespace NSDevilX
 		class IEnum
 		{
 		public:
-			enum EGPUDeviceType
+			enum EShaderType
 			{
-				EGPUDeviceType_GL,
-				EGPUDeviceType_GLES,
-				EGPUDeviceType_Vulkan,
-				EGPUDeviceType_CL,
-				EGPUDeviceType_D3D9,
-				EGPUDeviceType_D3D10,
-				EGPUDeviceType_D3D11,
-				EGPUDeviceType_D3D12,
+				EShaderType_VS_HLSL_6_0,
+				EShaderType_PS_HLSL_6_0,
+				EShaderType_VS_HLSL_5_0,
+				EShaderType_PS_HLSL_5_0,
+				EShaderType_VS_GLSL_4_5,
+				EShaderType_PS_GLSL_4_5,
 			};
-			enum EResourceLocationType
+			enum EShaderRegisterType
 			{
-				EResourceLocationType_SystemMemory,
-				EResourceLocationType_GPUMemory
+				EShaderRegisterType_Unknown,
+				EShaderRegisterType_ConstantBuffer,
+				EShaderRegisterType_TextureBuffer,
+				EShaderRegisterType_Texture,
+				EShaderRegisterType_Sampler
 			};
 		};
 	}

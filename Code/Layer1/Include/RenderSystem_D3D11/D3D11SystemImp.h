@@ -24,6 +24,7 @@ namespace NSDevilX
 				,public TMessageReceiver<IResourceManagerImp>
 				,public TMessageReceiver<ISystemImp>
 				,public CMessageNotifier
+				,public CFactory
 			{
 			public:
 				struct SInputLayout
@@ -227,7 +228,13 @@ namespace NSDevilX
 
 				// Inherited via CConstantBufferContainer
 				virtual Void _updateConstantBuffer(Byte * buffer) override;
-			};
+
+				// Í¨¹ý CFactory ¼Ì³Ð
+				virtual CBuffer * createBuffer() override;
+				virtual CShader * createShader() override;
+				virtual CProgram * createProgram() override;
+				virtual Void destroy(CResource * res) override;
+};
 		}
 	}
 }

@@ -3,6 +3,7 @@
 #include "IRenderWindow.h"
 #include "IRenderableSurface.h"
 #include "IRenderScene.h"
+#include "IRenderTask.h"
 namespace NSDevilX
 {
 	namespace NSRenderSystem
@@ -24,6 +25,11 @@ namespace NSDevilX
 			virtual IScene * createScene(const String & name,IEnum::ESceneManagerAlgorithm algorithm)=0;
 			virtual Void destroyScene(IScene * scene)=0;
 			virtual IScene * getScene(const String & name)const=0;
+			virtual IClearTask * createClearTask()=0;
+			virtual ISceneTask * createSceneTask()=0;
+			virtual IQuadTask * createQuadTask()=0;
+			virtual IRenderableTask * createRenderableTask()=0;
+			virtual Void destroyTask(ITask * task)=0;
 		};
 		ISystem * getSystem();
 	}

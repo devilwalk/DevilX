@@ -68,6 +68,18 @@ Float NSDevilX::CFloatRGB::a() const
 {
 	return 1.0f;
 }
+Void NSDevilX::CFloatRGB::setRed(float value)
+{
+	x=value;
+}
+Void NSDevilX::CFloatRGB::setGreen(float value)
+{
+	y=value;
+}
+Void NSDevilX::CFloatRGB::setBlue(float value)
+{
+	z=value;
+}
 const NSDevilX::CFloatRGBA NSDevilX::CFloatRGBA::sZero(CFloat4::sZero);
 const NSDevilX::CFloatRGBA NSDevilX::CFloatRGBA::sBlack(0.0f,0.0f,0.0f,1.0f);
 const NSDevilX::CFloatRGBA NSDevilX::CFloatRGBA::sWhite(1.0f,1.0f,1.0f,1.0f);
@@ -129,6 +141,26 @@ Float NSDevilX::CFloatRGBA::a() const
 	return w;
 }
 
+Void NSDevilX::CFloatRGBA::setRed(float value)
+{
+	x=value;
+}
+
+Void NSDevilX::CFloatRGBA::setGreen(float value)
+{
+	y=value;
+}
+
+Void NSDevilX::CFloatRGBA::setBlue(float value)
+{
+	z=value;
+}
+
+Void NSDevilX::CFloatRGBA::setAlpha(float value)
+{
+	w=value;
+}
+
 NSDevilX::CFloatAlpha::CFloatAlpha(UInt8 a)
 	:mValue(a/255.0f)
 {}
@@ -180,6 +212,11 @@ Float NSDevilX::CFloatAlpha::a() const
 	return mValue;
 }
 
+Void NSDevilX::CFloatAlpha::setAlpha(float value)
+{
+	mValue=value;
+}
+
 NSDevilX::CFloatHSV::CFloatHSV(UInt8 r,UInt8 g,UInt8 b)
 {}
 
@@ -225,4 +262,19 @@ Float NSDevilX::CFloatHSV::b() const
 Float NSDevilX::CFloatHSV::a() const
 {
 	return Float();
+}
+
+Void NSDevilX::CFloatHSV::setRed(float value)
+{
+	return Void();
+}
+
+Void NSDevilX::CFloatHSV::setGreen(float value)
+{
+	return Void();
+}
+
+Void NSDevilX::CFloatHSV::setBlue(float value)
+{
+	return Void();
 }
