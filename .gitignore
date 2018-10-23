@@ -93,3 +93,5 @@ $RECYCLE.BIN/
 /Project/VisualStudio/.vs
 /Project/VisualStudio/Core/Core.vcxproj.user
 /Project/VisualStudio/Test/Test.2017.vcxproj.user
+/Code/Common/Include/DirectXTK
+/Code/Common/Include/DirectXTK12
