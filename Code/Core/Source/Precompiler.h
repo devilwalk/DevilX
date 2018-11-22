@@ -12,7 +12,9 @@
 #include "ThreadType.h"
 #include "UTFString.h"
 
+#include "CPPScriptEnvironment.h"
 #include "DirectXManager.h"
+#include "ICPPScriptEnvironmentImp.h"
 #include "IDirectoryImp.h"
 #include "IFileImp.h"
 #include "INetworkConnectionImp.h"

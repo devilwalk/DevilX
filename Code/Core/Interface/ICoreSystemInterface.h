@@ -8,6 +8,7 @@
 #elif defined(GCC)
 #endif
 #include "Common.h"
+#include "ICoreCPPScriptEnvironment.h"
 #include "ICoreDirectory.h"
 #include "ICoreDirectXManager.h"
 #include "ICoreEnum.h"
@@ -21,6 +22,7 @@
 #include "ICoreReadWriteLock.h"
 #include "ICoreResource.h"
 #include "ICoreSystem.h"
+#include "ICoreScriptManager.h"
 #include "ICoreSemaphore.h"
 #include "ICoreThread.h"
 #include "ICoreThreadManager.h"

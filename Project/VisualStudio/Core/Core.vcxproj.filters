@@ -165,6 +165,18 @@
     <ClInclude Include="..\..\..\Code\Core\Include\ITimerImp.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreScriptManager.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreCPPScriptEnvironment.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\ICPPScriptEnvironmentImp.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\CPPScriptEnvironment.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Core\Source\Precompiler.cpp">
@@ -243,6 +255,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Core\Source\ITimerImp.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\CPPScriptEnvironment.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

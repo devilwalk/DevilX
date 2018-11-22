@@ -109,10 +109,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\Code\Core\Include\CPPScriptEnvironment.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\Define.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\DirectXManager.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\FileManager.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\FunctionWorker.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\ICPPScriptEnvironmentImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\IDirectoryImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\IFileImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\INetworkConnectionImp.h" />
@@ -138,6 +140,7 @@
     <ClInclude Include="..\..\..\Code\Core\Include\ThreadType.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\UTFString.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreBuffer.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreCPPScriptEnvironment.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreDirectXManager.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreDirectory.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreEnum.h" />
@@ -149,6 +152,7 @@
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreMemoryManager.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreReadWriteLock.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreResource.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreScriptManager.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreSemaphore.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreSystem.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreSystemInterface.h" />
@@ -160,6 +164,7 @@
     <ClInclude Include="..\..\..\Code\Core\Source\Precompiler.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Code\Core\Source\CPPScriptEnvironment.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\DirectXManager.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\FileManager.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\ICoreDirectXManager.cpp" />
