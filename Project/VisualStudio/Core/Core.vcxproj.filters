@@ -16,6 +16,9 @@
     <Filter Include="Interface">
       <UniqueIdentifier>{edf015b7-90c1-4749-bb6c-e9e6895a2b1e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Interface\GPU">
+      <UniqueIdentifier>{d9002bdb-9908-4254-9255-af388d43629d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\Core\Source\Precompiler.h">
@@ -176,6 +179,36 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Core\Include\CPPScriptEnvironment.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGPUCommandList.h">
+      <Filter>Interface\GPU</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGPUCommandQueue.h">
+      <Filter>Interface\GPU</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGPUEnum.h">
+      <Filter>Interface\GPU</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGPUInterface.h">
+      <Filter>Interface\GPU</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGPUPipelineState.h">
+      <Filter>Interface\GPU</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGPUResource.h">
+      <Filter>Interface\GPU</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGPUStruct.h">
+      <Filter>Interface\GPU</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGPUView.h">
+      <Filter>Interface\GPU</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGPUManager.h">
+      <Filter>Interface\GPU</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGPUDevice.h">
+      <Filter>Interface\GPU</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -16,3 +16,8 @@ DoubleFloat NSDevilX::NSCore::ITimerImp::getDeltaInSecond()
 	auto delta=tbb::tick_count::now()-mInit;
 	return delta.seconds();
 }
+
+Void NSDevilX::NSCore::ITimerImp::reset()
+{
+	mInit =tbb::tick_count::now();
+}

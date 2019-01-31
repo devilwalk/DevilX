@@ -5,7 +5,7 @@ namespace NSDevilX
 	{
 		class ICPPScriptEnvironmentImp
 			:public ICPPScriptEnvironment
-			,public TBaseObject<INetworkConnectionImp>
+			,public TBaseObject<ICPPScriptEnvironmentImp>
 		{
 		protected:
 		public:

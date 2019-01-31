@@ -141,6 +141,9 @@
     <ClInclude Include="..\..\..\Code\Common\Include\CommonReferenceObject.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonRect.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Common\Source\CommonColour.cpp">

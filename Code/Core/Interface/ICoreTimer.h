@@ -9,6 +9,7 @@ namespace NSDevilX
 			virtual ~ITimer(){ }
 		public:
 			virtual DoubleFloat getDeltaInSecond()=0;
+			virtual Void reset()=0;
 		};
 	}
 }

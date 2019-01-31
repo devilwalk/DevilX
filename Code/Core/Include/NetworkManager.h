@@ -11,7 +11,7 @@ namespace NSDevilX
 		public:
 		protected:
 			asio::io_context mIOContext;
-			TVector<String> mHostIPs;
+			TVector(String) mHostIPs;
 			TNamedResourcePtrMap(INetworkHostImp) mHosts;
 			TResourcePtrSet(INetworkConnectionImp) mConnections;
 		public:
@@ -22,7 +22,7 @@ namespace NSDevilX
 			{
 				return mIOContext;
 			}
-			const TVector<String> & getHostIPs()const
+			const TVector(String) & getHostIPs()const
 			{
 				return mHostIPs;
 			}

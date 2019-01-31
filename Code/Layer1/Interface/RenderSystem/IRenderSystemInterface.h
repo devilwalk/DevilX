@@ -5,8 +5,6 @@
 #include "IRenderBuffer.h"
 #include "IRenderBufferUsage.h"
 #include "IRenderCamera.h"
-#include "IRenderCompositorNode.h"
-#include "IRenderCompositorWorkspace.h"
 #include "IRenderEntity.h"
 #include "IRenderEnum.h"
 #include "IRenderGeometry.h"

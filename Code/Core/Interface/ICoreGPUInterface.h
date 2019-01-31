@@ -1,0 +1,10 @@
+#pragma once
+#include "ICoreGPUCommandList.h"
+#include "ICoreGPUCommandQueue.h"
+#include "ICoreGPUDevice.h"
+#include "ICoreGPUManager.h"
+#include "ICoreGPUView.h"
+#include "ICoreGPUEnum.h"
+#include "ICoreGPUPipelineState.h"
+#include "ICoreGPUResource.h"
+#include "ICoreGPUStruct.h"

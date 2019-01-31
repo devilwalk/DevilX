@@ -10,7 +10,8 @@ NSDevilX::NSCore::CNetworkManager::CNetworkManager()
 	while(iter!=end)
 	{
 		asio::ip::tcp::endpoint endpoint=*iter++;
-		mHostIPs.push_back(endpoint.address().to_string());
+		auto str=endpoint.address().to_string();
+		mHostIPs.push_back(String(str.begin(),str.end()));
 	}
 }
 
