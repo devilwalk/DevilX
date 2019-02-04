@@ -2,7 +2,7 @@
 using namespace NSDevilX;
 
 NSDevilX::CCommandQueue::CCommand::CCommand()
-	:mState(EState_Initialize)
+	:mState(EState_Unstart)
 {
 }
 
@@ -10,12 +10,12 @@ NSDevilX::CCommandQueue::CCommand::~CCommand()
 {
 }
 
-Boolean NSDevilX::CCommandQueue::CCommand::start()
+Boolean NSDevilX::CCommandQueue::CCommand::execute()
 {
 	return true;
 }
 
-Boolean NSDevilX::CCommandQueue::CCommand::execute()
+Boolean NSDevilX::CCommandQueue::CCommand::executing()
 {
 	return true;
 }
@@ -29,12 +29,12 @@ Boolean NSDevilX::CCommandQueue::CCommand::update()
 {
 	switch(mState)
 	{
-	case EState_Initialize:
-		if(start())
+	case EState_Unstart:
+		if(execute())
 			mState=EState_Executing;
 		return true;
 	case EState_Executing:
-		if(execute())
+		if(executing())
 			mState=EState_Finish;
 		return true;
 	case EState_Finish:

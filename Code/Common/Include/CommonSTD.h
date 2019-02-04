@@ -1,4 +1,17 @@
 #pragma once
+#include "CommonDefine.h"
+#include "CommonPlatformDefine.h"
+#if DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_WINDOWS
+#if DEVILX_DEBUG
+#define _CRTDBG_MAP_ALLOC  
+#endif
+#endif
+#include <stdlib.h>  
+#if DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_WINDOWS
+#if DEVILX_DEBUG
+#include <crtdbg.h>
+#endif
+#endif
 #include <list>
 #include <vector>
 #include <array>

@@ -10,7 +10,7 @@ namespace NSDevilX
 		public:
 			enum EState
 			{
-				EState_Initialize,
+				EState_Unstart,
 				EState_Executing,
 				EState_Finish
 			};
@@ -19,8 +19,8 @@ namespace NSDevilX
 		public:
 			CCommand();
 			virtual ~CCommand();
-			virtual Boolean start();
 			virtual Boolean execute();
+			virtual Boolean executing();
 			virtual Boolean finish();
 			virtual Boolean update();
 		};

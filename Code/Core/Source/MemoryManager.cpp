@@ -19,7 +19,7 @@ NSDevilX::NSCore::CMemoryManager::~CMemoryManager()
 #endif
 }
 
-VoidPtr NSDevilX::NSCore::CMemoryManager::allocateBytes(SizeT sizeInBytes,ConstCharPtr file,ConstCharPtr function,UInt32 line)
+VoidPtr NSDevilX::NSCore::CMemoryManager::allocateBytes(SizeT sizeInBytes,UInt32 blockType,ConstCharPtr file,UInt32 line,ConstCharPtr function)
 {
 	VoidPtr ret=nullptr;
 #if DEVILX_ALLOCATOR==DEVILX_ALLOCATOR_STANDER
@@ -34,7 +34,7 @@ VoidPtr NSDevilX::NSCore::CMemoryManager::allocateBytes(SizeT sizeInBytes,ConstC
 	return ret;
 }
 
-Void NSDevilX::NSCore::CMemoryManager::deallocateBytes(VoidPtr address,ConstCharPtr file,ConstCharPtr function,UInt32 line)
+Void NSDevilX::NSCore::CMemoryManager::deallocateBytes(VoidPtr address,UInt32 blockType,ConstCharPtr file,UInt32 line,ConstCharPtr function)
 {
 #if DEVILX_ALLOCATOR==DEVILX_ALLOCATOR_STANDER
 	free(address);
@@ -46,7 +46,7 @@ Void NSDevilX::NSCore::CMemoryManager::deallocateBytes(VoidPtr address,ConstChar
 #endif
 }
 
-VoidPtr NSDevilX::NSCore::CMemoryManager::alignedAllocateBytes(SizeT sizeInBytes,SizeT alignment,ConstCharPtr file,ConstCharPtr function,UInt32 line)
+VoidPtr NSDevilX::NSCore::CMemoryManager::alignedAllocateBytes(SizeT sizeInBytes,SizeT alignment,UInt32 blockType,ConstCharPtr file,UInt32 line,ConstCharPtr function)
 {
 	VoidPtr ret=nullptr;
 #if DEVILX_ALLOCATOR==DEVILX_ALLOCATOR_STANDER
@@ -61,7 +61,7 @@ VoidPtr NSDevilX::NSCore::CMemoryManager::alignedAllocateBytes(SizeT sizeInBytes
 	return ret;
 }
 
-Void NSDevilX::NSCore::CMemoryManager::alignedDeallocateBytes(VoidPtr address,ConstCharPtr file,ConstCharPtr function,UInt32 line)
+Void NSDevilX::NSCore::CMemoryManager::alignedDeallocateBytes(VoidPtr address,UInt32 blockType,ConstCharPtr file,UInt32 line,ConstCharPtr function)
 {
 #if DEVILX_ALLOCATOR==DEVILX_ALLOCATOR_STANDER
 	_aligned_free(address);

@@ -26,11 +26,11 @@ namespace NSDevilX
 		public:
 			using TMemoryAllocatorObject<T>::operator new;
 			using TMemoryAllocatorObject<T>::operator delete;
-			VoidPtr operator new(SizeT sizeInBytes,ConstCharPtr file,ConstCharPtr function,UInt32 line)
+			VoidPtr operator new(SizeT sizeInBytes,UInt32 blockType,ConstCharPtr file,UInt32 line,ConstCharPtr function)
 			{
-				return CMemoryManager::getSingleton().allocateBytes(sizeInBytes,file,function,line);
+				return CMemoryManager::getSingleton().allocateBytes(sizeInBytes,blockType,file,line,function);
 			}
-			Void operator delete(VoidPtr address,ConstCharPtr file,ConstCharPtr function,UInt32 line)
+			Void operator delete(VoidPtr address,UInt32 blockType,ConstCharPtr file,UInt32 line,ConstCharPtr function)
 			{
 				assert(0);
 			}

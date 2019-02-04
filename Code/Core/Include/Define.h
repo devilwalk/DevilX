@@ -1,6 +1,6 @@
 #pragma once
 
-#define DEVILX_MEMORY_TRACK_INFO __FILE__,__FUNCTION__,__LINE__
+#define DEVILX_MEMORY_TRACK_INFO _NORMAL_BLOCK,__FILE__,__LINE__,__FUNCTION__
 //#undef DEVILX_MEMORY_TRACK_ENABLE
 #ifdef DEVILX_MEMORY_TRACK_ENABLE
 #define DEVILX_ALLOC(sizeInBytes) CMemoryManager::getSingleton().allocateBytes(sizeInBytes,DEVILX_MEMORY_TRACK_INFO)
