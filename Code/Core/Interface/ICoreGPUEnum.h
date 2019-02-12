@@ -345,6 +345,107 @@ namespace NSDevilX
 				EPipelineStateFlag_NONE=0,
 				EPipelineStateFlag_TOOL_DEBUG=0x1
 			};
+			enum EHeapFlag
+			{
+				EHeapFlag_NONE,
+				EHeapFlag_SHARED,
+				EHeapFlag_DENY_BUFFERS,
+				EHeapFlag_ALLOW_DISPLAY,
+				EHeapFlag_SHARED_CROSS_ADAPTER,
+				EHeapFlag_DENY_RT_DS_TEXTURES,
+				EHeapFlag_DENY_NON_RT_DS_TEXTURES,
+				EHeapFlag_HARDWARE_PROTECTED,
+				EHeapFlag_ALLOW_WRITE_WATCH,
+				EHeapFlag_ALLOW_SHADER_ATOMICS,
+				EHeapFlag_ALLOW_ALL_BUFFERS_AND_TEXTURES,
+				EHeapFlag_ALLOW_ONLY_BUFFERS,
+				EHeapFlag_ALLOW_ONLY_NON_RT_DS_TEXTURES,
+				EHeapFlag_ALLOW_ONLY_RT_DS_TEXTURES
+			};
+			enum EResourceDimension
+			{
+				EResourceDimension_UNKNOWN,
+				EResourceDimension_BUFFER,
+				EResourceDimension_TEXTURE1D,
+				EResourceDimension_TEXTURE2D,
+				EResourceDimension_TEXTURE3D
+			};
+			enum ETextureLayout
+			{
+				ETextureLayout_UNKNOWN,
+				ETextureLayout_ROW_MAJOR,
+				ETextureLayout_64KB_UNDEFINED_SWIZZLE,
+				ETextureLayout_64KB_STANDARD_SWIZZLE
+			};
+			enum EResourceFlag
+			{
+				EResourceFlag_NONE,
+				EResourceFlag_ALLOW_RENDER_TARGET,
+				EResourceFlag_ALLOW_DEPTH_STENCIL,
+				EResourceFlag_ALLOW_UNORDERED_ACCESS,
+				EResourceFlag_DENY_SHADER_RESOURCE,
+				EResourceFlag_ALLOW_CROSS_ADAPTER,
+				EResourceFlag_ALLOW_SIMULTANEOUS_ACCESS,
+				EResourceFlag_VIDEO_DECODE_REFERENCE_ONLY
+			};
+			enum EResourceState
+			{
+				EResourceState_COMMON,
+				EResourceState_VERTEX_AND_CONSTANT_BUFFER,
+				EResourceState_INDEX_BUFFER,
+				EResourceState_RENDER_TARGET,
+				EResourceState_UNORDERED_ACCESS,
+				EResourceState_DEPTH_WRITE,
+				EResourceState_DEPTH_READ,
+				EResourceState_NON_PIXEL_SHADER_RESOURCE,
+				EResourceState_PIXEL_SHADER_RESOURCE,
+				EResourceState_STREAM_OUT,
+				EResourceState_INDIRECT_ARGUMENT,
+				EResourceState_COPY_DEST,
+				EResourceState_COPY_SOURCE,
+				EResourceState_RESOLVE_DEST,
+				EResourceState_RESOLVE_SOURCE,
+				EResourceState_GENERIC_READ,
+				EResourceState_RAYTRACING_ACCELERATION_STRUCTURE,
+				EResourceState_PRESENT,
+				EResourceState_PREDICATION,
+				EResourceState_VIDEO_DECODE_READ,
+				EResourceState_VIDEO_DECODE_WRITE,
+				EResourceState_VIDEO_PROCESS_READ,
+				EResourceState_VIDEO_PROCESS_WRITE,
+				EResourceState_VIDEO_ENCODE_READ,
+				EResourceState_VIDEO_ENCODE_WRITE
+			};
+			enum EShaderType
+			{
+				EShaderType_Vertex,
+				EShaderType_Geometry,
+				EShaderType_Pixel,
+				EShaderType_Hull,
+				EShaderType_Domain,
+				EShaderType_Compute
+			};
+			enum EBindFlag
+			{
+				EBindFlag_VERTEX_BUFFER=0x1L,
+				EBindFlag_INDEX_BUFFER=0x2L,
+				EBindFlag_CONSTANT_BUFFER=0x4L,
+				EBindFlag_SHADER_RESOURCE=0x8L,
+				EBindFlag_STREAM_OUTPUT=0x10L,
+				EBindFlag_RENDER_TARGET=0x20L,
+				EBindFlag_DEPTH_STENCIL=0x40L,
+				EBindFlag_UNORDERED_ACCESS=0x80L,
+				EBindFlag_DECODER=0x200L,
+				EBindFlag_VIDEO_ENCODER=0x400L
+			};
+			enum EDeviceVersion
+			{
+				EDeviceVersion_DirectX11,
+				EDeviceVersion_DirectX12,
+				EDeviceVersion_OpenGLES3,
+				EDeviceVersion_OpenGL4,
+				EDeviceVersion_Vulkan
+			};
 		};
 	}
 }

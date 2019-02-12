@@ -9,7 +9,7 @@ namespace NSDevilX
 		protected:
 			~IGPUManager();
 		public:
-			
+			IGPUDevice * createDevice(IGPUEnum::EDeviceVersion version);
 		};
 	}
 }

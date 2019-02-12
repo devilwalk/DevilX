@@ -15,7 +15,6 @@
 #include "FreeType/ft2build.h"
 #include FT_FREETYPE_H
 #include FT_GLYPH_H
-#include "Lua/lua.hpp"
 #include "Noise/noise.h"
 #include "FBX/fbxsdk.h"
 #define ASIO_STANDALONE
@@ -23,8 +22,8 @@
 #include "GL/glew.h"
 #if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
 #include "GL/wglew.h"
-#include "GL/wglext.h"
+//#include "GL/wglext.h"
 #elif DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_X
 #include "GL/glxew.h";
-#include "GL/glxext.h";
+//#include "GL/glxext.h";
 #endif

@@ -114,9 +114,15 @@
     <ClInclude Include="..\..\..\Code\Core\Include\DirectXManager.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\FileManager.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\FunctionWorker.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\GPUInclude.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\GPUMapper_DX11.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\ICPPScriptEnvironmentImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\IDirectoryImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\IFileImp.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\IGPUDeviceImp_DX11.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\IGPUDeviceImp_GL.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\IGPUResourceImp_DX11.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\IGPUResourceImp_GL.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\INetworkConnectionImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\INetworkHostImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\ISemaphoreImp.h" />
@@ -154,7 +160,6 @@
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGPUView.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGPUEnum.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGPUInterface.h" />
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGPUPipelineState.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGPUResource.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGPUStruct.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreNetworkConnection.h" />
@@ -178,6 +183,7 @@
     <ClCompile Include="..\..\..\Code\Core\Source\DirectXManager.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\FileManager.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\ICoreDirectXManager.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\ICoreGPUManager.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\ICoreMemoryManager.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\ICoreNetworkManager.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\ICoreSystem.cpp" />
@@ -185,6 +191,9 @@
     <ClCompile Include="..\..\..\Code\Core\Source\ICoreFileManager.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\IDirectoryImp.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\IFileImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\IGPUDeviceImp_DX11.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\IGPUResourceImp_DX11.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\IGPUResourceImp_GL.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\INetworkConnectionImp.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\INetworkHostImp.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\ISemaphoreImp.cpp" />

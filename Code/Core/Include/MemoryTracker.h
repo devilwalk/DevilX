@@ -33,7 +33,7 @@ namespace NSDevilX
 			CMemoryTracker();
 			~CMemoryTracker();
 			Void allocate(VoidPtr address,size_t size,ConstCharPtr fileName,ConstCharPtr functionName,UInt32 lineNumber);
-			Void deallocate(VoidPtr address,ConstCharPtr fileName,ConstCharPtr functionName,UInt32 lineNumber);
+			Void deallocate(VoidPtr address,UInt32 blockType=0,ConstCharPtr file=nullptr,UInt32 line=0,ConstCharPtr function=nullptr);
 		};
 	}
 }

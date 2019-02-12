@@ -9,7 +9,6 @@ namespace NSDevilX
 		protected:
 			virtual ~IGPUCommandQueue(){ }
 		public:
-			virtual Void executeCommandLists(UInt32 numCommandLists,)
 		};
 	}
 }

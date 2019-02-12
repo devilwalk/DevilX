@@ -9,7 +9,7 @@ NSDevilX::NSCore::CMemoryTracker::~CMemoryTracker()
 {
 	while(!mRecordChunkList.empty())
 	{
-		deallocate(mRecordChunkList.begin()->second->mAddress,__FILE__,__FUNCTION__,__LINE__);
+		deallocate(mRecordChunkList.begin()->second->mAddress,0,__FILE__,__LINE__,__FUNCTION__);
 	}
 	for(auto pair_value:mFreeChunkList)
 	{
@@ -26,7 +26,7 @@ Void NSDevilX::NSCore::CMemoryTracker::allocate(VoidPtr address,size_t size,Cons
 	mRecordChunkListLocker.unLockWrite();
 }
 
-Void NSDevilX::NSCore::CMemoryTracker::deallocate(VoidPtr address,ConstCharPtr fileName,ConstCharPtr functionName,UInt32 lineNumber)
+Void NSDevilX::NSCore::CMemoryTracker::deallocate(VoidPtr address,UInt32 blockType,ConstCharPtr file,UInt32 line,ConstCharPtr function)
 {
 	mRecordChunkListLocker.lockWrite();
 	STrackerChunk * chunk=nullptr;
@@ -38,10 +38,10 @@ Void NSDevilX::NSCore::CMemoryTracker::deallocate(VoidPtr address,ConstCharPtr f
 	mRecordChunkListLocker.unLockWrite();
 	if(chunk)
 	{
-		if(fileName)
+		if(file)
 		{
 			mFreeChunkListLocker.lockWrite();
-			mFreeChunkList[chunk]=new STrackerChunk(address,chunk->mSize,fileName,functionName,lineNumber,CThreadManager::getCurrentThreadID());
+			mFreeChunkList[chunk]=new STrackerChunk(address,chunk->mSize,file,function,line,CThreadManager::getCurrentThreadID());
 			mFreeChunkListLocker.unLockWrite();
 		}
 		else

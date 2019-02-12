@@ -8,6 +8,53 @@ namespace NSDevilX
 		class IGPUStruct
 		{
 		public:
+			struct SGISamplerDesc
+			{
+				UInt32 Count;
+				UInt32 Quality;
+			};
+			struct SHeapProperties
+			{
+				IGPUEnum::EHeapType         Type;
+				IGPUEnum::ECPUPageProperty CPUPageProperty;
+				IGPUEnum::EMemoryPool       MemoryPoolPreference;
+				UInt32                    CreationNodeMask;
+				UInt32                    VisibleNodeMask;
+			};
+			struct SHeapDesc
+			{
+				UInt64                SizeInBytes;
+				SHeapProperties Properties;
+				UInt64                Alignment;
+				IGPUEnum::EHeapFlag      Flags;
+			};
+			struct SResourceDesc
+			{
+				IGPUEnum::EResourceDimension Dimension;
+				UInt64                   Alignment;
+				UInt64                   Width;
+				UInt32                     Height;
+				UInt16                   DepthOrArraySize;
+				UInt16                   MipLevels;
+				IGPUEnum::EGIFormat              Format;
+				SGISamplerDesc         SampleDesc;
+				IGPUEnum::ETextureLayout     Layout;
+				IGPUEnum::EResourceFlag     Flags;
+			};
+			struct SDepthStencilValue
+			{
+				Float Depth;
+				UInt8 Stencil;
+			};
+			struct SClearValue
+			{
+				IGPUEnum::EGIFormat Format;
+				union
+				{
+					Float                     Color[4];
+					SDepthStencilValue DepthStencil;
+				};
+			};
 			struct SBufferDesc
 			{
 				UInt32        ByteWidth;
@@ -16,6 +63,42 @@ namespace NSDevilX
 				UInt32        CPUAccessFlags;
 				UInt32        MiscFlags;
 				UInt32        StructureByteStride;
+			};
+			struct STexture1DDesc
+			{
+				UInt32        Width;
+				UInt32        MipLevels;
+				UInt32        ArraySize;
+				IGPUEnum::EGIFormat Format;
+				IGPUEnum::EUsage Usage;
+				UInt32        BindFlags;
+				UInt32        CPUAccessFlags;
+				UInt32        MiscFlags;
+			};
+			struct STexture2DDesc
+			{
+				UInt32             Width;
+				UInt32             Height;
+				UInt32             MipLevels;
+				UInt32             ArraySize;
+				IGPUEnum::EGIFormat      Format;
+				SGISamplerDesc SampleDesc;
+				IGPUEnum::EUsage      Usage;
+				UInt32             BindFlags;
+				UInt32             CPUAccessFlags;
+				UInt32             MiscFlags;
+			};
+			struct STexture3DDesc
+			{
+				UInt32        Width;
+				UInt32        Height;
+				UInt32        Depth;
+				UInt32        MipLevels;
+				IGPUEnum::EGIFormat Format;
+				IGPUEnum::EUsage Usage;
+				UInt32        BindFlags;
+				UInt32        CPUAccessFlags;
+				UInt32        MiscFlags;
 			};
 			struct SSubResourceData
 			{
@@ -185,30 +268,6 @@ namespace NSDevilX
 			{
 				ConstVoidPtr pCachedBlob;
 				SizeT CachedBlobSizeInBytes;
-			};
-			struct SGraphicPipelineStateDesc
-			{
-				IGPURootSignature                *pRootSignature;
-				SShaderByteCode              VS;
-				SShaderByteCode             PS;
-				SShaderByteCode             DS;
-				SShaderByteCode              HS;
-				SShaderByteCode             GS;
-				SStreamOutputDesc           StreamOutput;
-				SBlendDesc                   BlendState;
-				UInt32                               SampleMask;
-				SRasterizerDesc              RasterizerState;
-				SDepthStencilDesc           DepthStencilState;
-				SInputLayoutDesc            InputLayout;
-				IGPUEnum::EIndexBufferStripCutValue IBStripCutValue;
-				IGPUEnum::EPrimitiveTopologyType      PrimitiveTopologyType;
-				UInt32                               NumRenderTargets;
-				IGPUEnum::EGIFormat                        RTVFormats[8];
-				IGPUEnum::EGIFormat                        DSVFormat;
-				SSamplerDesc                   SampleDesc;
-				UInt32                               NodeMask;
-				SCachedPipelineState        CachedPSO;
-				IGPUEnum::EPipelineStateFlag         Flags;
 			};
 		};
 	}

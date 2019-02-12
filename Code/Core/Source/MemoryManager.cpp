@@ -42,7 +42,7 @@ Void NSDevilX::NSCore::CMemoryManager::deallocateBytes(VoidPtr address,UInt32 bl
 	scalable_free(address);
 #endif
 #ifdef DEVILX_MEMORY_TRACK_ENABLE
-	mMemoryTracker->deallocate(address,file,function,line);
+	mMemoryTracker->deallocate(address,blockType,file,line,function);
 #endif
 }
 
@@ -69,6 +69,6 @@ Void NSDevilX::NSCore::CMemoryManager::alignedDeallocateBytes(VoidPtr address,UI
 	scalable_aligned_free(address);
 #endif
 #ifdef DEVILX_MEMORY_TRACK_ENABLE
-	mMemoryTracker->deallocate(address,file,function,line);
+	mMemoryTracker->deallocate(address,blockType,file,line,function);
 #endif
 }
