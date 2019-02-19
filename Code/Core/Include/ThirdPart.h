@@ -1,29 +1,24 @@
 #pragma once
 #define __TBB_SOURCE_DIRECTLY_INCLUDED 1
-#include "TBB/tbb/tbb_allocator.h"
-#include "TBB/tbb/scalable_allocator.h"
-#include "TBB/tbb/reader_writer_lock.h"
-#include "TBB/tbb/concurrent_queue.h"
-#include "TBB/tbb/concurrent_vector.h"
+#include "tbb/tbb.h"
 #undef __TBB_SOURCE_DIRECTLY_INCLUDED
-#include "TinyXML/tinyxml.h"
 #pragma warning(push)
 #pragma warning(disable:4819)
 #define FREEIMAGE_LIB
-#include "FreeImage/FreeImage.h"
+#include "FreeImage.h"
 #pragma warning(pop)
-#include "FreeType/ft2build.h"
+#include "ft2build.h"
 #include FT_FREETYPE_H
 #include FT_GLYPH_H
-#include "Noise/noise.h"
-#include "FBX/fbxsdk.h"
+#include "fbxsdk.h"
 #define ASIO_STANDALONE
 #include "asio.hpp"
+#define GLEW_STATIC
 #include "GL/glew.h"
 #if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
 #include "GL/wglew.h"
-//#include "GL/wglext.h"
+#include "GL/wglext.h"
 #elif DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_X
 #include "GL/glxew.h";
-//#include "GL/glxext.h";
+#include "GL/glxext.h";
 #endif

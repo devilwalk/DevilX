@@ -166,16 +166,16 @@ namespace NSDevilX
 			{
 				destroyAllMT();
 			}
-			Void destroy(const KeyT & name)
+			Void destroy(const KeyT & key)
 			{
 				auto iter=this->find(key);
 				iter->second->release();
 				this->erase(iter);
 			}
-			Void destroyMT(const KeyT & name)
+			Void destroyMT(const KeyT & key)
 			{
 				this->lockWrite();
-				destroy(name);
+				destroy(key);
 				this->unLockWrite();
 			}
 			Void destroyAll()
