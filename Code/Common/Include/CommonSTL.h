@@ -139,6 +139,29 @@ namespace NSDevilX
 		using std::map<KeyT,ValueT,SortfuncT,TAllocator>::map;
 		using std::map<KeyT,ValueT,SortfuncT,TAllocator>::operator[];
 		using std::map<KeyT,ValueT,SortfuncT,TAllocator>::operator=;
+
+		using _Mybase=std::map<KeyT,ValueT,SortfuncT,TAllocator>;
+		using key_type=KeyT;
+		using mapped_type=ValueT;
+		using key_compare=SortfuncT;
+		using value_compare=typename _Mybase::value_compare;
+		using value_type=typename _Mybase::value_type;
+		using allocator_type=typename _Mybase::allocator_type;
+		using size_type=typename _Mybase::size_type;
+		using difference_type=typename _Mybase::difference_type;
+		using pointer=typename _Mybase::pointer;
+		using const_pointer=typename _Mybase::const_pointer;
+		using reference=value_type&;
+		using const_reference=const value_type&;
+		using iterator=typename _Mybase::iterator;
+		using const_iterator=typename _Mybase::const_iterator;
+		using reverse_iterator=typename _Mybase::reverse_iterator;
+		using const_reverse_iterator=typename _Mybase::const_reverse_iterator;
+
+		using _Alnode=typename _Mybase::_Alnode;
+		using _Alnode_traits=typename _Mybase::_Alnode_traits;
+		using _Pairib=typename _Mybase::_Pairib;
+
 		TMap() {}
 		template<class TAllocator2>
 		TMap(const std::map<KeyT,ValueT,SortfuncT,TAllocator2> & cpy)

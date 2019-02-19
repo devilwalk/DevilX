@@ -6,8 +6,7 @@ namespace NSDevilX
 		namespace NSDX11
 		{
 			class IGPUBufferImp
-				:public IGPUResourceImp
-				,public TBaseObject<IGPUBufferImp>
+				:public TBaseObject<IGPUBufferImp>
 				,public IGPUResource
 				,public IGPUBuffer
 			{
