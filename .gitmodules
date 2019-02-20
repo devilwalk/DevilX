@@ -37,3 +37,9 @@
 [submodule "Dependences/TBB"]
 	path = Dependences/TBB
 	url = https://github.com/01org/tbb.git
+[submodule "Dependences/Lua"]
+	path = Dependences/Lua
+	url = https://github.com/lua/lua.git
+[submodule "Dependences/LibNoise"]
+	path = Dependences/LibNoise
+	url = https://github.com/eXpl0it3r/libnoise.git
