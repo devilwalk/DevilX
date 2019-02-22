@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <OutDir>$(SolutionDir)..\..\Bin\$(Configuration)\$(PlatformTarget)\</OutDir>
+    <IntDir>$(SolutionDir)Intermediate\$(Configuration)\$(PlatformTarget)\$(ProjectName)\</IntDir>
+    <LinkIncremental>
+    </LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Dependences\ASIO\asio\include;$(SolutionDir)..\..\Dependences\BOOST;$(SolutionDir)..\..\Dependences\Bullet\src;$(SolutionDir)..\..\Dependences\DirectXMath\Inc;$(SolutionDir)..\..\Dependences\FreeImage\Source;$(SolutionDir)..\..\Dependences\FreeType\include;$(SolutionDir)..\..\Dependences\TinyXML;$(SolutionDir)..\..\Dependences\TBB\include;$(SolutionDir)..\..\Dependences\FBXSDK\include;$(SolutionDir)..\..\Dependences\OpenGL\api;$(SolutionDir)..\..\Dependences\GLEW\include;$(SolutionDir)..\..\Dependences\Lua;$(SolutionDir)..\..\Dependences\LibNoise\include\noise;$(SolutionDir)..\..\Code\Common\Interface;$(SolutionDir)..\..\Code\Common\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <WarningLevel>Level3</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <SDLCheck>true</SDLCheck>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <PreprocessorDefinitions>_ALLOW_RTCc_IN_STL;WIN32_LEAN_AND_MEAN;DLLEXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>Precompiler.h</PrecompiledHeaderFile>
+      <DisableSpecificWarnings>4584;4819</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup />
+</Project>
