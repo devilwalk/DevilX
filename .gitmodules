@@ -1,45 +1,45 @@
 [submodule "Dependences/ASIO"]
 	path = Dependences/ASIO
-	url = https://github.com/chriskohlhoff/asio.git
+	url = git://github.com/chriskohlhoff/asio.git
 [submodule "Dependences/Bullet"]
 	path = Dependences/Bullet
-	url = https://github.com/bulletphysics/bullet3.git
+	url = git://github.com/bulletphysics/bullet3.git
 [submodule "Dependences/FreeType"]
 	path = Dependences/FreeType
 	url = git://git.sv.nongnu.org/freetype/freetype2.git
 [submodule "Dependences/DirectXMath"]
 	path = Dependences/DirectXMath
-	url = https://github.com/Microsoft/DirectXMath.git
+	url = git://github.com/Microsoft/DirectXMath.git
 [submodule "Dependences/DirectXShaderCompiler"]
 	path = Dependences/DirectXShaderCompiler
 	url = git://github.com/Microsoft/DirectXShaderCompiler
 [submodule "Dependences/GLEW"]
 	path = Dependences/GLEW
-	url = https://github.com/nigels-com/glew.git
+	url = git://github.com/nigels-com/glew.git
 [submodule "Dependences/KTX"]
 	path = Dependences/KTX
-	url = https://github.com/KhronosGroup/KTX-Software.git
+	url = git://github.com/KhronosGroup/KTX-Software.git
 [submodule "Dependences/OpenGL"]
 	path = Dependences/OpenGL
-	url = https://github.com/KhronosGroup/OpenGL-Registry.git
+	url = git://github.com/KhronosGroup/OpenGL-Registry.git
 [submodule "Dependences/EGL"]
 	path = Dependences/EGL
-	url = https://github.com/KhronosGroup/EGL-Registry.git
+	url = git://github.com/KhronosGroup/EGL-Registry.git
 [submodule "Dependences/VulkanHeaders"]
 	path = Dependences/VulkanHeaders
-	url = https://github.com/KhronosGroup/Vulkan-Headers.git
+	url = git://github.com/KhronosGroup/Vulkan-Headers.git
 [submodule "Dependences/OpenCLHeaders"]
 	path = Dependences/OpenCLHeaders
-	url = https://github.com/KhronosGroup/OpenCL-Headers.git
+	url = git://github.com/KhronosGroup/OpenCL-Headers.git
 [submodule "Dependences/LibCLCXX"]
 	path = Dependences/LibCLCXX
-	url = https://github.com/KhronosGroup/libclcxx.git
+	url = git://github.com/KhronosGroup/libclcxx.git
 [submodule "Dependences/TBB"]
 	path = Dependences/TBB
-	url = https://github.com/01org/tbb.git
+	url = git://github.com/01org/tbb.git
 [submodule "Dependences/Lua"]
 	path = Dependences/Lua
-	url = https://github.com/lua/lua.git
+	url = git://github.com/lua/lua.git
 [submodule "Dependences/LibNoise"]
 	path = Dependences/LibNoise
-	url = https://github.com/eXpl0it3r/libnoise.git
+	url = git://github.com/eXpl0it3r/libnoise.git
