@@ -12,7 +12,7 @@
 	url = https://github.com/Microsoft/DirectXMath.git
 [submodule "Dependences/DirectXShaderCompiler"]
 	path = Dependences/DirectXShaderCompiler
-	url = https://github.com/Microsoft/DirectXShaderCompiler.git
+	url = git://github.com/Microsoft/DirectXShaderCompiler
 [submodule "Dependences/GLEW"]
 	path = Dependences/GLEW
 	url = https://github.com/nigels-com/glew.git
