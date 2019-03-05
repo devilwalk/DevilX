@@ -28,4 +28,4 @@
 #include "ICoreThreadManager.h"
 #include "ICoreThreadPool.h"
 #include "ICoreTimer.h"
-#include "ICoreGPUInterface.h"
+#include "ICoreGAInterface.h"

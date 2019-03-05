@@ -16,13 +16,13 @@
     <Filter Include="Interface">
       <UniqueIdentifier>{edf015b7-90c1-4749-bb6c-e9e6895a2b1e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Interface\GPU">
+    <Filter Include="Interface\GraphicAPI">
       <UniqueIdentifier>{d9002bdb-9908-4254-9255-af388d43629d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\GPU">
+    <Filter Include="头文件\GraphicAPI">
       <UniqueIdentifier>{9e4f3c1b-55ba-4131-897b-74c990fa4aca}</UniqueIdentifier>
     </Filter>
-    <Filter Include="源文件\GPU">
+    <Filter Include="源文件\GraphicAPI">
       <UniqueIdentifier>{c0868085-4191-42cb-b514-c00281242e4e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -186,50 +186,53 @@
     <ClInclude Include="..\..\..\Code\Core\Include\CPPScriptEnvironment.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGPUCommandList.h">
-      <Filter>Interface\GPU</Filter>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGAResource.h">
+      <Filter>Interface\GraphicAPI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGPUCommandQueue.h">
-      <Filter>Interface\GPU</Filter>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGADevice.h">
+      <Filter>Interface\GraphicAPI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGPUEnum.h">
-      <Filter>Interface\GPU</Filter>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGAEnum.h">
+      <Filter>Interface\GraphicAPI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGPUInterface.h">
-      <Filter>Interface\GPU</Filter>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGAStruct.h">
+      <Filter>Interface\GraphicAPI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGPUResource.h">
-      <Filter>Interface\GPU</Filter>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGAView.h">
+      <Filter>Interface\GraphicAPI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGPUStruct.h">
-      <Filter>Interface\GPU</Filter>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGACommandList.h">
+      <Filter>Interface\GraphicAPI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGPUView.h">
-      <Filter>Interface\GPU</Filter>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGACommandQueue.h">
+      <Filter>Interface\GraphicAPI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGPUManager.h">
-      <Filter>Interface\GPU</Filter>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGAInterface.h">
+      <Filter>Interface\GraphicAPI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGPUDevice.h">
-      <Filter>Interface\GPU</Filter>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGAManager.h">
+      <Filter>Interface\GraphicAPI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Include\GPUInclude.h">
-      <Filter>头文件\GPU</Filter>
+    <ClInclude Include="..\..\..\Code\Core\Include\GAInclude.h">
+      <Filter>头文件\GraphicAPI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Include\IGPUDeviceImp_DX11.h">
-      <Filter>头文件\GPU</Filter>
+    <ClInclude Include="..\..\..\Code\Core\Include\GAMapper_DX11.h">
+      <Filter>头文件\GraphicAPI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Include\IGPUResourceImp_DX11.h">
-      <Filter>头文件\GPU</Filter>
+    <ClInclude Include="..\..\..\Code\Core\Include\IGADeviceImp_DX11.h">
+      <Filter>头文件\GraphicAPI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Include\GPUMapper_DX11.h">
-      <Filter>头文件\GPU</Filter>
+    <ClInclude Include="..\..\..\Code\Core\Include\IGADeviceImp_GL.h">
+      <Filter>头文件\GraphicAPI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Include\IGPUDeviceImp_GL.h">
-      <Filter>头文件\GPU</Filter>
+    <ClInclude Include="..\..\..\Code\Core\Include\IGAResourceImp_DX11.h">
+      <Filter>头文件\GraphicAPI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Include\IGPUResourceImp_GL.h">
-      <Filter>头文件\GPU</Filter>
+    <ClInclude Include="..\..\..\Code\Core\Include\IGAResourceImp_GL.h">
+      <Filter>头文件\GraphicAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGAAdapter.h">
+      <Filter>Interface\GraphicAPI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -314,17 +317,17 @@
     <ClCompile Include="..\..\..\Code\Core\Source\CPPScriptEnvironment.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\Source\IGPUResourceImp_DX11.cpp">
-      <Filter>源文件\GPU</Filter>
+    <ClCompile Include="..\..\..\Code\Core\Source\ICoreGAManager.cpp">
+      <Filter>源文件\GraphicAPI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\Source\IGPUDeviceImp_DX11.cpp">
-      <Filter>源文件\GPU</Filter>
+    <ClCompile Include="..\..\..\Code\Core\Source\IGADeviceImp_DX11.cpp">
+      <Filter>源文件\GraphicAPI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\Source\ICoreGPUManager.cpp">
-      <Filter>源文件\GPU</Filter>
+    <ClCompile Include="..\..\..\Code\Core\Source\IGAResourceImp_DX11.cpp">
+      <Filter>源文件\GraphicAPI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\Source\IGPUResourceImp_GL.cpp">
-      <Filter>源文件\GPU</Filter>
+    <ClCompile Include="..\..\..\Code\Core\Source\IGAResourceImp_GL.cpp">
+      <Filter>源文件\GraphicAPI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

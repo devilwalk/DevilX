@@ -7,6 +7,7 @@
 #include "CommonPlatformDefine.h"
 #include "CommonType.h"
 #include "CommonConstant.h"
+#include "CommonStruct.h"
 
 #include "CommonAngle.h"
 #include "CommonAny.h"

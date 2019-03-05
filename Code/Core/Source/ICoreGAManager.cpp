@@ -2,5 +2,5 @@
 using namespace NSDevilX;
 using namespace NSCore;
 
-NSDevilX::NSCore::IGPUManager::~IGPUManager()
+NSDevilX::NSCore::IGAManager::~IGAManager()
 {}

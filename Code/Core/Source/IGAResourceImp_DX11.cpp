@@ -3,7 +3,7 @@ using namespace NSDevilX;
 using namespace NSCore;
 using namespace NSDX11;
 
-NSDevilX::NSCore::NSDX11::IGPUBufferImp::IGPUBufferImp(ID3D11Device * device,const IGPUStruct::SBufferDesc & desc,const IGPUStruct::SSubResourceData * initialData)
+NSDevilX::NSCore::NSDX11::IGABufferImp::IGABufferImp(ID3D11Device * device,const IGPUStruct::SBufferDesc & desc,const IGPUStruct::SSubResourceData * initialData)
 	:mInternal(nullptr)
 {
 	if(initialData)
@@ -12,7 +12,7 @@ NSDevilX::NSCore::NSDX11::IGPUBufferImp::IGPUBufferImp(ID3D11Device * device,con
 		device->CreateBuffer(&CMapper::mapping(desc),NULL,&mInternal);
 }
 
-NSDevilX::NSCore::NSDX11::IGPUBufferImp::~IGPUBufferImp()
+NSDevilX::NSCore::NSDX11::IGABufferImp::~IGABufferImp()
 {
 	DEVILX_COM_SAFE_RELEASE(mInternal);
 }

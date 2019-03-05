@@ -3,7 +3,7 @@ namespace NSDevilX
 {
 	namespace NSCore
 	{
-		class IGPUEnum
+		class IGAEnum
 		{
 		public:
 			enum EGIFormat
@@ -437,6 +437,25 @@ namespace NSDevilX
 				EBindFlag_UNORDERED_ACCESS=0x80L,
 				EBindFlag_DECODER=0x200L,
 				EBindFlag_VIDEO_ENCODER=0x400L
+			};
+			enum ESRVDimension
+			{
+				ESRVDimension_UNKNOWN=0,
+				ESRVDimension_BUFFER=1,
+				ESRVDimension_TEXTURE1D=2,
+				ESRVDimension_TEXTURE1DARRAY=3,
+				ESRVDimension_TEXTURE2D=4,
+				ESRVDimension_TEXTURE2DARRAY=5,
+				ESRVDimension_TEXTURE2DMS=6,
+				ESRVDimension_TEXTURE2DMSARRAY=7,
+				ESRVDimension_TEXTURE3D=8,
+				ESRVDimension_TEXTURECUBE=9,
+				ESRVDimension_TEXTURECUBEARRAY=10
+			};
+			enum EBufferSRVFlag
+			{
+				EBufferSRVFlag_NONE=0,
+				EBufferSRVFlag_RAW=0x1
 			};
 			enum EDeviceVersion
 			{

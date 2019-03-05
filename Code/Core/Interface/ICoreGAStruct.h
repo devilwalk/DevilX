@@ -1,11 +1,11 @@
 #pragma once
-#include "ICoreGPUEnum.h"
-#include "ICoreGPUResource.h"
+#include "ICoreGAEnum.h"
+#include "ICoreGAResource.h"
 namespace NSDevilX
 {
 	namespace NSCore
 	{
-		class IGPUStruct
+		class IGAStruct
 		{
 		public:
 			struct SGISamplerDesc
@@ -15,9 +15,9 @@ namespace NSDevilX
 			};
 			struct SHeapProperties
 			{
-				IGPUEnum::EHeapType         Type;
-				IGPUEnum::ECPUPageProperty CPUPageProperty;
-				IGPUEnum::EMemoryPool       MemoryPoolPreference;
+				IGAEnum::EHeapType         Type;
+				IGAEnum::ECPUPageProperty CPUPageProperty;
+				IGAEnum::EMemoryPool       MemoryPoolPreference;
 				UInt32                    CreationNodeMask;
 				UInt32                    VisibleNodeMask;
 			};
@@ -26,20 +26,20 @@ namespace NSDevilX
 				UInt64                SizeInBytes;
 				SHeapProperties Properties;
 				UInt64                Alignment;
-				IGPUEnum::EHeapFlag      Flags;
+				IGAEnum::EHeapFlag      Flags;
 			};
 			struct SResourceDesc
 			{
-				IGPUEnum::EResourceDimension Dimension;
+				IGAEnum::EResourceDimension Dimension;
 				UInt64                   Alignment;
 				UInt64                   Width;
 				UInt32                     Height;
 				UInt16                   DepthOrArraySize;
 				UInt16                   MipLevels;
-				IGPUEnum::EGIFormat              Format;
+				IGAEnum::EGIFormat              Format;
 				SGISamplerDesc         SampleDesc;
-				IGPUEnum::ETextureLayout     Layout;
-				IGPUEnum::EResourceFlag     Flags;
+				IGAEnum::ETextureLayout     Layout;
+				IGAEnum::EResourceFlag     Flags;
 			};
 			struct SDepthStencilValue
 			{
@@ -48,7 +48,7 @@ namespace NSDevilX
 			};
 			struct SClearValue
 			{
-				IGPUEnum::EGIFormat Format;
+				IGAEnum::EGIFormat Format;
 				union
 				{
 					Float                     Color[4];
@@ -58,7 +58,7 @@ namespace NSDevilX
 			struct SBufferDesc
 			{
 				UInt32        ByteWidth;
-				IGPUEnum::EUsage Usage;
+				IGAEnum::EUsage Usage;
 				UInt32        BindFlags;
 				UInt32        CPUAccessFlags;
 				UInt32        MiscFlags;
@@ -69,8 +69,8 @@ namespace NSDevilX
 				UInt32        Width;
 				UInt32        MipLevels;
 				UInt32        ArraySize;
-				IGPUEnum::EGIFormat Format;
-				IGPUEnum::EUsage Usage;
+				IGAEnum::EGIFormat Format;
+				IGAEnum::EUsage Usage;
 				UInt32        BindFlags;
 				UInt32        CPUAccessFlags;
 				UInt32        MiscFlags;
@@ -81,9 +81,9 @@ namespace NSDevilX
 				UInt32             Height;
 				UInt32             MipLevels;
 				UInt32             ArraySize;
-				IGPUEnum::EGIFormat      Format;
+				IGAEnum::EGIFormat      Format;
 				SGISamplerDesc SampleDesc;
-				IGPUEnum::EUsage      Usage;
+				IGAEnum::EUsage      Usage;
 				UInt32             BindFlags;
 				UInt32             CPUAccessFlags;
 				UInt32             MiscFlags;
@@ -94,8 +94,8 @@ namespace NSDevilX
 				UInt32        Height;
 				UInt32        Depth;
 				UInt32        MipLevels;
-				IGPUEnum::EGIFormat Format;
-				IGPUEnum::EUsage Usage;
+				IGAEnum::EGIFormat Format;
+				IGAEnum::EUsage Usage;
 				UInt32        BindFlags;
 				UInt32        CPUAccessFlags;
 				UInt32        MiscFlags;
@@ -137,9 +137,9 @@ namespace NSDevilX
 			};
 			struct SDepthStencilViewDesc
 			{
-				IGPUEnum::EGIFormat         Format;
-				IGPUEnum::EDSVDimension ViewDimension;
-				IGPUEnum::EDSVFlag     Flags;
+				IGAEnum::EGIFormat         Format;
+				IGAEnum::EDSVDimension ViewDimension;
+				IGAEnum::EDSVFlag     Flags;
 				union
 				{
 					STex1DDSV         Texture1D;
@@ -154,7 +154,7 @@ namespace NSDevilX
 			{
 				UInt64 BufferLocation;
 				UInt32                      SizeInBytes;
-				IGPUEnum::EGIFormat               Format;
+				IGAEnum::EGIFormat               Format;
 			};
 			struct SVertexBufferView
 			{
@@ -175,13 +175,13 @@ namespace NSDevilX
 			{
 				Bool BlendEnable;
 				Bool LogicOpEnable;
-				IGPUEnum::EBlend SrcBlend;
-				IGPUEnum::EBlend DestBlend;
-				IGPUEnum::EBlendOp BlendOp;
-				IGPUEnum::EBlend SrcBlendAlpha;
-				IGPUEnum::EBlend DestBlendAlpha;
-				IGPUEnum::EBlendOp BlendOpAlpha;
-				IGPUEnum::ELogicOp LogicOp;
+				IGAEnum::EBlend SrcBlend;
+				IGAEnum::EBlend DestBlend;
+				IGAEnum::EBlendOp BlendOp;
+				IGAEnum::EBlend SrcBlendAlpha;
+				IGAEnum::EBlend DestBlendAlpha;
+				IGAEnum::EBlendOp BlendOpAlpha;
+				IGAEnum::ELogicOp LogicOp;
 				UInt8 RenderTargetWriteMask;
 			};
 			struct SBlendDesc
@@ -214,8 +214,8 @@ namespace NSDevilX
 			};
 			struct SRasterizerDesc
 			{
-				IGPUEnum::EFillMode                       FillMode;
-				IGPUEnum::ECullMode                       CullMode;
+				IGAEnum::EFillMode                       FillMode;
+				IGAEnum::ECullMode                       CullMode;
 				Bool                                  FrontCounterClockwise;
 				Int32                                   DepthBias;
 				Float                                 DepthBiasClamp;
@@ -224,20 +224,20 @@ namespace NSDevilX
 				Bool                                  MultisampleEnable;
 				Bool                                  AntialiasedLineEnable;
 				UInt32                                  ForcedSampleCount;
-				IGPUEnum::EConservativeRasterizationMode ConservativeRaster;
+				IGAEnum::EConservativeRasterizationMode ConservativeRaster;
 			};
 			struct SDepthStencilOpDesc
 			{
-				IGPUEnum::EStencilOp StencilFailOp;
-				IGPUEnum::EStencilOp StencilDepthFailOp;
-				IGPUEnum::EStencilOp StencilPassOp;
-				IGPUEnum::EComparisonFunc StencilFunc;
+				IGAEnum::EStencilOp StencilFailOp;
+				IGAEnum::EStencilOp StencilDepthFailOp;
+				IGAEnum::EStencilOp StencilPassOp;
+				IGAEnum::EComparisonFunc StencilFunc;
 			};
 			struct SDepthStencilDesc
 			{
 				Bool                       DepthEnable;
-				IGPUEnum::EDepthWriteMask     DepthWriteMask;
-				IGPUEnum::EComparisonFunc      DepthFunc;
+				IGAEnum::EDepthWriteMask     DepthWriteMask;
+				IGAEnum::EComparisonFunc      DepthFunc;
 				Bool                       StencilEnable;
 				UInt8                      StencilReadMask;
 				UInt8                      StencilWriteMask;
@@ -248,10 +248,10 @@ namespace NSDevilX
 			{
 				ConstCharPtr SemanticName;
 				UInt32 SemanticIndex;
-				IGPUEnum::EGIFormat Format;
+				IGAEnum::EGIFormat Format;
 				UInt32 InputSlot;
 				UInt32 AlignedByteOffset;
-				IGPUEnum::EInputClassification InputSlotClass;
+				IGAEnum::EInputClassification InputSlotClass;
 				UInt32 InstanceDataStepRate;
 			};
 			struct SInputLayoutDesc
@@ -268,6 +268,96 @@ namespace NSDevilX
 			{
 				ConstVoidPtr pCachedBlob;
 				SizeT CachedBlobSizeInBytes;
+			};
+			struct SBufferSRV
+			{
+				UInt64 FirstElement;
+				UInt32 NumElements;
+				UInt32 StructureByteStride;
+				IGAEnum::EBufferSRVFlag Flags;
+			};
+			struct STex1DSRV
+			{
+				UInt32 MostDetailedMip;
+				UInt32 MipLevels;
+				Float ResourceMinLODClamp;
+			};
+			struct STex1DArraySRV
+			{
+				UInt32 MostDetailedMip;
+				UInt32 MipLevels;
+				UInt32 FirstArraySlice;
+				UInt32 ArraySize;
+				Float ResourceMinLODClamp;
+			};
+			struct STex2DSRV
+			{
+				UInt32 MostDetailedMip;
+				UInt32 MipLevels;
+				UInt32 PlaneSlice;
+				Float ResourceMinLODClamp;
+			};
+			struct STex2DArraySRV
+			{
+				UInt32 MostDetailedMip;
+				UInt32 MipLevels;
+				UInt32 FirstArraySlice;
+				UInt32 ArraySize;
+				UInt32 PlaneSlice;
+				Float ResourceMinLODClamp;
+			};
+			struct STex2DMSSRV
+			{
+				UInt32 UnusedField_NothingToDefine;
+			};
+			struct STex2DMSArraySRV
+			{
+				UInt32 FirstArraySlice;
+				UInt32 ArraySize;
+			};
+			struct STex3DSRV
+			{
+				UInt32 MostDetailedMip;
+				UInt32 MipLevels;
+				Float ResourceMinLODClamp;
+			};
+			struct STexCubeSRV
+			{
+				UInt32 MostDetailedMip;
+				UInt32 MipLevels;
+				Float ResourceMinLODClamp;
+			};
+			struct STexCubeArraySRV
+			{
+				UInt32 MostDetailedMip;
+				UInt32 MipLevels;
+				UInt32 First2DArrayFace;
+				UInt32 NumCubes;
+				Float ResourceMinLODClamp;
+			};
+			struct SRaytracingAccelerationStructureSRV
+			{
+				UInt64 Location;
+			};
+			struct SShaderResourceViewDesc
+			{
+				IGAEnum::EGIFormat         Format;
+				IGAEnum::ESRVDimension ViewDimension;
+				UInt32                Shader4ComponentMapping;
+				union
+				{
+					SBufferSRV                            Buffer;
+					STex1DSRV                             Texture1D;
+					STex1DArraySRV                       Texture1DArray;
+					STex2DSRV                             Texture2D;
+					STex2DArraySRV                       Texture2DArray;
+					STex2DMSSRV                           Texture2DMS;
+					STex2DMSArraySRV                     Texture2DMSArray;
+					STex3DSRV                             Texture3D;
+					STexCubeSRV                           TextureCube;
+					STexCubeArraySRV                     TextureCubeArray;
+					SRaytracingAccelerationStructureSRV RaytracingAccelerationStructure;
+				};
 			};
 		};
 	}

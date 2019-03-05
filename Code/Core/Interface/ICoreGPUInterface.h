@@ -1,9 +1,0 @@
-#pragma once
-#include "ICoreGPUCommandList.h"
-#include "ICoreGPUCommandQueue.h"
-#include "ICoreGPUDevice.h"
-#include "ICoreGPUManager.h"
-#include "ICoreGPUEnum.h"
-#include "ICoreGPUResource.h"
-#include "ICoreGPUStruct.h"
-#include "ICoreGPUView.h"

@@ -5,19 +5,19 @@ namespace NSDevilX
 	{
 		namespace NSGL
 		{
-			class IGPUResourceImp
-				:public IGPUResource
+			class IGAResourceImp
+				:public IGAResource
 			{
 			protected:
 				GLuint mInternal;
 			public:
-				IGPUResourceImp();
-				virtual~IGPUResourceImp();
+				IGAResourceImp();
+				virtual~IGAResourceImp();
 			};
 			class IGPUBufferImp
 				:public TBaseObject<IGPUBufferImp>
-				,public IGPUResourceImp
-				,public IGPUBuffer
+				,public IGAResourceImp
+				,public IGABuffer
 			{
 			public:
 				IGPUBufferImp();

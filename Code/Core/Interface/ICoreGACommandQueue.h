@@ -4,10 +4,10 @@ namespace NSDevilX
 {
 	namespace NSCore
 	{
-		class IGPUCommandQueue
+		class IGACommandQueue
 		{
 		protected:
-			virtual ~IGPUCommandQueue(){ }
+			virtual ~IGACommandQueue(){ }
 		public:
 		};
 	}
