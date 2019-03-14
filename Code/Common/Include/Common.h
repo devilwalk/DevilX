@@ -24,6 +24,7 @@
 #include "CommonOctree.h"
 #include "CommonPathUtility.h"
 #include "CommonPlane.h"
+#include "CommonPointer.h"
 #include "CommonRange.h"
 #include "CommonRay.h"
 #include "CommonRect.h"

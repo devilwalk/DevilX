@@ -38,6 +38,7 @@
     <ClInclude Include="..\..\..\Code\Common\Include\CommonPlane.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonPlatformDefine.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonPlatformInclude.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonPointer.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonRange.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonRay.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonRect.h" />
