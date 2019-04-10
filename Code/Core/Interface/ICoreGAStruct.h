@@ -8,38 +8,24 @@ namespace NSDevilX
 		class IGAStruct
 		{
 		public:
+			struct SGIModeDesc
+			{
+				UInt32 Width;
+				UInt32 Height;
+				UInt32 RefreshRate;
+				IGAEnum::EGIFormat Format;
+			};
 			struct SGISamplerDesc
 			{
 				UInt32 Count;
 				UInt32 Quality;
 			};
-			struct SHeapProperties
+			struct SGISwapChainDesc
 			{
-				IGAEnum::EHeapType         Type;
-				IGAEnum::ECPUPageProperty CPUPageProperty;
-				IGAEnum::EMemoryPool       MemoryPoolPreference;
-				UInt32                    CreationNodeMask;
-				UInt32                    VisibleNodeMask;
-			};
-			struct SHeapDesc
-			{
-				UInt64                SizeInBytes;
-				SHeapProperties Properties;
-				UInt64                Alignment;
-				IGAEnum::EHeapFlag      Flags;
-			};
-			struct SResourceDesc
-			{
-				IGAEnum::EResourceDimension Dimension;
-				UInt64                   Alignment;
-				UInt64                   Width;
-				UInt32                     Height;
-				UInt16                   DepthOrArraySize;
-				UInt16                   MipLevels;
-				IGAEnum::EGIFormat              Format;
-				SGISamplerDesc         SampleDesc;
-				IGAEnum::ETextureLayout     Layout;
-				IGAEnum::EResourceFlag     Flags;
+				SGIModeDesc   BufferDesc;
+				SGISamplerDesc SampleDesc;
+				UInt32       BufferUsage;
+				VoidPtr             OutputWindow;
 			};
 			struct SDepthStencilValue
 			{
@@ -55,112 +41,11 @@ namespace NSDevilX
 					SDepthStencilValue DepthStencil;
 				};
 			};
-			struct SBufferDesc
-			{
-				UInt32        ByteWidth;
-				IGAEnum::EUsage Usage;
-				UInt32        BindFlags;
-				UInt32        CPUAccessFlags;
-				UInt32        MiscFlags;
-				UInt32        StructureByteStride;
-			};
-			struct STexture1DDesc
-			{
-				UInt32        Width;
-				UInt32        MipLevels;
-				UInt32        ArraySize;
-				IGAEnum::EGIFormat Format;
-				IGAEnum::EUsage Usage;
-				UInt32        BindFlags;
-				UInt32        CPUAccessFlags;
-				UInt32        MiscFlags;
-			};
-			struct STexture2DDesc
-			{
-				UInt32             Width;
-				UInt32             Height;
-				UInt32             MipLevels;
-				UInt32             ArraySize;
-				IGAEnum::EGIFormat      Format;
-				SGISamplerDesc SampleDesc;
-				IGAEnum::EUsage      Usage;
-				UInt32             BindFlags;
-				UInt32             CPUAccessFlags;
-				UInt32             MiscFlags;
-			};
-			struct STexture3DDesc
-			{
-				UInt32        Width;
-				UInt32        Height;
-				UInt32        Depth;
-				UInt32        MipLevels;
-				IGAEnum::EGIFormat Format;
-				IGAEnum::EUsage Usage;
-				UInt32        BindFlags;
-				UInt32        CPUAccessFlags;
-				UInt32        MiscFlags;
-			};
 			struct SSubResourceData
 			{
 				ConstVoidPtr pSysMem;
 				UInt32       SysMemPitch;
 				UInt32       SysMemSlicePitch;
-			};
-			struct STex1DDSV
-			{
-				UInt32 MipSlice;
-			};
-			struct STex1DArrayDSV
-			{
-				UInt32 MipSlice;
-				UInt32 FirstArraySlice;
-				UInt32 ArraySize;
-			};
-			struct STex2DDsv
-			{
-				UInt32 MipSlice;
-			};
-			struct STex2DArrayDsv
-			{
-				UInt32 MipSlice;
-				UInt32 FirstArraySlice;
-				UInt32 ArraySize;
-			};
-			struct STex2DMSDsv
-			{
-				UInt32 UnusedField_NothingToDefine;
-			};
-			struct STex2DMSArrayDsv
-			{
-				UInt32 FirstArraySlice;
-				UInt32 ArraySize;
-			};
-			struct SDepthStencilViewDesc
-			{
-				IGAEnum::EGIFormat         Format;
-				IGAEnum::EDSVDimension ViewDimension;
-				IGAEnum::EDSVFlag     Flags;
-				union
-				{
-					STex1DDSV         Texture1D;
-					STex1DArrayDSV   Texture1DArray;
-					STex2DDsv         Texture2D;
-					STex2DArrayDsv   Texture2DArray;
-					STex2DMSDsv       Texture2DMS;
-					STex2DMSArrayDsv Texture2DMSArray;
-				};
-			};
-			struct SIndexBufferView
-			{
-				UInt64 BufferLocation;
-				UInt32                      SizeInBytes;
-				IGAEnum::EGIFormat               Format;
-			};
-			struct SVertexBufferView
-			{
-				UInt64 BufferLocation;
-				UInt32                      SizeInBytes;
-				UInt32                      StrideInBytes;
 			};
 			struct SViewport
 			{
@@ -244,6 +129,19 @@ namespace NSDevilX
 				SDepthStencilOpDesc FrontFace;
 				SDepthStencilOpDesc BackFace;
 			};
+			struct SSamplerDesc
+			{
+				IGAEnum::EFilter Filter;
+				IGAEnum::ETextureAddressMode AddressU;
+				IGAEnum::ETextureAddressMode AddressV;
+				IGAEnum::ETextureAddressMode AddressW;
+				Float MipLODBias;
+				UInt32 MaxAnisotropy;
+				IGAEnum::EComparisonFunc ComparisonFunc;
+				Float BorderColor[4];
+				Float MinLOD;
+				Float MaxLOD;
+			};
 			struct SInputElementDesc
 			{
 				ConstCharPtr SemanticName;
@@ -251,18 +149,12 @@ namespace NSDevilX
 				IGAEnum::EGIFormat Format;
 				UInt32 InputSlot;
 				UInt32 AlignedByteOffset;
-				IGAEnum::EInputClassification InputSlotClass;
 				UInt32 InstanceDataStepRate;
 			};
 			struct SInputLayoutDesc
 			{
 				const SInputElementDesc *pInputElementDescs;
 				UInt32 NumElements;
-			};
-			struct SSamplerDesc
-			{
-				UInt32 Count;
-				UInt32 Quality;
 			};
 			struct SCachedPipelineState
 			{
@@ -274,7 +166,6 @@ namespace NSDevilX
 				UInt64 FirstElement;
 				UInt32 NumElements;
 				UInt32 StructureByteStride;
-				IGAEnum::EBufferSRVFlag Flags;
 			};
 			struct STex1DSRV
 			{

@@ -129,6 +129,15 @@ namespace NSDevilX
 				EGIFormat_V408,
 				EGIFormat_FORCE_UINT
 			};
+			enum EGIUsage
+			{
+				EGIUsage_BackBuffer=1,
+				EGIUsage_DiscardOnPresent=1<<1,
+				EGIUsage_ReadOnly=1<<2,
+				EGIUsage_RenderTargetOutput=1<<3,
+				EGIUsage_ShaderInput=1<<4,
+				EGIUsage_UnorderedAccess=1<<5
+			};
 			enum EPrimitiveTopology
 			{
 				EPrimitiveTopology_UNDEFINED,
@@ -201,35 +210,6 @@ namespace NSDevilX
 			{
 				EClearFlag_DEPTH,
 				EClearFlag_STENCIL
-			};
-			enum ECommandListType
-			{
-				ECommandListType_DIRECT,
-				ECommandListType_BUNDLE,
-				ECommandListType_COMPUTE,
-				ECommandListType_COPY,
-				ECommandListType_VIDEO_DECODE,
-				ECommandListType_VIDEO_PROCESS
-			};
-			enum EHeapType
-			{
-				EHeapType_DEFAULT,
-				EHeapType_UPLOAD,
-				EHeapType_READBACK,
-				EHeapType_CUSTOM
-			};
-			enum ECPUPageProperty
-			{
-				ECPUPageProperty_UNKNOWN,
-				ECPUPageProperty_NOT_AVAILABLE,
-				ECPUPageProperty_WRITE_COMBINE,
-				ECPUPageProperty_WRITE_BACK
-			};
-			enum EMemoryPool
-			{
-				EMemoryPool_UNKNOWN,
-				EMemoryPool_L0,
-				EMemoryPool_L1
 			};
 			enum EBlend
 			{
@@ -321,17 +301,6 @@ namespace NSDevilX
 				EStencilOp_INCR=7,
 				EStencilOp_DECR=8
 			};
-			enum EInputClassification
-			{
-				EInputClassification_PER_VERTEX_DATA=0,
-				EInputClassification_PER_INSTANCE_DATA=1
-			};
-			enum EIndexBufferStripCutValue
-			{
-				EIndexBufferStripCutValue_DISABLED=0,
-				EIndexBufferStripCutValue_0xFFFF=1,
-				EIndexBufferStripCutValue_0xFFFFFFFF=2
-			};
 			enum EPrimitiveTopologyType
 			{
 				EPrimitiveTopologyType_UNDEFINED=0,
@@ -339,82 +308,6 @@ namespace NSDevilX
 				EPrimitiveTopologyType_LINE=2,
 				EPrimitiveTopologyType_TRIANGLE=3,
 				EPrimitiveTopologyType_PATCH=4
-			};
-			enum EPipelineStateFlag
-			{
-				EPipelineStateFlag_NONE=0,
-				EPipelineStateFlag_TOOL_DEBUG=0x1
-			};
-			enum EHeapFlag
-			{
-				EHeapFlag_NONE,
-				EHeapFlag_SHARED,
-				EHeapFlag_DENY_BUFFERS,
-				EHeapFlag_ALLOW_DISPLAY,
-				EHeapFlag_SHARED_CROSS_ADAPTER,
-				EHeapFlag_DENY_RT_DS_TEXTURES,
-				EHeapFlag_DENY_NON_RT_DS_TEXTURES,
-				EHeapFlag_HARDWARE_PROTECTED,
-				EHeapFlag_ALLOW_WRITE_WATCH,
-				EHeapFlag_ALLOW_SHADER_ATOMICS,
-				EHeapFlag_ALLOW_ALL_BUFFERS_AND_TEXTURES,
-				EHeapFlag_ALLOW_ONLY_BUFFERS,
-				EHeapFlag_ALLOW_ONLY_NON_RT_DS_TEXTURES,
-				EHeapFlag_ALLOW_ONLY_RT_DS_TEXTURES
-			};
-			enum EResourceDimension
-			{
-				EResourceDimension_UNKNOWN,
-				EResourceDimension_BUFFER,
-				EResourceDimension_TEXTURE1D,
-				EResourceDimension_TEXTURE2D,
-				EResourceDimension_TEXTURE3D
-			};
-			enum ETextureLayout
-			{
-				ETextureLayout_UNKNOWN,
-				ETextureLayout_ROW_MAJOR,
-				ETextureLayout_64KB_UNDEFINED_SWIZZLE,
-				ETextureLayout_64KB_STANDARD_SWIZZLE
-			};
-			enum EResourceFlag
-			{
-				EResourceFlag_NONE,
-				EResourceFlag_ALLOW_RENDER_TARGET,
-				EResourceFlag_ALLOW_DEPTH_STENCIL,
-				EResourceFlag_ALLOW_UNORDERED_ACCESS,
-				EResourceFlag_DENY_SHADER_RESOURCE,
-				EResourceFlag_ALLOW_CROSS_ADAPTER,
-				EResourceFlag_ALLOW_SIMULTANEOUS_ACCESS,
-				EResourceFlag_VIDEO_DECODE_REFERENCE_ONLY
-			};
-			enum EResourceState
-			{
-				EResourceState_COMMON,
-				EResourceState_VERTEX_AND_CONSTANT_BUFFER,
-				EResourceState_INDEX_BUFFER,
-				EResourceState_RENDER_TARGET,
-				EResourceState_UNORDERED_ACCESS,
-				EResourceState_DEPTH_WRITE,
-				EResourceState_DEPTH_READ,
-				EResourceState_NON_PIXEL_SHADER_RESOURCE,
-				EResourceState_PIXEL_SHADER_RESOURCE,
-				EResourceState_STREAM_OUT,
-				EResourceState_INDIRECT_ARGUMENT,
-				EResourceState_COPY_DEST,
-				EResourceState_COPY_SOURCE,
-				EResourceState_RESOLVE_DEST,
-				EResourceState_RESOLVE_SOURCE,
-				EResourceState_GENERIC_READ,
-				EResourceState_RAYTRACING_ACCELERATION_STRUCTURE,
-				EResourceState_PRESENT,
-				EResourceState_PREDICATION,
-				EResourceState_VIDEO_DECODE_READ,
-				EResourceState_VIDEO_DECODE_WRITE,
-				EResourceState_VIDEO_PROCESS_READ,
-				EResourceState_VIDEO_PROCESS_WRITE,
-				EResourceState_VIDEO_ENCODE_READ,
-				EResourceState_VIDEO_ENCODE_WRITE
 			};
 			enum EShaderType
 			{
@@ -425,18 +318,20 @@ namespace NSDevilX
 				EShaderType_Domain,
 				EShaderType_Compute
 			};
-			enum EBindFlag
+			enum EBufferBindFlag
 			{
-				EBindFlag_VERTEX_BUFFER=0x1L,
-				EBindFlag_INDEX_BUFFER=0x2L,
-				EBindFlag_CONSTANT_BUFFER=0x4L,
-				EBindFlag_SHADER_RESOURCE=0x8L,
-				EBindFlag_STREAM_OUTPUT=0x10L,
-				EBindFlag_RENDER_TARGET=0x20L,
-				EBindFlag_DEPTH_STENCIL=0x40L,
-				EBindFlag_UNORDERED_ACCESS=0x80L,
-				EBindFlag_DECODER=0x200L,
-				EBindFlag_VIDEO_ENCODER=0x400L
+				EBufferBindFlag_StreamOut=1,
+			};
+			enum ETextureBindFlag
+			{
+				ETextureBindFlag_ShaderResource=1,
+				ETextureBindFlag_RenderTarget=1<<1,
+				ETextureBindFlag_DepthStencil=1<<2
+			};
+			enum ECPUAccessFlag
+			{
+				ECPUAccessFlag_Write=1,
+				ECPUAccessFlag_Read=1<<1
 			};
 			enum ESRVDimension
 			{
@@ -452,18 +347,59 @@ namespace NSDevilX
 				ESRVDimension_TEXTURECUBE=9,
 				ESRVDimension_TEXTURECUBEARRAY=10
 			};
-			enum EBufferSRVFlag
-			{
-				EBufferSRVFlag_NONE=0,
-				EBufferSRVFlag_RAW=0x1
-			};
 			enum EDeviceVersion
 			{
 				EDeviceVersion_DirectX11,
-				EDeviceVersion_DirectX12,
-				EDeviceVersion_OpenGLES3,
-				EDeviceVersion_OpenGL4,
+				EDeviceVersion_OpenGLES,
+				EDeviceVersion_OpenGL,
 				EDeviceVersion_Vulkan
+			};
+			enum EFilter
+			{
+				EFilter_MIN_MAG_MIP_POINT=0,
+				EFilter_MIN_MAG_POINT_MIP_LINEAR=0x1,
+				EFilter_MIN_POINT_MAG_LINEAR_MIP_POINT=0x4,
+				EFilter_MIN_POINT_MAG_MIP_LINEAR=0x5,
+				EFilter_MIN_LINEAR_MAG_MIP_POINT=0x10,
+				EFilter_MIN_LINEAR_MAG_POINT_MIP_LINEAR=0x11,
+				EFilter_MIN_MAG_LINEAR_MIP_POINT=0x14,
+				EFilter_MIN_MAG_MIP_LINEAR=0x15,
+				EFilter_ANISOTROPIC=0x55,
+				EFilter_COMPARISON_MIN_MAG_MIP_POINT=0x80,
+				EFilter_COMPARISON_MIN_MAG_POINT_MIP_LINEAR=0x81,
+				EFilter_COMPARISON_MIN_POINT_MAG_LINEAR_MIP_POINT=0x84,
+				EFilter_COMPARISON_MIN_POINT_MAG_MIP_LINEAR=0x85,
+				EFilter_COMPARISON_MIN_LINEAR_MAG_MIP_POINT=0x90,
+				EFilter_COMPARISON_MIN_LINEAR_MAG_POINT_MIP_LINEAR=0x91,
+				EFilter_COMPARISON_MIN_MAG_LINEAR_MIP_POINT=0x94,
+				EFilter_COMPARISON_MIN_MAG_MIP_LINEAR=0x95,
+				EFilter_COMPARISON_ANISOTROPIC=0xd5,
+				EFilter_MINIMUM_MIN_MAG_MIP_POINT=0x100,
+				EFilter_MINIMUM_MIN_MAG_POINT_MIP_LINEAR=0x101,
+				EFilter_MINIMUM_MIN_POINT_MAG_LINEAR_MIP_POINT=0x104,
+				EFilter_MINIMUM_MIN_POINT_MAG_MIP_LINEAR=0x105,
+				EFilter_MINIMUM_MIN_LINEAR_MAG_MIP_POINT=0x110,
+				EFilter_MINIMUM_MIN_LINEAR_MAG_POINT_MIP_LINEAR=0x111,
+				EFilter_MINIMUM_MIN_MAG_LINEAR_MIP_POINT=0x114,
+				EFilter_MINIMUM_MIN_MAG_MIP_LINEAR=0x115,
+				EFilter_MINIMUM_ANISOTROPIC=0x155,
+				EFilter_MAXIMUM_MIN_MAG_MIP_POINT=0x180,
+				EFilter_MAXIMUM_MIN_MAG_POINT_MIP_LINEAR=0x181,
+				EFilter_MAXIMUM_MIN_POINT_MAG_LINEAR_MIP_POINT=0x184,
+				EFilter_MAXIMUM_MIN_POINT_MAG_MIP_LINEAR=0x185,
+				EFilter_MAXIMUM_MIN_LINEAR_MAG_MIP_POINT=0x190,
+				EFilter_MAXIMUM_MIN_LINEAR_MAG_POINT_MIP_LINEAR=0x191,
+				EFilter_MAXIMUM_MIN_MAG_LINEAR_MIP_POINT=0x194,
+				EFilter_MAXIMUM_MIN_MAG_MIP_LINEAR=0x195,
+				EFilter_MAXIMUM_ANISOTROPIC=0x1d5
+			};
+			enum ETextureAddressMode
+			{
+				ETextureAddressMode_WRAP=1,
+				ETextureAddressMode_MIRROR=2,
+				ETextureAddressMode_CLAMP=3,
+				ETextureAddressMode_BORDER=4,
+				ETextureAddressMode_MIRROR_ONCE=5
 			};
 		};
 	}

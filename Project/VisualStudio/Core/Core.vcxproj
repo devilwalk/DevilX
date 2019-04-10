@@ -131,7 +131,10 @@
     <ClInclude Include="..\..\..\Code\Core\Include\FileManager.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\FunctionWorker.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\GAInclude.h" />
-    <ClInclude Include="..\..\..\Code\Core\Include\GAMapper_DX11.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\GAManager_DX.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\GAUtility_DX.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\GAUtility_GL.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\IGASwapChainImp_DX.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\ICPPScriptEnvironmentImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\IDirectoryImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\IFileImp.h" />
@@ -169,11 +172,10 @@
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreFile.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreFileManager.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreFileProcesser.h" />
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGAAdapter.h" />
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGACommandList.h" />
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGACommandQueue.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGADeviceContext.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGADevice.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGAManager.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGASwapChain.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGAView.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGAEnum.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGAInterface.h" />
@@ -199,6 +201,7 @@
     <ClCompile Include="..\..\..\Code\Core\Source\CPPScriptEnvironment.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\DirectXManager.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\FileManager.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\GAManager_DX.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\ICoreDirectXManager.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\ICoreGAManager.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\ICoreMemoryManager.cpp" />
@@ -211,6 +214,7 @@
     <ClCompile Include="..\..\..\Code\Core\Source\IGADeviceImp_DX11.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\IGAResourceImp_DX11.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\IGAResourceImp_GL.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\IGASwapChainImp_DX.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\INetworkConnectionImp.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\INetworkHostImp.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\ISemaphoreImp.cpp" />

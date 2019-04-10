@@ -1,9 +1,9 @@
 #pragma once
-#include "ICoreGACommandList.h"
-#include "ICoreGACommandQueue.h"
 #include "ICoreGADevice.h"
+#include "ICoreGADeviceContext.h"
 #include "ICoreGAManager.h"
 #include "ICoreGAEnum.h"
 #include "ICoreGAResource.h"
 #include "ICoreGAStruct.h"
+#include "ICoreGASwapChain.h"
 #include "ICoreGAView.h"

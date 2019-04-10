@@ -3,31 +3,31 @@ namespace NSDevilX
 {
 	namespace NSCore
 	{
-		namespace NSDX11
+		namespace NSDirectX
 		{
-			class IGPUDeviceImp
-				:public TBaseObject<IGPUDeviceImp>
-				,public IGPUDevice
+			namespace NSVersion11
 			{
-			protected:
-				ID3D11Device * mDevice;
-				ID3D11DeviceContext * mImmediateContext;
-			public:
-				IGPUDeviceImp();
-				~IGPUDeviceImp();
+				class IGADeviceImp
+					:public TBaseObject<IGADeviceImp>
+					,public IGADevice
+				{
+				protected:
+					ID3D11Device * mInternal;
+					ID3D11DeviceContext * mImmediateContext;
+				public:
+					IGADeviceImp();
+					~IGADeviceImp();
 
-				// Í¨¹ý IGPUDevice ¼Ì³Ð
-				virtual IGPUBuffer * createBuffer(const IGPUStruct::SBufferDesc & desc,const IGPUStruct::SSubResourceData * initialData=nullptr) override;
-				virtual IGPUTexture1D * createTexture1D(const IGPUStruct::STexture1DDesc & desc,const IGPUStruct::SSubResourceData * initialData=nullptr) override;
-				virtual IGPUTexture2D * createTexture2D(const IGPUStruct::STexture2DDesc & desc,const IGPUStruct::SSubResourceData * initialData=nullptr) override;
-				virtual IGPUTexture3D * createTexture3D(const IGPUStruct::STexture3DDesc & desc,const IGPUStruct::SSubResourceData * initialData=nullptr) override;
-				virtual IGPUInputLayout * createInputLayout(const IGPUStruct::SInputLayoutDesc & desc) override;
-				virtual IGPUShader * createShader(ConstVoidPtr code,SizeT codeSize,IGPUEnum::EShaderType type) override;
-				virtual IGPUPipelineState * createBlendState(const IGPUStruct::SBlendDesc & desc) override;
-				virtual IGPUPipelineState * createDepthStencilState(const IGPUStruct::SDepthStencilDesc & desc) override;
-				virtual IGPUPipelineState * createRasterizerState(const IGPUStruct::SRasterizerDesc & desc) override;
-				virtual IGPUSampler * createSampler(const IGPUStruct::SSamplerDesc & desc) override;
-			};
+					ID3D11Device * getInternal()const
+					{
+						return mInternal;
+					}
+					ID3D11DeviceContext * getImmediateContext()const
+					{
+						return mImmediateContext;
+					}
+				};
+			}
 		}
 	}
 }

@@ -1,6 +1,9 @@
 #pragma once
-#include "GAMapper_DX11.h"
+#include "GAManager_DX.h"
+#include "GAUtility_DX.h"
+#include "GAUtility_GL.h"
 #include "IGADeviceImp_DX11.h"
 #include "IGADeviceImp_GL.h"
 #include "IGAResourceImp_DX11.h"
 #include "IGAResourceImp_GL.h"
+#include "IGASwapChainImp_DX.h"

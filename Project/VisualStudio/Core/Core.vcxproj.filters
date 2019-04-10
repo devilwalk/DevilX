@@ -201,12 +201,6 @@
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGAView.h">
       <Filter>Interface\GraphicAPI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGACommandList.h">
-      <Filter>Interface\GraphicAPI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGACommandQueue.h">
-      <Filter>Interface\GraphicAPI</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGAInterface.h">
       <Filter>Interface\GraphicAPI</Filter>
     </ClInclude>
@@ -214,9 +208,6 @@
       <Filter>Interface\GraphicAPI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Core\Include\GAInclude.h">
-      <Filter>头文件\GraphicAPI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Include\GAMapper_DX11.h">
       <Filter>头文件\GraphicAPI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Core\Include\IGADeviceImp_DX11.h">
@@ -231,8 +222,23 @@
     <ClInclude Include="..\..\..\Code\Core\Include\IGAResourceImp_GL.h">
       <Filter>头文件\GraphicAPI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGAAdapter.h">
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGADeviceContext.h">
       <Filter>Interface\GraphicAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\GAManager_DX.h">
+      <Filter>头文件\GraphicAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGASwapChain.h">
+      <Filter>Interface\GraphicAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\IGASwapChainImp_DX.h">
+      <Filter>头文件\GraphicAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\GAUtility_GL.h">
+      <Filter>头文件\GraphicAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\GAUtility_DX.h">
+      <Filter>头文件\GraphicAPI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -327,6 +333,12 @@
       <Filter>源文件\GraphicAPI</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Core\Source\IGAResourceImp_GL.cpp">
+      <Filter>源文件\GraphicAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\GAManager_DX.cpp">
+      <Filter>源文件\GraphicAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\IGASwapChainImp_DX.cpp">
       <Filter>源文件\GraphicAPI</Filter>
     </ClCompile>
   </ItemGroup>

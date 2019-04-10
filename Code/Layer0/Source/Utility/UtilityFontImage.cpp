@@ -44,7 +44,7 @@ Void NSDevilX::CFontImage::getPixelRange(const CUTF8Char & ch,CUInt2 * pixelStar
 		{
 			for(UInt32 u=0;u<bitmap.width;++u)
 			{
-				auto font_img_pixel=bitmap.buffer[v*bitmap.width+u];
+				auto font_img_pixel=bitmap.buffer[v*bitmap.pitch+u];
 				auto & pixel_ref=mPixels[(fill_pixel_start_v+v)*getSize().x+pixel_start_u+u];
 				pixel_ref=font_img_pixel;
 			}

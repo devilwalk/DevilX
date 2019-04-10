@@ -3,11 +3,12 @@ namespace NSDevilX
 {
 	namespace NSCore
 	{
-		class IGAAdapter
+		class IGASwapChain
 		{
 		protected:
-			virtual ~IGAAdapter(){}
+			virtual ~IGASwapChain(){ }
 		public:
+			virtual Void present()=0;
 		};
 	}
 }

@@ -9,13 +9,6 @@ namespace NSDevilX
 			virtual ~IGAResource(){ }
 		public:
 		};
-		class IGAHeap
-		{
-		protected:
-			virtual ~IGAHeap(){}
-		public:
-			virtual IGAResource * queryInterface_IGAResource()=0;
-		};
 		class IGABuffer
 		{
 		protected:
@@ -24,6 +17,34 @@ namespace NSDevilX
 			}
 		public:
 			virtual IGAResource * queryInterface_IGAResource()=0;
+		};
+		class IGAVertexBuffer
+		{
+		protected:
+			virtual ~IGAVertexBuffer(){ }
+		public:
+			virtual IGABuffer * queryInterface_IGABuffer()=0;
+		};
+		class IGAIndexBuffer
+		{
+		protected:
+			virtual ~IGAIndexBuffer(){ }
+		public:
+			virtual IGABuffer * queryInterface_IGABuffer()=0;
+		};
+		class IGAConstantBuffer
+		{
+		protected:
+			virtual ~IGAConstantBuffer(){ }
+		public:
+			virtual IGABuffer * queryInterface_IGABuffer()=0;
+		};
+		class IGAUnorderedAccessBuffer
+		{
+		protected:
+			virtual ~IGAUnorderedAccessBuffer(){ }
+		public:
+			virtual IGABuffer * queryInterface_IGABuffer()=0;
 		};
 		class IGATexture
 		{
@@ -64,11 +85,27 @@ namespace NSDevilX
 		public:
 			virtual IGAResource * queryInterface_IGAResource()=0;
 		};
-		class IGAPipelineState
+		class IGABlendState
 		{
 		protected:
-			virtual ~IGAPipelineState()
+			virtual ~IGABlendState()
 			{}
+		public:
+			virtual IGAResource * queryInterface_IGAResource()=0;
+		};
+		class IGARasterizerState
+		{
+		protected:
+			virtual ~IGARasterizerState()
+			{
+			}
+		public:
+			virtual IGAResource * queryInterface_IGAResource()=0;
+		};
+		class IGADepthStencilState
+		{
+		protected:
+			virtual ~IGADepthStencilState(){ }
 		public:
 			virtual IGAResource * queryInterface_IGAResource()=0;
 		};
@@ -79,10 +116,10 @@ namespace NSDevilX
 		public:
 			virtual IGAResource * queryInterface_IGAResource()=0;
 		};
-		class IGASampler
+		class IGASamplerState
 		{
 		protected:
-			virtual ~IGASampler(){ }
+			virtual ~IGASamplerState(){ }
 		public:
 			virtual IGAResource * queryInterface_IGAResource()=0;
 		};

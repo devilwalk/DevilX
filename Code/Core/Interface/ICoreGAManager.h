@@ -1,6 +1,6 @@
 #pragma once
-#include "ICoreGAAdapter.h"
 #include "ICoreGADevice.h"
+#include "ICoreGASwapChain.h"
 namespace NSDevilX
 {
 	namespace NSCore
@@ -10,8 +10,8 @@ namespace NSDevilX
 		protected:
 			~IGAManager();
 		public:
-			IGAAdapter * getAdapter(SizeT index=0);
-			IGADevice * createDevice(IGAEnum::EDeviceVersion version,IGAAdapter * adapter=nullptr);
+			IGADevice * createDevice(IGAEnum::EDeviceVersion version);
+			IGASwapChain * createSwapChain(IGADevice * dev,const IGAStruct::SGISwapChainDesc & desc);
 		};
 	}
 }
