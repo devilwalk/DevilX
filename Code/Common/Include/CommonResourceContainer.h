@@ -138,6 +138,28 @@ namespace NSDevilX
 		virtual ~TRefResourcePtrSet()
 		{}
 	};
+	template<class ValueT,class THash=std::hash<ValueT*>,class TEqual=std::equal_to<ValueT*>,class TAllocator=std::allocator<ValueT*> >
+	class TResourcePtrUnorderedSet
+		:public TResourcePtrContainer<TUnorderedSet<ValueT*,THash,TEqual,TAllocator> >
+	{
+	public:
+		using TResourcePtrContainer<TUnorderedSet<ValueT*,THash,TEqual,TAllocator> >::TResourcePtrContainer;
+		using TResourcePtrContainer<TUnorderedSet<ValueT*,THash,TEqual,TAllocator> >::operator=;
+		virtual ~TResourcePtrUnorderedSet()
+		{
+		}
+	};
+	template<class ValueT,class THash=std::hash<ValueT*>,class TEqual=std::equal_to<ValueT*>,class TAllocator=std::allocator<ValueT*> >
+	class TRefResourcePtrUnorderedSet
+		:public TRefResourcePtrContainer<TUnorderedSet<ValueT*,THash,TEqual,TAllocator> >
+	{
+	public:
+		using TRefResourcePtrContainer<TUnorderedSet<ValueT*,THash,TEqual,TAllocator> >::TRefResourcePtrContainer;
+		using TRefResourcePtrContainer<TUnorderedSet<ValueT*,THash,TEqual,TAllocator> >::operator=;
+		virtual ~TRefResourcePtrUnorderedSet()
+		{
+		}
+	};
 	template<typename KeyT,class ValueT,typename SortfuncT=std::less<KeyT>,class TAllocator=std::allocator<std::pair<KeyT,ValueT*> > >
 	class TResourcePtrMap
 		:public TMap<KeyT,ValueT*,SortfuncT,TAllocator>
@@ -202,29 +224,93 @@ namespace NSDevilX
 			this->clear();
 		}
 	};
-	template<class T,class TStringAllocator=std::allocator<Char>,class TAllocator=std::allocator<std::pair<const std::basic_string<Char,std::char_traits<Char>,TStringAllocator>,T*> > >
-	class TNamedResourcePtrMap
-		:public TResourcePtrMap<const std::basic_string<Char,std::char_traits<Char>,TStringAllocator>,T,std::less<std::basic_string<Char,std::char_traits<Char>,TStringAllocator> >,TAllocator>
+	template<typename KeyT,class ValueT,class THash=std::hash<KeyT*>,class TEqual=std::equal_to<KeyT*>,class TAllocator=std::allocator<std::pair<KeyT,ValueT*> > >
+	class TResourcePtrUnorderedMap
+		:public TUnorderedMap<KeyT,ValueT*,THash,TEqual,TAllocator>
 	{
 	public:
-		using TResourcePtrMap<const std::basic_string<Char,std::char_traits<Char>,TStringAllocator>,T,std::less<std::basic_string<Char,std::char_traits<Char>,TStringAllocator> >,TAllocator>::TResourcePtrMap;
-		using TResourcePtrMap<const std::basic_string<Char,std::char_traits<Char>,TStringAllocator>,T,std::less<std::basic_string<Char,std::char_traits<Char>,TStringAllocator> >,TAllocator>::operator[];
-		using TResourcePtrMap<const std::basic_string<Char,std::char_traits<Char>,TStringAllocator>,T,std::less<std::basic_string<Char,std::char_traits<Char>,TStringAllocator> >,TAllocator>::operator=;
+		typedef ValueT ResourceType;
+		using TUnorderedMap<KeyT,ValueT*,THash,TEqual,TAllocator>::TUnorderedMap;
+		using TUnorderedMap<KeyT,ValueT*,THash,TEqual,TAllocator>::operator[];
+		using TUnorderedMap<KeyT,ValueT*,THash,TEqual,TAllocator>::operator=;
+		virtual ~TResourcePtrUnorderedMap()
+		{
+			destroyAll();
+		}
+		Void destroy(const KeyT & key)
+		{
+			auto iter=this->find(key);
+			delete iter->second;
+			this->erase(iter);
+		}
+		Void destroyAll()
+		{
+			for(auto res:*this)
+			{
+				delete res.second;
+			}
+			this->clear();
+		}
+		ValueT * get(KeyT const & key)const
+		{
+			auto iter=this->find(key);
+			if(this->end()==iter)
+				return nullptr;
+			else
+				return iter->second;
+		}
+	};
+	template<typename KeyT,class ValueT,class THash=std::hash<KeyT*>,class TEqual=std::equal_to<KeyT*>,class TAllocator=std::allocator<std::pair<KeyT,ValueT*> > >
+	class TRefResourcePtrUnorderedMap
+		:public TUnorderedMap<KeyT,ValueT*,THash,TEqual,TAllocator>
+	{
+	public:
+		using TUnorderedMap<KeyT,ValueT*,THash,TEqual,TAllocator>::TUnorderedMap;
+		using TUnorderedMap<KeyT,ValueT*,THash,TEqual,TAllocator>::operator[];
+		using TUnorderedMap<KeyT,ValueT*,THash,TEqual,TAllocator>::operator=;
+		virtual ~TRefResourcePtrUnorderedMap()
+		{
+			destroyAll();
+		}
+		Void destroy(const KeyT & key)
+		{
+			auto iter=this->find(key);
+			iter->second->release();
+			this->erase(iter);
+		}
+		Void destroyAll()
+		{
+			for(auto res:*this)
+			{
+				if(res.second)
+					res.second->release();
+			}
+			this->clear();
+		}
+	};
+	template<class T,class TStringAllocator=std::allocator<Char>,class TAllocator=std::allocator<std::pair<const std::basic_string<Char,std::char_traits<Char>,TStringAllocator>,T*> > >
+	class TNamedResourcePtrMap
+		:public TResourcePtrUnorderedMap<const std::basic_string<Char,std::char_traits<Char>,TStringAllocator>,T,std::hash<std::basic_string<Char,std::char_traits<Char>,TStringAllocator> >,std::equal_to<std::basic_string<Char,std::char_traits<Char>,TStringAllocator> >,TAllocator>
+	{
+	public:
+		using TResourcePtrUnorderedMap<const std::basic_string<Char,std::char_traits<Char>,TStringAllocator>,T,std::hash<std::basic_string<Char,std::char_traits<Char>,TStringAllocator> >,std::equal_to<std::basic_string<Char,std::char_traits<Char>,TStringAllocator> >,TAllocator>::TResourcePtrUnorderedMap;
+		using TResourcePtrUnorderedMap<const std::basic_string<Char,std::char_traits<Char>,TStringAllocator>,T,std::hash<std::basic_string<Char,std::char_traits<Char>,TStringAllocator> >,std::equal_to<std::basic_string<Char,std::char_traits<Char>,TStringAllocator> >,TAllocator>::operator[];
+		using TResourcePtrUnorderedMap<const std::basic_string<Char,std::char_traits<Char>,TStringAllocator>,T,std::hash<std::basic_string<Char,std::char_traits<Char>,TStringAllocator> >,std::equal_to<std::basic_string<Char,std::char_traits<Char>,TStringAllocator> >,TAllocator>::operator=;
 	};
 	template<class T,class TStringAllocator=std::allocator<Char>,class TAllocator=std::allocator<std::pair<const std::basic_string<Char,std::char_traits<Char>,TStringAllocator>,T*> > >
 	class TNamedRefResourcePtrMap
-		:public TRefResourcePtrMap<const std::basic_string<Char,std::char_traits<Char>,TStringAllocator>,T,std::less<std::basic_string<Char,std::char_traits<Char>,TStringAllocator> >,TAllocator>
+		:public TRefResourcePtrUnorderedMap<const std::basic_string<Char,std::char_traits<Char>,TStringAllocator>,T,std::hash<std::basic_string<Char,std::char_traits<Char>,TStringAllocator> >,std::equal_to<std::basic_string<Char,std::char_traits<Char>,TStringAllocator> >,TAllocator>
 	{
 	public:
-		using TRefResourcePtrMap<const std::basic_string<Char,std::char_traits<Char>,TStringAllocator>,T,std::less<std::basic_string<Char,std::char_traits<Char>,TStringAllocator> >,TAllocator>::TRefResourcePtrMap;
-		using TRefResourcePtrMap<const std::basic_string<Char,std::char_traits<Char>,TStringAllocator>,T,std::less<std::basic_string<Char,std::char_traits<Char>,TStringAllocator> >,TAllocator>::operator[];
-		using TRefResourcePtrMap<const std::basic_string<Char,std::char_traits<Char>,TStringAllocator>,T,std::less<std::basic_string<Char,std::char_traits<Char>,TStringAllocator> >,TAllocator>::operator=;
+		using TRefResourcePtrUnorderedMap<const std::basic_string<Char,std::char_traits<Char>,TStringAllocator>,T,std::hash<std::basic_string<Char,std::char_traits<Char>,TStringAllocator> >,std::equal_to<std::basic_string<Char,std::char_traits<Char>,TStringAllocator> >,TAllocator>::TRefResourcePtrUnorderedMap;
+		using TRefResourcePtrUnorderedMap<const std::basic_string<Char,std::char_traits<Char>,TStringAllocator>,T,std::hash<std::basic_string<Char,std::char_traits<Char>,TStringAllocator> >,std::equal_to<std::basic_string<Char,std::char_traits<Char>,TStringAllocator> >,TAllocator>::operator[];
+		using TRefResourcePtrUnorderedMap<const std::basic_string<Char,std::char_traits<Char>,TStringAllocator>,T,std::hash<std::basic_string<Char,std::char_traits<Char>,TStringAllocator> >,std::equal_to<std::basic_string<Char,std::char_traits<Char>,TStringAllocator> >,TAllocator>::operator=;
 	};
 	template<class T,class TStringAllocator=std::allocator<Char>,class TAllocator=std::allocator<T*> >
 	class TBaseNamedIndexResourcePtrContainer
 	{
 	public:
-		typedef TMap<const std::basic_string<Char,std::char_traits<Char>,TStringAllocator>,SizeT> IndexByNameList;
+		typedef TUnorderedMap<const std::basic_string<Char,std::char_traits<Char>,TStringAllocator>,SizeT> IndexByNameList;
 		typedef TList<T*,TAllocator> ResourcePtrList;
 	protected:
 		IndexByNameList mIndices;

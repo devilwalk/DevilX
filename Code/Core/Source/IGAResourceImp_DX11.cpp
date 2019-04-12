@@ -235,6 +235,28 @@ NSDevilX::NSCore::NSDirectX::NSVersion11::IGADomainShaderImp::~IGADomainShaderIm
 {
 }
 
+NSDevilX::NSCore::NSDirectX::NSVersion11::IGAComputeShaderImp::IGAComputeShaderImp(ID3D11Device * device,const String & hlsl)
+{
+	CComPtr<ID3DBlob> code;
+	CComPtr<ID3DBlob> error;
+	UInt32 flag=0;
+#if DEVILX_DEBUG
+	flag=D3DCOMPILE_DEBUG|D3DCOMPILE_SKIP_OPTIMIZATION;
+#else
+	flag=D3DCOMPILE_SKIP_VALIDATION|D3DCOMPILE_OPTIMIZATION_LEVEL3;
+#endif
+	D3DCompile(&hlsl[0],hlsl.size(),"temp",nullptr,nullptr,"main","cs_5_0",flag,0,&code,&error);
+	if(error.p)
+	{
+		OutputDebugStringA(static_cast<LPCSTR>(error->GetBufferPointer()));
+	}
+	device->CreateComputeShader(code->GetBufferPointer(),code->GetBufferSize(),nullptr,&mInternal);
+}
+
+NSDevilX::NSCore::NSDirectX::NSVersion11::IGAComputeShaderImp::~IGAComputeShaderImp()
+{
+}
+
 NSDevilX::NSCore::NSDirectX::NSVersion11::IGASamplerStateImp::IGASamplerStateImp(ID3D11Device * device,const D3D11_SAMPLER_DESC & desc)
 {
 	device->CreateSamplerState(&desc,&mInternal);

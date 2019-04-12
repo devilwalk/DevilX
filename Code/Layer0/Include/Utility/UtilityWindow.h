@@ -59,7 +59,7 @@ namespace NSDevilX
 		VoidPtr mHandle;
 		CInt2 mPosition;
 		CUInt2 mSize;
-		TSet(CWindowEventListener*) mEventListeners;
+		TUnorderedSet(CWindowEventListener*) mEventListeners;
 	public:
 		CWindow();
 		~CWindow();

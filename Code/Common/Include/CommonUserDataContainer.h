@@ -7,8 +7,8 @@ namespace NSDevilX
 	class TUserDataContainer
 	{
 	public:
-		typedef TMap<const std::basic_string<Char,std::char_traits<Char>,TStringAllocator>,CAny,std::less<std::basic_string<Char,std::char_traits<Char>,TStringAllocator> >,TAllocator1> Anys;
-		typedef TMap<ConstVoidPtr,CAny,std::less<ConstVoidPtr>,TAllocator2> Anys2;
+		typedef TUnorderedMap<const std::basic_string<Char,std::char_traits<Char>,TStringAllocator>,CAny,std::hash<std::basic_string<Char,std::char_traits<Char>,TStringAllocator> >,std::equal_to<std::basic_string<Char,std::char_traits<Char>,TStringAllocator> >,TAllocator1> Anys;
+		typedef TUnorderedMap<ConstVoidPtr,CAny,std::hash<ConstVoidPtr>,std::equal_to<ConstVoidPtr>,TAllocator2> Anys2;
 		typedef TVector<VoidPtr,TAllocator3> Pointers;
 	protected:
 		Anys * mAnys;

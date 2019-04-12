@@ -7,3 +7,4 @@
 #include "ICoreGAStruct.h"
 #include "ICoreGASwapChain.h"
 #include "ICoreGAView.h"
+#include "ICoreGAShaderReflection.h"

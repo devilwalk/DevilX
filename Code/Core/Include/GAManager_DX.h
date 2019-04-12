@@ -13,8 +13,8 @@ namespace NSDevilX
 			{
 			protected:
 				IDXGIFactory * mFactory;
-				TResourcePtrVector<NSVersion11::IGADeviceImp> mDevices11;
-				TResourcePtrVector<IGASwapChainImp> mSwapChains;
+				TResourcePtrVector(NSVersion11::IGADeviceImp) mDevices11;
+				TResourcePtrVector(IGASwapChainImp) mSwapChains;
 			public:
 				CGAManager();
 				~CGAManager();

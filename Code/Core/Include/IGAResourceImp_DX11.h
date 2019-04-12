@@ -87,6 +87,7 @@ namespace NSDevilX
 				};
 				class IGAVertexShaderImp
 					:public TGAResourceImp<IGAVertexShaderImp,IGAShader,ID3D11VertexShader>
+					,public IGAVertexShader
 				{
 				public:
 					IGAVertexShaderImp(ID3D11Device * device,const String & hlsl);
@@ -94,6 +95,7 @@ namespace NSDevilX
 				};
 				class IGAGeometryShaderImp
 					:public TGAResourceImp<IGAGeometryShaderImp,IGAShader,ID3D11GeometryShader>
+					,public IGAGeometryShader
 				{
 				public:
 					IGAGeometryShaderImp(ID3D11Device * device,const String & hlsl);
@@ -101,6 +103,7 @@ namespace NSDevilX
 				};
 				class IGAPixelShaderImp
 					:public TGAResourceImp<IGAPixelShaderImp,IGAShader,ID3D11PixelShader>
+					,public IGAPixelShader
 				{
 				public:
 					IGAPixelShaderImp(ID3D11Device * device,const String & hlsl);
@@ -108,6 +111,7 @@ namespace NSDevilX
 				};
 				class IGAHullShaderImp
 					:public TGAResourceImp<IGAHullShaderImp,IGAShader,ID3D11HullShader>
+					,public IGAHullShader
 				{
 				public:
 					IGAHullShaderImp(ID3D11Device * device,const String & hlsl);
@@ -115,13 +119,23 @@ namespace NSDevilX
 				};
 				class IGADomainShaderImp
 					:public TGAResourceImp<IGADomainShaderImp,IGAShader,ID3D11DomainShader>
+					,public IGADomainShader
 				{
 				public:
 					IGADomainShaderImp(ID3D11Device * device,const String & hlsl);
 					~IGADomainShaderImp();
 				};
+				class IGAComputeShaderImp
+					:public TGAResourceImp<IGAComputeShaderImp,IGAShader,ID3D11ComputeShader>
+					,public IGAComputeShader
+				{
+				public:
+					IGAComputeShaderImp(ID3D11Device * device,const String & hlsl);
+					~IGAComputeShaderImp();
+				};
 				class IGABlendStateImp
 					:public TGAResourceImp<IGABlendStateImp,IGABlendState,ID3D11BlendState>
+					,public CReferenceObject
 				{
 				public:
 					IGABlendStateImp(ID3D11Device * device,const D3D11_BLEND_DESC & desc);
@@ -129,6 +143,7 @@ namespace NSDevilX
 				};
 				class IGARasterizerStateImp
 					:public TGAResourceImp<IGARasterizerStateImp,IGARasterizerState,ID3D11RasterizerState>
+					,public CReferenceObject
 				{
 				public:
 					IGARasterizerStateImp(ID3D11Device * device,const D3D11_RASTERIZER_DESC & desc);
@@ -136,6 +151,7 @@ namespace NSDevilX
 				};
 				class IGADepthStencilStateImp
 					:public TGAResourceImp<IGADepthStencilStateImp,IGADepthStencilState,ID3D11DepthStencilState>
+					,public CReferenceObject
 				{
 				public:
 					IGADepthStencilStateImp(ID3D11Device * device,const D3D11_DEPTH_STENCIL_DESC & desc);
@@ -143,6 +159,7 @@ namespace NSDevilX
 				};
 				class IGASamplerStateImp
 					:public TGAResourceImp<IGASamplerStateImp,IGASamplerState,ID3D11SamplerState>
+					,public CReferenceObject
 				{
 				public:
 					IGASamplerStateImp(ID3D11Device * device,const D3D11_SAMPLER_DESC & desc);

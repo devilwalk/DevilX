@@ -77,6 +77,104 @@ namespace NSDevilX
 					DXGI_SWAP_CHAIN_DESC ret={};
 					return mapping(desc,ret);
 				}
+				static D3D11_PRIMITIVE_TOPOLOGY mapping(IGAEnum::EPrimitiveTopology value)
+				{
+					switch(value)
+					{
+					case IGAEnum::EPrimitiveTopology_TRIANGLELIST:
+						return D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+					case IGAEnum::EPrimitiveTopology_TRIANGLESTRIP:
+						return D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;
+					case IGAEnum::EPrimitiveTopology_LINELIST:
+						return D3D11_PRIMITIVE_TOPOLOGY_LINELIST;
+					case IGAEnum::EPrimitiveTopology_LINESTRIP:
+						return D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP;
+					case IGAEnum::EPrimitiveTopology_POINTLIST:
+						return D3D11_PRIMITIVE_TOPOLOGY_POINTLIST;
+					default:
+						assert(0);
+						return D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+					}
+				}
+				static D3D11_BLEND mapping(IGAEnum::EBlend blend)
+				{
+					switch(blend)
+					{
+					case IGAEnum::EBlend_ZERO:
+						return D3D11_BLEND_ZERO;
+					case IGAEnum::EBlend_ONE:
+						return D3D11_BLEND_ONE;
+					case IGAEnum::EBlend_SRC_COLOR:
+						return D3D11_BLEND_SRC_COLOR;
+					case IGAEnum::EBlend_SRC_ALPHA:
+						return D3D11_BLEND_SRC_ALPHA;
+					case IGAEnum::EBlend_SRC_ALPHA_SAT:
+						return D3D11_BLEND_SRC_ALPHA_SAT;
+					case IGAEnum::EBlend_BLEND_FACTOR:
+						return D3D11_BLEND_BLEND_FACTOR;
+					case IGAEnum::EBlend_DEST_ALPHA:
+						return D3D11_BLEND_DEST_ALPHA;
+					case IGAEnum::EBlend_DEST_COLOR:
+						return D3D11_BLEND_DEST_COLOR;
+					case IGAEnum::EBlend_INV_BLEND_FACTOR:
+						return D3D11_BLEND_INV_BLEND_FACTOR;
+					case IGAEnum::EBlend_INV_DEST_ALPHA:
+						return D3D11_BLEND_INV_DEST_ALPHA;
+					case IGAEnum::EBlend_INV_DEST_COLOR:
+						return D3D11_BLEND_INV_DEST_COLOR;
+					case IGAEnum::EBlend_INV_SRC1_ALPHA:
+						return D3D11_BLEND_INV_SRC1_ALPHA;
+					case IGAEnum::EBlend_INV_SRC1_COLOR:
+						return D3D11_BLEND_INV_SRC1_COLOR;
+					case IGAEnum::EBlend_INV_SRC_ALPHA:
+						return D3D11_BLEND_INV_SRC_ALPHA;
+					case IGAEnum::EBlend_INV_SRC_COLOR:
+						return D3D11_BLEND_INV_SRC_COLOR;
+					default:
+						assert(0);
+						return D3D11_BLEND_ONE;
+					}
+				}
+				static D3D11_BLEND_OP mapping(IGAEnum::EBlendOp blendOp)
+				{
+					switch(blendOp)
+					{
+					case IGAEnum::EBlendOp_ADD:
+						return D3D11_BLEND_OP_ADD;
+					case IGAEnum::EBlendOp_MAX:
+						return D3D11_BLEND_OP_MAX;
+					case IGAEnum::EBlendOp_MIN:
+						return D3D11_BLEND_OP_MIN;
+					case IGAEnum::EBlendOp_REV_SUBTRACT:
+						return D3D11_BLEND_OP_REV_SUBTRACT;
+					case IGAEnum::EBlendOp_SUBTRACT:
+						return D3D11_BLEND_OP_SUBTRACT;
+					default:
+						assert(0);
+						return D3D11_BLEND_OP_ADD;
+					}
+				}
+				static CD3D11_BLEND_DESC & mapping(const IGAStruct::SBlendDesc & src,CD3D11_BLEND_DESC & dest)
+				{
+					dest.AlphaToCoverageEnable=src.AlphaToCoverageEnable;
+					dest.IndependentBlendEnable=src.IndependentBlendEnable;
+					for(int i=0;i<sizeof(dest.RenderTarget)/sizeof(decltype(dest.RenderTarget[0]));++i)
+					{
+						dest.RenderTarget[i].BlendEnable=src.RenderTarget[i].BlendEnable;
+						dest.RenderTarget[i].BlendOp=mapping(src.RenderTarget[i].BlendOp);
+						dest.RenderTarget[i].BlendOpAlpha=mapping(src.RenderTarget[i].BlendOpAlpha);
+						dest.RenderTarget[i].DestBlend=mapping(src.RenderTarget[i].DestBlend);
+						dest.RenderTarget[i].DestBlendAlpha=mapping(src.RenderTarget[i].DestBlendAlpha);
+						dest.RenderTarget[i].RenderTargetWriteMask=src.RenderTarget[i].RenderTargetWriteMask;
+						dest.RenderTarget[i].SrcBlend=mapping(src.RenderTarget[i].SrcBlend);
+						dest.RenderTarget[i].SrcBlendAlpha=mapping(src.RenderTarget[i].SrcBlendAlpha);
+					}
+				}
+				static CD3D11_BLEND_DESC mapping(const IGAStruct::SBlendDesc & desc)
+				{
+					CD3D11_BLEND_DESC ret;
+					return mapping(desc,ret);
+				}
 			};
 		}
 	}

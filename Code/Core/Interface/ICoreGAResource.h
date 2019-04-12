@@ -112,9 +112,65 @@ namespace NSDevilX
 		class IGAShader
 		{
 		protected:
-			virtual ~IGAShader(){ }
+			virtual ~IGAShader()
+			{
+			}
 		public:
 			virtual IGAResource * queryInterface_IGAResource()=0;
+		};
+		class IGAVertexShader
+		{
+		protected:
+			virtual ~IGAVertexShader()
+			{
+			}
+		public:
+			virtual IGAShader * queryInterface_IGAShader()=0;
+		};
+		class IGAPixelShader
+		{
+		protected:
+			virtual ~IGAPixelShader()
+			{
+			}
+		public:
+			virtual IGAShader * queryInterface_IGAShader()=0;
+		};
+		class IGAGeometryShader
+		{
+		protected:
+			virtual ~IGAGeometryShader()
+			{
+			}
+		public:
+			virtual IGAShader * queryInterface_IGAShader()=0;
+		};
+		class IGAHullShader
+		{
+		protected:
+			virtual ~IGAHullShader()
+			{
+			}
+		public:
+			virtual IGAShader * queryInterface_IGAShader()=0;
+		};
+		class IGADomainShader
+		{
+		protected:
+			virtual ~IGADomainShader()
+			{
+			}
+		public:
+			virtual IGAShader * queryInterface_IGAShader()=0;
+		};
+		class IGAComputeShader
+		{
+		protected:
+			virtual ~IGAComputeShader()
+			{
+			}
+		public:
+			virtual IGAShader * queryInterface_IGAShader()=0;
 		};
 		class IGASamplerState
 		{

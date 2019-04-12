@@ -401,6 +401,90 @@ namespace NSDevilX
 				ETextureAddressMode_BORDER=4,
 				ETextureAddressMode_MIRROR_ONCE=5
 			};
+			enum ERegisterComponentType
+			{
+				ERegisterComponentType_UNKNOWN=0,
+				ERegisterComponentType_UINT32=1,
+				ERegisterComponentType_SINT32=2,
+				ERegisterComponentType_FLOAT32=3,
+			};
+			enum EShaderBufferType
+			{
+				EShaderBufferType_CBuffer=0,
+				EShaderBufferType_TBuffer=(EShaderBufferType_CBuffer+1),
+			};
+			enum EShaderVariableType
+			{
+				EShaderVariableType_VOID=0,
+				EShaderVariableType_BOOL=1,
+				EShaderVariableType_INT=2,
+				EShaderVariableType_FLOAT=3,
+				EShaderVariableType_STRING=4,
+				EShaderVariableType_TEXTURE=5,
+				EShaderVariableType_TEXTURE1D=6,
+				EShaderVariableType_TEXTURE2D=7,
+				EShaderVariableType_TEXTURE3D=8,
+				EShaderVariableType_TEXTURECUBE=9,
+				EShaderVariableType_SAMPLER=10,
+				EShaderVariableType_SAMPLER1D=11,
+				EShaderVariableType_SAMPLER2D=12,
+				EShaderVariableType_SAMPLER3D=13,
+				EShaderVariableType_SAMPLERCUBE=14,
+				EShaderVariableType_PIXELSHADER=15,
+				EShaderVariableType_VERTEXSHADER=16,
+				EShaderVariableType_PIXELFRAGMENT=17,
+				EShaderVariableType_VERTEXFRAGMENT=18,
+				EShaderVariableType_UINT=19,
+				EShaderVariableType_UINT8=20,
+				EShaderVariableType_GEOMETRYSHADER=21,
+				EShaderVariableType_RASTERIZER=22,
+				EShaderVariableType_DEPTHSTENCIL=23,
+				EShaderVariableType_BLEND=24,
+				EShaderVariableType_BUFFER=25,
+				EShaderVariableType_CBUFFER=26,
+				EShaderVariableType_TBUFFER=27,
+				EShaderVariableType_TEXTURE1DARRAY=28,
+				EShaderVariableType_TEXTURE2DARRAY=29,
+				EShaderVariableType_RENDERTARGETVIEW=30,
+				EShaderVariableType_DEPTHSTENCILVIEW=31,
+				EShaderVariableType_TEXTURE2DMS=32,
+				EShaderVariableType_TEXTURE2DMSARRAY=33,
+				EShaderVariableType_TEXTURECUBEARRAY=34,
+				EShaderVariableType_HULLSHADER=35,
+				EShaderVariableType_DOMAINSHADER=36,
+				EShaderVariableType_INTERFACE_POINTER=37,
+				EShaderVariableType_COMPUTESHADER=38,
+				EShaderVariableType_DOUBLE=39,
+				EShaderVariableType_RWTEXTURE1D=40,
+				EShaderVariableType_RWTEXTURE1DARRAY=41,
+				EShaderVariableType_RWTEXTURE2D=42,
+				EShaderVariableType_RWTEXTURE2DARRAY=43,
+				EShaderVariableType_RWTEXTURE3D=44,
+				EShaderVariableType_RWBUFFER=45,
+				EShaderVariableType_BYTEADDRESS_BUFFER=46,
+				EShaderVariableType_RWBYTEADDRESS_BUFFER=47,
+				EShaderVariableType_STRUCTURED_BUFFER=48,
+				EShaderVariableType_RWSTRUCTURED_BUFFER=49,
+				EShaderVariableType_APPEND_STRUCTURED_BUFFER=50,
+				EShaderVariableType_CONSUME_STRUCTURED_BUFFER=51,
+				EShaderVariableType_MIN8FLOAT=52,
+				EShaderVariableType_MIN10FLOAT=53,
+				EShaderVariableType_MIN16FLOAT=54,
+				EShaderVariableType_MIN12INT=55,
+				EShaderVariableType_MIN16INT=56,
+				EShaderVariableType_MIN16UINT=57,
+			};
+			enum EShaderVariableClass
+			{
+				EShaderVariableClass_SCALAR=0,
+				EShaderVariableClass_VECTOR=(EShaderVariableClass_SCALAR+1),
+				EShaderVariableClass_MATRIX_ROWS=(EShaderVariableClass_VECTOR+1),
+				EShaderVariableClass_MATRIX_COLUMNS=(EShaderVariableClass_MATRIX_ROWS+1),
+				EShaderVariableClass_OBJECT=(EShaderVariableClass_MATRIX_COLUMNS+1),
+				EShaderVariableClass_STRUCT=(EShaderVariableClass_OBJECT+1),
+				EShaderVariableClass_INTERFACE_CLASS=(EShaderVariableClass_STRUCT+1),
+				EShaderVariableClass_INTERFACE_POINTER=(EShaderVariableClass_INTERFACE_CLASS+1),
+			};
 		};
 	}
 }

@@ -411,23 +411,29 @@ NSDevilX::NSCore::NSOpenGL::IGAInputLayoutImp::IGAInputLayoutImp(const IGAStruct
 	{
 		glCreateVertexArrays(1,&mInternal);
 		CUtility::checkGLError();
+		for(UInt32 i=0;i<desc.NumElements;++i)
+		{
+			glVertexArrayAttribFormat(mInternal,desc.pInputElementDescs[i].InputSlot,CUtility::getComponentCount(desc.pInputElementDescs[i].Format),CUtility::getComponentType(desc.pInputElementDescs[i].Format),CUtility::needNormalize(desc.pInputElementDescs[i].Format),desc.pInputElementDescs[i].AlignedByteOffset);
+			CUtility::checkGLError();
+			glVertexArrayAttribBinding(mInternal,desc.pInputElementDescs[i].InputSlot,desc.pInputElementDescs[i].InputSlot);
+			CUtility::checkGLError();
+			glEnableVertexArrayAttrib(mInternal,desc.pInputElementDescs[i].InputSlot);
+			CUtility::checkGLError();
+		}
 	}
 	else if(glGenVertexArrays)
 	{
 		glGenVertexArrays(1,&mInternal);
 		CUtility::checkGLError();
-	}
-	if(mInternal)
-	{
 		glBindVertexArray(mInternal);
 		CUtility::checkGLError();
 		for(UInt32 i=0;i<desc.NumElements;++i)
 		{
-			glEnableVertexAttribArray(desc.pInputElementDescs[i].InputSlot);
-			CUtility::checkGLError();
 			glVertexAttribFormat(desc.pInputElementDescs[i].InputSlot,CUtility::getComponentCount(desc.pInputElementDescs[i].Format),CUtility::getComponentType(desc.pInputElementDescs[i].Format),CUtility::needNormalize(desc.pInputElementDescs[i].Format),desc.pInputElementDescs[i].AlignedByteOffset);
 			CUtility::checkGLError();
 			glVertexAttribBinding(desc.pInputElementDescs[i].InputSlot,desc.pInputElementDescs[i].InputSlot);
+			CUtility::checkGLError();
+			glEnableVertexAttribArray(desc.pInputElementDescs[i].InputSlot);
 			CUtility::checkGLError();
 		}
 		glBindVertexArray(0);
@@ -467,27 +473,82 @@ NSDevilX::NSCore::NSOpenGL::IGAShaderImp::IGAShaderImp(const String & glsl,IGAEn
 		break;
 	}
 	const GLchar * code_str=&glsl[0];
-	if(glCreateShaderProgramv)
+	if(glGenProgramPipelines)
 	{
-		mInternal=glCreateShaderProgramv(shader_type,1,&code_str);
-		CUtility::checkGLError();
+		if(glCreateShaderProgramv)
+		{
+			mInternal=glCreateShaderProgramv(shader_type,1,&code_str);
+			CUtility::checkGLError();
+		}
+		else
+		{
+			auto shader=glCreateShader(shader_type);
+			CUtility::checkGLError();
+			glShaderSource(shader,1,&code_str,nullptr);
+			CUtility::checkGLError();
+			glCompileShader(shader);
+			CUtility::checkGLError();
+			GLint compiler_status=GL_FALSE;
+			glGetShaderiv(shader,GL_COMPILE_STATUS,&compiler_status);
+			CUtility::checkGLError();
+			if(GL_TRUE!=compiler_status)
+			{
+				String shader_log;
+				shader_log.resize(1024);
+				glGetShaderInfoLog(shader,1024,nullptr,&shader_log[0]);
+				CUtility::checkGLError();
+#if DEVILX_DEBUG
+#if DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_WINDOWS
+				OutputDebugStringA(shader_log.c_str());
+				OutputDebugStringA("\r\n");
+#endif
+#endif
+			}
+			mInternal=glCreateProgram();
+			CUtility::checkGLError();
+			glProgramParameteri(mInternal,GL_PROGRAM_SEPARABLE,GL_TRUE);
+			CUtility::checkGLError();
+			glAttachShader(mInternal,shader);
+			CUtility::checkGLError();
+			glLinkProgram(mInternal);
+			CUtility::checkGLError();
+			glDetachShader(mInternal,shader);
+			CUtility::checkGLError();
+			glDeleteShader(shader);
+			CUtility::checkGLError();
+		}
+		GLint link_status=GL_FALSE;
+		glGetProgramiv(mInternal,GL_LINK_STATUS,&link_status);
+		if(GL_TRUE!=link_status)
+		{
+			String shader_log;
+			shader_log.resize(1024);
+			glGetProgramInfoLog(mInternal,1024,nullptr,&shader_log[0]);
+			CUtility::checkGLError();
+#if DEVILX_DEBUG
+#if DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_WINDOWS
+			OutputDebugStringA(("program log:"+shader_log).c_str());
+			OutputDebugStringA("\r\n");
+#endif
+#endif
+		}
 	}
 	else
 	{
-		auto shader=glCreateShader(shader_type);
+		mInternal=glCreateShader(shader_type);
 		CUtility::checkGLError();
-		glShaderSource(shader,1,&code_str,nullptr);
+		glShaderSource(mInternal,1,&code_str,nullptr);
 		CUtility::checkGLError();
-		glCompileShader(shader);
+		glCompileShader(mInternal);
 		CUtility::checkGLError();
 		GLint compiler_status=GL_FALSE;
-		glGetShaderiv(shader,GL_COMPILE_STATUS,&compiler_status);
+		glGetShaderiv(mInternal,GL_COMPILE_STATUS,&compiler_status);
 		CUtility::checkGLError();
 		if(GL_TRUE!=compiler_status)
 		{
 			String shader_log;
 			shader_log.resize(1024);
-			glGetShaderInfoLog(shader,1024,nullptr,&shader_log[0]);
+			glGetShaderInfoLog(mInternal,1024,nullptr,&shader_log[0]);
 			CUtility::checkGLError();
 #if DEVILX_DEBUG
 #if DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_WINDOWS
@@ -496,18 +557,6 @@ NSDevilX::NSCore::NSOpenGL::IGAShaderImp::IGAShaderImp(const String & glsl,IGAEn
 #endif
 #endif
 		}
-		mInternal=glCreateProgram();
-		CUtility::checkGLError();
-		glProgramParameteri(mInternal,GL_PROGRAM_SEPARABLE,GL_TRUE);
-		CUtility::checkGLError();
-		glAttachShader(mInternal,shader);
-		CUtility::checkGLError();
-		glLinkProgram(mInternal);
-		CUtility::checkGLError();
-		glDetachShader(mInternal,shader);
-		CUtility::checkGLError();
-		glDeleteShader(shader);
-		CUtility::checkGLError();
 	}
 }
 
@@ -515,7 +564,10 @@ NSDevilX::NSCore::NSOpenGL::IGAShaderImp::~IGAShaderImp()
 {
 	if(mInternal)
 	{
-		glDeleteProgram(mInternal);
+		if(glGenProgramPipelines)
+			glDeleteProgram(mInternal);
+		else
+			glDeleteShader(mInternal);
 		CUtility::checkGLError();
 		mInternal=0;
 	}

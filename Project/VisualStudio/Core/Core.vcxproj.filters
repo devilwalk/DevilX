@@ -240,6 +240,18 @@
     <ClInclude Include="..\..\..\Code\Core\Include\GAUtility_DX.h">
       <Filter>头文件\GraphicAPI</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\IGASwapChainImp_GL.h">
+      <Filter>头文件\GraphicAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\IGADeviceContextImp_DX.h">
+      <Filter>头文件\GraphicAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGAShaderReflection.h">
+      <Filter>Interface\GraphicAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\IGAShaderReflectionImp_DX.h">
+      <Filter>头文件\GraphicAPI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Core\Source\Precompiler.cpp">
@@ -339,6 +351,15 @@
       <Filter>源文件\GraphicAPI</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Core\Source\IGASwapChainImp_DX.cpp">
+      <Filter>源文件\GraphicAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\IGASwapChainImp_GL.cpp">
+      <Filter>源文件\GraphicAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\IGADeviceContextImp_DX.cpp">
+      <Filter>源文件\GraphicAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\IGADeviceImp_GL.cpp">
       <Filter>源文件\GraphicAPI</Filter>
     </ClCompile>
   </ItemGroup>

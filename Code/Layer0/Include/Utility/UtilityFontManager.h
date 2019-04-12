@@ -21,8 +21,8 @@ namespace NSDevilX
 		};
 	protected:
 		TNamedResourcePtrMap(const CMemoryStream) mFonts;
-		TMap(const CMemoryStream*,TResourcePtrVector(CFontFace) ) mFaces;
-		TMap(const CMemoryStream*,TResourcePtrVector(CFontImage) ) mImages;
+		TUnorderedMap(const CMemoryStream*,TResourcePtrVector(CFontFace) ) mFaces;
+		TUnorderedMap(const CMemoryStream*,TResourcePtrVector(CFontImage) ) mImages;
 	public:
 		CFontManager();
 		~CFontManager();

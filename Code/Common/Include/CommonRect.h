@@ -33,5 +33,5 @@ namespace NSDevilX
 			return std::abs<TValue>(mBottom-mTop);
 		}
 	};
-	typedef TRect<UInt32> CRect;
+	typedef TRect<Int32> CRect;
 }

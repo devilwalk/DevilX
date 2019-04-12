@@ -25,8 +25,8 @@ namespace NSDevilX
 				{}
 			};
 		protected:
-			TMap<VoidPtr,STrackerChunk*> mRecordChunkList;
-			TMap<STrackerChunk*,STrackerChunk*> mFreeChunkList;
+			TUnorderedMap<VoidPtr,STrackerChunk*> mRecordChunkList;
+			TUnorderedMap<STrackerChunk*,STrackerChunk*> mFreeChunkList;
 			IReadWriteLockImp mRecordChunkListLocker;
 			IReadWriteLockImp mFreeChunkListLocker;
 		public:

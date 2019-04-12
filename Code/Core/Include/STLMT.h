@@ -75,12 +75,56 @@ namespace NSDevilX
 				unLockWrite();
 			}
 		};
+		template<typename T,typename HashT=std::hash<T>,typename EqualT=std::equal_to<T>,class TAllocator=DevilXAllocator<T> >
+		class TUnorderedSetMT
+			:public TUnorderedSet<T,HashT,EqualT,TAllocator>
+			,public IReadWriteLockImp
+		{
+		public:
+			using TUnorderedSet<T,HashT,EqualT,TAllocator>::TUnorderedSet;
+			using TUnorderedSet<T,HashT,EqualT,TAllocator>::operator=;
+			Void insertMT(T const & t)
+			{
+				lockWrite();
+				insert(t);
+				unLockWrite();
+			}
+			Void eraseMT(T const & t)
+			{
+				lockWrite();
+				erase(t);
+				unLockWrite();
+			}
+		};
 		template<typename KeyT,typename ValueT,typename SortfuncT=std::less<KeyT>,class TAllocator=DevilXAllocator<std::pair<KeyT,ValueT> > >
 		class TMapMT
 			:public TMap<KeyT,ValueT,SortfuncT,TAllocator>
 			,public IReadWriteLockImp
 		{
 		public:
+			using TMap<KeyT,ValueT,SortfuncT,TAllocator>::TMap;
+			using TMap<KeyT,ValueT,SortfuncT,TAllocator>::operator=;
+			Void addMT(KeyT const & key,ValueT const & value)
+			{
+				lockWrite();
+				add(key,value);
+				unLockWrite();
+			}
+			Void eraseMT(KeyT const & key)
+			{
+				lockWrite();
+				erase(key);
+				unLockWrite();
+			}
+		};
+		template<typename KeyT,typename ValueT,typename HashT=std::hash<KeyT>,typename EqualT=std::equal_to<KeyT>,class TAllocator=DevilXAllocator<std::pair<KeyT,ValueT> > >
+		class TUnorderedMapMT
+			:public TUnorderedMap<KeyT,ValueT,HashT,EqualT,TAllocator>
+			,public IReadWriteLockImp
+		{
+		public:
+			using TUnorderedMapMT<KeyT,ValueT,HashT,EqualT,TAllocator>::TUnorderedMapMT;
+			using TUnorderedMapMT<KeyT,ValueT,HashT,EqualT,TAllocator>::operator=;
 			Void addMT(KeyT const & key,ValueT const & value)
 			{
 				lockWrite();

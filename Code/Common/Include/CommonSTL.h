@@ -131,6 +131,51 @@ namespace NSDevilX
 			return 0<this->erase(t);
 		}
 	};
+	template<typename T,class HashT=std::hash<T>,
+		class KeyEqualT=std::equal_to<T>
+		,class TAllocator=std::allocator<T> >
+		class TUnorderedSet
+		:public std::unordered_set<T,HashT,KeyEqualT,TAllocator>
+	{
+	public:
+		using std::unordered_set<T,HashT,KeyEqualT,TAllocator>::unordered_set;
+		using std::unordered_set<T,HashT,KeyEqualT,TAllocator>::operator=;
+		TUnorderedSet()
+		{
+		}
+		template<class TAllocator2>
+		TUnorderedSet(const std::unordered_set<T,HashT,KeyEqualT,TAllocator2> & cpy)
+			:std::unordered_set<T,HashT,KeyEqualT,TAllocator>(cpy.begin(),cpy.end())
+		{
+		}
+		template<class TAllocator2>
+		operator std::unordered_set<T,HashT,KeyEqualT,TAllocator2>()const
+		{
+			return std::unordered_set<T,HashT,KeyEqualT,TAllocator2>(this->begin(),this->end());
+		}
+		Boolean has(T const & t)const
+		{
+			return this->find(t)!=this->end();
+		}
+		const T & operator[](SizeT index)const
+		{
+			auto iter=this->begin();
+			while(index--)
+				++iter;
+			return *iter;
+		}
+		T & operator[](SizeT index)
+		{
+			auto iter=this->begin();
+			while(index--)
+				++iter;
+			return *iter;
+		}
+		Boolean remove(T const & t)
+		{
+			return 0<this->erase(t);
+		}
+	};
 	template<typename KeyT,typename ValueT,class SortfuncT=std::less<KeyT>,class TAllocator=std::allocator<std::pair<KeyT,ValueT> > >
 	class TMap
 		:public std::map<KeyT,ValueT,SortfuncT,TAllocator>
@@ -171,6 +216,70 @@ namespace NSDevilX
 		operator std::map<KeyT,ValueT,SortfuncT,TAllocator2>()const
 		{
 			return std::map<KeyT,ValueT,SortfuncT,TAllocator2>(this->begin(),this->end());
+		}
+		Boolean has(KeyT const & key)const
+		{
+			return this->find(key)!=this->end();
+		}
+		ValueT const & get(KeyT const & key)const
+		{
+			assert(has(key));
+			return this->find(key)->second;
+		}
+		Void add(KeyT const & key,ValueT const & value)
+		{
+			this->insert(value_type(key,value));
+		}
+		Boolean remove(ValueT const & t)
+		{
+			return 0<this->erase(t);
+		}
+	};
+	template<typename KeyT,typename ValueT,class HashT=std::hash<KeyT>,
+		class KeyEqualT=std::equal_to<KeyT>
+		,class TAllocator=std::allocator<std::pair<KeyT,ValueT> > >
+	class TUnorderedMap
+		:public std::unordered_map<KeyT,ValueT,HashT,KeyEqualT,TAllocator>
+	{
+	public:
+		using std::unordered_map<KeyT,ValueT,HashT,KeyEqualT,TAllocator>::unordered_map;
+		using std::unordered_map<KeyT,ValueT,HashT,KeyEqualT,TAllocator>::operator[];
+		using std::unordered_map<KeyT,ValueT,HashT,KeyEqualT,TAllocator>::operator=;
+
+		using _Mybase=std::unordered_map<KeyT,ValueT,HashT,KeyEqualT,TAllocator>;
+		using hasher=typename _Mybase::hasher;
+		using key_type=typename _Mybase::key_type;
+		using mapped_type=typename _Mybase::mapped_type;
+		using key_equal=typename _Mybase::key_equal;
+		using key_compare=typename _Mybase::key_compare;	// extra
+		using value_compare=typename _Mybase::value_compare;
+		using value_type=typename _Mybase::value_type;
+		using allocator_type=typename _Mybase::allocator_type;
+		using size_type=typename _Mybase::size_type;
+		using difference_type=typename _Mybase::difference_type;
+		using pointer=typename _Mybase::pointer;
+		using const_pointer=typename _Mybase::const_pointer;
+		using reference=value_type&;
+		using const_reference=const value_type&;
+		using iterator=typename _Mybase::iterator;
+		using const_iterator=typename _Mybase::const_iterator;
+
+		using _Alnode=typename _Mybase::_Alnode;
+		using _Alnode_traits=typename _Mybase::_Alnode_traits;
+		using _Pairib=typename _Mybase::_Pairib;
+
+		TUnorderedMap()
+		{
+		}
+		template<class TAllocator2>
+		TUnorderedMap(const std::unordered_map<KeyT,ValueT,HashT,KeyEqualT,TAllocator2> & cpy)
+			:std::unordered_map<KeyT,ValueT,HashT,KeyEqualT,TAllocator>(cpy.begin(),cpy.end())
+		{
+		}
+		template<class TAllocator2>
+		operator std::unordered_map<KeyT,ValueT,HashT,KeyEqualT,TAllocator2>()const
+		{
+			return std::unordered_map<KeyT,ValueT,HashT,KeyEqualT,TAllocator2>(this->begin(),this->end());
 		}
 		Boolean has(KeyT const & key)const
 		{

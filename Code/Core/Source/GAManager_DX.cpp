@@ -25,7 +25,7 @@ NSVersion11::IGADeviceImp * NSDevilX::NSCore::NSDirectX::CGAManager::createDevic
 
 IGASwapChainImp * NSDevilX::NSCore::NSDirectX::CGAManager::createSwapChain(NSVersion11::IGADeviceImp * device,const IGAStruct::SGISwapChainDesc & desc)
 {
-	auto ret=DEVILX_NEW IGASwapChainImp(device->getInternal(),CMapper::mapping(desc));
+	auto ret=DEVILX_NEW IGASwapChainImp(device->getInternal(),CUtility::mapping(desc));
 	mSwapChains.push_back(ret);
 	return ret;
 }

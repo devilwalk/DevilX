@@ -134,6 +134,8 @@
     <ClInclude Include="..\..\..\Code\Core\Include\GAManager_DX.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\GAUtility_DX.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\GAUtility_GL.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\IGADeviceContextImp_DX.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\IGAShaderReflectionImp_DX.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\IGASwapChainImp_DX.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\ICPPScriptEnvironmentImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\IDirectoryImp.h" />
@@ -142,6 +144,7 @@
     <ClInclude Include="..\..\..\Code\Core\Include\IGADeviceImp_GL.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\IGAResourceImp_DX11.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\IGAResourceImp_GL.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\IGASwapChainImp_GL.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\INetworkConnectionImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\INetworkHostImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\ISemaphoreImp.h" />
@@ -188,6 +191,7 @@
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreResource.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreScriptManager.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreSemaphore.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGAShaderReflection.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreSystem.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreSystemInterface.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreThread.h" />
@@ -211,10 +215,13 @@
     <ClCompile Include="..\..\..\Code\Core\Source\ICoreFileManager.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\IDirectoryImp.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\IFileImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\IGADeviceContextImp_DX.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\IGADeviceImp_DX11.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\IGADeviceImp_GL.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\IGAResourceImp_DX11.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\IGAResourceImp_GL.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\IGASwapChainImp_DX.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\IGASwapChainImp_GL.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\INetworkConnectionImp.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\INetworkHostImp.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\ISemaphoreImp.cpp" />

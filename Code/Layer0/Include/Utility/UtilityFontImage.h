@@ -10,7 +10,7 @@ namespace NSDevilX
 		const CUInt2 mSize;
 		TVector(UInt8) mPixels;
 		typedef std::pair<CUInt2,CUInt2> CharPixelRange;
-		TMap(CUTF8Char,CharPixelRange) mCharPixelRanges;
+		TUnorderedMap(CUTF8Char,CharPixelRange) mCharPixelRanges;
 		Bool mDirty;
 	public:
 		CFontImage(CFontFace * face,const CUInt2 & size=CUInt2(2048));

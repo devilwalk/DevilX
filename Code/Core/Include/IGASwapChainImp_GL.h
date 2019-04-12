@@ -3,8 +3,9 @@ namespace NSDevilX
 {
 	namespace NSCore
 	{
-		namespace NSDirectX
+		namespace NSOpenGL
 		{
+#if DEVILX_WINDOW_SYSTEM == DEVILX_WINDOW_SYSTEM_WINDOWS
 			class IGASwapChainImp
 				:public TBaseObject<IGASwapChainImp>
 				,public IGASwapChain
@@ -12,24 +13,16 @@ namespace NSDevilX
 				,public IGADepthStencilView
 			{
 			protected:
-				CComPtr<IDXGISwapChain> mInternal;
-				CComPtr<ID3D11Texture2D> mBackBuffer11;
-				CComPtr<ID3D11RenderTargetView> mRenderTargetView11;
-				CComPtr<ID3D11Texture2D> mDepthStencil11;
-				CComPtr<ID3D11DepthStencilView> mDepthStencilView11;
+				HDC mHDC;
 			public:
-				IGASwapChainImp(ID3D11Device * dev,DXGI_SWAP_CHAIN_DESC && desc);
+				IGASwapChainImp(HWND wnd);
 				~IGASwapChainImp();
-				IDXGISwapChain * getInternal()const
-				{
-					return mInternal;
-				}
 
-				// Í¨¹ý IGASwapChain ¼Ì³Ð
 				virtual IGARenderTargetView * getRenderTargetView() const override;
 				virtual IGADepthStencilView * getDepthStencilView() const override;
 				virtual Void present() override;
 			};
+#endif
 		}
 	}
 }

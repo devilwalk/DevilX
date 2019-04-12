@@ -250,6 +250,40 @@ namespace NSDevilX
 					SRaytracingAccelerationStructureSRV RaytracingAccelerationStructure;
 				};
 			};
+			struct SShaderDesc
+			{
+				UInt32                             ConstantBuffers;
+				UInt32                             BoundResources;
+				UInt32                             InputParameters;
+				UInt32                             OutputParameters;
+			};
+			struct SShaderSignatureParameterDesc
+			{
+				LPCSTR                      SemanticName;
+				UInt32                        SemanticIndex;
+				UInt32                        Register;
+				IGAEnum::ERegisterComponentType ComponentType;
+				UInt32                        Stream;
+			};
+			struct SShaderBufferDesc
+			{
+				LPCSTR           Name;
+				IGAEnum::EShaderBufferType Type;
+				UInt32             Variables;
+				UInt32             Size;
+			};
+			struct SShaderVariableDesc
+			{
+				LPCSTR Name;
+				UInt32   StartOffset;
+				UInt32   Size;
+				UInt32   StartTexture;
+				UInt32   TextureSize;
+				UInt32   StartSampler;
+				UInt32   SamplerSize;
+				IGAEnum::EShaderVariableClass Class;
+				IGAEnum::EShaderVariableType Type;
+			};
 		};
 	}
 }

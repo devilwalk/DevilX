@@ -12,6 +12,9 @@ namespace NSDevilX
 #define TResourcePtrSet(x) TResourcePtrSet<x,std::less<x*>,DevilXAllocator<x*> >
 #define TRefResourcePtrSet(x) TRefResourcePtrSet<x,std::less<x*>,DevilXAllocator<x*> >
 #define TResourcePtrMap(key,value) TResourcePtrMap<key,value,std::less<key>,DevilXAllocator<std::pair<key,value*> > >
+#define TRefResourcePtrMap(key,value) TRefResourcePtrMap<key,value,std::less<key>,DevilXAllocator<std::pair<key,value*> > >
+#define TResourcePtrUnorderedMap(key,value) TResourcePtrUnorderedMap<key,value,std::hash<key>,std::equal_to<key>,DevilXAllocator<std::pair<key,value*> > >
+#define TRefResourcePtrUnorderedMap(key,value) TRefResourcePtrUnorderedMap<key,value,std::hash<key>,std::equal_to<key>,DevilXAllocator<std::pair<key,value*> > >
 #define TNamedResourcePtrMap(x) TNamedResourcePtrMap<x,DevilXStringAllocator,DevilXAllocator<std::pair<const std::basic_string<Char,std::char_traits<Char>,DevilXStringAllocator>,x*> > >
 #define TNamedRefResourcePtrMap(x) TNamedRefResourcePtrMap<x,DevilXStringAllocator,DevilXAllocator<std::pair<const std::basic_string<Char,std::char_traits<Char>,DevilXStringAllocator>,x*> > >
 #define TBaseNamedIndexResourcePtrContainer(x) TBaseNamedIndexResourcePtrContainer<x,DevilXStringAllocator,DevilXAllocator<x*> >
