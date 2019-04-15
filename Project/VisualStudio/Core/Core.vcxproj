@@ -208,6 +208,7 @@
     <ClCompile Include="..\..\..\Code\Core\Source\GAManager_DX.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\ICoreDirectXManager.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\ICoreGAManager.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\IGAShaderReflectionImp_DX.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\ICoreMemoryManager.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\ICoreNetworkManager.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\ICoreSystem.cpp" />
