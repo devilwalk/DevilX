@@ -340,6 +340,146 @@ namespace NSDevilX
 						return GL_FALSE;
 					}
 				}
+				static GLenum mapping(IGAEnum::EPrimitiveTopology value)
+				{
+					switch(value)
+					{
+					case IGAEnum::EPrimitiveTopology_TRIANGLELIST:
+						return GL_TRIANGLES;
+					case IGAEnum::EPrimitiveTopology_TRIANGLESTRIP:
+						return GL_TRIANGLE_STRIP;
+					case IGAEnum::EPrimitiveTopology_LINELIST:
+						return GL_LINES;
+					case IGAEnum::EPrimitiveTopology_LINESTRIP:
+						return GL_LINE_STRIP;
+					case IGAEnum::EPrimitiveTopology_POINTLIST:
+						return GL_POINTS;
+					default:
+						assert(0);
+						return GL_TRIANGLES;
+					}
+				}
+				static GLenum mapping(IGAEnum::EBlend blend,Bool alpha=False)
+				{
+					switch(blend)
+					{
+					case IGAEnum::EBlend_ZERO:
+						return GL_ZERO;
+					case IGAEnum::EBlend_ONE:
+						return GL_ONE;
+					case IGAEnum::EBlend_SRC_COLOR:
+						return GL_SRC_COLOR;
+					case IGAEnum::EBlend_SRC_ALPHA:
+						return GL_SRC_ALPHA;
+					case IGAEnum::EBlend_SRC_ALPHA_SAT:
+						return GL_SRC_ALPHA_SATURATE;
+					case IGAEnum::EBlend_BLEND_FACTOR:
+						return alpha?GL_CONSTANT_ALPHA:GL_CONSTANT_COLOR;
+					case IGAEnum::EBlend_DEST_ALPHA:
+						return GL_DST_ALPHA;
+					case IGAEnum::EBlend_DEST_COLOR:
+						return GL_DST_COLOR;
+					case IGAEnum::EBlend_INV_BLEND_FACTOR:
+						return alpha?GL_ONE_MINUS_CONSTANT_ALPHA:GL_ONE_MINUS_CONSTANT_COLOR;
+					case IGAEnum::EBlend_INV_DEST_ALPHA:
+						return GL_ONE_MINUS_DST_ALPHA;
+					case IGAEnum::EBlend_INV_DEST_COLOR:
+						return GL_ONE_MINUS_DST_COLOR;
+					case IGAEnum::EBlend_INV_SRC1_ALPHA:
+						return GL_ONE_MINUS_SRC1_ALPHA;
+					case IGAEnum::EBlend_INV_SRC1_COLOR:
+						return GL_ONE_MINUS_SRC1_COLOR;
+					case IGAEnum::EBlend_INV_SRC_ALPHA:
+						return GL_ONE_MINUS_SRC_ALPHA;
+					case IGAEnum::EBlend_INV_SRC_COLOR:
+						return GL_ONE_MINUS_SRC_COLOR;
+					default:
+						assert(0);
+						return GL_ONE;
+					}
+				}
+				static GLenum mapping(IGAEnum::EBlendOp blendOp)
+				{
+					switch(blendOp)
+					{
+					case IGAEnum::EBlendOp_ADD:
+						return GL_FUNC_ADD;
+					case IGAEnum::EBlendOp_MAX:
+						return GL_MAX;
+					case IGAEnum::EBlendOp_MIN:
+						return GL_MIN;
+					case IGAEnum::EBlendOp_REV_SUBTRACT:
+						return GL_FUNC_REVERSE_SUBTRACT;
+					case IGAEnum::EBlendOp_SUBTRACT:
+						return GL_FUNC_SUBTRACT;
+					default:
+						assert(0);
+						return GL_FUNC_ADD;
+					}
+				}
+				static GLenum mapping(IGAEnum::ECullMode mode)
+				{
+					switch(mode)
+					{
+					case IGAEnum::ECullMode_BACK:
+						return GL_BACK;
+					case IGAEnum::ECullMode_FRONT:
+						return GL_FRONT;
+					default:
+						assert(0);
+						return GL_BACK;
+					}
+				}
+				static GLenum mapping(IGAEnum::EFillMode mode)
+				{
+					switch(mode)
+					{
+					case IGAEnum::EFillMode_SOLID:
+						return GL_FILL;
+					case IGAEnum::EFillMode_WIREFRAME:
+						return GL_LINE;
+					default:
+						return GL_FILL;
+					}
+				}
+				static GLenum mapping(IGAEnum::EStencilOp op)
+				{
+					switch(op)
+					{
+					case IGAEnum::EStencilOp_DECR:
+						return GL_DECR_WRAP;
+					case IGAEnum::EStencilOp_DECR_SAT:
+						return GL_DECR;
+					case IGAEnum::EStencilOp_INCR:
+						return GL_INCR_WRAP;
+					case IGAEnum::EStencilOp_INCR_SAT:
+						return GL_INCR;
+					case IGAEnum::EStencilOp_INVERT:
+						return GL_INVERT;
+					case IGAEnum::EStencilOp_KEEP:
+						return GL_KEEP;
+					case IGAEnum::EStencilOp_REPLACE:
+						return GL_REPLACE;
+					case IGAEnum::EStencilOp_ZERO:
+						return GL_ZERO;
+					default:
+						assert(0);
+						return GL_KEEP;
+					}
+				}
+				static GLboolean mapping(IGAEnum::EDepthWriteMask mask)
+				{
+					switch(mask)
+					{
+					case IGAEnum::EDepthWriteMask_ALL:
+						return GL_TRUE;
+					case IGAEnum::EDepthWriteMask_ZERO:
+						return GL_FALSE;
+					default:
+						assert(0);
+						return GL_TRUE;
+					}
+				}
 			};
 		}
 	}

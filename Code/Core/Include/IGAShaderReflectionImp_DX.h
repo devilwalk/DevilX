@@ -13,9 +13,9 @@ namespace NSDevilX
 					,public TBaseObject<IGAShaderReflectionImp>
 				{
 				protected:
-					TCOMResourcePtrVector(ID3D11ShaderReflection) mReflections;
+					CComPtr<ID3D11ShaderReflection> mReflection;
 				public:
-					IGAShaderReflectionImp(ID3DBlob * const * blobs,UInt32 numBlobs);
+					IGAShaderReflectionImp(ID3DBlob * blob);
 					~IGAShaderReflectionImp();
 
 					// Í¨¹ý IGAShaderReflection ¼Ì³Ð

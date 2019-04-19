@@ -4,6 +4,12 @@ using namespace NSCore;
 using namespace NSDirectX;
 using namespace NSVersion11;
 
+NSDevilX::NSCore::NSDirectX::IGAResourceImp::IGAResourceImp()
+{}
+
+NSDevilX::NSCore::NSDirectX::IGAResourceImp::~IGAResourceImp()
+{}
+
 NSDevilX::NSCore::NSDirectX::NSVersion11::IGABufferImp::IGABufferImp(ID3D11Device * device,const D3D11_BUFFER_DESC & desc,const D3D11_SUBRESOURCE_DATA * initialData)
 {
 	device->CreateBuffer(&desc,initialData,&mInternal);
@@ -18,6 +24,17 @@ IGABuffer * NSDevilX::NSCore::NSDirectX::NSVersion11::IGABufferImp::queryInterfa
 	return this;
 }
 
+NSDevilX::NSCore::NSDirectX::NSVersion11::IGATextureImp::IGATextureImp()
+{}
+
+NSDevilX::NSCore::NSDirectX::NSVersion11::IGATextureImp::~IGATextureImp()
+{}
+
+IGATexture * NSDevilX::NSCore::NSDirectX::NSVersion11::IGATextureImp::queryInterface_IGATexture()
+{
+	return this;
+}
+
 NSDevilX::NSCore::NSDirectX::NSVersion11::IGATexture1DImp::IGATexture1DImp(ID3D11Device * device,const D3D11_TEXTURE1D_DESC & desc,const D3D11_SUBRESOURCE_DATA * initialData)
 {
 	device->CreateTexture1D(&desc,initialData,&mInternal);
@@ -25,11 +42,6 @@ NSDevilX::NSCore::NSDirectX::NSVersion11::IGATexture1DImp::IGATexture1DImp(ID3D1
 
 NSDevilX::NSCore::NSDirectX::NSVersion11::IGATexture1DImp::~IGATexture1DImp()
 {
-}
-
-IGATexture * NSDevilX::NSCore::NSDirectX::NSVersion11::IGATexture1DImp::queryInterface_IGATexture()
-{
-	return this;
 }
 
 NSDevilX::NSCore::NSDirectX::NSVersion11::IGATexture2DImp::IGATexture2DImp(ID3D11Device * device,const D3D11_TEXTURE2D_DESC & desc,const D3D11_SUBRESOURCE_DATA * initialData)
@@ -41,11 +53,6 @@ NSDevilX::NSCore::NSDirectX::NSVersion11::IGATexture2DImp::~IGATexture2DImp()
 {
 }
 
-IGATexture * NSDevilX::NSCore::NSDirectX::NSVersion11::IGATexture2DImp::queryInterface_IGATexture()
-{
-	return this;
-}
-
 NSDevilX::NSCore::NSDirectX::NSVersion11::IGATexture3DImp::IGATexture3DImp(ID3D11Device * device,const D3D11_TEXTURE3D_DESC & desc,const D3D11_SUBRESOURCE_DATA * initialData)
 {
 	device->CreateTexture3D(&desc,initialData,&mInternal);
@@ -55,12 +62,7 @@ NSDevilX::NSCore::NSDirectX::NSVersion11::IGATexture3DImp::~IGATexture3DImp()
 {
 }
 
-IGATexture * NSDevilX::NSCore::NSDirectX::NSVersion11::IGATexture3DImp::queryInterface_IGATexture()
-{
-	return this;
-}
-
-NSDevilX::NSCore::NSDirectX::NSVersion11::IGAInputLayoutImp::IGAInputLayoutImp(ID3D11Device * device,const TVector<D3D11_INPUT_ELEMENT_DESC>& desc)
+NSDevilX::NSCore::NSDirectX::NSVersion11::IGAInputLayoutImp::IGAInputLayoutImp(ID3D11Device * device,const TVector(D3D11_INPUT_ELEMENT_DESC)& desc)
 {
 	String hlsl="void main(";
 	for(UInt32 i=0,count=static_cast<UInt32>(desc.size());i<count;++i)
@@ -125,9 +127,20 @@ NSDevilX::NSCore::NSDirectX::NSVersion11::IGAInputLayoutImp::~IGAInputLayoutImp(
 {
 }
 
+NSDevilX::NSCore::NSDirectX::NSVersion11::IGAShaderImp::IGAShaderImp()
+{}
+
+NSDevilX::NSCore::NSDirectX::NSVersion11::IGAShaderImp::~IGAShaderImp()
+{}
+
+IGAShader * NSDevilX::NSCore::NSDirectX::NSVersion11::IGAShaderImp::queryInterface_IGAShader()
+{
+	return this;
+}
+
 NSDevilX::NSCore::NSDirectX::NSVersion11::IGAVertexShaderImp::IGAVertexShaderImp(ID3D11Device * device,const String & hlsl)
 {
-	CComPtr<ID3DBlob> code;
+	auto & code=IGAShaderImp::mInternal;
 	CComPtr<ID3DBlob> error;
 	UInt32 flag=0;
 #if DEVILX_DEBUG
@@ -140,7 +153,8 @@ NSDevilX::NSCore::NSDirectX::NSVersion11::IGAVertexShaderImp::IGAVertexShaderImp
 	{
 		OutputDebugStringA(static_cast<LPCSTR>(error->GetBufferPointer()));
 	}
-	device->CreateVertexShader(code->GetBufferPointer(),code->GetBufferSize(),nullptr,&mInternal);
+	auto & internal_ref=TD3DResourceContainer<ID3D11VertexShader>::mInternal;
+	device->CreateVertexShader(code->GetBufferPointer(),code->GetBufferSize(),nullptr,&internal_ref);
 }
 
 NSDevilX::NSCore::NSDirectX::NSVersion11::IGAVertexShaderImp::~IGAVertexShaderImp()
@@ -149,7 +163,7 @@ NSDevilX::NSCore::NSDirectX::NSVersion11::IGAVertexShaderImp::~IGAVertexShaderIm
 
 NSDevilX::NSCore::NSDirectX::NSVersion11::IGAGeometryShaderImp::IGAGeometryShaderImp(ID3D11Device * device,const String & hlsl)
 {
-	CComPtr<ID3DBlob> code;
+	auto & code=IGAShaderImp::mInternal;
 	CComPtr<ID3DBlob> error;
 	UInt32 flag=0;
 #if DEVILX_DEBUG
@@ -162,7 +176,8 @@ NSDevilX::NSCore::NSDirectX::NSVersion11::IGAGeometryShaderImp::IGAGeometryShade
 	{
 		OutputDebugStringA(static_cast<LPCSTR>(error->GetBufferPointer()));
 	}
-	device->CreateGeometryShader(code->GetBufferPointer(),code->GetBufferSize(),nullptr,&mInternal);
+	auto & internal_ref=TD3DResourceContainer<ID3D11GeometryShader>::mInternal;
+	device->CreateGeometryShader(code->GetBufferPointer(),code->GetBufferSize(),nullptr,&internal_ref);
 }
 
 NSDevilX::NSCore::NSDirectX::NSVersion11::IGAGeometryShaderImp::~IGAGeometryShaderImp()
@@ -171,7 +186,7 @@ NSDevilX::NSCore::NSDirectX::NSVersion11::IGAGeometryShaderImp::~IGAGeometryShad
 
 NSDevilX::NSCore::NSDirectX::NSVersion11::IGAPixelShaderImp::IGAPixelShaderImp(ID3D11Device * device,const String & hlsl)
 {
-	CComPtr<ID3DBlob> code;
+	auto & code=IGAShaderImp::mInternal;
 	CComPtr<ID3DBlob> error;
 	UInt32 flag=0;
 #if DEVILX_DEBUG
@@ -184,7 +199,8 @@ NSDevilX::NSCore::NSDirectX::NSVersion11::IGAPixelShaderImp::IGAPixelShaderImp(I
 	{
 		OutputDebugStringA(static_cast<LPCSTR>(error->GetBufferPointer()));
 	}
-	device->CreatePixelShader(code->GetBufferPointer(),code->GetBufferSize(),nullptr,&mInternal);
+	auto & internal_ref=TD3DResourceContainer<ID3D11PixelShader>::mInternal;
+	device->CreatePixelShader(code->GetBufferPointer(),code->GetBufferSize(),nullptr,&internal_ref);
 }
 
 NSDevilX::NSCore::NSDirectX::NSVersion11::IGAPixelShaderImp::~IGAPixelShaderImp()
@@ -193,7 +209,7 @@ NSDevilX::NSCore::NSDirectX::NSVersion11::IGAPixelShaderImp::~IGAPixelShaderImp(
 
 NSDevilX::NSCore::NSDirectX::NSVersion11::IGAHullShaderImp::IGAHullShaderImp(ID3D11Device * device,const String & hlsl)
 {
-	CComPtr<ID3DBlob> code;
+	auto & code=IGAShaderImp::mInternal;
 	CComPtr<ID3DBlob> error;
 	UInt32 flag=0;
 #if DEVILX_DEBUG
@@ -206,7 +222,8 @@ NSDevilX::NSCore::NSDirectX::NSVersion11::IGAHullShaderImp::IGAHullShaderImp(ID3
 	{
 		OutputDebugStringA(static_cast<LPCSTR>(error->GetBufferPointer()));
 	}
-	device->CreateHullShader(code->GetBufferPointer(),code->GetBufferSize(),nullptr,&mInternal);
+	auto & internal_ref=TD3DResourceContainer<ID3D11HullShader>::mInternal;
+	device->CreateHullShader(code->GetBufferPointer(),code->GetBufferSize(),nullptr,&internal_ref);
 }
 
 NSDevilX::NSCore::NSDirectX::NSVersion11::IGAHullShaderImp::~IGAHullShaderImp()
@@ -215,7 +232,7 @@ NSDevilX::NSCore::NSDirectX::NSVersion11::IGAHullShaderImp::~IGAHullShaderImp()
 
 NSDevilX::NSCore::NSDirectX::NSVersion11::IGADomainShaderImp::IGADomainShaderImp(ID3D11Device * device,const String & hlsl)
 {
-	CComPtr<ID3DBlob> code;
+	auto & code=IGAShaderImp::mInternal;
 	CComPtr<ID3DBlob> error;
 	UInt32 flag=0;
 #if DEVILX_DEBUG
@@ -228,7 +245,8 @@ NSDevilX::NSCore::NSDirectX::NSVersion11::IGADomainShaderImp::IGADomainShaderImp
 	{
 		OutputDebugStringA(static_cast<LPCSTR>(error->GetBufferPointer()));
 	}
-	device->CreateDomainShader(code->GetBufferPointer(),code->GetBufferSize(),nullptr,&mInternal);
+	auto & internal_ref=TD3DResourceContainer<ID3D11DomainShader>::mInternal;
+	device->CreateDomainShader(code->GetBufferPointer(),code->GetBufferSize(),nullptr,&internal_ref);
 }
 
 NSDevilX::NSCore::NSDirectX::NSVersion11::IGADomainShaderImp::~IGADomainShaderImp()
@@ -237,7 +255,7 @@ NSDevilX::NSCore::NSDirectX::NSVersion11::IGADomainShaderImp::~IGADomainShaderIm
 
 NSDevilX::NSCore::NSDirectX::NSVersion11::IGAComputeShaderImp::IGAComputeShaderImp(ID3D11Device * device,const String & hlsl)
 {
-	CComPtr<ID3DBlob> code;
+	auto & code=IGAShaderImp::mInternal;
 	CComPtr<ID3DBlob> error;
 	UInt32 flag=0;
 #if DEVILX_DEBUG
@@ -250,34 +268,65 @@ NSDevilX::NSCore::NSDirectX::NSVersion11::IGAComputeShaderImp::IGAComputeShaderI
 	{
 		OutputDebugStringA(static_cast<LPCSTR>(error->GetBufferPointer()));
 	}
-	device->CreateComputeShader(code->GetBufferPointer(),code->GetBufferSize(),nullptr,&mInternal);
+	auto & internal_ref=TD3DResourceContainer<ID3D11ComputeShader>::mInternal;
+	device->CreateComputeShader(code->GetBufferPointer(),code->GetBufferSize(),nullptr,&internal_ref);
 }
 
 NSDevilX::NSCore::NSDirectX::NSVersion11::IGAComputeShaderImp::~IGAComputeShaderImp()
 {
 }
 
-NSDevilX::NSCore::NSDirectX::NSVersion11::IGASamplerStateImp::IGASamplerStateImp(ID3D11Device * device,const D3D11_SAMPLER_DESC & desc)
+Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGAComputeShaderImp::apply(ID3D11DeviceContext * context)
 {
-	device->CreateSamplerState(&desc,&mInternal);
+	auto & internal_ref=TD3DResourceContainer<ID3D11ComputeShader>::mInternal;
+	context->CSSetShader(internal_ref,nullptr,0);
 }
 
-NSDevilX::NSCore::NSDirectX::NSVersion11::IGASamplerStateImp::~IGASamplerStateImp()
+NSDevilX::NSCore::NSDirectX::NSVersion11::IGABlendStateImp::IGABlendStateImp(ID3D11Device * device,const D3D11_BLEND_DESC1 & desc)
 {
-}
-
-NSDevilX::NSCore::NSDirectX::NSVersion11::IGABlendStateImp::IGABlendStateImp(ID3D11Device * device,const D3D11_BLEND_DESC & desc)
-{
-	device->CreateBlendState(&desc,&mInternal);
+	CComPtr<ID3D11Device1> dev;
+	device->QueryInterface(__uuidof(dev),reinterpret_cast<VoidPtr*>(&dev));
+	if(dev.p)
+	{
+		ID3D11BlendState1 * state=nullptr;
+		dev->CreateBlendState1(&desc,&state);
+		mInternal=state;
+	}
+	else
+	{
+		device->CreateBlendState(reinterpret_cast<const D3D11_BLEND_DESC*>(&desc),&mInternal);
+	}
 }
 
 NSDevilX::NSCore::NSDirectX::NSVersion11::IGABlendStateImp::~IGABlendStateImp()
 {
 }
 
-NSDevilX::NSCore::NSDirectX::NSVersion11::IGARasterizerStateImp::IGARasterizerStateImp(ID3D11Device * device,const D3D11_RASTERIZER_DESC & desc)
+NSDevilX::NSCore::NSDirectX::NSVersion11::IGARasterizerStateImp::IGARasterizerStateImp(ID3D11Device * device,const D3D11_RASTERIZER_DESC2 & desc)
 {
-	device->CreateRasterizerState(&desc,&mInternal);
+	CComPtr<ID3D11Device3> dev;
+	device->QueryInterface(__uuidof(dev),reinterpret_cast<VoidPtr*>(&dev));
+	if(dev.p)
+	{
+		ID3D11RasterizerState2 * state=nullptr;
+		dev->CreateRasterizerState2(&desc,&state);
+		mInternal=state;
+	}
+	else
+	{
+		CComPtr<ID3D11Device1> dev1;
+		device->QueryInterface(__uuidof(dev),reinterpret_cast<VoidPtr*>(&dev));
+		if(dev1.p)
+		{
+			ID3D11RasterizerState1 * state=nullptr;
+			dev->CreateRasterizerState1(reinterpret_cast<const D3D11_RASTERIZER_DESC1*>(&desc),&state);
+			mInternal=state;
+		}
+		else
+		{
+			device->CreateRasterizerState(reinterpret_cast<const D3D11_RASTERIZER_DESC*>(&desc),&mInternal);
+		}
+	}
 }
 
 NSDevilX::NSCore::NSDirectX::NSVersion11::IGARasterizerStateImp::~IGARasterizerStateImp()
@@ -291,4 +340,39 @@ NSDevilX::NSCore::NSDirectX::NSVersion11::IGADepthStencilStateImp::IGADepthStenc
 
 NSDevilX::NSCore::NSDirectX::NSVersion11::IGADepthStencilStateImp::~IGADepthStencilStateImp()
 {
+}
+
+NSDevilX::NSCore::NSDirectX::NSVersion11::IGASamplerStateImp::IGASamplerStateImp(ID3D11Device * device,const D3D11_SAMPLER_DESC & desc)
+{
+	device->CreateSamplerState(&desc,&mInternal);
+}
+
+NSDevilX::NSCore::NSDirectX::NSVersion11::IGASamplerStateImp::~IGASamplerStateImp()
+{}
+
+NSDevilX::NSCore::NSDirectX::CGAProgram::CGAProgram()
+{}
+
+NSDevilX::NSCore::NSDirectX::CGAProgram::~CGAProgram()
+{}
+
+NSDevilX::NSCore::NSDirectX::NSVersion11::IGARenderPipelineProgramImp::IGARenderPipelineProgramImp(IGAVertexShaderImp * vertexShader,IGAPixelShaderImp * pixelShader,IGAGeometryShaderImp * geometryShader,IGAHullShaderImp * hullShader,IGADomainShaderImp * domainShader)
+{
+	mShaders[IGAEnum::EShaderType_Vertex]=vertexShader;
+	mShaders[IGAEnum::EShaderType_Pixel]=pixelShader;
+	mShaders[IGAEnum::EShaderType_Geometry]=geometryShader;
+	mShaders[IGAEnum::EShaderType_Hull]=hullShader;
+	mShaders[IGAEnum::EShaderType_Domain]=domainShader;
+}
+
+NSDevilX::NSCore::NSDirectX::NSVersion11::IGARenderPipelineProgramImp::~IGARenderPipelineProgramImp()
+{}
+
+Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGARenderPipelineProgramImp::apply(ID3D11DeviceContext * context)
+{
+	context->VSSetShader(static_cast<IGAVertexShaderImp*>(mShaders[IGAEnum::EShaderType_Vertex])->getInternal(),nullptr,0);
+	context->PSSetShader(static_cast<IGAPixelShaderImp*>(mShaders[IGAEnum::EShaderType_Pixel])->getInternal(),nullptr,0);
+	context->GSSetShader(static_cast<IGAGeometryShaderImp*>(mShaders[IGAEnum::EShaderType_Geometry])->getInternal(),nullptr,0);
+	context->HSSetShader(static_cast<IGAHullShaderImp*>(mShaders[IGAEnum::EShaderType_Hull])->getInternal(),nullptr,0);
+	context->DSSetShader(static_cast<IGADomainShaderImp*>(mShaders[IGAEnum::EShaderType_Domain])->getInternal(),nullptr,0);
 }

@@ -99,16 +99,17 @@ namespace NSDevilX
 			};
 			struct SRasterizerDesc
 			{
-				IGAEnum::EFillMode                       FillMode;
-				IGAEnum::ECullMode                       CullMode;
-				Bool                                  FrontCounterClockwise;
-				Int32                                   DepthBias;
-				Float                                 DepthBiasClamp;
-				Float                                 SlopeScaledDepthBias;
-				Bool                                  DepthClipEnable;
-				Bool                                  MultisampleEnable;
-				Bool                                  AntialiasedLineEnable;
-				UInt32                                  ForcedSampleCount;
+				IGAEnum::EFillMode FillMode;
+				IGAEnum::ECullMode CullMode;
+				Bool FrontCounterClockwise;
+				Int32 DepthBias;
+				Float DepthBiasClamp;
+				Float SlopeScaledDepthBias;
+				Bool DepthClipEnable;
+				Bool ScissorEnable;
+				Bool MultisampleEnable;
+				Bool AntialiasedLineEnable;
+				UInt32 ForcedSampleCount;
 				IGAEnum::EConservativeRasterizationMode ConservativeRaster;
 			};
 			struct SDepthStencilOpDesc

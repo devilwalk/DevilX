@@ -109,6 +109,14 @@ namespace NSDevilX
 		public:
 			virtual IGAResource * queryInterface_IGAResource()=0;
 		};
+		class IGASamplerState
+		{
+		protected:
+			virtual ~IGASamplerState()
+			{}
+		public:
+			virtual IGAResource * queryInterface_IGAResource()=0;
+		};
 		class IGAShader
 		{
 		protected:
@@ -172,12 +180,22 @@ namespace NSDevilX
 		public:
 			virtual IGAShader * queryInterface_IGAShader()=0;
 		};
-		class IGASamplerState
+		class IGAProgram
 		{
 		protected:
-			virtual ~IGASamplerState(){ }
+			virtual ~IGAProgram(){}
 		public:
 			virtual IGAResource * queryInterface_IGAResource()=0;
+		};
+		class IGAProgramParameter
+		{
+		protected:
+			virtual ~IGAProgramParameter(){}
+		public:
+			virtual IGAResource * queryInterface_IGAResource()=0;
+			virtual Void setConstantBuffer(UInt32 slot,IGAConstantBuffer * buffer)=0;
+			virtual Void setSampler(UInt32 slot,IGASamplerState * sampler)=0;
+			virtual Void setResourceView(UInt32 slot,IGAShaderResourceView * view)=0;
 		};
 	}
 }

@@ -4,15 +4,15 @@ using namespace NSCore;
 using namespace NSDirectX;
 using namespace NSVersion11;
 
-NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::IGADeviceContextImp(IGADeviceImp * device,Bool deferred)
+NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::IGADeviceContextImp(ID3D11Device * device,Bool deferred)
 {
 	if(deferred)
 	{
-		device->getInternal()->CreateDeferredContext(0,&mInternal);
+		device->CreateDeferredContext(0,&mInternal);
 	}
 	else
 	{
-		device->getInternal()->GetImmediateContext(&mInternal);
+		device->GetImmediateContext(&mInternal);
 	}
 }
 
@@ -61,119 +61,106 @@ Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::setIndexBuff
 	mInternal->IASetIndexBuffer(static_cast<IGABufferImp*>(buffer)->getInternal(),CUtility::mapping(format),offset);
 }
 
-Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::setShader(IGAVertexShader * shader)
+Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::setProgram(IGAEnum::EShaderType shaderType,IGAProgram * program)
 {
-	mInternal->VSSetShader(static_cast<IGAVertexShaderImp*>(shader)->getInternal(),nullptr,0);
-}
-
-Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::setShader(IGAPixelShader * shader)
-{
-	mInternal->PSSetShader(static_cast<IGAPixelShaderImp*>(shader)->getInternal(),nullptr,0);
-}
-
-Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::setShader(IGAGeometryShader * shader)
-{
-	mInternal->GSSetShader(static_cast<IGAGeometryShaderImp*>(shader)->getInternal(),nullptr,0);
-}
-
-Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::setShader(IGAHullShader * shader)
-{
-	mInternal->HSSetShader(static_cast<IGAHullShaderImp*>(shader)->getInternal(),nullptr,0);
-}
-
-Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::setShader(IGADomainShader * shader)
-{
-	mInternal->DSSetShader(static_cast<IGADomainShaderImp*>(shader)->getInternal(),nullptr,0);
-}
-
-Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::setShader(IGAComputeShader * shader)
-{
-	mInternal->CSSetShader(static_cast<IGAComputeShaderImp*>(shader)->getInternal(),nullptr,0);
+	switch(shaderType)
+	{
+	case IGAEnum::EShaderType_Vertex:
+		mInternal->VSSetShader(static_cast<IGAVertexShaderImp*>(program)->getInternal(),nullptr,0);
+		break;
+	case IGAEnum::EShaderType_Pixel:
+		mInternal->PSSetShader(static_cast<IGAPixelShaderImp*>(program)->getInternal(),nullptr,0);
+		break;
+	case IGAEnum::EShaderType_Geometry:
+		mInternal->GSSetShader(static_cast<IGAGeometryShaderImp*>(program)->getInternal(),nullptr,0);
+		break;
+	case IGAEnum::EShaderType_Hull:
+		mInternal->HSSetShader(static_cast<IGAHullShaderImp*>(program)->getInternal(),nullptr,0);
+		break;
+	case IGAEnum::EShaderType_Domain:
+		mInternal->DSSetShader(static_cast<IGADomainShaderImp*>(program)->getInternal(),nullptr,0);
+		break;
+	case IGAEnum::EShaderType_Compute:
+		mInternal->CSSetShader(static_cast<IGAComputeShaderImp*>(program)->getInternal(),nullptr,0);
+		break;
+	}
 }
 
 Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::setShaderConstantBuffers(IGAEnum::EShaderType shaderType,UInt32 startSlot,UInt32 numBuffers,IGAConstantBuffer * const * buffers)
 {
-	typedef decltype(ID3D11DeviceContext::VSSetConstantBuffers) func(UINT,UINT,ID3D11Buffer*const*);
-	func * func_ptr=nullptr;
+	for(UInt32 i=0;i<numBuffers;++i)
+		mPointerCache[i]=static_cast<IGABufferImp*>(buffers[i])->getInternal();
 	switch(shaderType)
 	{
 	case IGAEnum::EShaderType_Vertex:
-		func_ptr=mInternal->VSSetConstantBuffers;
+		mInternal->VSSetConstantBuffers(startSlot,numBuffers,reinterpret_cast<ID3D11Buffer**>(&mPointerCache[0]));
 		break;
 	case IGAEnum::EShaderType_Pixel:
-		func_ptr=mInternal->PSSetConstantBuffers;
+		mInternal->PSSetConstantBuffers(startSlot,numBuffers,reinterpret_cast<ID3D11Buffer**>(&mPointerCache[0]));
 		break;
 	case IGAEnum::EShaderType_Geometry:
-		func_ptr=mInternal->GSSetConstantBuffers;
+		mInternal->GSSetConstantBuffers(startSlot,numBuffers,reinterpret_cast<ID3D11Buffer**>(&mPointerCache[0]));
 		break;
 	case IGAEnum::EShaderType_Hull:
-		func_ptr=mInternal->HSSetConstantBuffers;
+		mInternal->HSSetConstantBuffers(startSlot,numBuffers,reinterpret_cast<ID3D11Buffer**>(&mPointerCache[0]));
 		break;
 	case IGAEnum::EShaderType_Domain:
-		func_ptr=mInternal->DSSetConstantBuffers;
+		mInternal->DSSetConstantBuffers(startSlot,numBuffers,reinterpret_cast<ID3D11Buffer**>(&mPointerCache[0]));
 		break;
 	case IGAEnum::EShaderType_Compute:
-		func_ptr=mInternal->CSSetConstantBuffers;
+		mInternal->CSSetConstantBuffers(startSlot,numBuffers,reinterpret_cast<ID3D11Buffer**>(&mPointerCache[0]));
 		break;
 	}
-	for(UInt32 i=0;i<numBuffers;++i)
-		mPointerCache[i]=static_cast<IGABufferImp*>(buffers[i])->getInternal();
-	(*func_ptr)(startSlot,numBuffers,reinterpret_cast<ID3D11Buffer**>(&mPointerCache[0]));
 }
 
 Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::setShaderSampler(IGAEnum::EShaderType shaderType,UInt32 startSlot,UInt32 numSamplers,IGASamplerState * const * samplers)
 {
-	typedef decltype(ID3D11DeviceContext::VSSetSamplers) func(UINT,UINT,ID3D11SamplerState*const*);
-	func * func_ptr=nullptr;
+	for(UInt32 i=0;i<numSamplers;++i)
+		mPointerCache[i]=static_cast<IGASamplerStateImp*>(samplers[i])->getInternal();
 	switch(shaderType)
 	{
 	case IGAEnum::EShaderType_Vertex:
-		func_ptr=mInternal->VSSetSamplers;
+		mInternal->VSSetSamplers(startSlot,numSamplers,reinterpret_cast<ID3D11SamplerState**>(&mPointerCache[0]));
 		break;
 	case IGAEnum::EShaderType_Pixel:
-		func_ptr=mInternal->PSSetSamplers;
+		mInternal->PSSetSamplers(startSlot,numSamplers,reinterpret_cast<ID3D11SamplerState**>(&mPointerCache[0]));
 		break;
 	case IGAEnum::EShaderType_Geometry:
-		func_ptr=mInternal->GSSetSamplers;
+		mInternal->GSSetSamplers(startSlot,numSamplers,reinterpret_cast<ID3D11SamplerState**>(&mPointerCache[0]));
 		break;
 	case IGAEnum::EShaderType_Hull:
-		func_ptr=mInternal->HSSetSamplers;
+		mInternal->HSSetSamplers(startSlot,numSamplers,reinterpret_cast<ID3D11SamplerState**>(&mPointerCache[0]));
 		break;
 	case IGAEnum::EShaderType_Domain:
-		func_ptr=mInternal->DSSetSamplers;
+		mInternal->DSSetSamplers(startSlot,numSamplers,reinterpret_cast<ID3D11SamplerState**>(&mPointerCache[0]));
 		break;
 	case IGAEnum::EShaderType_Compute:
-		func_ptr=mInternal->CSSetSamplers;
+		mInternal->CSSetSamplers(startSlot,numSamplers,reinterpret_cast<ID3D11SamplerState**>(&mPointerCache[0]));
 		break;
 	}
-	for(UInt32 i=0;i<numSamplers;++i)
-		mPointerCache[i]=static_cast<IGASamplerStateImp*>(samplers[i])->getInternal();
-	(*func_ptr)(startSlot,numSamplers,reinterpret_cast<ID3D11SamplerState**>(&mPointerCache[0]));
 }
 
 Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::setShaderResources(IGAEnum::EShaderType shaderType,UInt32 startSlot,UInt32 numViews,IGAShaderResourceView * const * views)
 {
-	typedef decltype(ID3D11DeviceContext::VSSetShaderResources) func(UINT,UINT,ID3D11ShaderResourceView*const*);
-	func * func_ptr=nullptr;
 	switch(shaderType)
 	{
 	case IGAEnum::EShaderType_Vertex:
-		func_ptr=mInternal->VSSetShaderResources;
+		mInternal->VSSetShaderResources(startSlot,numViews,reinterpret_cast<ID3D11ShaderResourceView**>(&mPointerCache[0]));
 		break;
 	case IGAEnum::EShaderType_Pixel:
-		func_ptr=mInternal->PSSetShaderResources;
+		mInternal->PSSetShaderResources(startSlot,numViews,reinterpret_cast<ID3D11ShaderResourceView**>(&mPointerCache[0]));
 		break;
 	case IGAEnum::EShaderType_Geometry:
-		func_ptr=mInternal->GSSetShaderResources;
+		mInternal->GSSetShaderResources(startSlot,numViews,reinterpret_cast<ID3D11ShaderResourceView**>(&mPointerCache[0]));
 		break;
 	case IGAEnum::EShaderType_Hull:
-		func_ptr=mInternal->HSSetShaderResources;
+		mInternal->HSSetShaderResources(startSlot,numViews,reinterpret_cast<ID3D11ShaderResourceView**>(&mPointerCache[0]));
 		break;
 	case IGAEnum::EShaderType_Domain:
-		func_ptr=mInternal->DSSetShaderResources;
+		mInternal->DSSetShaderResources(startSlot,numViews,reinterpret_cast<ID3D11ShaderResourceView**>(&mPointerCache[0]));
 		break;
 	case IGAEnum::EShaderType_Compute:
-		func_ptr=mInternal->CSSetShaderResources;
+		mInternal->CSSetShaderResources(startSlot,numViews,reinterpret_cast<ID3D11ShaderResourceView**>(&mPointerCache[0]));
 		break;
 	}
 }

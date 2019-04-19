@@ -6,6 +6,9 @@ using namespace NSDirectX;
 NSDevilX::NSCore::NSDirectX::IGASwapChainImp::IGASwapChainImp(ID3D11Device * dev,DXGI_SWAP_CHAIN_DESC && desc)
 {
 	CGAManager::getSingleton().getFactory()->CreateSwapChain(dev,&desc,&mInternal);
+	CComPtr<IDXGISwapChain2> swap_chain;
+	mInternal->QueryInterface<IDXGISwapChain2>(&swap_chain);
+	swap_chain->SetMaximumFrameLatency(1);
 	mInternal->GetBuffer(0,__uuidof(mBackBuffer11),reinterpret_cast<VoidPtr*>(&mBackBuffer11));
 	dev->CreateRenderTargetView(mBackBuffer11,nullptr,&mRenderTargetView11);
 	D3D11_TEXTURE2D_DESC rt_desc={0};

@@ -16,7 +16,7 @@ namespace NSDevilX
 					CComPtr<ID3D11DeviceContext> mInternal;
 					std::array<VoidPtr,256> mPointerCache;
 				public:
-					IGADeviceContextImp(IGADeviceImp * device,Bool deferred);
+					IGADeviceContextImp(ID3D11Device * device,Bool deferred);
 					~IGADeviceContextImp();
 
 					ID3D11DeviceContext * getInternal()const
@@ -33,15 +33,8 @@ namespace NSDevilX
 					virtual Void setInputLayout(IGAInputLayout * layout) override;
 					virtual Void setVertexBuffer(UInt32 startSlot,UInt32 numBuffers,IGAVertexBuffer * const * buffers,const UInt32 * strides,const UInt32 * offsets=nullptr) override;
 					virtual Void setIndexBuffer(IGAIndexBuffer * buffer,IGAEnum::EGIFormat format,UInt32 offset=0) override;
-					virtual Void setShader(IGAVertexShader * shader) override;
-					virtual Void setShader(IGAPixelShader * shader) override;
-					virtual Void setShader(IGAGeometryShader * shader) override;
-					virtual Void setShader(IGAHullShader * shader) override;
-					virtual Void setShader(IGADomainShader * shader) override;
-					virtual Void setShader(IGAComputeShader * shader) override;
-					virtual Void setShaderConstantBuffers(IGAEnum::EShaderType shaderType,UInt32 startSlot,UInt32 numBuffers,IGAConstantBuffer * const * buffers) override;
-					virtual Void setShaderSampler(IGAEnum::EShaderType shaderType,UInt32 startSlot,UInt32 numSamplers,IGASamplerState * const * samplers) override;
-					virtual Void setShaderResources(IGAEnum::EShaderType shaderType,UInt32 startSlot,UInt32 numViews,IGAShaderResourceView * const * views) override;
+					virtual Void setProgram(IGAProgram * program) override;
+					virtual Void setProgramParameter(IGAProgramParameter * parameter) override;
 					virtual Void setPrimitiveTopology(IGAEnum::EPrimitiveTopology primitiveTopology) override;
 					virtual Void setRasterizerState(IGARasterizerState * state) override;
 					virtual Void setDepthStencilState(IGADepthStencilState * state,UInt32 stencilRef) override;
