@@ -1,71 +1,25 @@
 #pragma once
+#include "IGAResourceImp.h"
 namespace NSDevilX
 {
 	namespace NSCore
 	{
 		namespace NSDirectX
 		{
-			template<class TD3DResource>
-			class TD3DResourceContainer
-			{
-			protected:
-				CComPtr<TD3DResource> mInternal;
-			public:
-				TD3DResourceContainer(TD3DResource * obj=nullptr)
-					:mInternal(obj)
-				{}
-				virtual ~TD3DResourceContainer()
-				{}
-
-				TD3DResource * getInternal() const
-				{
-					return mInternal;
-				}
-			};
-			class IGAResourceImp
-				:public IGAResource
-			{
-			public:
-				IGAResourceImp();
-				virtual ~IGAResourceImp();
-			};
-			template<class TInterface>
-			class TGAResourceImp
-				:public TInterface
-				,public IGAResourceImp
-			{
-			public:
-				TGAResourceImp()
-				{ }
-				virtual ~TGAResourceImp(){ }
-
-				virtual IGAResource * queryInterface_IGAResource()override
-				{
-					return this;
-				}
-			};
 			template<class TInterface,class TInternal>
 			class TGAD3DResourceImp
 				:public TGAResourceImp<TInterface>
-				,public TD3DResourceContainer<TInternal>
+				,public TD3DObjectContainer<TInternal>
 			{
 			public:
 				TGAD3DResourceImp(TInternal * obj=nullptr)
-					:TD3DResourceContainer<TInternal>(obj)
+					:TD3DObjectContainer<TInternal>(obj)
 				{}
 				virtual ~TGAD3DResourceImp()
 				{}
 			};
 			namespace NSVersion11
 			{
-				class CGAProgram
-				{
-				public:
-					CGAProgram();
-					virtual ~CGAProgram();
-
-					virtual Void apply(ID3D11DeviceContext * context)=0;
-				};
 				class IGABufferImp
 					:public TGAD3DResourceImp<IGABuffer,ID3D11Buffer>
 					,public IGAVertexBuffer
@@ -95,7 +49,7 @@ namespace NSDevilX
 				};
 				class IGATexture1DImp
 					:public IGATextureImp
-					,public TD3DResourceContainer<ID3D11Texture1D>
+					,public TD3DObjectContainer<ID3D11Texture1D>
 					,public TBaseObject<IGATexture1DImp>
 				{
 				protected:
@@ -104,7 +58,7 @@ namespace NSDevilX
 					~IGATexture1DImp();
 				};
 				class IGATexture2DImp
-					:public TD3DResourceContainer<ID3D11Texture2D>
+					:public TD3DObjectContainer<ID3D11Texture2D>
 					,public IGATextureImp
 					,public TBaseObject<IGATexture2DImp>
 				{
@@ -114,7 +68,7 @@ namespace NSDevilX
 					~IGATexture2DImp();
 				};
 				class IGATexture3DImp
-					:public TD3DResourceContainer<ID3D11Texture3D>
+					:public TD3DObjectContainer<ID3D11Texture3D>
 					,public IGATextureImp
 					,public TBaseObject<IGATexture3DImp>
 				{
@@ -134,7 +88,7 @@ namespace NSDevilX
 					IGAInputLayoutImp(ID3D11Device * device,const TVector(D3D11_INPUT_ELEMENT_DESC) & desc);
 					~IGAInputLayoutImp();
 
-					decltype(mInputElementDescs) const & getInputelementDescs()const
+					decltype(mInputElementDescs) const & getInputElementDescs()const
 					{
 						return mInputElementDescs;
 					}
@@ -155,7 +109,7 @@ namespace NSDevilX
 					virtual IGAShader * queryInterface_IGAShader()override;
 				};
 				class IGAVertexShaderImp
-					:public TD3DResourceContainer<ID3D11VertexShader>
+					:public TD3DObjectContainer<ID3D11VertexShader>
 					,public IGAShaderImp
 					,public TBaseObject<IGAVertexShaderImp>
 				{
@@ -163,10 +117,10 @@ namespace NSDevilX
 					IGAVertexShaderImp(ID3D11Device * device,const String & hlsl);
 					~IGAVertexShaderImp();
 
-					using TD3DResourceContainer<ID3D11VertexShader>::getInternal;
+					using TD3DObjectContainer<ID3D11VertexShader>::getInternal;
 				};
 				class IGAGeometryShaderImp
-					:public TD3DResourceContainer<ID3D11GeometryShader>
+					:public TD3DObjectContainer<ID3D11GeometryShader>
 					,public IGAShaderImp
 					,public TBaseObject<IGAGeometryShaderImp>
 				{
@@ -174,10 +128,10 @@ namespace NSDevilX
 					IGAGeometryShaderImp(ID3D11Device * device,const String & hlsl);
 					~IGAGeometryShaderImp();
 
-					using TD3DResourceContainer<ID3D11GeometryShader>::getInternal;
+					using TD3DObjectContainer<ID3D11GeometryShader>::getInternal;
 				};
 				class IGAPixelShaderImp
-					:public TD3DResourceContainer<ID3D11PixelShader>
+					:public TD3DObjectContainer<ID3D11PixelShader>
 					,public IGAShaderImp
 					,public TBaseObject<IGAPixelShaderImp>
 				{
@@ -185,10 +139,10 @@ namespace NSDevilX
 					IGAPixelShaderImp(ID3D11Device * device,const String & hlsl);
 					~IGAPixelShaderImp();
 
-					using TD3DResourceContainer<ID3D11PixelShader>::getInternal;
+					using TD3DObjectContainer<ID3D11PixelShader>::getInternal;
 				};
 				class IGAHullShaderImp
-					:public TD3DResourceContainer<ID3D11HullShader>
+					:public TD3DObjectContainer<ID3D11HullShader>
 					,public IGAShaderImp
 					,public TBaseObject<IGAHullShaderImp>
 				{
@@ -196,10 +150,10 @@ namespace NSDevilX
 					IGAHullShaderImp(ID3D11Device * device,const String & hlsl);
 					~IGAHullShaderImp();
 
-					using TD3DResourceContainer<ID3D11HullShader>::getInternal;
+					using TD3DObjectContainer<ID3D11HullShader>::getInternal;
 				};
 				class IGADomainShaderImp
-					:public TD3DResourceContainer<ID3D11DomainShader>
+					:public TD3DObjectContainer<ID3D11DomainShader>
 					,public IGAShaderImp
 					,public TBaseObject<IGAVertexShaderImp>
 				{
@@ -207,22 +161,35 @@ namespace NSDevilX
 					IGADomainShaderImp(ID3D11Device * device,const String & hlsl);
 					~IGADomainShaderImp();
 
-					using TD3DResourceContainer<ID3D11DomainShader>::getInternal;
+					using TD3DObjectContainer<ID3D11DomainShader>::getInternal;
+				};
+				class IGAProgramParameterImp;
+				class IGAProgramReflectionImp;
+				class IGAProgramImp
+					:public TGAResourceImp<IGAProgram>
+				{
+				public:
+					IGAProgramImp();
+					virtual ~IGAProgramImp();
+
+					virtual Void apply(ID3D11DeviceContext * context,IGAProgramParameterImp * parameter)=0;
+					virtual IGAProgramReflectionImp* createReflection()=0;
 				};
 				class IGAComputeShaderImp
-					:public TD3DResourceContainer<ID3D11ComputeShader>
+					:public TD3DObjectContainer<ID3D11ComputeShader>
 					,public IGAShaderImp
 					,public TBaseObject<IGAComputeShaderImp>
-					,public CGAProgram
+					,public IGAProgramImp
 				{
 				public:
 					IGAComputeShaderImp(ID3D11Device * device,const String & hlsl);
 					~IGAComputeShaderImp();
 
-					using TD3DResourceContainer<ID3D11ComputeShader>::getInternal;
+					using TD3DObjectContainer<ID3D11ComputeShader>::getInternal;
 
 					// 通过 CGAProgram 继承
-					virtual Void apply(ID3D11DeviceContext * context) override;
+					virtual Void apply(ID3D11DeviceContext * context,IGAProgramParameterImp * parameter) override;
+					virtual IGAProgramReflectionImp* createReflection() override;
 				};
 				class IGABlendStateImp
 					:public TGAD3DResourceImp<IGABlendState,ID3D11BlendState>
@@ -230,7 +197,8 @@ namespace NSDevilX
 					,public TBaseObject<IGABlendStateImp>
 				{
 				public:
-					IGABlendStateImp(ID3D11Device * device,const D3D11_BLEND_DESC1 & desc);
+					IGABlendStateImp(ID3D11Device * device,const D3D11_BLEND_DESC & desc);
+					IGABlendStateImp(ID3D11Device1 * device,const D3D11_BLEND_DESC1 & desc);
 					~IGABlendStateImp();
 				};
 				class IGARasterizerStateImp
@@ -239,7 +207,9 @@ namespace NSDevilX
 					,public TBaseObject<IGARasterizerStateImp>
 				{
 				public:
-					IGARasterizerStateImp(ID3D11Device * device,const D3D11_RASTERIZER_DESC2 & desc);
+					IGARasterizerStateImp(ID3D11Device * device,const D3D11_RASTERIZER_DESC & desc);
+					IGARasterizerStateImp(ID3D11Device1 * device,const D3D11_RASTERIZER_DESC1 & desc);
+					IGARasterizerStateImp(ID3D11Device3 * device,const D3D11_RASTERIZER_DESC2 & desc);
 					~IGARasterizerStateImp();
 				};
 				class IGADepthStencilStateImp
@@ -261,8 +231,7 @@ namespace NSDevilX
 					~IGASamplerStateImp();
 				};
 				class IGARenderPipelineProgramImp
-					:public TGAResourceImp<IGAProgram>
-					,public CGAProgram
+					:public IGAProgramImp
 					,public TBaseObject<IGARenderPipelineProgramImp>
 				{
 				protected:
@@ -277,16 +246,33 @@ namespace NSDevilX
 					}
 
 					// 通过 CGAProgram 继承
-					virtual Void apply(ID3D11DeviceContext * context) override;
+					virtual Void apply(ID3D11DeviceContext * context,IGAProgramParameterImp * parameter) override;
+					virtual IGAProgramReflectionImp* createReflection() override;
 				};
 				class IGAProgramParameterImp
 					:public TGAResourceImp<IGAProgramParameter>
 					,public TBaseObject<IGAProgramParameterImp>
 				{
 				protected:
+					std::array<TVector(IGABufferImp*),5> mConstantBuffers;
+					std::array<TVector(IGASamplerStateImp*),5> mSamplers;
 				public:
 					IGAProgramParameterImp();
 					~IGAProgramParameterImp();
+
+					const decltype(mConstantBuffers) & getConstantBuffers()const
+					{
+						return mConstantBuffers;
+					}
+					const decltype(mSamplers) & getSamplers()const
+					{
+						return mSamplers;
+					}
+
+					// 通过 TGAResourceImp 继承
+					virtual Void setConstantBuffer(UInt32 slot,IGAConstantBuffer * buffer) override;
+					virtual Void setSampler(UInt32 slot,IGASamplerState * sampler) override;
+					virtual Void setResourceView(UInt32 slot,IGAShaderResourceView * view) override;
 				};
 			}
 		}

@@ -16,8 +16,8 @@ namespace NSDevilX
 			{
 				CMemoryManager::getSingleton().deallocateBytes(address);
 			}
-			VoidPtr operator new[](SizeT sizeInBytes);
-			Void operator delete[](VoidPtr address);
+			VoidPtr operator new[](SizeT sizeInBytes)=delete;
+			Void operator delete[](VoidPtr address)=delete;
 		};
 		template<class T>
 		class TBaseObject

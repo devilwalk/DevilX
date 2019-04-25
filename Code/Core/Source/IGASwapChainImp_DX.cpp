@@ -4,13 +4,12 @@ using namespace NSCore;
 using namespace NSDirectX;
 
 NSDevilX::NSCore::NSDirectX::IGASwapChainImp::IGASwapChainImp(ID3D11Device * dev,DXGI_SWAP_CHAIN_DESC && desc)
+	:mRenderTargetView11(nullptr)
+	,mDepthStencilView11(nullptr)
 {
 	CGAManager::getSingleton().getFactory()->CreateSwapChain(dev,&desc,&mInternal);
-	CComPtr<IDXGISwapChain2> swap_chain;
-	mInternal->QueryInterface<IDXGISwapChain2>(&swap_chain);
-	swap_chain->SetMaximumFrameLatency(1);
 	mInternal->GetBuffer(0,__uuidof(mBackBuffer11),reinterpret_cast<VoidPtr*>(&mBackBuffer11));
-	dev->CreateRenderTargetView(mBackBuffer11,nullptr,&mRenderTargetView11);
+	mRenderTargetView11.reset(DEVILX_NEW NSVersion11::IGARenderTargetViewImp(dev,mBackBuffer11,nullptr));
 	D3D11_TEXTURE2D_DESC rt_desc={0};
 	mBackBuffer11->GetDesc(&rt_desc);
 	D3D11_TEXTURE2D_DESC ds_desc={0};
@@ -22,7 +21,7 @@ NSDevilX::NSCore::NSDirectX::IGASwapChainImp::IGASwapChainImp(ID3D11Device * dev
 	ds_desc.SampleDesc.Count=1;
 	ds_desc.Width=rt_desc.Width;
 	dev->CreateTexture2D(&ds_desc,nullptr,&mDepthStencil11);
-	dev->CreateDepthStencilView(mDepthStencil11,nullptr,&mDepthStencilView11);
+	mDepthStencilView11.reset(DEVILX_NEW NSVersion11::IGADepthStencilViewImp(dev,mDepthStencil11,nullptr));
 }
 
 NSDevilX::NSCore::NSDirectX::IGASwapChainImp::~IGASwapChainImp()
@@ -31,12 +30,12 @@ NSDevilX::NSCore::NSDirectX::IGASwapChainImp::~IGASwapChainImp()
 
 IGARenderTargetView * NSDevilX::NSCore::NSDirectX::IGASwapChainImp::getRenderTargetView() const
 {
-	return const_cast<IGASwapChainImp*>(this);
+	return mRenderTargetView11.get();
 }
 
 IGADepthStencilView * NSDevilX::NSCore::NSDirectX::IGASwapChainImp::getDepthStencilView() const
 {
-	return const_cast<IGASwapChainImp*>(this);
+	return mDepthStencilView11.get();
 }
 
 Void NSDevilX::NSCore::NSDirectX::IGASwapChainImp::present()

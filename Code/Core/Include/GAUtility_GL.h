@@ -64,6 +64,22 @@ namespace NSDevilX
 					}
 					return GL_RGBA;
 				}
+				static GLenum getFormat(GLenum internalFormat)
+				{
+					switch(internalFormat)
+					{
+					case GL_R8:
+						return GL_RED;
+					case GL_RGBA8:
+					case GL_COMPRESSED_RGBA_S3TC_DXT1_EXT:
+					case GL_COMPRESSED_RGBA_S3TC_DXT3_EXT:
+					case GL_COMPRESSED_RGBA_S3TC_DXT5_EXT:
+						return GL_RGBA;
+					default:
+						assert(0);
+					}
+					return GL_RGBA;
+				}
 				static UInt32 getRowPitch(GLint internalFormat,UInt32 width)
 				{
 					switch(internalFormat)
@@ -479,6 +495,40 @@ namespace NSDevilX
 						assert(0);
 						return GL_TRUE;
 					}
+				}
+				static GLbitfield mapping(IGAEnum::EUsage usage,UInt32 cpuAccessFlags)
+				{
+					GLbitfield flags=0;
+					if(glBufferStorage)
+					{
+						switch(usage)
+						{
+						case IGAEnum::EUsage_DYNAMIC:
+							flags=GL_DYNAMIC_STORAGE_BIT;
+						}
+					}
+					else
+					{
+						switch(usage)
+						{
+						case IGAEnum::EUsage_DYNAMIC:
+							flags=GL_DYNAMIC_DRAW;
+							if(IGAEnum::ECPUAccessFlag_Read&cpuAccessFlags)
+								flags=GL_DYNAMIC_READ;
+							break;
+						case IGAEnum::EUsage_DEFAULT:
+							flags=GL_STATIC_DRAW;
+							if(IGAEnum::ECPUAccessFlag_Read&cpuAccessFlags)
+								flags=GL_STATIC_READ;
+							break;
+						case IGAEnum::EUsage_STAGING:
+							flags=GL_STREAM_DRAW;
+							if(IGAEnum::ECPUAccessFlag_Read&cpuAccessFlags)
+								flags=GL_STREAM_READ;
+							break;
+						}
+					}
+					return flags;
 				}
 			};
 		}

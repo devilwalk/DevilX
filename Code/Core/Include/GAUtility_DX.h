@@ -8,6 +8,12 @@ namespace NSDevilX
 			class CUtility
 			{
 			public:
+				template<typename TDesc,typename TRet>
+				static TRet mappingT(const TDesc & desc)
+				{
+					TRet ret;
+					return mapping(desc,ret);
+				}
 				static UInt32 mappingToDXGIUsage(UInt32 usages)
 				{
 					UInt32 ret=0;
@@ -195,7 +201,24 @@ namespace NSDevilX
 						return D3D11_LOGIC_OP_CLEAR;
 					}
 				}
-				static CD3D11_BLEND_DESC1 & mapping(const IGAStruct::SBlendDesc & src,CD3D11_BLEND_DESC1 & dest)
+				static CD3D11_BLEND_DESC & mapping(const IGAStruct::SBlendDesc & src,CD3D11_BLEND_DESC & dest)
+				{
+					dest.AlphaToCoverageEnable=src.AlphaToCoverageEnable;
+					dest.IndependentBlendEnable=src.IndependentBlendEnable;
+					for(int i=0;i<sizeof(dest.RenderTarget)/sizeof(decltype(dest.RenderTarget[0]));++i)
+					{
+						dest.RenderTarget[i].BlendEnable=src.RenderTarget[i].BlendEnable;
+						dest.RenderTarget[i].BlendOp=mapping(src.RenderTarget[i].BlendOp);
+						dest.RenderTarget[i].BlendOpAlpha=mapping(src.RenderTarget[i].BlendOpAlpha);
+						dest.RenderTarget[i].DestBlend=mapping(src.RenderTarget[i].DestBlend);
+						dest.RenderTarget[i].DestBlendAlpha=mapping(src.RenderTarget[i].DestBlendAlpha);
+						dest.RenderTarget[i].RenderTargetWriteMask=src.RenderTarget[i].RenderTargetWriteMask;
+						dest.RenderTarget[i].SrcBlend=mapping(src.RenderTarget[i].SrcBlend);
+						dest.RenderTarget[i].SrcBlendAlpha=mapping(src.RenderTarget[i].SrcBlendAlpha);
+					}
+					return dest;
+				}
+				static CD3D11_BLEND_DESC1 & mapping(const IGAStruct::SBlendDesc1 & src,CD3D11_BLEND_DESC1 & dest)
 				{
 					dest.AlphaToCoverageEnable=src.AlphaToCoverageEnable;
 					dest.IndependentBlendEnable=src.IndependentBlendEnable;
@@ -213,11 +236,6 @@ namespace NSDevilX
 						dest.RenderTarget[i].LogicOp=mapping(src.RenderTarget[i].LogicOp);
 					}
 					return dest;
-				}
-				static CD3D11_BLEND_DESC1 mapping(const IGAStruct::SBlendDesc & desc)
-				{
-					CD3D11_BLEND_DESC1 ret;
-					return mapping(desc,ret);
 				}
 				static D3D11_CONSERVATIVE_RASTERIZATION_MODE mapping(IGAEnum::EConservativeRasterizationMode mode)
 				{
@@ -259,7 +277,36 @@ namespace NSDevilX
 						return D3D11_FILL_SOLID;
 					}
 				}
-				static CD3D11_RASTERIZER_DESC2 & mapping(const IGAStruct::SRasterizerDesc & src,CD3D11_RASTERIZER_DESC2 & dest)
+				static CD3D11_RASTERIZER_DESC & mapping(const IGAStruct::SRasterizerDesc & src,CD3D11_RASTERIZER_DESC & dest)
+				{
+					dest.AntialiasedLineEnable=src.AntialiasedLineEnable;
+					dest.CullMode=mapping(src.CullMode);
+					dest.DepthBias=src.DepthBias;
+					dest.DepthBiasClamp=src.DepthBiasClamp;
+					dest.DepthClipEnable=src.DepthClipEnable;
+					dest.FillMode=mapping(src.FillMode);
+					dest.FrontCounterClockwise=src.FrontCounterClockwise;
+					dest.MultisampleEnable=src.MultisampleEnable;
+					dest.ScissorEnable=src.ScissorEnable;
+					dest.SlopeScaledDepthBias=src.SlopeScaledDepthBias;
+					return dest;
+				}
+				static CD3D11_RASTERIZER_DESC1 & mapping(const IGAStruct::SRasterizerDesc1 & src,CD3D11_RASTERIZER_DESC1 & dest)
+				{
+					dest.AntialiasedLineEnable=src.AntialiasedLineEnable;
+					dest.CullMode=mapping(src.CullMode);
+					dest.DepthBias=src.DepthBias;
+					dest.DepthBiasClamp=src.DepthBiasClamp;
+					dest.DepthClipEnable=src.DepthClipEnable;
+					dest.FillMode=mapping(src.FillMode);
+					dest.ForcedSampleCount=src.ForcedSampleCount;
+					dest.FrontCounterClockwise=src.FrontCounterClockwise;
+					dest.MultisampleEnable=src.MultisampleEnable;
+					dest.ScissorEnable=src.ScissorEnable;
+					dest.SlopeScaledDepthBias=src.SlopeScaledDepthBias;
+					return dest;
+				}
+				static CD3D11_RASTERIZER_DESC2 & mapping(const IGAStruct::SRasterizerDesc2 & src,CD3D11_RASTERIZER_DESC2 & dest)
 				{
 					dest.AntialiasedLineEnable=src.AntialiasedLineEnable;
 					dest.ConservativeRaster=mapping(src.ConservativeRaster);
@@ -274,11 +321,6 @@ namespace NSDevilX
 					dest.ScissorEnable=src.ScissorEnable;
 					dest.SlopeScaledDepthBias=src.SlopeScaledDepthBias;
 					return dest;
-				}
-				static CD3D11_RASTERIZER_DESC2 mapping(const IGAStruct::SRasterizerDesc & desc)
-				{
-					CD3D11_RASTERIZER_DESC2 ret;
-					return mapping(desc,ret);
 				}
 				static D3D11_STENCIL_OP mapping(IGAEnum::EStencilOp op)
 				{

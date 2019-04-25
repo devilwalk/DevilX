@@ -22,8 +22,7 @@ namespace NSDevilX
 			virtual Void setInputLayout(IGAInputLayout * layout)=0;
 			virtual Void setVertexBuffer(UInt32 startSlot,UInt32 numBuffers,IGAVertexBuffer * const * buffers,const UInt32 * strides,const UInt32 * offsets=nullptr)=0;
 			virtual Void setIndexBuffer(IGAIndexBuffer * buffer,IGAEnum::EGIFormat format,UInt32 offset=0)=0;
-			virtual Void setProgram(IGAProgram * program)=0;
-			virtual Void setProgramParameter(IGAProgramParameter * parameter)=0;
+			virtual Void setProgram(IGAProgram * program,IGAProgramParameter * parameter)=0;
 			virtual Void setPrimitiveTopology(IGAEnum::EPrimitiveTopology primitiveTopology)=0;
 			virtual Void setRasterizerState(IGARasterizerState * state)=0;
 			virtual Void setDepthStencilState(IGADepthStencilState * state,UInt32 stencilRef)=0;

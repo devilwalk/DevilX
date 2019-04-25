@@ -1,10 +1,10 @@
 #pragma once
 #include "ICoreGADevice.h"
 #include "ICoreGADeviceContext.h"
-#include "ICoreGAManager.h"
 #include "ICoreGAEnum.h"
+#include "ICoreGAManager.h"
+#include "ICoreGAProgramReflection.h"
 #include "ICoreGAResource.h"
 #include "ICoreGAStruct.h"
 #include "ICoreGASwapChain.h"
 #include "ICoreGAView.h"
-#include "ICoreGAShaderReflection.h"

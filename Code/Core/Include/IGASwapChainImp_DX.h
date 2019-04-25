@@ -5,18 +5,21 @@ namespace NSDevilX
 	{
 		namespace NSDirectX
 		{
+			namespace NSVersion11
+			{
+				class IGARenderTargetViewImp;
+				class IGADepthStencilViewImp;
+			}
 			class IGASwapChainImp
 				:public TBaseObject<IGASwapChainImp>
 				,public IGASwapChain
-				,public IGARenderTargetView
-				,public IGADepthStencilView
 			{
 			protected:
 				CComPtr<IDXGISwapChain> mInternal;
 				CComPtr<ID3D11Texture2D> mBackBuffer11;
-				CComPtr<ID3D11RenderTargetView> mRenderTargetView11;
 				CComPtr<ID3D11Texture2D> mDepthStencil11;
-				CComPtr<ID3D11DepthStencilView> mDepthStencilView11;
+				std::auto_ptr<NSVersion11::IGARenderTargetViewImp> mRenderTargetView11;
+				std::auto_ptr<NSVersion11::IGADepthStencilViewImp> mDepthStencilView11;
 			public:
 				IGASwapChainImp(ID3D11Device * dev,DXGI_SWAP_CHAIN_DESC && desc);
 				~IGASwapChainImp();

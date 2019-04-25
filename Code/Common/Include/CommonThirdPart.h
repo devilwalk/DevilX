@@ -1,8 +1,6 @@
 #pragma once
 #include "CommonDefine.h"
-#define __TBB_SOURCE_DIRECTLY_INCLUDED 1
 #include "tbb/tbb.h"
-#undef __TBB_SOURCE_DIRECTLY_INCLUDED
 #if DEVILX_DEBUG
 #define _XM_NO_INTRINSICS_
 #endif

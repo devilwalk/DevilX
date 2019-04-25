@@ -15,11 +15,26 @@ NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::IGADeviceImp()
 	D3D11CreateDevice(NULL,D3D_DRIVER_TYPE_HARDWARE,NULL,flags,levels,_countof(levels),D3D11_SDK_VERSION,&mInternal,levels,nullptr);
 	mFeatureLevel=levels[0];
 	mContexts.push_back(DEVILX_NEW IGADeviceContextImp(mInternal,False));
+
+	CComPtr<IDXGIDevice1> dxgi_dev;
+	mInternal->QueryInterface(&dxgi_dev);
+	if(dxgi_dev.p)
+	{
+		dxgi_dev->SetMaximumFrameLatency(1);
+	}
 }
 
 NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::~IGADeviceImp()
 {
-	mCommonResources.destroyAll();
+	mCommonObjects.destroyAll();
+	mInputLayouts.destroyAll();
+	mRasterizerStates.destroyAll();
+	mDepthStencilStates.destroyAll();
+	mBlendStates.destroyAll();
+	mSamplerStates.destroyAll();
+	mRenderTargetViews.destroyAll();
+	mDepthStencilViews.destroyAll();
+	mShaderResourceViews.destroyAll();
 	mContexts.destroyAll();
 }
 
@@ -56,7 +71,7 @@ IGAVertexBuffer * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::create
 		d3d_sub_data.SysMemSlicePitch=sizeInByte;
 	}
 	auto ret=DEVILX_NEW IGABufferImp(mInternal,d3d_desc,initialData?(&d3d_sub_data):nullptr);
-	mCommonResources.push_back(ret);
+	mCommonObjects.insert(ret);
 	return ret;
 }
 
@@ -75,7 +90,7 @@ IGAIndexBuffer * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createI
 		d3d_sub_data.SysMemSlicePitch=sizeInByte;
 	}
 	auto ret=DEVILX_NEW IGABufferImp(mInternal,d3d_desc,initialData?(&d3d_sub_data):nullptr);
-	mCommonResources.push_back(ret);
+	mCommonObjects.insert(ret);
 	return ret;
 }
 
@@ -94,7 +109,7 @@ IGAConstantBuffer * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::crea
 		d3d_sub_data.SysMemSlicePitch=sizeInByte;
 	}
 	auto ret=DEVILX_NEW IGABufferImp(mInternal,d3d_desc,initialData?(&d3d_sub_data):nullptr);
-	mCommonResources.push_back(ret);
+	mCommonObjects.insert(ret);
 	return ret;
 }
 
@@ -113,7 +128,7 @@ IGAUnorderedAccessBuffer * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceIm
 		d3d_sub_data.SysMemSlicePitch=sizeInByte;
 	}
 	auto ret=DEVILX_NEW IGABufferImp(mInternal,d3d_desc,initialData?(&d3d_sub_data):nullptr);
-	mCommonResources.push_back(ret);
+	mCommonObjects.insert(ret);
 	return ret;
 }
 
@@ -135,7 +150,7 @@ IGATexture1D * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createTex
 		d3d_sub_data.SysMemSlicePitch=d3d_sub_data.SysMemPitch;
 	}
 	auto ret=DEVILX_NEW IGATexture1DImp(mInternal,d3d_desc,initialData?&d3d_sub_data:nullptr);
-	mCommonResources.push_back(ret);
+	mCommonObjects.insert(ret);
 	return ret;
 }
 
@@ -160,7 +175,7 @@ IGATexture2D * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createTex
 		d3d_sub_data.SysMemSlicePitch=d3d_sub_data.SysMemPitch;
 	}
 	auto ret=DEVILX_NEW IGATexture2DImp(mInternal,d3d_desc,initialData?&d3d_sub_data:nullptr);
-	mCommonResources.push_back(ret);
+	mCommonObjects.insert(ret);
 	return ret;
 }
 
@@ -183,7 +198,7 @@ IGATexture3D * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createTex
 		d3d_sub_data.SysMemSlicePitch=d3d_sub_data.SysMemPitch;
 	}
 	auto ret=DEVILX_NEW IGATexture3DImp(mInternal,d3d_desc,initialData?&d3d_sub_data:nullptr);
-	mCommonResources.push_back(ret);
+	mCommonObjects.insert(ret);
 	return ret;
 }
 
@@ -208,13 +223,8 @@ IGATexture2D * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createTex
 		d3d_sub_data.SysMemSlicePitch=d3d_sub_data.SysMemPitch;
 	}
 	auto ret=DEVILX_NEW IGATexture2DImp(mInternal,d3d_desc,initialData?&d3d_sub_data:nullptr);
-	mCommonResources.push_back(ret);
+	mCommonObjects.insert(ret);
 	return ret;
-}
-
-IGAShaderResourceView * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createShaderResourceView(IGAResource * resource,const IGAStruct::SShaderResourceViewDesc * desc)
-{
-	return nullptr;
 }
 
 IGAInputLayout * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createInputLayout(const TVector<IGAStruct::SInputElementDesc> & inputElements)
@@ -227,7 +237,7 @@ IGAInputLayout * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createI
 	}
 	auto iter=std::find_if(mInputLayouts.begin(),mInputLayouts.end(),[&d3d_descs](IGAInputLayoutImp * il)
 	{
-		auto & descs=il->getInputelementDescs();
+		auto & descs=il->getInputElementDescs();
 		if(descs.size()!=d3d_descs.size())
 			return false;
 		for(SizeT i=0,count=descs.size();i<count;++i)
@@ -259,23 +269,12 @@ IGAInputLayout * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createI
 
 IGABlendState * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createBlendState(const IGAStruct::SBlendDesc & desc)
 {
-	CComPtr<ID3D11Device1> dev;
-	mInternal->QueryInterface(__uuidof(dev),reinterpret_cast<VoidPtr*>(&dev));
-	auto d3d_desc=CUtility::mapping(desc);
-	auto iter=std::find_if(mBlendStates.begin(),mBlendStates.end(),[&d3d_desc,&dev](IGABlendStateImp * state)
+	auto d3d_desc=CUtility::mappingT<IGAStruct::SBlendDesc,CD3D11_BLEND_DESC>(desc);
+	auto iter=std::find_if(mBlendStates.begin(),mBlendStates.end(),[&d3d_desc](IGABlendStateImp * state)
 	{
-		if(dev.p)
-		{
-			D3D11_BLEND_DESC1 test_desc;
-			static_cast<ID3D11BlendState1*>(state->getInternal())->GetDesc1(&test_desc);
-			return memcmp(&test_desc,&d3d_desc,sizeof(D3D11_BLEND_DESC1));
-		}
-		else
-		{
-			D3D11_BLEND_DESC test_desc;
-			state->getInternal()->GetDesc(reinterpret_cast<D3D11_BLEND_DESC*>(&test_desc));
-			return memcmp(&test_desc,&d3d_desc,sizeof(D3D11_BLEND_DESC));
-		}
+		D3D11_BLEND_DESC test_desc;
+		state->getInternal()->GetDesc(reinterpret_cast<D3D11_BLEND_DESC*>(&test_desc));
+		return memcmp(&test_desc,&d3d_desc,sizeof(D3D11_BLEND_DESC));
 	});
 	if(mBlendStates.end()==iter)
 	{
@@ -293,32 +292,13 @@ IGABlendState * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createBl
 
 IGARasterizerState * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createRasterizerState(const IGAStruct::SRasterizerDesc & desc)
 {
-	CComPtr<ID3D11Device2> dev2;
-	mInternal->QueryInterface(__uuidof(dev2),reinterpret_cast<VoidPtr*>(&dev2));
-	CComPtr<ID3D11Device2> dev1;
-	mInternal->QueryInterface(__uuidof(dev1),reinterpret_cast<VoidPtr*>(&dev1));
-	auto d3d_desc=CUtility::mapping(desc);
-	auto iter=std::find_if(mRasterizerStates.begin(),mRasterizerStates.end(),[&d3d_desc,&dev1,&dev2](IGARasterizerStateImp * state)
-	{
-		if(dev2.p)
-		{
-			D3D11_RASTERIZER_DESC2 test_desc;
-			static_cast<ID3D11RasterizerState2*>(state->getInternal())->GetDesc2(&test_desc);
-			return memcmp(&test_desc,&d3d_desc,sizeof(D3D11_RASTERIZER_DESC2));
-		}
-		else if(dev1.p)
-		{
-			D3D11_RASTERIZER_DESC1 test_desc;
-			static_cast<ID3D11RasterizerState1*>(state->getInternal())->GetDesc1(&test_desc);
-			return memcmp(&test_desc,&d3d_desc,sizeof(D3D11_RASTERIZER_DESC1));
-		}
-		else
+	auto d3d_desc=CUtility::mappingT<IGAStruct::SRasterizerDesc,CD3D11_RASTERIZER_DESC>(desc);
+	auto iter=std::find_if(mRasterizerStates.begin(),mRasterizerStates.end(),[&d3d_desc](IGARasterizerStateImp*state)
 		{
 			D3D11_RASTERIZER_DESC test_desc;
-			static_cast<ID3D11RasterizerState*>(state->getInternal())->GetDesc(&test_desc);
+			static_cast<ID3D11RasterizerState *>(state->getInternal())->GetDesc(&test_desc);
 			return memcmp(&test_desc,&d3d_desc,sizeof(D3D11_RASTERIZER_DESC));
-		}
-	});
+		});
 	if(mRasterizerStates.end()==iter)
 	{
 		auto ret=DEVILX_NEW IGARasterizerStateImp(mInternal,d3d_desc);
@@ -382,70 +362,50 @@ IGASamplerState * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::create
 IGAVertexShader * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createVertexShader(const std::string & code)
 {
 	auto ret=DEVILX_NEW IGAVertexShaderImp(mInternal,code);
-	mCommonResources.push_back(ret);
+	mCommonObjects.insert(ret);
 	return ret;
 }
 
 IGAPixelShader * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createPixelShader(const std::string & code)
 {
 	auto ret=DEVILX_NEW IGAPixelShaderImp(mInternal,code);
-	mCommonResources.push_back(ret);
+	mCommonObjects.insert(ret);
 	return ret;
 }
 
 IGAGeometryShader * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createGeometryShader(const std::string & code)
 {
 	auto ret=DEVILX_NEW IGAGeometryShaderImp(mInternal,code);
-	mCommonResources.push_back(ret);
+	mCommonObjects.insert(ret);
 	return ret;
 }
 
 IGAHullShader * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createHullShader(const std::string & code)
 {
 	auto ret=DEVILX_NEW IGAHullShaderImp(mInternal,code);
-	mCommonResources.push_back(ret);
+	mCommonObjects.insert(ret);
 	return ret;
 }
 
 IGADomainShader * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createDomainShader(const std::string & code)
 {
 	auto ret=DEVILX_NEW IGADomainShaderImp(mInternal,code);
-	mCommonResources.push_back(ret);
+	mCommonObjects.insert(ret);
 	return ret;
 }
 
 IGAComputeShader * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createComputeShader(const std::string & code)
 {
 	auto ret=DEVILX_NEW IGAComputeShaderImp(mInternal,code);
-	mCommonResources.push_back(ret);
+	mCommonObjects.insert(ret);
 	return ret;
 }
 
 IGAProgram * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createProgram(IGAVertexShader * vertexShader,IGAPixelShader * pixelShader,IGAGeometryShader * geometryShader,IGAHullShader * hullShader,IGADomainShader * domainShader)
 {
-	UInt32 shader_count=0;
-	if(vertexShader)
-		++shader_count;
-	if(pixelShader)
-		++shader_count;
-	if(geometryShader)
-		++shader_count;
-	if(hullShader)
-		++shader_count;
-	if(domainShader)
-		++shader_count;
-	if((shader_count==0)||(shader_count>1))
-		return nullptr;
-	else if(vertexShader)
-		return static_cast<IGAVertexShaderImp*>(vertexShader);
-	else if(pixelShader)
-		return static_cast<IGAPixelShaderImp*>(pixelShader);
-	else if(geometryShader)
-		return static_cast<IGAGeometryShaderImp*>(geometryShader);
-	else if(hullShader)
-		return static_cast<IGAHullShaderImp*>(hullShader);
-	else
-		return static_cast<IGADomainShaderImp*>(domainShader);
+	auto ret=DEVILX_NEW IGARenderPipelineProgramImp(static_cast<IGAVertexShaderImp*>(vertexShader),static_cast<IGAPixelShaderImp*>(pixelShader),static_cast<IGAGeometryShaderImp*>(geometryShader),static_cast<IGAHullShaderImp*>(hullShader),static_cast<IGADomainShaderImp*>(domainShader));
+	mCommonObjects.insert(ret);
+	return ret;
 }
 
 IGAProgram * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createProgram(IGAComputeShader * computeShader)
@@ -453,15 +413,324 @@ IGAProgram * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createProgr
 	return static_cast<IGAComputeShaderImp*>(computeShader);
 }
 
-IGAShaderReflection * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createShaderReflection(IGAProgram * program)
+IGAProgramReflection * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createReflection(IGAProgram * program)
 {
-	auto blob=static_cast<IGAShaderImp*>(program)->getInternal();
-	auto ret=DEVILX_NEW IGAShaderReflectionImp(blob);
-	mShaderReflections.insert(ret);
+	auto ret=static_cast<IGAProgramImp*>(program)->createReflection();
+	mCommonObjects.insert(ret);
 	return ret;
 }
 
-Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::destroyShaderReflection(IGAShaderReflection * reflection)
+Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::destroyReflection(IGAProgramReflection * reflection)
 {
-	mShaderReflections.destroy(static_cast<IGAShaderReflectionImp*>(reflection));
+	mCommonObjects.destroy(static_cast<IGAProgramReflectionImp*>(reflection));
+}
+
+IGAProgramParameter* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createProgramParameter()
+{
+	auto ret=DEVILX_NEW IGAProgramParameterImp();
+	mCommonObjects.insert(ret);
+	return ret;
+}
+
+Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::destroyProgramParameter(IGAProgramParameter* parameter)
+{
+	mCommonObjects.destroy(static_cast<IGAProgramParameterImp*>(parameter));
+}
+
+IGARenderTargetView * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createRenderTargetView(IGATexture1D * resource,UInt32 mipSlice,UInt32 firstArraySlice)
+{
+	D3D11_RENDER_TARGET_VIEW_DESC * desc_ptr=nullptr;
+	D3D11_RENDER_TARGET_VIEW_DESC desc;
+	if((mipSlice>0)
+		||(firstArraySlice>0)
+		)
+	{
+		desc.Format=DXGI_FORMAT_UNKNOWN;
+		desc.ViewDimension=firstArraySlice>0?D3D11_RTV_DIMENSION_TEXTURE1DARRAY:D3D11_RTV_DIMENSION_TEXTURE1D;
+		desc.Texture1DArray.MipSlice=mipSlice;
+		desc.Texture1DArray.FirstArraySlice=firstArraySlice;
+		desc.Texture1DArray.ArraySize=1;
+		desc_ptr=&desc;
+	}
+	auto iter=std::find_if(mRenderTargetViews.begin(),mRenderTargetViews.end(),[&desc,this](IGARenderTargetViewImp*view)
+		{
+			D3D11_RENDER_TARGET_VIEW_DESC test_desc;
+			view->getInternal()->GetDesc(&test_desc);
+			return memcmp(&test_desc,&desc,sizeof(D3D11_RENDER_TARGET_VIEW_DESC));
+		});
+	IGARenderTargetViewImp * ret=nullptr;
+	if(mRenderTargetViews.end()==iter)
+	{
+		ret=_create(static_cast<IGATexture1DImp *>(resource)->getInternal(),desc_ptr);
+	}
+	else
+	{
+		ret=*iter;
+	}
+	return ret;
+}
+
+IGARenderTargetView * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createRenderTargetView(IGATexture2D * resource,UInt32 mipSlice,UInt32 firstArraySlice)
+{
+	D3D11_RENDER_TARGET_VIEW_DESC * desc_ptr=nullptr;
+	D3D11_RENDER_TARGET_VIEW_DESC desc;
+	if((mipSlice>0)
+		||(firstArraySlice>0)
+		)
+	{
+		desc.Format=DXGI_FORMAT_UNKNOWN;
+		desc.ViewDimension=firstArraySlice>0?D3D11_RTV_DIMENSION_TEXTURE2DARRAY:D3D11_RTV_DIMENSION_TEXTURE2D;
+		desc.Texture2DArray.MipSlice=mipSlice;
+		desc.Texture2DArray.FirstArraySlice=firstArraySlice;
+		desc.Texture2DArray.ArraySize=1;
+		desc_ptr=&desc;
+	}
+	auto iter=std::find_if(mRenderTargetViews.begin(),mRenderTargetViews.end(),[&desc,this](IGARenderTargetViewImp*view)
+		{
+			D3D11_RENDER_TARGET_VIEW_DESC test_desc;
+			view->getInternal()->GetDesc(&test_desc);
+			return memcmp(&test_desc,&desc,sizeof(D3D11_RENDER_TARGET_VIEW_DESC));
+		});
+	IGARenderTargetViewImp * ret=nullptr;
+	if(mRenderTargetViews.end()==iter)
+	{
+		ret=_create(static_cast<IGATexture2DImp*>(resource)->getInternal(),desc_ptr);
+	}
+	else
+	{
+		ret=*iter;
+	}
+	return ret;
+}
+
+IGARenderTargetView* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createRenderTargetView(IGATexture3D* resource,UInt32 mipSlice,UInt32 firstDepthSlice)
+{
+	D3D11_RENDER_TARGET_VIEW_DESC * desc_ptr=nullptr;
+	D3D11_RENDER_TARGET_VIEW_DESC desc;
+	if((mipSlice>0)
+		||(firstDepthSlice>0)
+		)
+	{
+		desc.Format=DXGI_FORMAT_UNKNOWN;
+		desc.ViewDimension=D3D11_RTV_DIMENSION_TEXTURE3D;
+		desc.Texture3D.MipSlice=mipSlice;
+		desc.Texture3D.FirstWSlice=firstDepthSlice;
+		desc.Texture3D.WSize=1;
+		desc_ptr=&desc;
+	}
+	auto iter=std::find_if(mRenderTargetViews.begin(),mRenderTargetViews.end(),[&desc,this](IGARenderTargetViewImp*view)
+		{
+			D3D11_RENDER_TARGET_VIEW_DESC test_desc;
+			view->getInternal()->GetDesc(&test_desc);
+			return memcmp(&test_desc,&desc,sizeof(D3D11_RENDER_TARGET_VIEW_DESC));
+		});
+	IGARenderTargetViewImp * ret=nullptr;
+	if(mRenderTargetViews.end()==iter)
+	{
+		ret=_create(static_cast<IGATexture3DImp *>(resource)->getInternal(),desc_ptr);
+	}
+	else
+	{
+		ret=*iter;
+	}
+	return ret;
+}
+
+IGADepthStencilView* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createDepthStencilView(IGATexture1D* resource,UInt32 mipSlice,UInt32 firstArraySlice)
+{
+	D3D11_DEPTH_STENCIL_VIEW_DESC * desc_ptr=nullptr;
+	D3D11_DEPTH_STENCIL_VIEW_DESC desc;
+	if((mipSlice>0)
+		||(firstArraySlice>0)
+		)
+	{
+		desc.Format=DXGI_FORMAT_UNKNOWN;
+		desc.ViewDimension=firstArraySlice>0?D3D11_DSV_DIMENSION_TEXTURE1DARRAY:D3D11_DSV_DIMENSION_TEXTURE1D;
+		desc.Texture1DArray.MipSlice=mipSlice;
+		desc.Texture1DArray.FirstArraySlice=firstArraySlice;
+		desc.Texture1DArray.ArraySize=1;
+		desc_ptr=&desc;
+	}
+	auto iter=std::find_if(mDepthStencilViews.begin(),mDepthStencilViews.end(),[&desc,this](IGADepthStencilViewImp*view)
+		{
+			D3D11_DEPTH_STENCIL_VIEW_DESC test_desc;
+			view->getInternal()->GetDesc(&test_desc);
+			return memcmp(&test_desc,&desc,sizeof(D3D11_DEPTH_STENCIL_VIEW_DESC));
+		});
+	IGADepthStencilViewImp * ret=nullptr;
+	if(mDepthStencilViews.end()==iter)
+	{
+		ret=_create(static_cast<IGATexture1DImp *>(resource)->getInternal(),desc_ptr);
+	}
+	else
+	{
+		ret=*iter;
+	}
+	return ret;
+}
+
+IGADepthStencilView* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createDepthStencilView(IGATexture2D* resource,UInt32 mipSlice,UInt32 firstArraySlice)
+{
+	D3D11_DEPTH_STENCIL_VIEW_DESC * desc_ptr=nullptr;
+	D3D11_DEPTH_STENCIL_VIEW_DESC desc;
+	if((mipSlice>0)
+		||(firstArraySlice>0)
+		)
+	{
+		desc.Format=DXGI_FORMAT_UNKNOWN;
+		desc.ViewDimension=firstArraySlice>0?D3D11_DSV_DIMENSION_TEXTURE2DARRAY:D3D11_DSV_DIMENSION_TEXTURE2D;
+		desc.Texture2DArray.MipSlice=mipSlice;
+		desc.Texture2DArray.FirstArraySlice=firstArraySlice;
+		desc.Texture2DArray.ArraySize=1;
+		desc_ptr=&desc;
+	}
+	auto iter=std::find_if(mDepthStencilViews.begin(),mDepthStencilViews.end(),[&desc,this](IGADepthStencilViewImp*view)
+		{
+			D3D11_DEPTH_STENCIL_VIEW_DESC test_desc;
+			view->getInternal()->GetDesc(&test_desc);
+			return memcmp(&test_desc,&desc,sizeof(D3D11_DEPTH_STENCIL_VIEW_DESC));
+		});
+	IGADepthStencilViewImp * ret=nullptr;
+	if(mDepthStencilViews.end()==iter)
+	{
+		ret=_create(static_cast<IGATexture2DImp *>(resource)->getInternal(),desc_ptr);
+	}
+	else
+	{
+		ret=*iter;
+	}
+	return ret;
+}
+
+IGAShaderResourceView * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createShaderResourceView(IGATexture1D * resource,UInt32 mostDetailedMip,UInt32 numMipLevels,UInt32 firstArraySlice,UInt32 arrayCount)
+{
+	D3D11_SHADER_RESOURCE_VIEW_DESC * desc_ptr=nullptr;
+	D3D11_SHADER_RESOURCE_VIEW_DESC desc;
+	if((mostDetailedMip>0)
+		||(static_cast<UInt32>(-1)==numMipLevels)
+		||(firstArraySlice>0)
+		||(arrayCount>0)
+		)
+	{
+		desc.Format=DXGI_FORMAT_UNKNOWN;
+		desc.ViewDimension=arrayCount>1?D3D11_SRV_DIMENSION_TEXTURE1DARRAY:D3D11_SRV_DIMENSION_TEXTURE1D;
+		desc.Texture1DArray.MostDetailedMip=mostDetailedMip;
+		desc.Texture1DArray.MipLevels=numMipLevels;
+		desc.Texture1DArray.FirstArraySlice=firstArraySlice;
+		desc.Texture1DArray.ArraySize=arrayCount;
+		desc_ptr=&desc;
+	}
+	auto iter=std::find_if(mShaderResourceViews.begin(),mShaderResourceViews.end(),[&desc](IGAShaderResourceViewImp*view)
+		{
+			D3D11_SHADER_RESOURCE_VIEW_DESC test_desc;
+			view->getInternal()->GetDesc(&test_desc);
+			return memcmp(&test_desc,&desc,sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
+		});
+	IGAShaderResourceViewImp * ret=nullptr;
+	if(mShaderResourceViews.end()==iter)
+	{
+		ret=_create(static_cast<IGATexture1DImp *>(resource)->getInternal(),desc_ptr);
+	}
+	else
+	{
+		ret=*iter;
+	}
+	return ret;
+}
+
+IGAShaderResourceView* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createShaderResourceView(IGATexture2D* resource,UInt32 mostDetailedMip,UInt32 numMipLevels,UInt32 firstArraySlice,UInt32 arrayCount)
+{
+	D3D11_SHADER_RESOURCE_VIEW_DESC * desc_ptr=nullptr;
+	D3D11_SHADER_RESOURCE_VIEW_DESC desc;
+	if((mostDetailedMip>0)
+		||(static_cast<UInt32>(-1)==numMipLevels)
+		||(firstArraySlice>0)
+		||(arrayCount>0)
+		)
+	{
+		desc.Format=DXGI_FORMAT_UNKNOWN;
+		desc.ViewDimension=arrayCount>1?D3D11_SRV_DIMENSION_TEXTURE2DARRAY:D3D11_SRV_DIMENSION_TEXTURE2D;
+		desc.Texture2DArray.MostDetailedMip=mostDetailedMip;
+		desc.Texture2DArray.MipLevels=numMipLevels;
+		desc.Texture2DArray.FirstArraySlice=firstArraySlice;
+		desc.Texture2DArray.ArraySize=arrayCount;
+		desc_ptr=&desc;
+	}
+	auto iter=std::find_if(mShaderResourceViews.begin(),mShaderResourceViews.end(),[&desc](IGAShaderResourceViewImp*view)
+		{
+			D3D11_SHADER_RESOURCE_VIEW_DESC test_desc;
+			view->getInternal()->GetDesc(&test_desc);
+			return memcmp(&test_desc,&desc,sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
+		});
+	IGAShaderResourceViewImp * ret=nullptr;
+	if(mShaderResourceViews.end()==iter)
+	{
+		ret=_create(static_cast<IGATexture2DImp *>(resource)->getInternal(),desc_ptr);
+	}
+	else
+	{
+		ret=*iter;
+	}
+	return ret;
+}
+
+IGAShaderResourceView* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createShaderResourceView(IGATexture3D* resource,UInt32 mostDetailedMip,UInt32 numMipLevels)
+{
+	D3D11_SHADER_RESOURCE_VIEW_DESC * desc_ptr=nullptr;
+	D3D11_SHADER_RESOURCE_VIEW_DESC desc;
+	if((mostDetailedMip>0)
+		||(static_cast<UInt32>(-1)==numMipLevels)
+		)
+	{
+		desc.Format=DXGI_FORMAT_UNKNOWN;
+		desc.ViewDimension=D3D11_SRV_DIMENSION_TEXTURE3D;
+		desc.Texture3D.MostDetailedMip=mostDetailedMip;
+		desc.Texture3D.MipLevels=numMipLevels;
+		desc_ptr=&desc;
+	}
+	auto iter=std::find_if(mShaderResourceViews.begin(),mShaderResourceViews.end(),[&desc](IGAShaderResourceViewImp*view)
+		{
+			D3D11_SHADER_RESOURCE_VIEW_DESC test_desc;
+			view->getInternal()->GetDesc(&test_desc);
+			return memcmp(&test_desc,&desc,sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
+		});
+	IGAShaderResourceViewImp * ret=nullptr;
+	if(mShaderResourceViews.end()==iter)
+	{
+		ret=_create(static_cast<IGATexture3DImp *>(resource)->getInternal(),desc_ptr);
+	}
+	else
+	{
+		ret=*iter;
+	}
+	return ret;
+}
+
+IGAUnorderedAccessView* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createUnorderedAccessView(IGATexture1D* resource,UInt32 mipSlice,UInt32 firstArraySlice,UInt32 arrayCount)
+{
+	return nullptr;
+}
+
+IGAUnorderedAccessView* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createUnorderedAccessView(IGATexture2D* resource,UInt32 mipSlice,UInt32 firstArraySlice,UInt32 arrayCount)
+{
+	return nullptr;
+}
+
+IGAUnorderedAccessView* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createUnorderedAccessView(IGATexture3D* resource,UInt32 mipSlice,UInt32 firstDepthSlice,UInt32 depthCount)
+{
+	return nullptr;
+}
+
+IGARenderTargetViewImp * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::_create(ID3D11Resource * resource,const D3D11_RENDER_TARGET_VIEW_DESC * desc)
+{
+	IGARenderTargetViewImp * ret=DEVILX_NEW IGARenderTargetViewImp(mInternal,resource,desc);
+	mRenderTargetViews.push_back(ret);
+	return ret;
+}
+
+IGADepthStencilViewImp * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::_create(ID3D11Resource * resource,const D3D11_DEPTH_STENCIL_VIEW_DESC * desc)
+{
+	IGADepthStencilViewImp * ret=DEVILX_NEW IGADepthStencilViewImp(mInternal,resource,desc);
+	mDepthStencilViews.push_back(ret);
+	return ret;
 }

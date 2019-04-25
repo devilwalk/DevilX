@@ -1,4 +1,5 @@
 #pragma once
+#include "ICoreGAView.h"
 namespace NSDevilX
 {
 	namespace NSCore
@@ -45,6 +46,13 @@ namespace NSDevilX
 			virtual ~IGAUnorderedAccessBuffer(){ }
 		public:
 			virtual IGABuffer * queryInterface_IGABuffer()=0;
+		};
+		class IGATextureBuffer
+		{
+		protected:
+			virtual ~IGATextureBuffer(){ }
+		public:
+			virtual IGABuffer* queryInterface_IGABuffer()=0;
 		};
 		class IGATexture
 		{

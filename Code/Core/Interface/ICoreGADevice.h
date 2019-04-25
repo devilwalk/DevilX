@@ -3,7 +3,7 @@
 #include "ICoreGAResource.h"
 #include "ICoreGAView.h"
 #include "ICoreGADeviceContext.h"
-#include "ICoreGAShaderReflection.h"
+#include "ICoreGAProgramReflection.h"
 namespace NSDevilX
 {
 	namespace NSCore
@@ -23,7 +23,17 @@ namespace NSDevilX
 			virtual IGATexture2D * createTexture2D(UInt32 width,UInt32 height,IGAEnum::EUsage usage,IGAEnum::EGIFormat format,UInt32 cpuAccessFlags,UInt32 bindFlags,UInt32 mipLevelCount=0,UInt32 arrayCount=1,const IGAStruct::SSubResourceData * initialData=nullptr)=0;
 			virtual IGATexture3D * createTexture3D(UInt32 width,UInt32 height,UInt32 depth,IGAEnum::EUsage usage,IGAEnum::EGIFormat format,UInt32 cpuAccessFlags,UInt32 bindFlags,UInt32 mipLevelCount=0,const IGAStruct::SSubResourceData * initialData=nullptr)=0;
 			virtual IGATexture2D * createTextureCube(UInt32 width,UInt32 height,IGAEnum::EUsage usage,IGAEnum::EGIFormat format,UInt32 cpuAccessFlags,UInt32 bindFlags,UInt32 mipLevelCount=0,UInt32 arrayCount=1,const IGAStruct::SSubResourceData * initialData=nullptr)=0;
-			virtual IGAShaderResourceView * createShaderResourceView(IGAResource * resource,const IGAStruct::SShaderResourceViewDesc * desc=nullptr)=0;
+			virtual IGARenderTargetView* createRenderTargetView(IGATexture1D* resource,UInt32 mipSlice=0,UInt32 firstArraySlice=0)=0;
+			virtual IGARenderTargetView* createRenderTargetView(IGATexture2D* resource,UInt32 mipSlice=0,UInt32 firstArraySlice=0)=0;
+			virtual IGARenderTargetView* createRenderTargetView(IGATexture3D* resource,UInt32 mipSlice,UInt32 firstDepthSlice)=0;
+			virtual IGADepthStencilView* createDepthStencilView(IGATexture1D* resource,UInt32 mipSlice=0,UInt32 firstArraySlice=0)=0;
+			virtual IGADepthStencilView* createDepthStencilView(IGATexture2D* resource,UInt32 mipSlice=0,UInt32 firstArraySlice=0)=0;
+			virtual IGAShaderResourceView* createShaderResourceView(IGATexture1D* resource,UInt32 mostDetailedMip=0,UInt32 numMipLevels=-1,UInt32 firstArraySlice=0,UInt32 arrayCount=0)=0;
+			virtual IGAShaderResourceView* createShaderResourceView(IGATexture2D* resource,UInt32 mostDetailedMip=0,UInt32 numMipLevels=-1,UInt32 firstArraySlice=0,UInt32 arrayCount=0)=0;
+			virtual IGAShaderResourceView* createShaderResourceView(IGATexture3D* resource,UInt32 mostDetailedMip=0,UInt32 numMipLevels=-1)=0;
+			virtual IGAUnorderedAccessView* createUnorderedAccessView(IGATexture1D* resource,UInt32 mipSlice=0,UInt32 firstArraySlice=0,UInt32 arrayCount=1)=0;
+			virtual IGAUnorderedAccessView* createUnorderedAccessView(IGATexture2D* resource,UInt32 mipSlice=0,UInt32 firstArraySlice=0,UInt32 arrayCount=1)=0;
+			virtual IGAUnorderedAccessView* createUnorderedAccessView(IGATexture3D* resource,UInt32 mipSlice,UInt32 firstDepthSlice,UInt32 depthCount)=0;
 			virtual IGAInputLayout * createInputLayout(const TVector<IGAStruct::SInputElementDesc> & inputElements)=0;
 			virtual IGAVertexShader * createVertexShader(const std::string & code)=0;
 			virtual IGAPixelShader * createPixelShader(const std::string & code)=0;
@@ -37,8 +47,8 @@ namespace NSDevilX
 			virtual IGASamplerState * createSamplerState(const IGAStruct::SSamplerDesc & desc)=0;
 			virtual IGAProgram * createProgram(IGAVertexShader * vertexShader,IGAPixelShader * pixelShader,IGAGeometryShader * geometryShader=nullptr,IGAHullShader * hullShader=nullptr,IGADomainShader * domainShader=nullptr)=0;
 			virtual IGAProgram * createProgram(IGAComputeShader * computeShader)=0;
-			virtual IGAShaderReflection * createShaderReflection(IGAProgram * program)=0;
-			virtual Void destroyShaderReflection(IGAShaderReflection * reflection)=0;
+			virtual IGAProgramReflection * createReflection(IGAProgram * program)=0;
+			virtual Void destroyReflection(IGAProgramReflection * reflection)=0;
 			virtual IGAProgramParameter * createProgramParameter()=0;
 			virtual Void destroyProgramParameter(IGAProgramParameter * parameter)=0;
 		};
