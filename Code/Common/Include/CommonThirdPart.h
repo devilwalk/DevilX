@@ -30,5 +30,7 @@
 #include "GL/glxew.h";
 #include "GL/glxext.h";
 #endif
+#define EGLAPI
+#include "EGL/egl.h"
 #include "lua.h"
 #include "noise.h"

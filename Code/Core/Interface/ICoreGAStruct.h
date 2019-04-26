@@ -25,7 +25,7 @@ namespace NSDevilX
 				SGIModeDesc   BufferDesc;
 				SGISamplerDesc SampleDesc;
 				UInt32       BufferUsage;
-				VoidPtr             OutputWindow;
+				EGLNativeWindowType             OutputWindow;
 			};
 			struct SDepthStencilValue
 			{

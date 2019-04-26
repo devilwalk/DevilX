@@ -16,6 +16,53 @@ namespace NSDevilX
 					GLsizei mWidth;
 					GLsizei mHeight;
 				};
+				static Void checkEGLError()
+				{
+#if DEVILX_DEBUG
+					auto err=eglGetError();
+					if(EGL_SUCCESS!=err)
+					{
+#if DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_WINDOWS
+						OutputDebugStringA(CStringUtility::toString(err).c_str());
+						OutputDebugStringA("\r\n");
+#endif
+					}
+#endif
+				}
+				static EGLConfig chooseConfig(EGLDisplay display,const TMap(EGLint,EGLint) * configAttributes=nullptr)
+				{
+					TMap(EGLint,EGLint) config_attr_map;
+					config_attr_map[EGL_RED_SIZE]=8;
+					config_attr_map[EGL_GREEN_SIZE]=8;
+					config_attr_map[EGL_BLUE_SIZE]=8;
+					config_attr_map[EGL_ALPHA_SIZE]=8;
+					config_attr_map[EGL_COLOR_BUFFER_TYPE]=EGL_RGB_BUFFER;
+					config_attr_map[EGL_DEPTH_SIZE]=24;
+					config_attr_map[EGL_STENCIL_SIZE]=8;
+					config_attr_map[EGL_SURFACE_TYPE]=EGL_WINDOW_BIT;
+					config_attr_map[EGL_CONFORMANT]=EGL_OPENGL_BIT|EGL_OPENGL_ES_BIT|EGL_OPENGL_ES2_BIT|EGL_OPENGL_ES3_BIT;
+					config_attr_map[EGL_RENDERABLE_TYPE]=EGL_OPENGL_BIT|EGL_OPENGL_ES_BIT|EGL_OPENGL_ES2_BIT|EGL_OPENGL_ES3_BIT;
+					if(configAttributes)
+					{
+						for(auto const& pairs:*configAttributes)
+						{
+							config_attr_map[pairs.first]=pairs.second;
+						}
+					}
+					TVector(EGLint) config_attr_list;
+					config_attr_list.reserve(config_attr_map.size()*2+1);
+					for(const auto& pairs:config_attr_map)
+					{
+						config_attr_list.push_back(pairs.first);
+						config_attr_list.push_back(pairs.second);
+					}
+					config_attr_list.push_back(EGL_NONE);
+					EGLConfig config=0;
+					EGLint num_config=0;
+					eglChooseConfig(display,&config_attr_list[0],&config,1,&num_config);
+					CUtility::checkEGLError();
+					return config;
+				}
 				static Void checkGLError()
 				{
 #if DEVILX_DEBUG

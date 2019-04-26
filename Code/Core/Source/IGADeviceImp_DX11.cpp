@@ -38,6 +38,11 @@ NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::~IGADeviceImp()
 	mContexts.destroyAll();
 }
 
+IGAEnum::EDeviceVersion NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::getVersion() const
+{
+	return IGAEnum::EDeviceVersion_DirectX11;
+}
+
 IGADeviceContext * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::getImmediateContext() const
 {
 	return mContexts[0];
@@ -732,5 +737,12 @@ IGADepthStencilViewImp * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp:
 {
 	IGADepthStencilViewImp * ret=DEVILX_NEW IGADepthStencilViewImp(mInternal,resource,desc);
 	mDepthStencilViews.push_back(ret);
+	return ret;
+}
+
+IGAShaderResourceViewImp* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::_create(ID3D11Resource* resource,const D3D11_SHADER_RESOURCE_VIEW_DESC* desc)
+{
+	IGAShaderResourceViewImp* ret=DEVILX_NEW IGAShaderResourceViewImp(mInternal,resource,desc);
+	mShaderResourceViews.push_back(ret);
 	return ret;
 }

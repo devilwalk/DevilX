@@ -45,6 +45,7 @@ namespace NSDevilX
 					}
 
 					// Í¨¹ý IGADevice ¼Ì³Ð
+					virtual IGAEnum::EDeviceVersion getVersion() const override;
 					virtual IGADeviceContext * getImmediateContext() const override;
 					virtual IGADeviceContext * createDeferredContext() override;
 					virtual IGAVertexBuffer * createVertexBuffer(UInt32 sizeInByte,UInt32 cpuAccessFlags,IGAEnum::EUsage usage=IGAEnum::EUsage_DEFAULT,UInt32 bindFlags=0,ConstVoidPtr initialData=nullptr) override;

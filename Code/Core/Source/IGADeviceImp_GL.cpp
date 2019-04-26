@@ -3,8 +3,8 @@ using namespace NSDevilX;
 using namespace NSCore;
 using namespace NSOpenGL;
 
-IGADeviceImp::IGADeviceImp()
-	:mContext(0)
+IGADeviceImp::IGADeviceImp(IGAEnum::EDeviceVersion version)
+	:mVersion(version)
 	,mFrameBufferObject(0)
 {
 	if(glCreateFramebuffers)
@@ -17,6 +17,11 @@ IGADeviceImp::IGADeviceImp()
 	}
 }
 
+Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::setEnvironment(CGAEnvironment* env)
+{
+	mEnvironment=env;
+}
+
 IGADeviceImp::~IGADeviceImp()
 {
 	mCommonObjects.destroyAll();
@@ -25,6 +30,11 @@ IGADeviceImp::~IGADeviceImp()
 	mRenderTargetViews.destroyAll();
 	mDepthStencilViews.destroyAll();
 	glDeleteFramebuffers(1,&mFrameBufferObject);
+}
+
+IGAEnum::EDeviceVersion NSDevilX::NSCore::NSOpenGL::IGADeviceImp::getVersion() const
+{
+	return mVersion;
 }
 
 IGADeviceContext * NSDevilX::NSCore::NSOpenGL::IGADeviceImp::getImmediateContext() const
@@ -330,6 +340,91 @@ IGAProgramParameter* NSDevilX::NSCore::NSOpenGL::IGADeviceImp::createProgramPara
 }
 
 Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::destroyProgramParameter(IGAProgramParameter* parameter)
+{
+	return Void();
+}
+
+Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::clear(IGADepthStencilView* view,IGAEnum::EClearFlag flags,Float depth,UInt8 stencil)
+{
+	return Void();
+}
+
+Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::clear(IGARenderTargetView* view,const Float colourRGBA[4])
+{
+	return Void();
+}
+
+Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::clear(IGAUnorderedAccessView* view,const Float value[4])
+{
+	return Void();
+}
+
+Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::clear(IGAUnorderedAccessView* view,const UInt32 value[4])
+{
+	return Void();
+}
+
+Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::setRenderTargets(UInt32 numRenderTarget,IGARenderTargetView* const* renderTargetViews,IGADepthStencilView* depthStencilView,UInt32 uavStartSlot,UInt32 numUAV,IGAUnorderedAccessView* const* unorderedAccessViews,const UInt32* uavInitialCounts)
+{
+	return Void();
+}
+
+Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::setInputLayout(IGAInputLayout* layout)
+{
+	return Void();
+}
+
+Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::setVertexBuffer(UInt32 startSlot,UInt32 numBuffers,IGAVertexBuffer* const* buffers,const UInt32* strides,const UInt32* offsets)
+{
+	return Void();
+}
+
+Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::setIndexBuffer(IGAIndexBuffer* buffer,IGAEnum::EGIFormat format,UInt32 offset)
+{
+	return Void();
+}
+
+Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::setProgram(IGAProgram* program,IGAProgramParameter* parameter)
+{
+	return Void();
+}
+
+Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::setPrimitiveTopology(IGAEnum::EPrimitiveTopology primitiveTopology)
+{
+	return Void();
+}
+
+Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::setRasterizerState(IGARasterizerState* state)
+{
+	return Void();
+}
+
+Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::setDepthStencilState(IGADepthStencilState* state,UInt32 stencilRef)
+{
+	return Void();
+}
+
+Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::setBlendState(IGABlendState* state,const Float factor[4],UInt32 samplerMask)
+{
+	return Void();
+}
+
+Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::setScissorRects(UInt32 numRects,const CRect* rects)
+{
+	return Void();
+}
+
+Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::setViewports(UInt32 numViewports,const IGAStruct::SViewport* viewports)
+{
+	return Void();
+}
+
+Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::draw(UInt32 vertexCountPerInstance,UInt32 startVertexLocation,UInt32 instanceCount,UInt32 startInstanceLocation)
+{
+	return Void();
+}
+
+Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::draw(UInt32 indexCountPerInstance,UInt32 startIndexLocation,Int32 baseVertexLocation,UInt32 instanceCount,UInt32 startInstanceLocation)
 {
 	return Void();
 }

@@ -5,24 +5,29 @@ namespace NSDevilX
 	{
 		namespace NSOpenGL
 		{
-#if DEVILX_WINDOW_SYSTEM == DEVILX_WINDOW_SYSTEM_WINDOWS
+			class IGADeviceImp;
+			class CGAEnvironment;
 			class IGASwapChainImp
 				:public TBaseObject<IGASwapChainImp>
 				,public IGASwapChain
-				,public IGARenderTargetView
-				,public IGADepthStencilView
 			{
 			protected:
-				HDC mHDC;
+				std::auto_ptr<CGAEnvironment> mEnvironment;
+				std::auto_ptr<IGARenderTargetViewImp> mRenderTargetView;
+				std::auto_ptr<IGADepthStencilViewImp> mDepthStencilView;
 			public:
-				IGASwapChainImp(HWND wnd);
+				IGASwapChainImp(IGADeviceImp * device,EGLNativeWindowType window);
 				~IGASwapChainImp();
+
+				CGAEnvironment* getEnvironment()const
+				{
+					return mEnvironment.get();
+				}
 
 				virtual IGARenderTargetView * getRenderTargetView() const override;
 				virtual IGADepthStencilView * getDepthStencilView() const override;
 				virtual Void present() override;
 			};
-#endif
 		}
 	}
 }

@@ -22,31 +22,30 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{9A0B2A1F-78B1-4E31-9405-E6FF2BF99351}</ProjectGuid>
     <RootNamespace>Core</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
@@ -84,18 +83,14 @@
   <PropertyGroup />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile />
-    <Link>
-      <AdditionalDependencies>Common.lib;tinyxml.lib;FreeImage.lib;freetype.lib;libfbxsdk.lib;tbb.lib;tbbmalloc.lib;glew.lib;dxgi.lib;d3d9.lib;d3d10.lib;d3d11.lib;d3d12.lib;d3dcompiler.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
+    <Link />
     <ClCompile>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile />
-    <Link>
-      <AdditionalDependencies>Common.lib;tinyxml.lib;FreeImage.lib;freetype.lib;libfbxsdk.lib;tbb.lib;tbbmalloc.lib;glew.lib;dxgi.lib;d3d9.lib;d3d10.lib;d3d11.lib;d3d12.lib;d3dcompiler.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
+    <Link />
     <ClCompile>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
@@ -109,7 +104,6 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>Common.lib;tinyxml.lib;FreeImage.lib;freetype.lib;libfbxsdk.lib;tbb.lib;tbbmalloc.lib;glew.lib;dxgi.lib;d3d9.lib;d3d10.lib;d3d11.lib;d3d12.lib;d3dcompiler.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -121,10 +115,10 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>Common.lib;tinyxml.lib;FreeImage.lib;freetype.lib;libfbxsdk.lib;tbb.lib;tbbmalloc.lib;glew.lib;dxgi.lib;d3d9.lib;d3d10.lib;d3d11.lib;d3d12.lib;d3dcompiler.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\Code\Core\Include\GAManager_GL.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\CPPScriptEnvironment.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\Define.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\DirectXManager.h" />
@@ -132,10 +126,13 @@
     <ClInclude Include="..\..\..\Code\Core\Include\FunctionWorker.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\GAInclude.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\GAManager_DX.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\GAObject.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\GAEnvironment_GL.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\GAUtility_DX.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\GAUtility_GL.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\IGADeviceContextImp_DX.h" />
-    <ClInclude Include="..\..\..\Code\Core\Include\IGAShaderReflectionImp_DX.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\IGAProgramReflectionImp_DX.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\IGAResourceImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\IGASwapChainImp_DX.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\ICPPScriptEnvironmentImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\IDirectoryImp.h" />
@@ -145,6 +142,9 @@
     <ClInclude Include="..\..\..\Code\Core\Include\IGAResourceImp_DX11.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\IGAResourceImp_GL.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\IGASwapChainImp_GL.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\IGAViewImp.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\IGAViewImp_DX.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\IGAViewImp_GL.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\INetworkConnectionImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\INetworkHostImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\ISemaphoreImp.h" />
@@ -178,6 +178,7 @@
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGADeviceContext.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGADevice.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGAManager.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGAProgramReflection.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGASwapChain.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGAView.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGAEnum.h" />
@@ -191,7 +192,6 @@
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreResource.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreScriptManager.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreSemaphore.h" />
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGAShaderReflection.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreSystem.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreSystemInterface.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreThread.h" />
@@ -205,10 +205,11 @@
     <ClCompile Include="..\..\..\Code\Core\Source\CPPScriptEnvironment.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\DirectXManager.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\FileManager.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\GAEnvironment_GL.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\GAManager_DX.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\GAManager_GL.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\ICoreDirectXManager.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\ICoreGAManager.cpp" />
-    <ClCompile Include="..\..\..\Code\Core\Source\IGAShaderReflectionImp_DX.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\ICoreMemoryManager.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\ICoreNetworkManager.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\ICoreSystem.cpp" />
@@ -219,10 +220,15 @@
     <ClCompile Include="..\..\..\Code\Core\Source\IGADeviceContextImp_DX.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\IGADeviceImp_DX11.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\IGADeviceImp_GL.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\IGAProgramReflectionImp_DX.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\IGAResourceImp.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\IGAResourceImp_DX11.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\IGAResourceImp_GL.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\IGASwapChainImp_DX.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\IGASwapChainImp_GL.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\IGAViewImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\IGAViewImp_DX.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\IGAViewImp_GL.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\INetworkConnectionImp.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\INetworkHostImp.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\ISemaphoreImp.cpp" />

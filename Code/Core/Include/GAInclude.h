@@ -1,5 +1,7 @@
 #pragma once
+#include "GAEnvironment_GL.h"
 #include "GAManager_DX.h"
+#include "GAManager_GL.h"
 #include "GAObject.h"
 #include "GAUtility_DX.h"
 #include "GAUtility_GL.h"

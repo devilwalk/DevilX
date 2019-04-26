@@ -13,6 +13,7 @@ namespace NSDevilX
 		protected:
 			virtual ~IGADevice(){ }
 		public:
+			virtual IGAEnum::EDeviceVersion getVersion()const=0;
 			virtual IGADeviceContext * getImmediateContext()const=0;
 			virtual IGADeviceContext * createDeferredContext()=0;
 			virtual IGAVertexBuffer * createVertexBuffer(UInt32 sizeInByte,UInt32 cpuAccessFlags,IGAEnum::EUsage usage=IGAEnum::EUsage_DEFAULT,UInt32 bindFlags=0,ConstVoidPtr initialData=nullptr)=0;

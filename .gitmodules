@@ -43,3 +43,6 @@
 [submodule "Dependences/LibNoise"]
 	path = Dependences/LibNoise
 	url = git://github.com/eXpl0it3r/libnoise.git
+[submodule "Dependences/McNopper_EGL"]
+	path = Dependences/McNopper_EGL
+	url = git://github.com/McNopper/EGL.git

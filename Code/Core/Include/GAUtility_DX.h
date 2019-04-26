@@ -71,7 +71,7 @@ namespace NSDevilX
 					dest.BufferDesc.Width=src.BufferDesc.Width;
 					dest.BufferUsage=mappingToDXGIUsage(src.BufferUsage);
 					dest.Flags=DXGI_SWAP_CHAIN_FLAG_DISPLAY_ONLY;
-					dest.OutputWindow=static_cast<HWND>(src.OutputWindow);
+					dest.OutputWindow=src.OutputWindow;
 					dest.SampleDesc.Count=src.SampleDesc.Count;
 					dest.SampleDesc.Quality=src.SampleDesc.Quality;
 					dest.SwapEffect=DXGI_SWAP_EFFECT_DISCARD;
