@@ -20,28 +20,33 @@ NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::~IGADeviceContext
 {
 }
 
-Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::clear(IGADepthStencilView * view,IGAEnum::EClearFlag flags,Float depth,UInt8 stencil)
+Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::clear(IGADepthStencilView * view,UInt32 flags,Float depth,UInt8 stencil)
 {
+	mInternal->ClearDepthStencilView(static_cast<IGADepthStencilViewImp*>(view)->getInternal(),CUtility::mappingClearFlags(flags),depth,stencil);
 }
 
 Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::clear(IGARenderTargetView * view,const Float colourRGBA[4])
 {
-	return Void();
+	mInternal->ClearRenderTargetView(static_cast<IGARenderTargetViewImp*>(view)->getInternal(),colourRGBA);
 }
 
 Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::clear(IGAUnorderedAccessView * view,const Float value[4])
 {
-	return Void();
 }
 
 Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::clear(IGAUnorderedAccessView * view,const UInt32 value[4])
 {
-	return Void();
 }
 
 Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::setRenderTargets(UInt32 numRenderTarget,IGARenderTargetView * const * renderTargetViews,IGADepthStencilView * depthStencilView,UInt32 uavStartSlot,UInt32 numUAV,IGAUnorderedAccessView * const * unorderedAccessViews,const UInt32 * uavInitialCounts)
 {
-	return Void();
+	static thread_local ID3D11RenderTargetView* rt_views[8]={nullptr};
+	for(UInt32 i=0;i<numRenderTarget;++i)
+	{
+		rt_views[i]=static_cast<IGARenderTargetViewImp*>(renderTargetViews[i])->getInternal();
+	}
+	static thread_local ID3D11UnorderedAccessView* uav_views[8]={nullptr};
+	mInternal->OMSetRenderTargetsAndUnorderedAccessViews(numRenderTarget,rt_views,static_cast<IGADepthStencilViewImp*>(depthStencilView)->getInternal(),uavStartSlot,numUAV,uav_views,uavInitialCounts);
 }
 
 Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::setInputLayout(IGAInputLayout * layout)

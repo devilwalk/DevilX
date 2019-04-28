@@ -22,9 +22,9 @@ INetworkManager * NSDevilX::NSCore::ISystem::getNetworkManager() const
 	return CSystem::getSingleton().getNetworkManager();
 }
 
-IDirectXManager * NSDevilX::NSCore::ISystem::getDirectXManager() const
+IGAManager * NSDevilX::NSCore::ISystem::getGAManager() const
 {
-	return CSystem::getSingleton().getDirectXManager();
+	return CSystem::getSingleton().getGAManager();
 }
 
 ITimer * NSDevilX::NSCore::ISystem::createTimer() const

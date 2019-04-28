@@ -5,16 +5,8 @@ using namespace NSOpenGL;
 
 IGADeviceImp::IGADeviceImp(IGAEnum::EDeviceVersion version)
 	:mVersion(version)
-	,mFrameBufferObject(0)
+	,mEnvironment(nullptr)
 {
-	if(glCreateFramebuffers)
-	{
-		glCreateFramebuffers(1,&mFrameBufferObject);
-	}
-	else
-	{
-		glGenFramebuffers(1,&mFrameBufferObject);
-	}
 }
 
 Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::setEnvironment(CGAEnvironment* env)
@@ -29,7 +21,6 @@ IGADeviceImp::~IGADeviceImp()
 	mSamplerStates.destroyAll();
 	mRenderTargetViews.destroyAll();
 	mDepthStencilViews.destroyAll();
-	glDeleteFramebuffers(1,&mFrameBufferObject);
 }
 
 IGAEnum::EDeviceVersion NSDevilX::NSCore::NSOpenGL::IGADeviceImp::getVersion() const
@@ -105,27 +96,27 @@ IGATexture2D* NSDevilX::NSCore::NSOpenGL::IGADeviceImp::createTextureCube(UInt32
 
 IGARenderTargetView* NSDevilX::NSCore::NSOpenGL::IGADeviceImp::createRenderTargetView(IGATexture1D* resource,UInt32 mipSlice,UInt32 firstArraySlice)
 {
-	return nullptr;
+	return _createRenderTargetView(static_cast<IGATextureImp*>(resource),mipSlice,firstArraySlice);
 }
 
 IGARenderTargetView* NSDevilX::NSCore::NSOpenGL::IGADeviceImp::createRenderTargetView(IGATexture2D* resource,UInt32 mipSlice,UInt32 firstArraySlice)
 {
-	return nullptr;
+	return _createRenderTargetView(static_cast<IGATextureImp*>(resource),mipSlice,firstArraySlice);
 }
 
 IGARenderTargetView* NSDevilX::NSCore::NSOpenGL::IGADeviceImp::createRenderTargetView(IGATexture3D* resource,UInt32 mipSlice,UInt32 firstDepthSlice)
 {
-	return nullptr;
+	return _createRenderTargetView(static_cast<IGATextureImp*>(resource),mipSlice,firstDepthSlice);
 }
 
 IGADepthStencilView* NSDevilX::NSCore::NSOpenGL::IGADeviceImp::createDepthStencilView(IGATexture1D* resource,UInt32 mipSlice,UInt32 firstArraySlice)
 {
-	return nullptr;
+	return _createDepthStencilView(static_cast<IGATextureImp*>(resource),mipSlice,firstArraySlice);
 }
 
 IGADepthStencilView* NSDevilX::NSCore::NSOpenGL::IGADeviceImp::createDepthStencilView(IGATexture2D* resource,UInt32 mipSlice,UInt32 firstArraySlice)
 {
-	return nullptr;
+	return _createDepthStencilView(static_cast<IGATextureImp*>(resource),mipSlice,firstArraySlice);
 }
 
 IGAShaderResourceView* NSDevilX::NSCore::NSOpenGL::IGADeviceImp::createShaderResourceView(IGATexture1D* resource,UInt32 mostDetailedMip,UInt32 numMipLevels,UInt32 firstArraySlice,UInt32 arrayCount)
@@ -344,14 +335,25 @@ Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::destroyProgramParameter(IGAProgra
 	return Void();
 }
 
-Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::clear(IGADepthStencilView* view,IGAEnum::EClearFlag flags,Float depth,UInt8 stencil)
+Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::clear(IGADepthStencilView* view,UInt32 flags,Float depth,UInt8 stencil)
 {
-	return Void();
+	switch(flags)
+	{
+	case IGAEnum::EClearFlag_DEPTH:
+		mEnvironment->clear(static_cast<IGADepthStencilViewImp*>(view),depth);
+		break;
+	case IGAEnum::EClearFlag_STENCIL:
+		mEnvironment->clear(static_cast<IGADepthStencilViewImp*>(view),stencil);
+		break;
+	case IGAEnum::EClearFlag_DEPTH|IGAEnum::EClearFlag_STENCIL:
+		mEnvironment->clear(static_cast<IGADepthStencilViewImp*>(view),depth,stencil);
+		break;
+	}
 }
 
 Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::clear(IGARenderTargetView* view,const Float colourRGBA[4])
 {
-	return Void();
+	mEnvironment->clear(static_cast<IGARenderTargetViewImp*>(view),colourRGBA);
 }
 
 Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::clear(IGAUnorderedAccessView* view,const Float value[4])
@@ -427,4 +429,42 @@ Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::draw(UInt32 vertexCountPerInstanc
 Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::draw(UInt32 indexCountPerInstance,UInt32 startIndexLocation,Int32 baseVertexLocation,UInt32 instanceCount,UInt32 startInstanceLocation)
 {
 	return Void();
+}
+
+IGARenderTargetViewImp* NSDevilX::NSCore::NSOpenGL::IGADeviceImp::_createRenderTargetView(IGATextureImp* texture,UInt32 mipLevel,UInt32 arrayIndex)
+{
+	auto iter=std::find_if(mRenderTargetViews.begin(),mRenderTargetViews.end(),[texture,mipLevel,arrayIndex](IGARenderTargetViewImp*rtv)
+		{
+			return (rtv->getTexture()==texture->getInternal())&&(rtv->getMipLevel()==mipLevel)&&(rtv->getArrayIndex()==arrayIndex);
+		});
+	IGARenderTargetViewImp*ret=nullptr;
+	if(mRenderTargetViews.end()==iter)
+	{
+		ret=DEVILX_NEW IGARenderTargetViewImp(texture->getInternal(),mipLevel,arrayIndex);
+		mRenderTargetViews.push_back(ret);
+	}
+	else
+	{
+		ret=*iter;
+	}
+	return ret;
+}
+
+IGADepthStencilViewImp* NSDevilX::NSCore::NSOpenGL::IGADeviceImp::_createDepthStencilView(IGATextureImp* texture,UInt32 mipLevel,UInt32 arrayIndex)
+{
+	auto iter=std::find_if(mDepthStencilViews.begin(),mDepthStencilViews.end(),[texture,mipLevel,arrayIndex](IGADepthStencilViewImp*dsv)
+		{
+			return (dsv->getTexture()==texture->getInternal())&&(dsv->getMipLevel()==mipLevel)&&(dsv->getArrayIndex()==arrayIndex);
+		});
+	IGADepthStencilViewImp*ret=nullptr;
+	if(mDepthStencilViews.end()==iter)
+	{
+		ret=DEVILX_NEW IGADepthStencilViewImp(texture->getInternal(),mipLevel,arrayIndex);
+		mDepthStencilViews.push_back(ret);
+	}
+	else
+	{
+		ret=*iter;
+	}
+	return ret;
 }

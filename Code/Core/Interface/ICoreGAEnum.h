@@ -132,7 +132,6 @@ namespace NSDevilX
 			enum EGIUsage
 			{
 				EGIUsage_BackBuffer=1,
-				EGIUsage_DiscardOnPresent=1<<1,
 				EGIUsage_ReadOnly=1<<2,
 				EGIUsage_RenderTargetOutput=1<<3,
 				EGIUsage_ShaderInput=1<<4,
@@ -208,8 +207,8 @@ namespace NSDevilX
 			};
 			enum EClearFlag
 			{
-				EClearFlag_DEPTH,
-				EClearFlag_STENCIL
+				EClearFlag_DEPTH=1,
+				EClearFlag_STENCIL=1<<1
 			};
 			enum EBlend
 			{

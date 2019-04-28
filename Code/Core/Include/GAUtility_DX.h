@@ -19,8 +19,6 @@ namespace NSDevilX
 					UInt32 ret=0;
 					if(usages&IGAEnum::EGIUsage_BackBuffer)
 						ret|=DXGI_USAGE_BACK_BUFFER;
-					if(usages&IGAEnum::EGIUsage_DiscardOnPresent)
-						ret|=DXGI_USAGE_DISCARD_ON_PRESENT;
 					if(usages&IGAEnum::EGIUsage_ReadOnly)
 						ret|=DXGI_USAGE_READ_ONLY;
 					if(usages&IGAEnum::EGIUsage_RenderTargetOutput)
@@ -70,12 +68,12 @@ namespace NSDevilX
 					dest.BufferDesc.ScanlineOrdering=DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
 					dest.BufferDesc.Width=src.BufferDesc.Width;
 					dest.BufferUsage=mappingToDXGIUsage(src.BufferUsage);
-					dest.Flags=DXGI_SWAP_CHAIN_FLAG_DISPLAY_ONLY;
+					dest.Flags=0;
 					dest.OutputWindow=src.OutputWindow;
 					dest.SampleDesc.Count=src.SampleDesc.Count;
 					dest.SampleDesc.Quality=src.SampleDesc.Quality;
 					dest.SwapEffect=DXGI_SWAP_EFFECT_DISCARD;
-					dest.Windowed=FALSE;
+					dest.Windowed=TRUE;
 					return dest;
 				}
 				static DXGI_SWAP_CHAIN_DESC mapping(const IGAStruct::SGISwapChainDesc & desc)
@@ -765,6 +763,15 @@ namespace NSDevilX
 						assert(0);
 						return IGAEnum::EShaderVariableType_VOID;
 					}
+				}
+				static UInt32 mappingClearFlags(UInt32 flags)
+				{
+					UInt32 ret=0;
+					if(IGAEnum::EClearFlag_DEPTH&flags)
+						ret|=D3D11_CLEAR_DEPTH;
+					if(IGAEnum::EClearFlag_STENCIL&flags)
+						ret|=D3D11_CLEAR_STENCIL;
+					return ret;
 				}
 			};
 		}

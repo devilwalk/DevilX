@@ -2,7 +2,7 @@
 #include "ICoreMemoryManager.h"
 #include "ICoreThreadManager.h"
 #include "ICoreNetworkManager.h"
-#include "ICoreDirectXManager.h"
+#include "ICoreGAManager.h"
 #include "ICoreTimer.h"
 namespace NSDevilX
 {
@@ -18,7 +18,7 @@ namespace NSDevilX
 			IThreadManager*getThreadManager()const;
 			IMemoryManager*getMemoryManager()const;
 			INetworkManager * getNetworkManager()const;
-			IDirectXManager * getDirectXManager()const;
+			IGAManager * getGAManager()const;
 			ITimer * createTimer()const;
 			Void destroyTimer(ITimer * timer)const;
 		};

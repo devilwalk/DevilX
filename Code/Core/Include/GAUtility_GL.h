@@ -46,7 +46,10 @@ namespace NSDevilX
 					{
 						for(auto const& pairs:*configAttributes)
 						{
-							config_attr_map[pairs.first]=pairs.second;
+							if(pairs.second)
+								config_attr_map[pairs.first]=pairs.second;
+							else
+								config_attr_map.erase(pairs.first);
 						}
 					}
 					TVector(EGLint) config_attr_list;

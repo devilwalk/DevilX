@@ -16,7 +16,6 @@ namespace NSDevilX
 			protected:
 				const IGAEnum::EDeviceVersion mVersion;
 				CGAEnvironment* mEnvironment;
-				GLuint mFrameBufferObject;
 
 				TResourcePtrUnorderedSet(CGAObject) mCommonObjects;
 				TResourcePtrVector(IGAInputLayoutImp) mInputLayouts;
@@ -79,8 +78,8 @@ namespace NSDevilX
 				virtual IGAProgramParameter* createProgramParameter() override;
 				virtual Void destroyProgramParameter(IGAProgramParameter* parameter) override;
 
-				// 通过 IGADeviceContext 继承
-				virtual Void clear(IGADepthStencilView* view,IGAEnum::EClearFlag flags,Float depth,UInt8 stencil) override;
+				// 通过 IGADeviceContext 继承 
+				virtual Void clear(IGADepthStencilView* view,UInt32 flags,Float depth,UInt8 stencil) override;
 				virtual Void clear(IGARenderTargetView* view,const Float colourRGBA[4]) override;
 				virtual Void clear(IGAUnorderedAccessView* view,const Float value[4]) override;
 				virtual Void clear(IGAUnorderedAccessView* view,const UInt32 value[4]) override;
@@ -97,6 +96,9 @@ namespace NSDevilX
 				virtual Void setViewports(UInt32 numViewports,const IGAStruct::SViewport* viewports) override;
 				virtual Void draw(UInt32 vertexCountPerInstance,UInt32 startVertexLocation,UInt32 instanceCount=1,UInt32 startInstanceLocation=0) override;
 				virtual Void draw(UInt32 indexCountPerInstance,UInt32 startIndexLocation,Int32 baseVertexLocation,UInt32 instanceCount=1,UInt32 startInstanceLocation=0) override;
+			protected:
+				IGARenderTargetViewImp* _createRenderTargetView(IGATextureImp* texture,UInt32 mipLevel,UInt32 arrayIndex);
+				IGADepthStencilViewImp* _createDepthStencilView(IGATextureImp* texture,UInt32 mipLevel,UInt32 arrayIndex);
 			};
 		}
 	}

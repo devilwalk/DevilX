@@ -6,6 +6,7 @@ IGASwapChainImp::IGASwapChainImp(IGADeviceImp* device,EGLNativeWindowType window
 	:mEnvironment(nullptr)
 {
 	mEnvironment.reset(DEVILX_NEW CGAEnvironment(window,device->getVersion()==IGAEnum::EDeviceVersion_OpenGLES));
+	device->setEnvironment(mEnvironment.get());
 	mRenderTargetView.reset(DEVILX_NEW IGARenderTargetViewImp(0,0,0));
 	mDepthStencilView.reset(DEVILX_NEW IGADepthStencilViewImp(0,0,0));
 }
@@ -26,5 +27,5 @@ IGADepthStencilView * IGASwapChainImp::getDepthStencilView() const
 
 Void IGASwapChainImp::present()
 {
-	eglSwapBuffers(mEnvironment->getDisplay(),mEnvironment->getSurface());
+	mEnvironment->swapBuffer();
 }

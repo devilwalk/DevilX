@@ -16,6 +16,7 @@ using namespace NSCore;
 #pragma comment(lib,"d3dcompiler.lib")
 #pragma comment(lib,"opengl32.lib")
 #pragma comment(lib,"glu32.lib")
+//#pragma comment(lib,"libEGL.lib")
 #pragma comment(lib,"egl.lib")
 #if DEVILX_DEBUG
 #pragma comment(lib,"tbb_debug.lib")

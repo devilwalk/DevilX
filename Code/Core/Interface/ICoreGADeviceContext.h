@@ -14,7 +14,7 @@ namespace NSDevilX
 			{
 			}
 		public:
-			virtual Void clear(IGADepthStencilView * view,IGAEnum::EClearFlag flags,Float depth,UInt8 stencil)=0;
+			virtual Void clear(IGADepthStencilView * view,UInt32 flags,Float depth,UInt8 stencil)=0;
 			virtual Void clear(IGARenderTargetView * view,const Float colourRGBA[4])=0;
 			virtual Void clear(IGAUnorderedAccessView * view,const Float value[4])=0;
 			virtual Void clear(IGAUnorderedAccessView * view,const UInt32 value[4])=0;

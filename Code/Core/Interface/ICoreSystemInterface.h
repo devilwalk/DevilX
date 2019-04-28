@@ -10,7 +10,6 @@
 #include "Common.h"
 #include "ICoreCPPScriptEnvironment.h"
 #include "ICoreDirectory.h"
-#include "ICoreDirectXManager.h"
 #include "ICoreEnum.h"
 #include "ICoreFile.h"
 #include "ICoreFileManager.h"

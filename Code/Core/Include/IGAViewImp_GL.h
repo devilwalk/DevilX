@@ -21,40 +21,62 @@ namespace NSDevilX
 				}
 			};
 			class IGARenderTargetViewImp
-				:public TGAGLViewImp<IGARenderTargetView>
+				:public TGAViewImp<IGARenderTargetView>
 				,public TBaseObject<IGARenderTargetViewImp>
 			{
 			protected:
-				union
-				{
-					struct
-					{
-						GLuint mTexture;
-						GLuint mMipLevel;
-						GLuint mArrayIndex;
-					};
-				};
+				GLuint mTexture;
+				GLuint mMipLevel;
+				GLuint mArrayIndex;
 			public:
 				IGARenderTargetViewImp(GLuint texture,GLint mipLevel,GLint arrayIndex);
 				~IGARenderTargetViewImp();
+
+				auto getTexture()const
+				{
+					return mTexture;
+				}
+				auto getMipLevel()const
+				{
+					return mMipLevel;
+				}
+				auto getArrayIndex()const
+				{
+					return mArrayIndex;
+				}
 			};
 			class IGADepthStencilViewImp
-				:public TGAGLViewImp<IGADepthStencilView>
+				:public TGAViewImp<IGADepthStencilView>
 				,public TBaseObject<IGADepthStencilViewImp>
 			{
 			protected:
-				union
-				{
-					struct
-					{
-						GLuint mTexture;
-						GLuint mMipLevel;
-						GLuint mArrayIndex;
-					};
-				};
+				GLuint mTexture;
+				GLuint mMipLevel;
+				GLuint mArrayIndex;
 			public:
 				IGADepthStencilViewImp(GLuint texture,GLint mipLevel,GLint arrayIndex);
 				~IGADepthStencilViewImp();
+
+				auto getTexture()const
+				{
+					return mTexture;
+				}
+				auto getMipLevel()const
+				{
+					return mMipLevel;
+				}
+				auto getArrayIndex()const
+				{
+					return mArrayIndex;
+				}
+			};
+			class IGAShaderResourceViewImp
+				:public TGAGLViewImp<IGAShaderResourceView>
+				,public TBaseObject<IGAShaderResourceViewImp>
+			{
+			protected:
+			public:
+
 			};
 		}
 	}
