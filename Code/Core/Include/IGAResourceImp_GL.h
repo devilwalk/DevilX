@@ -1,5 +1,6 @@
 #pragma once
 #include "GAObject.h"
+#include "IGAResourceImp.h"
 #include "IGAViewImp_GL.h"
 namespace NSDevilX
 {
@@ -44,6 +45,7 @@ namespace NSDevilX
 				,public TGAViewImp<IGARenderTargetView>
 				,public TGAViewImp<IGADepthStencilView>
 				,public TBaseObject<IGATextureImp>
+				,public TGAViewImp<IGATextureView>
 			{
 			protected:
 			public:
@@ -74,6 +76,18 @@ namespace NSDevilX
 					return mInputElementDescs;
 				}
 			};
+			class IGAProgramParameterImp;
+			class IGAProgramReflectionImp;
+			class IGAProgramImp
+				:public TGAResourceImp<IGAProgram>
+			{
+			public:
+				IGAProgramImp();
+				virtual ~IGAProgramImp();
+
+				virtual Void apply()=0;
+				virtual IGAProgramReflectionImp* createReflection()=0;
+			};
 			class IGAShaderImp
 				:public TGAGLResourceImp<IGAShader>
 				,public TBaseObject<IGAShaderImp>
@@ -83,12 +97,44 @@ namespace NSDevilX
 				,public IGAHullShader
 				,public IGADomainShader
 				,public IGAComputeShader
+				,public IGAProgramImp
 			{
 			public:
 				IGAShaderImp(const String & glsl,IGAEnum::EShaderType type);
 				~IGAShaderImp();
 
 				virtual IGAShader* queryInterface_IGAShader() override;
+				virtual Void apply() override;
+				virtual IGAProgramReflectionImp* createReflection() override;
+			};
+			class CGAProgramImp
+				:public IGAProgramImp
+				,public TGLObjectContainer<>
+				,public TBaseObject<IGAProgramImp>
+			{
+			public:
+				CGAProgramImp(GLuint vertexShader,GLuint pixelShader,GLuint geometryShader,GLuint hullShader,GLuint domainShader);
+				~CGAProgramImp();
+
+				virtual Void apply() override;
+				virtual IGAProgramReflectionImp* createReflection() override;
+			};
+			class CGAProgramPipelineImp
+				:public IGAProgramImp
+				,public TBaseObject<CGAProgramPipelineImp>
+			{
+			protected:
+				static GLuint msProgramPipeline;
+				static UInt32 msRefCount;
+				std::array<GLuint,5> mPrograms;
+			public:
+				CGAProgramPipelineImp(GLuint vertexShader,GLuint pixelShader,GLuint geometryShader,GLuint hullShader,GLuint domainShader);
+				~CGAProgramPipelineImp();
+
+				virtual Void apply() override;
+				virtual IGAProgramReflectionImp* createReflection() override;
+			protected:
+				Void _createInternal();
 			};
 			class IGABlendStateImp
 				:public TGAResourceImp<IGABlendState>
@@ -153,6 +199,36 @@ namespace NSDevilX
 				{
 					return mDescription;
 				}
+			};
+			class IGAProgramParameterImp
+				:public TGAResourceImp<IGAProgramParameter>
+				,public TBaseObject<IGAProgramParameterImp>
+			{
+			protected:
+				std::array<TVector(GLuint),5> mConstantBuffers;
+				std::array<TVector(GLuint),5> mSamplers;
+			public:
+				IGAProgramParameterImp();
+				~IGAProgramParameterImp();
+
+				const decltype(mConstantBuffers)& getConstantBuffers()const
+				{
+					return mConstantBuffers;
+				}
+				const decltype(mSamplers)& getSamplers()const
+				{
+					return mSamplers;
+				}
+
+				Void apply();
+				Void apply(IGAEnum::EShaderType type);
+
+				// Í¨¹ý TGAResourceImp ¼Ì³Ð
+				virtual Void setConstantBuffer(UInt32 slot,IGAConstantBuffer* buffer) override;
+				virtual Void setSampler(UInt32 slot,IGASamplerState* sampler) override;
+				virtual Void setResourceView(UInt32 slot,IGATextureView* view) override;
+				virtual Void setResourceView(UInt32 slot,IGATextureBufferView* view) override;
+				virtual Void setResourceView(UInt32 slot,IGAUnorderedAccessView* view) override;
 			};
 		}
 	}

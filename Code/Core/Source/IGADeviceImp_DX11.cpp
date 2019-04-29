@@ -17,10 +17,6 @@ NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::IGADeviceImp()
 
 	CComPtr<IDXGIDevice1> dxgi_dev;
 	mInternal->QueryInterface(&dxgi_dev);
-	if(dxgi_dev.p)
-	{
-		dxgi_dev->SetMaximumFrameLatency(1);
-	}
 }
 
 NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::~IGADeviceImp()

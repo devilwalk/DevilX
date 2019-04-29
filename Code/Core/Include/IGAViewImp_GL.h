@@ -70,12 +70,33 @@ namespace NSDevilX
 					return mArrayIndex;
 				}
 			};
-			class IGAShaderResourceViewImp
-				:public TGAGLViewImp<IGAShaderResourceView>
-				,public TBaseObject<IGAShaderResourceViewImp>
+			class IGATextureViewImp
+				:public TGAGLViewImp<IGATextureView>
+				,public TBaseObject<IGATextureViewImp>
 			{
-			protected:
 			public:
+				IGATextureViewImp(
+					GLenum target,
+					GLuint origtexture,
+					GLenum internalformat,
+					GLuint minlevel,
+					GLuint numlevels,
+					GLuint minlayer,
+					GLuint numlayers);
+				~IGATextureViewImp();
+			};
+			class IGATextureBufferViewImp
+				:public TGAGLViewImp<IGATextureBufferView>
+				,public TBaseObject<IGATextureBufferViewImp>
+			{
+			public:
+				IGATextureBufferViewImp(GLuint texture,GLint mipLevel,GLint arrayIndex,GLenum access);
+				~IGATextureBufferViewImp();
+			};
+			class IGAUnorderedAccessViewImp
+				:public TGAGLViewImp<IGAUnorderedAccessView>
+				,public TBaseObject<IGAUnorderedAccessViewImp>
+			{
 
 			};
 		}

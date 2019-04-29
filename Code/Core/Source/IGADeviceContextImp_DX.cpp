@@ -40,13 +40,15 @@ Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::clear(IGAUno
 
 Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::setRenderTargets(UInt32 numRenderTarget,IGARenderTargetView * const * renderTargetViews,IGADepthStencilView * depthStencilView,UInt32 uavStartSlot,UInt32 numUAV,IGAUnorderedAccessView * const * unorderedAccessViews,const UInt32 * uavInitialCounts)
 {
-	static thread_local ID3D11RenderTargetView* rt_views[8]={nullptr};
 	for(UInt32 i=0;i<numRenderTarget;++i)
 	{
-		rt_views[i]=static_cast<IGARenderTargetViewImp*>(renderTargetViews[i])->getInternal();
+		mPointerCache[i]=static_cast<IGARenderTargetViewImp*>(renderTargetViews[i])->getInternal();
 	}
-	static thread_local ID3D11UnorderedAccessView* uav_views[8]={nullptr};
-	mInternal->OMSetRenderTargetsAndUnorderedAccessViews(numRenderTarget,rt_views,static_cast<IGADepthStencilViewImp*>(depthStencilView)->getInternal(),uavStartSlot,numUAV,uav_views,uavInitialCounts);
+	for(UInt32 i=0;i<numUAV;++i)
+	{
+		mPointerCache[i+numRenderTarget]=nullptr;
+	}
+	mInternal->OMSetRenderTargetsAndUnorderedAccessViews(numRenderTarget,reinterpret_cast<ID3D11RenderTargetView**>(&mPointerCache[0]),static_cast<IGADepthStencilViewImp*>(depthStencilView)->getInternal(),uavStartSlot,numUAV,reinterpret_cast<ID3D11UnorderedAccessView**>(&mPointerCache[numRenderTarget]),uavInitialCounts);
 }
 
 Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::setInputLayout(IGAInputLayout * layout)

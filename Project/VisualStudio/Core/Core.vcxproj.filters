@@ -267,6 +267,9 @@
     <ClInclude Include="..\..\..\Code\Core\Include\GAManager_GL.h">
       <Filter>头文件\GraphicAPI</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\IGAProgramReflectionImp_GL.h">
+      <Filter>头文件\GraphicAPI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Core\Source\Precompiler.cpp">
@@ -390,6 +393,9 @@
       <Filter>源文件\GraphicAPI</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Core\Source\GAManager_GL.cpp">
+      <Filter>源文件\GraphicAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\IGAProgramReflectionImp_GL.cpp">
       <Filter>源文件\GraphicAPI</Filter>
     </ClCompile>
   </ItemGroup>

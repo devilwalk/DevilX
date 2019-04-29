@@ -203,7 +203,9 @@ namespace NSDevilX
 			virtual IGAResource * queryInterface_IGAResource()=0;
 			virtual Void setConstantBuffer(UInt32 slot,IGAConstantBuffer * buffer)=0;
 			virtual Void setSampler(UInt32 slot,IGASamplerState * sampler)=0;
-			virtual Void setResourceView(UInt32 slot,IGAShaderResourceView * view)=0;
+			virtual Void setResourceView(UInt32 slot,IGATextureView* view)=0;
+			virtual Void setResourceView(UInt32 slot,IGATextureBufferView* view)=0;
+			virtual Void setResourceView(UInt32 slot,IGAUnorderedAccessView* view)=0;
 		};
 	}
 }

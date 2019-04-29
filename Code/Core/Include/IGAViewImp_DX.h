@@ -42,7 +42,8 @@ namespace NSDevilX
 					~IGADepthStencilViewImp();
 				};
 				class IGAShaderResourceViewImp
-					:public TGAD3DViewImp<IGAShaderResourceView,ID3D11ShaderResourceView>
+					:public TGAD3DViewImp<IGATextureView,ID3D11ShaderResourceView>
+					,public TGAViewImp<IGATextureBufferView>
 					,public TBaseObject<IGAShaderResourceViewImp>
 				{
 				protected:
@@ -50,6 +51,14 @@ namespace NSDevilX
 					IGAShaderResourceViewImp(ID3D11Device * device,ID3D11Resource * resource,const D3D11_SHADER_RESOURCE_VIEW_DESC * desc=nullptr);
 					IGAShaderResourceViewImp(ID3D11Device3 * device,ID3D11Resource * resource,const D3D11_SHADER_RESOURCE_VIEW_DESC1 * desc=nullptr);
 					~IGAShaderResourceViewImp();
+				};
+				class IGAUnorderedAccessViewImp
+					:public TGAD3DViewImp<IGAUnorderedAccessView,ID3D11UnorderedAccessView>
+					,public TBaseObject<IGAUnorderedAccessViewImp>
+				{
+				public:
+					IGAUnorderedAccessViewImp(ID3D11Device* device,ID3D11Resource* resource,const D3D11_UNORDERED_ACCESS_VIEW_DESC * desc=nullptr);
+					~IGAUnorderedAccessViewImp();
 				};
 			}
 		}

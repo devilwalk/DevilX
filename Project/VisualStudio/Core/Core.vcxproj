@@ -131,6 +131,7 @@
     <ClInclude Include="..\..\..\Code\Core\Include\GAUtility_GL.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\IGADeviceContextImp_DX.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\IGAProgramReflectionImp_DX.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\IGAProgramReflectionImp_GL.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\IGAResourceImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\IGASwapChainImp_DX.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\ICPPScriptEnvironmentImp.h" />
@@ -217,6 +218,7 @@
     <ClCompile Include="..\..\..\Code\Core\Source\IGADeviceImp_DX11.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\IGADeviceImp_GL.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\IGAProgramReflectionImp_DX.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\IGAProgramReflectionImp_GL.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\IGAResourceImp.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\IGAResourceImp_DX11.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\IGAResourceImp_GL.cpp" />

@@ -1,4 +1,5 @@
 #pragma once
+#include "GAObject.h"
 namespace NSDevilX
 {
 	namespace NSCore

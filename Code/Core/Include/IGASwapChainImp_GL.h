@@ -13,8 +13,6 @@ namespace NSDevilX
 			{
 			protected:
 				std::auto_ptr<CGAEnvironment> mEnvironment;
-				std::auto_ptr<IGARenderTargetViewImp> mRenderTargetView;
-				std::auto_ptr<IGADepthStencilViewImp> mDepthStencilView;
 			public:
 				IGASwapChainImp(IGADeviceImp * device,EGLNativeWindowType window);
 				~IGASwapChainImp();

@@ -32,12 +32,22 @@ namespace NSDevilX
 		public:
 			virtual IGAView * queryInterface_IGAView()=0;
 		};
-		class IGAShaderResourceView
+		class IGATextureView
 		{
 		protected:
-			virtual ~IGAShaderResourceView(){ }
+			virtual ~IGATextureView(){ }
 		public:
 			virtual IGAView * queryInterface_IGAView()=0;
+		};
+		class IGATextureBufferView
+		{
+		protected:
+		protected:
+			virtual ~IGATextureBufferView()
+			{
+			}
+		public:
+			virtual IGAView* queryInterface_IGAView()=0;
 		};
 	}
 }

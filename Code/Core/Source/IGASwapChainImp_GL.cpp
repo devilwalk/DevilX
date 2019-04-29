@@ -7,8 +7,6 @@ IGASwapChainImp::IGASwapChainImp(IGADeviceImp* device,EGLNativeWindowType window
 {
 	mEnvironment.reset(DEVILX_NEW CGAEnvironment(window,device->getVersion()==IGAEnum::EDeviceVersion_OpenGLES));
 	device->setEnvironment(mEnvironment.get());
-	mRenderTargetView.reset(DEVILX_NEW IGARenderTargetViewImp(0,0,0));
-	mDepthStencilView.reset(DEVILX_NEW IGADepthStencilViewImp(0,0,0));
 }
 
 IGASwapChainImp::~IGASwapChainImp()
@@ -17,12 +15,12 @@ IGASwapChainImp::~IGASwapChainImp()
 
 IGARenderTargetView * IGASwapChainImp::getRenderTargetView() const
 {
-	return mRenderTargetView.get();
+	return nullptr;
 }
 
 IGADepthStencilView * IGASwapChainImp::getDepthStencilView() const
 {
-	return mDepthStencilView.get();
+	return nullptr;
 }
 
 Void IGASwapChainImp::present()

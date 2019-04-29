@@ -1,13 +1,13 @@
 #pragma once
 #include "IGAResourceImp_GL.h"
 #include "IGAViewImp_GL.h"
-#include "GAEnvironment_GL.h"
 namespace NSDevilX
 {
 	namespace NSCore
 	{
 		namespace NSOpenGL
 		{
+			class CGAEnvironment;
 			class IGADeviceImp
 				:public TBaseObject<IGADeviceImp>
 				,public IGADevice

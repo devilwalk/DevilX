@@ -368,12 +368,16 @@ Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::clear(IGAUnorderedAccessView* vie
 
 Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::setRenderTargets(UInt32 numRenderTarget,IGARenderTargetView* const* renderTargetViews,IGADepthStencilView* depthStencilView,UInt32 uavStartSlot,UInt32 numUAV,IGAUnorderedAccessView* const* unorderedAccessViews,const UInt32* uavInitialCounts)
 {
-	return Void();
+	for(UInt32 i=0;i<numRenderTarget;++i)
+	{
+		mEnvironment->setRenderTarget(i,reinterpret_cast<IGARenderTargetViewImp*>(renderTargetViews[i]));
+	}
+	mEnvironment->setDepthStencil(static_cast<IGADepthStencilViewImp*>(depthStencilView));
 }
 
 Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::setInputLayout(IGAInputLayout* layout)
 {
-	return Void();
+	mEnvironment->setInputLayout(static_cast<IGAInputLayoutImp*>(layout));
 }
 
 Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::setVertexBuffer(UInt32 startSlot,UInt32 numBuffers,IGAVertexBuffer* const* buffers,const UInt32* strides,const UInt32* offsets)

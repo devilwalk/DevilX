@@ -1,4 +1,6 @@
 #pragma once
+#include "IGAViewImp_GL.h"
+#include "IGAResourceImp_GL.h"
 namespace NSDevilX
 {
 	namespace NSCore
@@ -7,9 +9,7 @@ namespace NSDevilX
 		{
 			class IGADeviceImp;
 			class IGASwapChainImp;
-			class IGADepthStencilViewImp;
-			class IGARenderTargetViewImp;
-			class CGAContextBase;
+			class CGAEnvironmentMultiImp;
 			class CGAEnvironment
 				:public TBaseObject<CGAEnvironment>
 			{
@@ -17,7 +17,7 @@ namespace NSDevilX
 				EGLDisplay mDisplay;
 				EGLSurface mSurface;
 				EGLContext mContext;
-				std::auto_ptr<CGAContextBase> mImp;
+				std::auto_ptr<CGAEnvironmentMultiImp> mMultiImp;
 			public:
 				CGAEnvironment(EGLNativeWindowType window,Bool isGLES=False);
 				virtual ~CGAEnvironment();
@@ -42,40 +42,45 @@ namespace NSDevilX
 				Void clear(IGADepthStencilViewImp* view,UInt8 stencil);
 				Void clear(IGADepthStencilViewImp* view,Float depth,UInt8 stencil);
 				Void clear(IGARenderTargetViewImp* view,const Float colourRGBA[4]);
+				Void setRenderTarget(UInt32 index,IGARenderTargetViewImp* view);
+				Void setDepthStencil(IGADepthStencilViewImp* view);
+				Void setInputLayout(IGAInputLayoutImp* layout);
 			};
-			class CGAContextBase
+			class CGAEnvironmentMultiImp
 			{
-			protected:
-				GLuint mFrameBufferObject;
 			public:
-				CGAContextBase();
-				virtual ~CGAContextBase();
+				CGAEnvironmentMultiImp();
+				virtual ~CGAEnvironmentMultiImp();
 				virtual Void clear(IGADepthStencilViewImp* view,Float depth);
 				virtual Void clear(IGADepthStencilViewImp* view,UInt8 stencil);
 				virtual Void clear(IGADepthStencilViewImp* view,Float depth,UInt8 stencil);
 				virtual Void clear(IGARenderTargetViewImp* view,const Float colourRGBA[4]);
+				virtual Void setRenderTarget(UInt32 index,IGARenderTargetViewImp* view);
+				virtual Void setDepthStencil(IGADepthStencilViewImp* view);
 			};
-			class CGAContextCommon
-				:public CGAContextBase
-				,public TBaseObject<CGAContextCommon>
+			class CGAEnvironmentCommon
+				:public CGAEnvironmentMultiImp
+				,public TBaseObject<CGAEnvironmentCommon>
 			{
 			public:
-				CGAContextCommon();
-				~CGAContextCommon();
+				CGAEnvironmentCommon();
+				~CGAEnvironmentCommon();
 			};
-			class CGAContextGL45
-				:public CGAContextBase
-				,public TBaseObject<CGAContextGL45>
+			class CGAEnvironmentDSA
+				:public CGAEnvironmentMultiImp
+				,public TBaseObject<CGAEnvironmentDSA>
 			{
 			protected:
 			public:
-				CGAContextGL45();
-				~CGAContextGL45();
+				CGAEnvironmentDSA();
+				~CGAEnvironmentDSA();
 
 				virtual Void clear(IGADepthStencilViewImp* view,Float depth) override;
 				virtual Void clear(IGADepthStencilViewImp* view,UInt8 stencil) override;
 				virtual Void clear(IGADepthStencilViewImp* view,Float depth,UInt8 stencil) override;
 				virtual Void clear(IGARenderTargetViewImp* view,const Float colourRGBA[4]) override;
+				virtual Void setRenderTarget(UInt32 index,IGARenderTargetViewImp* view) override;
+				virtual Void setDepthStencil(IGADepthStencilViewImp* view) override;
 			};
 		}
 	}
