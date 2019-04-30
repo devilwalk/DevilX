@@ -7,6 +7,16 @@ namespace NSDevilX
 		{
 			namespace NSVersion11
 			{
+				class IGAShaderReflectionImp
+					:public IGAShaderReflection
+					,public CGAObject
+					,public TD3DObjectContainer<ID3D11ShaderReflection>
+					,public TBaseObject<IGAShaderReflectionImp>
+				{
+				public:
+					IGAShaderReflectionImp(ID3DBlob* blob);
+					~IGAShaderReflectionImp();
+				};
 				class IGAProgramReflectionImp
 					:public IGAProgramReflection
 					,public TBaseObject<IGAProgramReflectionImp>

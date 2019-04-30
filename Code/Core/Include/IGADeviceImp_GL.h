@@ -11,7 +11,9 @@ namespace NSDevilX
 			class IGADeviceImp
 				:public TBaseObject<IGADeviceImp>
 				,public IGADevice
+				,public IGADevice1
 				,public IGADeviceContext
+				,public IGADeviceContext1
 			{
 			protected:
 				const IGAEnum::EDeviceVersion mVersion;
@@ -54,9 +56,9 @@ namespace NSDevilX
 				virtual IGARenderTargetView* createRenderTargetView(IGATexture3D* resource,UInt32 mipSlice,UInt32 firstDepthSlice) override;
 				virtual IGADepthStencilView* createDepthStencilView(IGATexture1D* resource,UInt32 mipSlice=0,UInt32 firstArraySlice=0) override;
 				virtual IGADepthStencilView* createDepthStencilView(IGATexture2D* resource,UInt32 mipSlice=0,UInt32 firstArraySlice=0) override;
-				virtual IGAShaderResourceView* createShaderResourceView(IGATexture1D* resource,UInt32 mostDetailedMip=0,UInt32 numMipLevels=-1,UInt32 firstArraySlice=0,UInt32 arrayCount=0) override;
-				virtual IGAShaderResourceView* createShaderResourceView(IGATexture2D* resource,UInt32 mostDetailedMip=0,UInt32 numMipLevels=-1,UInt32 firstArraySlice=0,UInt32 arrayCount=0) override;
-				virtual IGAShaderResourceView* createShaderResourceView(IGATexture3D* resource,UInt32 mostDetailedMip=0,UInt32 numMipLevels=-1) override;
+				virtual IGATextureView* createShaderResourceView(IGATexture1D* resource,UInt32 mostDetailedMip=0,UInt32 numMipLevels=-1,UInt32 firstArraySlice=0,UInt32 arrayCount=0) override;
+				virtual IGATextureView* createShaderResourceView(IGATexture2D* resource,UInt32 mostDetailedMip=0,UInt32 numMipLevels=-1,UInt32 firstArraySlice=0,UInt32 arrayCount=0) override;
+				virtual IGATextureView* createShaderResourceView(IGATexture3D* resource,UInt32 mostDetailedMip=0,UInt32 numMipLevels=-1) override;
 				virtual IGAUnorderedAccessView* createUnorderedAccessView(IGATexture1D* resource,UInt32 mipSlice=0,UInt32 firstArraySlice=0,UInt32 arrayCount=1) override;
 				virtual IGAUnorderedAccessView* createUnorderedAccessView(IGATexture2D* resource,UInt32 mipSlice=0,UInt32 firstArraySlice=0,UInt32 arrayCount=1) override;
 				virtual IGAUnorderedAccessView* createUnorderedAccessView(IGATexture3D* resource,UInt32 mipSlice,UInt32 firstDepthSlice,UInt32 depthCount) override;
@@ -72,7 +74,6 @@ namespace NSDevilX
 				virtual IGADepthStencilState* createDepthStencilState(const IGAStruct::SDepthStencilDesc& desc) override;
 				virtual IGASamplerState* createSamplerState(const IGAStruct::SSamplerDesc& desc) override;
 				virtual IGAProgram* createProgram(IGAVertexShader* vertexShader,IGAPixelShader* pixelShader,IGAGeometryShader* geometryShader=nullptr,IGAHullShader* hullShader=nullptr,IGADomainShader* domainShader=nullptr) override;
-				virtual IGAProgram* createProgram(IGAComputeShader* computeShader) override;
 				virtual IGAProgramReflection* createReflection(IGAProgram* program) override;
 				virtual Void destroyReflection(IGAProgramReflection* reflection) override;
 				virtual IGAProgramParameter* createProgramParameter() override;
@@ -83,7 +84,7 @@ namespace NSDevilX
 				virtual Void clear(IGARenderTargetView* view,const Float colourRGBA[4]) override;
 				virtual Void clear(IGAUnorderedAccessView* view,const Float value[4]) override;
 				virtual Void clear(IGAUnorderedAccessView* view,const UInt32 value[4]) override;
-				virtual Void setRenderTargets(UInt32 numRenderTarget,IGARenderTargetView* const* renderTargetViews,IGADepthStencilView* depthStencilView,UInt32 uavStartSlot=0,UInt32 numUAV=0,IGAUnorderedAccessView* const* unorderedAccessViews=nullptr,const UInt32* uavInitialCounts=nullptr) override;
+				virtual Void setRenderTargets(UInt32 numRenderTarget,IGARenderTargetView* const* renderTargetViews,IGADepthStencilView* depthStencilView) override;
 				virtual Void setInputLayout(IGAInputLayout* layout) override;
 				virtual Void setVertexBuffer(UInt32 startSlot,UInt32 numBuffers,IGAVertexBuffer* const* buffers,const UInt32* strides,const UInt32* offsets=nullptr) override;
 				virtual Void setIndexBuffer(IGAIndexBuffer* buffer,IGAEnum::EGIFormat format,UInt32 offset=0) override;
@@ -99,7 +100,32 @@ namespace NSDevilX
 			protected:
 				IGARenderTargetViewImp* _createRenderTargetView(IGATextureImp* texture,UInt32 mipLevel,UInt32 arrayIndex);
 				IGADepthStencilViewImp* _createDepthStencilView(IGATextureImp* texture,UInt32 mipLevel,UInt32 arrayIndex);
-			};
+
+				// 通过 IGADevice 继承
+				virtual IGADevice1* queryInterface_IGADevice1() const override;
+
+				// 通过 IGADevice1 继承
+				virtual IGADevice* queryInterface_IGADevice() const override;
+				virtual IGAShaderParameter* createShaderParameter() override;
+				virtual IGAComputeShaderParameter* createComputeShaderParameter() override;
+				virtual Void destroyShaderParameter(IGAShaderParameter* parameter) override;
+				virtual IGAShaderReflection* createReflection(IGAShader* shader) override;
+				virtual Void destroyReflection(IGAShaderReflection* reflection) override;
+
+				// 通过 IGADeviceContext 继承
+				virtual IGADeviceContext1* queryInterface_IGADeviceContext1() const override;
+
+				// 通过 IGADeviceContext1 继承
+				virtual IGADeviceContext* queryInterface_IGADeviceContext() const override;
+
+				// 通过 IGADeviceContext1 继承
+				virtual Void setVertexShader(IGAVertexShader* shader,IGAShaderParameter* parameter) override;
+				virtual Void setPixelShader(IGAPixelShader* shader,IGAShaderParameter* parameter) override;
+				virtual Void setGeometryShader(IGAGeometryShader* shader,IGAShaderParameter* parameter) override;
+				virtual Void setHullShader(IGAHullShader* shader,IGAShaderParameter* parameter) override;
+				virtual Void setDomainShader(IGADomainShader* shader,IGAShaderParameter* parameter) override;
+				virtual Void dispatch(IGAComputeShader* shader,IGAShaderParameter* parameter,UInt32 threadGroupCountX,UInt32 threadGroupCountY,UInt32 threadGroupCountZ) override;
+};
 		}
 	}
 }

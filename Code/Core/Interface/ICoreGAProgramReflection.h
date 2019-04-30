@@ -3,10 +3,20 @@ namespace NSDevilX
 {
 	namespace NSCore
 	{
+		class IGAShaderReflection
+		{
+		protected:
+			virtual ~IGAShaderReflection()
+			{
+			}
+		public:
+		};
 		class IGAProgramReflection
 		{
 		protected:
-			virtual ~IGAProgramReflection(){}
+			virtual ~IGAProgramReflection()
+			{
+			}
 		public:
 		};
 	}

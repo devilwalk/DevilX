@@ -5,6 +5,15 @@ namespace NSDevilX
 	{
 		namespace NSOpenGL
 		{
+			class IGAShaderReflectionImp
+				:public IGAShaderReflection
+				,public CGAObject
+				,public TBaseObject<IGAShaderReflectionImp>
+			{
+			public:
+				IGAShaderReflectionImp(GLuint program);
+				~IGAShaderReflectionImp();
+			};
 			class IGAProgramReflectionImp
 				:public IGAProgramReflection
 				,public TBaseObject<IGAProgramReflectionImp>

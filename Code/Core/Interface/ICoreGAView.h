@@ -39,15 +39,5 @@ namespace NSDevilX
 		public:
 			virtual IGAView * queryInterface_IGAView()=0;
 		};
-		class IGATextureBufferView
-		{
-		protected:
-		protected:
-			virtual ~IGATextureBufferView()
-			{
-			}
-		public:
-			virtual IGAView* queryInterface_IGAView()=0;
-		};
 	}
 }

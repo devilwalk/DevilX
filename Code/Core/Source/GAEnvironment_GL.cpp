@@ -31,8 +31,51 @@ NSDevilX::NSCore::NSOpenGL::CGAEnvironment::CGAEnvironment(EGLNativeWindowType w
 	mSurface=eglCreateWindowSurface(mDisplay,config,window,nullptr);
 	CUtility::checkEGLError();
 	TMap(EGLint,EGLint) config_attr_map;
-	config_attr_map[EGL_CONTEXT_MAJOR_VERSION]=4;
-	config_attr_map[EGL_CONTEXT_MINOR_VERSION]=5;
+	if(GLEW_VERSION_4_0)
+	{
+		config_attr_map[EGL_CONTEXT_MAJOR_VERSION]=4;
+	}
+	else if(GLEW_VERSION_3_0)
+	{
+		config_attr_map[EGL_CONTEXT_MAJOR_VERSION]=3;
+	}
+	else if(GLEW_VERSION_2_0)
+	{
+		config_attr_map[EGL_CONTEXT_MAJOR_VERSION]=2;
+	}
+	else
+	{
+		config_attr_map[EGL_CONTEXT_MAJOR_VERSION]=1;
+	}
+	if(GLEW_VERSION_4_6)
+	{
+		config_attr_map[EGL_CONTEXT_MINOR_VERSION]=6;
+	}
+	else if(GLEW_VERSION_1_5||GLEW_VERSION_4_5)
+	{
+		config_attr_map[EGL_CONTEXT_MINOR_VERSION]=5;
+	}
+	else if(GLEW_VERSION_1_4||GLEW_VERSION_4_4)
+	{
+		config_attr_map[EGL_CONTEXT_MINOR_VERSION]=4;
+	}
+	else if(GLEW_VERSION_1_3||GLEW_VERSION_3_3||GLEW_VERSION_4_3)
+	{
+		config_attr_map[EGL_CONTEXT_MINOR_VERSION]=3;
+	}
+	else if(GLEW_VERSION_1_2||GLEW_VERSION_3_2||GLEW_VERSION_4_2)
+	{
+		config_attr_map[EGL_CONTEXT_MINOR_VERSION]=2;
+	}
+	else if(GLEW_VERSION_1_1||GLEW_VERSION_2_1||GLEW_VERSION_3_1||GLEW_VERSION_4_1)
+	{
+		config_attr_map[EGL_CONTEXT_MINOR_VERSION]=1;
+	}
+	else if(GLEW_VERSION_2_0||GLEW_VERSION_3_0||GLEW_VERSION_4_0)
+	{
+		config_attr_map[EGL_CONTEXT_MINOR_VERSION]=0;
+	}
+
 	config_attr_map[EGL_CONTEXT_OPENGL_PROFILE_MASK]=EGL_CONTEXT_OPENGL_CORE_PROFILE_BIT;
 #if DEVILX_DEBUG
 	config_attr_map[EGL_CONTEXT_OPENGL_DEBUG]=EGL_TRUE;
@@ -49,7 +92,6 @@ NSDevilX::NSCore::NSOpenGL::CGAEnvironment::CGAEnvironment(EGLNativeWindowType w
 	CUtility::checkEGLError();
 	eglMakeCurrent(mDisplay,mSurface,mSurface,mContext);
 	CUtility::checkEGLError();
-	glewInit();
 #if DEVILX_DEBUG
 	if(glDebugMessageCallback)
 	{
@@ -65,9 +107,13 @@ NSDevilX::NSCore::NSOpenGL::CGAEnvironment::CGAEnvironment(EGLNativeWindowType w
 		CUtility::checkGLError();
 	}
 #endif
-	if(glCreateFramebuffers)
+	if(GLEW_VERSION_4_5)
 	{
-		mMultiImp.reset(DEVILX_NEW CGAEnvironmentDSA);
+		mMultiImp.reset(DEVILX_NEW CGAEnvironmentGL45);
+	}
+	else if(GLEW_VERSION_4_1)
+	{
+		mMultiImp.reset(DEVILX_NEW CGAEnvironmentGL41);
 	}
 	else
 	{
@@ -118,6 +164,16 @@ Void NSDevilX::NSCore::NSOpenGL::CGAEnvironment::setInputLayout(IGAInputLayoutIm
 {
 	glBindVertexArray(layout->getInternal());
 	CUtility::checkGLError();
+}
+
+Void NSDevilX::NSCore::NSOpenGL::CGAEnvironment::setShader(IGAShaderImp* shader,IGAProgramParameterImp* parameter)
+{
+	mMultiImp->setShader(shader,parameter);
+}
+
+Void NSDevilX::NSCore::NSOpenGL::CGAEnvironment::setProgram(CGAProgramImp* program,IGAProgramParameterImp* parameter)
+{
+	mMultiImp->setProgram(program,parameter);
 }
 
 NSDevilX::NSCore::NSOpenGL::CGAEnvironmentMultiImp::CGAEnvironmentMultiImp()
@@ -186,15 +242,36 @@ Void NSDevilX::NSCore::NSOpenGL::CGAEnvironmentMultiImp::setDepthStencil(IGADept
 	CUtility::checkGLError();
 }
 
-NSDevilX::NSCore::NSOpenGL::CGAEnvironmentDSA::CGAEnvironmentDSA()
+Void NSDevilX::NSCore::NSOpenGL::CGAEnvironmentMultiImp::setShader(IGAShaderImp* shader,IGAProgramParameterImp* parameter)
+{
+	assert(0);
+}
+
+Void NSDevilX::NSCore::NSOpenGL::CGAEnvironmentMultiImp::setProgram(CGAProgramImp* program,IGAProgramParameterImp* parameter)
+{
+	glUseProgram(program->getInternal());
+	CUtility::checkGLError();
+	glBindBuffersBase(GL_UNIFORM_BUFFER,0,parameter->getConstantBuffers().size(),&parameter->getConstantBuffers()[0]);
+	CUtility::checkGLError();
+	glBindSamplers(0,parameter->getSamplers().size(),&parameter->getSamplers()[0]);
+	CUtility::checkGLError();
+	glBindTextures(0,parameter->getTextures().size(),&parameter->getTextures()[0]);
+	CUtility::checkGLError();
+}
+
+NSDevilX::NSCore::NSOpenGL::CGAEnvironmentGL45Base::CGAEnvironmentGL45Base()
+{
+	glDeleteProgramPipelines(1,&mPipeline);
+	CUtility::checkGLError();
+	glCreateProgramPipelines(1,&mPipeline);
+	CUtility::checkGLError();
+}
+
+NSDevilX::NSCore::NSOpenGL::CGAEnvironmentGL45Base::~CGAEnvironmentGL45Base()
 {
 }
 
-NSDevilX::NSCore::NSOpenGL::CGAEnvironmentDSA::~CGAEnvironmentDSA()
-{
-}
-
-Void NSDevilX::NSCore::NSOpenGL::CGAEnvironmentDSA::clear(IGADepthStencilViewImp* view,Float depth)
+Void NSDevilX::NSCore::NSOpenGL::CGAEnvironmentGL45Base::clear(IGADepthStencilViewImp* view,Float depth)
 {
 	if(view)
 	{
@@ -205,7 +282,7 @@ Void NSDevilX::NSCore::NSOpenGL::CGAEnvironmentDSA::clear(IGADepthStencilViewImp
 	CUtility::checkGLError();
 }
 
-Void NSDevilX::NSCore::NSOpenGL::CGAEnvironmentDSA::clear(IGADepthStencilViewImp* view,UInt8 stencil)
+Void NSDevilX::NSCore::NSOpenGL::CGAEnvironmentGL45Base::clear(IGADepthStencilViewImp* view,UInt8 stencil)
 {
 	if(view)
 	{
@@ -217,7 +294,7 @@ Void NSDevilX::NSCore::NSOpenGL::CGAEnvironmentDSA::clear(IGADepthStencilViewImp
 	CUtility::checkGLError();
 }
 
-Void NSDevilX::NSCore::NSOpenGL::CGAEnvironmentDSA::clear(IGADepthStencilViewImp* view,Float depth,UInt8 stencil)
+Void NSDevilX::NSCore::NSOpenGL::CGAEnvironmentGL45Base::clear(IGADepthStencilViewImp* view,Float depth,UInt8 stencil)
 {
 	if(view)
 	{
@@ -228,7 +305,7 @@ Void NSDevilX::NSCore::NSOpenGL::CGAEnvironmentDSA::clear(IGADepthStencilViewImp
 	CUtility::checkGLError();
 }
 
-Void NSDevilX::NSCore::NSOpenGL::CGAEnvironmentDSA::clear(IGARenderTargetViewImp* view,const Float colourRGBA[4])
+Void NSDevilX::NSCore::NSOpenGL::CGAEnvironmentGL45Base::clear(IGARenderTargetViewImp* view,const Float colourRGBA[4])
 {
 	Float gl_clear_colour[4]={colourRGBA[0],colourRGBA[1],colourRGBA[2],colourRGBA[3]};
 	if(view)
@@ -240,22 +317,37 @@ Void NSDevilX::NSCore::NSOpenGL::CGAEnvironmentDSA::clear(IGARenderTargetViewImp
 	CUtility::checkGLError();
 }
 
-Void NSDevilX::NSCore::NSOpenGL::CGAEnvironmentDSA::setRenderTarget(UInt32 index,IGARenderTargetViewImp* view)
+Void NSDevilX::NSCore::NSOpenGL::CGAEnvironmentGL45Base::setRenderTarget(UInt32 index,IGARenderTargetViewImp* view)
 {
 	glNamedFramebufferTextureLayer(0,GL_COLOR_ATTACHMENT0+index,view->getTexture(),view->getMipLevel(),view->getArrayIndex());
 	CUtility::checkGLError();
 }
 
-Void NSDevilX::NSCore::NSOpenGL::CGAEnvironmentDSA::setDepthStencil(IGADepthStencilViewImp* view)
+Void NSDevilX::NSCore::NSOpenGL::CGAEnvironmentGL45Base::setDepthStencil(IGADepthStencilViewImp* view)
 {
 	glNamedFramebufferTextureLayer(0,GL_DEPTH_STENCIL_ATTACHMENT,view->getTexture(),view->getMipLevel(),view->getArrayIndex());
 	CUtility::checkGLError();
 }
 
-NSDevilX::NSCore::NSOpenGL::CGAEnvironmentCommon::CGAEnvironmentCommon()
+Void NSDevilX::NSCore::NSOpenGL::CGAEnvironmentGL45Base::setShader(IGAShaderImp* shader,IGAProgramParameterImp* parameter)
 {
+	return Void();
 }
 
-NSDevilX::NSCore::NSOpenGL::CGAEnvironmentCommon::~CGAEnvironmentCommon()
+NSDevilX::NSCore::NSOpenGL::CGAEnvironmentGL41Base::CGAEnvironmentGL41Base()
+	:mPipeline(0)
 {
+	glGenProgramPipelines(1,&mPipeline);
+	CUtility::checkGLError();
+}
+
+NSDevilX::NSCore::NSOpenGL::CGAEnvironmentGL41Base::~CGAEnvironmentGL41Base()
+{
+	glDeleteProgramPipelines(1,&mPipeline);
+	CUtility::checkGLError();
+}
+
+Void NSDevilX::NSCore::NSOpenGL::CGAEnvironmentGL41Base::setShader(IGAShaderImp* shader,IGAProgramParameterImp* parameter)
+{
+	return Void();
 }

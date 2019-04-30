@@ -119,17 +119,17 @@ IGADepthStencilView* NSDevilX::NSCore::NSOpenGL::IGADeviceImp::createDepthStenci
 	return _createDepthStencilView(static_cast<IGATextureImp*>(resource),mipSlice,firstArraySlice);
 }
 
-IGAShaderResourceView* NSDevilX::NSCore::NSOpenGL::IGADeviceImp::createShaderResourceView(IGATexture1D* resource,UInt32 mostDetailedMip,UInt32 numMipLevels,UInt32 firstArraySlice,UInt32 arrayCount)
+IGATextureView* NSDevilX::NSCore::NSOpenGL::IGADeviceImp::createShaderResourceView(IGATexture1D* resource,UInt32 mostDetailedMip,UInt32 numMipLevels,UInt32 firstArraySlice,UInt32 arrayCount)
 {
 	return nullptr;
 }
 
-IGAShaderResourceView* NSDevilX::NSCore::NSOpenGL::IGADeviceImp::createShaderResourceView(IGATexture2D* resource,UInt32 mostDetailedMip,UInt32 numMipLevels,UInt32 firstArraySlice,UInt32 arrayCount)
+IGATextureView* NSDevilX::NSCore::NSOpenGL::IGADeviceImp::createShaderResourceView(IGATexture2D* resource,UInt32 mostDetailedMip,UInt32 numMipLevels,UInt32 firstArraySlice,UInt32 arrayCount)
 {
 	return nullptr;
 }
 
-IGAShaderResourceView* NSDevilX::NSCore::NSOpenGL::IGADeviceImp::createShaderResourceView(IGATexture3D* resource,UInt32 mostDetailedMip,UInt32 numMipLevels)
+IGATextureView* NSDevilX::NSCore::NSOpenGL::IGADeviceImp::createShaderResourceView(IGATexture3D* resource,UInt32 mostDetailedMip,UInt32 numMipLevels)
 {
 	return nullptr;
 }
@@ -310,11 +310,6 @@ IGAProgram* NSDevilX::NSCore::NSOpenGL::IGADeviceImp::createProgram(IGAVertexSha
 	return nullptr;
 }
 
-IGAProgram* NSDevilX::NSCore::NSOpenGL::IGADeviceImp::createProgram(IGAComputeShader* computeShader)
-{
-	return nullptr;
-}
-
 IGAProgramReflection* NSDevilX::NSCore::NSOpenGL::IGADeviceImp::createReflection(IGAProgram* program)
 {
 	return nullptr;
@@ -366,7 +361,7 @@ Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::clear(IGAUnorderedAccessView* vie
 	return Void();
 }
 
-Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::setRenderTargets(UInt32 numRenderTarget,IGARenderTargetView* const* renderTargetViews,IGADepthStencilView* depthStencilView,UInt32 uavStartSlot,UInt32 numUAV,IGAUnorderedAccessView* const* unorderedAccessViews,const UInt32* uavInitialCounts)
+Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::setRenderTargets(UInt32 numRenderTarget,IGARenderTargetView* const* renderTargetViews,IGADepthStencilView* depthStencilView)
 {
 	for(UInt32 i=0;i<numRenderTarget;++i)
 	{
@@ -471,4 +466,85 @@ IGADepthStencilViewImp* NSDevilX::NSCore::NSOpenGL::IGADeviceImp::_createDepthSt
 		ret=*iter;
 	}
 	return ret;
+}
+
+IGADevice1* NSDevilX::NSCore::NSOpenGL::IGADeviceImp::queryInterface_IGADevice1() const
+{
+	if(GLEW_VERSION_4_5)
+		return const_cast<IGADeviceImp*>(this);
+	else
+		return nullptr;
+}
+
+IGADevice* NSDevilX::NSCore::NSOpenGL::IGADeviceImp::queryInterface_IGADevice() const
+{
+	return const_cast<IGADeviceImp*>(this);
+}
+
+IGAShaderParameter* NSDevilX::NSCore::NSOpenGL::IGADeviceImp::createShaderParameter()
+{
+	return nullptr;
+}
+
+IGAComputeShaderParameter* NSDevilX::NSCore::NSOpenGL::IGADeviceImp::createComputeShaderParameter()
+{
+	return nullptr;
+}
+
+Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::destroyShaderParameter(IGAShaderParameter* parameter)
+{
+	return Void();
+}
+
+IGAShaderReflection* NSDevilX::NSCore::NSOpenGL::IGADeviceImp::createReflection(IGAShader* shader)
+{
+	return nullptr;
+}
+
+Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::destroyReflection(IGAShaderReflection* reflection)
+{
+	return Void();
+}
+
+IGADeviceContext1* NSDevilX::NSCore::NSOpenGL::IGADeviceImp::queryInterface_IGADeviceContext1() const
+{
+	if(GLEW_VERSION_4_5)
+		return const_cast<IGADeviceImp*>(this);
+	else
+		return nullptr;
+}
+
+IGADeviceContext* NSDevilX::NSCore::NSOpenGL::IGADeviceImp::queryInterface_IGADeviceContext() const
+{
+	return const_cast<IGADeviceImp*>(this);
+}
+
+Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::setVertexShader(IGAVertexShader* shader,IGAShaderParameter* parameter)
+{
+	return Void();
+}
+
+Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::setPixelShader(IGAPixelShader* shader,IGAShaderParameter* parameter)
+{
+	return Void();
+}
+
+Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::setGeometryShader(IGAGeometryShader* shader,IGAShaderParameter* parameter)
+{
+	return Void();
+}
+
+Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::setHullShader(IGAHullShader* shader,IGAShaderParameter* parameter)
+{
+	return Void();
+}
+
+Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::setDomainShader(IGADomainShader* shader,IGAShaderParameter* parameter)
+{
+	return Void();
+}
+
+Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::dispatch(IGAComputeShader* shader,IGAShaderParameter* parameter,UInt32 threadGroupCountX,UInt32 threadGroupCountY,UInt32 threadGroupCountZ)
+{
+	return Void();
 }

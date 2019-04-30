@@ -38,17 +38,13 @@ Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::clear(IGAUno
 {
 }
 
-Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::setRenderTargets(UInt32 numRenderTarget,IGARenderTargetView * const * renderTargetViews,IGADepthStencilView * depthStencilView,UInt32 uavStartSlot,UInt32 numUAV,IGAUnorderedAccessView * const * unorderedAccessViews,const UInt32 * uavInitialCounts)
+Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::setRenderTargets(UInt32 numRenderTarget,IGARenderTargetView * const * renderTargetViews,IGADepthStencilView * depthStencilView)
 {
 	for(UInt32 i=0;i<numRenderTarget;++i)
 	{
 		mPointerCache[i]=static_cast<IGARenderTargetViewImp*>(renderTargetViews[i])->getInternal();
 	}
-	for(UInt32 i=0;i<numUAV;++i)
-	{
-		mPointerCache[i+numRenderTarget]=nullptr;
-	}
-	mInternal->OMSetRenderTargetsAndUnorderedAccessViews(numRenderTarget,reinterpret_cast<ID3D11RenderTargetView**>(&mPointerCache[0]),static_cast<IGADepthStencilViewImp*>(depthStencilView)->getInternal(),uavStartSlot,numUAV,reinterpret_cast<ID3D11UnorderedAccessView**>(&mPointerCache[numRenderTarget]),uavInitialCounts);
+	mInternal->OMSetRenderTargets(numRenderTarget,reinterpret_cast<ID3D11RenderTargetView**>(&mPointerCache[0]),static_cast<IGADepthStencilViewImp*>(depthStencilView)->getInternal());
 }
 
 Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::setInputLayout(IGAInputLayout * layout)
@@ -70,7 +66,92 @@ Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::setIndexBuff
 
 Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::setProgram(IGAProgram * program,IGAProgramParameter * parameter)
 {
-	static_cast<IGAProgramImp*>(program)->apply(mInternal,static_cast<IGAProgramParameterImp*>(parameter));
+	auto shaders=static_cast<IGAProgramImp*>(program)->getShaders();
+	auto vertex_shader=static_cast<IGAVertexShaderImp*>(shaders[IGAEnum::EShaderType_Vertex]);
+	if(vertex_shader)
+	{
+		mInternal->VSSetShader(vertex_shader->getInternal(),nullptr,0);
+		auto & constant_buffers=static_cast<IGAProgramParameterImp*>(parameter)->getShaderParameters()[IGAEnum::EShaderType_Vertex]->getConstantBuffers();
+		if(!constant_buffers.empty())
+			CopyMemory(&mPointerCache[0],&constant_buffers[0],constant_buffers.size());
+		mInternal->VSSetConstantBuffers(0,static_cast<UInt32>(constant_buffers.size()),reinterpret_cast<ID3D11Buffer*const*>(&mPointerCache[0]));
+		auto& samplers=static_cast<IGAProgramParameterImp*>(parameter)->getShaderParameters()[IGAEnum::EShaderType_Vertex]->getSamplers();
+		if(!samplers.empty())
+			CopyMemory(&mPointerCache[0],&samplers[0],samplers.size());
+		mInternal->VSSetSamplers(0,static_cast<UInt32>(samplers.size()),reinterpret_cast<ID3D11SamplerState*const*>(&mPointerCache[0]));
+		auto& shader_resource=static_cast<IGAProgramParameterImp*>(parameter)->getShaderParameters()[IGAEnum::EShaderType_Vertex]->getShaderResourceViews();
+		if(!shader_resource.empty())
+			CopyMemory(&mPointerCache[0],&shader_resource[0],shader_resource.size());
+		mInternal->VSSetShaderResources(0,static_cast<UInt32>(shader_resource.size()),reinterpret_cast<ID3D11ShaderResourceView*const*>(&mPointerCache[0]));
+	}
+	auto pixel_shader=static_cast<IGAPixelShaderImp*>(shaders[IGAEnum::EShaderType_Pixel]);
+	if(pixel_shader)
+	{
+		mInternal->PSSetShader(pixel_shader->getInternal(),nullptr,0);
+		auto& constant_buffers=static_cast<IGAProgramParameterImp*>(parameter)->getShaderParameters()[IGAEnum::EShaderType_Pixel]->getConstantBuffers();
+		if(!constant_buffers.empty())
+			CopyMemory(&mPointerCache[0],&constant_buffers[0],constant_buffers.size());
+		mInternal->PSSetConstantBuffers(0,static_cast<UInt32>(constant_buffers.size()),reinterpret_cast<ID3D11Buffer*const*>(&mPointerCache[0]));
+		auto& samplers=static_cast<IGAProgramParameterImp*>(parameter)->getShaderParameters()[IGAEnum::EShaderType_Pixel]->getSamplers();
+		if(!samplers.empty())
+			CopyMemory(&mPointerCache[0],&samplers[0],samplers.size());
+		mInternal->PSSetSamplers(0,static_cast<UInt32>(samplers.size()),reinterpret_cast<ID3D11SamplerState*const*>(&mPointerCache[0]));
+		auto& shader_resource=static_cast<IGAProgramParameterImp*>(parameter)->getShaderParameters()[IGAEnum::EShaderType_Pixel]->getShaderResourceViews();
+		if(!shader_resource.empty())
+			CopyMemory(&mPointerCache[0],&shader_resource[0],shader_resource.size());
+		mInternal->PSSetShaderResources(0,static_cast<UInt32>(shader_resource.size()),reinterpret_cast<ID3D11ShaderResourceView*const*>(&mPointerCache[0]));
+	}
+	auto geometry_shader=static_cast<IGAGeometryShaderImp*>(shaders[IGAEnum::EShaderType_Geometry]);
+	if(geometry_shader)
+	{
+		mInternal->GSSetShader(geometry_shader->getInternal(),nullptr,0);
+		auto& constant_buffers=static_cast<IGAProgramParameterImp*>(parameter)->getShaderParameters()[IGAEnum::EShaderType_Geometry]->getConstantBuffers();
+		if(!constant_buffers.empty())
+			CopyMemory(&mPointerCache[0],&constant_buffers[0],constant_buffers.size());
+		mInternal->GSSetConstantBuffers(0,static_cast<UInt32>(constant_buffers.size()),reinterpret_cast<ID3D11Buffer*const*>(&mPointerCache[0]));
+		auto& samplers=static_cast<IGAProgramParameterImp*>(parameter)->getShaderParameters()[IGAEnum::EShaderType_Geometry]->getSamplers();
+		if(!samplers.empty())
+			CopyMemory(&mPointerCache[0],&samplers[0],samplers.size());
+		mInternal->GSSetSamplers(0,static_cast<UInt32>(samplers.size()),reinterpret_cast<ID3D11SamplerState*const*>(&mPointerCache[0]));
+		auto& shader_resource=static_cast<IGAProgramParameterImp*>(parameter)->getShaderParameters()[IGAEnum::EShaderType_Geometry]->getShaderResourceViews();
+		if(!shader_resource.empty())
+			CopyMemory(&mPointerCache[0],&shader_resource[0],shader_resource.size());
+		mInternal->GSSetShaderResources(0,static_cast<UInt32>(shader_resource.size()),reinterpret_cast<ID3D11ShaderResourceView*const*>(&mPointerCache[0]));
+	}
+	auto hull_shader=static_cast<IGAHullShaderImp*>(shaders[IGAEnum::EShaderType_Hull]);
+	if(hull_shader)
+	{
+		mInternal->HSSetShader(hull_shader->getInternal(),nullptr,0);
+		auto& constant_buffers=static_cast<IGAProgramParameterImp*>(parameter)->getShaderParameters()[IGAEnum::EShaderType_Hull]->getConstantBuffers();
+		if(!constant_buffers.empty())
+			CopyMemory(&mPointerCache[0],&constant_buffers[0],constant_buffers.size());
+		mInternal->HSSetConstantBuffers(0,static_cast<UInt32>(constant_buffers.size()),reinterpret_cast<ID3D11Buffer*const*>(&mPointerCache[0]));
+		auto& samplers=static_cast<IGAProgramParameterImp*>(parameter)->getShaderParameters()[IGAEnum::EShaderType_Hull]->getSamplers();
+		if(!samplers.empty())
+			CopyMemory(&mPointerCache[0],&samplers[0],samplers.size());
+		mInternal->HSSetSamplers(0,static_cast<UInt32>(samplers.size()),reinterpret_cast<ID3D11SamplerState*const*>(&mPointerCache[0]));
+		auto& shader_resource=static_cast<IGAProgramParameterImp*>(parameter)->getShaderParameters()[IGAEnum::EShaderType_Hull]->getShaderResourceViews();
+		if(!shader_resource.empty())
+			CopyMemory(&mPointerCache[0],&shader_resource[0],shader_resource.size());
+		mInternal->HSSetShaderResources(0,static_cast<UInt32>(shader_resource.size()),reinterpret_cast<ID3D11ShaderResourceView*const*>(&mPointerCache[0]));
+	}
+	auto domain_shader=static_cast<IGADomainShaderImp*>(shaders[IGAEnum::EShaderType_Domain]);
+	if(domain_shader)
+	{
+		mInternal->DSSetShader(domain_shader->getInternal(),nullptr,0);
+		auto& constant_buffers=static_cast<IGAProgramParameterImp*>(parameter)->getShaderParameters()[IGAEnum::EShaderType_Domain]->getConstantBuffers();
+		if(!constant_buffers.empty())
+			CopyMemory(&mPointerCache[0],&constant_buffers[0],constant_buffers.size());
+		mInternal->DSSetConstantBuffers(0,static_cast<UInt32>(constant_buffers.size()),reinterpret_cast<ID3D11Buffer*const*>(&mPointerCache[0]));
+		auto& samplers=static_cast<IGAProgramParameterImp*>(parameter)->getShaderParameters()[IGAEnum::EShaderType_Domain]->getSamplers();
+		if(!samplers.empty())
+			CopyMemory(&mPointerCache[0],&samplers[0],samplers.size());
+		mInternal->DSSetSamplers(0,static_cast<UInt32>(samplers.size()),reinterpret_cast<ID3D11SamplerState*const*>(&mPointerCache[0]));
+		auto& shader_resource=static_cast<IGAProgramParameterImp*>(parameter)->getShaderParameters()[IGAEnum::EShaderType_Domain]->getShaderResourceViews();
+		if(!shader_resource.empty())
+			CopyMemory(&mPointerCache[0],&shader_resource[0],shader_resource.size());
+		mInternal->DSSetShaderResources(0,static_cast<UInt32>(shader_resource.size()),reinterpret_cast<ID3D11ShaderResourceView*const*>(&mPointerCache[0]));
+	}
 }
 
 Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::setPrimitiveTopology(IGAEnum::EPrimitiveTopology primitiveTopology)
@@ -129,4 +210,82 @@ Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::draw(UInt32 
 Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::draw(UInt32 indexCountPerInstance,UInt32 startIndexLocation,Int32 baseVertexLocation,UInt32 instanceCount,UInt32 startInstanceLocation)
 {
 	mInternal->DrawIndexedInstanced(indexCountPerInstance,instanceCount,startIndexLocation,baseVertexLocation,startInstanceLocation);
+}
+
+IGADeviceContext1* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::queryInterface_IGADeviceContext1() const
+{
+	return const_cast<IGADeviceContextImp*>(this);
+}
+
+IGADeviceContext* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::queryInterface_IGADeviceContext() const
+{
+	return const_cast<IGADeviceContextImp*>(this);
+}
+
+Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::setVertexShader(IGAVertexShader* shader,IGAShaderParameter* parameter)
+{
+	mInternal->VSSetShader(static_cast<IGAVertexShaderImp*>(shader)->getInternal(),nullptr,0);
+	if(!static_cast<IGAShaderParameterImp*>(parameter)->getConstantBuffers().empty())
+		mInternal->VSSetConstantBuffers(0,static_cast<IGAShaderParameterImp*>(parameter)->getConstantBuffers().size(),&static_cast<IGAShaderParameterImp*>(parameter)->getConstantBuffers()[0]);
+	if(!static_cast<IGAShaderParameterImp*>(parameter)->getSamplers().empty())
+		mInternal->VSSetSamplers(0,static_cast<IGAShaderParameterImp*>(parameter)->getSamplers().size(),&static_cast<IGAShaderParameterImp*>(parameter)->getSamplers()[0]);
+	if(!static_cast<IGAShaderParameterImp*>(parameter)->getShaderResourceViews().empty())
+		mInternal->VSSetShaderResources(0,static_cast<IGAShaderParameterImp*>(parameter)->getShaderResourceViews().size(),&static_cast<IGAShaderParameterImp*>(parameter)->getShaderResourceViews()[0]);
+}
+
+Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::setPixelShader(IGAPixelShader* shader,IGAShaderParameter* parameter)
+{
+	mInternal->PSSetShader(static_cast<IGAPixelShaderImp*>(shader)->getInternal(),nullptr,0);
+	if(!static_cast<IGAShaderParameterImp*>(parameter)->getConstantBuffers().empty())
+		mInternal->PSSetConstantBuffers(0,static_cast<IGAShaderParameterImp*>(parameter)->getConstantBuffers().size(),&static_cast<IGAShaderParameterImp*>(parameter)->getConstantBuffers()[0]);
+	if(!static_cast<IGAShaderParameterImp*>(parameter)->getSamplers().empty())
+		mInternal->PSSetSamplers(0,static_cast<IGAShaderParameterImp*>(parameter)->getSamplers().size(),&static_cast<IGAShaderParameterImp*>(parameter)->getSamplers()[0]);
+	if(!static_cast<IGAShaderParameterImp*>(parameter)->getShaderResourceViews().empty())
+		mInternal->PSSetShaderResources(0,static_cast<IGAShaderParameterImp*>(parameter)->getShaderResourceViews().size(),&static_cast<IGAShaderParameterImp*>(parameter)->getShaderResourceViews()[0]);
+}
+
+Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::setGeometryShader(IGAGeometryShader* shader,IGAShaderParameter* parameter)
+{
+	mInternal->GSSetShader(static_cast<IGAGeometryShaderImp*>(shader)->getInternal(),nullptr,0);
+	if(!static_cast<IGAShaderParameterImp*>(parameter)->getConstantBuffers().empty())
+		mInternal->GSSetConstantBuffers(0,static_cast<IGAShaderParameterImp*>(parameter)->getConstantBuffers().size(),&static_cast<IGAShaderParameterImp*>(parameter)->getConstantBuffers()[0]);
+	if(!static_cast<IGAShaderParameterImp*>(parameter)->getSamplers().empty())
+		mInternal->GSSetSamplers(0,static_cast<IGAShaderParameterImp*>(parameter)->getSamplers().size(),&static_cast<IGAShaderParameterImp*>(parameter)->getSamplers()[0]);
+	if(!static_cast<IGAShaderParameterImp*>(parameter)->getShaderResourceViews().empty())
+		mInternal->GSSetShaderResources(0,static_cast<IGAShaderParameterImp*>(parameter)->getShaderResourceViews().size(),&static_cast<IGAShaderParameterImp*>(parameter)->getShaderResourceViews()[0]);
+}
+
+Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::setHullShader(IGAHullShader* shader,IGAShaderParameter* parameter)
+{
+	mInternal->HSSetShader(static_cast<IGAHullShaderImp*>(shader)->getInternal(),nullptr,0);
+	if(!static_cast<IGAShaderParameterImp*>(parameter)->getConstantBuffers().empty())
+		mInternal->HSSetConstantBuffers(0,static_cast<IGAShaderParameterImp*>(parameter)->getConstantBuffers().size(),&static_cast<IGAShaderParameterImp*>(parameter)->getConstantBuffers()[0]);
+	if(!static_cast<IGAShaderParameterImp*>(parameter)->getSamplers().empty())
+		mInternal->HSSetSamplers(0,static_cast<IGAShaderParameterImp*>(parameter)->getSamplers().size(),&static_cast<IGAShaderParameterImp*>(parameter)->getSamplers()[0]);
+	if(!static_cast<IGAShaderParameterImp*>(parameter)->getShaderResourceViews().empty())
+		mInternal->HSSetShaderResources(0,static_cast<IGAShaderParameterImp*>(parameter)->getShaderResourceViews().size(),&static_cast<IGAShaderParameterImp*>(parameter)->getShaderResourceViews()[0]);
+}
+
+Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::setDomainShader(IGADomainShader* shader,IGAShaderParameter* parameter)
+{
+	mInternal->DSSetShader(static_cast<IGADomainShaderImp*>(shader)->getInternal(),nullptr,0);
+	if(!static_cast<IGAShaderParameterImp*>(parameter)->getConstantBuffers().empty())
+		mInternal->DSSetConstantBuffers(0,static_cast<IGAShaderParameterImp*>(parameter)->getConstantBuffers().size(),&static_cast<IGAShaderParameterImp*>(parameter)->getConstantBuffers()[0]);
+	if(!static_cast<IGAShaderParameterImp*>(parameter)->getSamplers().empty())
+		mInternal->DSSetSamplers(0,static_cast<IGAShaderParameterImp*>(parameter)->getSamplers().size(),&static_cast<IGAShaderParameterImp*>(parameter)->getSamplers()[0]);
+	if(!static_cast<IGAShaderParameterImp*>(parameter)->getShaderResourceViews().empty())
+		mInternal->DSSetShaderResources(0,static_cast<IGAShaderParameterImp*>(parameter)->getShaderResourceViews().size(),&static_cast<IGAShaderParameterImp*>(parameter)->getShaderResourceViews()[0]);
+}
+
+Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::dispatch(IGAComputeShader* shader,IGAShaderParameter* parameter,UInt32 threadGroupCountX,UInt32 threadGroupCountY,UInt32 threadGroupCountZ)
+{
+	mInternal->CSSetShader(static_cast<IGAComputeShaderImp*>(shader)->getInternal(),nullptr,0);
+	if(!static_cast<IGAShaderParameterImp*>(parameter)->getConstantBuffers().empty())
+		mInternal->CSSetConstantBuffers(0,static_cast<IGAShaderParameterImp*>(parameter)->getConstantBuffers().size(),&static_cast<IGAShaderParameterImp*>(parameter)->getConstantBuffers()[0]);
+	if(!static_cast<IGAShaderParameterImp*>(parameter)->getSamplers().empty())
+		mInternal->CSSetSamplers(0,static_cast<IGAShaderParameterImp*>(parameter)->getSamplers().size(),&static_cast<IGAShaderParameterImp*>(parameter)->getSamplers()[0]);
+	if(!static_cast<IGAShaderParameterImp*>(parameter)->getShaderResourceViews().empty())
+		mInternal->CSSetShaderResources(0,static_cast<IGAShaderParameterImp*>(parameter)->getShaderResourceViews().size(),&static_cast<IGAShaderParameterImp*>(parameter)->getShaderResourceViews()[0]);
+	if(!static_cast<IGAShaderParameterImp*>(parameter)->getUnorderedAccessViews().empty())
+		mInternal->CSSetUnorderedAccessViews(0,static_cast<IGAShaderParameterImp*>(parameter)->getUnorderedAccessViews().size(),&static_cast<IGAShaderParameterImp*>(parameter)->getUnorderedAccessViews()[0],nullptr);
 }

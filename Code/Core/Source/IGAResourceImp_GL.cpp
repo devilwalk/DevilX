@@ -347,6 +347,11 @@ Void NSDevilX::NSCore::NSOpenGL::IGATextureImp::_initialize3D(GLsizei width,GLsi
 	}
 }
 
+GLuint NSDevilX::NSCore::NSOpenGL::IGATextureImp::getInternal() const
+{
+	return mInternal;
+}
+
 NSDevilX::NSCore::NSOpenGL::IGAInputLayoutImp::IGAInputLayoutImp(const TVector(IGAStruct::SInputElementDesc)& inputElementDescs)
 	:mInputElementDescs(inputElementDescs)
 {
@@ -521,12 +526,6 @@ IGAShader* NSDevilX::NSCore::NSOpenGL::IGAShaderImp::queryInterface_IGAShader()
 	return this;
 }
 
-Void NSDevilX::NSCore::NSOpenGL::IGAShaderImp::apply()
-{
-	assert(glCreateProgramPipelines);
-	glUseProgram(mInternal);
-}
-
 IGAProgramReflectionImp* NSDevilX::NSCore::NSOpenGL::IGAShaderImp::createReflection()
 {
 	return DEVILX_NEW IGAProgramReflectionImp(&mInternal,1);
@@ -618,11 +617,6 @@ NSDevilX::NSCore::NSOpenGL::CGAProgramImp::~CGAProgramImp()
 	glDeleteProgram(mInternal);
 }
 
-Void NSDevilX::NSCore::NSOpenGL::CGAProgramImp::apply()
-{
-	glUseProgram(mInternal);
-}
-
 IGAProgramReflectionImp* NSDevilX::NSCore::NSOpenGL::CGAProgramImp::createReflection()
 {
 	return DEVILX_NEW IGAProgramReflectionImp(&mInternal,1);
@@ -709,93 +703,6 @@ NSDevilX::NSCore::NSOpenGL::IGADepthStencilStateImp::~IGADepthStencilStateImp()
 {
 }
 
-GLuint NSDevilX::NSCore::NSOpenGL::CGAProgramPipelineImp::msProgramPipeline=0;
-UInt32 NSDevilX::NSCore::NSOpenGL::CGAProgramPipelineImp::msRefCount=0;
-
-NSDevilX::NSCore::NSOpenGL::CGAProgramPipelineImp::CGAProgramPipelineImp(GLuint vertexShader,GLuint pixelShader,GLuint geometryShader,GLuint hullShader,GLuint domainShader)
-{
-	mPrograms[IGAEnum::EShaderType_Vertex]=vertexShader;
-	mPrograms[IGAEnum::EShaderType_Pixel]=vertexShader;
-	mPrograms[IGAEnum::EShaderType_Geometry]=vertexShader;
-	mPrograms[IGAEnum::EShaderType_Hull]=vertexShader;
-	mPrograms[IGAEnum::EShaderType_Domain]=vertexShader;
-	_createInternal();
-
-	glUseProgramStages(msProgramPipeline,GL_VERTEX_SHADER_BIT,mPrograms[IGAEnum::EShaderType_Vertex]);
-	CUtility::checkGLError();
-	glUseProgramStages(msProgramPipeline,GL_FRAGMENT_SHADER_BIT,mPrograms[IGAEnum::EShaderType_Pixel]);
-	CUtility::checkGLError();
-	glUseProgramStages(msProgramPipeline,GL_GEOMETRY_SHADER_BIT,mPrograms[IGAEnum::EShaderType_Geometry]);
-	CUtility::checkGLError();
-	glUseProgramStages(msProgramPipeline,GL_TESS_CONTROL_SHADER_BIT,mPrograms[IGAEnum::EShaderType_Hull]);
-	CUtility::checkGLError();
-	glUseProgramStages(msProgramPipeline,GL_TESS_EVALUATION_SHADER_BIT,mPrograms[IGAEnum::EShaderType_Domain]);
-	GLint info_log_len=0;
-	glGetProgramPipelineiv(msProgramPipeline,GL_INFO_LOG_LENGTH,&info_log_len);
-	CUtility::checkGLError();
-	if(info_log_len)
-	{
-		String log;
-		log.resize(info_log_len);
-		glGetProgramPipelineInfoLog(msProgramPipeline,info_log_len,nullptr,&log[0]);
-		CUtility::checkGLError();
-#if DEVILX_DEBUG
-#if DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_WINDOWS
-		OutputDebugStringA(("program pipeline log:"+log).c_str());
-		OutputDebugStringA("\r\n");
-#endif
-#endif
-	}
-}
-
-NSDevilX::NSCore::NSOpenGL::CGAProgramPipelineImp::~CGAProgramPipelineImp()
-{
-	if(!(--msRefCount))
-	{
-		glDeleteProgramPipelines(1,&msProgramPipeline);
-		CUtility::checkGLError();
-		msProgramPipeline=0;
-	}
-}
-
-Void NSDevilX::NSCore::NSOpenGL::CGAProgramPipelineImp::apply()
-{
-	glUseProgramStages(msProgramPipeline,GL_VERTEX_SHADER_BIT,mPrograms[IGAEnum::EShaderType_Vertex]);
-	CUtility::checkGLError();
-	glUseProgramStages(msProgramPipeline,GL_FRAGMENT_SHADER_BIT,mPrograms[IGAEnum::EShaderType_Pixel]);
-	CUtility::checkGLError();
-	glUseProgramStages(msProgramPipeline,GL_GEOMETRY_SHADER_BIT,mPrograms[IGAEnum::EShaderType_Geometry]);
-	CUtility::checkGLError();
-	glUseProgramStages(msProgramPipeline,GL_TESS_CONTROL_SHADER_BIT,mPrograms[IGAEnum::EShaderType_Hull]);
-	CUtility::checkGLError();
-	glUseProgramStages(msProgramPipeline,GL_TESS_EVALUATION_SHADER_BIT,mPrograms[IGAEnum::EShaderType_Domain]);
-	CUtility::checkGLError();
-	glBindProgramPipeline(msProgramPipeline);
-	CUtility::checkGLError();
-}
-
-IGAProgramReflectionImp* NSDevilX::NSCore::NSOpenGL::CGAProgramPipelineImp::createReflection()
-{
-	return DEVILX_NEW IGAProgramReflectionImp(&mPrograms[0],5);
-}
-
-Void NSDevilX::NSCore::NSOpenGL::CGAProgramPipelineImp::_createInternal()
-{
-	if(!msProgramPipeline)
-	{
-		if(glCreateProgramPipelines)
-		{
-			glCreateProgramPipelines(1,&msProgramPipeline);
-		}
-		else
-		{
-			glGenProgramPipelines(1,&msProgramPipeline);
-		}
-		CUtility::checkGLError();
-	}
-	++msRefCount;
-}
-
 NSDevilX::NSCore::NSOpenGL::IGAProgramParameterImp::IGAProgramParameterImp()
 {
 }
@@ -804,63 +711,34 @@ NSDevilX::NSCore::NSOpenGL::IGAProgramParameterImp::~IGAProgramParameterImp()
 {
 }
 
-Void NSDevilX::NSCore::NSOpenGL::IGAProgramParameterImp::apply()
+Void NSDevilX::NSCore::NSOpenGL::IGAProgramParameterImp::setResource(UInt32 slot,IGAConstantBuffer* resource)
 {
-	apply(IGAEnum::EShaderType_Vertex);
+	if(mConstantBuffers.size()<=slot)
+		mConstantBuffers.resize(slot);
+	mConstantBuffers[slot]=static_cast<IGABufferImp*>(resource)->getInternal();
 }
 
-Void NSDevilX::NSCore::NSOpenGL::IGAProgramParameterImp::apply(IGAEnum::EShaderType type)
+Void NSDevilX::NSCore::NSOpenGL::IGAProgramParameterImp::setResource(UInt32 slot,IGASamplerState* resource)
 {
-	auto& constant_buffers=mConstantBuffers[type];
-	glBindBuffersBase(GL_UNIFORM_BUFFER,0,constant_buffers.size(),&constant_buffers[0]);
-	auto& samplers=mSamplers[type];
-	glBindSamplers(0,samplers.size(),&samplers[0]);
+	if(mSamplers.size()<=slot)
+		mSamplers.resize(slot);
+	mSamplers[slot]=static_cast<IGASamplerStateImp*>(resource)->getInternal();
 }
 
-Void NSDevilX::NSCore::NSOpenGL::IGAProgramParameterImp::setConstantBuffer(UInt32 slot,IGAConstantBuffer* buffer)
+Void NSDevilX::NSCore::NSOpenGL::IGAProgramParameterImp::setResource(UInt32 slot,IGATextureView* resource)
 {
-	UInt32 index=0;
-	for(UInt32 i=4;i>=0;--i)
-	{
-		if(slot>IGAProgramReflectionImp::msConstantBufferSlotOffsets[i])
-		{
-			index=i;
-			slot-=IGAProgramReflectionImp::msConstantBufferSlotOffsets[i];
-			break;
-		}
-	}
-	if(mConstantBuffers[index].size()<=slot)
-		mConstantBuffers[index].resize(slot);
-	mConstantBuffers[index][slot]=static_cast<IGABufferImp*>(buffer)->getInternal();
+	if(mTextures.size()<=slot)
+		mTextures.resize(slot);
+	mTextures[slot]=static_cast<IGATextureViewImp*>(resource)->getInternal();
 }
 
-Void NSDevilX::NSCore::NSOpenGL::IGAProgramParameterImp::setSampler(UInt32 slot,IGASamplerState* sampler)
+IGAShaderParameter* NSDevilX::NSCore::NSOpenGL::IGAProgramParameterImp::queryInterface_IGAShaderParameter()
 {
-	UInt32 index=0;
-	for(UInt32 i=4;i>=0;--i)
-	{
-		if(slot>IGAProgramReflectionImp::msSamplerSlotOffsets[i])
-		{
-			index=i;
-			slot-=IGAProgramReflectionImp::msSamplerSlotOffsets[i];
-			break;
-		}
-	}
-	if(mSamplers[index].size()<=slot)
-		mSamplers[index].resize(slot);
-	mSamplers[index][slot]=static_cast<IGASamplerStateImp*>(sampler)->getInternal();
+	return this;
 }
 
-Void NSDevilX::NSCore::NSOpenGL::IGAProgramParameterImp::setResourceView(UInt32 slot,IGAShaderResourceView* view)
+Void NSDevilX::NSCore::NSOpenGL::IGAProgramParameterImp::setResource(UInt32 slot,IGAUnorderedAccessView* view)
 {
-	UInt32 index=0;
-	for(UInt32 i=4;i>=0;--i)
-	{
-		if(slot>IGAProgramReflectionImp::msShaderResourceSlotOffsets[i])
-		{
-			index=i;
-			slot-=IGAProgramReflectionImp::msShaderResourceSlotOffsets[i];
-			break;
-		}
-	}
+	if(mShaderStorageBuffers.size()<=slot)
+		mShaderStorageBuffers.resize(slot);
 }

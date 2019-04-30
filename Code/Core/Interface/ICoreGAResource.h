@@ -198,14 +198,34 @@ namespace NSDevilX
 		class IGAProgramParameter
 		{
 		protected:
-			virtual ~IGAProgramParameter(){}
+			virtual ~IGAProgramParameter()
+			{
+			}
 		public:
 			virtual IGAResource * queryInterface_IGAResource()=0;
-			virtual Void setConstantBuffer(UInt32 slot,IGAConstantBuffer * buffer)=0;
-			virtual Void setSampler(UInt32 slot,IGASamplerState * sampler)=0;
-			virtual Void setResourceView(UInt32 slot,IGATextureView* view)=0;
-			virtual Void setResourceView(UInt32 slot,IGATextureBufferView* view)=0;
-			virtual Void setResourceView(UInt32 slot,IGAUnorderedAccessView* view)=0;
+			virtual Void setResource(UInt32 slot,IGAConstantBuffer * resource)=0;
+			virtual Void setResource(UInt32 slot,IGASamplerState * resource)=0;
+			virtual Void setResource(UInt32 slot,IGATextureView* resource)=0;
+		};
+		class IGAShaderParameter
+		{
+		protected:
+			virtual ~IGAShaderParameter()
+			{
+			}
+		public:
+			virtual IGAResource* queryInterface_IGAResource()=0;
+			virtual Void setResource(UInt32 slot,IGAConstantBuffer* buffer)=0;
+			virtual Void setResource(UInt32 slot,IGASamplerState* sampler)=0;
+			virtual Void setResource(UInt32 slot,IGATextureView* view)=0;
+		};
+		class IGAComputeShaderParameter
+		{
+		protected:
+			virtual ~IGAComputeShaderParameter(){ }
+		public:
+			virtual IGAShaderParameter* queryInterface_IGAShaderParameter()=0;
+			virtual Void setResource(UInt32 slot,IGAUnorderedAccessView* view)=0;
 		};
 	}
 }

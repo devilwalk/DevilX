@@ -14,6 +14,7 @@ namespace NSDevilX
 				class IGADeviceImp
 					:public TBaseObject<IGADeviceImp>
 					,public IGADevice
+					,public IGADevice1
 				{
 				protected:
 					D3D_FEATURE_LEVEL mFeatureLevel;
@@ -45,6 +46,8 @@ namespace NSDevilX
 					}
 
 					// 通过 IGADevice 继承
+					virtual IGADevice* queryInterface_IGADevice() const override;
+					virtual IGADevice1* queryInterface_IGADevice1() const override;
 					virtual IGAEnum::EDeviceVersion getVersion() const override;
 					virtual IGADeviceContext * getImmediateContext() const override;
 					virtual IGADeviceContext * createDeferredContext() override;
@@ -68,11 +71,13 @@ namespace NSDevilX
 					virtual IGADomainShader * createDomainShader(const std::string & code) override;
 					virtual IGAComputeShader * createComputeShader(const std::string & code) override;
 					virtual IGAProgram * createProgram(IGAVertexShader * vertexShader,IGAPixelShader * pixelShader,IGAGeometryShader * geometryShader=nullptr,IGAHullShader * hullShader=nullptr,IGADomainShader * domainShader=nullptr) override;
-					virtual IGAProgram * createProgram(IGAComputeShader * computeShader) override;
 					virtual IGAProgramReflection * createReflection(IGAProgram * program) override;
 					virtual Void destroyReflection(IGAProgramReflection * reflection) override;
 					virtual IGAProgramParameter * createProgramParameter() override;
 					virtual Void destroyProgramParameter(IGAProgramParameter * parameter) override;
+					virtual IGAShaderParameter* createShaderParameter() override;
+					virtual IGAComputeShaderParameter* createComputeShaderParameter() override;
+					virtual Void destroyShaderParameter(IGAShaderParameter* parameter) override;
 
 					// 通过 IGADevice 继承
 					virtual IGARenderTargetView* createRenderTargetView(IGATexture1D* resource,UInt32 mipSlice=0,UInt32 firstArraySlice=0) override;
@@ -80,12 +85,16 @@ namespace NSDevilX
 					virtual IGARenderTargetView* createRenderTargetView(IGATexture3D* resource,UInt32 mipSlice,UInt32 firstDepthSlice) override;
 					virtual IGADepthStencilView* createDepthStencilView(IGATexture1D* resource,UInt32 mipSlice=0,UInt32 firstArraySlice=0) override;
 					virtual IGADepthStencilView* createDepthStencilView(IGATexture2D* resource,UInt32 mipSlice=0,UInt32 firstArraySlice=0) override;
-					virtual IGAShaderResourceView* createShaderResourceView(IGATexture1D* resource,UInt32 mostDetailedMip=0,UInt32 numMipLevels=-1,UInt32 firstArraySlice=0,UInt32 arrayCount=0) override;
-					virtual IGAShaderResourceView* createShaderResourceView(IGATexture2D* resource,UInt32 mostDetailedMip=0,UInt32 numMipLevels=-1,UInt32 firstArraySlice=0,UInt32 arrayCount=0) override;
-					virtual IGAShaderResourceView* createShaderResourceView(IGATexture3D* resource,UInt32 mostDetailedMip=0,UInt32 numMipLevels=-1) override;
+					virtual IGATextureView* createShaderResourceView(IGATexture1D* resource,UInt32 mostDetailedMip=0,UInt32 numMipLevels=-1,UInt32 firstArraySlice=0,UInt32 arrayCount=0) override;
+					virtual IGATextureView* createShaderResourceView(IGATexture2D* resource,UInt32 mostDetailedMip=0,UInt32 numMipLevels=-1,UInt32 firstArraySlice=0,UInt32 arrayCount=0) override;
+					virtual IGATextureView* createShaderResourceView(IGATexture3D* resource,UInt32 mostDetailedMip=0,UInt32 numMipLevels=-1) override;
 					virtual IGAUnorderedAccessView* createUnorderedAccessView(IGATexture1D* resource,UInt32 mipSlice=0,UInt32 firstArraySlice=0,UInt32 arrayCount=0) override;
 					virtual IGAUnorderedAccessView* createUnorderedAccessView(IGATexture2D* resource,UInt32 mipSlice=0,UInt32 firstArraySlice=0,UInt32 arrayCount=0) override;
 					virtual IGAUnorderedAccessView* createUnorderedAccessView(IGATexture3D* resource,UInt32 mipSlice,UInt32 firstDepthSlice,UInt32 depthCount) override;
+
+					// 通过 IGADevice1 继承
+					virtual IGAShaderReflection* createReflection(IGAShader* shader) override;
+					virtual Void destroyReflection(IGAShaderReflection* reflection) override;
 
 				protected:
 					IGARenderTargetViewImp * _create(ID3D11Resource * resource,const D3D11_RENDER_TARGET_VIEW_DESC * desc);

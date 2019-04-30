@@ -4,6 +4,14 @@ using namespace NSCore;
 using namespace NSDirectX;
 using namespace NSVersion11;
 
+NSDevilX::NSCore::NSDirectX::NSVersion11::IGAShaderReflectionImp::IGAShaderReflectionImp(ID3DBlob* blob)
+{
+}
+
+NSDevilX::NSCore::NSDirectX::NSVersion11::IGAShaderReflectionImp::~IGAShaderReflectionImp()
+{
+}
+
 const std::array<UInt32, 5> NSDevilX::NSCore::NSDirectX::NSVersion11::IGAProgramReflectionImp::msConstantBufferSlotOffsets = { 0, static_cast<UInt16>(-1), static_cast<UInt16>(-1) * 2, static_cast<UInt16>(-1) * 3, static_cast<UInt16>(-1) * 4 };
 const std::array<UInt32, 5> NSDevilX::NSCore::NSDirectX::NSVersion11::IGAProgramReflectionImp::msSamplerSlotOffsets = { 0, static_cast<UInt16>(-1), static_cast<UInt16>(-1) * 2, static_cast<UInt16>(-1) * 3, static_cast<UInt16>(-1) * 4 };
 const std::array<UInt32, 5> NSDevilX::NSCore::NSDirectX::NSVersion11::IGAProgramReflectionImp::msShaderResourceSlotOffsets = { 0, static_cast<UInt16>(-1), static_cast<UInt16>(-1) * 2, static_cast<UInt16>(-1) * 3, static_cast<UInt16>(-1) * 4 };

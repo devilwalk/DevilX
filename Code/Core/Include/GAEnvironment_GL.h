@@ -45,6 +45,8 @@ namespace NSDevilX
 				Void setRenderTarget(UInt32 index,IGARenderTargetViewImp* view);
 				Void setDepthStencil(IGADepthStencilViewImp* view);
 				Void setInputLayout(IGAInputLayoutImp* layout);
+				Void setShader(IGAShaderImp* shader,IGAProgramParameterImp* parameter);
+				Void setProgram(CGAProgramImp* program,IGAProgramParameterImp* parameter);
 			};
 			class CGAEnvironmentMultiImp
 			{
@@ -57,23 +59,44 @@ namespace NSDevilX
 				virtual Void clear(IGARenderTargetViewImp* view,const Float colourRGBA[4]);
 				virtual Void setRenderTarget(UInt32 index,IGARenderTargetViewImp* view);
 				virtual Void setDepthStencil(IGADepthStencilViewImp* view);
+				virtual Void setShader(IGAShaderImp* shader,IGAProgramParameterImp* parameter);
+				virtual Void setProgram(CGAProgramImp* program,IGAProgramParameterImp* parameter);
 			};
 			class CGAEnvironmentCommon
 				:public CGAEnvironmentMultiImp
 				,public TBaseObject<CGAEnvironmentCommon>
 			{
 			public:
-				CGAEnvironmentCommon();
-				~CGAEnvironmentCommon();
+				CGAEnvironmentCommon(){ }
+				~CGAEnvironmentCommon(){ }
 			};
-			class CGAEnvironmentDSA
+			class CGAEnvironmentGL41Base
 				:public CGAEnvironmentMultiImp
-				,public TBaseObject<CGAEnvironmentDSA>
+			{
+			protected:
+				GLuint mPipeline;
+			public:
+				CGAEnvironmentGL41Base();
+				virtual ~CGAEnvironmentGL41Base();
+
+				virtual Void setShader(IGAShaderImp* shader,IGAProgramParameterImp* parameter) override;
+			};
+			class CGAEnvironmentGL41
+				:public CGAEnvironmentGL41Base
+				,public TBaseObject<CGAEnvironmentGL41>
 			{
 			protected:
 			public:
-				CGAEnvironmentDSA();
-				~CGAEnvironmentDSA();
+				CGAEnvironmentGL41(){ }
+				~CGAEnvironmentGL41(){ }
+			};
+			class CGAEnvironmentGL45Base
+				:public CGAEnvironmentGL41Base
+			{
+			protected:
+			public:
+				CGAEnvironmentGL45Base();
+				virtual ~CGAEnvironmentGL45Base();
 
 				virtual Void clear(IGADepthStencilViewImp* view,Float depth) override;
 				virtual Void clear(IGADepthStencilViewImp* view,UInt8 stencil) override;
@@ -81,6 +104,15 @@ namespace NSDevilX
 				virtual Void clear(IGARenderTargetViewImp* view,const Float colourRGBA[4]) override;
 				virtual Void setRenderTarget(UInt32 index,IGARenderTargetViewImp* view) override;
 				virtual Void setDepthStencil(IGADepthStencilViewImp* view) override;
+				virtual Void setShader(IGAShaderImp* shader,IGAProgramParameterImp* parameter) override;
+			};
+			class CGAEnvironmentGL45
+				:public CGAEnvironmentGL45Base
+				,public TBaseObject<CGAEnvironmentGL45>
+			{
+			public:
+				CGAEnvironmentGL45(){ }
+				~CGAEnvironmentGL45(){ }
 			};
 		}
 	}

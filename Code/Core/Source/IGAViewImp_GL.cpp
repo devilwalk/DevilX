@@ -25,3 +25,11 @@ NSDevilX::NSCore::NSOpenGL::IGADepthStencilViewImp::~IGADepthStencilViewImp()
 {
 
 }
+
+NSDevilX::NSCore::NSOpenGL::IGATextureViewImp::IGATextureViewImp()
+{
+}
+
+NSDevilX::NSCore::NSOpenGL::IGATextureViewImp::~IGATextureViewImp()
+{
+}

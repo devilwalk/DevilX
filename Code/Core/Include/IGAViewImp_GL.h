@@ -71,11 +71,21 @@ namespace NSDevilX
 				}
 			};
 			class IGATextureViewImp
-				:public TGAGLViewImp<IGATextureView>
-				,public TBaseObject<IGATextureViewImp>
+				:public TGAViewImp<IGATextureView>
 			{
 			public:
-				IGATextureViewImp(
+				IGATextureViewImp();
+				virtual ~IGATextureViewImp();
+
+				virtual GLuint getInternal()const=0;
+			};
+			class CGATextureViewImp
+				:public IGATextureViewImp
+				,public TGLObjectContainer<>
+				,public TBaseObject<CGATextureViewImp>
+			{
+			public:
+				CGATextureViewImp(
 					GLenum target,
 					GLuint origtexture,
 					GLenum internalformat,
@@ -83,21 +93,7 @@ namespace NSDevilX
 					GLuint numlevels,
 					GLuint minlayer,
 					GLuint numlayers);
-				~IGATextureViewImp();
-			};
-			class IGATextureBufferViewImp
-				:public TGAGLViewImp<IGATextureBufferView>
-				,public TBaseObject<IGATextureBufferViewImp>
-			{
-			public:
-				IGATextureBufferViewImp(GLuint texture,GLint mipLevel,GLint arrayIndex,GLenum access);
-				~IGATextureBufferViewImp();
-			};
-			class IGAUnorderedAccessViewImp
-				:public TGAGLViewImp<IGAUnorderedAccessView>
-				,public TBaseObject<IGAUnorderedAccessViewImp>
-			{
-
+				~CGATextureViewImp();
 			};
 		}
 	}

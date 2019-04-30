@@ -33,6 +33,16 @@ NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::~IGADeviceImp()
 	mContexts.destroyAll();
 }
 
+IGADevice* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::queryInterface_IGADevice() const
+{
+	return const_cast<IGADeviceImp*>(this);
+}
+
+IGADevice1* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::queryInterface_IGADevice1() const
+{
+	return const_cast<IGADeviceImp*>(this);
+}
+
 IGAEnum::EDeviceVersion NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::getVersion() const
 {
 	return IGAEnum::EDeviceVersion_DirectX11;
@@ -403,19 +413,23 @@ IGAComputeShader * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::creat
 
 IGAProgram * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createProgram(IGAVertexShader * vertexShader,IGAPixelShader * pixelShader,IGAGeometryShader * geometryShader,IGAHullShader * hullShader,IGADomainShader * domainShader)
 {
-	auto ret=DEVILX_NEW IGARenderPipelineProgramImp(static_cast<IGAVertexShaderImp*>(vertexShader),static_cast<IGAPixelShaderImp*>(pixelShader),static_cast<IGAGeometryShaderImp*>(geometryShader),static_cast<IGAHullShaderImp*>(hullShader),static_cast<IGADomainShaderImp*>(domainShader));
+	auto ret=DEVILX_NEW IGAProgramImp(static_cast<IGAVertexShaderImp*>(vertexShader),static_cast<IGAPixelShaderImp*>(pixelShader),static_cast<IGAGeometryShaderImp*>(geometryShader),static_cast<IGAHullShaderImp*>(hullShader),static_cast<IGADomainShaderImp*>(domainShader));
 	mCommonObjects.insert(ret);
 	return ret;
 }
 
-IGAProgram * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createProgram(IGAComputeShader * computeShader)
-{
-	return static_cast<IGAComputeShaderImp*>(computeShader);
-}
-
 IGAProgramReflection * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createReflection(IGAProgram * program)
 {
-	auto ret=static_cast<IGAProgramImp*>(program)->createReflection();
+	std::array<ID3DBlob*,5> blobs={nullptr};
+	for(SizeT i=0;i<5;++i)
+	{
+		auto shader=static_cast<IGAProgramImp*>(program)->getShaders()[i];
+		if(shader)
+		{
+			blobs[i]=shader->getInternal();
+		}
+	}
+	auto ret=DEVILX_NEW IGAProgramReflectionImp(&blobs[0],5);
 	mCommonObjects.insert(ret);
 	return ret;
 }
@@ -435,6 +449,21 @@ IGAProgramParameter* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::cre
 Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::destroyProgramParameter(IGAProgramParameter* parameter)
 {
 	mCommonObjects.destroy(static_cast<IGAProgramParameterImp*>(parameter));
+}
+
+IGAShaderParameter* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createShaderParameter()
+{
+	return nullptr;
+}
+
+IGAComputeShaderParameter* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createComputeShaderParameter()
+{
+	return nullptr;
+}
+
+Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::destroyShaderParameter(IGAShaderParameter* parameter)
+{
+	return Void();
 }
 
 IGARenderTargetView * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createRenderTargetView(IGATexture1D * resource,UInt32 mipSlice,UInt32 firstArraySlice)
@@ -602,7 +631,7 @@ IGADepthStencilView* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::cre
 	return ret;
 }
 
-IGAShaderResourceView * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createShaderResourceView(IGATexture1D * resource,UInt32 mostDetailedMip,UInt32 numMipLevels,UInt32 firstArraySlice,UInt32 arrayCount)
+IGATextureView* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createShaderResourceView(IGATexture1D * resource,UInt32 mostDetailedMip,UInt32 numMipLevels,UInt32 firstArraySlice,UInt32 arrayCount)
 {
 	D3D11_SHADER_RESOURCE_VIEW_DESC * desc_ptr=nullptr;
 	D3D11_SHADER_RESOURCE_VIEW_DESC desc;
@@ -638,7 +667,7 @@ IGAShaderResourceView * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::
 	return ret;
 }
 
-IGAShaderResourceView* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createShaderResourceView(IGATexture2D* resource,UInt32 mostDetailedMip,UInt32 numMipLevels,UInt32 firstArraySlice,UInt32 arrayCount)
+IGATextureView* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createShaderResourceView(IGATexture2D* resource,UInt32 mostDetailedMip,UInt32 numMipLevels,UInt32 firstArraySlice,UInt32 arrayCount)
 {
 	D3D11_SHADER_RESOURCE_VIEW_DESC * desc_ptr=nullptr;
 	D3D11_SHADER_RESOURCE_VIEW_DESC desc;
@@ -674,7 +703,7 @@ IGAShaderResourceView* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::c
 	return ret;
 }
 
-IGAShaderResourceView* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createShaderResourceView(IGATexture3D* resource,UInt32 mostDetailedMip,UInt32 numMipLevels)
+IGATextureView* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createShaderResourceView(IGATexture3D* resource,UInt32 mostDetailedMip,UInt32 numMipLevels)
 {
 	D3D11_SHADER_RESOURCE_VIEW_DESC * desc_ptr=nullptr;
 	D3D11_SHADER_RESOURCE_VIEW_DESC desc;
@@ -740,4 +769,16 @@ IGAShaderResourceViewImp* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp
 	IGAShaderResourceViewImp* ret=DEVILX_NEW IGAShaderResourceViewImp(mInternal,resource,desc);
 	mShaderResourceViews.push_back(ret);
 	return ret;
+}
+
+IGAShaderReflection* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createReflection(IGAShader* shader)
+{
+	auto ret=DEVILX_NEW IGAShaderReflectionImp(static_cast<TGAD3DResourceImp<IGAShader,ID3DBlob>*>(shader)->getInternal());
+	mCommonObjects.insert(ret);
+	return ret;
+}
+
+Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::destroyReflection(IGAShaderReflection* reflection)
+{
+	mCommonObjects.destroy(static_cast<IGAShaderReflectionImp*>(reflection));
 }

@@ -41,11 +41,10 @@ namespace NSDevilX
 				,public IGATexture1D
 				,public IGATexture2D
 				,public IGATexture3D
-				,public TGAViewImp<IGAShaderResourceView>
+				,public IGATextureViewImp
 				,public TGAViewImp<IGARenderTargetView>
 				,public TGAViewImp<IGADepthStencilView>
 				,public TBaseObject<IGATextureImp>
-				,public TGAViewImp<IGATextureView>
 			{
 			protected:
 			public:
@@ -55,11 +54,14 @@ namespace NSDevilX
 				~IGATextureImp();
 
 				virtual IGATexture * queryInterface_IGATexture()override;
+				// 通过 IGATextureViewImp 继承
+				virtual GLuint getInternal() const override;
 
 			protected:
 				Void _initialize1D(GLsizei width,GLenum internalFormat,GLint mipLevel,UInt32 arrayCount,const IGAStruct::SSubResourceData* initialData);
 				Void _initialize2D(GLsizei width,GLsizei height,GLenum internalFormat,GLint mipLevel,UInt32 arrayCount,Bool cubemap,const IGAStruct::SSubResourceData* initialData);
 				Void _initialize3D(GLsizei width,GLsizei height,GLsizei depth,GLenum internalFormat,GLint mipLevel,const IGAStruct::SSubResourceData* initialData);
+
 			};
 			class IGAInputLayoutImp
 				:public TGAGLResourceImp<IGAInputLayout>
@@ -85,7 +87,6 @@ namespace NSDevilX
 				IGAProgramImp();
 				virtual ~IGAProgramImp();
 
-				virtual Void apply()=0;
 				virtual IGAProgramReflectionImp* createReflection()=0;
 			};
 			class IGAShaderImp
@@ -104,7 +105,6 @@ namespace NSDevilX
 				~IGAShaderImp();
 
 				virtual IGAShader* queryInterface_IGAShader() override;
-				virtual Void apply() override;
 				virtual IGAProgramReflectionImp* createReflection() override;
 			};
 			class CGAProgramImp
@@ -116,25 +116,7 @@ namespace NSDevilX
 				CGAProgramImp(GLuint vertexShader,GLuint pixelShader,GLuint geometryShader,GLuint hullShader,GLuint domainShader);
 				~CGAProgramImp();
 
-				virtual Void apply() override;
 				virtual IGAProgramReflectionImp* createReflection() override;
-			};
-			class CGAProgramPipelineImp
-				:public IGAProgramImp
-				,public TBaseObject<CGAProgramPipelineImp>
-			{
-			protected:
-				static GLuint msProgramPipeline;
-				static UInt32 msRefCount;
-				std::array<GLuint,5> mPrograms;
-			public:
-				CGAProgramPipelineImp(GLuint vertexShader,GLuint pixelShader,GLuint geometryShader,GLuint hullShader,GLuint domainShader);
-				~CGAProgramPipelineImp();
-
-				virtual Void apply() override;
-				virtual IGAProgramReflectionImp* createReflection() override;
-			protected:
-				Void _createInternal();
 			};
 			class IGABlendStateImp
 				:public TGAResourceImp<IGABlendState>
@@ -202,11 +184,15 @@ namespace NSDevilX
 			};
 			class IGAProgramParameterImp
 				:public TGAResourceImp<IGAProgramParameter>
+				,public TGAResourceImp<IGAShaderParameter>
 				,public TBaseObject<IGAProgramParameterImp>
+				,public IGAComputeShaderParameter
 			{
 			protected:
-				std::array<TVector(GLuint),5> mConstantBuffers;
-				std::array<TVector(GLuint),5> mSamplers;
+				TVector(GLuint) mConstantBuffers;
+				TVector(GLuint) mSamplers;
+				TVector(GLuint) mTextures;
+				TVector(GLuint) mShaderStorageBuffers;
 			public:
 				IGAProgramParameterImp();
 				~IGAProgramParameterImp();
@@ -219,16 +205,23 @@ namespace NSDevilX
 				{
 					return mSamplers;
 				}
-
-				Void apply();
-				Void apply(IGAEnum::EShaderType type);
+				const decltype(mTextures)& getTextures()const
+				{
+					return mTextures;
+				}
+				const decltype(mShaderStorageBuffers)& getShaderStorageBuffers()const
+				{
+					return mShaderStorageBuffers;
+				}
 
 				// 通过 TGAResourceImp 继承
-				virtual Void setConstantBuffer(UInt32 slot,IGAConstantBuffer* buffer) override;
-				virtual Void setSampler(UInt32 slot,IGASamplerState* sampler) override;
-				virtual Void setResourceView(UInt32 slot,IGATextureView* view) override;
-				virtual Void setResourceView(UInt32 slot,IGATextureBufferView* view) override;
-				virtual Void setResourceView(UInt32 slot,IGAUnorderedAccessView* view) override;
+				virtual Void setResource(UInt32 slot,IGAConstantBuffer* resource) override;
+				virtual Void setResource(UInt32 slot,IGASamplerState* resource) override;
+				virtual Void setResource(UInt32 slot,IGATextureView* resource) override;
+
+				// 通过 IGAComputeShaderParameter 继承
+				virtual IGAShaderParameter* queryInterface_IGAShaderParameter() override;
+				virtual Void setResource(UInt32 slot,IGAUnorderedAccessView* view) override;
 			};
 		}
 	}
