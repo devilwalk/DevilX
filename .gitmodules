@@ -46,3 +46,6 @@
 [submodule "Dependences/McNopper_EGL"]
 	path = Dependences/McNopper_EGL
 	url = git://github.com/McNopper/EGL.git
+[submodule "Dependences/TinyXML2"]
+	path = Dependences/TinyXML2
+	url = git://github.com/leethomason/tinyxml2.git
