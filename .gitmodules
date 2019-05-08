@@ -49,3 +49,12 @@
 [submodule "Dependences/TinyXML2"]
 	path = Dependences/TinyXML2
 	url = git://github.com/leethomason/tinyxml2.git
+[submodule "Dependences/BOOST"]
+	path = Dependences/BOOST
+	url = git://github.com/boostorg/boost.git
+[submodule "Dependences/DirectXTK"]
+	path = Dependences/DirectXTK
+	url = git://github.com/microsoft/DirectXTK.git
+[submodule "Dependences/HLSLcc"]
+	path = Dependences/HLSLcc
+	url = git://github.com/Unity-Technologies/HLSLcc.git

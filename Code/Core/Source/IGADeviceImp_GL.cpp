@@ -59,6 +59,13 @@ IGAConstantBuffer* NSDevilX::NSCore::NSOpenGL::IGADeviceImp::createConstantBuffe
 	return ret;
 }
 
+IGAShaderResourceBuffer* NSDevilX::NSCore::NSOpenGL::IGADeviceImp::createShaderResourceBuffer(UInt32 sizeInByte,UInt32 cpuAccessFlags,UInt32 shaderResourceBufferFlags,UInt32 structureByteStride,IGAEnum::EUsage usage,UInt32 bindFlags,ConstVoidPtr initialData)
+{
+	auto ret=DEVILX_NEW IGABufferImp(GL_SHADER_STORAGE_BUFFER,sizeInByte,CUtility::mapping(usage,cpuAccessFlags),initialData);
+	mCommonObjects.insert(ret);
+	return ret;
+}
+
 IGAUnorderedAccessBuffer* NSDevilX::NSCore::NSOpenGL::IGADeviceImp::createUnorderedAccessBuffer(UInt32 sizeInByte,UInt32 cpuAccessFlags,IGAEnum::EUsage usage,UInt32 bindFlags,ConstVoidPtr initialData)
 {
 	auto ret=DEVILX_NEW IGABufferImp(GL_SHADER_STORAGE_BUFFER,sizeInByte,CUtility::mapping(usage,cpuAccessFlags),initialData);
@@ -425,7 +432,7 @@ Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::draw(UInt32 vertexCountPerInstanc
 	return Void();
 }
 
-Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::draw(UInt32 indexCountPerInstance,UInt32 startIndexLocation,Int32 baseVertexLocation,UInt32 instanceCount,UInt32 startInstanceLocation)
+Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::drawIndexed(UInt32 indexCountPerInstance,UInt32 startIndexLocation,Int32 baseVertexLocation,UInt32 instanceCount,UInt32 startInstanceLocation)
 {
 	return Void();
 }
@@ -547,4 +554,14 @@ Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::setDomainShader(IGADomainShader* 
 Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::dispatch(IGAComputeShader* shader,IGAShaderParameter* parameter,UInt32 threadGroupCountX,UInt32 threadGroupCountY,UInt32 threadGroupCountZ)
 {
 	return Void();
+}
+
+Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::update(IGABuffer* buffer,ConstVoidPtr data,UInt32 updateOffsetInBytes,UInt32 updateSizeInBytes)
+{
+	return Void();
+}
+
+IGAShaderResourceBufferView* NSDevilX::NSCore::NSOpenGL::IGADeviceImp::createShaderResourceView(IGAShaderResourceBuffer* resource,UInt32 elementOffset,UInt32 numElements)
+{
+	return nullptr;
 }

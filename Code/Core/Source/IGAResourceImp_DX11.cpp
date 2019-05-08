@@ -329,6 +329,7 @@ NSDevilX::NSCore::NSDirectX::NSVersion11::IGAProgramImp::~IGAProgramImp()
 
 NSDevilX::NSCore::NSDirectX::NSVersion11::IGAProgramParameterImp::IGAProgramParameterImp()
 {
+	ZeroMemory(&mShaderParameters[0],mShaderParameters.size()*sizeof(mShaderParameters[0]));
 }
 
 NSDevilX::NSCore::NSDirectX::NSVersion11::IGAProgramParameterImp::~IGAProgramParameterImp()
@@ -338,7 +339,7 @@ NSDevilX::NSCore::NSDirectX::NSVersion11::IGAProgramParameterImp::~IGAProgramPar
 Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGAProgramParameterImp::setResource(UInt32 slot,IGAConstantBuffer*buffer)
 {
 	UInt32 index=0;
-	for(UInt32 i=4;i>=0;--i)
+	for(Int32 i=4;i>=0;--i)
 	{
 		if(slot>IGAProgramReflectionImp::msConstantBufferSlotOffsets[i])
 		{
@@ -347,13 +348,15 @@ Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGAProgramParameterImp::setResour
 			break;
 		}
 	}
+	if(!mShaderParameters[index])
+		mShaderParameters[index]=DEVILX_NEW IGAShaderParameterImp;
 	mShaderParameters[index]->setResource(slot,buffer);
 }
 
 Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGAProgramParameterImp::setResource(UInt32 slot,IGASamplerState*sampler)
 {
 	UInt32 index=0;
-	for(UInt32 i=4;i>=0;--i)
+	for(Int32 i=4;i>=0;--i)
 	{
 		if(slot>IGAProgramReflectionImp::msSamplerSlotOffsets[i])
 		{
@@ -362,13 +365,15 @@ Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGAProgramParameterImp::setResour
 			break;
 		}
 	}
+	if(!mShaderParameters[index])
+		mShaderParameters[index]=DEVILX_NEW IGAShaderParameterImp;
 	mShaderParameters[index]->setResource(slot,sampler);
 }
 
 Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGAProgramParameterImp::setResource(UInt32 slot,IGATextureView*view)
 {
 	UInt32 index=0;
-	for(UInt32 i=4;i>=0;--i)
+	for(Int32 i=4;i>=0;--i)
 	{
 		if(slot>IGAProgramReflectionImp::msShaderResourceSlotOffsets[i])
 		{
@@ -377,6 +382,25 @@ Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGAProgramParameterImp::setResour
 			break;
 		}
 	}
+	if(!mShaderParameters[index])
+		mShaderParameters[index]=DEVILX_NEW IGAShaderParameterImp;
+	mShaderParameters[index]->setResource(slot,view);
+}
+
+Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGAProgramParameterImp::setResource(UInt32 slot,IGAShaderResourceBufferView* view)
+{
+	UInt32 index=0;
+	for(Int32 i=4;i>=0;--i)
+	{
+		if(slot>IGAProgramReflectionImp::msShaderResourceSlotOffsets[i])
+		{
+			index=i;
+			slot-=IGAProgramReflectionImp::msShaderResourceSlotOffsets[i];
+			break;
+		}
+	}
+	if(!mShaderParameters[index])
+		mShaderParameters[index]=DEVILX_NEW IGAShaderParameterImp;
 	mShaderParameters[index]->setResource(slot,view);
 }
 
@@ -419,4 +443,11 @@ Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGAShaderParameterImp::setResourc
 	if(mUnorderedAccessViews.size()<=slot)
 		mUnorderedAccessViews.resize(slot+1);
 	mUnorderedAccessViews[slot]=static_cast<IGAUnorderedAccessViewImp*>(view)->getInternal();
+}
+
+Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGAShaderParameterImp::setResource(UInt32 slot,IGAShaderResourceBufferView* view)
+{
+	if(mShaderResourceViews.size()<=slot)
+		mShaderResourceViews.resize(slot+1);
+	mShaderResourceViews[slot]=static_cast<IGAShaderResourceViewImp*>(view)->getInternal();
 }

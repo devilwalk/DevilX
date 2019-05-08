@@ -26,6 +26,7 @@ namespace NSDevilX
 					,public IGAIndexBuffer
 					,public IGAConstantBuffer
 					,public IGAUnorderedAccessBuffer
+					,public IGAShaderResourceBuffer
 					,public TBaseObject<IGABufferImp>
 				{
 				protected:
@@ -198,6 +199,9 @@ namespace NSDevilX
 					// 通过 TGAResourceImp 继承
 					virtual IGAShaderParameter* queryInterface_IGAShaderParameter() override;
 					virtual Void setResource(UInt32 slot,IGAUnorderedAccessView* view) override;
+
+					// 通过 TGAResourceImp 继承
+					virtual Void setResource(UInt32 slot,IGAShaderResourceBufferView* resource) override;
 				};
 				class IGABlendStateImp
 					:public TGAD3DResourceImp<IGABlendState,ID3D11BlendState>
@@ -249,9 +253,9 @@ namespace NSDevilX
 					IGAProgramImp(IGAVertexShaderImp * vertexShader,IGAPixelShaderImp * pixelShader,IGAGeometryShaderImp * geometryShader=nullptr,IGAHullShaderImp * hullShader=nullptr,IGADomainShaderImp * domainShader=nullptr);
 					~IGAProgramImp();
 
-					auto getShaders()const
+					auto& getShaders()const
 					{
-						return &mShaders[0];
+						return mShaders;
 					}
 				};
 				class IGAProgramParameterImp
@@ -273,6 +277,9 @@ namespace NSDevilX
 					virtual Void setResource(UInt32 slot,IGAConstantBuffer * buffer) override;
 					virtual Void setResource(UInt32 slot,IGASamplerState * sampler) override;
 					virtual Void setResource(UInt32 slot,IGATextureView * view) override;
+
+					// 通过 TGAResourceImp 继承
+					virtual Void setResource(UInt32 slot,IGAShaderResourceBufferView* resource) override;
 				};
 			}
 		}

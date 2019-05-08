@@ -14,20 +14,37 @@ namespace NSDevilX
 					TRet ret;
 					return mapping(desc,ret);
 				}
-				static UInt32 mappingToDXGIUsage(UInt32 usages)
+				template<typename TFlag,UInt32 TBit=32>
+				static UInt32 mappingT(UInt32 flags)
 				{
 					UInt32 ret=0;
-					if(usages&IGAEnum::EGIUsage_BackBuffer)
-						ret|=DXGI_USAGE_BACK_BUFFER;
-					if(usages&IGAEnum::EGIUsage_ReadOnly)
-						ret|=DXGI_USAGE_READ_ONLY;
-					if(usages&IGAEnum::EGIUsage_RenderTargetOutput)
-						ret|=DXGI_USAGE_RENDER_TARGET_OUTPUT;
-					if(usages&IGAEnum::EGIUsage_ShaderInput)
-						ret|=DXGI_USAGE_SHADER_INPUT;
-					if(usages&IGAEnum::EGIUsage_UnorderedAccess)
-						ret|=DXGI_USAGE_UNORDERED_ACCESS;
+					for(int i=0;i<TBit;++i)
+					{
+						auto usage=(1<<i);
+						if(flags&usage)
+						{
+							ret|=mapping((TFlag)usage);
+						}
+					}
 					return ret;
+				}
+				static DXGI_USAGE mapping(IGAEnum::EGIUsage usage)
+				{
+					switch(usage)
+					{
+					case IGAEnum::EGIUsage_BackBuffer:
+						return DXGI_USAGE_BACK_BUFFER;
+					case IGAEnum::EGIUsage_ReadOnly:
+						return DXGI_USAGE_READ_ONLY;
+					case IGAEnum::EGIUsage_RenderTargetOutput:
+						return DXGI_USAGE_RENDER_TARGET_OUTPUT;
+					case IGAEnum::EGIUsage_ShaderInput:
+						return DXGI_USAGE_SHADER_INPUT;
+					case IGAEnum::EGIUsage_UnorderedAccess:
+						return DXGI_USAGE_UNORDERED_ACCESS;
+					default:
+						return (DXGI_USAGE)0;
+					}
 				}
 				static DXGI_FORMAT mapping(IGAEnum::EGIFormat format)
 				{
@@ -43,6 +60,16 @@ namespace NSDevilX
 					case IGAEnum::EUsage_STAGING:return D3D11_USAGE_STAGING;
 					default:
 						return D3D11_USAGE_DEFAULT;
+					}
+				}
+				static D3D11_RESOURCE_MISC_FLAG mapping(IGAEnum::EShaderResourceBufferFlag flag)
+				{
+					switch(flag)
+					{
+					case IGAEnum::EShaderResourceBufferFlag_AllowRawViews:
+						return D3D11_RESOURCE_MISC_BUFFER_ALLOW_RAW_VIEWS;
+					default:
+						return (D3D11_RESOURCE_MISC_FLAG)0;
 					}
 				}
 				static D3D11_SUBRESOURCE_DATA & mapping(const IGAStruct::SSubResourceData & src,D3D11_SUBRESOURCE_DATA & dest)
@@ -67,7 +94,7 @@ namespace NSDevilX
 					dest.BufferDesc.Scaling=DXGI_MODE_SCALING_UNSPECIFIED;
 					dest.BufferDesc.ScanlineOrdering=DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
 					dest.BufferDesc.Width=src.BufferDesc.Width;
-					dest.BufferUsage=mappingToDXGIUsage(src.BufferUsage);
+					dest.BufferUsage=mappingT<IGAEnum::EGIUsage,8>(src.BufferUsage);
 					dest.Flags=0;
 					dest.OutputWindow=src.OutputWindow;
 					dest.SampleDesc.Count=src.SampleDesc.Count;
@@ -550,18 +577,8 @@ namespace NSDevilX
 					case IGAEnum::ECPUAccessFlag_Write:
 						return D3D11_CPU_ACCESS_WRITE;
 					default:
-						assert(0);
 						return (D3D11_CPU_ACCESS_FLAG)0;
 					}
-				}
-				static UInt32 mappingCPUAccessFlags(UInt32 flags)
-				{
-					UInt32 ret=0;
-					if(flags&IGAEnum::ECPUAccessFlag_Read)
-						ret|=mapping(IGAEnum::ECPUAccessFlag_Read);
-					if(flags&IGAEnum::ECPUAccessFlag_Write)
-						ret|=mapping(IGAEnum::ECPUAccessFlag_Write);
-					return ret;
 				}
 				static D3D11_BIND_FLAG mapping(IGAEnum::EBufferBindFlag flag)
 				{

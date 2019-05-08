@@ -39,5 +39,14 @@ namespace NSDevilX
 		public:
 			virtual IGAView * queryInterface_IGAView()=0;
 		};
+		class IGAShaderResourceBufferView
+		{
+		protected:
+			virtual ~IGAShaderResourceBufferView()
+			{
+			}
+		public:
+			virtual IGAView* queryInterface_IGAView()=0;
+		};
 	}
 }

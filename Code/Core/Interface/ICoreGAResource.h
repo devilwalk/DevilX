@@ -40,6 +40,13 @@ namespace NSDevilX
 		public:
 			virtual IGABuffer * queryInterface_IGABuffer()=0;
 		};
+		class IGAShaderResourceBuffer
+		{
+		protected:
+			virtual ~IGAShaderResourceBuffer(){}
+		public:
+			virtual IGABuffer* queryInterface_IGABuffer() = 0;
+		};
 		class IGAUnorderedAccessBuffer
 		{
 		protected:
@@ -206,6 +213,7 @@ namespace NSDevilX
 			virtual Void setResource(UInt32 slot,IGAConstantBuffer * resource)=0;
 			virtual Void setResource(UInt32 slot,IGASamplerState * resource)=0;
 			virtual Void setResource(UInt32 slot,IGATextureView* resource)=0;
+			virtual Void setResource(UInt32 slot,IGAShaderResourceBufferView* resource)=0;
 		};
 		class IGAShaderParameter
 		{
@@ -218,6 +226,7 @@ namespace NSDevilX
 			virtual Void setResource(UInt32 slot,IGAConstantBuffer* buffer)=0;
 			virtual Void setResource(UInt32 slot,IGASamplerState* sampler)=0;
 			virtual Void setResource(UInt32 slot,IGATextureView* view)=0;
+			virtual Void setResource(UInt32 slot,IGAShaderResourceBufferView* resource)=0;
 		};
 		class IGAComputeShaderParameter
 		{

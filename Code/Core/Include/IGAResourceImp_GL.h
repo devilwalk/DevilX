@@ -28,6 +28,7 @@ namespace NSDevilX
 				,public IGAIndexBuffer
 				,public IGAConstantBuffer
 				,public IGAUnorderedAccessBuffer
+				,public IGAShaderResourceBuffer
 				,public TBaseObject<IGABufferImp>
 			{
 			public:

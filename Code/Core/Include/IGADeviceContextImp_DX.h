@@ -41,7 +41,7 @@ namespace NSDevilX
 					virtual Void setScissorRects(UInt32 numRects,const CRect * rects) override;
 					virtual Void setViewports(UInt32 numViewports,const IGAStruct::SViewport * viewports) override;
 					virtual Void draw(UInt32 vertexCountPerInstance,UInt32 startVertexLocation,UInt32 instanceCount,UInt32 startInstanceLocation) override;
-					virtual Void draw(UInt32 indexCountPerInstance,UInt32 startIndexLocation,Int32 baseVertexLocation,UInt32 instanceCount,UInt32 startInstanceLocation) override;
+					virtual Void drawIndexed(UInt32 indexCountPerInstance,UInt32 startIndexLocation,Int32 baseVertexLocation,UInt32 instanceCount,UInt32 startInstanceLocation) override;
 
 					// 通过 IGADeviceContext 继承
 					virtual IGADeviceContext1* queryInterface_IGADeviceContext1() const override;
@@ -56,6 +56,9 @@ namespace NSDevilX
 					virtual Void setHullShader(IGAHullShader* shader,IGAShaderParameter* parameter) override;
 					virtual Void setDomainShader(IGADomainShader* shader,IGAShaderParameter* parameter) override;
 					virtual Void dispatch(IGAComputeShader* shader,IGAShaderParameter* parameter,UInt32 threadGroupCountX,UInt32 threadGroupCountY,UInt32 threadGroupCountZ) override;
+
+					// 通过 IGADeviceContext 继承
+					virtual Void update(IGABuffer* buffer,ConstVoidPtr data,UInt32 updateOffsetInBytes,UInt32 updateSizeInBytes) override;
 				};
 			}
 		}

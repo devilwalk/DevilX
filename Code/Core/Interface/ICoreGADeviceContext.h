@@ -16,6 +16,7 @@ namespace NSDevilX
 			}
 		public:
 			virtual IGADeviceContext1* queryInterface_IGADeviceContext1()const=0;
+			virtual Void update(IGABuffer* buffer,ConstVoidPtr data,UInt32 updateOffsetInBytes=0,UInt32 updateSizeInBytes=0)=0;
 			virtual Void clear(IGADepthStencilView * view,UInt32 flags,Float depth,UInt8 stencil)=0;
 			virtual Void clear(IGARenderTargetView * view,const Float colourRGBA[4])=0;
 			virtual Void setRenderTargets(UInt32 numRenderTarget,IGARenderTargetView * const * renderTargetViews,IGADepthStencilView * depthStencilView)=0;
@@ -30,7 +31,7 @@ namespace NSDevilX
 			virtual Void setScissorRects(UInt32 numRects,const CRect * rects)=0;
 			virtual Void setViewports(UInt32 numViewports,const IGAStruct::SViewport * viewports)=0;
 			virtual Void draw(UInt32 vertexCountPerInstance,UInt32 startVertexLocation,UInt32 instanceCount=1,UInt32 startInstanceLocation=0)=0;
-			virtual Void draw(UInt32 indexCountPerInstance,UInt32 startIndexLocation,Int32 baseVertexLocation,UInt32 instanceCount=1,UInt32 startInstanceLocation=0)=0;
+			virtual Void drawIndexed(UInt32 indexCountPerInstance,UInt32 startIndexLocation,Int32 baseVertexLocation,UInt32 instanceCount=1,UInt32 startInstanceLocation=0)=0;
 		};
 		class IGADeviceContext1
 		{

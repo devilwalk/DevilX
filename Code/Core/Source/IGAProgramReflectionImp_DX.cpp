@@ -18,7 +18,6 @@ const std::array<UInt32, 5> NSDevilX::NSCore::NSDirectX::NSVersion11::IGAProgram
 
 NSDevilX::NSCore::NSDirectX::NSVersion11::IGAProgramReflectionImp::IGAProgramReflectionImp(ID3DBlob* const* blobs,UInt32 numBlobs)
 {
-	mShaderReflections.resize(numBlobs);
 	for(UInt32 i=0;i<numBlobs;++i)
 	{
 		if(blobs[i])
@@ -26,20 +25,23 @@ NSDevilX::NSCore::NSDirectX::NSVersion11::IGAProgramReflectionImp::IGAProgramRef
 			D3DReflect(blobs[i]->GetBufferPointer(),blobs[i]->GetBufferSize(),__uuidof(ID3D11ShaderReflection),reinterpret_cast<VoidPtr*>(&mShaderReflections[i]));
 			D3D11_SHADER_DESC shader_desc;
 			mShaderReflections[i]->GetDesc(&shader_desc);
-			for(UInt32 i=0;i<shader_desc.ConstantBuffers;++i)
+			for(UInt32 j=0;j<shader_desc.ConstantBuffers;++j)
 			{
 				D3D11_SHADER_BUFFER_DESC buffer_desc;
-				mShaderReflections[i]->GetConstantBufferByIndex(i)->GetDesc(&buffer_desc);
+				mShaderReflections[i]->GetConstantBufferByIndex(j)->GetDesc(&buffer_desc);
+				assert(buffer_desc.Size);
 			}
-			for(UInt32 i=0;i<shader_desc.InputParameters;++i)
+			for(UInt32 j=0;j<shader_desc.InputParameters;++j)
 			{
 				D3D11_SIGNATURE_PARAMETER_DESC param_desc;
-				mShaderReflections[i]->GetInputParameterDesc(i,&param_desc);
+				mShaderReflections[i]->GetInputParameterDesc(j,&param_desc);
+				assert(param_desc.SemanticName);
 			}
-			for(UInt32 i=0;i<shader_desc.BoundResources;++i)
+			for(UInt32 j=0;j<shader_desc.BoundResources;++j)
 			{
 				D3D11_SHADER_INPUT_BIND_DESC param_desc;
-				mShaderReflections[i]->GetResourceBindingDesc(i,&param_desc);
+				mShaderReflections[i]->GetResourceBindingDesc(j,&param_desc);
+				assert(param_desc.BindCount);
 			}
 		}
 	}

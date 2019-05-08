@@ -43,6 +43,7 @@ namespace NSDevilX
 				};
 				class IGAShaderResourceViewImp
 					:public TGAD3DViewImp<IGATextureView,ID3D11ShaderResourceView>
+					,public TGAViewImp<IGAShaderResourceBufferView>
 					,public TBaseObject<IGAShaderResourceViewImp>
 				{
 				protected:

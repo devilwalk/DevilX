@@ -27,7 +27,7 @@ namespace NSDevilX
 					static const std::array<UInt32, 5> msSamplerSlotOffsets;
 					static const std::array<UInt32, 5> msShaderResourceSlotOffsets;
 				protected:
-					TVector(CComPtr<ID3D11ShaderReflection>) mShaderReflections;
+					std::array<CComPtr<ID3D11ShaderReflection>,5> mShaderReflections;
 				public:
 					IGAProgramReflectionImp(ID3DBlob * const * blobs,UInt32 numBlobs);
 					~IGAProgramReflectionImp();

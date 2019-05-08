@@ -46,6 +46,7 @@ namespace NSDevilX
 				virtual IGAVertexBuffer* createVertexBuffer(UInt32 sizeInByte,UInt32 cpuAccessFlags,IGAEnum::EUsage usage=IGAEnum::EUsage_DEFAULT,UInt32 bindFlags=0,ConstVoidPtr initialData=nullptr) override;
 				virtual IGAIndexBuffer* createIndexBuffer(UInt32 sizeInByte,UInt32 cpuAccessFlags,IGAEnum::EUsage usage=IGAEnum::EUsage_DEFAULT,UInt32 bindFlags=0,ConstVoidPtr initialData=nullptr) override;
 				virtual IGAConstantBuffer* createConstantBuffer(UInt32 sizeInByte,UInt32 cpuAccessFlags,IGAEnum::EUsage usage=IGAEnum::EUsage_DEFAULT,UInt32 bindFlags=0,ConstVoidPtr initialData=nullptr) override;
+				virtual IGAShaderResourceBuffer* createShaderResourceBuffer(UInt32 sizeInByte,UInt32 cpuAccessFlags=0,UInt32 shaderResourceBufferFlags=0,UInt32 structureByteStride=0,IGAEnum::EUsage usage=IGAEnum::EUsage_DEFAULT,UInt32 bindFlags=0,ConstVoidPtr initialData=nullptr) override;
 				virtual IGAUnorderedAccessBuffer* createUnorderedAccessBuffer(UInt32 sizeInByte,UInt32 cpuAccessFlags,IGAEnum::EUsage usage=IGAEnum::EUsage_DEFAULT,UInt32 bindFlags=0,ConstVoidPtr initialData=nullptr) override;
 				virtual IGATexture1D* createTexture1D(UInt32 length,IGAEnum::EUsage usage,IGAEnum::EGIFormat format,UInt32 cpuAccessFlags,UInt32 bindFlags,UInt32 mipLevelCount=0,UInt32 arrayCount=1,const IGAStruct::SSubResourceData* initialData=nullptr) override;
 				virtual IGATexture2D* createTexture2D(UInt32 width,UInt32 height,IGAEnum::EUsage usage,IGAEnum::EGIFormat format,UInt32 cpuAccessFlags,UInt32 bindFlags,UInt32 mipLevelCount=0,UInt32 arrayCount=1,const IGAStruct::SSubResourceData* initialData=nullptr) override;
@@ -96,7 +97,7 @@ namespace NSDevilX
 				virtual Void setScissorRects(UInt32 numRects,const CRect* rects) override;
 				virtual Void setViewports(UInt32 numViewports,const IGAStruct::SViewport* viewports) override;
 				virtual Void draw(UInt32 vertexCountPerInstance,UInt32 startVertexLocation,UInt32 instanceCount=1,UInt32 startInstanceLocation=0) override;
-				virtual Void draw(UInt32 indexCountPerInstance,UInt32 startIndexLocation,Int32 baseVertexLocation,UInt32 instanceCount=1,UInt32 startInstanceLocation=0) override;
+				virtual Void drawIndexed(UInt32 indexCountPerInstance,UInt32 startIndexLocation,Int32 baseVertexLocation,UInt32 instanceCount=1,UInt32 startInstanceLocation=0) override;
 			protected:
 				IGARenderTargetViewImp* _createRenderTargetView(IGATextureImp* texture,UInt32 mipLevel,UInt32 arrayIndex);
 				IGADepthStencilViewImp* _createDepthStencilView(IGATextureImp* texture,UInt32 mipLevel,UInt32 arrayIndex);
@@ -125,6 +126,12 @@ namespace NSDevilX
 				virtual Void setHullShader(IGAHullShader* shader,IGAShaderParameter* parameter) override;
 				virtual Void setDomainShader(IGADomainShader* shader,IGAShaderParameter* parameter) override;
 				virtual Void dispatch(IGAComputeShader* shader,IGAShaderParameter* parameter,UInt32 threadGroupCountX,UInt32 threadGroupCountY,UInt32 threadGroupCountZ) override;
+
+				// 通过 IGADeviceContext 继承
+				virtual Void update(IGABuffer* buffer,ConstVoidPtr data,UInt32 updateOffsetInBytes=0,UInt32 updateSizeInBytes=0) override;
+
+				// 通过 IGADevice 继承
+				virtual IGAShaderResourceBufferView* createShaderResourceView(IGAShaderResourceBuffer* resource,UInt32 elementOffset=0,UInt32 numElements=-1) override;
 };
 		}
 	}

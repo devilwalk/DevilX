@@ -321,6 +321,10 @@ namespace NSDevilX
 			{
 				EBufferBindFlag_StreamOut=1,
 			};
+			enum EShaderResourceBufferFlag
+			{
+				EShaderResourceBufferFlag_AllowRawViews=1
+			};
 			enum ETextureBindFlag
 			{
 				ETextureBindFlag_ShaderResource=1,

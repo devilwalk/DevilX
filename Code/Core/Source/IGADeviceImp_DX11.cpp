@@ -71,7 +71,7 @@ IGAVertexBuffer * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::create
 	D3D11_BUFFER_DESC d3d_desc={0};
 	d3d_desc.BindFlags=D3D11_BIND_VERTEX_BUFFER|CUtility::mappingBufferBindFlags(bindFlags);
 	d3d_desc.ByteWidth=sizeInByte;
-	d3d_desc.CPUAccessFlags=CUtility::mappingCPUAccessFlags(cpuAccessFlags);
+	d3d_desc.CPUAccessFlags=CUtility::mappingT<IGAEnum::ECPUAccessFlag>(cpuAccessFlags);
 	d3d_desc.Usage=CUtility::mapping(usage);
 	D3D11_SUBRESOURCE_DATA d3d_sub_data={0};
 	if(initialData)
@@ -90,7 +90,7 @@ IGAIndexBuffer * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createI
 	D3D11_BUFFER_DESC d3d_desc={0};
 	d3d_desc.BindFlags=D3D11_BIND_INDEX_BUFFER|CUtility::mappingBufferBindFlags(bindFlags);
 	d3d_desc.ByteWidth=sizeInByte;
-	d3d_desc.CPUAccessFlags=CUtility::mappingCPUAccessFlags(cpuAccessFlags);
+	d3d_desc.CPUAccessFlags=CUtility::mappingT<IGAEnum::ECPUAccessFlag>(cpuAccessFlags);
 	d3d_desc.Usage=CUtility::mapping(usage);
 	D3D11_SUBRESOURCE_DATA d3d_sub_data={0};
 	if(initialData)
@@ -109,8 +109,34 @@ IGAConstantBuffer * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::crea
 	D3D11_BUFFER_DESC d3d_desc={0};
 	d3d_desc.BindFlags=D3D11_BIND_CONSTANT_BUFFER|CUtility::mappingBufferBindFlags(bindFlags);
 	d3d_desc.ByteWidth=sizeInByte;
-	d3d_desc.CPUAccessFlags=CUtility::mappingCPUAccessFlags(cpuAccessFlags);
+	d3d_desc.CPUAccessFlags=CUtility::mappingT<IGAEnum::ECPUAccessFlag>(cpuAccessFlags);
 	d3d_desc.Usage=CUtility::mapping(usage);
+	D3D11_SUBRESOURCE_DATA d3d_sub_data={0};
+	if(initialData)
+	{
+		d3d_sub_data.pSysMem=initialData;
+		d3d_sub_data.SysMemPitch=sizeInByte;
+		d3d_sub_data.SysMemSlicePitch=sizeInByte;
+	}
+	auto ret=DEVILX_NEW IGABufferImp(mInternal,d3d_desc,initialData?(&d3d_sub_data):nullptr);
+	mCommonObjects.insert(ret);
+	return ret;
+}
+
+IGAShaderResourceBuffer* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createShaderResourceBuffer(UInt32 sizeInByte,UInt32 cpuAccessFlags,UInt32 shaderResourceBufferFlags,UInt32 structureByteStride,IGAEnum::EUsage usage,UInt32 bindFlags,ConstVoidPtr initialData)
+{
+	D3D11_BUFFER_DESC d3d_desc={0};
+	d3d_desc.BindFlags=D3D11_BIND_SHADER_RESOURCE|CUtility::mappingBufferBindFlags(bindFlags);
+	d3d_desc.ByteWidth=sizeInByte;
+	d3d_desc.CPUAccessFlags=CUtility::mappingT<IGAEnum::ECPUAccessFlag>(cpuAccessFlags);
+	d3d_desc.Usage=CUtility::mapping(usage);
+	d3d_desc.MiscFlags=CUtility::mappingT<IGAEnum::EShaderResourceBufferFlag>(shaderResourceBufferFlags);
+	if(structureByteStride)
+	{
+		d3d_desc.StructureByteStride=structureByteStride;
+		d3d_desc.MiscFlags|=D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
+		assert(d3d_desc.CPUAccessFlags==0);
+	}
 	D3D11_SUBRESOURCE_DATA d3d_sub_data={0};
 	if(initialData)
 	{
@@ -128,7 +154,7 @@ IGAUnorderedAccessBuffer * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceIm
 	D3D11_BUFFER_DESC d3d_desc={0};
 	d3d_desc.BindFlags=D3D11_BIND_UNORDERED_ACCESS|CUtility::mappingBufferBindFlags(bindFlags);
 	d3d_desc.ByteWidth=sizeInByte;
-	d3d_desc.CPUAccessFlags=CUtility::mappingCPUAccessFlags(cpuAccessFlags);
+	d3d_desc.CPUAccessFlags=CUtility::mappingT<IGAEnum::ECPUAccessFlag>(cpuAccessFlags);
 	d3d_desc.Usage=CUtility::mapping(usage);
 	D3D11_SUBRESOURCE_DATA d3d_sub_data={0};
 	if(initialData)
@@ -147,7 +173,7 @@ IGATexture1D * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createTex
 	D3D11_TEXTURE1D_DESC d3d_desc={0};
 	d3d_desc.ArraySize=arrayCount;
 	d3d_desc.BindFlags=CUtility::mappingTextureBindFlags(bindFlags);
-	d3d_desc.CPUAccessFlags=CUtility::mappingCPUAccessFlags(cpuAccessFlags);
+	d3d_desc.CPUAccessFlags=CUtility::mappingT<IGAEnum::ECPUAccessFlag>(cpuAccessFlags);
 	d3d_desc.Format=CUtility::mapping(format);
 	d3d_desc.MipLevels=mipLevelCount;
 	d3d_desc.Usage=CUtility::mapping(usage);
@@ -169,7 +195,7 @@ IGATexture2D * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createTex
 	D3D11_TEXTURE2D_DESC d3d_desc={0};
 	d3d_desc.ArraySize=arrayCount;
 	d3d_desc.BindFlags=CUtility::mappingTextureBindFlags(bindFlags);
-	d3d_desc.CPUAccessFlags=CUtility::mappingCPUAccessFlags(cpuAccessFlags);
+	d3d_desc.CPUAccessFlags=CUtility::mappingT<IGAEnum::ECPUAccessFlag>(cpuAccessFlags);
 	d3d_desc.Format=CUtility::mapping(format);
 	d3d_desc.MipLevels=mipLevelCount;
 	d3d_desc.Usage=CUtility::mapping(usage);
@@ -193,7 +219,7 @@ IGATexture3D * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createTex
 {
 	D3D11_TEXTURE3D_DESC d3d_desc={0};
 	d3d_desc.BindFlags=CUtility::mappingTextureBindFlags(bindFlags);
-	d3d_desc.CPUAccessFlags=CUtility::mappingCPUAccessFlags(cpuAccessFlags);
+	d3d_desc.CPUAccessFlags=CUtility::mappingT<IGAEnum::ECPUAccessFlag>(cpuAccessFlags);
 	d3d_desc.Format=CUtility::mapping(format);
 	d3d_desc.MipLevels=mipLevelCount;
 	d3d_desc.Usage=CUtility::mapping(usage);
@@ -217,7 +243,7 @@ IGATexture2D * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createTex
 	D3D11_TEXTURE2D_DESC d3d_desc={0};
 	d3d_desc.ArraySize=arrayCount*6;
 	d3d_desc.BindFlags=CUtility::mappingTextureBindFlags(bindFlags);
-	d3d_desc.CPUAccessFlags=CUtility::mappingCPUAccessFlags(cpuAccessFlags);
+	d3d_desc.CPUAccessFlags=CUtility::mappingT<IGAEnum::ECPUAccessFlag>(cpuAccessFlags);
 	d3d_desc.Format=CUtility::mapping(format);
 	d3d_desc.MipLevels=mipLevelCount;
 	d3d_desc.Usage=CUtility::mapping(usage);
@@ -636,7 +662,7 @@ IGATextureView* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createSh
 	D3D11_SHADER_RESOURCE_VIEW_DESC * desc_ptr=nullptr;
 	D3D11_SHADER_RESOURCE_VIEW_DESC desc;
 	if((mostDetailedMip>0)
-		||(static_cast<UInt32>(-1)==numMipLevels)
+		||(static_cast<UInt32>(-1)!=numMipLevels)
 		||(firstArraySlice>0)
 		||(arrayCount>0)
 		)
@@ -649,11 +675,13 @@ IGATextureView* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createSh
 		desc.Texture1DArray.ArraySize=arrayCount;
 		desc_ptr=&desc;
 	}
-	auto iter=std::find_if(mShaderResourceViews.begin(),mShaderResourceViews.end(),[&desc](IGAShaderResourceViewImp*view)
+	auto iter=std::find_if(mShaderResourceViews.begin(),mShaderResourceViews.end(),[&desc,resource](IGAShaderResourceViewImp*view)
 		{
 			D3D11_SHADER_RESOURCE_VIEW_DESC test_desc;
 			view->getInternal()->GetDesc(&test_desc);
-			return memcmp(&test_desc,&desc,sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
+			CComPtr<ID3D11Resource> test_res;
+			view->getInternal()->GetResource(&test_res);
+			return memcmp(&test_desc,&desc,sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC))&&(static_cast<IGATexture1DImp*>(resource)->getInternal()==test_res);
 		});
 	IGAShaderResourceViewImp * ret=nullptr;
 	if(mShaderResourceViews.end()==iter)
@@ -672,7 +700,7 @@ IGATextureView* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createSh
 	D3D11_SHADER_RESOURCE_VIEW_DESC * desc_ptr=nullptr;
 	D3D11_SHADER_RESOURCE_VIEW_DESC desc;
 	if((mostDetailedMip>0)
-		||(static_cast<UInt32>(-1)==numMipLevels)
+		||(static_cast<UInt32>(-1)!=numMipLevels)
 		||(firstArraySlice>0)
 		||(arrayCount>0)
 		)
@@ -685,11 +713,13 @@ IGATextureView* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createSh
 		desc.Texture2DArray.ArraySize=arrayCount;
 		desc_ptr=&desc;
 	}
-	auto iter=std::find_if(mShaderResourceViews.begin(),mShaderResourceViews.end(),[&desc](IGAShaderResourceViewImp*view)
+	auto iter=std::find_if(mShaderResourceViews.begin(),mShaderResourceViews.end(),[&desc,resource](IGAShaderResourceViewImp*view)
 		{
 			D3D11_SHADER_RESOURCE_VIEW_DESC test_desc;
 			view->getInternal()->GetDesc(&test_desc);
-			return memcmp(&test_desc,&desc,sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
+			CComPtr<ID3D11Resource> test_res;
+			view->getInternal()->GetResource(&test_res);
+			return memcmp(&test_desc,&desc,sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC))&&(static_cast<IGATexture2DImp*>(resource)->getInternal()==test_res);
 		});
 	IGAShaderResourceViewImp * ret=nullptr;
 	if(mShaderResourceViews.end()==iter)
@@ -708,7 +738,7 @@ IGATextureView* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createSh
 	D3D11_SHADER_RESOURCE_VIEW_DESC * desc_ptr=nullptr;
 	D3D11_SHADER_RESOURCE_VIEW_DESC desc;
 	if((mostDetailedMip>0)
-		||(static_cast<UInt32>(-1)==numMipLevels)
+		||(static_cast<UInt32>(-1)!=numMipLevels)
 		)
 	{
 		desc.Format=DXGI_FORMAT_UNKNOWN;
@@ -717,11 +747,13 @@ IGATextureView* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createSh
 		desc.Texture3D.MipLevels=numMipLevels;
 		desc_ptr=&desc;
 	}
-	auto iter=std::find_if(mShaderResourceViews.begin(),mShaderResourceViews.end(),[&desc](IGAShaderResourceViewImp*view)
+	auto iter=std::find_if(mShaderResourceViews.begin(),mShaderResourceViews.end(),[&desc,resource](IGAShaderResourceViewImp*view)
 		{
 			D3D11_SHADER_RESOURCE_VIEW_DESC test_desc;
 			view->getInternal()->GetDesc(&test_desc);
-			return memcmp(&test_desc,&desc,sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
+			CComPtr<ID3D11Resource> test_res;
+			view->getInternal()->GetResource(&test_res);
+			return memcmp(&test_desc,&desc,sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC))&&(static_cast<IGATexture3DImp*>(resource)->getInternal()==test_res);
 		});
 	IGAShaderResourceViewImp * ret=nullptr;
 	if(mShaderResourceViews.end()==iter)
@@ -768,6 +800,33 @@ IGAShaderResourceViewImp* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp
 {
 	IGAShaderResourceViewImp* ret=DEVILX_NEW IGAShaderResourceViewImp(mInternal,resource,desc);
 	mShaderResourceViews.push_back(ret);
+	return ret;
+}
+
+IGAShaderResourceBufferView* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createShaderResourceView(IGAShaderResourceBuffer* resource,UInt32 elementOffset,UInt32 numElements)
+{
+	D3D11_SHADER_RESOURCE_VIEW_DESC desc;
+	desc.Format=DXGI_FORMAT_UNKNOWN;
+	desc.ViewDimension=D3D11_SRV_DIMENSION_BUFFER;
+	desc.Buffer.ElementOffset=elementOffset;
+	desc.Buffer.NumElements=numElements;
+	auto iter=std::find_if(mShaderResourceViews.begin(),mShaderResourceViews.end(),[&desc,resource](IGAShaderResourceViewImp*view)
+		{
+			D3D11_SHADER_RESOURCE_VIEW_DESC test_desc;
+			view->getInternal()->GetDesc(&test_desc);
+			CComPtr<ID3D11Resource> test_res;
+			view->getInternal()->GetResource(&test_res);
+			return memcmp(&test_desc,&desc,sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC))&&(test_res==static_cast<IGABufferImp*>(resource)->getInternal());
+		});
+	IGAShaderResourceViewImp* ret=nullptr;
+	if(mShaderResourceViews.end()==iter)
+	{
+		ret=_create(static_cast<IGABufferImp*>(resource)->getInternal(),&desc);
+	}
+	else
+	{
+		ret=*iter;
+	}
 	return ret;
 }
 

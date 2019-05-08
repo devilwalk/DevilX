@@ -251,11 +251,11 @@ Void NSDevilX::NSCore::NSOpenGL::CGAEnvironmentMultiImp::setProgram(CGAProgramIm
 {
 	glUseProgram(program->getInternal());
 	CUtility::checkGLError();
-	glBindBuffersBase(GL_UNIFORM_BUFFER,0,parameter->getConstantBuffers().size(),&parameter->getConstantBuffers()[0]);
+	glBindBuffersBase(GL_UNIFORM_BUFFER,0,static_cast<GLsizei>(parameter->getConstantBuffers().size()),&parameter->getConstantBuffers()[0]);
 	CUtility::checkGLError();
-	glBindSamplers(0,parameter->getSamplers().size(),&parameter->getSamplers()[0]);
+	glBindSamplers(0, static_cast<GLsizei>(parameter->getSamplers().size()),&parameter->getSamplers()[0]);
 	CUtility::checkGLError();
-	glBindTextures(0,parameter->getTextures().size(),&parameter->getTextures()[0]);
+	glBindTextures(0, static_cast<GLsizei>(parameter->getTextures().size()),&parameter->getTextures()[0]);
 	CUtility::checkGLError();
 }
 

@@ -15,6 +15,8 @@
 #include <tchar.h>
 
 #include "ICoreSystemInterface.h"
+#include "Utility.h"
 
 #pragma comment(lib,"Core.lib")
+#pragma comment(lib,"Utility.lib")
 #pragma comment(lib,"libfbxsdk.lib")

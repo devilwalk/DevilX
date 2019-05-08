@@ -3,7 +3,7 @@ using namespace NSDevilX;
 using namespace NSCore;
 
 #pragma comment(lib,"Common.lib")
-#pragma comment(lib,"tinyxml.lib")
+#pragma comment(lib,"tinyxml2.lib")
 #pragma comment(lib,"FreeImage.lib")
 #pragma comment(lib,"freetype.lib")
 #pragma comment(lib,"libfbxsdk.lib")

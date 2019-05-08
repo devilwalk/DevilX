@@ -8,7 +8,7 @@
 #include "DirectXPackedVector.h"
 #include "DirectXColors.h"
 #include "DirectXCollision.h"
-#include "tinyxml.h"
+#include "tinyxml2.h"
 #include "boost/any.hpp"
 #pragma warning(push)
 #pragma warning(disable:4819)
