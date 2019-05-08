@@ -79,21 +79,21 @@ public:
 
 		NSDevilX::String code;
 		{
-			NSDevilX::CFileStream fs("D:\\develop\\DevilX\\Code\\Test\\TestCore_GA\\PreDepthVS.hlsl");
+			NSDevilX::CFileStream fs(NSDevilX::CDirectory::getApplicationDirectory()+"/PreDepthVS.hlsl");
 			auto reader=fs.createReader();
 			code.resize(fs.getSize());
 			reader->process(fs.getSize(),&code[0]);
 		}
 		auto vertex_shader=mGADevice->createVertexShader(code);
 		{
-			NSDevilX::CFileStream fs("D:\\develop\\DevilX\\Code\\Test\\TestCore_GA\\PreDepthPS.hlsl");
+			NSDevilX::CFileStream fs(NSDevilX::CDirectory::getApplicationDirectory()+"/PreDepthPS.hlsl");
 			auto reader=fs.createReader();
 			code.resize(fs.getSize());
 			reader->process(fs.getSize(),&code[0]);
 		}
 		auto pixel_shader=mGADevice->createPixelShader(code);
 		{
-			NSDevilX::CFileStream fs("D:\\develop\\DevilX\\Code\\Test\\TestCore_GA\\PreDepthGS.hlsl");
+			NSDevilX::CFileStream fs(NSDevilX::CDirectory::getApplicationDirectory()+"/PreDepthGS.hlsl");
 			auto reader=fs.createReader();
 			code.resize(fs.getSize());
 			reader->process(fs.getSize(),&code[0]);
