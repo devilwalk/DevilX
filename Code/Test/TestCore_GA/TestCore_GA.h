@@ -39,20 +39,20 @@ public:
 		swap_chain_desc.SampleDesc.Quality=0;
 		mGASwapChain=NSDevilX::NSCore::getSystem()->getGAManager()->createSwapChain(mGADevice,swap_chain_desc);
 
-		auto vertex_buffer=mGADevice->createShaderResourceBuffer(sizeof(NSDevilX::CFloat4)*3,0,0,16);
+		auto vertex_buffer=mGADevice->createShaderResourceBuffer(sizeof(NSDevilX::CFloat4)*4);
 		NSDevilX::CFloat4 pos[]={NSDevilX::CFloat4(1,-1,0.5,0),NSDevilX::CFloat4(-1,-1,0.5,0),NSDevilX::CFloat4(0,1,0.5,0)};
 		mGADevice->getImmediateContext()->update(vertex_buffer->queryInterface_IGABuffer(),pos);
-		auto index_buffer=mGADevice->createShaderResourceBuffer(sizeof(NSDevilX::CUInt4),0,0,16);
+		auto index_buffer=mGADevice->createShaderResourceBuffer(sizeof(NSDevilX::CUInt4));
 		NSDevilX::UInt32 index[]={0,1,2,0};
 		mGADevice->getImmediateContext()->update(index_buffer->queryInterface_IGABuffer(),index);
 		struct SObjectBuffer
 		{
 			NSDevilX::CMatrix4F mWorldViewProjMatrix;
 		};
-		auto object_buffer=mGADevice->createShaderResourceBuffer(sizeof(SObjectBuffer)*1000,0,0,sizeof(SObjectBuffer));
-		SObjectBuffer obj[1000];
+		auto object_buffer=mGADevice->createShaderResourceBuffer(sizeof(SObjectBuffer)*8192,0,0,sizeof(SObjectBuffer));
+		SObjectBuffer obj[8192];
 		srand(GetTickCount());
-		for(int i=0;i<1000;++i)
+		for(int i=0;i<8192;++i)
 		{
 			auto scale=DirectX::XMMatrixScaling(abs(rand())*0.00001f,abs(rand())*0.00001f,1);
 			auto trans=DirectX::XMMatrixTranslation(rand()*0.0001f,rand()*0.0001f,0);
@@ -68,7 +68,7 @@ public:
 			NSDevilX::UInt32 mIndexCount1;
 		};
 		SInstanceBuffer instance[4096]={0};
-		for(int i=0;i<500;++i)
+		for(int i=0;i<4096;++i)
 		{
 			instance[i].mIndexStart0=0;
 			instance[i].mIndexCount0=3;
@@ -84,30 +84,30 @@ public:
 			code.resize(fs.getSize());
 			reader->process(fs.getSize(),&code[0]);
 		}
-		auto vertex_shader=mGADevice->createVertexShader(code);
+		auto vertex_shader=mGADevice->createVertexShader(code.c_str());
 		{
 			NSDevilX::CFileStream fs(NSDevilX::CDirectory::getApplicationDirectory()+"/PreDepthPS.hlsl");
 			auto reader=fs.createReader();
 			code.resize(fs.getSize());
 			reader->process(fs.getSize(),&code[0]);
 		}
-		auto pixel_shader=mGADevice->createPixelShader(code);
+		auto pixel_shader=mGADevice->createPixelShader(code.c_str());
 		{
 			NSDevilX::CFileStream fs(NSDevilX::CDirectory::getApplicationDirectory()+"/PreDepthGS.hlsl");
 			auto reader=fs.createReader();
 			code.resize(fs.getSize());
 			reader->process(fs.getSize(),&code[0]);
 		}
-		auto geometry_shader=mGADevice->createGeometryShader(code);
-		mProgram=mGADevice->createProgram(vertex_shader,pixel_shader);
+		auto geometry_shader=mGADevice->createGeometryShader(code.c_str());
+		mProgram=mGADevice->createProgram(vertex_shader,nullptr);
 
 		auto reflection=mGADevice->createReflection(mProgram);
 
 		mProgramParameter=mGADevice->createProgramParameter();
 
-		auto vertex_buffer_view=mGADevice->createShaderResourceView(vertex_buffer,0,3);
-		auto index_buffer_view=mGADevice->createShaderResourceView(index_buffer,0,1);
-		auto object_buffer_view=mGADevice->createShaderResourceView(object_buffer,0,1000);
+		auto vertex_buffer_view=mGADevice->createShaderResourceView(vertex_buffer,NSDevilX::NSCore::IGAEnum::EGIFormat_R32G32B32A32_FLOAT);
+		auto index_buffer_view=mGADevice->createShaderResourceView(index_buffer,NSDevilX::NSCore::IGAEnum::EGIFormat_R32G32B32A32_UINT);
+		auto object_buffer_view=mGADevice->createShaderResourceView(object_buffer);
 		mProgramParameter->setResource(0,vertex_buffer_view);
 		mProgramParameter->setResource(1,index_buffer_view);
 		mProgramParameter->setResource(2,object_buffer_view);
@@ -120,11 +120,11 @@ public:
 		mGADevice->getImmediateContext()->clear(mGASwapChain->getRenderTargetView(),clear_rgba);
 		mGADevice->getImmediateContext()->clear(mGASwapChain->getDepthStencilView(),NSDevilX::NSCore::IGAEnum::EClearFlag_DEPTH|NSDevilX::NSCore::IGAEnum::EClearFlag_STENCIL,1.0f,0);
 		auto rtv=mGASwapChain->getRenderTargetView();
-		mGADevice->getImmediateContext()->setRenderTargets(1,&rtv,mGASwapChain->getDepthStencilView());
+		mGADevice->getImmediateContext()->setRenderTargets(0,nullptr,mGASwapChain->getDepthStencilView());
 		mGADevice->getImmediateContext()->setViewports(1,&mViewport);
 		mGADevice->getImmediateContext()->setPrimitiveTopology(NSDevilX::NSCore::IGAEnum::EPrimitiveTopology_TRIANGLELIST);
 		mGADevice->getImmediateContext()->setProgram(mProgram,mProgramParameter);
-		mGADevice->getImmediateContext()->draw(1000*3,0,1000);
+		mGADevice->getImmediateContext()->draw(300,0,8192);
 		mGASwapChain->present();
 	}
 };

@@ -34,7 +34,7 @@ namespace NSDevilX
 			virtual IGATextureView* createShaderResourceView(IGATexture1D* resource,UInt32 mostDetailedMip=0,UInt32 numMipLevels=-1,UInt32 firstArraySlice=0,UInt32 arrayCount=0)=0;
 			virtual IGATextureView* createShaderResourceView(IGATexture2D* resource,UInt32 mostDetailedMip=0,UInt32 numMipLevels=-1,UInt32 firstArraySlice=0,UInt32 arrayCount=0)=0;
 			virtual IGATextureView* createShaderResourceView(IGATexture3D* resource,UInt32 mostDetailedMip=0,UInt32 numMipLevels=-1)=0;
-			virtual IGAShaderResourceBufferView* createShaderResourceView(IGAShaderResourceBuffer* resource,UInt32 elementOffset,UInt32 numElements)=0;
+			virtual IGAShaderResourceBufferView* createShaderResourceView(IGAShaderResourceBuffer* resource,IGAEnum::EGIFormat format=IGAEnum::EGIFormat_UNKNOWN,UInt32 elementOffset=0,UInt32 numElements=-1)=0;
 			virtual IGAInputLayout * createInputLayout(const TVector<IGAStruct::SInputElementDesc> & inputElements)=0;
 			virtual IGAVertexShader * createVertexShader(const std::string & code)=0;
 			virtual IGAPixelShader * createPixelShader(const std::string & code)=0;

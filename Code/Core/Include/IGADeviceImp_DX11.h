@@ -103,7 +103,7 @@ namespace NSDevilX
 					IGAShaderResourceViewImp * _create(ID3D11Resource * resource,const D3D11_SHADER_RESOURCE_VIEW_DESC * desc);
 
 					// Í¨¹ý IGADevice ¼Ì³Ð
-					virtual IGAShaderResourceBufferView* createShaderResourceView(IGAShaderResourceBuffer* resource,UInt32 elementOffset,UInt32 numElements) override;
+					virtual IGAShaderResourceBufferView* createShaderResourceView(IGAShaderResourceBuffer* resource,IGAEnum::EGIFormat format,UInt32 elementOffset,UInt32 numElements) override;
 				};
 			}
 		}

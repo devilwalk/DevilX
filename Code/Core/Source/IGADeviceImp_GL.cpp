@@ -192,42 +192,42 @@ IGAInputLayout* NSDevilX::NSCore::NSOpenGL::IGADeviceImp::createInputLayout(cons
 
 IGAVertexShader* NSDevilX::NSCore::NSOpenGL::IGADeviceImp::createVertexShader(const std::string& code)
 {
-	auto ret=DEVILX_NEW IGAShaderImp(code,IGAEnum::EShaderType_Vertex);
+	auto ret=DEVILX_NEW IGAShaderImp(code.c_str(),IGAEnum::EShaderType_Vertex);
 	mCommonObjects.insert(ret);
 	return ret;
 }
 
 IGAPixelShader* NSDevilX::NSCore::NSOpenGL::IGADeviceImp::createPixelShader(const std::string& code)
 {
-	auto ret=DEVILX_NEW IGAShaderImp(code,IGAEnum::EShaderType_Pixel);
+	auto ret=DEVILX_NEW IGAShaderImp(code.c_str(),IGAEnum::EShaderType_Pixel);
 	mCommonObjects.insert(ret);
 	return ret;
 }
 
 IGAGeometryShader* NSDevilX::NSCore::NSOpenGL::IGADeviceImp::createGeometryShader(const std::string& code)
 {
-	auto ret=DEVILX_NEW IGAShaderImp(code,IGAEnum::EShaderType_Geometry);
+	auto ret=DEVILX_NEW IGAShaderImp(code.c_str(),IGAEnum::EShaderType_Geometry);
 	mCommonObjects.insert(ret);
 	return ret;
 }
 
 IGAHullShader* NSDevilX::NSCore::NSOpenGL::IGADeviceImp::createHullShader(const std::string& code)
 {
-	auto ret=DEVILX_NEW IGAShaderImp(code,IGAEnum::EShaderType_Hull);
+	auto ret=DEVILX_NEW IGAShaderImp(code.c_str(),IGAEnum::EShaderType_Hull);
 	mCommonObjects.insert(ret);
 	return ret;
 }
 
 IGADomainShader* NSDevilX::NSCore::NSOpenGL::IGADeviceImp::createDomainShader(const std::string& code)
 {
-	auto ret=DEVILX_NEW IGAShaderImp(code,IGAEnum::EShaderType_Domain);
+	auto ret=DEVILX_NEW IGAShaderImp(code.c_str(),IGAEnum::EShaderType_Domain);
 	mCommonObjects.insert(ret);
 	return ret;
 }
 
 IGAComputeShader* NSDevilX::NSCore::NSOpenGL::IGADeviceImp::createComputeShader(const std::string& code)
 {
-	auto ret=DEVILX_NEW IGAShaderImp(code,IGAEnum::EShaderType_Compute);
+	auto ret=DEVILX_NEW IGAShaderImp(code.c_str(),IGAEnum::EShaderType_Compute);
 	mCommonObjects.insert(ret);
 	return ret;
 }
@@ -561,7 +561,7 @@ Void NSDevilX::NSCore::NSOpenGL::IGADeviceImp::update(IGABuffer* buffer,ConstVoi
 	return Void();
 }
 
-IGAShaderResourceBufferView* NSDevilX::NSCore::NSOpenGL::IGADeviceImp::createShaderResourceView(IGAShaderResourceBuffer* resource,UInt32 elementOffset,UInt32 numElements)
+IGAShaderResourceBufferView* NSDevilX::NSCore::NSOpenGL::IGADeviceImp::createShaderResourceView(IGAShaderResourceBuffer* resource,IGAEnum::EGIFormat format,UInt32 elementOffset,UInt32 numElements)
 {
 	return nullptr;
 }

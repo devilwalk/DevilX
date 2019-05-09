@@ -131,7 +131,7 @@ namespace NSDevilX
 				virtual Void update(IGABuffer* buffer,ConstVoidPtr data,UInt32 updateOffsetInBytes=0,UInt32 updateSizeInBytes=0) override;
 
 				// Í¨¹ý IGADevice ¼Ì³Ð
-				virtual IGAShaderResourceBufferView* createShaderResourceView(IGAShaderResourceBuffer* resource,UInt32 elementOffset=0,UInt32 numElements=-1) override;
+				virtual IGAShaderResourceBufferView* createShaderResourceView(IGAShaderResourceBuffer* resource,IGAEnum::EGIFormat format,UInt32 elementOffset=0,UInt32 numElements=-1) override;
 };
 		}
 	}

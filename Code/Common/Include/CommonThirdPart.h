@@ -1,6 +1,7 @@
 #pragma once
 #include "CommonDefine.h"
 #include "tbb/tbb.h"
+#include "tbb/scalable_allocator.h"
 #if DEVILX_DEBUG
 #define _XM_NO_INTRINSICS_
 #endif

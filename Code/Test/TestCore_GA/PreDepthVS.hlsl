@@ -1,5 +1,5 @@
-StructuredBuffer<float4> gPositionBuffer:register(t0);
-StructuredBuffer<uint4> gIndexBuffer:register(t1);
+Buffer<float4> gPositionBuffer:register(t0);
+Buffer<uint4> gIndexBuffer:register(t1);
 
 struct SObjectBuffer
 {
@@ -35,6 +35,7 @@ void main(SInputVS input,out SOutputVS output)
 	uint component_index=(input.mInstanceID%2)*2;
 	uint index_start=instance_data[component_index];
 	uint index_count=instance_data[component_index+1];
+	[branch]
 	if(input.mVertexID<index_count)
 	{
 		uint vertex_index=input.mVertexID+index_start;

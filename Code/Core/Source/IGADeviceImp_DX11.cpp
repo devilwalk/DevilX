@@ -397,42 +397,42 @@ IGASamplerState * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::create
 
 IGAVertexShader * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createVertexShader(const std::string & code)
 {
-	auto ret=DEVILX_NEW IGAVertexShaderImp(mInternal,code);
+	auto ret=DEVILX_NEW IGAVertexShaderImp(mInternal,code.c_str());
 	mCommonObjects.insert(ret);
 	return ret;
 }
 
 IGAPixelShader * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createPixelShader(const std::string & code)
 {
-	auto ret=DEVILX_NEW IGAPixelShaderImp(mInternal,code);
+	auto ret=DEVILX_NEW IGAPixelShaderImp(mInternal,code.c_str());
 	mCommonObjects.insert(ret);
 	return ret;
 }
 
 IGAGeometryShader * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createGeometryShader(const std::string & code)
 {
-	auto ret=DEVILX_NEW IGAGeometryShaderImp(mInternal,code);
+	auto ret=DEVILX_NEW IGAGeometryShaderImp(mInternal,code.c_str());
 	mCommonObjects.insert(ret);
 	return ret;
 }
 
 IGAHullShader * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createHullShader(const std::string & code)
 {
-	auto ret=DEVILX_NEW IGAHullShaderImp(mInternal,code);
+	auto ret=DEVILX_NEW IGAHullShaderImp(mInternal,code.c_str());
 	mCommonObjects.insert(ret);
 	return ret;
 }
 
 IGADomainShader * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createDomainShader(const std::string & code)
 {
-	auto ret=DEVILX_NEW IGADomainShaderImp(mInternal,code);
+	auto ret=DEVILX_NEW IGADomainShaderImp(mInternal,code.c_str());
 	mCommonObjects.insert(ret);
 	return ret;
 }
 
 IGAComputeShader * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createComputeShader(const std::string & code)
 {
-	auto ret=DEVILX_NEW IGAComputeShaderImp(mInternal,code);
+	auto ret=DEVILX_NEW IGAComputeShaderImp(mInternal,code.c_str());
 	mCommonObjects.insert(ret);
 	return ret;
 }
@@ -803,13 +803,29 @@ IGAShaderResourceViewImp* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp
 	return ret;
 }
 
-IGAShaderResourceBufferView* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createShaderResourceView(IGAShaderResourceBuffer* resource,UInt32 elementOffset,UInt32 numElements)
+IGAShaderResourceBufferView* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createShaderResourceView(IGAShaderResourceBuffer* resource,IGAEnum::EGIFormat format,UInt32 elementOffset,UInt32 numElements)
 {
 	D3D11_SHADER_RESOURCE_VIEW_DESC desc;
-	desc.Format=DXGI_FORMAT_UNKNOWN;
+	desc.Format=CUtility::mapping(format);
 	desc.ViewDimension=D3D11_SRV_DIMENSION_BUFFER;
 	desc.Buffer.ElementOffset=elementOffset;
-	desc.Buffer.NumElements=numElements;
+	if(static_cast<UInt32>(-1)==numElements)
+	{
+		D3D11_BUFFER_DESC buffer_desc;
+		static_cast<IGABufferImp*>(resource)->getInternal()->GetDesc(&buffer_desc);
+		auto struct_size=1;
+		if(buffer_desc.StructureByteStride)
+		{
+			struct_size=buffer_desc.StructureByteStride;
+		}
+		else if(IGAEnum::EGIFormat_UNKNOWN!=format)
+		{
+			struct_size=CUtility::getComponentSize(format)*CUtility::getComponentCount(format);
+		}
+		desc.Buffer.NumElements=buffer_desc.ByteWidth/struct_size;
+	}
+	else
+		desc.Buffer.NumElements=numElements;
 	auto iter=std::find_if(mShaderResourceViews.begin(),mShaderResourceViews.end(),[&desc,resource](IGAShaderResourceViewImp*view)
 		{
 			D3D11_SHADER_RESOURCE_VIEW_DESC test_desc;

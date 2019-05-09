@@ -15,6 +15,7 @@ namespace NSDevilX
 		typedef String TString;
 		typedef StringStream TStringStream;
 #endif
+#define toString(x) CStringUtility::toString<decltype(x),DevilXAllocator<Char> >(x)
 #define TVector(TValue) NSDevilX::TVector<TValue,DevilXAllocator<TValue> >
 #define TList(TValue) NSDevilX::TList<TValue,DevilXAllocator<TValue> >
 #define TSet(TValue) NSDevilX::TSet<TValue,std::less<TValue>,DevilXAllocator<TValue> >

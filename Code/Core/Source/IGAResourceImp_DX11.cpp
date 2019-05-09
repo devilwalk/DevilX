@@ -104,7 +104,7 @@ NSDevilX::NSCore::NSDirectX::NSVersion11::IGAInputLayoutImp::IGAInputLayoutImp(I
 		default:
 			assert(0);
 		}
-		hlsl+=" inputParameter"+CStringUtility::toString(i)+":"+desc[i].SemanticName+CStringUtility::toString(desc[i].SemanticIndex)+",";
+		hlsl+=" inputParameter"+toString(i)+":"+desc[i].SemanticName+toString(desc[i].SemanticIndex)+",";
 	}
 	hlsl+="out float4 outputParameter:SV_Position){outputParameter=1;}";
 	CComPtr<ID3DBlob> code;
