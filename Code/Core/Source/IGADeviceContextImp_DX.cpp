@@ -59,7 +59,7 @@ Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::setVertexBuf
 	mInternal->IASetVertexBuffers(startSlot,numBuffers,reinterpret_cast<ID3D11Buffer**>(&mPointerCache[0]),strides,offsets);
 }
 
-Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::setIndexBuffer(IGAIndexBuffer * buffer,IGAEnum::EGIFormat format,UInt32 offset)
+Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::setIndexBuffer(IGAIndexBuffer * buffer,IGAEnum::EIndexBufferFormat format,UInt32 offset)
 {
 	mInternal->IASetIndexBuffer(static_cast<IGABufferImp*>(buffer)->getInternal(),CUtility::mapping(format),offset);
 }
@@ -227,16 +227,6 @@ Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::drawIndexed(
 	mInternal->DrawIndexedInstanced(indexCountPerInstance,instanceCount,startIndexLocation,baseVertexLocation,startInstanceLocation);
 }
 
-IGADeviceContext1* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::queryInterface_IGADeviceContext1() const
-{
-	return const_cast<IGADeviceContextImp*>(this);
-}
-
-IGADeviceContext* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::queryInterface_IGADeviceContext() const
-{
-	return const_cast<IGADeviceContextImp*>(this);
-}
-
 Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::setVertexShader(IGAVertexShader* shader,IGAShaderParameter* parameter)
 {
 	mInternal->VSSetShader(static_cast<IGAVertexShaderImp*>(shader)->getInternal(),nullptr,0);
@@ -305,7 +295,7 @@ Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::dispatch(IGA
 		mInternal->CSSetUnorderedAccessViews(0, static_cast<UINT>(static_cast<IGAShaderParameterImp*>(parameter)->getUnorderedAccessViews().size()),&static_cast<IGAShaderParameterImp*>(parameter)->getUnorderedAccessViews()[0],nullptr);
 }
 
-Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::update(IGABuffer* buffer,ConstVoidPtr data,UInt32 updateOffsetInBytes,UInt32 updateSizeInBytes)
+Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::update(IGAHighLevelBuffer* buffer,ConstVoidPtr data,UInt32 updateOffsetInBytes,UInt32 updateSizeInBytes)
 {
 	D3D11_BUFFER_DESC desc;
 	static_cast<IGABufferImp*>(buffer)->getInternal()->GetDesc(&desc);
@@ -337,4 +327,29 @@ Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::update(IGABu
 	{
 		assert(0);
 	}
+}
+
+Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::setVertexArrayObject(IGAVertexArrayObject* vao)
+{
+	return Void();
+}
+
+IGADeviceContextFeature_SeparateProgram* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::queryFeature_SeparateProgram() const
+{
+	return const_cast<IGADeviceContextImp*>(this);
+}
+
+IGADeviceContextFeature_SeparateVAO* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::queryFeature_SeparateVAO() const
+{
+	return const_cast<IGADeviceContextImp*>(this);
+}
+
+IGADeviceContextFeature_MultiDraw* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::queryFeature_MultiDraw() const
+{
+	return nullptr;
+}
+
+IGADeviceContextFeature_ComputeShader* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::queryFeature_ComputeShader() const
+{
+	return const_cast<IGADeviceContextImp*>(this);
 }

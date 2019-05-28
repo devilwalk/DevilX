@@ -350,12 +350,16 @@ namespace NSDevilX
 				ESRVDimension_TEXTURECUBE=9,
 				ESRVDimension_TEXTURECUBEARRAY=10
 			};
-			enum EDeviceVersion
+			enum EHighLevelDeviceVersion
 			{
-				EDeviceVersion_DirectX11,
-				EDeviceVersion_OpenGLES,
-				EDeviceVersion_OpenGL,
-				EDeviceVersion_Vulkan
+				EHighLevelDeviceVersion_DirectX11,
+				EHighLevelDeviceVersion_OpenGLES,
+				EHighLevelDeviceVersion_OpenGL,
+			};
+			enum ELowLevelDeviceVersion
+			{
+				ELowLevelDeviceVersion_DirectX12,
+				ELowLevelDeviceVersion_Vulkan
 			};
 			enum EFilter
 			{
@@ -487,6 +491,35 @@ namespace NSDevilX
 				EShaderVariableClass_STRUCT=(EShaderVariableClass_OBJECT+1),
 				EShaderVariableClass_INTERFACE_CLASS=(EShaderVariableClass_STRUCT+1),
 				EShaderVariableClass_INTERFACE_POINTER=(EShaderVariableClass_INTERFACE_CLASS+1),
+			};
+			enum EIndexBufferFormat
+			{
+				EIndexBufferFormat_16,
+				EIndexBufferFormat_32
+			};
+			enum EHeapType
+			{
+				EHeapType_DEFAULT=1,
+				EHeapType_UPLOAD=2,
+				EHeapType_READBACK=3,
+				EHeapType_CUSTOM=4
+			};
+			enum EHeapFlags
+			{
+				EHeapFlag_NONE=0,
+				EHeapFlag_SHARED=0x1,
+				EHeapFlag_DENY_BUFFERS=0x4,
+				EHeapFlag_ALLOW_DISPLAY=0x8,
+				EHeapFlag_SHARED_CROSS_ADAPTER=0x20,
+				EHeapFlag_DENY_RT_DS_TEXTURES=0x40,
+				EHeapFlag_DENY_NON_RT_DS_TEXTURES=0x80,
+				EHeapFlag_HARDWARE_PROTECTED=0x100,
+				EHeapFlag_ALLOW_WRITE_WATCH=0x200,
+				EHeapFlag_ALLOW_SHADER_ATOMICS=0x400,
+				EHeapFlag_ALLOW_ALL_BUFFERS_AND_TEXTURES=0,
+				EHeapFlag_ALLOW_ONLY_BUFFERS=0xc0,
+				EHeapFlag_ALLOW_ONLY_NON_RT_DS_TEXTURES=0x44,
+				EHeapFlag_ALLOW_ONLY_RT_DS_TEXTURES=0x84
 			};
 		};
 	}

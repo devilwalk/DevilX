@@ -1,6 +1,6 @@
 #pragma once
 #include "ICoreGAEnum.h"
-#include "ICoreGAResource.h"
+#include "ICoreGAHighLevelResource.h"
 namespace NSDevilX
 {
 	namespace NSCore
@@ -170,10 +170,34 @@ namespace NSDevilX
 				UInt32 AlignedByteOffset;
 				UInt32 InstanceDataStepRate;
 			};
-			struct SInputLayoutDesc
+			class IGAVertexBuffer;
+			struct SVAOElementDesc
+				:public SInputElementDesc
 			{
-				const SInputElementDesc *pInputElementDescs;
-				UInt32 NumElements;
+				IGAVertexBuffer* mVertexBuffer;
+				UInt32 mVertexBufferOffsetInBytes;
+			};
+			struct SDrawParameter_GL
+			{
+				UInt32 mVertexCount;
+				UInt32 mInstanceCount;
+				UInt32 mFirstVertex;
+				UInt32 mBaseInstances;
+			};
+			struct SDrawIndexedParameter_GL
+			{
+				UInt32 mIndexCount;
+				UInt32 mInstanceCount;
+				UInt32 mFirstIndex;
+				UInt32 mBaseVertex;
+				UInt32 mBaseInstances;
+			};
+			struct SHeapDesc
+			{
+				UInt64 SizeInBytes;
+				IGAEnum::EHeapType Properties;
+				UInt64 Alignment;
+				IGAEnum::EHeapFlags Flags;
 			};
 		};
 	}

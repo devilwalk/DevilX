@@ -2,10 +2,10 @@
 using namespace NSDevilX;
 using namespace NSCore;
 using namespace NSOpenGL;
-IGASwapChainImp::IGASwapChainImp(IGADeviceImp* device,EGLNativeWindowType window)
+IGASwapChainImp::IGASwapChainImp(CGADeviceImp* device,EGLNativeWindowType window)
 	:mEnvironment(nullptr)
 {
-	mEnvironment.reset(DEVILX_NEW CGAEnvironment(window,device->getVersion()==IGAEnum::EDeviceVersion_OpenGLES));
+	mEnvironment.reset(DEVILX_NEW CGAEnvironment(window,device->getVersion()==IGAEnum::EHighLevelDeviceVersion_OpenGLES));
 	device->setEnvironment(mEnvironment.get());
 }
 

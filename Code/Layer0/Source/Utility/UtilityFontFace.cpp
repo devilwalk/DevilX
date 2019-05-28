@@ -75,7 +75,7 @@ UInt32 NSDevilX::CFontFace::getTotalAdvanceWidth(const CUTF8String & text) const
 	return ret;
 }
 
-Void NSDevilX::CFontFace::getStartPositions(const CUTF8String & text,TVector(CUInt2)& startPositions)
+Void NSDevilX::CFontFace::getStartPositions(const CUTF8String & text,DevilXTVector(CUInt2)& startPositions)
 {
 	startPositions.clear();
 	UInt32 start_pos=0;

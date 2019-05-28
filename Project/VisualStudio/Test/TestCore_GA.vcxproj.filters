@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{216e5de7-eac4-495f-bbfd-72f0cd2573da}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\Test\TestCore_GA\framework.h">
@@ -45,5 +48,24 @@
     <ResourceCompile Include="..\..\..\Code\Test\TestCore_GA\TestCore_GA.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\Code\Test\TestCore_GA\PreDepthGS.glsl">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="..\..\..\Code\Test\TestCore_GA\PreDepthPS.glsl">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="..\..\..\Code\Test\TestCore_GA\PreDepthVS.glsl">
+      <Filter>Shader</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\..\..\Code\Test\TestCore_GA\PreDepthGS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\..\Code\Test\TestCore_GA\PreDepthPS.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

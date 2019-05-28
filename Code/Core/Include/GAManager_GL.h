@@ -12,14 +12,14 @@ namespace NSDevilX
 				,public TSingleton<CGAManager>
 			{
 			protected:
-				TResourcePtrVector(IGADeviceImp) mDevices;
+				TResourcePtrVector(CGADeviceImp) mDevices;
 				TResourcePtrVector(IGASwapChainImp) mSwapChains;
 			public:
 				CGAManager();
 				~CGAManager();
 
-				IGADeviceImp* createDevice(IGAEnum::EDeviceVersion version);
-				IGASwapChainImp* createSwapChain(IGADeviceImp* device,const IGAStruct::SGISwapChainDesc& desc);
+				CGADeviceImp* createDevice(IGAEnum::EHighLevelDeviceVersion version);
+				IGASwapChainImp* createSwapChain(CGADeviceImp* device,const IGAStruct::SGISwapChainDesc& desc);
 			};
 		}
 	}

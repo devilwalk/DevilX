@@ -95,6 +95,25 @@ namespace NSDevilX
 					GLuint numlayers);
 				~CGATextureViewImp();
 			};
+			class IGAShaderResourceBufferViewImp
+				:public TGAViewImp<IGAShaderResourceBufferView>
+			{
+			public:
+				IGAShaderResourceBufferViewImp(){ }
+				virtual ~IGAShaderResourceBufferViewImp(){ }
+
+				virtual GLuint getInternal()const=0;
+			};
+			class CGAShaderResourceBufferViewImp
+				:public IGAShaderResourceBufferViewImp
+				,public TBaseObject<CGAShaderResourceBufferViewImp>
+			{
+			public:
+				CGAShaderResourceBufferViewImp();
+				~CGAShaderResourceBufferViewImp();
+
+				virtual GLuint getInternal() const override;
+			};
 		}
 	}
 }

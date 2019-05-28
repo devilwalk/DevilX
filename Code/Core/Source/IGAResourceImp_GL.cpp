@@ -38,9 +38,14 @@ NSDevilX::NSCore::NSOpenGL::IGABufferImp::~IGABufferImp()
 	mInternal=0;
 }
 
-NSDevilX::NSCore::IGABuffer * NSDevilX::NSCore::NSOpenGL::IGABufferImp::queryInterface_IGABuffer()
+NSDevilX::NSCore::IGAHighLevelBuffer * NSDevilX::NSCore::NSOpenGL::IGABufferImp::queryInterface_IGAHighLevelBuffer()
 {
 	return this;
+}
+
+GLuint NSDevilX::NSCore::NSOpenGL::IGABufferImp::getInternal() const
+{
+	return mInternal;
 }
 
 NSDevilX::NSCore::NSOpenGL::IGATextureImp::IGATextureImp(GLsizei width,GLenum internalFormat,GLint mipLevel,UInt32 arrayCount,const IGAStruct::SSubResourceData* initialData)
@@ -112,7 +117,7 @@ Void NSDevilX::NSCore::NSOpenGL::IGATextureImp::_initialize1D(GLsizei width,GLen
 				)
 				glCompressedTextureImage1DEXT(mInternal,target,0,internalFormat,width,0,initialData->SysMemSlicePitch,mem_ptr);
 			else
-				glTextureImage1DEXT(mInternal,target,0,internalFormat,width,0,CUtility::getFormat(internalFormat),GL_UNSIGNED_BYTE,mem_ptr);
+				glTextureImage1DEXT(mInternal,target,0,internalFormat,width,0,CUtility::getColourFormat(internalFormat),GL_UNSIGNED_BYTE,mem_ptr);
 			CUtility::checkGLError();
 			if(initialData&&(mipLevel==0))
 			{
@@ -129,7 +134,7 @@ Void NSDevilX::NSCore::NSOpenGL::IGATextureImp::_initialize1D(GLsizei width,GLen
 				)
 				glCompressedTextureImage2DEXT(mInternal,target,0,internalFormat,width,arrayCount,0,initialData->SysMemSlicePitch,mem_ptr);
 			else
-				glTextureImage2DEXT(mInternal,target,0,internalFormat,width,arrayCount,0,CUtility::getFormat(internalFormat),GL_UNSIGNED_BYTE,mem_ptr);
+				glTextureImage2DEXT(mInternal,target,0,internalFormat,width,arrayCount,0,CUtility::getColourFormat(internalFormat),GL_UNSIGNED_BYTE,mem_ptr);
 			CUtility::checkGLError();
 			if(initialData&&(mipLevel==0))
 			{
@@ -156,7 +161,7 @@ Void NSDevilX::NSCore::NSOpenGL::IGATextureImp::_initialize1D(GLsizei width,GLen
 				)
 				glCompressedTexImage1D(target,0,internalFormat,width,0,initialData->SysMemSlicePitch,mem_ptr);
 			else
-				glTexImage1D(target,0,internalFormat,width,0,CUtility::getFormat(internalFormat),GL_UNSIGNED_BYTE,mem_ptr);
+				glTexImage1D(target,0,internalFormat,width,0,CUtility::getColourFormat(internalFormat),GL_UNSIGNED_BYTE,mem_ptr);
 			CUtility::checkGLError();
 			if(initialData&&(mipLevel==0))
 			{
@@ -173,7 +178,7 @@ Void NSDevilX::NSCore::NSOpenGL::IGATextureImp::_initialize1D(GLsizei width,GLen
 				)
 				glCompressedTexImage2D(target,0,internalFormat,width,arrayCount,0,initialData->SysMemSlicePitch,mem_ptr);
 			else
-				glTexImage2D(target,0,internalFormat,width,arrayCount,0,CUtility::getFormat(internalFormat),GL_UNSIGNED_BYTE,mem_ptr);
+				glTexImage2D(target,0,internalFormat,width,arrayCount,0,CUtility::getColourFormat(internalFormat),GL_UNSIGNED_BYTE,mem_ptr);
 			CUtility::checkGLError();
 			if(initialData&&(mipLevel==0))
 			{
@@ -217,7 +222,7 @@ Void NSDevilX::NSCore::NSOpenGL::IGATextureImp::_initialize2D(GLsizei width,GLsi
 				)
 				glCompressedTextureImage2DEXT(mInternal,target,0,internalFormat,width,height,0,initialData->SysMemSlicePitch,mem_ptr);
 			else
-				glTextureImage2DEXT(mInternal,target,0,internalFormat,width,height,0,CUtility::getFormat(internalFormat),GL_UNSIGNED_BYTE,mem_ptr);
+				glTextureImage2DEXT(mInternal,target,0,internalFormat,width,height,0,CUtility::getColourFormat(internalFormat),GL_UNSIGNED_BYTE,mem_ptr);
 			CUtility::checkGLError();
 			if(initialData&&(mipLevel==0))
 			{
@@ -234,7 +239,7 @@ Void NSDevilX::NSCore::NSOpenGL::IGATextureImp::_initialize2D(GLsizei width,GLsi
 				)
 				glCompressedTextureImage3DEXT(mInternal,target,0,internalFormat,width,height,arrayCount,0,initialData->SysMemSlicePitch,mem_ptr);
 			else
-				glTextureImage3DEXT(mInternal,target,0,internalFormat,width,height,arrayCount,0,CUtility::getFormat(internalFormat),GL_UNSIGNED_BYTE,mem_ptr);
+				glTextureImage3DEXT(mInternal,target,0,internalFormat,width,height,arrayCount,0,CUtility::getColourFormat(internalFormat),GL_UNSIGNED_BYTE,mem_ptr);
 			CUtility::checkGLError();
 			if(initialData&&(mipLevel==0))
 			{
@@ -265,7 +270,7 @@ Void NSDevilX::NSCore::NSOpenGL::IGATextureImp::_initialize2D(GLsizei width,GLsi
 				)
 				glCompressedTexImage2D(target,0,internalFormat,width,height,0,initialData->SysMemSlicePitch,mem_ptr);
 			else
-				glTexImage2D(target,0,internalFormat,width,height,0,CUtility::getFormat(internalFormat),GL_UNSIGNED_BYTE,mem_ptr);
+				glTexImage2D(target,0,internalFormat,width,height,0,CUtility::getColourFormat(internalFormat),GL_UNSIGNED_BYTE,mem_ptr);
 			CUtility::checkGLError();
 			if(initialData&&(mipLevel==0))
 			{
@@ -282,7 +287,7 @@ Void NSDevilX::NSCore::NSOpenGL::IGATextureImp::_initialize2D(GLsizei width,GLsi
 				)
 				glCompressedTexImage3D(target,0,internalFormat,width,height,arrayCount,0,initialData->SysMemSlicePitch,mem_ptr);
 			else
-				glTexImage3D(target,0,internalFormat,width,height,arrayCount,0,CUtility::getFormat(internalFormat),GL_UNSIGNED_BYTE,mem_ptr);
+				glTexImage3D(target,0,internalFormat,width,height,arrayCount,0,CUtility::getColourFormat(internalFormat),GL_UNSIGNED_BYTE,mem_ptr);
 			CUtility::checkGLError();
 			if(initialData&&(mipLevel==0))
 			{
@@ -315,7 +320,7 @@ Void NSDevilX::NSCore::NSOpenGL::IGATextureImp::_initialize3D(GLsizei width,GLsi
 			)
 			glCompressedTextureImage3DEXT(mInternal,GL_TEXTURE_3D,0,internalFormat,width,height,depth,0,initialData->SysMemSlicePitch,mem_ptr);
 		else
-			glTextureImage3DEXT(mInternal,GL_TEXTURE_3D,mipLevel,internalFormat,width,height,depth,0,CUtility::getFormat(internalFormat),GL_UNSIGNED_BYTE,mem_ptr);
+			glTextureImage3DEXT(mInternal,GL_TEXTURE_3D,mipLevel,internalFormat,width,height,depth,0,CUtility::getColourFormat(internalFormat),GL_UNSIGNED_BYTE,mem_ptr);
 		CUtility::checkGLError();
 		if(initialData&&(mipLevel==0))
 		{
@@ -335,7 +340,7 @@ Void NSDevilX::NSCore::NSOpenGL::IGATextureImp::_initialize3D(GLsizei width,GLsi
 			)
 			glCompressedTexImage3D(GL_TEXTURE_3D,0,internalFormat,width,height,depth,0,initialData->SysMemSlicePitch,mem_ptr);
 		else
-			glTexImage3D(GL_TEXTURE_3D,mipLevel,internalFormat,width,height,depth,0,CUtility::getFormat(internalFormat),GL_UNSIGNED_BYTE,mem_ptr);
+			glTexImage3D(GL_TEXTURE_3D,mipLevel,internalFormat,width,height,depth,0,CUtility::getColourFormat(internalFormat),GL_UNSIGNED_BYTE,mem_ptr);
 		CUtility::checkGLError();
 		if(initialData&&(mipLevel==0))
 		{
@@ -714,21 +719,21 @@ NSDevilX::NSCore::NSOpenGL::IGAProgramParameterImp::~IGAProgramParameterImp()
 Void NSDevilX::NSCore::NSOpenGL::IGAProgramParameterImp::setResource(UInt32 slot,IGAConstantBuffer* resource)
 {
 	if(mConstantBuffers.size()<=slot)
-		mConstantBuffers.resize(slot);
+		mConstantBuffers.resize(slot+1);
 	mConstantBuffers[slot]=static_cast<IGABufferImp*>(resource)->getInternal();
 }
 
 Void NSDevilX::NSCore::NSOpenGL::IGAProgramParameterImp::setResource(UInt32 slot,IGASamplerState* resource)
 {
 	if(mSamplers.size()<=slot)
-		mSamplers.resize(slot);
+		mSamplers.resize(slot+1);
 	mSamplers[slot]=static_cast<IGASamplerStateImp*>(resource)->getInternal();
 }
 
 Void NSDevilX::NSCore::NSOpenGL::IGAProgramParameterImp::setResource(UInt32 slot,IGATextureView* resource)
 {
 	if(mTextures.size()<=slot)
-		mTextures.resize(slot);
+		mTextures.resize(slot+1);
 	mTextures[slot]=static_cast<IGATextureViewImp*>(resource)->getInternal();
 }
 
@@ -740,5 +745,12 @@ IGAShaderParameter* NSDevilX::NSCore::NSOpenGL::IGAProgramParameterImp::queryInt
 Void NSDevilX::NSCore::NSOpenGL::IGAProgramParameterImp::setResource(UInt32 slot,IGAUnorderedAccessView* view)
 {
 	if(mShaderStorageBuffers.size()<=slot)
-		mShaderStorageBuffers.resize(slot);
+		mShaderStorageBuffers.resize(slot+1);
+}
+
+Void NSDevilX::NSCore::NSOpenGL::IGAProgramParameterImp::setResource(UInt32 slot,IGAShaderResourceBufferView* resource)
+{
+	if(mShaderStorageBuffers.size()<=slot)
+		mShaderStorageBuffers.resize(slot+1);
+	mShaderStorageBuffers[slot]=static_cast<IGAShaderResourceBufferViewImp*>(resource);
 }

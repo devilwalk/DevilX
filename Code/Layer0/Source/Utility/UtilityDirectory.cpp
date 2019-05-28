@@ -13,7 +13,7 @@ String NSDevilX::CDirectory::cleanPath(const String & path)
 		}
 	};
 	std::replace_if(path_copy.begin(),path_copy.end(),SReplace(),'/');
-	TList(String) dirs;
+	DevilXTList(String) dirs;
 	while(String::npos!=path_copy.find('/'))
 	{
 		dirs.push_back(path_copy.substr(0,path_copy.find_first_of('/')));
@@ -116,7 +116,7 @@ String NSDevilX::CDirectory::getAbsolutePath(const String & path,String currentP
 Void NSDevilX::CDirectory::create(const String & fullName)
 {
 	String full_name=cleanPath(fullName);
-	TVector(CDirectory*) dirs;
+	DevilXTVector(CDirectory*) dirs;
 	while(String::npos!=full_name.find('/'))
 	{
 		dirs.push_back(DEVILX_NEW CDirectory(full_name.substr(0,full_name.find_first_of('/')),dirs.empty()?nullptr:dirs.back()));
@@ -208,7 +208,7 @@ Void NSDevilX::CDirectory::create()
 #endif
 }
 
-Void NSDevilX::CDirectory::getChildFiles(TVector(String)& files) const
+Void NSDevilX::CDirectory::getChildFiles(DevilXTVector(String)& files) const
 {
 #if DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_WINDOWS
 	String old_current_dir;

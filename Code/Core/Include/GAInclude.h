@@ -1,4 +1,5 @@
 #pragma once
+#include "vulkan.h"
 #include "GAEnvironment_GL.h"
 #include "GAManager_DX.h"
 #include "GAManager_GL.h"

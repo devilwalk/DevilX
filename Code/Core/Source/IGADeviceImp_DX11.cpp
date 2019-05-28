@@ -33,19 +33,9 @@ NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::~IGADeviceImp()
 	mContexts.destroyAll();
 }
 
-IGADevice* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::queryInterface_IGADevice() const
+IGAEnum::EHighLevelDeviceVersion NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::getVersion() const
 {
-	return const_cast<IGADeviceImp*>(this);
-}
-
-IGADevice1* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::queryInterface_IGADevice1() const
-{
-	return const_cast<IGADeviceImp*>(this);
-}
-
-IGAEnum::EDeviceVersion NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::getVersion() const
-{
-	return IGAEnum::EDeviceVersion_DirectX11;
+	return IGAEnum::EHighLevelDeviceVersion_DirectX11;
 }
 
 IGADeviceContext * NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::getImmediateContext() const
@@ -844,6 +834,31 @@ IGAShaderResourceBufferView* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADevice
 		ret=*iter;
 	}
 	return ret;
+}
+
+IGAVertexArrayObject* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createVertexArrayObject(const TVector<IGAStruct::SVAOElementDesc>& inputElements)
+{
+	return nullptr;
+}
+
+IGAHighLevelDeviceFeature_SeparateVAO* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::queryFeature_SeparateVAO() const
+{
+	return const_cast<IGADeviceImp*>(this);
+}
+
+IGAHighLevelDeviceFeature_ComputeShader* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::queryFeature_ComputeShader() const
+{
+	return const_cast<IGADeviceImp*>(this);
+}
+
+IGAHighLevelDeviceFeature_SeparateProgram* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::queryFeature_SeparateProgram() const
+{
+	return const_cast<IGADeviceImp*>(this);
+}
+
+IGADevice* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::queryInterface_IGADevice() const
+{
+	return const_cast<IGADeviceImp*>(this);
 }
 
 IGAShaderReflection* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceImp::createReflection(IGAShader* shader)

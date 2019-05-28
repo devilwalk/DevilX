@@ -40,7 +40,7 @@ namespace NSDevilX
 		,public TBaseObject<CMemoryStream>
 	{
 	public:
-		typedef TVector(Byte) Data;
+		typedef DevilXTVector(Byte) Data;
 	protected:
 		Data mData;
 	public:

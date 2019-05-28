@@ -65,7 +65,7 @@ namespace NSDevilX
 		{
 		protected:
 			SSizeChunk * mSizeChunk;
-			TVector(Byte) mData;
+			DevilXTVector(Byte) mData;
 		public:
 			SDataChunk();
 			SDataChunk(ConstVoidPtr data,UInt32 sizeInBytes);
@@ -131,7 +131,7 @@ namespace NSDevilX
 		:public TBaseObject<CBinaryFile>
 	{
 	public:
-		typedef TVector(CBinaryFileChunk*) Chunks;
+		typedef DevilXTVector(CBinaryFileChunk*) Chunks;
 	protected:
 		Chunks mChunks;
 	public:

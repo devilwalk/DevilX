@@ -61,14 +61,14 @@ NSDevilX::NSCore::NSOpenGL::CGAManager::~CGAManager()
 	mDevices.destroyAll();
 }
 
-IGADeviceImp* NSDevilX::NSCore::NSOpenGL::CGAManager::createDevice(IGAEnum::EDeviceVersion version)
+CGADeviceImp* NSDevilX::NSCore::NSOpenGL::CGAManager::createDevice(IGAEnum::EHighLevelDeviceVersion version)
 {
-	auto ret=DEVILX_NEW IGADeviceImp(version);
+	auto ret=DEVILX_NEW CGADeviceImp(version);
 	mDevices.push_back(ret);
 	return ret;
 }
 
-IGASwapChainImp* NSDevilX::NSCore::NSOpenGL::CGAManager::createSwapChain(IGADeviceImp* device,const IGAStruct::SGISwapChainDesc& desc)
+IGASwapChainImp* NSDevilX::NSCore::NSOpenGL::CGAManager::createSwapChain(CGADeviceImp* device,const IGAStruct::SGISwapChainDesc& desc)
 {
 	auto ret=DEVILX_NEW IGASwapChainImp(device,desc.OutputWindow);
 	mSwapChains.push_back(ret);

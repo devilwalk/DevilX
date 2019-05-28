@@ -1,6 +1,6 @@
 #pragma once
 #include "ICoreGAStruct.h"
-#include "ICoreGAResource.h"
+#include "ICoreGAHighLevelResource.h"
 #include "ICoreGAView.h"
 #include "ICoreGADeviceContext.h"
 #include "ICoreGAProgramReflection.h"
@@ -8,14 +8,51 @@ namespace NSDevilX
 {
 	namespace NSCore
 	{
-		class IGADevice1;
-		class IGADevice
+		class IGAHighLevelDeviceFeature_SeparateVAO
 		{
 		protected:
-			virtual ~IGADevice(){ }
+			virtual ~IGAHighLevelDeviceFeature_SeparateVAO()
+			{
+			}
 		public:
-			virtual IGADevice1* queryInterface_IGADevice1()const=0;
-			virtual IGAEnum::EDeviceVersion getVersion()const=0;
+			virtual IGAInputLayout* createInputLayout(const TVector<IGAStruct::SInputElementDesc>& inputElements)=0;
+		};
+		class IGAHighLevelDeviceFeature_ComputeShader
+		{
+		protected:
+			virtual ~IGAHighLevelDeviceFeature_ComputeShader()
+			{
+			}
+		public:
+			virtual IGAUnorderedAccessBuffer* createUnorderedAccessBuffer(UInt32 sizeInByte,UInt32 cpuAccessFlags,IGAEnum::EUsage usage=IGAEnum::EUsage_DEFAULT,UInt32 bindFlags=0,ConstVoidPtr initialData=nullptr)=0;
+			virtual IGAUnorderedAccessView* createUnorderedAccessView(IGATexture1D* resource,UInt32 mipSlice=0,UInt32 firstArraySlice=0,UInt32 arrayCount=1)=0;
+			virtual IGAUnorderedAccessView* createUnorderedAccessView(IGATexture2D* resource,UInt32 mipSlice=0,UInt32 firstArraySlice=0,UInt32 arrayCount=1)=0;
+			virtual IGAUnorderedAccessView* createUnorderedAccessView(IGATexture3D* resource,UInt32 mipSlice,UInt32 firstDepthSlice,UInt32 depthCount)=0;
+			virtual IGAComputeShader* createComputeShader(const std::string& code)=0;
+			virtual IGAComputeShaderParameter* createComputeShaderParameter()=0;
+		};
+		class IGAHighLevelDeviceFeature_SeparateProgram
+		{
+		protected:
+			virtual ~IGAHighLevelDeviceFeature_SeparateProgram()
+			{
+			}
+		public:
+			virtual IGAShaderParameter* createShaderParameter()=0;
+			virtual Void destroyShaderParameter(IGAShaderParameter* parameter)=0;
+			virtual IGAShaderReflection* createReflection(IGAShader* shader)=0;
+			virtual Void destroyReflection(IGAShaderReflection* reflection)=0;
+		};
+		class IGAHighLevelDevice
+		{
+		protected:
+			virtual ~IGAHighLevelDevice(){ }
+		public:
+			virtual IGADevice* queryInterface_IGADevice()const=0;
+			virtual IGAHighLevelDeviceFeature_SeparateVAO* queryFeature_SeparateVAO()const=0;
+			virtual IGAHighLevelDeviceFeature_ComputeShader* queryFeature_ComputeShader()const=0;
+			virtual IGAHighLevelDeviceFeature_SeparateProgram* queryFeature_SeparateProgram()const=0;
+			virtual IGAEnum::EHighLevelDeviceVersion getVersion()const=0;
 			virtual IGADeviceContext * getImmediateContext()const=0;
 			virtual IGADeviceContext * createDeferredContext()=0;
 			virtual IGAVertexBuffer * createVertexBuffer(UInt32 sizeInByte,UInt32 cpuAccessFlags=0,IGAEnum::EUsage usage=IGAEnum::EUsage_DEFAULT,UInt32 bindFlags=0,ConstVoidPtr initialData=nullptr)=0;
@@ -35,7 +72,6 @@ namespace NSDevilX
 			virtual IGATextureView* createShaderResourceView(IGATexture2D* resource,UInt32 mostDetailedMip=0,UInt32 numMipLevels=-1,UInt32 firstArraySlice=0,UInt32 arrayCount=0)=0;
 			virtual IGATextureView* createShaderResourceView(IGATexture3D* resource,UInt32 mostDetailedMip=0,UInt32 numMipLevels=-1)=0;
 			virtual IGAShaderResourceBufferView* createShaderResourceView(IGAShaderResourceBuffer* resource,IGAEnum::EGIFormat format=IGAEnum::EGIFormat_UNKNOWN,UInt32 elementOffset=0,UInt32 numElements=-1)=0;
-			virtual IGAInputLayout * createInputLayout(const TVector<IGAStruct::SInputElementDesc> & inputElements)=0;
 			virtual IGAVertexShader * createVertexShader(const std::string & code)=0;
 			virtual IGAPixelShader * createPixelShader(const std::string & code)=0;
 			virtual IGAGeometryShader * createGeometryShader(const std::string & code)=0;
@@ -50,23 +86,7 @@ namespace NSDevilX
 			virtual Void destroyReflection(IGAProgramReflection * reflection)=0;
 			virtual IGAProgramParameter * createProgramParameter()=0;
 			virtual Void destroyProgramParameter(IGAProgramParameter * parameter)=0;
-		};
-		class IGADevice1
-		{
-		protected:
-			virtual ~IGADevice1(){ }
-		public:
-			virtual IGADevice* queryInterface_IGADevice()const=0;
-			virtual IGAUnorderedAccessBuffer* createUnorderedAccessBuffer(UInt32 sizeInByte,UInt32 cpuAccessFlags,IGAEnum::EUsage usage=IGAEnum::EUsage_DEFAULT,UInt32 bindFlags=0,ConstVoidPtr initialData=nullptr)=0;
-			virtual IGAUnorderedAccessView* createUnorderedAccessView(IGATexture1D* resource,UInt32 mipSlice=0,UInt32 firstArraySlice=0,UInt32 arrayCount=1)=0;
-			virtual IGAUnorderedAccessView* createUnorderedAccessView(IGATexture2D* resource,UInt32 mipSlice=0,UInt32 firstArraySlice=0,UInt32 arrayCount=1)=0;
-			virtual IGAUnorderedAccessView* createUnorderedAccessView(IGATexture3D* resource,UInt32 mipSlice,UInt32 firstDepthSlice,UInt32 depthCount)=0;
-			virtual IGAComputeShader* createComputeShader(const std::string& code)=0;
-			virtual IGAShaderParameter* createShaderParameter()=0;
-			virtual IGAComputeShaderParameter* createComputeShaderParameter()=0;
-			virtual Void destroyShaderParameter(IGAShaderParameter* parameter)=0;
-			virtual IGAShaderReflection* createReflection(IGAShader* shader)=0;
-			virtual Void destroyReflection(IGAShaderReflection* reflection)=0;
+			virtual IGAVertexArrayObject* createVertexArrayObject(const TVector<IGAStruct::SVAOElementDesc>& inputElements)=0;
 		};
 	}
 }

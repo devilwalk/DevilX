@@ -14,7 +14,10 @@ namespace NSDevilX
 				class IGADeviceImp
 					:public TBaseObject<IGADeviceImp>
 					,public IGADevice
-					,public IGADevice1
+					,public IGAHighLevelDevice
+					,public IGAHighLevelDeviceFeature_SeparateProgram
+					,public IGAHighLevelDeviceFeature_SeparateVAO
+					,public IGAHighLevelDeviceFeature_ComputeShader
 				{
 				protected:
 					D3D_FEATURE_LEVEL mFeatureLevel;
@@ -46,9 +49,7 @@ namespace NSDevilX
 					}
 
 					// 通过 IGADevice 继承
-					virtual IGADevice* queryInterface_IGADevice() const override;
-					virtual IGADevice1* queryInterface_IGADevice1() const override;
-					virtual IGAEnum::EDeviceVersion getVersion() const override;
+					virtual IGAEnum::EHighLevelDeviceVersion getVersion() const override;
 					virtual IGADeviceContext * getImmediateContext() const override;
 					virtual IGADeviceContext * createDeferredContext() override;
 					virtual IGAVertexBuffer * createVertexBuffer(UInt32 sizeInByte,UInt32 cpuAccessFlags,IGAEnum::EUsage usage=IGAEnum::EUsage_DEFAULT,UInt32 bindFlags=0,ConstVoidPtr initialData=nullptr) override;
@@ -104,7 +105,18 @@ namespace NSDevilX
 
 					// 通过 IGADevice 继承
 					virtual IGAShaderResourceBufferView* createShaderResourceView(IGAShaderResourceBuffer* resource,IGAEnum::EGIFormat format,UInt32 elementOffset,UInt32 numElements) override;
-				};
+
+					// 通过 IGADevice 继承
+					virtual IGAVertexArrayObject* createVertexArrayObject(const TVector<IGAStruct::SVAOElementDesc>& inputElements) override;
+
+					// 通过 IGADevice 继承
+					virtual IGAHighLevelDeviceFeature_SeparateVAO* queryFeature_SeparateVAO() const override;
+					virtual IGAHighLevelDeviceFeature_ComputeShader* queryFeature_ComputeShader() const override;
+					virtual IGAHighLevelDeviceFeature_SeparateProgram* queryFeature_SeparateProgram() const override;
+
+					// 通过 IGAHighLevelDevice 继承
+					virtual IGADevice* queryInterface_IGADevice() const override;
+					};
 			}
 		}
 	}

@@ -23,19 +23,23 @@ namespace NSDevilX
 				}
 			};
 			class IGABufferImp
-				:public TGAGLResourceImp<IGABuffer>
+				:public TGAGLResourceImp<IGAHighLevelBuffer>
 				,public IGAVertexBuffer
 				,public IGAIndexBuffer
 				,public IGAConstantBuffer
 				,public IGAUnorderedAccessBuffer
 				,public IGAShaderResourceBuffer
 				,public TBaseObject<IGABufferImp>
+				,public IGAShaderResourceBufferViewImp
 			{
 			public:
 				IGABufferImp(GLenum target,GLuint sizeInByte,GLbitfield flags,ConstVoidPtr initialData);
 				~IGABufferImp();
 
-				virtual IGABuffer * queryInterface_IGABuffer()override;
+				virtual IGAHighLevelBuffer * queryInterface_IGAHighLevelBuffer()override;
+
+				// 通过 IGAShaderResourceBufferViewImp 继承
+				virtual GLuint getInternal() const override;
 			};
 			class IGATextureImp
 				:public TGAGLResourceImp<IGATexture>
@@ -193,7 +197,7 @@ namespace NSDevilX
 				TVector(GLuint) mConstantBuffers;
 				TVector(GLuint) mSamplers;
 				TVector(GLuint) mTextures;
-				TVector(GLuint) mShaderStorageBuffers;
+				TVector(IGAShaderResourceBufferViewImp*) mShaderStorageBuffers;
 			public:
 				IGAProgramParameterImp();
 				~IGAProgramParameterImp();
@@ -223,6 +227,9 @@ namespace NSDevilX
 				// 通过 IGAComputeShaderParameter 继承
 				virtual IGAShaderParameter* queryInterface_IGAShaderParameter() override;
 				virtual Void setResource(UInt32 slot,IGAUnorderedAccessView* view) override;
+
+				// 通过 TGAResourceImp 继承
+				virtual Void setResource(UInt32 slot,IGAShaderResourceBufferView* resource) override;
 			};
 		}
 	}

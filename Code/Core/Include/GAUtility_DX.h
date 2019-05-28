@@ -50,6 +50,19 @@ namespace NSDevilX
 				{
 					return (DXGI_FORMAT)format;
 				}
+				static DXGI_FORMAT mapping(IGAEnum::EIndexBufferFormat format)
+				{
+					switch(format)
+					{
+					case IGAEnum::EIndexBufferFormat_16:
+						return DXGI_FORMAT_R16_UINT;
+					case IGAEnum::EIndexBufferFormat_32:
+						return DXGI_FORMAT_R32_UINT;
+					default:
+						assert(0);
+						return DXGI_FORMAT_UNKNOWN;
+					}
+				}
 				static D3D11_USAGE mapping(IGAEnum::EUsage usage)
 				{
 					switch(usage)

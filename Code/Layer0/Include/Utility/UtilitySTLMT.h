@@ -6,12 +6,12 @@ namespace NSDevilX
 {
 	template<typename T>
 	class TVectorMT
-		:public TVector(T)
+		:public DevilXTVector(T)
 		,public CReadWriteLocker
 	{
 	public:
-		using TVector(T)::TVector;
-		using TVector(T)::operator=;
+		using DevilXTVector(T)::TVector;
+		using DevilXTVector(T)::operator=;
 		Void pushBackMT(T const & t)
 		{
 			lockWrite();
@@ -27,12 +27,12 @@ namespace NSDevilX
 	};
 	template<typename T>
 	class TListMT
-		:public TList(T)
+		:public DevilXTList(T)
 		,public CReadWriteLocker
 	{
 	public:
-		using TList(T)::TList;
-		using TList(T)::operator=;
+		using DevilXTList(T)::TList;
+		using DevilXTList(T)::operator=;
 		Void pushBackMT(T const & t)
 		{
 			lockWrite();
@@ -54,12 +54,12 @@ namespace NSDevilX
 	};
 	template<typename T>
 	class TSetMT
-		:public TSet(T)
+		:public DevilXTSet(T)
 		,public CReadWriteLocker
 	{
 	public:
-		using TSet(T)::TSet;
-		using TSet(T)::operator=;
+		using DevilXTSet(T)::TSet;
+		using DevilXTSet(T)::operator=;
 		Void insertMT(T const & t)
 		{
 			lockWrite();
@@ -75,7 +75,7 @@ namespace NSDevilX
 	};
 	template<typename KeyT,typename ValueT>
 	class TMapMT
-		:public TMap(KeyT,ValueT)
+		:public DevilXTMap(KeyT,ValueT)
 		,public CReadWriteLocker
 	{
 	public:
@@ -141,7 +141,7 @@ namespace NSDevilX
 		:public TBaseObject<CUnorderListMT>
 	{
 	protected:
-		TSharedReadObject<TVector(TSharedReadData<VoidPtr>*) > mDatas;
+		TSharedReadObject<DevilXTVector(TSharedReadData<VoidPtr>*) > mDatas;
 	public:
 		CUnorderListMT();
 		Void pushMT(VoidPtr value);

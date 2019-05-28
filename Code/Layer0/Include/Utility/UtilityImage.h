@@ -17,7 +17,7 @@ namespace NSDevilX
 		UInt32 mBPP;
 		UInt32 mWidth;
 		UInt32 mHeight;
-		TVector(Byte) mPixels;
+		DevilXTVector(Byte) mPixels;
 	public:
 		static Void convertRGB8ToRGBA8(const Byte * src,Byte * dst,UInt32 pixelCount);
 		static Void convertRGBA8ToRGB8(const Byte * src,Byte * dst,UInt32 pixelCount);

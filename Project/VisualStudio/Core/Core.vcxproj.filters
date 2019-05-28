@@ -25,6 +25,12 @@
     <Filter Include="源文件\GraphicAPI">
       <UniqueIdentifier>{c0868085-4191-42cb-b514-c00281242e4e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Interface\GraphicAPI\HightLevel">
+      <UniqueIdentifier>{06e6869c-510f-4f90-a867-b29d0af5b3c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface\GraphicAPI\LowLevel">
+      <UniqueIdentifier>{61e4fb1f-1cb3-41ed-bd44-3fc7c37c95f3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\Core\Source\Precompiler.h">
@@ -180,12 +186,6 @@
     <ClInclude Include="..\..\..\Code\Core\Include\CPPScriptEnvironment.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGAResource.h">
-      <Filter>Interface\GraphicAPI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGADevice.h">
-      <Filter>Interface\GraphicAPI</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGAEnum.h">
       <Filter>Interface\GraphicAPI</Filter>
     </ClInclude>
@@ -215,9 +215,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Core\Include\IGAResourceImp_GL.h">
       <Filter>头文件\GraphicAPI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGADeviceContext.h">
-      <Filter>Interface\GraphicAPI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Core\Include\GAManager_DX.h">
       <Filter>头文件\GraphicAPI</Filter>
@@ -269,6 +266,27 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Core\Include\IGAProgramReflectionImp_GL.h">
       <Filter>头文件\GraphicAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGABase.h">
+      <Filter>Interface\GraphicAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGADeviceContext.h">
+      <Filter>Interface\GraphicAPI\HightLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGAHighLevelDevice.h">
+      <Filter>Interface\GraphicAPI\HightLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGAHighLevelResource.h">
+      <Filter>Interface\GraphicAPI\HightLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGACommandList.h">
+      <Filter>Interface\GraphicAPI\LowLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGACommandQueue.h">
+      <Filter>Interface\GraphicAPI\LowLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGALowLevelDevice.h">
+      <Filter>Interface\GraphicAPI\LowLevel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

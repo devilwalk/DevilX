@@ -79,7 +79,7 @@ namespace NSDevilX
 					}
 #endif
 				}
-				static GLint getInternalFormat(IGAEnum::EGIFormat format)
+				static GLint mappingInternalFormat(IGAEnum::EGIFormat format)
 				{
 					switch(format)
 					{
@@ -98,7 +98,7 @@ namespace NSDevilX
 					}
 					return GL_RGBA8;
 				}
-				static GLenum getFormat(IGAEnum::EGIFormat format)
+				static GLenum mappingColourFormat(IGAEnum::EGIFormat format)
 				{
 					switch(format)
 					{
@@ -114,7 +114,20 @@ namespace NSDevilX
 					}
 					return GL_RGBA;
 				}
-				static GLenum getFormat(GLenum internalFormat)
+				static GLenum mapping(IGAEnum::EIndexBufferFormat format)
+				{
+					switch(format)
+					{
+					case IGAEnum::EIndexBufferFormat_16:
+						return GL_UNSIGNED_SHORT;
+					case IGAEnum::EIndexBufferFormat_32:
+						return GL_UNSIGNED_INT;
+					default:
+						assert(0);
+						return 0;
+					}
+				}
+				static GLenum getColourFormat(GLenum internalFormat)
 				{
 					switch(internalFormat)
 					{
@@ -138,6 +151,19 @@ namespace NSDevilX
 						return 4*width;
 					}
 					return 0;
+				}
+				static UInt32 getSizeInBytes(GLenum format)
+				{
+					switch(format)
+					{
+					case GL_UNSIGNED_SHORT:
+						return sizeof(UInt16);
+					case GL_UNSIGNED_INT:
+						return sizeof(UInt32);
+					default:
+						assert(0);
+						return 0;
+					}
 				}
 				static GLint mappingMinFilter(IGAEnum::EFilter filter)
 				{

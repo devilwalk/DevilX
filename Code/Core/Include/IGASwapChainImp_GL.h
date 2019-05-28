@@ -5,7 +5,7 @@ namespace NSDevilX
 	{
 		namespace NSOpenGL
 		{
-			class IGADeviceImp;
+			class CGADeviceImp;
 			class CGAEnvironment;
 			class IGASwapChainImp
 				:public TBaseObject<IGASwapChainImp>
@@ -14,7 +14,7 @@ namespace NSDevilX
 			protected:
 				std::auto_ptr<CGAEnvironment> mEnvironment;
 			public:
-				IGASwapChainImp(IGADeviceImp * device,EGLNativeWindowType window);
+				IGASwapChainImp(CGADeviceImp* device,EGLNativeWindowType window);
 				~IGASwapChainImp();
 
 				CGAEnvironment* getEnvironment()const

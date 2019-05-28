@@ -13,7 +13,7 @@ NSDevilX::NSCore::NSDirectX::NSVersion11::IGABufferImp::~IGABufferImp()
 {
 }
 
-IGABuffer * NSDevilX::NSCore::NSDirectX::NSVersion11::IGABufferImp::queryInterface_IGABuffer()
+IGAHighLevelBuffer * NSDevilX::NSCore::NSDirectX::NSVersion11::IGABufferImp::queryInterface_IGAHighLevelBuffer()
 {
 	return this;
 }

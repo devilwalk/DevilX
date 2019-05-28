@@ -21,7 +21,7 @@ namespace NSDevilX
 			namespace NSVersion11
 			{
 				class IGABufferImp
-					:public TGAD3DResourceImp<IGABuffer,ID3D11Buffer>
+					:public TGAD3DResourceImp<IGAHighLevelBuffer,ID3D11Buffer>
 					,public IGAVertexBuffer
 					,public IGAIndexBuffer
 					,public IGAConstantBuffer
@@ -34,7 +34,7 @@ namespace NSDevilX
 					IGABufferImp(ID3D11Device * device,const D3D11_BUFFER_DESC & desc,const D3D11_SUBRESOURCE_DATA * initialData=nullptr);
 					~IGABufferImp();
 					
-					virtual IGABuffer * queryInterface_IGABuffer()override;
+					virtual IGAHighLevelBuffer * queryInterface_IGAHighLevelBuffer()override;
 				};
 				class IGATextureImp
 					:public TGAResourceImp<IGATexture>

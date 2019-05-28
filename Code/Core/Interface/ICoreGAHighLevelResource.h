@@ -1,19 +1,14 @@
 #pragma once
 #include "ICoreGAView.h"
+#include "ICoreGABase.h"
 namespace NSDevilX
 {
 	namespace NSCore
 	{
-		class IGAResource
+		class IGAHighLevelBuffer
 		{
 		protected:
-			virtual ~IGAResource(){ }
-		public:
-		};
-		class IGABuffer
-		{
-		protected:
-			virtual ~IGABuffer()
+			virtual ~IGAHighLevelBuffer()
 			{
 			}
 		public:
@@ -24,42 +19,42 @@ namespace NSDevilX
 		protected:
 			virtual ~IGAVertexBuffer(){ }
 		public:
-			virtual IGABuffer * queryInterface_IGABuffer()=0;
+			virtual IGAHighLevelBuffer* queryInterface_IGAHighLevelBuffer()=0;
 		};
 		class IGAIndexBuffer
 		{
 		protected:
 			virtual ~IGAIndexBuffer(){ }
 		public:
-			virtual IGABuffer * queryInterface_IGABuffer()=0;
+			virtual IGAHighLevelBuffer* queryInterface_IGAHighLevelBuffer()=0;
 		};
 		class IGAConstantBuffer
 		{
 		protected:
 			virtual ~IGAConstantBuffer(){ }
 		public:
-			virtual IGABuffer * queryInterface_IGABuffer()=0;
+			virtual IGAHighLevelBuffer* queryInterface_IGAHighLevelBuffer()=0;
 		};
 		class IGAShaderResourceBuffer
 		{
 		protected:
 			virtual ~IGAShaderResourceBuffer(){}
 		public:
-			virtual IGABuffer* queryInterface_IGABuffer() = 0;
+			virtual IGAHighLevelBuffer* queryInterface_IGAHighLevelBuffer() = 0;
 		};
 		class IGAUnorderedAccessBuffer
 		{
 		protected:
 			virtual ~IGAUnorderedAccessBuffer(){ }
 		public:
-			virtual IGABuffer * queryInterface_IGABuffer()=0;
+			virtual IGAHighLevelBuffer* queryInterface_IGAHighLevelBuffer()=0;
 		};
 		class IGATextureBuffer
 		{
 		protected:
 			virtual ~IGATextureBuffer(){ }
 		public:
-			virtual IGABuffer* queryInterface_IGABuffer()=0;
+			virtual IGAHighLevelBuffer* queryInterface_IGAHighLevelBuffer()=0;
 		};
 		class IGATexture
 		{
@@ -99,6 +94,15 @@ namespace NSDevilX
 			{}
 		public:
 			virtual IGAResource * queryInterface_IGAResource()=0;
+		};
+		class IGAVertexArrayObject
+		{
+		protected:
+			virtual ~IGAVertexArrayObject()
+			{
+			}
+		public:
+			virtual IGAResource* queryInterface_IGAResource()=0;
 		};
 		class IGABlendState
 		{
@@ -235,6 +239,14 @@ namespace NSDevilX
 		public:
 			virtual IGAShaderParameter* queryInterface_IGAShaderParameter()=0;
 			virtual Void setResource(UInt32 slot,IGAUnorderedAccessView* view)=0;
+		};
+
+		class IGAHeap
+		{
+		protected:
+			virtual ~IGAHeap(){ }
+		public:
+			virtual IGAResource* queryInterface_IGAResource()=0;
 		};
 	}
 }

@@ -58,6 +58,6 @@ namespace NSDevilX
 		}
 		Boolean hasDirectory(const String & name)const;
 		Void create();
-		Void getChildFiles(TVector(String) & files)const;
+		Void getChildFiles(DevilXTVector(String) & files)const;
 	};
 }

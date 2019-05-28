@@ -64,7 +64,7 @@ NSDevilX::CImage::~CImage()
 
 Void NSDevilX::CImage::load(const CDataStream & dataStream)
 {
-	TVector(Byte) src;
+	DevilXTVector(Byte) src;
 	src.resize(dataStream.getSize());
 	CDataStreamReader * reader=dataStream.createReader();
 	reader->process(static_cast<UInt32>(src.size()),&src[0]);

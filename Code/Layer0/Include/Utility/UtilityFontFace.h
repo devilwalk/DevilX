@@ -22,6 +22,6 @@ namespace NSDevilX
 		const FT_BBox & getBBox();
 		FT_BBox getBBox(const CUTF8Char & ch)const;
 		UInt32 getTotalAdvanceWidth(const CUTF8String & text)const;
-		Void getStartPositions(const CUTF8String & text,TVector(CUInt2) & startPositions);
+		Void getStartPositions(const CUTF8String & text,DevilXTVector(CUInt2) & startPositions);
 	};
 }
