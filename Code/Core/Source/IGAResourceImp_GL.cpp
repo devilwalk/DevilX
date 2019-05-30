@@ -16,8 +16,7 @@ NSDevilX::NSCore::NSOpenGL::IGABufferImp::IGABufferImp(GLenum target,GLuint size
 	{
 		glGenBuffers(1,&mInternal);
 		CUtility::checkGLError();
-		glBindBuffer(GL_ARRAY_BUFFER,mInternal);
-		CUtility::checkGLError();
+		CGAStateManager::activeInstance()->bindBuffer(GL_ARRAY_BUFFER,mInternal);
 		if(glBufferStorage)
 		{
 			glBufferStorage(GL_ARRAY_BUFFER,sizeInByte,initialData,flags);
@@ -149,8 +148,7 @@ Void NSDevilX::NSCore::NSOpenGL::IGATextureImp::_initialize1D(GLsizei width,GLen
 	{
 		glGenTextures(1,&mInternal);
 		CUtility::checkGLError();
-		glBindTexture(target,mInternal);
-		CUtility::checkGLError();
+		CGAStateManager::activeInstance()->bindTexture(target,mInternal);
 		switch(target)
 		{
 		case GL_TEXTURE_1D:
@@ -188,8 +186,7 @@ Void NSDevilX::NSCore::NSOpenGL::IGATextureImp::_initialize1D(GLsizei width,GLen
 		}
 		break;
 		}
-		glBindTexture(target,0);
-		CUtility::checkGLError();
+		CGAStateManager::activeInstance()->bindTexture(target,0);
 	}
 }
 
@@ -257,8 +254,7 @@ Void NSDevilX::NSCore::NSOpenGL::IGATextureImp::_initialize2D(GLsizei width,GLsi
 	{
 		glGenTextures(1,&mInternal);
 		CUtility::checkGLError();
-		glBindTexture(target,mInternal);
-		CUtility::checkGLError();
+		CGAStateManager::activeInstance()->bindTexture(target,mInternal);
 		switch(target)
 		{
 		case GL_TEXTURE_2D:
@@ -300,8 +296,7 @@ Void NSDevilX::NSCore::NSOpenGL::IGATextureImp::_initialize2D(GLsizei width,GLsi
 			assert(0);
 			break;
 		}
-		glBindTexture(target,0);
-		CUtility::checkGLError();
+		CGAStateManager::activeInstance()->bindTexture(target,0);
 	}
 }
 
@@ -332,8 +327,7 @@ Void NSDevilX::NSCore::NSOpenGL::IGATextureImp::_initialize3D(GLsizei width,GLsi
 	{
 		glGenTextures(1,&mInternal);
 		CUtility::checkGLError();
-		glBindTexture(GL_TEXTURE_3D,mInternal);
-		CUtility::checkGLError();
+		CGAStateManager::activeInstance()->bindTexture(GL_TEXTURE_3D,mInternal);
 		if((GL_COMPRESSED_RGBA_S3TC_DXT1_EXT==internalFormat)
 			||(GL_COMPRESSED_RGBA_S3TC_DXT3_EXT==internalFormat)
 			||(GL_COMPRESSED_RGBA_S3TC_DXT5_EXT==internalFormat)
@@ -347,8 +341,7 @@ Void NSDevilX::NSCore::NSOpenGL::IGATextureImp::_initialize3D(GLsizei width,GLsi
 			glGenerateMipmap(GL_TEXTURE_3D);
 			CUtility::checkGLError();
 		}
-		glBindTexture(GL_TEXTURE_3D,0);
-		CUtility::checkGLError();
+		CGAStateManager::activeInstance()->bindTexture(GL_TEXTURE_3D,0);
 	}
 }
 
@@ -378,8 +371,7 @@ NSDevilX::NSCore::NSOpenGL::IGAInputLayoutImp::IGAInputLayoutImp(const TVector(I
 	{
 		glGenVertexArrays(1,&mInternal);
 		CUtility::checkGLError();
-		glBindVertexArray(mInternal);
-		CUtility::checkGLError();
+		CGAStateManager::activeInstance()->bindVertexArray(mInternal);
 		for(UInt32 i=0,count=static_cast<UInt32>(mInputElementDescs.size());i<count;++i)
 		{
 			glVertexAttribFormat(mInputElementDescs[i].InputSlot,CUtility::getComponentCount(mInputElementDescs[i].Format),CUtility::getComponentType(mInputElementDescs[i].Format),CUtility::needNormalize(mInputElementDescs[i].Format),mInputElementDescs[i].AlignedByteOffset);
@@ -389,8 +381,7 @@ NSDevilX::NSCore::NSOpenGL::IGAInputLayoutImp::IGAInputLayoutImp(const TVector(I
 			glEnableVertexAttribArray(mInputElementDescs[i].InputSlot);
 			CUtility::checkGLError();
 		}
-		glBindVertexArray(0);
-		CUtility::checkGLError();
+		CGAStateManager::activeInstance()->bindVertexArray(0);
 	}
 }
 
@@ -642,7 +633,7 @@ NSDevilX::NSCore::NSOpenGL::IGASamplerStateImp::IGASamplerStateImp(const IGAStru
 	}
 	if(glBindSampler)
 	{
-		glBindSampler(0,mInternal);
+		CGAStateManager::activeInstance()->bindSampler(0,mInternal);
 		CUtility::checkGLError();
 		glSamplerParameteri(0,GL_TEXTURE_MIN_FILTER,CUtility::mappingMinFilter(desc.Filter));
 		CUtility::checkGLError();
@@ -666,7 +657,7 @@ NSDevilX::NSCore::NSOpenGL::IGASamplerStateImp::IGASamplerStateImp(const IGAStru
 		CUtility::checkGLError();
 		glSamplerParameterf(0,GL_TEXTURE_LOD_BIAS,desc.MipLODBias);
 		CUtility::checkGLError();
-		glBindSampler(0,0);
+		CGAStateManager::activeInstance()->bindSampler(0,0);
 		CUtility::checkGLError();
 	}
 }

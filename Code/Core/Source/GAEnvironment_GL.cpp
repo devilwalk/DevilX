@@ -3,6 +3,8 @@ using namespace NSDevilX;
 using namespace NSCore;
 using namespace NSOpenGL;
 
+CGAEnvironment* NSDevilX::NSCore::NSOpenGL::CGAEnvironment::msActiveEnvironment=nullptr;
+
 NSDevilX::NSCore::NSOpenGL::CGAEnvironment::CGAEnvironment(EGLNativeWindowType window,Bool isGLES)
 	:mDisplay(EGL_NO_DISPLAY)
 	,mSurface(EGL_NO_SURFACE)
@@ -90,8 +92,7 @@ NSDevilX::NSCore::NSOpenGL::CGAEnvironment::CGAEnvironment(EGLNativeWindowType w
 	context_config_attr_list.push_back(EGL_NONE);
 	mContext=eglCreateContext(mDisplay,config,EGL_NO_CONTEXT,&context_config_attr_list[0]);
 	CUtility::checkEGLError();
-	eglMakeCurrent(mDisplay,mSurface,mSurface,mContext);
-	CUtility::checkEGLError();
+	_active();
 #if DEVILX_DEBUG
 	if(glDebugMessageCallback)
 	{
@@ -119,6 +120,7 @@ NSDevilX::NSCore::NSOpenGL::CGAEnvironment::CGAEnvironment(EGLNativeWindowType w
 	{
 		mMultiImp.reset(DEVILX_NEW CGAEnvironmentCommon(this));
 	}
+	mStateManager.reset(DEVILX_NEW CGAStateManager);
 }
 
 NSDevilX::NSCore::NSOpenGL::CGAEnvironment::~CGAEnvironment()
@@ -128,6 +130,16 @@ NSDevilX::NSCore::NSOpenGL::CGAEnvironment::~CGAEnvironment()
 	CUtility::checkEGLError();
 	eglDestroySurface(mDisplay,mSurface);
 	CUtility::checkEGLError();
+}
+
+Void NSDevilX::NSCore::NSOpenGL::CGAEnvironment::_active()
+{
+	if(msActiveEnvironment!=this)
+	{
+		eglMakeCurrent(mDisplay,mSurface,mSurface,mContext);
+		CUtility::checkEGLError();
+		msActiveEnvironment=this;
+	}
 }
 
 NSDevilX::NSCore::NSOpenGL::CGAEnvironmentMultiImp::CGAEnvironmentMultiImp(CGAEnvironment* environment)
@@ -223,21 +235,21 @@ Void NSDevilX::NSCore::NSOpenGL::CGAEnvironmentMultiImp::setProgram(CGAProgramIm
 {
 	glUseProgram(program->getInternal());
 	CUtility::checkGLError();
-	glBindBuffersBase(GL_UNIFORM_BUFFER,0,static_cast<GLsizei>(parameter->getConstantBuffers().size()),&parameter->getConstantBuffers()[0]);
+	mEnvironment->activeStateManager()->bindBuffersBase(GL_UNIFORM_BUFFER,0,static_cast<GLsizei>(parameter->getConstantBuffers().size()),&parameter->getConstantBuffers()[0]);
 	CUtility::checkGLError();
-	glBindSamplers(0, static_cast<GLsizei>(parameter->getSamplers().size()),&parameter->getSamplers()[0]);
+	mEnvironment->activeStateManager()->bindSamplers(0, static_cast<GLsizei>(parameter->getSamplers().size()),&parameter->getSamplers()[0]);
 	CUtility::checkGLError();
-	glBindTextures(0, static_cast<GLsizei>(parameter->getTextures().size()),&parameter->getTextures()[0]);
+	mEnvironment->activeStateManager()->bindTextures(0, static_cast<GLsizei>(parameter->getTextures().size()),&parameter->getTextures()[0]);
 	CUtility::checkGLError();
 }
 
 Void NSDevilX::NSCore::NSOpenGL::CGAEnvironmentMultiImp::update(IGABufferImp* buffer,ConstVoidPtr data,UInt32 updateOffsetInBytes,UInt32 updateSizeInBytes)
 {
-	glBindBuffer(GL_ARRAY_BUFFER,static_cast<IGABufferImp*>(buffer)->getInternal());
+	mEnvironment->activeStateManager()->bindBuffer(GL_ARRAY_BUFFER,static_cast<IGABufferImp*>(buffer)->getInternal());
 	CUtility::checkGLError();
 	glBufferSubData(GL_ARRAY_BUFFER,updateOffsetInBytes,updateSizeInBytes,data);
 	CUtility::checkGLError();
-	glBindBuffer(GL_ARRAY_BUFFER,0);
+	mEnvironment->activeStateManager()->bindBuffer(GL_ARRAY_BUFFER,0);
 	CUtility::checkGLError();
 }
 

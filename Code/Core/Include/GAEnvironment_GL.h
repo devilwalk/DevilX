@@ -1,6 +1,7 @@
 #pragma once
 #include "IGAViewImp_GL.h"
 #include "IGAResourceImp_GL.h"
+#include "GAStateManager_GL.h"
 namespace NSDevilX
 {
 	namespace NSCore
@@ -14,11 +15,17 @@ namespace NSDevilX
 				:public TBaseObject<CGAEnvironment>
 			{
 			protected:
+				static CGAEnvironment* msActiveEnvironment;
 				EGLDisplay mDisplay;
 				EGLSurface mSurface;
 				EGLContext mContext;
 				std::auto_ptr<CGAEnvironmentMultiImp> mMultiImp;
+				std::auto_ptr<CGAStateManager> mStateManager;
 			public:
+				static CGAEnvironment* activeInstance()
+				{
+					return msActiveEnvironment;
+				}
 				CGAEnvironment(EGLNativeWindowType window,Bool isGLES=False);
 				virtual ~CGAEnvironment();
 
@@ -36,12 +43,25 @@ namespace NSDevilX
 				}
 				Void swapBuffer()
 				{
+					_active();
 					eglSwapBuffers(mDisplay,mSurface);
 				}
-				CGAEnvironmentMultiImp* getImp()const
+				CGAEnvironmentMultiImp* active()
 				{
+					_active();
 					return mMultiImp.get();
 				}
+				CGAStateManager* activeStateManager()
+				{
+					_active();
+					return mStateManager.get();
+				}
+				CGAStateManager* getStateManager()const
+				{
+					return mStateManager.get();
+				}
+			protected:
+				Void _active();
 			};
 			class CGAEnvironmentMultiImp
 			{

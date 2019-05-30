@@ -4,6 +4,7 @@
 #include "GAManager_DX.h"
 #include "GAManager_GL.h"
 #include "GAObject.h"
+#include "GAStateManager_GL.h"
 #include "GAUtility_DX.h"
 #include "GAUtility_GL.h"
 #include "IGADeviceContextImp_DX.h"

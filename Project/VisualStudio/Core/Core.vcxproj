@@ -128,6 +128,7 @@
     <ClInclude Include="..\..\..\Code\Core\Include\GAManager_DX.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\GAObject.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\GAEnvironment_GL.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\GAStateManager_GL.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\GAUtility_DX.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\GAUtility_GL.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\IGADeviceContextImp_DX.h" />
@@ -211,6 +212,7 @@
     <ClCompile Include="..\..\..\Code\Core\Source\GAEnvironment_GL.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\GAManager_DX.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\GAManager_GL.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\GAStateManager_GL.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\ICoreGAManager.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\ICoreMemoryManager.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\ICoreNetworkManager.cpp" />

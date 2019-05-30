@@ -351,20 +351,20 @@ Void NSDevilX::NSCore::NSOpenGL::CGADeviceImp::clear(IGADepthStencilView* view,U
 	switch(flags)
 	{
 	case IGAEnum::EClearFlag_DEPTH:
-		mEnvironment->getImp()->clear(static_cast<IGADepthStencilViewImp*>(view),depth);
+		mEnvironment->active()->clear(static_cast<IGADepthStencilViewImp*>(view),depth);
 		break;
 	case IGAEnum::EClearFlag_STENCIL:
-		mEnvironment->getImp()->clear(static_cast<IGADepthStencilViewImp*>(view),stencil);
+		mEnvironment->active()->clear(static_cast<IGADepthStencilViewImp*>(view),stencil);
 		break;
 	case IGAEnum::EClearFlag_DEPTH|IGAEnum::EClearFlag_STENCIL:
-		mEnvironment->getImp()->clear(static_cast<IGADepthStencilViewImp*>(view),depth,stencil);
+		mEnvironment->active()->clear(static_cast<IGADepthStencilViewImp*>(view),depth,stencil);
 		break;
 	}
 }
 
 Void NSDevilX::NSCore::NSOpenGL::CGADeviceImp::clear(IGARenderTargetView* view,const Float colourRGBA[4])
 {
-	mEnvironment->getImp()->clear(static_cast<IGARenderTargetViewImp*>(view),colourRGBA);
+	mEnvironment->active()->clear(static_cast<IGARenderTargetViewImp*>(view),colourRGBA);
 }
 
 Void NSDevilX::NSCore::NSOpenGL::CGADeviceImp::clear(IGAUnorderedAccessView* view,const Float value[4])
@@ -381,9 +381,9 @@ Void NSDevilX::NSCore::NSOpenGL::CGADeviceImp::setRenderTargets(UInt32 numRender
 {
 	for(UInt32 i=0;i<numRenderTarget;++i)
 	{
-		mEnvironment->getImp()->setRenderTarget(i,reinterpret_cast<IGARenderTargetViewImp*>(renderTargetViews[i]));
+		mEnvironment->active()->setRenderTarget(i,reinterpret_cast<IGARenderTargetViewImp*>(renderTargetViews[i]));
 	}
-	mEnvironment->getImp()->setDepthStencil(static_cast<IGADepthStencilViewImp*>(depthStencilView));
+	mEnvironment->active()->setDepthStencil(static_cast<IGADepthStencilViewImp*>(depthStencilView));
 }
 
 Void NSDevilX::NSCore::NSOpenGL::CGADeviceImp::setInputLayout(IGAInputLayout* layout)
@@ -521,7 +521,7 @@ Void NSDevilX::NSCore::NSOpenGL::CGADeviceImp::dispatch(IGAComputeShader* shader
 
 Void NSDevilX::NSCore::NSOpenGL::CGADeviceImp::update(IGAHighLevelBuffer* buffer,ConstVoidPtr data,UInt32 updateOffsetInBytes,UInt32 updateSizeInBytes)
 {
-	mEnvironment->getImp()->update(static_cast<IGABufferImp*>(buffer),data,updateOffsetInBytes,updateSizeInBytes);
+	mEnvironment->active()->update(static_cast<IGABufferImp*>(buffer),data,updateOffsetInBytes,updateSizeInBytes);
 }
 
 IGAShaderResourceBufferView* NSDevilX::NSCore::NSOpenGL::CGADeviceImp::createShaderResourceView(IGAShaderResourceBuffer* resource,IGAEnum::EGIFormat format,UInt32 elementOffset,UInt32 numElements)
