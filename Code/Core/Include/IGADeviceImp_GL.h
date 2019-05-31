@@ -41,6 +41,7 @@ namespace NSDevilX
 				,public IGADeviceContextFeature_SeparateVAO
 				,public IGADeviceContextFeature_SeparateProgram
 				,public IGADeviceContextFeature_MultiDraw
+				,public IGADeviceContextFeature_IndirectDraw
 			{
 			public:
 				IGADeviceContextImp()

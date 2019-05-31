@@ -51,6 +51,14 @@ namespace NSDevilX
 			virtual Void clear(IGAUnorderedAccessView* view,const UInt32 value[4])=0;
 			virtual Void dispatch(IGAComputeShader* shader,IGAShaderParameter* parameter,UInt32 threadGroupCountX,UInt32 threadGroupCountY,UInt32 threadGroupCountZ)=0;
 		};
+		class IGADeviceContextFeature_IndirectDraw
+		{
+		protected:
+			virtual ~IGADeviceContextFeature_IndirectDraw(){ }
+		public:
+			virtual Void drawIndirect(UInt32 vertexCountPerInstance,UInt32 startVertexLocation=0,UInt32 instanceCount=1,UInt32 startInstanceLocation=0)=0;
+			virtual Void drawIndexedIndirect(UInt32 indexCountPerInstance,UInt32 startIndexLocation=0,Int32 baseVertexLocation=0,UInt32 instanceCount=1,UInt32 startInstanceLocation=0)=0;
+		};
 		class IGADeviceContext
 		{
 		protected:
@@ -75,8 +83,8 @@ namespace NSDevilX
 			virtual Void setBlendState(IGABlendState * state,const Float factor[4],UInt32 samplerMask=-1)=0;
 			virtual Void setScissorRects(UInt32 numRects,const CRect * rects)=0;
 			virtual Void setViewports(UInt32 numViewports,const IGAStruct::SViewport * viewports)=0;
-			virtual Void draw(UInt32 vertexCountPerInstance,UInt32 startVertexLocation,UInt32 instanceCount=1,UInt32 startInstanceLocation=0)=0;
-			virtual Void drawIndexed(UInt32 indexCountPerInstance,UInt32 startIndexLocation,Int32 baseVertexLocation,UInt32 instanceCount=1,UInt32 startInstanceLocation=0)=0;
+			virtual Void draw(UInt32 vertexCountPerInstance,UInt32 startVertexLocation=0,UInt32 instanceCount=1,UInt32 startInstanceLocation=0)=0;
+			virtual Void drawIndexed(UInt32 indexCountPerInstance,UInt32 startIndexLocation=0,Int32 baseVertexLocation=0,UInt32 instanceCount=1,UInt32 startInstanceLocation=0)=0;
 		};
 	}
 }

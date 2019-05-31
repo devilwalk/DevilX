@@ -13,6 +13,7 @@ namespace NSDevilX
 					,public IGADeviceContextFeature_SeparateVAO
 					,public IGADeviceContextFeature_ComputeShader
 					,public IGADeviceContextFeature_SeparateProgram
+					,public IGADeviceContextFeature_IndirectDraw
 				{
 				protected:
 					CComPtr<ID3D11DeviceContext> mInternal;

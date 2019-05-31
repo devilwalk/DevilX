@@ -59,7 +59,7 @@ namespace NSDevilX
 						return !(*this==test);
 					}
 				};
-			protected:
+			public:
 				GLuint mBindBufferArrayBuffer;
 				GLuint mBindBufferElementArrayBuffer;
 				GLuint mBindBufferCopyReadBuffer;
