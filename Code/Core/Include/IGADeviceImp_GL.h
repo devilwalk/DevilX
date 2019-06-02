@@ -17,23 +17,15 @@ namespace NSDevilX
 			public:
 				IGADeviceImp(){ }
 				virtual ~IGADeviceImp(){ }
-
 				virtual IGADevice* queryInterface_IGADevice() const override
 				{
 					return const_cast<IGADeviceImp*>(this);
 				}
-				virtual IGAHighLevelDeviceFeature_SeparateProgram* queryFeature_SeparateProgram() const override
-				{
-					return const_cast<IGADeviceImp*>(this);
-				}
-				virtual IGAHighLevelDeviceFeature_SeparateVAO* queryFeature_SeparateVAO() const override
-				{
-					return const_cast<IGADeviceImp*>(this);
-				}
-				virtual IGAHighLevelDeviceFeature_ComputeShader* queryFeature_ComputeShader() const override
-				{
-					return const_cast<IGADeviceImp*>(this);
-				}
+#define IMP_FEATURE(feature,glVersion) virtual IGAHighLevelDeviceFeature_##feature* queryFeature_##feature() const override{if(glVersion)return const_cast<IGADeviceImp*>(this);else return nullptr;}
+					IMP_FEATURE(SeparateProgram,glGenProgramPipelines)
+						IMP_FEATURE(SeparateVAO,glGenVertexArrays)
+						IMP_FEATURE(ComputeShader,glDispatchCompute)
+#undef IMP_FEATURE
 			};
 			class IGADeviceContextImp
 				:public IGADeviceContext
@@ -50,23 +42,13 @@ namespace NSDevilX
 				virtual ~IGADeviceContextImp()
 				{
 				}
-
-				virtual IGADeviceContextFeature_SeparateProgram* queryFeature_SeparateProgram() const override
-				{
-					return const_cast<IGADeviceContextImp*>(this);
-				}
-				virtual IGADeviceContextFeature_SeparateVAO* queryFeature_SeparateVAO() const override
-				{
-					return const_cast<IGADeviceContextImp*>(this);
-				}
-				virtual IGADeviceContextFeature_ComputeShader* queryFeature_ComputeShader() const override
-				{
-					return const_cast<IGADeviceContextImp*>(this);
-				}
-				virtual IGADeviceContextFeature_MultiDraw* queryFeature_MultiDraw() const override
-				{
-					return const_cast<IGADeviceContextImp*>(this);
-				}
+#define IMP_FEATURE(feature,glVersion) virtual IGADeviceContextFeature_##feature* queryFeature_##feature() const override{return const_cast<IGADeviceContextImp*>(this);}
+				IMP_FEATURE(SeparateProgram,glGenProgramPipelines)
+					IMP_FEATURE(SeparateVAO,glGenVertexArrays)
+					IMP_FEATURE(ComputeShader,glDispatchCompute)
+					IMP_FEATURE(MultiDraw,glMultiDrawArrays)
+					IMP_FEATURE(IndirectDraw,glDrawArraysIndirect)
+#undef IMP_FEATURE
 			};
 			class CGADeviceImp
 				:public TBaseObject<CGADeviceImp>
@@ -178,7 +160,11 @@ namespace NSDevilX
 			protected:
 				IGARenderTargetViewImp* _createRenderTargetView(IGATextureImp* texture,UInt32 mipLevel,UInt32 arrayIndex);
 				IGADepthStencilViewImp* _createDepthStencilView(IGATextureImp* texture,UInt32 mipLevel,UInt32 arrayIndex);
-			};
+
+				// Í¨¹ý IGADeviceContextImp ¼Ì³Ð
+				virtual Void drawIndirect(UInt32 vertexCountPerInstance,UInt32 startVertexLocation=0,UInt32 instanceCount=1,UInt32 startInstanceLocation=0) override;
+				virtual Void drawIndexedIndirect(UInt32 indexCountPerInstance,UInt32 startIndexLocation=0,Int32 baseVertexLocation=0,UInt32 instanceCount=1,UInt32 startInstanceLocation=0) override;
+};
 		}
 	}
 }

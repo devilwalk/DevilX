@@ -4,16 +4,17 @@ namespace NSDevilX
 	class CStringUtility
 	{
 	public:
-		template<class TReturn,class TAllocator=std::allocator<Char> >
-		static Void split(const std::basic_string<Char,std::char_traits<Char>,TAllocator> & text,const std::basic_string<Char,std::char_traits<Char>,TAllocator> & splitKey,OUT TReturn & ret)
+		template<class TValue>
+		static auto& split(const TValue& text,const TValue& splitKey,OUT TValue& ret)
 		{
 			auto copy=text;
-			while(std::basic_string<Char,std::char_traits<Char>,TAllocator>::npos!=copy.find(splitKey))
+			while(TValue::npos!=copy.find(splitKey))
 			{
 				ret.push_back(copy.substr(0,copy.find_first_of(splitKey)));
 				copy=copy.substr(copy.find_first_of(splitKey)+1);
 			}
 			ret.push_back(copy);
+			return ret;
 		}
 		template<typename T,class TAllocator=std::allocator<Char> >
 		static std::basic_string<Char,std::char_traits<Char>,TAllocator> & toString(T t,OUT std::basic_string<Char,std::char_traits<Char>,TAllocator> & ret)

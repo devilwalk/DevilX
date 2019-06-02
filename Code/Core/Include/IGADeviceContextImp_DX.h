@@ -65,6 +65,11 @@ namespace NSDevilX
 					virtual IGADeviceContextFeature_SeparateVAO* queryFeature_SeparateVAO() const override;
 					virtual IGADeviceContextFeature_MultiDraw* queryFeature_MultiDraw() const override;
 					virtual IGADeviceContextFeature_ComputeShader* queryFeature_ComputeShader() const override;
+					virtual IGADeviceContextFeature_IndirectDraw* queryFeature_IndirectDraw() const override;
+
+					// Í¨¹ý IGADeviceContextFeature_IndirectDraw ¼Ì³Ð
+					virtual Void drawIndirect(UInt32 vertexCountPerInstance,UInt32 startVertexLocation=0,UInt32 instanceCount=1,UInt32 startInstanceLocation=0) override;
+					virtual Void drawIndexedIndirect(UInt32 indexCountPerInstance,UInt32 startIndexLocation=0,Int32 baseVertexLocation=0,UInt32 instanceCount=1,UInt32 startInstanceLocation=0) override;
 				};
 			}
 		}

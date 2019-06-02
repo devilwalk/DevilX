@@ -353,3 +353,18 @@ IGADeviceContextFeature_ComputeShader* NSDevilX::NSCore::NSDirectX::NSVersion11:
 {
 	return const_cast<IGADeviceContextImp*>(this);
 }
+
+IGADeviceContextFeature_IndirectDraw* NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::queryFeature_IndirectDraw() const
+{
+	return const_cast<IGADeviceContextImp*>(this);
+}
+
+Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::drawIndirect(UInt32 vertexCountPerInstance,UInt32 startVertexLocation,UInt32 instanceCount,UInt32 startInstanceLocation)
+{
+	draw(vertexCountPerInstance,startInstanceLocation,instanceCount,startInstanceLocation);
+}
+
+Void NSDevilX::NSCore::NSDirectX::NSVersion11::IGADeviceContextImp::drawIndexedIndirect(UInt32 indexCountPerInstance,UInt32 startIndexLocation,Int32 baseVertexLocation,UInt32 instanceCount,UInt32 startInstanceLocation)
+{
+	drawIndexed(indexCountPerInstance,startIndexLocation,baseVertexLocation,instanceCount,startInstanceLocation);
+}

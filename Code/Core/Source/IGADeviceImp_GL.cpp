@@ -464,6 +464,35 @@ IGADepthStencilViewImp* NSDevilX::NSCore::NSOpenGL::CGADeviceImp::_createDepthSt
 	return ret;
 }
 
+Void NSDevilX::NSCore::NSOpenGL::CGADeviceImp::drawIndirect(UInt32 vertexCountPerInstance,UInt32 startVertexLocation,UInt32 instanceCount,UInt32 startInstanceLocation)
+{
+	typedef  struct
+	{
+		GLuint  count;
+		GLuint  primCount;
+		GLuint  first;
+		GLuint  baseInstance;
+	} DrawArraysIndirectCommand;
+	DrawArraysIndirectCommand cmd={vertexCountPerInstance,instanceCount,startVertexLocation,startInstanceLocation};
+	glDrawArraysIndirect(mDrawMode,&cmd);
+	CUtility::checkGLError();
+}
+
+Void NSDevilX::NSCore::NSOpenGL::CGADeviceImp::drawIndexedIndirect(UInt32 indexCountPerInstance,UInt32 startIndexLocation,Int32 baseVertexLocation,UInt32 instanceCount,UInt32 startInstanceLocation)
+{
+	typedef  struct
+	{
+		GLuint  count;
+		GLuint  primCount;
+		GLuint  firstIndex;
+		GLuint  baseVertex;
+		GLuint  baseInstance;
+	} DrawElementsIndirectCommand;
+	DrawElementsIndirectCommand cmd={indexCountPerInstance,instanceCount,static_cast<GLuint>(startIndexLocation),static_cast<GLuint>(baseVertexLocation),startInstanceLocation};
+	glDrawElementsIndirect(mDrawMode,mIndexType,&cmd);
+	CUtility::checkGLError();
+}
+
 IGAShaderParameter* NSDevilX::NSCore::NSOpenGL::CGADeviceImp::createShaderParameter()
 {
 	return nullptr;

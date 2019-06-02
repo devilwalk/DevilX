@@ -70,6 +70,7 @@ namespace NSDevilX
 			virtual IGADeviceContextFeature_SeparateVAO* queryFeature_SeparateVAO()const=0;
 			virtual IGADeviceContextFeature_MultiDraw* queryFeature_MultiDraw()const=0;
 			virtual IGADeviceContextFeature_ComputeShader* queryFeature_ComputeShader()const=0;
+			virtual IGADeviceContextFeature_IndirectDraw* queryFeature_IndirectDraw()const=0;
 			virtual Void update(IGAHighLevelBuffer* buffer,ConstVoidPtr data,UInt32 updateOffsetInBytes=0,UInt32 updateSizeInBytes=0)=0;
 			virtual Void clear(IGADepthStencilView * view,UInt32 flags,Float depth,UInt8 stencil)=0;
 			virtual Void clear(IGARenderTargetView * view,const Float colourRGBA[4])=0;

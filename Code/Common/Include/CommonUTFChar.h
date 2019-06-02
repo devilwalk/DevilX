@@ -11,6 +11,8 @@ namespace NSDevilX
 		std::wstring mDebug;
 #endif
 	public:
+		CUTFChar(){ }
+		~CUTFChar(){ }
 		explicit operator Char()const
 		{
 			Int32 ret=*this;
@@ -36,6 +38,7 @@ namespace NSDevilX
 		:public CUTFChar
 	{
 	public:
+		CUTF8Char(){ }
 		CUTF8Char(Int32 c);
 		CUTF8Char(ConstVoidPtr buffer);
 	protected:
@@ -48,6 +51,10 @@ namespace NSDevilX
 	protected:
 		const Bool mBigEndian;
 	public:
+		CUTF16Char(Bool bigEndian=DEVILX_BYTE_ORDER==DEVILX_BYTE_ORDER_BIG_ENDIAN)
+			:mBigEndian(bigEndian)
+		{
+		}
 		CUTF16Char(Int32 c,Bool bigEndian=DEVILX_BYTE_ORDER==DEVILX_BYTE_ORDER_BIG_ENDIAN);
 		CUTF16Char(ConstVoidPtr buffer,Bool bigEndian=DEVILX_BYTE_ORDER==DEVILX_BYTE_ORDER_BIG_ENDIAN);
 		Bool isBigEndian()const
