@@ -58,3 +58,6 @@
 [submodule "Dependences/HLSLcc"]
 	path = Dependences/HLSLcc
 	url = git://github.com/Unity-Technologies/HLSLcc.git
+[submodule "Dependences/AGS_SDK"]
+	path = Dependences/AGS_SDK
+	url = git://github.com/GPUOpen-LibrariesAndSDKs/AGS_SDK.git
