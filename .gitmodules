@@ -61,3 +61,12 @@
 [submodule "Dependences/AGS_SDK"]
 	path = Dependences/AGS_SDK
 	url = git://github.com/GPUOpen-LibrariesAndSDKs/AGS_SDK.git
+[submodule "Dependences/GPUOpen/D3D12MemoryAllocator"]
+	path = Dependences/GPUOpen/D3D12MemoryAllocator
+	url = git://github.com/GPUOpen-LibrariesAndSDKs/D3D12MemoryAllocator.git
+[submodule "Dependences/GPUOpen/VulkanMemoryAllocator"]
+	path = Dependences/GPUOpen/VulkanMemoryAllocator
+	url = git://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator.git
+[submodule "Dependences/GPUOpen/RadeonRays_SDK"]
+	path = Dependences/GPUOpen/RadeonRays_SDK
+	url = https://github.com/GPUOpen-LibrariesAndSDKs/RadeonRays_SDK.git
