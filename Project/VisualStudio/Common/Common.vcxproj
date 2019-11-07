@@ -29,6 +29,7 @@
     <ClInclude Include="..\..\..\Code\Common\Include\CommonConstant.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonDefine.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonDirtyFlagContainer.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonD3D9GraphicsDeviceImp.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonMath.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonMatrix.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonMessageMode.h" />
@@ -61,6 +62,10 @@
     <ClInclude Include="..\..\..\Code\Common\Include\CommonVectorF.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonVectorI.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\ICommonUserDataContainerImp.h" />
+    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsCommon.h" />
+    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsBuffer.h" />
+    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsDevice.h" />
+    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsTexture.h" />
     <ClInclude Include="..\..\..\Code\Common\Interface\ICommonUserDataContainer.h" />
     <ClInclude Include="..\..\..\Code\Common\Source\Precompiler.h" />
   </ItemGroup>
@@ -75,6 +80,7 @@
     <ClCompile Include="..\..\..\Code\Common\Source\CommonUTFChar.cpp" />
     <ClCompile Include="..\..\..\Code\Common\Source\CommonVectorF.cpp" />
     <ClCompile Include="..\..\..\Code\Common\Source\CommonVectorI.cpp" />
+    <ClCompile Include="..\..\..\Code\Common\Source\CommonD3D9GraphicsDeviceImp.cpp" />
     <ClCompile Include="..\..\..\Code\Common\Source\Precompiler.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

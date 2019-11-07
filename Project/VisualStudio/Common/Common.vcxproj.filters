@@ -150,6 +150,21 @@
     <ClInclude Include="..\..\..\Code\Common\Include\CommonPointer.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsDevice.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsBuffer.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsCommon.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsTexture.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonD3D9GraphicsDeviceImp.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Common\Source\CommonColour.cpp">
@@ -183,6 +198,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Common\Source\CommonBounding.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Common\Source\CommonD3D9GraphicsDeviceImp.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

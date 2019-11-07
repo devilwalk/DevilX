@@ -93,4 +93,19 @@ namespace NSDevilX
 		const WCharPtr mWCharPtr;
 		const BoolPtr mBoolPtr;
 	};
+
+	typedef Byte BYTE;
+	typedef Char CHAR;
+	typedef Int16 SHORT;
+	typedef UInt16 USHORT;
+	typedef UInt32 UINT;
+	typedef Int32 INT;
+	typedef UInt32 DWORD;
+	typedef long LONG;
+	typedef unsigned long ULONG;
+	typedef long long LONGLONG;
+	typedef Float FLOAT;
+	typedef SizeT SIZET;
+	typedef ConstCharPtr LPCSTR;
+	typedef ConstWCharPtr LPCWSTR;
 }

@@ -41,3 +41,9 @@
 #include "CommonVector.h"
 #include "CommonVectorF.h"
 #include "CommonVectorI.h"
+
+#include "ICommonGraphicsCommon.h"
+#include "ICommonGraphicsBuffer.h"
+#include "ICommonGraphicsDevice.h"
+
+#include "CommonD3D9GraphicsDeviceImp.h"
