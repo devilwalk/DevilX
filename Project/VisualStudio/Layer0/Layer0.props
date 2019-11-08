@@ -8,7 +8,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Core\Interface;$(SolutionDir)..\..\Code\Layer0\Include;$(SolutionDir)..\..\Code\Layer0\Include\Utility;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Layer0\Include\Utility;$(SolutionDir)..\..\Code\Layer0\Include;$(SolutionDir)..\..\Code\Core\Interface;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link />
     <Lib>

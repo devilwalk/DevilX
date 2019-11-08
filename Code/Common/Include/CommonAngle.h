@@ -2,6 +2,7 @@
 #include "CommonType.h"
 namespace NSDevilX
 {
+	class CRadian;
 	class CDegree
 	{
 	protected:
@@ -14,6 +15,7 @@ namespace NSDevilX
 		{
 			return mValue;
 		}
+		operator CRadian()const;
 		Float valueRadian()const
 		{
 			return mValue/180.0f*DirectX::XM_PI;
@@ -31,6 +33,7 @@ namespace NSDevilX
 		{
 			return mValue;
 		}
+		operator CDegree()const;
 		Float valueDegree()const
 		{
 			return mValue*DirectX::XM_1DIVPI*180.0f;

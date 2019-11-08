@@ -10,7 +10,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Layer2\Interface;$(SolutionDir)..\..\Code\Layer1\Interface;$(SolutionDir)..\..\Code\Layer0\Include;$(SolutionDir)..\..\Code\Layer0\Include\Utility;$(SolutionDir)..\..\Code\Core\Interface;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Code\Layer0\Include;$(SolutionDir)..\..\Code\Layer0\Include\Utility;$(SolutionDir)..\..\Code\Layer2\Interface;$(SolutionDir)..\..\Code\Layer1\Interface;$(SolutionDir)..\..\Code\Engine\Interface;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <WarningLevel>Level3</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <SDLCheck>true</SDLCheck>

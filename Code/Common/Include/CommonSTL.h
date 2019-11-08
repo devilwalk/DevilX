@@ -205,7 +205,6 @@ namespace NSDevilX
 
 		using _Alnode=typename _Mybase::_Alnode;
 		using _Alnode_traits=typename _Mybase::_Alnode_traits;
-		using _Pairib=typename _Mybase::_Pairib;
 
 		TMap() {}
 		template<class TAllocator2>
@@ -251,8 +250,6 @@ namespace NSDevilX
 		using key_type=typename _Mybase::key_type;
 		using mapped_type=typename _Mybase::mapped_type;
 		using key_equal=typename _Mybase::key_equal;
-		using key_compare=typename _Mybase::key_compare;	// extra
-		using value_compare=typename _Mybase::value_compare;
 		using value_type=typename _Mybase::value_type;
 		using allocator_type=typename _Mybase::allocator_type;
 		using size_type=typename _Mybase::size_type;
@@ -263,10 +260,6 @@ namespace NSDevilX
 		using const_reference=const value_type&;
 		using iterator=typename _Mybase::iterator;
 		using const_iterator=typename _Mybase::const_iterator;
-
-		using _Alnode=typename _Mybase::_Alnode;
-		using _Alnode_traits=typename _Mybase::_Alnode_traits;
-		using _Pairib=typename _Mybase::_Pairib;
 
 		TUnorderedMap()
 		{

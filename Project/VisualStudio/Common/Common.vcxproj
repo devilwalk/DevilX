@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonD3D11GraphicsBufferImp.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonD3D11GraphicsDeviceImp.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\Common.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonAngle.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonAny.h" />
@@ -30,6 +32,11 @@
     <ClInclude Include="..\..\..\Code\Common\Include\CommonDefine.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonDirtyFlagContainer.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonD3D9GraphicsDeviceImp.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonGLGraphics.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonGLGraphicsBufferImp.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonGLGraphicsDeviceImp.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonGLGraphicsInputLayoutImp.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonGLGraphicsTextureImp.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonMath.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonMatrix.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonMessageMode.h" />
@@ -65,14 +72,23 @@
     <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsCommon.h" />
     <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsBuffer.h" />
     <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsDevice.h" />
+    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsInputLayout.h" />
     <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsTexture.h" />
     <ClInclude Include="..\..\..\Code\Common\Interface\ICommonUserDataContainer.h" />
     <ClInclude Include="..\..\..\Code\Common\Source\Precompiler.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Code\Common\Source\CommonAngle.cpp" />
     <ClCompile Include="..\..\..\Code\Common\Source\CommonBounding.cpp" />
     <ClCompile Include="..\..\..\Code\Common\Source\CommonColour.cpp" />
     <ClCompile Include="..\..\..\Code\Common\Source\CommonCommandQueue.cpp" />
+    <ClCompile Include="..\..\..\Code\Common\Source\CommonD3D11GraphicsBufferImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Common\Source\CommonD3D11GraphicsDeviceImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Common\Source\CommonGLGraphics.cpp" />
+    <ClCompile Include="..\..\..\Code\Common\Source\CommonGLGraphicsBufferImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Common\Source\CommonGLGraphicsDeviceImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Common\Source\CommonGLGraphicsTextureImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Common\Source\CommonGraphicsInputLayoutImp.cpp" />
     <ClCompile Include="..\..\..\Code\Common\Source\CommonMatrix.cpp" />
     <ClCompile Include="..\..\..\Code\Common\Source\CommonMessageMode.cpp" />
     <ClCompile Include="..\..\..\Code\Common\Source\CommonTransformNode.cpp" />

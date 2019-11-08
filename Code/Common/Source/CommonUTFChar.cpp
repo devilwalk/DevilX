@@ -196,7 +196,7 @@ NSDevilX::CUTF16Char::CUTF16Char(Int32 c,Bool bigEndian)
 	_encode();
 #if DEVILX_DEBUG
 	TUTFString<CUTF16Char> utf16_str;
-	utf16_str+=*this;
+	utf16_str.push_back(*this);
 	mDebug.resize(utf16_str.size());
 	memcpy(&mDebug[0],&utf16_str[0],utf16_str.size()*2);
 #endif
@@ -226,7 +226,7 @@ NSDevilX::CUTF16Char::CUTF16Char(ConstVoidPtr buffer,Bool bigEndian)
 	_decode();
 #if DEVILX_DEBUG
 	TUTFString<CUTF16Char> utf16_str;
-	utf16_str+=*this;
+	utf16_str.push_back(*this);
 	mDebug.resize(utf16_str.size());
 	memcpy(&mDebug[0],&utf16_str[0],utf16_str.size()*2);
 #endif

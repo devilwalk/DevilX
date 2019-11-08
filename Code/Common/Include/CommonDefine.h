@@ -6,7 +6,7 @@
 #define OUT
 #endif
 #define DEVILX_SAFE_RELEASE(x) {x->release();x=nullptr;}
-#define DEVILX_COM_SAFE_RELEASE(x) {x->Release();x=nullptr;}
+#define DEVILX_COM_SAFE_RELEASE(x) {static_cast<IUnknown*>(x)->Release();x=nullptr;}
 #define DEVILX_SAFE_DELETE(x) delete(x);x=0;
 #define DEVILX_BYTE_ORDER_LITTLE_ENDIAN 0
 #define DEVILX_BYTE_ORDER_BIG_ENDIAN 1

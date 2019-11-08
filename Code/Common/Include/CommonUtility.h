@@ -20,4 +20,13 @@ namespace NSDevilX
 			return (mBaseName+"/"+CStringUtility::toString(mIndex++)).c_str();
 		}
 	};
+
+	template<typename T,Bool force=True>
+	T convertPointerToNumber(ConstVoidPtr pointer)
+	{
+		if(force)
+			return static_cast<T>(*reinterpret_cast<ConstSizeTPtr>(&pointer));
+		else
+			return *reinterpret_cast<const T*>(&pointer);
+	}
 }

@@ -45,5 +45,16 @@
 #include "ICommonGraphicsCommon.h"
 #include "ICommonGraphicsBuffer.h"
 #include "ICommonGraphicsDevice.h"
+#include "ICommonGraphicsInputLayout.h"
+#include "ICommonGraphicsTexture.h"
 
 #include "CommonD3D9GraphicsDeviceImp.h"
+
+#include "CommonD3D11GraphicsBufferImp.h"
+#include "CommonD3D11GraphicsDeviceImp.h"
+
+#include "CommonGLGraphics.h"
+#include "CommonGLGraphicsBufferImp.h"
+#include "CommonGLGraphicsDeviceImp.h"
+#include "CommonGLGraphicsInputLayoutImp.h"
+#include "CommonGLGraphicsTextureImp.h"

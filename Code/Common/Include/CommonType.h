@@ -105,7 +105,7 @@ namespace NSDevilX
 	typedef unsigned long ULONG;
 	typedef long long LONGLONG;
 	typedef Float FLOAT;
-	typedef SizeT SIZET;
+	typedef SizeT SIZE_T;
 	typedef ConstCharPtr LPCSTR;
 	typedef ConstWCharPtr LPCWSTR;
 }
