@@ -43,9 +43,12 @@
 #include "CommonVectorI.h"
 
 #include "ICommonGraphicsCommon.h"
+
 #include "ICommonGraphicsBuffer.h"
 #include "ICommonGraphicsDevice.h"
 #include "ICommonGraphicsInputLayout.h"
+#include "ICommonGraphicsOperation.h"
+#include "ICommonGraphicsShader.h"
 #include "ICommonGraphicsTexture.h"
 
 #include "CommonD3D9GraphicsDeviceImp.h"

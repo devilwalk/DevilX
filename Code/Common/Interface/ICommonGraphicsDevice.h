@@ -2,6 +2,7 @@
 #include "ICommonGraphicsBuffer.h"
 #include "ICommonGraphicsTexture.h"
 #include "ICommonGraphicsInputLayout.h"
+#include "ICommonGraphicsShader.h"
 namespace NSDevilX
 {
 	class IGraphicsDevice
@@ -58,7 +59,18 @@ namespace NSDevilX
 		//gl style
 		virtual Bool vertexAttribFormat(GLuint attribindex,GLint size,GLenum type,GLboolean normalized,GLuint relativeoffset,OUT IGraphicsInputLayout* layout)=0;
 		virtual Bool vertexAttribIFormat(GLuint attribindex,GLint size,GLenum type,GLuint relativeoffset,OUT IGraphicsInputLayout* layout)=0;
-		virtual Bool vertexAttribPoint(GLuint index,GLint size,GLenum type,GLboolean normalized,GLsizei stride,ConstVoidPtr pointer,OUT IGraphicsInputLayout* layout)=0;
-		virtual Bool vertexAttribIPoint(GLuint index,GLint size,GLenum type,GLsizei stride,ConstVoidPtr pointer,OUT IGraphicsInputLayout* layout)=0;
+		virtual Bool vertexAttribPoint(GLuint index,GLint size,GLenum type,GLboolean normalized,GLsizei stride,ConstVoidPtr pointer,IGraphicsBuffer * buffer,OUT IGraphicsInputLayout* layout)=0;
+		virtual Bool vertexAttribIPoint(GLuint index,GLint size,GLenum type,GLsizei stride,ConstVoidPtr pointer,IGraphicsBuffer* buffer,OUT IGraphicsInputLayout* layout)=0;
+		//d3d style
+		virtual Bool createVertexShader(ConstVoidPtr bytecoe,SizeT bytecodeSize,OUT IGraphicsShader* shader)=0;
+		virtual Bool createPixelShader(ConstVoidPtr bytecoe,SizeT bytecodeSize,OUT IGraphicsShader* shader)=0;
+		virtual Bool createGeometryShader(ConstVoidPtr bytecoe,SizeT bytecodeSize,OUT IGraphicsShader* shader)=0;
+		virtual Bool createHullShader(ConstVoidPtr bytecoe,SizeT bytecodeSize,OUT IGraphicsShader* shader)=0;
+		virtual Bool createDomainShader(ConstVoidPtr bytecoe,SizeT bytecodeSize,OUT IGraphicsShader* shader)=0;
+		virtual Bool createComputeShader(ConstVoidPtr bytecoe,SizeT bytecodeSize,OUT IGraphicsShader* shader)=0;
+		//gl style
+		virtual Bool createShader(GLenum type,ConstVoidPtr bytecoe,SizeT bytecodeSize,OUT IGraphicsShader* shader)=0;
+		virtual Bool attachProgram(GLenum type,IGraphicsShader* shader,OUT IGraphicsProgram* program)=0;
+		virtual Bool linkProgram(OUT IGraphicsProgram* program)=0;
 	};
 }

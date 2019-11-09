@@ -447,100 +447,84 @@ Bool NSDevilX::CGLGraphicsDeviceImp::createCompressedTexture3D(GLenum target,GLi
 
 Bool NSDevilX::CGLGraphicsDeviceImp::createVertexDeclaration(const D3DVERTEXELEMENT9* elements,OUT IGraphicsInputLayout* layout)
 {
-	glGenVertexArrays(1,&static_cast<CGLGraphicsInputLayoutImp*>(layout)->mInternal);
-	glBindVertexArray(static_cast<CGLGraphicsInputLayoutImp*>(layout)->mInternal);
+	Bool ret=True;
 	D3DVERTEXELEMENT9 end=D3DDECL_END();
-	TMap<WORD,GLsizei> strides;
-	auto first_element=elements;
-	while(first_element&&(0!=memcmp(first_element,&end,sizeof(D3DVERTEXELEMENT9))))
-	{
-		strides[first_element->Stream]+=IGraphicsCommon::getStride(IGraphicsCommon::getComponentType((D3DDECLTYPE)elements->Type),IGraphicsCommon::getComponentCount((D3DDECLTYPE)elements->Type));
-		++first_element;
-	}
 	while(elements&&(0!=memcmp(elements,&end,sizeof(D3DVERTEXELEMENT9))))
 	{
-		glVertexAttribPointer(elements->Stream,IGraphicsCommon::getComponentCount((D3DDECLTYPE)elements->Type),IGraphicsCommon::getComponentType((D3DDECLTYPE)elements->Type),IGraphicsCommon::needNormalize((D3DDECLTYPE)elements->Type),strides[first_element->Stream],reinterpret_cast<ConstVoidPtr>(elements->Offset));
-		glVertexAttribBinding(elements->Stream,elements->Stream);
+		ret&=vertexAttribFormat(elements->Stream,IGraphicsCommon::getComponentCount((D3DDECLTYPE)elements->Type),IGraphicsCommon::getComponentType((D3DDECLTYPE)elements->Type),IGraphicsCommon::needNormalize((D3DDECLTYPE)elements->Type),elements->Offset,layout);
 		++elements;
 	}
-	glBindVertexArray(0);
-	return True;
+	return ret;
 }
 
 Bool NSDevilX::CGLGraphicsDeviceImp::createInputLayout(const D3D10_INPUT_ELEMENT_DESC* descs,UINT numElements,ConstVoidPtr shaderBytecodeWithInputSignature,SIZE_T bytecodeLength,OUT IGraphicsInputLayout* layout)
 {
-	glGenVertexArrays(1,&static_cast<CGLGraphicsInputLayoutImp*>(layout)->mInternal);
-	glBindVertexArray(static_cast<CGLGraphicsInputLayoutImp*>(layout)->mInternal);
-	TMap<WORD,GLsizei> strides;
+	Bool ret=True;
 	for(UINT i=0;i<numElements;++i)
 	{
-		strides[descs[i].InputSlot]+=IGraphicsCommon::getStride(IGraphicsCommon::getComponentType(descs[i].Format),IGraphicsCommon::getComponentCount(descs[i].Format));
+		ret&=vertexAttribFormat(descs[i].InputSlot,IGraphicsCommon::getComponentCount(descs[i].Format),IGraphicsCommon::getComponentType(descs[i].Format),IGraphicsCommon::needNormalize(descs[i].Format),descs[i].AlignedByteOffset,layout);
 	}
-	for(UINT i=0;i<numElements;++i)
-	{
-		glVertexAttribPointer(descs[i].InputSlot,IGraphicsCommon::getComponentCount(descs[i].Format),IGraphicsCommon::getComponentType(descs[i].Format),IGraphicsCommon::needNormalize(descs[i].Format),strides[descs[i].InputSlot],reinterpret_cast<ConstVoidPtr>(descs[i].AlignedByteOffset));
-	}
-	glBindVertexArray(0);
-	return True;
+	return ret;
 }
 
 Bool NSDevilX::CGLGraphicsDeviceImp::createInputLayout(const D3D11_INPUT_ELEMENT_DESC* descs,UINT numElements,ConstVoidPtr shaderBytecodeWithInputSignature,SIZE_T bytecodeLength,OUT IGraphicsInputLayout* layout)
 {
-	glGenVertexArrays(1,&static_cast<CGLGraphicsInputLayoutImp*>(layout)->mInternal);
-	glBindVertexArray(static_cast<CGLGraphicsInputLayoutImp*>(layout)->mInternal);
-	TMap<WORD,GLsizei> strides;
+	Bool ret=True;
 	for(UINT i=0;i<numElements;++i)
 	{
-		strides[descs[i].InputSlot]+=IGraphicsCommon::getStride(IGraphicsCommon::getComponentType(descs[i].Format),IGraphicsCommon::getComponentCount(descs[i].Format));
+		ret&=vertexAttribFormat(descs[i].InputSlot,IGraphicsCommon::getComponentCount(descs[i].Format),IGraphicsCommon::getComponentType(descs[i].Format),IGraphicsCommon::needNormalize(descs[i].Format),descs[i].AlignedByteOffset,layout);
 	}
-	for(UINT i=0;i<numElements;++i)
-	{
-		glVertexAttribPointer(descs[i].InputSlot,IGraphicsCommon::getComponentCount(descs[i].Format),IGraphicsCommon::getComponentType(descs[i].Format),IGraphicsCommon::needNormalize(descs[i].Format),strides[descs[i].InputSlot],reinterpret_cast<ConstVoidPtr>(descs[i].AlignedByteOffset));
-	}
-	glBindVertexArray(0);
-	return True;
+	return ret;
 }
 
 Bool NSDevilX::CGLGraphicsDeviceImp::vertexAttribFormat(GLuint attribindex,GLint size,GLenum type,GLboolean normalized,GLuint relativeoffset,OUT IGraphicsInputLayout* layout)
 {
-	if(0==static_cast<CGLGraphicsInputLayoutImp*>(layout)->mInternal)
+	if(0==static_cast<CGLGraphicsVertexArrayObjectImp*>(layout)->mInternal)
 	{
-		glGenVertexArrays(1,&static_cast<CGLGraphicsInputLayoutImp*>(layout)->mInternal);
+		glGenVertexArrays(1,&static_cast<CGLGraphicsVertexArrayObjectImp*>(layout)->mInternal);
 	}
-	glBindVertexArray(static_cast<CGLGraphicsInputLayoutImp*>(layout)->mInternal);
+	glBindVertexArray(static_cast<CGLGraphicsVertexArrayObjectImp*>(layout)->mInternal);
 	glVertexAttribFormat(attribindex,size,type,normalized,relativeoffset);
+	glBindVertexArray(0);
 	return True;
 }
 
 Bool NSDevilX::CGLGraphicsDeviceImp::vertexAttribIFormat(GLuint attribindex,GLint size,GLenum type,GLuint relativeoffset,OUT IGraphicsInputLayout* layout)
 {
-	if(0==static_cast<CGLGraphicsInputLayoutImp*>(layout)->mInternal)
+	if(0==static_cast<CGLGraphicsVertexArrayObjectImp*>(layout)->mInternal)
 	{
-		glGenVertexArrays(1,&static_cast<CGLGraphicsInputLayoutImp*>(layout)->mInternal);
+		glGenVertexArrays(1,&static_cast<CGLGraphicsVertexArrayObjectImp*>(layout)->mInternal);
 	}
-	glBindVertexArray(static_cast<CGLGraphicsInputLayoutImp*>(layout)->mInternal);
+	glBindVertexArray(static_cast<CGLGraphicsVertexArrayObjectImp*>(layout)->mInternal);
 	glVertexAttribIFormat(attribindex,size,type,relativeoffset);
+	glBindVertexArray(0);
 	return True;
 }
 
-Bool NSDevilX::CGLGraphicsDeviceImp::vertexAttribPoint(GLuint index,GLint size,GLenum type,GLboolean normalized,GLsizei stride,ConstVoidPtr pointer,OUT IGraphicsInputLayout* layout)
+Bool NSDevilX::CGLGraphicsDeviceImp::vertexAttribPoint(GLuint index,GLint size,GLenum type,GLboolean normalized,GLsizei stride,ConstVoidPtr pointer,IGraphicsBuffer* buffer,OUT IGraphicsInputLayout* layout)
 {
-	if(0==static_cast<CGLGraphicsInputLayoutImp*>(layout)->mInternal)
+	if(0==static_cast<CGLGraphicsVertexArrayObjectImp*>(layout)->mInternal)
 	{
-		glGenVertexArrays(1,&static_cast<CGLGraphicsInputLayoutImp*>(layout)->mInternal);
+		glGenVertexArrays(1,&static_cast<CGLGraphicsVertexArrayObjectImp*>(layout)->mInternal);
 	}
-	glBindVertexArray(static_cast<CGLGraphicsInputLayoutImp*>(layout)->mInternal);
+	glBindVertexArray(static_cast<CGLGraphicsVertexArrayObjectImp*>(layout)->mInternal);
+	glBindBuffer(GL_ARRAY_BUFFER,static_cast<CGLGraphicsBufferImp*>(buffer)->mInternal);
 	glVertexAttribPointer(index,size,type,normalized,stride,pointer);
+	glBindBuffer(GL_ARRAY_BUFFER,0);
+	glBindVertexArray(0);
 	return True;
 }
 
-Bool NSDevilX::CGLGraphicsDeviceImp::vertexAttribIPoint(GLuint index,GLint size,GLenum type,GLsizei stride,ConstVoidPtr pointer,OUT IGraphicsInputLayout* layout)
+Bool NSDevilX::CGLGraphicsDeviceImp::vertexAttribIPoint(GLuint index,GLint size,GLenum type,GLsizei stride,ConstVoidPtr pointer,IGraphicsBuffer* buffer,OUT IGraphicsInputLayout* layout)
 {
-	if(0==static_cast<CGLGraphicsInputLayoutImp*>(layout)->mInternal)
+	if(0==static_cast<CGLGraphicsVertexArrayObjectImp*>(layout)->mInternal)
 	{
-		glGenVertexArrays(1,&static_cast<CGLGraphicsInputLayoutImp*>(layout)->mInternal);
+		glGenVertexArrays(1,&static_cast<CGLGraphicsVertexArrayObjectImp*>(layout)->mInternal);
 	}
-	glBindVertexArray(static_cast<CGLGraphicsInputLayoutImp*>(layout)->mInternal);
+	glBindVertexArray(static_cast<CGLGraphicsVertexArrayObjectImp*>(layout)->mInternal);
+	glBindBuffer(GL_ARRAY_BUFFER,static_cast<CGLGraphicsBufferImp*>(buffer)->mInternal);
 	glVertexAttribIPointer(index,size,type,stride,pointer);
+	glBindBuffer(GL_ARRAY_BUFFER,0);
+	glBindVertexArray(0);
 	return True;
 }

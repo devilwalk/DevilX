@@ -69,6 +69,8 @@
     <ClInclude Include="..\..\..\Code\Common\Include\CommonVectorF.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonVectorI.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\ICommonUserDataContainerImp.h" />
+    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsOperation.h" />
+    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsShader.h" />
     <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsCommon.h" />
     <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsBuffer.h" />
     <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsDevice.h" />

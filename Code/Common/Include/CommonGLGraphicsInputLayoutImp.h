@@ -1,13 +1,13 @@
 #pragma once
 namespace NSDevilX
 {
-	class CGLGraphicsInputLayoutImp
+	class CGLGraphicsVertexArrayObjectImp
 		:public IGraphicsInputLayout
 		,public CGLGraphicsObject
 	{
 	protected:
 	public:
-		CGLGraphicsInputLayoutImp();
-		virtual ~CGLGraphicsInputLayoutImp();
+		CGLGraphicsVertexArrayObjectImp();
+		virtual ~CGLGraphicsVertexArrayObjectImp();
 	};
 }

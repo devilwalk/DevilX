@@ -189,6 +189,12 @@
     <ClInclude Include="..\..\..\Code\Common\Include\CommonGLGraphicsInputLayoutImp.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsShader.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsOperation.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Common\Source\CommonColour.cpp">

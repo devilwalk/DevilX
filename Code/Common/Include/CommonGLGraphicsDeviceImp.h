@@ -42,8 +42,8 @@ namespace NSDevilX
 		virtual Bool createInputLayout(const D3D11_INPUT_ELEMENT_DESC* descs,UINT numElements,ConstVoidPtr shaderBytecodeWithInputSignature,SIZE_T bytecodeLength,OUT IGraphicsInputLayout* layout) override;
 		virtual Bool vertexAttribFormat(GLuint attribindex,GLint size,GLenum type,GLboolean normalized,GLuint relativeoffset,OUT IGraphicsInputLayout* layout) override;
 		virtual Bool vertexAttribIFormat(GLuint attribindex,GLint size,GLenum type,GLuint relativeoffset,OUT IGraphicsInputLayout* layout) override;
-		virtual Bool vertexAttribPoint(GLuint index,GLint size,GLenum type,GLboolean normalized,GLsizei stride,ConstVoidPtr pointer,OUT IGraphicsInputLayout* layout) override;
-		virtual Bool vertexAttribIPoint(GLuint index,GLint size,GLenum type,GLsizei stride,ConstVoidPtr pointer,OUT IGraphicsInputLayout* layout) override;
+		virtual Bool vertexAttribPoint(GLuint index,GLint size,GLenum type,GLboolean normalized,GLsizei stride,ConstVoidPtr pointer,IGraphicsBuffer* buffer,OUT IGraphicsInputLayout* layout) override;
+		virtual Bool vertexAttribIPoint(GLuint index,GLint size,GLenum type,GLsizei stride,ConstVoidPtr pointer,IGraphicsBuffer* buffer,OUT IGraphicsInputLayout* layout) override;
 	};
 
 	class CGLES2GraphicsDeviceImp
