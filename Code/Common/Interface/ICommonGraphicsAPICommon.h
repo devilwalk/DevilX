@@ -865,6 +865,22 @@ namespace NSDevilX
 				}
 				return base_stride*componentCount;
 			}
+			static GLint mappingGL(D3D10_BLEND blend)
+			{
+				GLint ret=0;
+				switch(blend)
+				{
+				case D3D10_BLEND_ZERO:ret=GL_ZERO;break;
+				case D3D10_BLEND_ONE:ret=GL_ONE;break;
+				case D3D10_BLEND_SRC_COLOR:ret=GL_SRC_COLOR;break;
+				case D3D10_BLEND_INV_SRC_COLOR:ret=GL_ONE_MINUS_SRC_COLOR;break;
+				case D3D10_BLEND_SRC_ALPHA:ret=GL_SRC_ALPHA;break;
+				case D3D10_BLEND_INV_SRC_ALPHA:ret=GL_ONE_MINUS_SRC_ALPHA;break;
+				case D3D10_BLEND_DEST_ALPHA:ret=GL_DST_ALPHA;break;
+				case D3D10_BLEND_INV_DEST_ALPHA:ret=GL_ONE_MINUS_DST_ALPHA;break;
+				}
+				return ret;
+			}
 		};
 	}
 }
