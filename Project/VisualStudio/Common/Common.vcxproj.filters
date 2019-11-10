@@ -16,6 +16,15 @@
     <Filter Include="Interface">
       <UniqueIdentifier>{e0b00a43-2078-4b44-a17c-0c93bcee67b7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Interface\GrahpicsAPI">
+      <UniqueIdentifier>{15d5b3fd-09f5-4149-97e2-62fcc34f5782}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\GraphicsAPI">
+      <UniqueIdentifier>{5c760b09-6544-45c7-b666-a368d2d84cc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\GraphicsAPI">
+      <UniqueIdentifier>{73c5b2c7-0696-4ba6-a192-0aa2aa7d5960}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Code\Common\Include\Common.h">
@@ -150,50 +159,71 @@
     <ClInclude Include="..\..\..\Code\Common\Include\CommonPointer.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsDevice.h">
-      <Filter>Interface</Filter>
+    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsAPIBuffer.h">
+      <Filter>Interface\GrahpicsAPI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsBuffer.h">
-      <Filter>Interface</Filter>
+    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsAPICommandList.h">
+      <Filter>Interface\GrahpicsAPI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsCommon.h">
-      <Filter>Interface</Filter>
+    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsAPICommandQueue.h">
+      <Filter>Interface\GrahpicsAPI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsTexture.h">
-      <Filter>Interface</Filter>
+    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsAPICommon.h">
+      <Filter>Interface\GrahpicsAPI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Common\Include\CommonD3D9GraphicsDeviceImp.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsAPIDevice.h">
+      <Filter>Interface\GrahpicsAPI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Common\Include\CommonD3D11GraphicsDeviceImp.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsAPIInputLayout.h">
+      <Filter>Interface\GrahpicsAPI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Common\Include\CommonD3D11GraphicsBufferImp.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsAPIOperation.h">
+      <Filter>Interface\GrahpicsAPI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsInputLayout.h">
-      <Filter>Interface</Filter>
+    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsAPIShader.h">
+      <Filter>Interface\GrahpicsAPI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Common\Include\CommonGLGraphicsBufferImp.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsAPITexture.h">
+      <Filter>Interface\GrahpicsAPI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Common\Include\CommonGLGraphicsDeviceImp.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonD3D9DeviceImp.h">
+      <Filter>头文件\GraphicsAPI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Common\Include\CommonGLGraphicsTextureImp.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonD3D11BufferImp.h">
+      <Filter>头文件\GraphicsAPI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Common\Include\CommonGLGraphics.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonD3D11DeviceImp.h">
+      <Filter>头文件\GraphicsAPI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Common\Include\CommonGLGraphicsInputLayoutImp.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonGL.h">
+      <Filter>头文件\GraphicsAPI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsShader.h">
-      <Filter>Interface</Filter>
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonGLBufferImp.h">
+      <Filter>头文件\GraphicsAPI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsOperation.h">
-      <Filter>Interface</Filter>
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonGLDeviceImp.h">
+      <Filter>头文件\GraphicsAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonGLInputLayoutImp.h">
+      <Filter>头文件\GraphicsAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonGLTextureImp.h">
+      <Filter>头文件\GraphicsAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonGLShaderImp.h">
+      <Filter>头文件\GraphicsAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsAPIVertexArrayObject.h">
+      <Filter>Interface\GrahpicsAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsAPIHeap.h">
+      <Filter>Interface\GrahpicsAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsAPIPipelineState.h">
+      <Filter>Interface\GrahpicsAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonGLPipelineStateImp.h">
+      <Filter>头文件\GraphicsAPI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -233,29 +263,32 @@
     <ClCompile Include="..\..\..\Code\Common\Source\CommonAngle.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Common\Source\CommonD3D9GraphicsDeviceImp.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="..\..\..\Code\Common\Source\CommonD3D9DeviceImp.cpp">
+      <Filter>源文件\GraphicsAPI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Common\Source\CommonD3D11GraphicsDeviceImp.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="..\..\..\Code\Common\Source\CommonD3D11BufferImp.cpp">
+      <Filter>源文件\GraphicsAPI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Common\Source\CommonD3D11GraphicsBufferImp.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="..\..\..\Code\Common\Source\CommonD3D11DeviceImp.cpp">
+      <Filter>源文件\GraphicsAPI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Common\Source\CommonGLGraphics.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="..\..\..\Code\Common\Source\CommonGL.cpp">
+      <Filter>源文件\GraphicsAPI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Common\Source\CommonGLGraphicsBufferImp.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="..\..\..\Code\Common\Source\CommonGLBufferImp.cpp">
+      <Filter>源文件\GraphicsAPI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Common\Source\CommonGLGraphicsDeviceImp.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="..\..\..\Code\Common\Source\CommonGLDeviceImp.cpp">
+      <Filter>源文件\GraphicsAPI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Common\Source\CommonGLGraphicsTextureImp.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="..\..\..\Code\Common\Source\CommonGLTextureImp.cpp">
+      <Filter>源文件\GraphicsAPI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Common\Source\CommonGraphicsInputLayoutImp.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="..\..\..\Code\Common\Source\CommonGLInputLayoutImp.cpp">
+      <Filter>源文件\GraphicsAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Common\Source\CommonGLShaderImp.cpp">
+      <Filter>源文件\GraphicsAPI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
