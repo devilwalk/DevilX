@@ -10,11 +10,12 @@ namespace NSDevilX
 		{
 			friend class CGLDeviceImp;
 		protected:
-			TMap<VoidPtr,GLint> mStateChangeOneParameters;
-			TMap<VoidPtr,GLint[2]> mStateChangeTwoParameters;
-			TMap<VoidPtr,GLint[3]> mStateChangeThreeParameters;
-			TMap<VoidPtr,GLint[4]> mStateChangeFourParameters;
-			TMap<VoidPtr,GLint[5]> mStateChangeFiveParameters;
+			TMap<VoidPtr,GLint> mStateChangeParameters_I;
+			TMap<VoidPtr,GLint[2]> mStateChangeParameters_II;
+			TMap<VoidPtr,GLint[3]> mStateChangeParameters_III;
+			TMap<VoidPtr,GLint[4]> mStateChangeParameters_IIII;
+			TMap<VoidPtr,GLint[5]> mStateChangeParameters_IIIII;
+			TMap<VoidPtr,GLfloat> mStateChangeParameters_F;
 		public:
 			CGLStateImp();
 			virtual ~CGLStateImp();
