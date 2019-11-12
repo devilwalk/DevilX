@@ -1204,14 +1204,14 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createRasterizerState(const D3D10_RA
 	}
 	if(desc.DepthBiasClamp!=0)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_III[glPolygonOffsetClamp][0]=*reinterpret_cast<const GLint*>(&desc.SlopeScaledDepthBias);
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_III[glPolygonOffsetClamp][1]=desc.DepthBias;
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_III[glPolygonOffsetClamp][2]=*reinterpret_cast<const GLint*>(&desc.DepthBiasClamp);
+		static_cast<CGLStateImp*>(state)->mStateChangeParameters_FFF[glPolygonOffsetClamp][0]=desc.SlopeScaledDepthBias;
+		static_cast<CGLStateImp*>(state)->mStateChangeParameters_FFF[glPolygonOffsetClamp][1]=*reinterpret_cast<const GLfloat*>(&desc.DepthBias);
+		static_cast<CGLStateImp*>(state)->mStateChangeParameters_FFF[glPolygonOffsetClamp][2]=desc.DepthBiasClamp;
 	}
 	else if((desc.DepthBias!=0)||(desc.SlopeScaledDepthBias!=0))
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glPolygonOffset][0]=*reinterpret_cast<const GLint*>(&desc.SlopeScaledDepthBias);
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glPolygonOffset][1]=desc.DepthBias;
+		static_cast<CGLStateImp*>(state)->mStateChangeParameters_FF[glPolygonOffset][0]=desc.SlopeScaledDepthBias;
+		static_cast<CGLStateImp*>(state)->mStateChangeParameters_FF[glPolygonOffset][1]=*reinterpret_cast<const GLfloat*>(&desc.DepthBias);
 	}
 	if(!desc.DepthClipEnable)
 	{
@@ -1248,14 +1248,14 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createRasterizerState(const D3D11_RA
 	}
 	if(desc.DepthBiasClamp!=0)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_III[glPolygonOffsetClamp][0]=*reinterpret_cast<const GLint*>(&desc.SlopeScaledDepthBias);
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_III[glPolygonOffsetClamp][1]=desc.DepthBias;
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_III[glPolygonOffsetClamp][2]=*reinterpret_cast<const GLint*>(&desc.DepthBiasClamp);
+		static_cast<CGLStateImp*>(state)->mStateChangeParameters_FFF[glPolygonOffsetClamp][0]=desc.SlopeScaledDepthBias;
+		static_cast<CGLStateImp*>(state)->mStateChangeParameters_FFF[glPolygonOffsetClamp][1]=*reinterpret_cast<const GLfloat*>(&desc.DepthBias);
+		static_cast<CGLStateImp*>(state)->mStateChangeParameters_FFF[glPolygonOffsetClamp][2]=desc.DepthBiasClamp;
 	}
 	else if((desc.DepthBias!=0)||(desc.SlopeScaledDepthBias!=0))
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glPolygonOffset][0]=*reinterpret_cast<const GLint*>(&desc.SlopeScaledDepthBias);
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glPolygonOffset][1]=desc.DepthBias;
+		static_cast<CGLStateImp*>(state)->mStateChangeParameters_FF[glPolygonOffset][0]=desc.SlopeScaledDepthBias;
+		static_cast<CGLStateImp*>(state)->mStateChangeParameters_FF[glPolygonOffset][1]=*reinterpret_cast<const GLfloat*>(&desc.DepthBias);
 	}
 	if(!desc.DepthClipEnable)
 	{
@@ -1291,6 +1291,10 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createRasterizerState(const D3D11_RA
 
 Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createRasterizerState(const D3D11_RASTERIZER_DESC2& desc,OUT IRasterizerState* state)
 {
+	if(desc.ConservativeRaster!=D3D11_CONSERVATIVE_RASTERIZATION_MODE_OFF)
+	{
+		static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glEnable]=ICommon::mappingGL(desc.ConservativeRaster);
+	}
 	return createRasterizerState(*reinterpret_cast<const D3D11_RASTERIZER_DESC1*>(&desc),state);
 }
 

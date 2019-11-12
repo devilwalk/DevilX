@@ -892,28 +892,7 @@ namespace NSDevilX
 			}
 			static GLint mappingGL(D3D11_BLEND blend)
 			{
-				GLint ret=0;
-				switch(blend)
-				{
-				case D3D11_BLEND_ZERO:ret=GL_ZERO;break;
-				case D3D11_BLEND_ONE:ret=GL_ONE;break;
-				case D3D11_BLEND_SRC_COLOR:ret=GL_SRC_COLOR;break;
-				case D3D11_BLEND_INV_SRC_COLOR:ret=GL_ONE_MINUS_SRC_COLOR;break;
-				case D3D11_BLEND_SRC_ALPHA:ret=GL_SRC_ALPHA;break;
-				case D3D11_BLEND_INV_SRC_ALPHA:ret=GL_ONE_MINUS_SRC_ALPHA;break;
-				case D3D11_BLEND_DEST_ALPHA:ret=GL_DST_ALPHA;break;
-				case D3D11_BLEND_INV_DEST_ALPHA:ret=GL_ONE_MINUS_DST_ALPHA;break;
-				case D3D11_BLEND_DEST_COLOR:ret=GL_DST_COLOR;break;
-				case D3D11_BLEND_INV_DEST_COLOR:ret=GL_ONE_MINUS_DST_COLOR;break;
-				case D3D11_BLEND_SRC_ALPHA_SAT:ret=GL_SRC_ALPHA_SATURATE;break;
-				case D3D11_BLEND_BLEND_FACTOR:break;
-				case D3D11_BLEND_INV_BLEND_FACTOR:break;
-				case D3D11_BLEND_SRC1_COLOR:ret=GL_SRC1_COLOR;break;
-				case D3D11_BLEND_INV_SRC1_COLOR:ret=GL_ONE_MINUS_SRC1_COLOR;break;
-				case D3D11_BLEND_SRC1_ALPHA:ret=GL_SRC1_ALPHA;break;
-				case D3D11_BLEND_INV_SRC1_ALPHA:ret=GL_ONE_MINUS_SRC1_ALPHA;break;
-				}
-				return ret;
+				return mappingGL(*reinterpret_cast<D3D11_BLEND*>(&blend));
 			}
 			static GLint mappingGL(D3D10_BLEND_OP op)
 			{
@@ -930,16 +909,7 @@ namespace NSDevilX
 			}
 			static GLint mappingGL(D3D11_BLEND_OP op)
 			{
-				GLint ret=0;
-				switch(op)
-				{
-				case D3D11_BLEND_OP_ADD:ret=GL_FUNC_ADD;break;
-				case D3D11_BLEND_OP_SUBTRACT:ret=GL_FUNC_SUBTRACT;break;
-				case D3D11_BLEND_OP_REV_SUBTRACT:ret=GL_FUNC_REVERSE_SUBTRACT;break;
-				case D3D11_BLEND_OP_MIN:ret=GL_MIN;break;
-				case D3D11_BLEND_OP_MAX:ret=GL_MAX;break;
-				}
-				return ret;
+				return mappingGL(*reinterpret_cast<D3D11_BLEND_OP*>(&op));
 			}
 			static GLint mappingGL(D3D11_LOGIC_OP op)
 			{
@@ -962,6 +932,86 @@ namespace NSDevilX
 				case D3D11_LOGIC_OP_AND_INVERTED:ret=GL_AND_INVERTED;break;
 				case D3D11_LOGIC_OP_OR_REVERSE:ret=GL_OR_REVERSE;break;
 				case D3D11_LOGIC_OP_OR_INVERTED:ret=GL_OR_INVERTED;break;
+				}
+				return ret;
+			}
+			static GLint mappingGL(D3D10_STENCIL_OP op)
+			{
+				GLint ret=0;
+				switch(op)
+				{
+				case D3D10_STENCIL_OP_KEEP:ret=GL_KEEP;break;
+				case D3D10_STENCIL_OP_ZERO:ret=GL_ZERO;break;
+				case D3D10_STENCIL_OP_REPLACE:ret=GL_REPLACE;break;
+				case D3D10_STENCIL_OP_INCR_SAT:ret=GL_INCR;break;
+				case D3D10_STENCIL_OP_DECR_SAT:ret=GL_DECR;break;
+				case D3D10_STENCIL_OP_INVERT:ret=GL_INVERT;break;
+				case D3D10_STENCIL_OP_INCR:ret=GL_INCR_WRAP;break;
+				case D3D10_STENCIL_OP_DECR:ret=GL_DECR_WRAP;break;
+				}
+				return ret;
+			}
+			static GLint mappingGL(D3D11_STENCIL_OP op)
+			{
+				return mappingGL(*reinterpret_cast<D3D10_STENCIL_OP*>(&op));
+			}
+			static GLint mappingGL(D3D10_COMPARISON_FUNC func)
+			{
+				GLint ret=0;
+				switch(func)
+				{
+				case D3D10_COMPARISON_NEVER:ret=GL_NEVER;break;
+				case D3D10_COMPARISON_LESS:ret=GL_LESS;break;
+				case D3D10_COMPARISON_EQUAL:ret=GL_EQUAL;break;
+				case D3D10_COMPARISON_LESS_EQUAL:ret=GL_LEQUAL;break;
+				case D3D10_COMPARISON_GREATER:ret=GL_GREATER;break;
+				case D3D10_COMPARISON_NOT_EQUAL:ret=GL_NOTEQUAL;break;
+				case D3D10_COMPARISON_GREATER_EQUAL:ret=GL_GEQUAL;break;
+				case D3D10_COMPARISON_ALWAYS:ret=GL_ALWAYS;break;
+				}
+				return ret;
+			}
+			static GLint mappingGL(D3D11_COMPARISON_FUNC func)
+			{
+				return mappingGL(*reinterpret_cast<D3D10_COMPARISON_FUNC*>(&func));
+			}
+			static GLint mappingGL(D3D10_CULL_MODE mode)
+			{
+				GLint ret=0;
+				switch(mode)
+				{
+				case D3D10_CULL_NONE:ret=GL_NONE;break;
+				case D3D10_CULL_FRONT:ret=GL_FRONT;break;
+				case D3D10_CULL_BACK:ret=GL_BACK;break;
+				}
+				return ret;
+			}
+			static GLint mappingGL(D3D11_CULL_MODE mode)
+			{
+				return mappingGL(*reinterpret_cast<D3D10_CULL_MODE*>(&mode));
+			}
+			static GLint mappingGL(D3D10_FILL_MODE mode)
+			{
+				GLint ret=0;
+				switch(mode)
+				{
+				case D3D10_FILL_WIREFRAME:ret=GL_LINE;break;
+				case D3D10_FILL_SOLID:ret=GL_FILL;break;
+				}
+				return ret;
+			}
+			static GLint mappingGL(D3D11_FILL_MODE mode)
+			{
+				return mappingGL(*reinterpret_cast<D3D10_FILL_MODE*>(&mode));
+			}
+			static GLint mappingGL(D3D11_CONSERVATIVE_RASTERIZATION_MODE mode)
+			{
+				GLint ret=0;
+				switch(mode)
+				{
+				case D3D11_CONSERVATIVE_RASTERIZATION_MODE_ON:
+					ret=GL_CONSERVATIVE_RASTER_MODE_NV;
+					break;
 				}
 				return ret;
 			}

@@ -80,6 +80,8 @@ namespace NSDevilX
 		public:
 			CGLES2GraphicsDeviceImp();
 			virtual ~CGLES2GraphicsDeviceImp();
+
+			virtual Bool createBufferStorage(GLenum target,GLsizeiptr size,ConstVoidPtr intializeData,GLbitfield flags,OUT IBuffer* buffer) override;
 		};
 
 		class CGLES3GraphicsDeviceImp
