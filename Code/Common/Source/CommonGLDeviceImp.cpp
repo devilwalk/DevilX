@@ -1027,7 +1027,7 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createDepthStencilState(const D3D10_
 			||(desc.FrontFace.StencilFunc!=D3D10_COMPARISON_ALWAYS)
 			)
 		{
-			static_cast<CGLStateImp*>(state)->addState(glStencilFunc,mappingGL(desc.BackFace.StencilFunc),desc.StencilReadMask);
+			static_cast<CGLStateImp*>(state)->addState(glStencilFunc,mappingGL(desc.BackFace.StencilFunc),0,desc.StencilReadMask);
 		}
 	}
 	else
@@ -1036,28 +1036,28 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createDepthStencilState(const D3D10_
 			||(desc.FrontFace.StencilFunc!=D3D10_COMPARISON_ALWAYS)
 			)
 		{
-			static_cast<CGLStateImp*>(state)->addState(glStencilFuncSeparate,mappingGL(desc.FrontFace.StencilFunc),mappingGL(desc.BackFace.StencilFunc),desc.StencilReadMask);
+			static_cast<CGLStateImp*>(state)->addState(glStencilFuncSeparate,mappingGL(desc.FrontFace.StencilFunc),mappingGL(desc.BackFace.StencilFunc),0,desc.StencilReadMask);
 		}
 	}
 	if(!desc.DepthEnable)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glDisable]=GL_DEPTH_TEST;
+		static_cast<CGLStateImp*>(state)->addState(glDisable,GL_DEPTH_TEST);
 	}
 	if(desc.DepthFunc!=D3D10_COMPARISON_LESS_EQUAL)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glDepthFunc]=mappingGL(desc.DepthFunc);
+		static_cast<CGLStateImp*>(state)->addState(glDepthFunc,mappingGL(desc.DepthFunc));
 	}
 	if(desc.DepthWriteMask!=D3D10_DEPTH_WRITE_MASK_ALL)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glDepthMask]=false;
+		static_cast<CGLStateImp*>(state)->addState(glDepthMask,GL_FALSE);
 	}
 	if(desc.StencilEnable)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glEnable]=GL_STENCIL_TEST;
+		static_cast<CGLStateImp*>(state)->addState(glEnable,GL_STENCIL_TEST);
 	}
 	if(desc.StencilWriteMask!=0xff)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glStencilMask]=desc.StencilWriteMask;
+		static_cast<CGLStateImp*>(state)->addState(glStencilMask,desc.StencilWriteMask);
 	}
 	return True;
 }
@@ -1069,9 +1069,8 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createDepthStencilState(const D3D11_
 		&&(desc.FrontFace.StencilPassOp==desc.BackFace.StencilPassOp)
 		)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_III[glStencilOp][0]=mappingGL(desc.BackFace.StencilFailOp);
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_III[glStencilOp][1]=mappingGL(desc.BackFace.StencilDepthFailOp);
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_III[glStencilOp][2]=mappingGL(desc.BackFace.StencilPassOp);
+		static_cast<CGLStateImp*>(state)->addState(glStencilOp,mappingGL(desc.BackFace.StencilFailOp),mappingGL(desc.BackFace.StencilDepthFailOp),
+			mappingGL(desc.BackFace.StencilPassOp));
 	}
 	else
 	{
@@ -1080,20 +1079,16 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createDepthStencilState(const D3D11_
 			||(desc.BackFace.StencilPassOp!=D3D11_STENCIL_OP_KEEP)
 			)
 		{
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glStencilOpSeparate][0]=GL_BACK;
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glStencilOpSeparate][1]=mappingGL(desc.BackFace.StencilFailOp);
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glStencilOpSeparate][2]=mappingGL(desc.BackFace.StencilDepthFailOp);
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glStencilOpSeparate][3]=mappingGL(desc.BackFace.StencilPassOp);
+			static_cast<CGLStateImp*>(state)->addState(glStencilOpSeparate,GL_BACK,mappingGL(desc.BackFace.StencilFailOp),
+				mappingGL(desc.BackFace.StencilDepthFailOp),mappingGL(desc.BackFace.StencilPassOp));
 		}
 		if((desc.FrontFace.StencilDepthFailOp!=D3D11_STENCIL_OP_KEEP)
 			||(desc.FrontFace.StencilFailOp!=D3D11_STENCIL_OP_KEEP)
 			||(desc.FrontFace.StencilPassOp!=D3D11_STENCIL_OP_KEEP)
 			)
 		{
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glStencilOpSeparate][0]=GL_FRONT;
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glStencilOpSeparate][1]=mappingGL(desc.FrontFace.StencilFailOp);
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glStencilOpSeparate][2]=mappingGL(desc.FrontFace.StencilDepthFailOp);
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glStencilOpSeparate][3]=mappingGL(desc.FrontFace.StencilPassOp);
+			static_cast<CGLStateImp*>(state)->addState(glStencilOpSeparate,GL_FRONT,mappingGL(desc.FrontFace.StencilFailOp),
+				mappingGL(desc.FrontFace.StencilDepthFailOp),mappingGL(desc.FrontFace.StencilPassOp));
 		}
 	}
 	if(desc.BackFace.StencilFunc==desc.FrontFace.StencilFunc)
@@ -1102,8 +1097,7 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createDepthStencilState(const D3D11_
 			||(desc.FrontFace.StencilFunc!=D3D11_COMPARISON_ALWAYS)
 			)
 		{
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_III[glStencilFunc][0]=mappingGL(desc.BackFace.StencilFunc);
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_III[glStencilFunc][2]=desc.StencilReadMask;
+			static_cast<CGLStateImp*>(state)->addState(glStencilFunc,mappingGL(desc.BackFace.StencilFunc),0,desc.StencilReadMask);
 		}
 	}
 	else
@@ -1112,30 +1106,29 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createDepthStencilState(const D3D11_
 			||(desc.FrontFace.StencilFunc!=D3D11_COMPARISON_ALWAYS)
 			)
 		{
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glStencilFuncSeparate][0]=mappingGL(desc.FrontFace.StencilFunc);
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glStencilFuncSeparate][1]=mappingGL(desc.BackFace.StencilFunc);
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glStencilFuncSeparate][3]=desc.StencilReadMask;
+			static_cast<CGLStateImp*>(state)->addState(glStencilFuncSeparate,mappingGL(desc.FrontFace.StencilFunc),mappingGL(desc.BackFace.StencilFunc),0,
+				desc.StencilReadMask);
 		}
 	}
 	if(!desc.DepthEnable)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glDisable]=GL_DEPTH_TEST;
+		static_cast<CGLStateImp*>(state)->addState(glDisable,GL_DEPTH_TEST);
 	}
 	if(desc.DepthFunc!=D3D11_COMPARISON_LESS_EQUAL)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glDepthFunc]=mappingGL(desc.DepthFunc);
+		static_cast<CGLStateImp*>(state)->addState(glDepthFunc,mappingGL(desc.DepthFunc));
 	}
 	if(desc.DepthWriteMask!=D3D11_DEPTH_WRITE_MASK_ALL)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glDepthMask]=false;
+		static_cast<CGLStateImp*>(state)->addState(glDepthMask,GL_FALSE);
 	}
 	if(desc.StencilEnable)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glEnable]=GL_STENCIL_TEST;
+		static_cast<CGLStateImp*>(state)->addState(glEnable,GL_STENCIL_TEST);
 	}
 	if(desc.StencilWriteMask!=0xff)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glStencilMask]=desc.StencilWriteMask;
+		static_cast<CGLStateImp*>(state)->addState(glStencilMask,desc.StencilWriteMask);
 	}
 	return True;
 }
@@ -1144,42 +1137,38 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createRasterizerState(const D3D10_RA
 {
 	if(desc.AntialiasedLineEnable)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glEnable]=GL_LINE_SMOOTH;
+		static_cast<CGLStateImp*>(state)->addState(glEnable,GL_LINE_SMOOTH);
 	}
 	if(desc.CullMode!=D3D10_CULL_BACK)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glCullFace]=mappingGL(desc.CullMode);
+		static_cast<CGLStateImp*>(state)->addState(glCullFace,mappingGL(desc.CullMode));
 	}
 	if(desc.DepthBiasClamp!=0)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_FFF[glPolygonOffsetClamp][0]=desc.SlopeScaledDepthBias;
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_FFF[glPolygonOffsetClamp][1]=*reinterpret_cast<const GLfloat*>(&desc.DepthBias);
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_FFF[glPolygonOffsetClamp][2]=desc.DepthBiasClamp;
+		static_cast<CGLStateImp*>(state)->addState(glPolygonOffsetClamp,desc.SlopeScaledDepthBias,*reinterpret_cast<const GLfloat*>(&desc.DepthBias),desc.DepthBiasClamp);
 	}
 	else if((desc.DepthBias!=0)||(desc.SlopeScaledDepthBias!=0))
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_FF[glPolygonOffset][0]=desc.SlopeScaledDepthBias;
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_FF[glPolygonOffset][1]=*reinterpret_cast<const GLfloat*>(&desc.DepthBias);
+		static_cast<CGLStateImp*>(state)->addState(glPolygonOffset,desc.SlopeScaledDepthBias,*reinterpret_cast<const GLfloat*>(&desc.DepthBias));
 	}
 	if(!desc.DepthClipEnable)
 	{
 	}
 	if(desc.FillMode!=D3D10_FILL_SOLID)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glPolygonMode][0]=GL_FRONT_AND_BACK;
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glPolygonMode][1]=mappingGL(desc.FillMode);
+		static_cast<CGLStateImp*>(state)->addState(glPolygonMode,GL_FRONT_AND_BACK,mappingGL(desc.FillMode));
 	}
 	if(desc.FrontCounterClockwise)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glFrontFace]=GL_CW;
+		static_cast<CGLStateImp*>(state)->addState(glFrontFace,GL_CW);
 	}
 	if(desc.MultisampleEnable)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glEnable]=GL_POLYGON_SMOOTH;
+		static_cast<CGLStateImp*>(state)->addState(glEnable,GL_POLYGON_SMOOTH);
 	}
 	if(desc.ScissorEnable)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glEnable]=GL_SCISSOR_TEST;
+		static_cast<CGLStateImp*>(state)->addState(glEnable,GL_SCISSOR_TEST);
 	}
 	return True;
 }
@@ -1188,42 +1177,38 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createRasterizerState(const D3D11_RA
 {
 	if(desc.AntialiasedLineEnable)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glEnable]=GL_LINE_SMOOTH;
+		static_cast<CGLStateImp*>(state)->addState(glEnable,GL_LINE_SMOOTH);
 	}
 	if(desc.CullMode!=D3D11_CULL_BACK)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glCullFace]=mappingGL(desc.CullMode);
+		static_cast<CGLStateImp*>(state)->addState(glCullFace,mappingGL(desc.CullMode));
 	}
 	if(desc.DepthBiasClamp!=0)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_FFF[glPolygonOffsetClamp][0]=desc.SlopeScaledDepthBias;
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_FFF[glPolygonOffsetClamp][1]=*reinterpret_cast<const GLfloat*>(&desc.DepthBias);
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_FFF[glPolygonOffsetClamp][2]=desc.DepthBiasClamp;
+		static_cast<CGLStateImp*>(state)->addState(glPolygonOffsetClamp,desc.SlopeScaledDepthBias,*reinterpret_cast<const GLfloat*>(&desc.DepthBias),desc.DepthBiasClamp);
 	}
 	else if((desc.DepthBias!=0)||(desc.SlopeScaledDepthBias!=0))
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_FF[glPolygonOffset][0]=desc.SlopeScaledDepthBias;
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_FF[glPolygonOffset][1]=*reinterpret_cast<const GLfloat*>(&desc.DepthBias);
+		static_cast<CGLStateImp*>(state)->addState(glPolygonOffset,desc.SlopeScaledDepthBias,*reinterpret_cast<const GLfloat*>(&desc.DepthBias));
 	}
 	if(!desc.DepthClipEnable)
 	{
 	}
 	if(desc.FillMode!=D3D11_FILL_SOLID)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glPolygonMode][0]=GL_FRONT_AND_BACK;
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glPolygonMode][1]=mappingGL(desc.FillMode);
+		static_cast<CGLStateImp*>(state)->addState(glPolygonMode,GL_FRONT_AND_BACK,mappingGL(desc.FillMode));
 	}
 	if(desc.FrontCounterClockwise)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glFrontFace]=GL_CW;
+		static_cast<CGLStateImp*>(state)->addState(glFrontFace,GL_CW);
 	}
 	if(desc.MultisampleEnable)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glEnable]=GL_MULTISAMPLE;
+		static_cast<CGLStateImp*>(state)->addState(glEnable,GL_MULTISAMPLE);
 	}
 	if(desc.ScissorEnable)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glEnable]=GL_SCISSOR_TEST;
+		static_cast<CGLStateImp*>(state)->addState(glEnable,GL_SCISSOR_TEST);
 	}
 	return True;
 }
@@ -1232,7 +1217,7 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createRasterizerState(const D3D11_RA
 {
 	if(desc.ForcedSampleCount>0)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_F[glMinSampleShading]=*reinterpret_cast<const GLfloat*>(&desc.ForcedSampleCount);
+		static_cast<CGLStateImp*>(state)->addState(glMinSampleShading,*reinterpret_cast<const GLfloat*>(&desc.ForcedSampleCount));
 	}
 	return createRasterizerState(*reinterpret_cast<const D3D11_RASTERIZER_DESC*>(&desc),state);
 }
@@ -1241,15 +1226,16 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createRasterizerState(const D3D11_RA
 {
 	if(desc.ConservativeRaster!=D3D11_CONSERVATIVE_RASTERIZATION_MODE_OFF)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glEnable]=mappingGL(desc.ConservativeRaster);
+		static_cast<CGLStateImp*>(state)->addState(glEnable,mappingGL(desc.ConservativeRaster));
 	}
 	return createRasterizerState(*reinterpret_cast<const D3D11_RASTERIZER_DESC1*>(&desc),state);
 }
 
 Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createSamplerState(const D3D10_SAMPLER_DESC& desc,OUT ISamplerState* state)
 {
-	static_cast<CGLStateImp*>(state)->mStateChangeParameters_III[glTexParameteri][1]=GL_TEXTURE_WRAP_S;
-	static_cast<CGLStateImp*>(state)->mStateChangeParameters_III[glTexParameteri][2]=mappingGL(desc.AddressU);
+	static_cast<CGLStateImp*>(state)->addState(glTexParameteri,0,GL_TEXTURE_WRAP_S,mappingGL(desc.AddressU));
+	static_cast<CGLStateImp*>(state)->addState(glTexParameteri,0,GL_TEXTURE_WRAP_T,mappingGL(desc.AddressV));
+	static_cast<CGLStateImp*>(state)->addState(glTexParameteri,0,GL_TEXTURE_WRAP_R,mappingGL(desc.AddressW));
 	return True;
 }
 
