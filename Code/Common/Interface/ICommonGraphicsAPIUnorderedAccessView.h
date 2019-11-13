@@ -3,10 +3,10 @@ namespace NSDevilX
 {
 	namespace NSGraphicsAPI
 	{
-		class ICommandList
+		class IUnorderedAccessView
 		{
 		protected:
-			virtual ~ICommandList()
+			virtual ~IUnorderedAccessView()
 			{
 			}
 		public:

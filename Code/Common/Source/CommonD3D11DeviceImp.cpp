@@ -19,7 +19,7 @@ Bool NSDevilX::NSGraphicsAPI::CD3D11DeviceImp::createVertexBuffer(UINT Length,DW
 	desc.CPUAccessFlags=D3D11_CPU_ACCESS_WRITE|((Usage&D3DUSAGE_WRITEONLY)?0:D3D11_CPU_ACCESS_READ);
 	desc.MiscFlags=0;
 	desc.StructureByteStride=0;
-	desc.Usage=ICommon::mappingD3D11(Pool,Usage);
+	desc.Usage=mappingD3D11(Pool,Usage);
 	mInternal->CreateBuffer(&desc,nullptr,&static_cast<CD3D11BufferImp*>(Buffer)->mInternal);
 	return True;
 }
@@ -32,14 +32,14 @@ Bool NSDevilX::NSGraphicsAPI::CD3D11DeviceImp::createIndexBuffer(UINT Length,DWO
 	desc.CPUAccessFlags=D3D11_CPU_ACCESS_WRITE|((Usage&D3DUSAGE_WRITEONLY)?0:D3D11_CPU_ACCESS_READ);
 	desc.MiscFlags=0;
 	desc.StructureByteStride=0;
-	desc.Usage=ICommon::mappingD3D11(Pool,Usage);
+	desc.Usage=mappingD3D11(Pool,Usage);
 	mInternal->CreateBuffer(&desc,nullptr,&static_cast<CD3D11BufferImp*>(Buffer)->mInternal);
 	return True;
 }
 
 Bool NSDevilX::NSGraphicsAPI::CD3D11DeviceImp::createBuffer(const D3D10_BUFFER_DESC& desc,const D3D10_SUBRESOURCE_DATA* initializeData,OUT IBuffer* buffer)
 {
-	D3D11_BUFFER_DESC real_desc=ICommon::mapping(desc);
+	D3D11_BUFFER_DESC real_desc=mapping(desc);
 	mInternal->CreateBuffer(&real_desc,reinterpret_cast<const D3D11_SUBRESOURCE_DATA*>(initializeData),&static_cast<CD3D11BufferImp*>(buffer)->mInternal);
 	return True;
 }

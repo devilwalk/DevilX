@@ -11,12 +11,12 @@ NSDevilX::NSGraphicsAPI::CGLDeviceImp::~CGLDeviceImp()
 
 Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createVertexBuffer(UINT length,DWORD usage,DWORD fvf,D3DPOOL pool,OUT IBuffer* buffer)
 {
-	return createBufferData(GL_ARRAY_BUFFER,length,nullptr,ICommon::mappingGL(pool,usage),buffer);
+	return createBufferData(GL_ARRAY_BUFFER,length,nullptr,mappingGL(pool,usage),buffer);
 }
 
 Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createIndexBuffer(UINT length,DWORD usage,D3DFORMAT format,D3DPOOL pool,OUT IBuffer* buffer)
 {
-	return createBufferData(GL_ELEMENT_ARRAY_BUFFER,length,nullptr,ICommon::mappingGL(pool,usage),buffer);
+	return createBufferData(GL_ELEMENT_ARRAY_BUFFER,length,nullptr,mappingGL(pool,usage),buffer);
 }
 
 Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createBuffer(const D3D10_BUFFER_DESC& desc,const D3D10_SUBRESOURCE_DATA* initializeData,OUT IBuffer* buffer)
@@ -36,7 +36,7 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createBuffer(const D3D10_BUFFER_DESC
 	{
 		data=initializeData->pSysMem;
 	}
-	return createBufferData(target,desc.ByteWidth,data,ICommon::mappingGL(desc.Usage,desc.CPUAccessFlags),buffer);
+	return createBufferData(target,desc.ByteWidth,data,mappingGL(desc.Usage,desc.CPUAccessFlags),buffer);
 }
 
 Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createBuffer(const D3D11_BUFFER_DESC& desc,const D3D11_SUBRESOURCE_DATA* initializeData,OUT IBuffer* buffer)
@@ -56,7 +56,7 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createBuffer(const D3D11_BUFFER_DESC
 	{
 		data=initializeData->pSysMem;
 	}
-	return createBufferData(target,desc.ByteWidth,data,ICommon::mappingGL(desc.Usage,desc.CPUAccessFlags),buffer);
+	return createBufferData(target,desc.ByteWidth,data,mappingGL(desc.Usage,desc.CPUAccessFlags),buffer);
 }
 
 Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createBufferData(GLenum target,GLsizeiptr size,ConstVoidPtr intializeData,GLenum usage,OUT IBuffer* buffer)
@@ -79,63 +79,63 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createBufferStorage(GLenum target,GL
 
 Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createTexture(UINT width,UINT height,UINT levels,DWORD usage,D3DFORMAT format,D3DPOOL pool,OUT ITexture* texture)
 {
-	if(ICommon::isCompressedFormat(format))
+	if(isCompressedFormat(format))
 	{
 		if(height==1)
 		{
-			return createCompressedTexture1D(GL_TEXTURE_1D,levels,ICommon::mappingGLInternalFormat(format),width,0,0,nullptr,texture);
+			return createCompressedTexture1D(GL_TEXTURE_1D,levels,mappingGLInternalFormat(format),width,0,0,nullptr,texture);
 		}
 		else
 		{
-			return createCompressedTexture2D(GL_TEXTURE_2D,levels,ICommon::mappingGLInternalFormat(format),width,height,0,0,nullptr,texture);
+			return createCompressedTexture2D(GL_TEXTURE_2D,levels,mappingGLInternalFormat(format),width,height,0,0,nullptr,texture);
 		}
 	}
 	else
 	{
 		if(height==1)
 		{
-			return createTexture1D(GL_TEXTURE_1D,levels,ICommon::mappingGLInternalFormat(format),width,0,ICommon::mappingGLFormat(format),GL_BYTE,nullptr,texture);
+			return createTexture1D(GL_TEXTURE_1D,levels,mappingGLInternalFormat(format),width,0,mappingGLFormat(format),GL_BYTE,nullptr,texture);
 		}
 		else
 		{
-			return createTexture2D(GL_TEXTURE_2D,levels,ICommon::mappingGLInternalFormat(format),width,height,0,ICommon::mappingGLFormat(format),GL_BYTE,nullptr,texture);
+			return createTexture2D(GL_TEXTURE_2D,levels,mappingGLInternalFormat(format),width,height,0,mappingGLFormat(format),GL_BYTE,nullptr,texture);
 		}
 	}
 }
 
 Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createCubeTexture(UINT edageLength,UINT levels,DWORD usage,D3DFORMAT format,D3DPOOL pool,OUT ITexture* texture)
 {
-	if(ICommon::isCompressedFormat(format))
+	if(isCompressedFormat(format))
 	{
-		Bool ret=createCompressedTexture2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X,levels,ICommon::mappingGLInternalFormat(format),edageLength,edageLength,0,0,nullptr,texture);
-		ret&=createCompressedTexture2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y,levels,ICommon::mappingGLInternalFormat(format),edageLength,edageLength,0,0,nullptr,texture);
-		ret&=createCompressedTexture2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z,levels,ICommon::mappingGLInternalFormat(format),edageLength,edageLength,0,0,nullptr,texture);
-		ret&=createCompressedTexture2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X,levels,ICommon::mappingGLInternalFormat(format),edageLength,edageLength,0,0,nullptr,texture);
-		ret&=createCompressedTexture2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,levels,ICommon::mappingGLInternalFormat(format),edageLength,edageLength,0,0,nullptr,texture);
-		ret&=createCompressedTexture2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z,levels,ICommon::mappingGLInternalFormat(format),edageLength,edageLength,0,0,nullptr,texture);
+		Bool ret=createCompressedTexture2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X,levels,mappingGLInternalFormat(format),edageLength,edageLength,0,0,nullptr,texture);
+		ret&=createCompressedTexture2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y,levels,mappingGLInternalFormat(format),edageLength,edageLength,0,0,nullptr,texture);
+		ret&=createCompressedTexture2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z,levels,mappingGLInternalFormat(format),edageLength,edageLength,0,0,nullptr,texture);
+		ret&=createCompressedTexture2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X,levels,mappingGLInternalFormat(format),edageLength,edageLength,0,0,nullptr,texture);
+		ret&=createCompressedTexture2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,levels,mappingGLInternalFormat(format),edageLength,edageLength,0,0,nullptr,texture);
+		ret&=createCompressedTexture2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z,levels,mappingGLInternalFormat(format),edageLength,edageLength,0,0,nullptr,texture);
 		return ret;
 	}
 	else
 	{
-		Bool ret=createTexture2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X,levels,ICommon::mappingGLInternalFormat(format),edageLength,edageLength,0,ICommon::mappingGLFormat(format),GL_BYTE,nullptr,texture);
-		ret&=createTexture2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y,levels,ICommon::mappingGLInternalFormat(format),edageLength,edageLength,0,ICommon::mappingGLFormat(format),GL_BYTE,nullptr,texture);
-		ret&=createTexture2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z,levels,ICommon::mappingGLInternalFormat(format),edageLength,edageLength,0,ICommon::mappingGLFormat(format),GL_BYTE,nullptr,texture);
-		ret&=createTexture2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X,levels,ICommon::mappingGLInternalFormat(format),edageLength,edageLength,0,ICommon::mappingGLFormat(format),GL_BYTE,nullptr,texture);
-		ret&=createTexture2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,levels,ICommon::mappingGLInternalFormat(format),edageLength,edageLength,0,ICommon::mappingGLFormat(format),GL_BYTE,nullptr,texture);
-		ret&=createTexture2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z,levels,ICommon::mappingGLInternalFormat(format),edageLength,edageLength,0,ICommon::mappingGLFormat(format),GL_BYTE,nullptr,texture);
+		Bool ret=createTexture2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X,levels,mappingGLInternalFormat(format),edageLength,edageLength,0,mappingGLFormat(format),GL_BYTE,nullptr,texture);
+		ret&=createTexture2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y,levels,mappingGLInternalFormat(format),edageLength,edageLength,0,mappingGLFormat(format),GL_BYTE,nullptr,texture);
+		ret&=createTexture2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z,levels,mappingGLInternalFormat(format),edageLength,edageLength,0,mappingGLFormat(format),GL_BYTE,nullptr,texture);
+		ret&=createTexture2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X,levels,mappingGLInternalFormat(format),edageLength,edageLength,0,mappingGLFormat(format),GL_BYTE,nullptr,texture);
+		ret&=createTexture2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,levels,mappingGLInternalFormat(format),edageLength,edageLength,0,mappingGLFormat(format),GL_BYTE,nullptr,texture);
+		ret&=createTexture2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z,levels,mappingGLInternalFormat(format),edageLength,edageLength,0,mappingGLFormat(format),GL_BYTE,nullptr,texture);
 		return ret;
 	}
 }
 
 Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createVolumeTexture(UINT width,UINT height,UINT depth,UINT levels,DWORD usage,D3DFORMAT format,D3DPOOL pool,OUT ITexture* texture)
 {
-	if(ICommon::isCompressedFormat(format))
+	if(isCompressedFormat(format))
 	{
-		return createCompressedTexture3D(GL_TEXTURE_3D,levels,ICommon::mappingGLInternalFormat(format),width,height,depth,0,0,nullptr,texture);
+		return createCompressedTexture3D(GL_TEXTURE_3D,levels,mappingGLInternalFormat(format),width,height,depth,0,0,nullptr,texture);
 	}
 	else
 	{
-		return createTexture3D(GL_TEXTURE_3D,levels,ICommon::mappingGLInternalFormat(format),width,height,depth,0,ICommon::mappingGLFormat(format),GL_BYTE,nullptr,texture);
+		return createTexture3D(GL_TEXTURE_3D,levels,mappingGLInternalFormat(format),width,height,depth,0,mappingGLFormat(format),GL_BYTE,nullptr,texture);
 	}
 }
 
@@ -148,13 +148,13 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createTexture1D(const D3D10_TEXTURE1
 		data=initializeData->pSysMem;
 		data_size=initializeData->SysMemSlicePitch*desc.ArraySize;
 	}
-	if(ICommon::isCompressedFormat(desc.Format))
+	if(isCompressedFormat(desc.Format))
 	{
-		return createCompressedTexture1D(GL_TEXTURE_1D,desc.MipLevels,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,0,data_size,data,texture);
+		return createCompressedTexture1D(GL_TEXTURE_1D,desc.MipLevels,mappingGLInternalFormat(desc.Format),desc.Width,0,data_size,data,texture);
 	}
 	else
 	{
-		return createTexture1D(GL_TEXTURE_1D,desc.MipLevels,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,0,ICommon::mappingGLFormat(desc.Format),GL_BYTE,data,texture);
+		return createTexture1D(GL_TEXTURE_1D,desc.MipLevels,mappingGLInternalFormat(desc.Format),desc.Width,0,mappingGLFormat(desc.Format),GL_BYTE,data,texture);
 	}
 }
 
@@ -180,68 +180,68 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createTexture2D(const D3D10_TEXTURE2
 			}
 			if(desc.ArraySize==6)
 			{
-				if(ICommon::isCompressedFormat(desc.Format))
+				if(isCompressedFormat(desc.Format))
 				{
-					Bool ret=createCompressedTexture2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X,desc.MipLevels,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,slice_pitch,static_cast<ConstBytePtr>(data)+slice_pitch*0,texture);
-					ret&=createCompressedTexture2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y,desc.MipLevels,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,slice_pitch,static_cast<ConstBytePtr>(data)+slice_pitch*1,texture);
-					ret&=createCompressedTexture2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z,desc.MipLevels,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,slice_pitch,static_cast<ConstBytePtr>(data)+slice_pitch*2,texture);
-					ret&=createCompressedTexture2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X,desc.MipLevels,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,slice_pitch,static_cast<ConstBytePtr>(data)+slice_pitch*3,texture);
-					ret&=createCompressedTexture2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,desc.MipLevels,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,slice_pitch,static_cast<ConstBytePtr>(data)+slice_pitch*4,texture);
-					ret&=createCompressedTexture2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z,desc.MipLevels,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,slice_pitch,static_cast<ConstBytePtr>(data)+slice_pitch*5,texture);
+					Bool ret=createCompressedTexture2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X,desc.MipLevels,mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,slice_pitch,static_cast<ConstBytePtr>(data)+slice_pitch*0,texture);
+					ret&=createCompressedTexture2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y,desc.MipLevels,mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,slice_pitch,static_cast<ConstBytePtr>(data)+slice_pitch*1,texture);
+					ret&=createCompressedTexture2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z,desc.MipLevels,mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,slice_pitch,static_cast<ConstBytePtr>(data)+slice_pitch*2,texture);
+					ret&=createCompressedTexture2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X,desc.MipLevels,mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,slice_pitch,static_cast<ConstBytePtr>(data)+slice_pitch*3,texture);
+					ret&=createCompressedTexture2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,desc.MipLevels,mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,slice_pitch,static_cast<ConstBytePtr>(data)+slice_pitch*4,texture);
+					ret&=createCompressedTexture2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z,desc.MipLevels,mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,slice_pitch,static_cast<ConstBytePtr>(data)+slice_pitch*5,texture);
 					return ret;
 				}
 				else
 				{
-					Bool ret=createTexture2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X,desc.MipLevels,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,ICommon::mappingGLFormat(desc.Format),GL_BYTE,static_cast<ConstBytePtr>(data)+slice_pitch*0,texture);
-					ret&=createTexture2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y,desc.MipLevels,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,ICommon::mappingGLFormat(desc.Format),GL_BYTE,static_cast<ConstBytePtr>(data)+slice_pitch*1,texture);
-					ret&=createTexture2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z,desc.MipLevels,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,ICommon::mappingGLFormat(desc.Format),GL_BYTE,static_cast<ConstBytePtr>(data)+slice_pitch*2,texture);
-					ret&=createTexture2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X,desc.MipLevels,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,ICommon::mappingGLFormat(desc.Format),GL_BYTE,static_cast<ConstBytePtr>(data)+slice_pitch*3,texture);
-					ret&=createTexture2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,desc.MipLevels,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,ICommon::mappingGLFormat(desc.Format),GL_BYTE,static_cast<ConstBytePtr>(data)+slice_pitch*4,texture);
-					ret&=createTexture2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z,desc.MipLevels,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,ICommon::mappingGLFormat(desc.Format),GL_BYTE,static_cast<ConstBytePtr>(data)+slice_pitch*5,texture);
+					Bool ret=createTexture2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X,desc.MipLevels,mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,mappingGLFormat(desc.Format),GL_BYTE,static_cast<ConstBytePtr>(data)+slice_pitch*0,texture);
+					ret&=createTexture2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y,desc.MipLevels,mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,mappingGLFormat(desc.Format),GL_BYTE,static_cast<ConstBytePtr>(data)+slice_pitch*1,texture);
+					ret&=createTexture2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z,desc.MipLevels,mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,mappingGLFormat(desc.Format),GL_BYTE,static_cast<ConstBytePtr>(data)+slice_pitch*2,texture);
+					ret&=createTexture2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X,desc.MipLevels,mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,mappingGLFormat(desc.Format),GL_BYTE,static_cast<ConstBytePtr>(data)+slice_pitch*3,texture);
+					ret&=createTexture2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,desc.MipLevels,mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,mappingGLFormat(desc.Format),GL_BYTE,static_cast<ConstBytePtr>(data)+slice_pitch*4,texture);
+					ret&=createTexture2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z,desc.MipLevels,mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,mappingGLFormat(desc.Format),GL_BYTE,static_cast<ConstBytePtr>(data)+slice_pitch*5,texture);
 					return ret;
 				}
 			}
 			else
 			{
-				if(ICommon::isCompressedFormat(desc.Format))
+				if(isCompressedFormat(desc.Format))
 				{
-					return createCompressedTexture3D(GL_TEXTURE_CUBE_MAP_ARRAY,desc.MipLevels,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,desc.ArraySize,0,data_size,data,texture);
+					return createCompressedTexture3D(GL_TEXTURE_CUBE_MAP_ARRAY,desc.MipLevels,mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,desc.ArraySize,0,data_size,data,texture);
 				}
 				else
 				{
-					return createTexture3D(GL_TEXTURE_CUBE_MAP_ARRAY,desc.MipLevels,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,desc.ArraySize,0,ICommon::mappingGLFormat(desc.Format),GL_BYTE,data,texture);
+					return createTexture3D(GL_TEXTURE_CUBE_MAP_ARRAY,desc.MipLevels,mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,desc.ArraySize,0,mappingGLFormat(desc.Format),GL_BYTE,data,texture);
 				}
 			}
 		}
 		else
 		{
-			if(ICommon::isCompressedFormat(desc.Format))
+			if(isCompressedFormat(desc.Format))
 			{
-				return createCompressedTexture3D(GL_TEXTURE_2D_ARRAY,desc.MipLevels,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,desc.ArraySize,0,data_size,data,texture);
+				return createCompressedTexture3D(GL_TEXTURE_2D_ARRAY,desc.MipLevels,mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,desc.ArraySize,0,data_size,data,texture);
 			}
 			else if(desc.SampleDesc.Count>1)
 			{
-				return createTexture3DMSAA(GL_TEXTURE_2D_MULTISAMPLE_ARRAY,desc.SampleDesc.Count,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,desc.ArraySize,true,texture);
+				return createTexture3DMSAA(GL_TEXTURE_2D_MULTISAMPLE_ARRAY,desc.SampleDesc.Count,mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,desc.ArraySize,true,texture);
 			}
 			else
 			{
-				return createTexture3D(GL_TEXTURE_2D_ARRAY,desc.MipLevels,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,desc.ArraySize,0,ICommon::mappingGLFormat(desc.Format),GL_BYTE,data,texture);
+				return createTexture3D(GL_TEXTURE_2D_ARRAY,desc.MipLevels,mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,desc.ArraySize,0,mappingGLFormat(desc.Format),GL_BYTE,data,texture);
 			}
 		}
 	}
 	else
 	{
-		if(ICommon::isCompressedFormat(desc.Format))
+		if(isCompressedFormat(desc.Format))
 		{
-			return createCompressedTexture2D(GL_TEXTURE_2D,desc.MipLevels,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,data_size,data,texture);
+			return createCompressedTexture2D(GL_TEXTURE_2D,desc.MipLevels,mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,data_size,data,texture);
 		}
 		else if(desc.SampleDesc.Count>1)
 		{
-			return createTexture2DMSAA(GL_TEXTURE_2D_MULTISAMPLE,desc.SampleDesc.Count,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,true,texture);
+			return createTexture2DMSAA(GL_TEXTURE_2D_MULTISAMPLE,desc.SampleDesc.Count,mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,true,texture);
 		}
 		else
 		{
-			return createTexture2D(GL_TEXTURE_2D,desc.MipLevels,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,ICommon::mappingGLFormat(desc.Format),GL_BYTE,data,texture);
+			return createTexture2D(GL_TEXTURE_2D,desc.MipLevels,mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,mappingGLFormat(desc.Format),GL_BYTE,data,texture);
 		}
 	}
 }
@@ -253,7 +253,7 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createTexture3D(const D3D10_TEXTURE3
 	{
 		data=initializeData->pSysMem;
 	}
-	return createTexture3D(GL_TEXTURE_3D,desc.MipLevels,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,desc.Depth,0,ICommon::mappingGLFormat(desc.Format),GL_BYTE,data,texture);
+	return createTexture3D(GL_TEXTURE_3D,desc.MipLevels,mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,desc.Depth,0,mappingGLFormat(desc.Format),GL_BYTE,data,texture);
 }
 
 Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createTexture1D(const D3D11_TEXTURE1D_DESC& desc,const D3D11_SUBRESOURCE_DATA* initializeData,OUT ITexture* texture)
@@ -265,13 +265,13 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createTexture1D(const D3D11_TEXTURE1
 		data=initializeData->pSysMem;
 		data_size=initializeData->SysMemSlicePitch*desc.ArraySize;
 	}
-	if(ICommon::isCompressedFormat(desc.Format))
+	if(isCompressedFormat(desc.Format))
 	{
-		return createCompressedTexture1D(GL_TEXTURE_1D,desc.MipLevels,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,0,data_size,data,texture);
+		return createCompressedTexture1D(GL_TEXTURE_1D,desc.MipLevels,mappingGLInternalFormat(desc.Format),desc.Width,0,data_size,data,texture);
 	}
 	else
 	{
-		return createTexture1D(GL_TEXTURE_1D,desc.MipLevels,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,0,ICommon::mappingGLFormat(desc.Format),GL_BYTE,data,texture);
+		return createTexture1D(GL_TEXTURE_1D,desc.MipLevels,mappingGLInternalFormat(desc.Format),desc.Width,0,mappingGLFormat(desc.Format),GL_BYTE,data,texture);
 	}
 }
 
@@ -297,68 +297,68 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createTexture2D(const D3D11_TEXTURE2
 			}
 			if(desc.ArraySize==6)
 			{
-				if(ICommon::isCompressedFormat(desc.Format))
+				if(isCompressedFormat(desc.Format))
 				{
-					Bool ret=createCompressedTexture2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X,desc.MipLevels,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,slice_pitch,static_cast<ConstBytePtr>(data)+slice_pitch*0,texture);
-					ret&=createCompressedTexture2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y,desc.MipLevels,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,slice_pitch,static_cast<ConstBytePtr>(data)+slice_pitch*1,texture);
-					ret&=createCompressedTexture2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z,desc.MipLevels,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,slice_pitch,static_cast<ConstBytePtr>(data)+slice_pitch*2,texture);
-					ret&=createCompressedTexture2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X,desc.MipLevels,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,slice_pitch,static_cast<ConstBytePtr>(data)+slice_pitch*3,texture);
-					ret&=createCompressedTexture2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,desc.MipLevels,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,slice_pitch,static_cast<ConstBytePtr>(data)+slice_pitch*4,texture);
-					ret&=createCompressedTexture2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z,desc.MipLevels,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,slice_pitch,static_cast<ConstBytePtr>(data)+slice_pitch*5,texture);
+					Bool ret=createCompressedTexture2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X,desc.MipLevels,mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,slice_pitch,static_cast<ConstBytePtr>(data)+slice_pitch*0,texture);
+					ret&=createCompressedTexture2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y,desc.MipLevels,mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,slice_pitch,static_cast<ConstBytePtr>(data)+slice_pitch*1,texture);
+					ret&=createCompressedTexture2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z,desc.MipLevels,mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,slice_pitch,static_cast<ConstBytePtr>(data)+slice_pitch*2,texture);
+					ret&=createCompressedTexture2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X,desc.MipLevels,mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,slice_pitch,static_cast<ConstBytePtr>(data)+slice_pitch*3,texture);
+					ret&=createCompressedTexture2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,desc.MipLevels,mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,slice_pitch,static_cast<ConstBytePtr>(data)+slice_pitch*4,texture);
+					ret&=createCompressedTexture2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z,desc.MipLevels,mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,slice_pitch,static_cast<ConstBytePtr>(data)+slice_pitch*5,texture);
 					return ret;
 				}
 				else
 				{
-					Bool ret=createTexture2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X,desc.MipLevels,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,ICommon::mappingGLFormat(desc.Format),GL_BYTE,static_cast<ConstBytePtr>(data)+slice_pitch*0,texture);
-					ret&=createTexture2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y,desc.MipLevels,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,ICommon::mappingGLFormat(desc.Format),GL_BYTE,static_cast<ConstBytePtr>(data)+slice_pitch*1,texture);
-					ret&=createTexture2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z,desc.MipLevels,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,ICommon::mappingGLFormat(desc.Format),GL_BYTE,static_cast<ConstBytePtr>(data)+slice_pitch*2,texture);
-					ret&=createTexture2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X,desc.MipLevels,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,ICommon::mappingGLFormat(desc.Format),GL_BYTE,static_cast<ConstBytePtr>(data)+slice_pitch*3,texture);
-					ret&=createTexture2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,desc.MipLevels,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,ICommon::mappingGLFormat(desc.Format),GL_BYTE,static_cast<ConstBytePtr>(data)+slice_pitch*4,texture);
-					ret&=createTexture2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z,desc.MipLevels,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,ICommon::mappingGLFormat(desc.Format),GL_BYTE,static_cast<ConstBytePtr>(data)+slice_pitch*5,texture);
+					Bool ret=createTexture2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X,desc.MipLevels,mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,mappingGLFormat(desc.Format),GL_BYTE,static_cast<ConstBytePtr>(data)+slice_pitch*0,texture);
+					ret&=createTexture2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y,desc.MipLevels,mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,mappingGLFormat(desc.Format),GL_BYTE,static_cast<ConstBytePtr>(data)+slice_pitch*1,texture);
+					ret&=createTexture2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z,desc.MipLevels,mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,mappingGLFormat(desc.Format),GL_BYTE,static_cast<ConstBytePtr>(data)+slice_pitch*2,texture);
+					ret&=createTexture2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X,desc.MipLevels,mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,mappingGLFormat(desc.Format),GL_BYTE,static_cast<ConstBytePtr>(data)+slice_pitch*3,texture);
+					ret&=createTexture2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,desc.MipLevels,mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,mappingGLFormat(desc.Format),GL_BYTE,static_cast<ConstBytePtr>(data)+slice_pitch*4,texture);
+					ret&=createTexture2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z,desc.MipLevels,mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,mappingGLFormat(desc.Format),GL_BYTE,static_cast<ConstBytePtr>(data)+slice_pitch*5,texture);
 					return ret;
 				}
 			}
 			else
 			{
-				if(ICommon::isCompressedFormat(desc.Format))
+				if(isCompressedFormat(desc.Format))
 				{
-					return createCompressedTexture3D(GL_TEXTURE_CUBE_MAP_ARRAY,desc.MipLevels,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,desc.ArraySize,0,data_size,data,texture);
+					return createCompressedTexture3D(GL_TEXTURE_CUBE_MAP_ARRAY,desc.MipLevels,mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,desc.ArraySize,0,data_size,data,texture);
 				}
 				else
 				{
-					return createTexture3D(GL_TEXTURE_CUBE_MAP_ARRAY,desc.MipLevels,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,desc.ArraySize,0,ICommon::mappingGLFormat(desc.Format),GL_BYTE,data,texture);
+					return createTexture3D(GL_TEXTURE_CUBE_MAP_ARRAY,desc.MipLevels,mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,desc.ArraySize,0,mappingGLFormat(desc.Format),GL_BYTE,data,texture);
 				}
 			}
 		}
 		else
 		{
-			if(ICommon::isCompressedFormat(desc.Format))
+			if(isCompressedFormat(desc.Format))
 			{
-				return createCompressedTexture3D(GL_TEXTURE_2D_ARRAY,desc.MipLevels,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,desc.ArraySize,0,data_size,data,texture);
+				return createCompressedTexture3D(GL_TEXTURE_2D_ARRAY,desc.MipLevels,mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,desc.ArraySize,0,data_size,data,texture);
 			}
 			else if(desc.SampleDesc.Count>1)
 			{
-				return createTexture3DMSAA(GL_TEXTURE_2D_MULTISAMPLE_ARRAY,desc.SampleDesc.Count,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,desc.ArraySize,true,texture);
+				return createTexture3DMSAA(GL_TEXTURE_2D_MULTISAMPLE_ARRAY,desc.SampleDesc.Count,mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,desc.ArraySize,true,texture);
 			}
 			else
 			{
-				return createTexture3D(GL_TEXTURE_2D_ARRAY,desc.MipLevels,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,desc.ArraySize,0,ICommon::mappingGLFormat(desc.Format),GL_BYTE,data,texture);
+				return createTexture3D(GL_TEXTURE_2D_ARRAY,desc.MipLevels,mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,desc.ArraySize,0,mappingGLFormat(desc.Format),GL_BYTE,data,texture);
 			}
 		}
 	}
 	else
 	{
-		if(ICommon::isCompressedFormat(desc.Format))
+		if(isCompressedFormat(desc.Format))
 		{
-			return createCompressedTexture2D(GL_TEXTURE_2D,desc.MipLevels,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,data_size,data,texture);
+			return createCompressedTexture2D(GL_TEXTURE_2D,desc.MipLevels,mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,data_size,data,texture);
 		}
 		else if(desc.SampleDesc.Count>1)
 		{
-			return createTexture2DMSAA(GL_TEXTURE_2D_MULTISAMPLE,desc.SampleDesc.Count,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,true,texture);
+			return createTexture2DMSAA(GL_TEXTURE_2D_MULTISAMPLE,desc.SampleDesc.Count,mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,true,texture);
 		}
 		else
 		{
-			return createTexture2D(GL_TEXTURE_2D,desc.MipLevels,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,ICommon::mappingGLFormat(desc.Format),GL_BYTE,data,texture);
+			return createTexture2D(GL_TEXTURE_2D,desc.MipLevels,mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,0,mappingGLFormat(desc.Format),GL_BYTE,data,texture);
 		}
 	}
 }
@@ -370,7 +370,7 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createTexture3D(const D3D11_TEXTURE3
 	{
 		data=initializeData->pSysMem;
 	}
-	return createTexture3D(GL_TEXTURE_3D,desc.MipLevels,ICommon::mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,desc.Depth,0,ICommon::mappingGLFormat(desc.Format),GL_BYTE,data,texture);
+	return createTexture3D(GL_TEXTURE_3D,desc.MipLevels,mappingGLInternalFormat(desc.Format),desc.Width,desc.Height,desc.Depth,0,mappingGLFormat(desc.Format),GL_BYTE,data,texture);
 }
 
 Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createTexture1D(GLenum target,GLint level,GLint internalformat,GLsizei width,GLint border,GLenum format,GLenum type,ConstVoidPtr initializeData,OUT ITexture* texture)
@@ -451,7 +451,7 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createVertexDeclaration(const D3DVER
 	D3DVERTEXELEMENT9 end=D3DDECL_END();
 	while(elements&&(0!=memcmp(elements,&end,sizeof(D3DVERTEXELEMENT9))))
 	{
-		ret&=vertexAttribFormat(elements->Stream,ICommon::getComponentCount((D3DDECLTYPE)elements->Type),ICommon::getComponentType((D3DDECLTYPE)elements->Type),ICommon::needNormalize((D3DDECLTYPE)elements->Type),elements->Offset,layout);
+		ret&=vertexAttribFormat(elements->Stream,getComponentCount((D3DDECLTYPE)elements->Type),getComponentType((D3DDECLTYPE)elements->Type),needNormalize((D3DDECLTYPE)elements->Type),elements->Offset,layout);
 		++elements;
 	}
 	return ret;
@@ -462,7 +462,7 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createInputLayout(const D3D10_INPUT_
 	Bool ret=True;
 	for(UINT i=0;i<numElements;++i)
 	{
-		ret&=vertexAttribFormat(descs[i].InputSlot,ICommon::getComponentCount(descs[i].Format),ICommon::getComponentType(descs[i].Format),ICommon::needNormalize(descs[i].Format),descs[i].AlignedByteOffset,layout);
+		ret&=vertexAttribFormat(descs[i].InputSlot,getComponentCount(descs[i].Format),getComponentType(descs[i].Format),needNormalize(descs[i].Format),descs[i].AlignedByteOffset,layout);
 	}
 	return ret;
 }
@@ -472,7 +472,7 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createInputLayout(const D3D11_INPUT_
 	Bool ret=True;
 	for(UINT i=0;i<numElements;++i)
 	{
-		ret&=vertexAttribFormat(descs[i].InputSlot,ICommon::getComponentCount(descs[i].Format),ICommon::getComponentType(descs[i].Format),ICommon::needNormalize(descs[i].Format),descs[i].AlignedByteOffset,layout);
+		ret&=vertexAttribFormat(descs[i].InputSlot,getComponentCount(descs[i].Format),getComponentType(descs[i].Format),needNormalize(descs[i].Format),descs[i].AlignedByteOffset,layout);
 	}
 	return ret;
 }
@@ -706,54 +706,49 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createBlendState(const D3D10_BLEND_D
 {
 	if(desc.AlphaToCoverageEnable)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glEnable]=GL_SAMPLE_ALPHA_TO_COVERAGE;
+		static_cast<CGLStateImp*>(state)->addState(glEnable,GL_SAMPLE_ALPHA_TO_COVERAGE);
 	}
 	if(desc.BlendOpAlpha!=D3D10_BLEND_OP_ADD)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glBlendEquationSeparate][0]=ICommon::mappingGL(desc.BlendOp);
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glBlendEquationSeparate][1]=ICommon::mappingGL(desc.BlendOpAlpha);
+		static_cast<CGLStateImp*>(state)->addState(glBlendEquationSeparate,mappingGL(desc.BlendOp),mappingGL(desc.BlendOpAlpha));
 	}
 	else if(desc.BlendOp!=D3D10_BLEND_OP_ADD)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glBlendEquation]=ICommon::mappingGL(desc.BlendOp);
+		static_cast<CGLStateImp*>(state)->addState(glBlendEquation,mappingGL(desc.BlendOp));
 	}
 	if((desc.DestBlendAlpha!=D3D10_BLEND_ZERO)||(desc.SrcBlendAlpha!=D3D10_BLEND_ONE))
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glBlendFuncSeparate][0]=ICommon::mappingGL(desc.SrcBlend);
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glBlendFuncSeparate][1]=ICommon::mappingGL(desc.DestBlend);
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glBlendFuncSeparate][2]=ICommon::mappingGL(desc.SrcBlendAlpha);
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glBlendFuncSeparate][3]=ICommon::mappingGL(desc.DestBlendAlpha);
+		static_cast<CGLStateImp*>(state)->addState(glBlendFuncSeparate,mappingGL(desc.SrcBlend),mappingGL(desc.DestBlend),mappingGL(desc.SrcBlendAlpha),mappingGL(desc.DestBlendAlpha));
 	}
 	else if((desc.DestBlend!=D3D10_BLEND_ZERO)||(desc.SrcBlend!=D3D10_BLEND_ONE))
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glBlendFunc][0]=ICommon::mappingGL(desc.SrcBlend);
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glBlendFunc][1]=ICommon::mappingGL(desc.DestBlend);
+		static_cast<CGLStateImp*>(state)->addState(glBlendFunc,mappingGL(desc.SrcBlend),mappingGL(desc.DestBlend));
 	}
 	if((desc.RenderTargetWriteMask[0]&D3D10_COLOR_WRITE_ENABLE_ALL)!=D3D10_COLOR_WRITE_ENABLE_ALL)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glColorMask][0]=desc.RenderTargetWriteMask[0]&D3D10_COLOR_WRITE_ENABLE_RED?true:false;
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glColorMask][1]=desc.RenderTargetWriteMask[0]&D3D10_COLOR_WRITE_ENABLE_GREEN?true:false;
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glColorMask][2]=desc.RenderTargetWriteMask[0]&D3D10_COLOR_WRITE_ENABLE_BLUE?true:false;
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glColorMask][3]=desc.RenderTargetWriteMask[0]&D3D10_COLOR_WRITE_ENABLE_ALPHA?true:false;
+		static_cast<CGLStateImp*>(state)->addState(glColorMask,desc.RenderTargetWriteMask[0]&D3D10_COLOR_WRITE_ENABLE_RED?GL_TRUE:GL_FALSE
+			,desc.RenderTargetWriteMask[0]&D3D10_COLOR_WRITE_ENABLE_GREEN?GL_TRUE:GL_FALSE
+			,desc.RenderTargetWriteMask[0]&D3D10_COLOR_WRITE_ENABLE_BLUE?GL_TRUE:GL_FALSE
+			,desc.RenderTargetWriteMask[0]&D3D10_COLOR_WRITE_ENABLE_ALPHA?GL_TRUE:GL_FALSE
+		);
 	}
 	if(desc.BlendEnable[0])
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glEnable]=GL_BLEND;
+		static_cast<CGLStateImp*>(state)->addState(glEnable,GL_BLEND);
 	}
 	for(Int32 i=1;i<sizeof(desc.BlendEnable)/sizeof(desc.BlendEnable[0]);++i)
 	{
 		if((desc.RenderTargetWriteMask[i]&D3D10_COLOR_WRITE_ENABLE_ALL)!=D3D10_COLOR_WRITE_ENABLE_ALL)
 		{
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glColorMaski][0]=i;
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glColorMaski][1]=desc.RenderTargetWriteMask[i]&D3D10_COLOR_WRITE_ENABLE_RED?true:false;
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glColorMaski][2]=desc.RenderTargetWriteMask[i]&D3D10_COLOR_WRITE_ENABLE_GREEN?true:false;
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glColorMaski][3]=desc.RenderTargetWriteMask[i]&D3D10_COLOR_WRITE_ENABLE_BLUE?true:false;
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glColorMaski][4]=desc.RenderTargetWriteMask[i]&D3D10_COLOR_WRITE_ENABLE_ALPHA?true:false;
+			static_cast<CGLStateImp*>(state)->addState(glColorMaski,i
+			,desc.RenderTargetWriteMask[i]&D3D10_COLOR_WRITE_ENABLE_RED?GL_TRUE:GL_FALSE
+			,desc.RenderTargetWriteMask[i]&D3D10_COLOR_WRITE_ENABLE_GREEN?GL_TRUE:GL_FALSE
+			,desc.RenderTargetWriteMask[i]&D3D10_COLOR_WRITE_ENABLE_BLUE?GL_TRUE:GL_FALSE
+			,desc.RenderTargetWriteMask[i]&D3D10_COLOR_WRITE_ENABLE_ALPHA?GL_TRUE:GL_FALSE);
 		}
 		if(desc.BlendEnable[i])
 		{
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glEnablei][0]=GL_BLEND;
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glEnablei][1]=i;
+			static_cast<CGLStateImp*>(state)->addState(glEnablei,GL_BLEND,i);
 		}
 	}
 	return True;
@@ -763,29 +758,27 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createBlendState(const D3D10_BLEND_D
 {
 	if(desc.AlphaToCoverageEnable)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glEnable]=GL_SAMPLE_ALPHA_TO_COVERAGE;
+		static_cast<CGLStateImp*>(state)->addState(glEnable,GL_SAMPLE_ALPHA_TO_COVERAGE);
 	}
 	{
 		if(desc.RenderTarget[0].BlendOpAlpha!=D3D10_BLEND_OP_ADD)
 		{
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glBlendEquationSeparate][0]=ICommon::mappingGL(desc.RenderTarget[0].BlendOp);
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glBlendEquationSeparate][1]=ICommon::mappingGL(desc.RenderTarget[0].BlendOpAlpha);
+			static_cast<CGLStateImp*>(state)->addState(glBlendEquationSeparate,mappingGL(desc.RenderTarget[0].BlendOp),mappingGL(desc.RenderTarget[0].BlendOpAlpha));
 		}
 		else if(desc.RenderTarget[0].BlendOp!=D3D10_BLEND_OP_ADD)
 		{
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glBlendEquation]=ICommon::mappingGL(desc.RenderTarget[0].BlendOp);
+			static_cast<CGLStateImp*>(state)->addState(glBlendEquation,mappingGL(desc.RenderTarget[0].BlendOp));
 		}
 		if((desc.RenderTarget[0].DestBlendAlpha!=D3D10_BLEND_ZERO)||(desc.RenderTarget[0].SrcBlendAlpha!=D3D10_BLEND_ONE))
 		{
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glBlendFuncSeparate][0]=ICommon::mappingGL(desc.RenderTarget[0].SrcBlend);
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glBlendFuncSeparate][1]=ICommon::mappingGL(desc.RenderTarget[0].DestBlend);
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glBlendFuncSeparate][2]=ICommon::mappingGL(desc.RenderTarget[0].SrcBlendAlpha);
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glBlendFuncSeparate][3]=ICommon::mappingGL(desc.RenderTarget[0].DestBlendAlpha);
+			static_cast<CGLStateImp*>(state)->addState(glBlendFuncSeparate,mappingGL(desc.RenderTarget[0].SrcBlend)
+				,mappingGL(desc.RenderTarget[0].DestBlend)
+				,mappingGL(desc.RenderTarget[0].SrcBlendAlpha)
+				,mappingGL(desc.RenderTarget[0].DestBlendAlpha));
 		}
 		else if((desc.RenderTarget[0].DestBlend!=D3D10_BLEND_ZERO)||(desc.RenderTarget[0].SrcBlend!=D3D10_BLEND_ONE))
 		{
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glBlendFunc][0]=ICommon::mappingGL(desc.RenderTarget[0].SrcBlend);
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glBlendFunc][1]=ICommon::mappingGL(desc.RenderTarget[0].DestBlend);
+			static_cast<CGLStateImp*>(state)->addState(glBlendFunc,mappingGL(desc.RenderTarget[0].SrcBlend),mappingGL(desc.RenderTarget[0].DestBlend));
 		}
 	}
 	if(desc.IndependentBlendEnable)
@@ -794,56 +787,48 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createBlendState(const D3D10_BLEND_D
 		{
 			if(desc.RenderTarget[i].BlendOpAlpha!=D3D10_BLEND_OP_ADD)
 			{
-				static_cast<CGLStateImp*>(state)->mStateChangeParameters_III[glBlendEquationSeparatei][0]=i;
-				static_cast<CGLStateImp*>(state)->mStateChangeParameters_III[glBlendEquationSeparatei][1]=ICommon::mappingGL(desc.RenderTarget[i].BlendOp);
-				static_cast<CGLStateImp*>(state)->mStateChangeParameters_III[glBlendEquationSeparatei][2]=ICommon::mappingGL(desc.RenderTarget[i].BlendOpAlpha);
+				static_cast<CGLStateImp*>(state)->addState(glBlendEquationSeparatei,i,mappingGL(desc.RenderTarget[i].BlendOp),mappingGL(desc.RenderTarget[i].BlendOpAlpha));
 			}
 			else if(desc.RenderTarget[i].BlendOp!=D3D10_BLEND_OP_ADD)
 			{
-				static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glBlendEquationi][0]=i;
-				static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glBlendEquationi][1]=ICommon::mappingGL(desc.RenderTarget[i].BlendOp);
+				static_cast<CGLStateImp*>(state)->addState(glBlendEquationi,i,mappingGL(desc.RenderTarget[i].BlendOp));
 			}
 			if((desc.RenderTarget[i].DestBlendAlpha!=D3D10_BLEND_ZERO)||(desc.RenderTarget[i].SrcBlendAlpha!=D3D10_BLEND_ONE))
 			{
-				static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIIII[glBlendFuncSeparatei][0]=i;
-				static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIIII[glBlendFuncSeparatei][1]=ICommon::mappingGL(desc.RenderTarget[i].SrcBlend);
-				static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIIII[glBlendFuncSeparatei][2]=ICommon::mappingGL(desc.RenderTarget[i].DestBlend);
-				static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIIII[glBlendFuncSeparatei][3]=ICommon::mappingGL(desc.RenderTarget[i].SrcBlendAlpha);
-				static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIIII[glBlendFuncSeparatei][4]=ICommon::mappingGL(desc.RenderTarget[i].DestBlendAlpha);
+				static_cast<CGLStateImp*>(state)->addState(glBlendFuncSeparatei,i
+					,mappingGL(desc.RenderTarget[i].SrcBlend),mappingGL(desc.RenderTarget[i].DestBlend)
+					,mappingGL(desc.RenderTarget[i].SrcBlendAlpha),mappingGL(desc.RenderTarget[i].DestBlendAlpha));
 			}
 			else if((desc.RenderTarget[i].DestBlend!=D3D10_BLEND_ZERO)||(desc.RenderTarget[i].SrcBlend!=D3D10_BLEND_ONE))
 			{
-				static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glBlendFunci][0]=i;
-				static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glBlendFunci][1]=ICommon::mappingGL(desc.RenderTarget[i].SrcBlend);
-				static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glBlendFunci][2]=ICommon::mappingGL(desc.RenderTarget[i].DestBlend);
+				static_cast<CGLStateImp*>(state)->addState(glBlendFunci,i,mappingGL(desc.RenderTarget[i].SrcBlend),mappingGL(desc.RenderTarget[i].DestBlend));
 			}
 		}
 	}
 	if((desc.RenderTarget[0].RenderTargetWriteMask&D3D10_COLOR_WRITE_ENABLE_ALL)!=D3D10_COLOR_WRITE_ENABLE_ALL)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glColorMask][0]=desc.RenderTarget[0].RenderTargetWriteMask&D3D10_COLOR_WRITE_ENABLE_RED?true:false;
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glColorMask][1]=desc.RenderTarget[0].RenderTargetWriteMask&D3D10_COLOR_WRITE_ENABLE_GREEN?true:false;
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glColorMask][2]=desc.RenderTarget[0].RenderTargetWriteMask&D3D10_COLOR_WRITE_ENABLE_BLUE?true:false;
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glColorMask][3]=desc.RenderTarget[0].RenderTargetWriteMask&D3D10_COLOR_WRITE_ENABLE_ALPHA?true:false;
+		static_cast<CGLStateImp*>(state)->addState(glColorMask,desc.RenderTarget[0].RenderTargetWriteMask&D3D10_COLOR_WRITE_ENABLE_RED?GL_TRUE:GL_FALSE,
+			desc.RenderTarget[0].RenderTargetWriteMask&D3D10_COLOR_WRITE_ENABLE_GREEN?GL_TRUE:GL_FALSE,
+			desc.RenderTarget[0].RenderTargetWriteMask&D3D10_COLOR_WRITE_ENABLE_BLUE?GL_TRUE:GL_FALSE,
+			desc.RenderTarget[0].RenderTargetWriteMask&D3D10_COLOR_WRITE_ENABLE_ALPHA?GL_TRUE:GL_FALSE);
 	}
 	if(desc.RenderTarget[0].BlendEnable)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glEnable]=GL_BLEND;
+		static_cast<CGLStateImp*>(state)->addState(glEnable,GL_BLEND);
 	}
 	for(int i=1;i<sizeof(desc.RenderTarget)/sizeof(desc.RenderTarget[0]);++i)
 	{
 		if((desc.RenderTarget[i].RenderTargetWriteMask&D3D10_COLOR_WRITE_ENABLE_ALL)!=D3D10_COLOR_WRITE_ENABLE_ALL)
 		{
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glColorMaski][0]=i;
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glColorMaski][1]=desc.RenderTarget[i].RenderTargetWriteMask&D3D10_COLOR_WRITE_ENABLE_RED?true:false;
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glColorMaski][2]=desc.RenderTarget[i].RenderTargetWriteMask&D3D10_COLOR_WRITE_ENABLE_GREEN?true:false;
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glColorMaski][3]=desc.RenderTarget[i].RenderTargetWriteMask&D3D10_COLOR_WRITE_ENABLE_BLUE?true:false;
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glColorMaski][4]=desc.RenderTarget[i].RenderTargetWriteMask&D3D10_COLOR_WRITE_ENABLE_ALPHA?true:false;
+			static_cast<CGLStateImp*>(state)->addState(glColorMaski,i,
+				desc.RenderTarget[i].RenderTargetWriteMask&D3D10_COLOR_WRITE_ENABLE_RED?GL_TRUE:GL_FALSE,
+				desc.RenderTarget[i].RenderTargetWriteMask&D3D10_COLOR_WRITE_ENABLE_GREEN?GL_TRUE:GL_FALSE,
+				desc.RenderTarget[i].RenderTargetWriteMask&D3D10_COLOR_WRITE_ENABLE_BLUE?GL_TRUE:GL_FALSE,
+				desc.RenderTarget[i].RenderTargetWriteMask&D3D10_COLOR_WRITE_ENABLE_ALPHA?GL_TRUE:GL_FALSE);
 		}
 		if(desc.RenderTarget[i].BlendEnable)
 		{
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glEnablei][0]=GL_BLEND;
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glEnablei][1]=i;
+			static_cast<CGLStateImp*>(state)->addState(glEnablei,GL_BLEND,i);
 		}
 	}
 	return True;
@@ -853,29 +838,27 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createBlendState(const D3D11_BLEND_D
 {
 	if(desc.AlphaToCoverageEnable)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glEnable]=GL_SAMPLE_ALPHA_TO_COVERAGE;
+		static_cast<CGLStateImp*>(state)->addState(glEnable,GL_SAMPLE_ALPHA_TO_COVERAGE);
 	}
 	{
 		if(desc.RenderTarget[0].BlendOpAlpha!=D3D11_BLEND_OP_ADD)
 		{
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glBlendEquationSeparate][0]=ICommon::mappingGL(desc.RenderTarget[0].BlendOp);
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glBlendEquationSeparate][1]=ICommon::mappingGL(desc.RenderTarget[0].BlendOpAlpha);
+			static_cast<CGLStateImp*>(state)->addState(glBlendEquationSeparate,mappingGL(desc.RenderTarget[0].BlendOp),mappingGL(desc.RenderTarget[0].BlendOpAlpha));
 		}
 		else if(desc.RenderTarget[0].BlendOp!=D3D11_BLEND_OP_ADD)
 		{
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glBlendEquation]=ICommon::mappingGL(desc.RenderTarget[0].BlendOp);
+			static_cast<CGLStateImp*>(state)->addState(glBlendEquation,mappingGL(desc.RenderTarget[0].BlendOp));
 		}
 		if((desc.RenderTarget[0].DestBlendAlpha!=D3D11_BLEND_ZERO)||(desc.RenderTarget[0].SrcBlendAlpha!=D3D11_BLEND_ONE))
 		{
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glBlendFuncSeparate][0]=ICommon::mappingGL(desc.RenderTarget[0].SrcBlend);
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glBlendFuncSeparate][1]=ICommon::mappingGL(desc.RenderTarget[0].DestBlend);
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glBlendFuncSeparate][2]=ICommon::mappingGL(desc.RenderTarget[0].SrcBlendAlpha);
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glBlendFuncSeparate][3]=ICommon::mappingGL(desc.RenderTarget[0].DestBlendAlpha);
+			static_cast<CGLStateImp*>(state)->addState(glBlendFuncSeparate,mappingGL(desc.RenderTarget[0].SrcBlend),
+				mappingGL(desc.RenderTarget[0].DestBlend),
+				mappingGL(desc.RenderTarget[0].SrcBlendAlpha),
+				mappingGL(desc.RenderTarget[0].DestBlendAlpha));
 		}
 		else if((desc.RenderTarget[0].DestBlend!=D3D11_BLEND_ZERO)||(desc.RenderTarget[0].SrcBlend!=D3D11_BLEND_ONE))
 		{
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glBlendFunc][0]=ICommon::mappingGL(desc.RenderTarget[0].SrcBlend);
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glBlendFunc][1]=ICommon::mappingGL(desc.RenderTarget[0].DestBlend);
+			static_cast<CGLStateImp*>(state)->addState(glBlendFunc,mappingGL(desc.RenderTarget[0].SrcBlend),mappingGL(desc.RenderTarget[0].DestBlend));
 		}
 	}
 	if(desc.IndependentBlendEnable)
@@ -884,56 +867,44 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createBlendState(const D3D11_BLEND_D
 		{
 			if(desc.RenderTarget[i].BlendOpAlpha!=D3D11_BLEND_OP_ADD)
 			{
-				static_cast<CGLStateImp*>(state)->mStateChangeParameters_III[glBlendEquationSeparatei][0]=i;
-				static_cast<CGLStateImp*>(state)->mStateChangeParameters_III[glBlendEquationSeparatei][1]=ICommon::mappingGL(desc.RenderTarget[i].BlendOp);
-				static_cast<CGLStateImp*>(state)->mStateChangeParameters_III[glBlendEquationSeparatei][2]=ICommon::mappingGL(desc.RenderTarget[i].BlendOpAlpha);
+				static_cast<CGLStateImp*>(state)->addState(glBlendEquationSeparatei,i,mappingGL(desc.RenderTarget[i].BlendOp),mappingGL(desc.RenderTarget[i].BlendOpAlpha));
 			}
 			else if(desc.RenderTarget[i].BlendOp!=D3D11_BLEND_OP_ADD)
 			{
-				static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glBlendEquationi][0]=i;
-				static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glBlendEquationi][1]=ICommon::mappingGL(desc.RenderTarget[i].BlendOp);
+				static_cast<CGLStateImp*>(state)->addState(glBlendEquationi,i,mappingGL(desc.RenderTarget[i].BlendOp));
 			}
 			if((desc.RenderTarget[i].DestBlendAlpha!=D3D11_BLEND_ZERO)||(desc.RenderTarget[i].SrcBlendAlpha!=D3D11_BLEND_ONE))
 			{
-				static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIIII[glBlendFuncSeparatei][0]=i;
-				static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIIII[glBlendFuncSeparatei][1]=ICommon::mappingGL(desc.RenderTarget[i].SrcBlend);
-				static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIIII[glBlendFuncSeparatei][2]=ICommon::mappingGL(desc.RenderTarget[i].DestBlend);
-				static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIIII[glBlendFuncSeparatei][3]=ICommon::mappingGL(desc.RenderTarget[i].SrcBlendAlpha);
-				static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIIII[glBlendFuncSeparatei][4]=ICommon::mappingGL(desc.RenderTarget[i].DestBlendAlpha);
+				static_cast<CGLStateImp*>(state)->addState(glBlendFuncSeparatei,i,mappingGL(desc.RenderTarget[i].SrcBlend),
+					mappingGL(desc.RenderTarget[i].DestBlend),mappingGL(desc.RenderTarget[i].SrcBlendAlpha),mappingGL(desc.RenderTarget[i].DestBlendAlpha));
 			}
 			else if((desc.RenderTarget[i].DestBlend!=D3D11_BLEND_ZERO)||(desc.RenderTarget[i].SrcBlend!=D3D11_BLEND_ONE))
 			{
-				static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glBlendFunci][0]=i;
-				static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glBlendFunci][1]=ICommon::mappingGL(desc.RenderTarget[i].SrcBlend);
-				static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glBlendFunci][2]=ICommon::mappingGL(desc.RenderTarget[i].DestBlend);
+				static_cast<CGLStateImp*>(state)->addState(glBlendFunci,i,mappingGL(desc.RenderTarget[i].SrcBlend),mappingGL(desc.RenderTarget[i].DestBlend));
 			}
 		}
 	}
 	if((desc.RenderTarget[0].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_ALL)!=D3D11_COLOR_WRITE_ENABLE_ALL)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glColorMask][0]=desc.RenderTarget[0].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_RED?true:false;
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glColorMask][1]=desc.RenderTarget[0].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_GREEN?true:false;
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glColorMask][2]=desc.RenderTarget[0].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_BLUE?true:false;
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glColorMask][3]=desc.RenderTarget[0].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_ALPHA?true:false;
+		static_cast<CGLStateImp*>(state)->addState(glColorMask,desc.RenderTarget[0].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_RED?GL_TRUE:GL_FALSE,
+			desc.RenderTarget[0].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_GREEN?GL_TRUE:GL_FALSE,desc.RenderTarget[0].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_BLUE?GL_TRUE:GL_FALSE,
+			desc.RenderTarget[0].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_ALPHA?GL_TRUE:GL_FALSE);
 	}
 	if(desc.RenderTarget[0].BlendEnable)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glEnable]=GL_BLEND;
+		static_cast<CGLStateImp*>(state)->addState(glEnable,GL_BLEND);
 	}
 	for(int i=1;i<sizeof(desc.RenderTarget)/sizeof(desc.RenderTarget[0]);++i)
 	{
 		if((desc.RenderTarget[i].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_ALL)!=D3D11_COLOR_WRITE_ENABLE_ALL)
 		{
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glColorMaski][0]=i;
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glColorMaski][1]=desc.RenderTarget[i].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_RED?true:false;
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glColorMaski][2]=desc.RenderTarget[i].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_GREEN?true:false;
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glColorMaski][3]=desc.RenderTarget[i].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_BLUE?true:false;
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glColorMaski][4]=desc.RenderTarget[i].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_ALPHA?true:false;
+			static_cast<CGLStateImp*>(state)->addState(glColorMaski,i,desc.RenderTarget[i].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_RED?GL_TRUE:GL_FALSE,
+				desc.RenderTarget[i].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_GREEN?GL_TRUE:GL_FALSE,desc.RenderTarget[i].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_BLUE?GL_TRUE:GL_FALSE,
+				desc.RenderTarget[i].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_ALPHA?GL_TRUE:GL_FALSE);
 		}
 		if(desc.RenderTarget[i].BlendEnable)
 		{
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glEnablei][0]=GL_BLEND;
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glEnablei][1]=i;
+			static_cast<CGLStateImp*>(state)->addState(glEnablei,GL_BLEND,i);
 		}
 	}
 	return True;
@@ -943,36 +914,32 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createBlendState(const D3D11_BLEND_D
 {
 	if(desc.AlphaToCoverageEnable)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glEnable]=GL_SAMPLE_ALPHA_TO_COVERAGE;
+		static_cast<CGLStateImp*>(state)->addState(glEnable,GL_SAMPLE_ALPHA_TO_COVERAGE);
 	}
 	{
 		if(desc.RenderTarget[0].BlendOpAlpha!=D3D11_BLEND_OP_ADD)
 		{
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glBlendEquationSeparate][0]=ICommon::mappingGL(desc.RenderTarget[0].BlendOp);
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glBlendEquationSeparate][1]=ICommon::mappingGL(desc.RenderTarget[0].BlendOpAlpha);
+			static_cast<CGLStateImp*>(state)->addState(glBlendEquationSeparate,mappingGL(desc.RenderTarget[0].BlendOp),mappingGL(desc.RenderTarget[0].BlendOpAlpha));
 		}
 		else if(desc.RenderTarget[0].BlendOp!=D3D11_BLEND_OP_ADD)
 		{
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glBlendEquation]=ICommon::mappingGL(desc.RenderTarget[0].BlendOp);
+			static_cast<CGLStateImp*>(state)->addState(glBlendEquation,mappingGL(desc.RenderTarget[0].BlendOp));
 		}
 		if((desc.RenderTarget[0].DestBlendAlpha!=D3D11_BLEND_ZERO)||(desc.RenderTarget[0].SrcBlendAlpha!=D3D11_BLEND_ONE))
 		{
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glBlendFuncSeparate][0]=ICommon::mappingGL(desc.RenderTarget[0].SrcBlend);
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glBlendFuncSeparate][1]=ICommon::mappingGL(desc.RenderTarget[0].DestBlend);
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glBlendFuncSeparate][2]=ICommon::mappingGL(desc.RenderTarget[0].SrcBlendAlpha);
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glBlendFuncSeparate][3]=ICommon::mappingGL(desc.RenderTarget[0].DestBlendAlpha);
+			static_cast<CGLStateImp*>(state)->addState(glBlendFuncSeparate,mappingGL(desc.RenderTarget[0].SrcBlend),mappingGL(desc.RenderTarget[0].DestBlend),
+				mappingGL(desc.RenderTarget[0].SrcBlendAlpha),mappingGL(desc.RenderTarget[0].DestBlendAlpha));
 		}
 		else if((desc.RenderTarget[0].DestBlend!=D3D11_BLEND_ZERO)||(desc.RenderTarget[0].SrcBlend!=D3D11_BLEND_ONE))
 		{
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glBlendFunc][0]=ICommon::mappingGL(desc.RenderTarget[0].SrcBlend);
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glBlendFunc][1]=ICommon::mappingGL(desc.RenderTarget[0].DestBlend);
+			static_cast<CGLStateImp*>(state)->addState(glBlendFunc,mappingGL(desc.RenderTarget[0].SrcBlend),mappingGL(desc.RenderTarget[0].DestBlend));
 		}
 	}
 	if(desc.RenderTarget[0].LogicOpEnable)
 	{
 		if(D3D11_LOGIC_OP_NOOP!=desc.RenderTarget[0].LogicOp)
 		{
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glLogicOp]=ICommon::mappingGL(desc.RenderTarget[0].LogicOp);
+			static_cast<CGLStateImp*>(state)->addState(glLogicOp,mappingGL(desc.RenderTarget[0].LogicOp));
 		}
 	}
 	if(desc.IndependentBlendEnable)
@@ -981,56 +948,46 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createBlendState(const D3D11_BLEND_D
 		{
 			if(desc.RenderTarget[i].BlendOpAlpha!=D3D11_BLEND_OP_ADD)
 			{
-				static_cast<CGLStateImp*>(state)->mStateChangeParameters_III[glBlendEquationSeparatei][0]=i;
-				static_cast<CGLStateImp*>(state)->mStateChangeParameters_III[glBlendEquationSeparatei][1]=ICommon::mappingGL(desc.RenderTarget[i].BlendOp);
-				static_cast<CGLStateImp*>(state)->mStateChangeParameters_III[glBlendEquationSeparatei][2]=ICommon::mappingGL(desc.RenderTarget[i].BlendOpAlpha);
+				static_cast<CGLStateImp*>(state)->addState(glBlendEquationSeparatei,i,mappingGL(desc.RenderTarget[i].BlendOp),mappingGL(desc.RenderTarget[i].BlendOpAlpha));
 			}
 			else if(desc.RenderTarget[i].BlendOp!=D3D11_BLEND_OP_ADD)
 			{
-				static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glBlendEquationi][0]=i;
-				static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glBlendEquationi][1]=ICommon::mappingGL(desc.RenderTarget[i].BlendOp);
+				static_cast<CGLStateImp*>(state)->addState(glBlendEquationi,i,mappingGL(desc.RenderTarget[i].BlendOp));
 			}
 			if((desc.RenderTarget[i].DestBlendAlpha!=D3D11_BLEND_ZERO)||(desc.RenderTarget[i].SrcBlendAlpha!=D3D11_BLEND_ONE))
 			{
-				static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIIII[glBlendFuncSeparatei][0]=i;
-				static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIIII[glBlendFuncSeparatei][1]=ICommon::mappingGL(desc.RenderTarget[i].SrcBlend);
-				static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIIII[glBlendFuncSeparatei][2]=ICommon::mappingGL(desc.RenderTarget[i].DestBlend);
-				static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIIII[glBlendFuncSeparatei][3]=ICommon::mappingGL(desc.RenderTarget[i].SrcBlendAlpha);
-				static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIIII[glBlendFuncSeparatei][4]=ICommon::mappingGL(desc.RenderTarget[i].DestBlendAlpha);
+				static_cast<CGLStateImp*>(state)->addState(glBlendFuncSeparatei,i,mappingGL(desc.RenderTarget[i].SrcBlend),
+					mappingGL(desc.RenderTarget[i].DestBlend),mappingGL(desc.RenderTarget[i].SrcBlendAlpha),
+					mappingGL(desc.RenderTarget[i].DestBlendAlpha));
 			}
 			else if((desc.RenderTarget[i].DestBlend!=D3D11_BLEND_ZERO)||(desc.RenderTarget[i].SrcBlend!=D3D11_BLEND_ONE))
 			{
-				static_cast<CGLStateImp*>(state)->mStateChangeParameters_III[glBlendFunci][0]=i;
-				static_cast<CGLStateImp*>(state)->mStateChangeParameters_III[glBlendFunci][1]=ICommon::mappingGL(desc.RenderTarget[i].SrcBlend);
-				static_cast<CGLStateImp*>(state)->mStateChangeParameters_III[glBlendFunci][2]=ICommon::mappingGL(desc.RenderTarget[i].DestBlend);
+				static_cast<CGLStateImp*>(state)->addState(glBlendFunci,i,
+					mappingGL(desc.RenderTarget[i].SrcBlend),mappingGL(desc.RenderTarget[i].DestBlend));
 			}
 		}
 	}
 	if((desc.RenderTarget[0].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_ALL)!=D3D11_COLOR_WRITE_ENABLE_ALL)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glColorMask][0]=desc.RenderTarget[0].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_RED?true:false;
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glColorMask][1]=desc.RenderTarget[0].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_GREEN?true:false;
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glColorMask][2]=desc.RenderTarget[0].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_BLUE?true:false;
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glColorMask][3]=desc.RenderTarget[0].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_ALPHA?true:false;
+		static_cast<CGLStateImp*>(state)->addState(glColorMask,desc.RenderTarget[0].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_RED?GL_TRUE:GL_FALSE,
+			desc.RenderTarget[0].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_GREEN?GL_TRUE:GL_FALSE,desc.RenderTarget[0].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_BLUE?GL_TRUE:GL_FALSE,
+			desc.RenderTarget[0].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_ALPHA?GL_TRUE:GL_FALSE);
 	}
 	if(desc.RenderTarget[0].BlendEnable)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glEnable]=GL_BLEND;
+		static_cast<CGLStateImp*>(state)->addState(glEnable,GL_BLEND);
 	}
 	for(int i=1;i<sizeof(desc.RenderTarget)/sizeof(desc.RenderTarget[0]);++i)
 	{
 		if((desc.RenderTarget[i].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_ALL)!=D3D11_COLOR_WRITE_ENABLE_ALL)
 		{
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIIII[glColorMaski][0]=i;
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIIII[glColorMaski][1]=desc.RenderTarget[i].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_RED?true:false;
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIIII[glColorMaski][2]=desc.RenderTarget[i].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_GREEN?true:false;
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIIII[glColorMaski][3]=desc.RenderTarget[i].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_BLUE?true:false;
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIIII[glColorMaski][4]=desc.RenderTarget[i].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_ALPHA?true:false;
+			static_cast<CGLStateImp*>(state)->addState(glColorMaski,i,
+				desc.RenderTarget[i].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_RED?GL_TRUE:GL_FALSE,desc.RenderTarget[i].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_GREEN?GL_TRUE:GL_FALSE,
+				desc.RenderTarget[i].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_BLUE?GL_TRUE:GL_FALSE,desc.RenderTarget[i].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_ALPHA?GL_TRUE:GL_FALSE);
 		}
 		if(desc.RenderTarget[i].BlendEnable)
 		{
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glEnablei][0]=GL_BLEND;
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glEnablei][1]=i;
+			static_cast<CGLStateImp*>(state)->addState(glEnablei,GL_BLEND,i);
 		}
 	}
 	return True;
@@ -1043,9 +1000,7 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createDepthStencilState(const D3D10_
 		&&(desc.FrontFace.StencilPassOp==desc.BackFace.StencilPassOp)
 		)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_III[glStencilOp][0]=ICommon::mappingGL(desc.BackFace.StencilFailOp);
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_III[glStencilOp][1]=ICommon::mappingGL(desc.BackFace.StencilDepthFailOp);
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_III[glStencilOp][2]=ICommon::mappingGL(desc.BackFace.StencilPassOp);
+		static_cast<CGLStateImp*>(state)->addState(glStencilOp,mappingGL(desc.BackFace.StencilFailOp),mappingGL(desc.BackFace.StencilDepthFailOp),mappingGL(desc.BackFace.StencilPassOp));
 	}
 	else
 	{
@@ -1054,20 +1009,16 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createDepthStencilState(const D3D10_
 			||(desc.BackFace.StencilPassOp!=D3D10_STENCIL_OP_KEEP)
 			)
 		{
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glStencilOpSeparate][0]=GL_BACK;
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glStencilOpSeparate][1]=ICommon::mappingGL(desc.BackFace.StencilFailOp);
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glStencilOpSeparate][2]=ICommon::mappingGL(desc.BackFace.StencilDepthFailOp);
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glStencilOpSeparate][3]=ICommon::mappingGL(desc.BackFace.StencilPassOp);
+			static_cast<CGLStateImp*>(state)->addState(glStencilOpSeparate,GL_BACK,mappingGL(desc.BackFace.StencilFailOp),
+				mappingGL(desc.BackFace.StencilDepthFailOp),mappingGL(desc.BackFace.StencilPassOp));
 		}
 		if((desc.FrontFace.StencilDepthFailOp!=D3D10_STENCIL_OP_KEEP)
 			||(desc.FrontFace.StencilFailOp!=D3D10_STENCIL_OP_KEEP)
 			||(desc.FrontFace.StencilPassOp!=D3D10_STENCIL_OP_KEEP)
 			)
 		{
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glStencilOpSeparate][0]=GL_FRONT;
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glStencilOpSeparate][1]=ICommon::mappingGL(desc.FrontFace.StencilFailOp);
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glStencilOpSeparate][2]=ICommon::mappingGL(desc.FrontFace.StencilDepthFailOp);
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glStencilOpSeparate][3]=ICommon::mappingGL(desc.FrontFace.StencilPassOp);
+			static_cast<CGLStateImp*>(state)->addState(glStencilOpSeparate,GL_FRONT,mappingGL(desc.FrontFace.StencilFailOp),
+				mappingGL(desc.FrontFace.StencilDepthFailOp),mappingGL(desc.FrontFace.StencilPassOp));
 		}
 	}
 	if(desc.BackFace.StencilFunc==desc.FrontFace.StencilFunc)
@@ -1076,8 +1027,7 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createDepthStencilState(const D3D10_
 			||(desc.FrontFace.StencilFunc!=D3D10_COMPARISON_ALWAYS)
 			)
 		{
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_III[glStencilFunc][0]=ICommon::mappingGL(desc.BackFace.StencilFunc);
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_III[glStencilFunc][2]=desc.StencilReadMask;
+			static_cast<CGLStateImp*>(state)->addState(glStencilFunc,mappingGL(desc.BackFace.StencilFunc),desc.StencilReadMask);
 		}
 	}
 	else
@@ -1086,9 +1036,7 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createDepthStencilState(const D3D10_
 			||(desc.FrontFace.StencilFunc!=D3D10_COMPARISON_ALWAYS)
 			)
 		{
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glStencilFuncSeparate][0]=ICommon::mappingGL(desc.FrontFace.StencilFunc);
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glStencilFuncSeparate][1]=ICommon::mappingGL(desc.BackFace.StencilFunc);
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glStencilFuncSeparate][3]=desc.StencilReadMask;
+			static_cast<CGLStateImp*>(state)->addState(glStencilFuncSeparate,mappingGL(desc.FrontFace.StencilFunc),mappingGL(desc.BackFace.StencilFunc),desc.StencilReadMask);
 		}
 	}
 	if(!desc.DepthEnable)
@@ -1097,7 +1045,7 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createDepthStencilState(const D3D10_
 	}
 	if(desc.DepthFunc!=D3D10_COMPARISON_LESS_EQUAL)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glDepthFunc]=ICommon::mappingGL(desc.DepthFunc);
+		static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glDepthFunc]=mappingGL(desc.DepthFunc);
 	}
 	if(desc.DepthWriteMask!=D3D10_DEPTH_WRITE_MASK_ALL)
 	{
@@ -1121,9 +1069,9 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createDepthStencilState(const D3D11_
 		&&(desc.FrontFace.StencilPassOp==desc.BackFace.StencilPassOp)
 		)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_III[glStencilOp][0]=ICommon::mappingGL(desc.BackFace.StencilFailOp);
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_III[glStencilOp][1]=ICommon::mappingGL(desc.BackFace.StencilDepthFailOp);
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_III[glStencilOp][2]=ICommon::mappingGL(desc.BackFace.StencilPassOp);
+		static_cast<CGLStateImp*>(state)->mStateChangeParameters_III[glStencilOp][0]=mappingGL(desc.BackFace.StencilFailOp);
+		static_cast<CGLStateImp*>(state)->mStateChangeParameters_III[glStencilOp][1]=mappingGL(desc.BackFace.StencilDepthFailOp);
+		static_cast<CGLStateImp*>(state)->mStateChangeParameters_III[glStencilOp][2]=mappingGL(desc.BackFace.StencilPassOp);
 	}
 	else
 	{
@@ -1133,9 +1081,9 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createDepthStencilState(const D3D11_
 			)
 		{
 			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glStencilOpSeparate][0]=GL_BACK;
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glStencilOpSeparate][1]=ICommon::mappingGL(desc.BackFace.StencilFailOp);
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glStencilOpSeparate][2]=ICommon::mappingGL(desc.BackFace.StencilDepthFailOp);
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glStencilOpSeparate][3]=ICommon::mappingGL(desc.BackFace.StencilPassOp);
+			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glStencilOpSeparate][1]=mappingGL(desc.BackFace.StencilFailOp);
+			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glStencilOpSeparate][2]=mappingGL(desc.BackFace.StencilDepthFailOp);
+			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glStencilOpSeparate][3]=mappingGL(desc.BackFace.StencilPassOp);
 		}
 		if((desc.FrontFace.StencilDepthFailOp!=D3D11_STENCIL_OP_KEEP)
 			||(desc.FrontFace.StencilFailOp!=D3D11_STENCIL_OP_KEEP)
@@ -1143,9 +1091,9 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createDepthStencilState(const D3D11_
 			)
 		{
 			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glStencilOpSeparate][0]=GL_FRONT;
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glStencilOpSeparate][1]=ICommon::mappingGL(desc.FrontFace.StencilFailOp);
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glStencilOpSeparate][2]=ICommon::mappingGL(desc.FrontFace.StencilDepthFailOp);
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glStencilOpSeparate][3]=ICommon::mappingGL(desc.FrontFace.StencilPassOp);
+			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glStencilOpSeparate][1]=mappingGL(desc.FrontFace.StencilFailOp);
+			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glStencilOpSeparate][2]=mappingGL(desc.FrontFace.StencilDepthFailOp);
+			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glStencilOpSeparate][3]=mappingGL(desc.FrontFace.StencilPassOp);
 		}
 	}
 	if(desc.BackFace.StencilFunc==desc.FrontFace.StencilFunc)
@@ -1154,7 +1102,7 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createDepthStencilState(const D3D11_
 			||(desc.FrontFace.StencilFunc!=D3D11_COMPARISON_ALWAYS)
 			)
 		{
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_III[glStencilFunc][0]=ICommon::mappingGL(desc.BackFace.StencilFunc);
+			static_cast<CGLStateImp*>(state)->mStateChangeParameters_III[glStencilFunc][0]=mappingGL(desc.BackFace.StencilFunc);
 			static_cast<CGLStateImp*>(state)->mStateChangeParameters_III[glStencilFunc][2]=desc.StencilReadMask;
 		}
 	}
@@ -1164,8 +1112,8 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createDepthStencilState(const D3D11_
 			||(desc.FrontFace.StencilFunc!=D3D11_COMPARISON_ALWAYS)
 			)
 		{
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glStencilFuncSeparate][0]=ICommon::mappingGL(desc.FrontFace.StencilFunc);
-			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glStencilFuncSeparate][1]=ICommon::mappingGL(desc.BackFace.StencilFunc);
+			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glStencilFuncSeparate][0]=mappingGL(desc.FrontFace.StencilFunc);
+			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glStencilFuncSeparate][1]=mappingGL(desc.BackFace.StencilFunc);
 			static_cast<CGLStateImp*>(state)->mStateChangeParameters_IIII[glStencilFuncSeparate][3]=desc.StencilReadMask;
 		}
 	}
@@ -1175,7 +1123,7 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createDepthStencilState(const D3D11_
 	}
 	if(desc.DepthFunc!=D3D11_COMPARISON_LESS_EQUAL)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glDepthFunc]=ICommon::mappingGL(desc.DepthFunc);
+		static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glDepthFunc]=mappingGL(desc.DepthFunc);
 	}
 	if(desc.DepthWriteMask!=D3D11_DEPTH_WRITE_MASK_ALL)
 	{
@@ -1200,7 +1148,7 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createRasterizerState(const D3D10_RA
 	}
 	if(desc.CullMode!=D3D10_CULL_BACK)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glCullFace]=ICommon::mappingGL(desc.CullMode);
+		static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glCullFace]=mappingGL(desc.CullMode);
 	}
 	if(desc.DepthBiasClamp!=0)
 	{
@@ -1219,7 +1167,7 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createRasterizerState(const D3D10_RA
 	if(desc.FillMode!=D3D10_FILL_SOLID)
 	{
 		static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glPolygonMode][0]=GL_FRONT_AND_BACK;
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glPolygonMode][1]=ICommon::mappingGL(desc.FillMode);
+		static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glPolygonMode][1]=mappingGL(desc.FillMode);
 	}
 	if(desc.FrontCounterClockwise)
 	{
@@ -1244,7 +1192,7 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createRasterizerState(const D3D11_RA
 	}
 	if(desc.CullMode!=D3D11_CULL_BACK)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glCullFace]=ICommon::mappingGL(desc.CullMode);
+		static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glCullFace]=mappingGL(desc.CullMode);
 	}
 	if(desc.DepthBiasClamp!=0)
 	{
@@ -1263,7 +1211,7 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createRasterizerState(const D3D11_RA
 	if(desc.FillMode!=D3D11_FILL_SOLID)
 	{
 		static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glPolygonMode][0]=GL_FRONT_AND_BACK;
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glPolygonMode][1]=ICommon::mappingGL(desc.FillMode);
+		static_cast<CGLStateImp*>(state)->mStateChangeParameters_II[glPolygonMode][1]=mappingGL(desc.FillMode);
 	}
 	if(desc.FrontCounterClockwise)
 	{
@@ -1293,9 +1241,116 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createRasterizerState(const D3D11_RA
 {
 	if(desc.ConservativeRaster!=D3D11_CONSERVATIVE_RASTERIZATION_MODE_OFF)
 	{
-		static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glEnable]=ICommon::mappingGL(desc.ConservativeRaster);
+		static_cast<CGLStateImp*>(state)->mStateChangeParameters_I[glEnable]=mappingGL(desc.ConservativeRaster);
 	}
 	return createRasterizerState(*reinterpret_cast<const D3D11_RASTERIZER_DESC1*>(&desc),state);
+}
+
+Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createSamplerState(const D3D10_SAMPLER_DESC& desc,OUT ISamplerState* state)
+{
+	static_cast<CGLStateImp*>(state)->mStateChangeParameters_III[glTexParameteri][1]=GL_TEXTURE_WRAP_S;
+	static_cast<CGLStateImp*>(state)->mStateChangeParameters_III[glTexParameteri][2]=mappingGL(desc.AddressU);
+	return True;
+}
+
+Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createSamplerState(const D3D11_SAMPLER_DESC& desc,OUT ISamplerState* state)
+{
+	return createSamplerState(*reinterpret_cast<const D3D10_SAMPLER_DESC*>(&desc),state);
+}
+
+Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::getSurfaceLevel(ITexture* texture,UINT level,OUT ISurface* surface)
+{
+	return Bool();
+}
+
+Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::getCubeMapSurface(ITexture* texture,D3DCUBEMAP_FACES faceType,UINT level,OUT ISurface* surface)
+{
+	return Bool();
+}
+
+Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createRenderTarget(UINT width,UINT height,D3DFORMAT format,D3DMULTISAMPLE_TYPE multiSample,DWORD multiSampleQuality,BOOL lockable,OUT ISurface* surface)
+{
+	return Bool();
+}
+
+Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createDepthStencilSurface(UINT width,UINT height,D3DFORMAT format,D3DMULTISAMPLE_TYPE multiSample,DWORD multiSampleQuality,BOOL discard,OUT ISurface* surface)
+{
+	return Bool();
+}
+
+Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::renderbufferStorage(GLenum target,GLenum internalformat,GLsizei width,GLsizei height,OUT ISurface* surface)
+{
+	return Bool();
+}
+
+Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::renderbufferStorageMultisample(GLenum target,GLsizei samples,GLenum internalformat,GLsizei width,GLsizei height,OUT ISurface* surface)
+{
+	return Bool();
+}
+
+Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createRenderTargetView(ITexture* resource,const D3D10_RENDER_TARGET_VIEW_DESC* desc,OUT IRenderTargetView* view)
+{
+	return Bool();
+}
+
+Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createRenderTargetView(ITexture* resource,const D3D11_RENDER_TARGET_VIEW_DESC* desc,OUT IRenderTargetView* view)
+{
+	return Bool();
+}
+
+Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createDepthStencilView(ITexture* resource,const D3D10_DEPTH_STENCIL_VIEW_DESC* desc,OUT IDepthStencilView* view)
+{
+	return Bool();
+}
+
+Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createDepthStencilView(ITexture* resource,const D3D11_DEPTH_STENCIL_VIEW_DESC* desc,OUT IDepthStencilView* view)
+{
+	return Bool();
+}
+
+Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::framebufferTexture2D(GLenum target,GLenum attachment,GLenum textarget,ITexture* texture,GLint level,OUT IFrameBufferObject* fbo)
+{
+	return Bool();
+}
+
+Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::framebufferTextureLayer(GLenum target,GLenum attachment,ITexture* texture,GLint level,GLint layer,OUT IFrameBufferObject* fbo)
+{
+	return Bool();
+}
+
+Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::framebufferTexture(GLenum target,GLenum attachment,ITexture* texture,GLint level,OUT IFrameBufferObject* fbo)
+{
+	return Bool();
+}
+
+Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::framebufferRenderbuffer(GLenum target,GLenum attachment,GLenum renderbuffertarget,ISurface* surface,OUT IFrameBufferObject* fbo)
+{
+	return Bool();
+}
+
+Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createShaderResourceView(IBuffer* resource,const D3D10_SHADER_RESOURCE_VIEW_DESC* desc,OUT IShaderResourceView* view)
+{
+	return Bool();
+}
+
+Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createShaderResourceView(ITexture* resource,const D3D10_SHADER_RESOURCE_VIEW_DESC* desc,OUT IShaderResourceView* view)
+{
+	return Bool();
+}
+
+Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createShaderResourceView(ITexture* resource,const D3D10_SHADER_RESOURCE_VIEW_DESC1* desc,OUT IShaderResourceView* view)
+{
+	return Bool();
+}
+
+Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createShaderResourceView(IBuffer* resource,const D3D11_SHADER_RESOURCE_VIEW_DESC* desc,OUT IShaderResourceView* view)
+{
+	return Bool();
+}
+
+Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createShaderResourceView(ITexture* resource,const D3D11_SHADER_RESOURCE_VIEW_DESC* desc,OUT IShaderResourceView* view)
+{
+	return Bool();
 }
 
 NSDevilX::NSGraphicsAPI::CGLES2GraphicsDeviceImp::CGLES2GraphicsDeviceImp()
@@ -1304,6 +1359,41 @@ NSDevilX::NSGraphicsAPI::CGLES2GraphicsDeviceImp::CGLES2GraphicsDeviceImp()
 
 NSDevilX::NSGraphicsAPI::CGLES2GraphicsDeviceImp::~CGLES2GraphicsDeviceImp()
 {
+}
+
+Bool NSDevilX::NSGraphicsAPI::CGLES2GraphicsDeviceImp::createBufferStorage(GLenum target,GLsizeiptr size,ConstVoidPtr initializeData,GLbitfield flags,OUT IBuffer* buffer)
+{
+	return createBufferData(target,size,initializeData,mappingGLBufferStorageFlagsToBufferDataUsage(flags),buffer);
+}
+
+Bool NSDevilX::NSGraphicsAPI::CGLES2GraphicsDeviceImp::createTexture1D(GLenum target,GLint level,GLint internalformat,GLsizei width,GLint border,GLenum format,GLenum type,ConstVoidPtr initializeData,OUT ITexture* texture)
+{
+	return createTexture2D(target,level,internalformat,width,1,border,format,type,initializeData,texture);
+}
+
+Bool NSDevilX::NSGraphicsAPI::CGLES2GraphicsDeviceImp::createTexture3D(GLenum target,GLint level,GLint internalformat,GLsizei width,GLsizei height,GLsizei depth,GLint border,GLenum format,GLenum type,ConstVoidPtr initializeData,OUT ITexture* texture)
+{
+	return False;
+}
+
+Bool NSDevilX::NSGraphicsAPI::CGLES2GraphicsDeviceImp::createTexture2DMSAA(GLenum target,GLsizei samplers,GLenum internalformat,GLsizei width,GLsizei height,GLboolean fixedsamplelocations,OUT ITexture* texture)
+{
+	return False;
+}
+
+Bool NSDevilX::NSGraphicsAPI::CGLES2GraphicsDeviceImp::createTexture3DMSAA(GLenum target,GLsizei samplers,GLenum internalformat,GLsizei width,GLsizei height,GLsizei depth,GLboolean fixedsamplelocations,OUT ITexture* texture)
+{
+	return False;
+}
+
+Bool NSDevilX::NSGraphicsAPI::CGLES2GraphicsDeviceImp::createCompressedTexture1D(GLenum target,GLint level,GLint internalformat,GLsizei width,GLint border,GLsizei imageSize,ConstVoidPtr initializeData,OUT ITexture* texture)
+{
+	return createCompressedTexture2D(target,level,internalformat,width,1,border,imageSize,initializeData,texture);
+}
+
+Bool NSDevilX::NSGraphicsAPI::CGLES2GraphicsDeviceImp::createCompressedTexture3D(GLenum target,GLint level,GLint internalformat,GLsizei width,GLsizei height,GLsizei depth,GLint border,GLsizei imageSize,ConstVoidPtr initializeData,OUT ITexture* texture)
+{
+	return False;
 }
 
 NSDevilX::NSGraphicsAPI::CGLES3GraphicsDeviceImp::CGLES3GraphicsDeviceImp()

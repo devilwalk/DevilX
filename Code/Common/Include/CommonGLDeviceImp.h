@@ -18,8 +18,8 @@ namespace NSDevilX
 			virtual Bool createBuffer(const D3D11_BUFFER_DESC& desc,const D3D11_SUBRESOURCE_DATA* initializeData,OUT IBuffer* buffer) override;
 
 			// 通过 IDevice 继承
-			virtual Bool createBufferData(GLenum target,GLsizeiptr size,ConstVoidPtr intializeData,GLenum usage,OUT IBuffer* buffer) override;
-			virtual Bool createBufferStorage(GLenum target,GLsizeiptr size,ConstVoidPtr intializeData,GLbitfield flags,OUT IBuffer* buffer) override;
+			virtual Bool createBufferData(GLenum target,GLsizeiptr size,ConstVoidPtr initializeData,GLenum usage,OUT IBuffer* buffer) override;
+			virtual Bool createBufferStorage(GLenum target,GLsizeiptr size,ConstVoidPtr initializeData,GLbitfield flags,OUT IBuffer* buffer) override;
 			virtual Bool createTexture(UINT width,UINT height,UINT levels,DWORD usage,D3DFORMAT format,D3DPOOL pool,OUT ITexture* texture) override;
 			virtual Bool createCubeTexture(UINT edageLength,UINT levels,DWORD usage,D3DFORMAT format,D3DPOOL pool,OUT ITexture* texture) override;
 			virtual Bool createVolumeTexture(UINT width,UINT height,UINT depth,UINT levels,DWORD usage,D3DFORMAT format,D3DPOOL pool,OUT ITexture* texture) override;
@@ -72,6 +72,29 @@ namespace NSDevilX
 			virtual Bool createRasterizerState(const D3D11_RASTERIZER_DESC& desc,OUT IRasterizerState* state) override;
 			virtual Bool createRasterizerState(const D3D11_RASTERIZER_DESC1& desc,OUT IRasterizerState* state) override;
 			virtual Bool createRasterizerState(const D3D11_RASTERIZER_DESC2& desc,OUT IRasterizerState* state) override;
+
+			// 通过 IDevice 继承
+			virtual Bool createSamplerState(const D3D10_SAMPLER_DESC& desc,OUT ISamplerState* state) override;
+			virtual Bool createSamplerState(const D3D11_SAMPLER_DESC& desc,OUT ISamplerState* state) override;
+			virtual Bool getSurfaceLevel(ITexture* texture,UINT level,OUT ISurface* surface) override;
+			virtual Bool getCubeMapSurface(ITexture* texture,D3DCUBEMAP_FACES faceType,UINT level,OUT ISurface* surface) override;
+			virtual Bool createRenderTarget(UINT width,UINT height,D3DFORMAT format,D3DMULTISAMPLE_TYPE multiSample,DWORD multiSampleQuality,BOOL lockable,OUT ISurface* surface) override;
+			virtual Bool createDepthStencilSurface(UINT width,UINT height,D3DFORMAT format,D3DMULTISAMPLE_TYPE multiSample,DWORD multiSampleQuality,BOOL discard,OUT ISurface* surface) override;
+			virtual Bool renderbufferStorage(GLenum target,GLenum internalformat,GLsizei width,GLsizei height,OUT ISurface* surface) override;
+			virtual Bool renderbufferStorageMultisample(GLenum target,GLsizei samples,GLenum internalformat,GLsizei width,GLsizei height,OUT ISurface* surface) override;
+			virtual Bool createRenderTargetView(ITexture* resource,const D3D10_RENDER_TARGET_VIEW_DESC* desc,OUT IRenderTargetView* view) override;
+			virtual Bool createRenderTargetView(ITexture* resource,const D3D11_RENDER_TARGET_VIEW_DESC* desc,OUT IRenderTargetView* view) override;
+			virtual Bool createDepthStencilView(ITexture* resource,const D3D10_DEPTH_STENCIL_VIEW_DESC* desc,OUT IDepthStencilView* view) override;
+			virtual Bool createDepthStencilView(ITexture* resource,const D3D11_DEPTH_STENCIL_VIEW_DESC* desc,OUT IDepthStencilView* view) override;
+			virtual Bool framebufferTexture2D(GLenum target,GLenum attachment,GLenum textarget,ITexture* texture,GLint level,OUT IFrameBufferObject* fbo) override;
+			virtual Bool framebufferTextureLayer(GLenum target,GLenum attachment,ITexture* texture,GLint level,GLint layer,OUT IFrameBufferObject* fbo) override;
+			virtual Bool framebufferTexture(GLenum target,GLenum attachment,ITexture* texture,GLint level,OUT IFrameBufferObject* fbo) override;
+			virtual Bool framebufferRenderbuffer(GLenum target,GLenum attachment,GLenum renderbuffertarget,ISurface* surface,OUT IFrameBufferObject* fbo) override;
+			virtual Bool createShaderResourceView(IBuffer* resource,const D3D10_SHADER_RESOURCE_VIEW_DESC* desc,OUT IShaderResourceView* view) override;
+			virtual Bool createShaderResourceView(ITexture* resource,const D3D10_SHADER_RESOURCE_VIEW_DESC* desc,OUT IShaderResourceView* view) override;
+			virtual Bool createShaderResourceView(ITexture* resource,const D3D10_SHADER_RESOURCE_VIEW_DESC1* desc,OUT IShaderResourceView* view) override;
+			virtual Bool createShaderResourceView(IBuffer* resource,const D3D11_SHADER_RESOURCE_VIEW_DESC* desc,OUT IShaderResourceView* view) override;
+			virtual Bool createShaderResourceView(ITexture* resource,const D3D11_SHADER_RESOURCE_VIEW_DESC* desc,OUT IShaderResourceView* view) override;
 		};
 
 		class CGLES2GraphicsDeviceImp
@@ -81,7 +104,13 @@ namespace NSDevilX
 			CGLES2GraphicsDeviceImp();
 			virtual ~CGLES2GraphicsDeviceImp();
 
-			virtual Bool createBufferStorage(GLenum target,GLsizeiptr size,ConstVoidPtr intializeData,GLbitfield flags,OUT IBuffer* buffer) override;
+			virtual Bool createBufferStorage(GLenum target,GLsizeiptr size,ConstVoidPtr initializeData,GLbitfield flags,OUT IBuffer* buffer) override;
+			virtual Bool createTexture1D(GLenum target,GLint level,GLint internalformat,GLsizei width,GLint border,GLenum format,GLenum type,ConstVoidPtr initializeData,OUT ITexture* texture) override;
+			virtual Bool createTexture3D(GLenum target,GLint level,GLint internalformat,GLsizei width,GLsizei height,GLsizei depth,GLint border,GLenum format,GLenum type,ConstVoidPtr initializeData,OUT ITexture* texture) override;
+			virtual Bool createTexture2DMSAA(GLenum target,GLsizei samplers,GLenum internalformat,GLsizei width,GLsizei height,GLboolean fixedsamplelocations,OUT ITexture* texture) override;
+			virtual Bool createTexture3DMSAA(GLenum target,GLsizei samplers,GLenum internalformat,GLsizei width,GLsizei height,GLsizei depth,GLboolean fixedsamplelocations,OUT ITexture* texture) override;
+			virtual Bool createCompressedTexture1D(GLenum target,GLint level,GLint internalformat,GLsizei width,GLint border,GLsizei imageSize,ConstVoidPtr initializeData,OUT ITexture* texture) override;
+			virtual Bool createCompressedTexture3D(GLenum target,GLint level,GLint internalformat,GLsizei width,GLsizei height,GLsizei depth,GLint border,GLsizei imageSize,ConstVoidPtr initializeData,OUT ITexture* texture) override;
 		};
 
 		class CGLES3GraphicsDeviceImp

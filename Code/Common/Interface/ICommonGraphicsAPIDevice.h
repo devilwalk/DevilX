@@ -1,10 +1,13 @@
 #pragma once
 #include "ICommonGraphicsAPIBuffer.h"
+#include "ICommonGraphicsAPIFrameBufferObject.h"
 #include "ICommonGraphicsAPIHeap.h"
 #include "ICommonGraphicsAPIInputLayout.h"
 #include "ICommonGraphicsAPIPipelineState.h"
 #include "ICommonGraphicsAPIShader.h"
+#include "ICommonGraphicsAPIShaderResourceView.h"
 #include "ICommonGraphicsAPITexture.h"
+#include "ICommonGraphicsAPIUnorderedAccessView.h"
 #include "ICommonGraphicsAPIVertexArrayObject.h"
 namespace NSDevilX
 {
@@ -36,8 +39,8 @@ namespace NSDevilX
 			virtual Bool createBuffer(const D3D10_BUFFER_DESC& desc,const D3D10_SUBRESOURCE_DATA* initializeData,OUT IBuffer* buffer)=0;
 			virtual Bool createBuffer(const D3D11_BUFFER_DESC& desc,const D3D11_SUBRESOURCE_DATA* initializeData,OUT IBuffer* buffer)=0;
 			//gl style
-			virtual Bool createBufferData(GLenum target,GLsizeiptr size,ConstVoidPtr intializeData,GLenum usage,OUT IBuffer* buffer)=0;
-			virtual Bool createBufferStorage(GLenum target,GLsizeiptr size,ConstVoidPtr intializeData,GLbitfield flags,OUT IBuffer* buffer)=0;
+			virtual Bool createBufferData(GLenum target,GLsizeiptr size,ConstVoidPtr initializeData,GLenum usage,OUT IBuffer* buffer)=0;
+			virtual Bool createBufferStorage(GLenum target,GLsizeiptr size,ConstVoidPtr initializeData,GLbitfield flags,OUT IBuffer* buffer)=0;
 			//d3d9 style
 			virtual Bool createTexture(UINT width,UINT height,UINT levels,DWORD usage,D3DFORMAT format,D3DPOOL pool,OUT ITexture* texture)=0;
 			virtual Bool createCubeTexture(UINT edageLength,UINT levels,DWORD usage,D3DFORMAT format,D3DPOOL pool,OUT ITexture* texture)=0;
@@ -96,6 +99,33 @@ namespace NSDevilX
 			virtual Bool createRasterizerState(const D3D11_RASTERIZER_DESC& desc,OUT IRasterizerState* state)=0;
 			virtual Bool createRasterizerState(const D3D11_RASTERIZER_DESC1& desc,OUT IRasterizerState* state)=0;
 			virtual Bool createRasterizerState(const D3D11_RASTERIZER_DESC2& desc,OUT IRasterizerState* state)=0;
+			//d3d10/11 style
+			virtual Bool createSamplerState(const D3D10_SAMPLER_DESC& desc,OUT ISamplerState* state)=0;
+			virtual Bool createSamplerState(const D3D11_SAMPLER_DESC& desc,OUT ISamplerState* state)=0;
+			//d3d9 style
+			virtual Bool getSurfaceLevel(ITexture* texture,UINT level,OUT ISurface* surface)=0;
+			virtual Bool getCubeMapSurface(ITexture* texture,D3DCUBEMAP_FACES faceType,UINT level,OUT ISurface* surface)=0;
+			virtual Bool createRenderTarget(UINT width,UINT height,D3DFORMAT format,D3DMULTISAMPLE_TYPE multiSample,DWORD multiSampleQuality,BOOL lockable,OUT ISurface* surface)=0;
+			virtual Bool createDepthStencilSurface(UINT width,UINT height,D3DFORMAT format,D3DMULTISAMPLE_TYPE multiSample,DWORD multiSampleQuality,BOOL discard,OUT ISurface* surface)=0;
+			//gl style
+			virtual Bool renderbufferStorage(GLenum target,GLenum internalformat,GLsizei width,GLsizei height,OUT ISurface* surface)=0;
+			virtual Bool renderbufferStorageMultisample(GLenum target,GLsizei samples,GLenum internalformat,GLsizei width,GLsizei height,OUT ISurface* surface)=0;
+			//d3d10/11 style
+			virtual Bool createRenderTargetView(ITexture* resource,const D3D10_RENDER_TARGET_VIEW_DESC* desc,OUT IRenderTargetView* view)=0;
+			virtual Bool createRenderTargetView(ITexture* resource,const D3D11_RENDER_TARGET_VIEW_DESC* desc,OUT IRenderTargetView* view)=0;
+			virtual Bool createDepthStencilView(ITexture* resource,const D3D10_DEPTH_STENCIL_VIEW_DESC* desc,OUT IDepthStencilView* view)=0;
+			virtual Bool createDepthStencilView(ITexture* resource,const D3D11_DEPTH_STENCIL_VIEW_DESC* desc,OUT IDepthStencilView* view)=0;
+			//gl style
+			virtual Bool framebufferTexture2D(GLenum target,GLenum attachment,GLenum textarget,ITexture* texture,GLint level,OUT IFrameBufferObject* fbo)=0;
+			virtual Bool framebufferTextureLayer(GLenum target,GLenum attachment,ITexture* texture,GLint level,GLint layer,OUT IFrameBufferObject* fbo)=0;
+			virtual Bool framebufferTexture(GLenum target,GLenum attachment,ITexture* texture,GLint level,OUT IFrameBufferObject* fbo)=0;
+			virtual Bool framebufferRenderbuffer(GLenum target,GLenum attachment,GLenum renderbuffertarget,ISurface* surface,OUT IFrameBufferObject* fbo)=0;
+			//d3d10/11 style
+			virtual Bool createShaderResourceView(IBuffer* resource,const D3D10_SHADER_RESOURCE_VIEW_DESC* desc,OUT IShaderResourceView* view)=0;
+			virtual Bool createShaderResourceView(ITexture* resource,const D3D10_SHADER_RESOURCE_VIEW_DESC* desc,OUT IShaderResourceView* view)=0;
+			virtual Bool createShaderResourceView(ITexture* resource,const D3D10_SHADER_RESOURCE_VIEW_DESC1* desc,OUT IShaderResourceView* view)=0;
+			virtual Bool createShaderResourceView(IBuffer* resource,const D3D11_SHADER_RESOURCE_VIEW_DESC* desc,OUT IShaderResourceView* view)=0;
+			virtual Bool createShaderResourceView(ITexture* resource,const D3D11_SHADER_RESOURCE_VIEW_DESC* desc,OUT IShaderResourceView* view)=0;
 		};
 	}
 }

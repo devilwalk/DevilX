@@ -94,8 +94,16 @@ namespace NSDevilX
 		const BoolPtr mBoolPtr;
 	};
 
+#ifdef VOID
+#undef VOID
+	typedef Void VOID;
+#define VOID void
+#else
+	typedef Void VOID;
+#endif
 	typedef Byte BYTE;
 	typedef Char CHAR;
+	typedef UInt8 UINT8;
 	typedef Int16 SHORT;
 	typedef UInt16 USHORT;
 	typedef UInt32 UINT;

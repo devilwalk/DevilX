@@ -3,6 +3,13 @@ namespace NSDevilX
 {
 	namespace NSGraphicsAPI
 	{
+		class IStateBlock
+		{
+		protected:
+			virtual ~IStateBlock(){ }
+		public:
+		};
+
 		class IBlendState
 		{
 		protected:
@@ -25,6 +32,15 @@ namespace NSDevilX
 		{
 		protected:
 			virtual ~IRasterizerState()
+			{
+			}
+		public:
+		};
+
+		class ISamplerState
+		{
+		protected:
+			virtual ~ISamplerState()
 			{
 			}
 		public:

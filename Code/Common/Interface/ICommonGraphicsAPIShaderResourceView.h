@@ -3,10 +3,12 @@ namespace NSDevilX
 {
 	namespace NSGraphicsAPI
 	{
-		class ICommandQueue
+		class IShaderResourceView
 		{
 		protected:
-			virtual ~ICommandQueue(){ }
+			virtual ~IShaderResourceView()
+			{
+			}
 		public:
 		};
 	}

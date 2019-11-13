@@ -162,12 +162,6 @@
     <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsAPIBuffer.h">
       <Filter>Interface\GrahpicsAPI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsAPICommandList.h">
-      <Filter>Interface\GrahpicsAPI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsAPICommandQueue.h">
-      <Filter>Interface\GrahpicsAPI</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsAPICommon.h">
       <Filter>Interface\GrahpicsAPI</Filter>
     </ClInclude>
@@ -223,6 +217,21 @@
       <Filter>Interface\GrahpicsAPI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Common\Include\CommonGLPipelineStateImp.h">
+      <Filter>头文件\GraphicsAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsAPICommandDriver.h">
+      <Filter>Interface\GrahpicsAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsAPIShaderResourceView.h">
+      <Filter>Interface\GrahpicsAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsAPIUnorderedAccessView.h">
+      <Filter>Interface\GrahpicsAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsAPIFrameBufferObject.h">
+      <Filter>Interface\GrahpicsAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonGraphicsAPI.h">
       <Filter>头文件\GraphicsAPI</Filter>
     </ClInclude>
   </ItemGroup>

@@ -39,6 +39,7 @@
     <ClInclude Include="..\..\..\Code\Common\Include\CommonGLPipelineStateImp.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonGLShaderImp.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonGLTextureImp.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonGraphicsAPI.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonMath.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonMatrix.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonMessageMode.h" />
@@ -72,17 +73,19 @@
     <ClInclude Include="..\..\..\Code\Common\Include\CommonVectorI.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\ICommonUserDataContainerImp.h" />
     <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsAPIBuffer.h" />
-    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsAPICommandList.h" />
-    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsAPICommandQueue.h" />
+    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsAPICommandDriver.h" />
     <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsAPICommon.h" />
+    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsAPIFrameBufferObject.h" />
     <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsAPIDevice.h" />
     <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsAPIHeap.h" />
     <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsAPIInputLayout.h" />
     <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsAPIOperation.h" />
     <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsAPIPipelineState.h" />
     <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsAPIShader.h" />
+    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsAPIShaderResourceView.h" />
     <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsAPITexture.h" />
     <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsAPIVertexArrayObject.h" />
+    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsAPIUnorderedAccessView.h" />
     <ClInclude Include="..\..\..\Code\Common\Interface\ICommonUserDataContainer.h" />
     <ClInclude Include="..\..\..\Code\Common\Source\Precompiler.h" />
   </ItemGroup>
