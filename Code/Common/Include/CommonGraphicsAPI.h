@@ -1,4 +1,5 @@
 #pragma once
+#include "CommonGL.h"
 namespace NSDevilX
 {
 	namespace NSGraphicsAPI
@@ -53,38 +54,47 @@ namespace NSDevilX
 			auto ret=mappingD3D10(pool,usage);
 			return *reinterpret_cast<D3D11_USAGE*>(&ret);
 		}
-		static GLenum mappingGL(D3DPOOL pool,DWORD usage)
+		static TGLCompatible<GLenum> mappingGL(D3DPOOL pool,DWORD usage)
 		{
-			GLenum ret=GL_STATIC_DRAW;
-			switch(pool)
+			TGLCompatible<GLenum> ret;
+			if((D3DPOOL_DEFAULT==pool)&&(usage&D3DUSAGE_DYNAMIC))
 			{
-			case D3DPOOL_DEFAULT:
-				if(usage&D3DUSAGE_DYNAMIC)
-				{
-					ret=GL_DYNAMIC_DRAW;
-				}
-				break;
-			case D3DPOOL_SYSTEMMEM:
-			case D3DPOOL_SCRATCH:
-				ret=GL_STREAM_DRAW;break;
+				ret.setProfile(CGLGlobal::EESProfile_Core_GLES2,GL_DYNAMIC_DRAW);
+				ret.setProfile(CGLGlobal::EProfile_Core_GL3,GL_DYNAMIC_DRAW);
+			}
+			else if(D3DPOOL_DEFAULT==pool)
+			{
+				ret.setProfile(CGLGlobal::EESProfile_Core_GLES2,GL_STATIC_DRAW);
+				ret.setProfile(CGLGlobal::EProfile_Core_GL3,GL_STATIC_DRAW);
+			}
+			else
+			{
+				ret.setProfile(CGLGlobal::EESProfile_Core_GLES2,GL_STREAM_DRAW);
+				ret.setProfile(CGLGlobal::EProfile_Core_GL3,GL_STREAM_DRAW);
 			}
 			return ret;
 		}
-		static GLenum mappingGL(D3D10_USAGE usage,UINT cpuAccessFlags)
+		static TGLCompatible<GLenum> mappingGL(D3D10_USAGE usage,UINT cpuAccessFlags)
 		{
-			GLenum ret=GL_STATIC_DRAW;
-			switch(usage)
+			TGLCompatible<GLenum> ret;
+			if(D3D10_USAGE_DYNAMIC==usage)
 			{
-			case D3D10_USAGE_DYNAMIC:
-				ret=GL_DYNAMIC_DRAW;
-				break;
-			case D3D10_USAGE_STAGING:
-				ret=GL_STREAM_DRAW;
-				break;
+				ret.setProfile(CGLGlobal::EESProfile_Core_GLES2,GL_DYNAMIC_DRAW);
+				ret.setProfile(CGLGlobal::EProfile_Core_GL3,GL_DYNAMIC_DRAW);
+			}
+			else if(D3DPOOL_DEFAULT==usage)
+			{
+				ret.setProfile(CGLGlobal::EESProfile_Core_GLES2,GL_STATIC_DRAW);
+				ret.setProfile(CGLGlobal::EProfile_Core_GL3,GL_STATIC_DRAW);
+			}
+			else
+			{
+				ret.setProfile(CGLGlobal::EESProfile_Core_GLES2,GL_STREAM_DRAW);
+				ret.setProfile(CGLGlobal::EProfile_Core_GL3,GL_STREAM_DRAW);
 			}
 			return ret;
 		}
-		static GLenum mappingGL(D3D11_USAGE usage,UINT cpuAccessFlags)
+		static TGLCompatible<GLenum> mappingGL(D3D11_USAGE usage,UINT cpuAccessFlags)
 		{
 			return mappingGL(*reinterpret_cast<D3D10_USAGE*>(&usage),cpuAccessFlags);
 		}
@@ -807,9 +817,9 @@ namespace NSDevilX
 		{
 			return *reinterpret_cast<D3D10_BLEND_OP*>(&op);
 		}
-		static GLint mappingGL(D3D10_BLEND_OP op)
+		static GLenum mappingGL(D3D10_BLEND_OP op)
 		{
-			GLint ret=0;
+			GLenum ret=0;
 			switch(op)
 			{
 			case D3D10_BLEND_OP_ADD:ret=GL_FUNC_ADD;break;
@@ -820,7 +830,7 @@ namespace NSDevilX
 			}
 			return ret;
 		}
-		static GLint mappingGL(D3D11_BLEND_OP op)
+		static GLenum mappingGL(D3D11_BLEND_OP op)
 		{
 			return mappingGL(*reinterpret_cast<D3D10_BLEND_OP*>(&op));
 		}
@@ -974,6 +984,102 @@ namespace NSDevilX
 			else
 			{
 				ret=GL_STATIC_DRAW;
+			}
+			return ret;
+		}
+
+		static GLint mappingGL(D3D10_TEXTURE_ADDRESS_MODE mode)
+		{
+			GLint ret=0;
+			switch(mode)
+			{
+			case D3D10_TEXTURE_ADDRESS_WRAP:
+				ret=GL_REPEAT;
+				break;
+			case D3D10_TEXTURE_ADDRESS_MIRROR:
+				ret=GL_MIRRORED_REPEAT;
+				break;
+			case D3D10_TEXTURE_ADDRESS_CLAMP:
+				ret=GL_CLAMP_TO_EDGE;
+				break;
+			case D3D10_TEXTURE_ADDRESS_BORDER:
+				ret=GL_CLAMP_TO_BORDER;
+				break;
+			case D3D10_TEXTURE_ADDRESS_MIRROR_ONCE:
+				ret=GL_MIRROR_CLAMP_TO_EDGE;
+				break;
+			}
+			return ret;
+		}
+		static GLint mappingGL(D3D11_TEXTURE_ADDRESS_MODE mode)
+		{
+			return mappingGL(*reinterpret_cast<D3D10_TEXTURE_ADDRESS_MODE*>(&mode));
+		}
+		static GLint mappingGLMag(D3D10_FILTER filter)
+		{
+			GLint ret=0;
+			switch(filter)
+			{
+			case D3D10_FILTER_MIN_MAG_MIP_POINT:
+			case D3D10_FILTER_MIN_MAG_POINT_MIP_LINEAR:
+			case D3D10_FILTER_MIN_LINEAR_MAG_MIP_POINT:
+			case D3D10_FILTER_MIN_LINEAR_MAG_POINT_MIP_LINEAR:
+			case D3D10_FILTER_COMPARISON_MIN_MAG_MIP_POINT:
+			case D3D10_FILTER_COMPARISON_MIN_MAG_POINT_MIP_LINEAR:
+			case D3D10_FILTER_COMPARISON_MIN_LINEAR_MAG_MIP_POINT:
+			case D3D10_FILTER_COMPARISON_MIN_LINEAR_MAG_POINT_MIP_LINEAR:
+			case D3D10_FILTER_TEXT_1BIT:
+				ret=GL_NEAREST;
+				break;
+			case D3D10_FILTER_MIN_POINT_MAG_LINEAR_MIP_POINT:
+			case D3D10_FILTER_MIN_POINT_MAG_MIP_LINEAR:
+			case D3D10_FILTER_MIN_MAG_LINEAR_MIP_POINT:
+			case D3D10_FILTER_MIN_MAG_MIP_LINEAR:
+			case D3D10_FILTER_COMPARISON_MIN_POINT_MAG_LINEAR_MIP_POINT:
+			case D3D10_FILTER_COMPARISON_MIN_POINT_MAG_MIP_LINEAR:
+			case D3D10_FILTER_COMPARISON_MIN_MAG_LINEAR_MIP_POINT:
+			case D3D10_FILTER_COMPARISON_MIN_MAG_MIP_LINEAR:
+			case D3D10_FILTER_ANISOTROPIC:
+			case D3D10_FILTER_COMPARISON_ANISOTROPIC:
+				ret=GL_LINEAR;
+				break;
+			}
+			return ret;
+		}
+		static GLint mappingGLMin(D3D10_FILTER filter)
+		{
+			GLint ret=0;
+			switch(filter)
+			{
+			case D3D10_FILTER_MIN_MAG_MIP_POINT:
+			case D3D10_FILTER_MIN_POINT_MAG_LINEAR_MIP_POINT:
+			case D3D10_FILTER_COMPARISON_MIN_MAG_MIP_POINT:
+			case D3D10_FILTER_COMPARISON_MIN_POINT_MAG_LINEAR_MIP_POINT:
+			case D3D10_FILTER_TEXT_1BIT:
+				ret=GL_NEAREST_MIPMAP_NEAREST;
+				break;
+			case D3D10_FILTER_MIN_MAG_POINT_MIP_LINEAR:
+			case D3D10_FILTER_MIN_POINT_MAG_MIP_LINEAR:
+			case D3D10_FILTER_COMPARISON_MIN_MAG_POINT_MIP_LINEAR:
+			case D3D10_FILTER_COMPARISON_MIN_POINT_MAG_MIP_LINEAR:
+				ret=GL_NEAREST_MIPMAP_LINEAR;
+				break;
+				break;
+				break;
+			case D3D10_FILTER_MIN_LINEAR_MAG_MIP_POINT:
+			case D3D10_FILTER_MIN_MAG_LINEAR_MIP_POINT:
+			case D3D10_FILTER_COMPARISON_MIN_LINEAR_MAG_MIP_POINT:
+			case D3D10_FILTER_COMPARISON_MIN_MAG_LINEAR_MIP_POINT:
+				ret=GL_LINEAR_MIPMAP_NEAREST;
+				break;
+			case D3D10_FILTER_MIN_LINEAR_MAG_POINT_MIP_LINEAR:
+			case D3D10_FILTER_MIN_MAG_MIP_LINEAR:
+			case D3D10_FILTER_ANISOTROPIC:
+			case D3D10_FILTER_COMPARISON_MIN_LINEAR_MAG_POINT_MIP_LINEAR:
+			case D3D10_FILTER_COMPARISON_MIN_MAG_MIP_LINEAR:
+			case D3D10_FILTER_COMPARISON_ANISOTROPIC:
+				ret=GL_LINEAR_MIPMAP_LINEAR;
+				break;
 			}
 			return ret;
 		}

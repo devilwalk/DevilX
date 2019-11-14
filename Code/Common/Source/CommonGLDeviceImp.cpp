@@ -1,6 +1,8 @@
 #include "Precompiler.h"
 using namespace NSDevilX;
 
+#define SAVE_STATE(func,...) static_cast<CGLStateImp*>(state)->mStateChanges.push_back(new S##func(__VA_ARGS__))
+
 NSDevilX::NSGraphicsAPI::CGLDeviceImp::CGLDeviceImp()
 {
 }
@@ -706,27 +708,27 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createBlendState(const D3D10_BLEND_D
 {
 	if(desc.AlphaToCoverageEnable)
 	{
-		static_cast<CGLStateImp*>(state)->addState(glEnable,GL_SAMPLE_ALPHA_TO_COVERAGE);
+		SAVE_STATE(glEnable,GL_SAMPLE_ALPHA_TO_COVERAGE);
 	}
 	if(desc.BlendOpAlpha!=D3D10_BLEND_OP_ADD)
 	{
-		static_cast<CGLStateImp*>(state)->addState(glBlendEquationSeparate,mappingGL(desc.BlendOp),mappingGL(desc.BlendOpAlpha));
+		SAVE_STATE(glBlendEquationSeparate,mappingGL(desc.BlendOp),mappingGL(desc.BlendOpAlpha));
 	}
 	else if(desc.BlendOp!=D3D10_BLEND_OP_ADD)
 	{
-		static_cast<CGLStateImp*>(state)->addState(glBlendEquation,mappingGL(desc.BlendOp));
+		SAVE_STATE(glBlendEquation,mappingGL(desc.BlendOp));
 	}
 	if((desc.DestBlendAlpha!=D3D10_BLEND_ZERO)||(desc.SrcBlendAlpha!=D3D10_BLEND_ONE))
 	{
-		static_cast<CGLStateImp*>(state)->addState(glBlendFuncSeparate,mappingGL(desc.SrcBlend),mappingGL(desc.DestBlend),mappingGL(desc.SrcBlendAlpha),mappingGL(desc.DestBlendAlpha));
+		SAVE_STATE(glBlendFuncSeparate,mappingGL(desc.SrcBlend),mappingGL(desc.DestBlend),mappingGL(desc.SrcBlendAlpha),mappingGL(desc.DestBlendAlpha));
 	}
 	else if((desc.DestBlend!=D3D10_BLEND_ZERO)||(desc.SrcBlend!=D3D10_BLEND_ONE))
 	{
-		static_cast<CGLStateImp*>(state)->addState(glBlendFunc,mappingGL(desc.SrcBlend),mappingGL(desc.DestBlend));
+		SAVE_STATE(glBlendFunc,mappingGL(desc.SrcBlend),mappingGL(desc.DestBlend));
 	}
 	if((desc.RenderTargetWriteMask[0]&D3D10_COLOR_WRITE_ENABLE_ALL)!=D3D10_COLOR_WRITE_ENABLE_ALL)
 	{
-		static_cast<CGLStateImp*>(state)->addState(glColorMask,desc.RenderTargetWriteMask[0]&D3D10_COLOR_WRITE_ENABLE_RED?GL_TRUE:GL_FALSE
+		SAVE_STATE(glColorMask,desc.RenderTargetWriteMask[0]&D3D10_COLOR_WRITE_ENABLE_RED?GL_TRUE:GL_FALSE
 			,desc.RenderTargetWriteMask[0]&D3D10_COLOR_WRITE_ENABLE_GREEN?GL_TRUE:GL_FALSE
 			,desc.RenderTargetWriteMask[0]&D3D10_COLOR_WRITE_ENABLE_BLUE?GL_TRUE:GL_FALSE
 			,desc.RenderTargetWriteMask[0]&D3D10_COLOR_WRITE_ENABLE_ALPHA?GL_TRUE:GL_FALSE
@@ -734,13 +736,13 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createBlendState(const D3D10_BLEND_D
 	}
 	if(desc.BlendEnable[0])
 	{
-		static_cast<CGLStateImp*>(state)->addState(glEnable,GL_BLEND);
+		SAVE_STATE(glEnable,GL_BLEND);
 	}
 	for(Int32 i=1;i<sizeof(desc.BlendEnable)/sizeof(desc.BlendEnable[0]);++i)
 	{
 		if((desc.RenderTargetWriteMask[i]&D3D10_COLOR_WRITE_ENABLE_ALL)!=D3D10_COLOR_WRITE_ENABLE_ALL)
 		{
-			static_cast<CGLStateImp*>(state)->addState(glColorMaski,i
+			SAVE_STATE(glColorMaski,i
 			,desc.RenderTargetWriteMask[i]&D3D10_COLOR_WRITE_ENABLE_RED?GL_TRUE:GL_FALSE
 			,desc.RenderTargetWriteMask[i]&D3D10_COLOR_WRITE_ENABLE_GREEN?GL_TRUE:GL_FALSE
 			,desc.RenderTargetWriteMask[i]&D3D10_COLOR_WRITE_ENABLE_BLUE?GL_TRUE:GL_FALSE
@@ -748,7 +750,7 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createBlendState(const D3D10_BLEND_D
 		}
 		if(desc.BlendEnable[i])
 		{
-			static_cast<CGLStateImp*>(state)->addState(glEnablei,GL_BLEND,i);
+			SAVE_STATE(glEnablei,GL_BLEND,i);
 		}
 	}
 	return True;
@@ -758,27 +760,27 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createBlendState(const D3D10_BLEND_D
 {
 	if(desc.AlphaToCoverageEnable)
 	{
-		static_cast<CGLStateImp*>(state)->addState(glEnable,GL_SAMPLE_ALPHA_TO_COVERAGE);
+		SAVE_STATE(glEnable,GL_SAMPLE_ALPHA_TO_COVERAGE);
 	}
 	{
 		if(desc.RenderTarget[0].BlendOpAlpha!=D3D10_BLEND_OP_ADD)
 		{
-			static_cast<CGLStateImp*>(state)->addState(glBlendEquationSeparate,mappingGL(desc.RenderTarget[0].BlendOp),mappingGL(desc.RenderTarget[0].BlendOpAlpha));
+			SAVE_STATE(glBlendEquationSeparate,mappingGL(desc.RenderTarget[0].BlendOp),mappingGL(desc.RenderTarget[0].BlendOpAlpha));
 		}
 		else if(desc.RenderTarget[0].BlendOp!=D3D10_BLEND_OP_ADD)
 		{
-			static_cast<CGLStateImp*>(state)->addState(glBlendEquation,mappingGL(desc.RenderTarget[0].BlendOp));
+			SAVE_STATE(glBlendEquation,mappingGL(desc.RenderTarget[0].BlendOp));
 		}
 		if((desc.RenderTarget[0].DestBlendAlpha!=D3D10_BLEND_ZERO)||(desc.RenderTarget[0].SrcBlendAlpha!=D3D10_BLEND_ONE))
 		{
-			static_cast<CGLStateImp*>(state)->addState(glBlendFuncSeparate,mappingGL(desc.RenderTarget[0].SrcBlend)
+			SAVE_STATE(glBlendFuncSeparate,mappingGL(desc.RenderTarget[0].SrcBlend)
 				,mappingGL(desc.RenderTarget[0].DestBlend)
 				,mappingGL(desc.RenderTarget[0].SrcBlendAlpha)
 				,mappingGL(desc.RenderTarget[0].DestBlendAlpha));
 		}
 		else if((desc.RenderTarget[0].DestBlend!=D3D10_BLEND_ZERO)||(desc.RenderTarget[0].SrcBlend!=D3D10_BLEND_ONE))
 		{
-			static_cast<CGLStateImp*>(state)->addState(glBlendFunc,mappingGL(desc.RenderTarget[0].SrcBlend),mappingGL(desc.RenderTarget[0].DestBlend));
+			SAVE_STATE(glBlendFunc,mappingGL(desc.RenderTarget[0].SrcBlend),mappingGL(desc.RenderTarget[0].DestBlend));
 		}
 	}
 	if(desc.IndependentBlendEnable)
@@ -787,40 +789,40 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createBlendState(const D3D10_BLEND_D
 		{
 			if(desc.RenderTarget[i].BlendOpAlpha!=D3D10_BLEND_OP_ADD)
 			{
-				static_cast<CGLStateImp*>(state)->addState(glBlendEquationSeparatei,i,mappingGL(desc.RenderTarget[i].BlendOp),mappingGL(desc.RenderTarget[i].BlendOpAlpha));
+				SAVE_STATE(glBlendEquationSeparatei,i,mappingGL(desc.RenderTarget[i].BlendOp),mappingGL(desc.RenderTarget[i].BlendOpAlpha));
 			}
 			else if(desc.RenderTarget[i].BlendOp!=D3D10_BLEND_OP_ADD)
 			{
-				static_cast<CGLStateImp*>(state)->addState(glBlendEquationi,i,mappingGL(desc.RenderTarget[i].BlendOp));
+				SAVE_STATE(glBlendEquationi,i,mappingGL(desc.RenderTarget[i].BlendOp));
 			}
 			if((desc.RenderTarget[i].DestBlendAlpha!=D3D10_BLEND_ZERO)||(desc.RenderTarget[i].SrcBlendAlpha!=D3D10_BLEND_ONE))
 			{
-				static_cast<CGLStateImp*>(state)->addState(glBlendFuncSeparatei,i
+				SAVE_STATE(glBlendFuncSeparatei,i
 					,mappingGL(desc.RenderTarget[i].SrcBlend),mappingGL(desc.RenderTarget[i].DestBlend)
 					,mappingGL(desc.RenderTarget[i].SrcBlendAlpha),mappingGL(desc.RenderTarget[i].DestBlendAlpha));
 			}
 			else if((desc.RenderTarget[i].DestBlend!=D3D10_BLEND_ZERO)||(desc.RenderTarget[i].SrcBlend!=D3D10_BLEND_ONE))
 			{
-				static_cast<CGLStateImp*>(state)->addState(glBlendFunci,i,mappingGL(desc.RenderTarget[i].SrcBlend),mappingGL(desc.RenderTarget[i].DestBlend));
+				SAVE_STATE(glBlendFunci,i,mappingGL(desc.RenderTarget[i].SrcBlend),mappingGL(desc.RenderTarget[i].DestBlend));
 			}
 		}
 	}
 	if((desc.RenderTarget[0].RenderTargetWriteMask&D3D10_COLOR_WRITE_ENABLE_ALL)!=D3D10_COLOR_WRITE_ENABLE_ALL)
 	{
-		static_cast<CGLStateImp*>(state)->addState(glColorMask,desc.RenderTarget[0].RenderTargetWriteMask&D3D10_COLOR_WRITE_ENABLE_RED?GL_TRUE:GL_FALSE,
+		SAVE_STATE(glColorMask,desc.RenderTarget[0].RenderTargetWriteMask&D3D10_COLOR_WRITE_ENABLE_RED?GL_TRUE:GL_FALSE,
 			desc.RenderTarget[0].RenderTargetWriteMask&D3D10_COLOR_WRITE_ENABLE_GREEN?GL_TRUE:GL_FALSE,
 			desc.RenderTarget[0].RenderTargetWriteMask&D3D10_COLOR_WRITE_ENABLE_BLUE?GL_TRUE:GL_FALSE,
 			desc.RenderTarget[0].RenderTargetWriteMask&D3D10_COLOR_WRITE_ENABLE_ALPHA?GL_TRUE:GL_FALSE);
 	}
 	if(desc.RenderTarget[0].BlendEnable)
 	{
-		static_cast<CGLStateImp*>(state)->addState(glEnable,GL_BLEND);
+		SAVE_STATE(glEnable,GL_BLEND);
 	}
 	for(int i=1;i<sizeof(desc.RenderTarget)/sizeof(desc.RenderTarget[0]);++i)
 	{
 		if((desc.RenderTarget[i].RenderTargetWriteMask&D3D10_COLOR_WRITE_ENABLE_ALL)!=D3D10_COLOR_WRITE_ENABLE_ALL)
 		{
-			static_cast<CGLStateImp*>(state)->addState(glColorMaski,i,
+			SAVE_STATE(glColorMaski,i,
 				desc.RenderTarget[i].RenderTargetWriteMask&D3D10_COLOR_WRITE_ENABLE_RED?GL_TRUE:GL_FALSE,
 				desc.RenderTarget[i].RenderTargetWriteMask&D3D10_COLOR_WRITE_ENABLE_GREEN?GL_TRUE:GL_FALSE,
 				desc.RenderTarget[i].RenderTargetWriteMask&D3D10_COLOR_WRITE_ENABLE_BLUE?GL_TRUE:GL_FALSE,
@@ -828,7 +830,7 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createBlendState(const D3D10_BLEND_D
 		}
 		if(desc.RenderTarget[i].BlendEnable)
 		{
-			static_cast<CGLStateImp*>(state)->addState(glEnablei,GL_BLEND,i);
+			SAVE_STATE(glEnablei,GL_BLEND,i);
 		}
 	}
 	return True;
@@ -838,27 +840,27 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createBlendState(const D3D11_BLEND_D
 {
 	if(desc.AlphaToCoverageEnable)
 	{
-		static_cast<CGLStateImp*>(state)->addState(glEnable,GL_SAMPLE_ALPHA_TO_COVERAGE);
+		SAVE_STATE(glEnable,GL_SAMPLE_ALPHA_TO_COVERAGE);
 	}
 	{
 		if(desc.RenderTarget[0].BlendOpAlpha!=D3D11_BLEND_OP_ADD)
 		{
-			static_cast<CGLStateImp*>(state)->addState(glBlendEquationSeparate,mappingGL(desc.RenderTarget[0].BlendOp),mappingGL(desc.RenderTarget[0].BlendOpAlpha));
+			SAVE_STATE(glBlendEquationSeparate,mappingGL(desc.RenderTarget[0].BlendOp),mappingGL(desc.RenderTarget[0].BlendOpAlpha));
 		}
 		else if(desc.RenderTarget[0].BlendOp!=D3D11_BLEND_OP_ADD)
 		{
-			static_cast<CGLStateImp*>(state)->addState(glBlendEquation,mappingGL(desc.RenderTarget[0].BlendOp));
+			SAVE_STATE(glBlendEquation,mappingGL(desc.RenderTarget[0].BlendOp));
 		}
 		if((desc.RenderTarget[0].DestBlendAlpha!=D3D11_BLEND_ZERO)||(desc.RenderTarget[0].SrcBlendAlpha!=D3D11_BLEND_ONE))
 		{
-			static_cast<CGLStateImp*>(state)->addState(glBlendFuncSeparate,mappingGL(desc.RenderTarget[0].SrcBlend),
+			SAVE_STATE(glBlendFuncSeparate,mappingGL(desc.RenderTarget[0].SrcBlend),
 				mappingGL(desc.RenderTarget[0].DestBlend),
 				mappingGL(desc.RenderTarget[0].SrcBlendAlpha),
 				mappingGL(desc.RenderTarget[0].DestBlendAlpha));
 		}
 		else if((desc.RenderTarget[0].DestBlend!=D3D11_BLEND_ZERO)||(desc.RenderTarget[0].SrcBlend!=D3D11_BLEND_ONE))
 		{
-			static_cast<CGLStateImp*>(state)->addState(glBlendFunc,mappingGL(desc.RenderTarget[0].SrcBlend),mappingGL(desc.RenderTarget[0].DestBlend));
+			SAVE_STATE(glBlendFunc,mappingGL(desc.RenderTarget[0].SrcBlend),mappingGL(desc.RenderTarget[0].DestBlend));
 		}
 	}
 	if(desc.IndependentBlendEnable)
@@ -867,44 +869,44 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createBlendState(const D3D11_BLEND_D
 		{
 			if(desc.RenderTarget[i].BlendOpAlpha!=D3D11_BLEND_OP_ADD)
 			{
-				static_cast<CGLStateImp*>(state)->addState(glBlendEquationSeparatei,i,mappingGL(desc.RenderTarget[i].BlendOp),mappingGL(desc.RenderTarget[i].BlendOpAlpha));
+				SAVE_STATE(glBlendEquationSeparatei,i,mappingGL(desc.RenderTarget[i].BlendOp),mappingGL(desc.RenderTarget[i].BlendOpAlpha));
 			}
 			else if(desc.RenderTarget[i].BlendOp!=D3D11_BLEND_OP_ADD)
 			{
-				static_cast<CGLStateImp*>(state)->addState(glBlendEquationi,i,mappingGL(desc.RenderTarget[i].BlendOp));
+				SAVE_STATE(glBlendEquationi,i,mappingGL(desc.RenderTarget[i].BlendOp));
 			}
 			if((desc.RenderTarget[i].DestBlendAlpha!=D3D11_BLEND_ZERO)||(desc.RenderTarget[i].SrcBlendAlpha!=D3D11_BLEND_ONE))
 			{
-				static_cast<CGLStateImp*>(state)->addState(glBlendFuncSeparatei,i,mappingGL(desc.RenderTarget[i].SrcBlend),
+				SAVE_STATE(glBlendFuncSeparatei,i,mappingGL(desc.RenderTarget[i].SrcBlend),
 					mappingGL(desc.RenderTarget[i].DestBlend),mappingGL(desc.RenderTarget[i].SrcBlendAlpha),mappingGL(desc.RenderTarget[i].DestBlendAlpha));
 			}
 			else if((desc.RenderTarget[i].DestBlend!=D3D11_BLEND_ZERO)||(desc.RenderTarget[i].SrcBlend!=D3D11_BLEND_ONE))
 			{
-				static_cast<CGLStateImp*>(state)->addState(glBlendFunci,i,mappingGL(desc.RenderTarget[i].SrcBlend),mappingGL(desc.RenderTarget[i].DestBlend));
+				SAVE_STATE(glBlendFunci,i,mappingGL(desc.RenderTarget[i].SrcBlend),mappingGL(desc.RenderTarget[i].DestBlend));
 			}
 		}
 	}
 	if((desc.RenderTarget[0].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_ALL)!=D3D11_COLOR_WRITE_ENABLE_ALL)
 	{
-		static_cast<CGLStateImp*>(state)->addState(glColorMask,desc.RenderTarget[0].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_RED?GL_TRUE:GL_FALSE,
+		SAVE_STATE(glColorMask,desc.RenderTarget[0].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_RED?GL_TRUE:GL_FALSE,
 			desc.RenderTarget[0].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_GREEN?GL_TRUE:GL_FALSE,desc.RenderTarget[0].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_BLUE?GL_TRUE:GL_FALSE,
 			desc.RenderTarget[0].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_ALPHA?GL_TRUE:GL_FALSE);
 	}
 	if(desc.RenderTarget[0].BlendEnable)
 	{
-		static_cast<CGLStateImp*>(state)->addState(glEnable,GL_BLEND);
+		SAVE_STATE(glEnable,GL_BLEND);
 	}
 	for(int i=1;i<sizeof(desc.RenderTarget)/sizeof(desc.RenderTarget[0]);++i)
 	{
 		if((desc.RenderTarget[i].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_ALL)!=D3D11_COLOR_WRITE_ENABLE_ALL)
 		{
-			static_cast<CGLStateImp*>(state)->addState(glColorMaski,i,desc.RenderTarget[i].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_RED?GL_TRUE:GL_FALSE,
+			SAVE_STATE(glColorMaski,i,desc.RenderTarget[i].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_RED?GL_TRUE:GL_FALSE,
 				desc.RenderTarget[i].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_GREEN?GL_TRUE:GL_FALSE,desc.RenderTarget[i].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_BLUE?GL_TRUE:GL_FALSE,
 				desc.RenderTarget[i].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_ALPHA?GL_TRUE:GL_FALSE);
 		}
 		if(desc.RenderTarget[i].BlendEnable)
 		{
-			static_cast<CGLStateImp*>(state)->addState(glEnablei,GL_BLEND,i);
+			SAVE_STATE(glEnablei,GL_BLEND,i);
 		}
 	}
 	return True;
@@ -914,32 +916,32 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createBlendState(const D3D11_BLEND_D
 {
 	if(desc.AlphaToCoverageEnable)
 	{
-		static_cast<CGLStateImp*>(state)->addState(glEnable,GL_SAMPLE_ALPHA_TO_COVERAGE);
+		SAVE_STATE(glEnable,GL_SAMPLE_ALPHA_TO_COVERAGE);
 	}
 	{
 		if(desc.RenderTarget[0].BlendOpAlpha!=D3D11_BLEND_OP_ADD)
 		{
-			static_cast<CGLStateImp*>(state)->addState(glBlendEquationSeparate,mappingGL(desc.RenderTarget[0].BlendOp),mappingGL(desc.RenderTarget[0].BlendOpAlpha));
+			SAVE_STATE(glBlendEquationSeparate,mappingGL(desc.RenderTarget[0].BlendOp),mappingGL(desc.RenderTarget[0].BlendOpAlpha));
 		}
 		else if(desc.RenderTarget[0].BlendOp!=D3D11_BLEND_OP_ADD)
 		{
-			static_cast<CGLStateImp*>(state)->addState(glBlendEquation,mappingGL(desc.RenderTarget[0].BlendOp));
+			SAVE_STATE(glBlendEquation,mappingGL(desc.RenderTarget[0].BlendOp));
 		}
 		if((desc.RenderTarget[0].DestBlendAlpha!=D3D11_BLEND_ZERO)||(desc.RenderTarget[0].SrcBlendAlpha!=D3D11_BLEND_ONE))
 		{
-			static_cast<CGLStateImp*>(state)->addState(glBlendFuncSeparate,mappingGL(desc.RenderTarget[0].SrcBlend),mappingGL(desc.RenderTarget[0].DestBlend),
+			SAVE_STATE(glBlendFuncSeparate,mappingGL(desc.RenderTarget[0].SrcBlend),mappingGL(desc.RenderTarget[0].DestBlend),
 				mappingGL(desc.RenderTarget[0].SrcBlendAlpha),mappingGL(desc.RenderTarget[0].DestBlendAlpha));
 		}
 		else if((desc.RenderTarget[0].DestBlend!=D3D11_BLEND_ZERO)||(desc.RenderTarget[0].SrcBlend!=D3D11_BLEND_ONE))
 		{
-			static_cast<CGLStateImp*>(state)->addState(glBlendFunc,mappingGL(desc.RenderTarget[0].SrcBlend),mappingGL(desc.RenderTarget[0].DestBlend));
+			SAVE_STATE(glBlendFunc,mappingGL(desc.RenderTarget[0].SrcBlend),mappingGL(desc.RenderTarget[0].DestBlend));
 		}
 	}
 	if(desc.RenderTarget[0].LogicOpEnable)
 	{
 		if(D3D11_LOGIC_OP_NOOP!=desc.RenderTarget[0].LogicOp)
 		{
-			static_cast<CGLStateImp*>(state)->addState(glLogicOp,mappingGL(desc.RenderTarget[0].LogicOp));
+			SAVE_STATE(glLogicOp,mappingGL(desc.RenderTarget[0].LogicOp));
 		}
 	}
 	if(desc.IndependentBlendEnable)
@@ -948,46 +950,46 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createBlendState(const D3D11_BLEND_D
 		{
 			if(desc.RenderTarget[i].BlendOpAlpha!=D3D11_BLEND_OP_ADD)
 			{
-				static_cast<CGLStateImp*>(state)->addState(glBlendEquationSeparatei,i,mappingGL(desc.RenderTarget[i].BlendOp),mappingGL(desc.RenderTarget[i].BlendOpAlpha));
+				SAVE_STATE(glBlendEquationSeparatei,i,mappingGL(desc.RenderTarget[i].BlendOp),mappingGL(desc.RenderTarget[i].BlendOpAlpha));
 			}
 			else if(desc.RenderTarget[i].BlendOp!=D3D11_BLEND_OP_ADD)
 			{
-				static_cast<CGLStateImp*>(state)->addState(glBlendEquationi,i,mappingGL(desc.RenderTarget[i].BlendOp));
+				SAVE_STATE(glBlendEquationi,i,mappingGL(desc.RenderTarget[i].BlendOp));
 			}
 			if((desc.RenderTarget[i].DestBlendAlpha!=D3D11_BLEND_ZERO)||(desc.RenderTarget[i].SrcBlendAlpha!=D3D11_BLEND_ONE))
 			{
-				static_cast<CGLStateImp*>(state)->addState(glBlendFuncSeparatei,i,mappingGL(desc.RenderTarget[i].SrcBlend),
+				SAVE_STATE(glBlendFuncSeparatei,i,mappingGL(desc.RenderTarget[i].SrcBlend),
 					mappingGL(desc.RenderTarget[i].DestBlend),mappingGL(desc.RenderTarget[i].SrcBlendAlpha),
 					mappingGL(desc.RenderTarget[i].DestBlendAlpha));
 			}
 			else if((desc.RenderTarget[i].DestBlend!=D3D11_BLEND_ZERO)||(desc.RenderTarget[i].SrcBlend!=D3D11_BLEND_ONE))
 			{
-				static_cast<CGLStateImp*>(state)->addState(glBlendFunci,i,
+				SAVE_STATE(glBlendFunci,i,
 					mappingGL(desc.RenderTarget[i].SrcBlend),mappingGL(desc.RenderTarget[i].DestBlend));
 			}
 		}
 	}
 	if((desc.RenderTarget[0].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_ALL)!=D3D11_COLOR_WRITE_ENABLE_ALL)
 	{
-		static_cast<CGLStateImp*>(state)->addState(glColorMask,desc.RenderTarget[0].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_RED?GL_TRUE:GL_FALSE,
+		SAVE_STATE(glColorMask,desc.RenderTarget[0].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_RED?GL_TRUE:GL_FALSE,
 			desc.RenderTarget[0].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_GREEN?GL_TRUE:GL_FALSE,desc.RenderTarget[0].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_BLUE?GL_TRUE:GL_FALSE,
 			desc.RenderTarget[0].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_ALPHA?GL_TRUE:GL_FALSE);
 	}
 	if(desc.RenderTarget[0].BlendEnable)
 	{
-		static_cast<CGLStateImp*>(state)->addState(glEnable,GL_BLEND);
+		SAVE_STATE(glEnable,GL_BLEND);
 	}
 	for(int i=1;i<sizeof(desc.RenderTarget)/sizeof(desc.RenderTarget[0]);++i)
 	{
 		if((desc.RenderTarget[i].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_ALL)!=D3D11_COLOR_WRITE_ENABLE_ALL)
 		{
-			static_cast<CGLStateImp*>(state)->addState(glColorMaski,i,
+			SAVE_STATE(glColorMaski,i,
 				desc.RenderTarget[i].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_RED?GL_TRUE:GL_FALSE,desc.RenderTarget[i].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_GREEN?GL_TRUE:GL_FALSE,
 				desc.RenderTarget[i].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_BLUE?GL_TRUE:GL_FALSE,desc.RenderTarget[i].RenderTargetWriteMask&D3D11_COLOR_WRITE_ENABLE_ALPHA?GL_TRUE:GL_FALSE);
 		}
 		if(desc.RenderTarget[i].BlendEnable)
 		{
-			static_cast<CGLStateImp*>(state)->addState(glEnablei,GL_BLEND,i);
+			SAVE_STATE(glEnablei,GL_BLEND,i);
 		}
 	}
 	return True;
@@ -1000,7 +1002,7 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createDepthStencilState(const D3D10_
 		&&(desc.FrontFace.StencilPassOp==desc.BackFace.StencilPassOp)
 		)
 	{
-		static_cast<CGLStateImp*>(state)->addState(glStencilOp,mappingGL(desc.BackFace.StencilFailOp),mappingGL(desc.BackFace.StencilDepthFailOp),mappingGL(desc.BackFace.StencilPassOp));
+		SAVE_STATE(glStencilOp,mappingGL(desc.BackFace.StencilFailOp),mappingGL(desc.BackFace.StencilDepthFailOp),mappingGL(desc.BackFace.StencilPassOp));
 	}
 	else
 	{
@@ -1009,7 +1011,7 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createDepthStencilState(const D3D10_
 			||(desc.BackFace.StencilPassOp!=D3D10_STENCIL_OP_KEEP)
 			)
 		{
-			static_cast<CGLStateImp*>(state)->addState(glStencilOpSeparate,GL_BACK,mappingGL(desc.BackFace.StencilFailOp),
+			SAVE_STATE(glStencilOpSeparate,GL_BACK,mappingGL(desc.BackFace.StencilFailOp),
 				mappingGL(desc.BackFace.StencilDepthFailOp),mappingGL(desc.BackFace.StencilPassOp));
 		}
 		if((desc.FrontFace.StencilDepthFailOp!=D3D10_STENCIL_OP_KEEP)
@@ -1017,7 +1019,7 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createDepthStencilState(const D3D10_
 			||(desc.FrontFace.StencilPassOp!=D3D10_STENCIL_OP_KEEP)
 			)
 		{
-			static_cast<CGLStateImp*>(state)->addState(glStencilOpSeparate,GL_FRONT,mappingGL(desc.FrontFace.StencilFailOp),
+			SAVE_STATE(glStencilOpSeparate,GL_FRONT,mappingGL(desc.FrontFace.StencilFailOp),
 				mappingGL(desc.FrontFace.StencilDepthFailOp),mappingGL(desc.FrontFace.StencilPassOp));
 		}
 	}
@@ -1027,7 +1029,7 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createDepthStencilState(const D3D10_
 			||(desc.FrontFace.StencilFunc!=D3D10_COMPARISON_ALWAYS)
 			)
 		{
-			static_cast<CGLStateImp*>(state)->addState(glStencilFunc,mappingGL(desc.BackFace.StencilFunc),0,desc.StencilReadMask);
+			SAVE_STATE(glStencilFunc,mappingGL(desc.BackFace.StencilFunc),0,desc.StencilReadMask);
 		}
 	}
 	else
@@ -1036,28 +1038,28 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createDepthStencilState(const D3D10_
 			||(desc.FrontFace.StencilFunc!=D3D10_COMPARISON_ALWAYS)
 			)
 		{
-			static_cast<CGLStateImp*>(state)->addState(glStencilFuncSeparate,mappingGL(desc.FrontFace.StencilFunc),mappingGL(desc.BackFace.StencilFunc),0,desc.StencilReadMask);
+			SAVE_STATE(glStencilFuncSeparate,mappingGL(desc.FrontFace.StencilFunc),mappingGL(desc.BackFace.StencilFunc),0,desc.StencilReadMask);
 		}
 	}
 	if(!desc.DepthEnable)
 	{
-		static_cast<CGLStateImp*>(state)->addState(glDisable,GL_DEPTH_TEST);
+		SAVE_STATE(glDisable,GL_DEPTH_TEST);
 	}
 	if(desc.DepthFunc!=D3D10_COMPARISON_LESS_EQUAL)
 	{
-		static_cast<CGLStateImp*>(state)->addState(glDepthFunc,mappingGL(desc.DepthFunc));
+		SAVE_STATE(glDepthFunc,mappingGL(desc.DepthFunc));
 	}
 	if(desc.DepthWriteMask!=D3D10_DEPTH_WRITE_MASK_ALL)
 	{
-		static_cast<CGLStateImp*>(state)->addState(glDepthMask,GL_FALSE);
+		SAVE_STATE(glDepthMask,GL_FALSE);
 	}
 	if(desc.StencilEnable)
 	{
-		static_cast<CGLStateImp*>(state)->addState(glEnable,GL_STENCIL_TEST);
+		SAVE_STATE(glEnable,GL_STENCIL_TEST);
 	}
 	if(desc.StencilWriteMask!=0xff)
 	{
-		static_cast<CGLStateImp*>(state)->addState(glStencilMask,desc.StencilWriteMask);
+		SAVE_STATE(glStencilMask,desc.StencilWriteMask);
 	}
 	return True;
 }
@@ -1069,7 +1071,7 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createDepthStencilState(const D3D11_
 		&&(desc.FrontFace.StencilPassOp==desc.BackFace.StencilPassOp)
 		)
 	{
-		static_cast<CGLStateImp*>(state)->addState(glStencilOp,mappingGL(desc.BackFace.StencilFailOp),mappingGL(desc.BackFace.StencilDepthFailOp),
+		SAVE_STATE(glStencilOp,mappingGL(desc.BackFace.StencilFailOp),mappingGL(desc.BackFace.StencilDepthFailOp),
 			mappingGL(desc.BackFace.StencilPassOp));
 	}
 	else
@@ -1079,7 +1081,7 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createDepthStencilState(const D3D11_
 			||(desc.BackFace.StencilPassOp!=D3D11_STENCIL_OP_KEEP)
 			)
 		{
-			static_cast<CGLStateImp*>(state)->addState(glStencilOpSeparate,GL_BACK,mappingGL(desc.BackFace.StencilFailOp),
+			SAVE_STATE(glStencilOpSeparate,GL_BACK,mappingGL(desc.BackFace.StencilFailOp),
 				mappingGL(desc.BackFace.StencilDepthFailOp),mappingGL(desc.BackFace.StencilPassOp));
 		}
 		if((desc.FrontFace.StencilDepthFailOp!=D3D11_STENCIL_OP_KEEP)
@@ -1087,7 +1089,7 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createDepthStencilState(const D3D11_
 			||(desc.FrontFace.StencilPassOp!=D3D11_STENCIL_OP_KEEP)
 			)
 		{
-			static_cast<CGLStateImp*>(state)->addState(glStencilOpSeparate,GL_FRONT,mappingGL(desc.FrontFace.StencilFailOp),
+			SAVE_STATE(glStencilOpSeparate,GL_FRONT,mappingGL(desc.FrontFace.StencilFailOp),
 				mappingGL(desc.FrontFace.StencilDepthFailOp),mappingGL(desc.FrontFace.StencilPassOp));
 		}
 	}
@@ -1097,7 +1099,7 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createDepthStencilState(const D3D11_
 			||(desc.FrontFace.StencilFunc!=D3D11_COMPARISON_ALWAYS)
 			)
 		{
-			static_cast<CGLStateImp*>(state)->addState(glStencilFunc,mappingGL(desc.BackFace.StencilFunc),0,desc.StencilReadMask);
+			SAVE_STATE(glStencilFunc,mappingGL(desc.BackFace.StencilFunc),0,desc.StencilReadMask);
 		}
 	}
 	else
@@ -1106,29 +1108,29 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createDepthStencilState(const D3D11_
 			||(desc.FrontFace.StencilFunc!=D3D11_COMPARISON_ALWAYS)
 			)
 		{
-			static_cast<CGLStateImp*>(state)->addState(glStencilFuncSeparate,mappingGL(desc.FrontFace.StencilFunc),mappingGL(desc.BackFace.StencilFunc),0,
+			SAVE_STATE(glStencilFuncSeparate,mappingGL(desc.FrontFace.StencilFunc),mappingGL(desc.BackFace.StencilFunc),0,
 				desc.StencilReadMask);
 		}
 	}
 	if(!desc.DepthEnable)
 	{
-		static_cast<CGLStateImp*>(state)->addState(glDisable,GL_DEPTH_TEST);
+		SAVE_STATE(glDisable,GL_DEPTH_TEST);
 	}
 	if(desc.DepthFunc!=D3D11_COMPARISON_LESS_EQUAL)
 	{
-		static_cast<CGLStateImp*>(state)->addState(glDepthFunc,mappingGL(desc.DepthFunc));
+		SAVE_STATE(glDepthFunc,mappingGL(desc.DepthFunc));
 	}
 	if(desc.DepthWriteMask!=D3D11_DEPTH_WRITE_MASK_ALL)
 	{
-		static_cast<CGLStateImp*>(state)->addState(glDepthMask,GL_FALSE);
+		SAVE_STATE(glDepthMask,GL_FALSE);
 	}
 	if(desc.StencilEnable)
 	{
-		static_cast<CGLStateImp*>(state)->addState(glEnable,GL_STENCIL_TEST);
+		SAVE_STATE(glEnable,GL_STENCIL_TEST);
 	}
 	if(desc.StencilWriteMask!=0xff)
 	{
-		static_cast<CGLStateImp*>(state)->addState(glStencilMask,desc.StencilWriteMask);
+		SAVE_STATE(glStencilMask,desc.StencilWriteMask);
 	}
 	return True;
 }
@@ -1137,38 +1139,38 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createRasterizerState(const D3D10_RA
 {
 	if(desc.AntialiasedLineEnable)
 	{
-		static_cast<CGLStateImp*>(state)->addState(glEnable,GL_LINE_SMOOTH);
+		SAVE_STATE(glEnable,GL_LINE_SMOOTH);
 	}
 	if(desc.CullMode!=D3D10_CULL_BACK)
 	{
-		static_cast<CGLStateImp*>(state)->addState(glCullFace,mappingGL(desc.CullMode));
+		SAVE_STATE(glCullFace,mappingGL(desc.CullMode));
 	}
 	if(desc.DepthBiasClamp!=0)
 	{
-		static_cast<CGLStateImp*>(state)->addState(glPolygonOffsetClamp,desc.SlopeScaledDepthBias,*reinterpret_cast<const GLfloat*>(&desc.DepthBias),desc.DepthBiasClamp);
+		SAVE_STATE(glPolygonOffsetClamp,desc.SlopeScaledDepthBias,*reinterpret_cast<const GLfloat*>(&desc.DepthBias),desc.DepthBiasClamp);
 	}
 	else if((desc.DepthBias!=0)||(desc.SlopeScaledDepthBias!=0))
 	{
-		static_cast<CGLStateImp*>(state)->addState(glPolygonOffset,desc.SlopeScaledDepthBias,*reinterpret_cast<const GLfloat*>(&desc.DepthBias));
+		SAVE_STATE(glPolygonOffset,desc.SlopeScaledDepthBias,*reinterpret_cast<const GLfloat*>(&desc.DepthBias));
 	}
 	if(!desc.DepthClipEnable)
 	{
 	}
 	if(desc.FillMode!=D3D10_FILL_SOLID)
 	{
-		static_cast<CGLStateImp*>(state)->addState(glPolygonMode,GL_FRONT_AND_BACK,mappingGL(desc.FillMode));
+		SAVE_STATE(glPolygonMode,GL_FRONT_AND_BACK,mappingGL(desc.FillMode));
 	}
 	if(desc.FrontCounterClockwise)
 	{
-		static_cast<CGLStateImp*>(state)->addState(glFrontFace,GL_CW);
+		SAVE_STATE(glFrontFace,GL_CW);
 	}
 	if(desc.MultisampleEnable)
 	{
-		static_cast<CGLStateImp*>(state)->addState(glEnable,GL_POLYGON_SMOOTH);
+		SAVE_STATE(glEnable,GL_POLYGON_SMOOTH);
 	}
 	if(desc.ScissorEnable)
 	{
-		static_cast<CGLStateImp*>(state)->addState(glEnable,GL_SCISSOR_TEST);
+		SAVE_STATE(glEnable,GL_SCISSOR_TEST);
 	}
 	return True;
 }
@@ -1177,38 +1179,38 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createRasterizerState(const D3D11_RA
 {
 	if(desc.AntialiasedLineEnable)
 	{
-		static_cast<CGLStateImp*>(state)->addState(glEnable,GL_LINE_SMOOTH);
+		SAVE_STATE(glEnable,GL_LINE_SMOOTH);
 	}
 	if(desc.CullMode!=D3D11_CULL_BACK)
 	{
-		static_cast<CGLStateImp*>(state)->addState(glCullFace,mappingGL(desc.CullMode));
+		SAVE_STATE(glCullFace,mappingGL(desc.CullMode));
 	}
 	if(desc.DepthBiasClamp!=0)
 	{
-		static_cast<CGLStateImp*>(state)->addState(glPolygonOffsetClamp,desc.SlopeScaledDepthBias,*reinterpret_cast<const GLfloat*>(&desc.DepthBias),desc.DepthBiasClamp);
+		SAVE_STATE(glPolygonOffsetClamp,desc.SlopeScaledDepthBias,*reinterpret_cast<const GLfloat*>(&desc.DepthBias),desc.DepthBiasClamp);
 	}
 	else if((desc.DepthBias!=0)||(desc.SlopeScaledDepthBias!=0))
 	{
-		static_cast<CGLStateImp*>(state)->addState(glPolygonOffset,desc.SlopeScaledDepthBias,*reinterpret_cast<const GLfloat*>(&desc.DepthBias));
+		SAVE_STATE(glPolygonOffset,desc.SlopeScaledDepthBias,*reinterpret_cast<const GLfloat*>(&desc.DepthBias));
 	}
 	if(!desc.DepthClipEnable)
 	{
 	}
 	if(desc.FillMode!=D3D11_FILL_SOLID)
 	{
-		static_cast<CGLStateImp*>(state)->addState(glPolygonMode,GL_FRONT_AND_BACK,mappingGL(desc.FillMode));
+		SAVE_STATE(glPolygonMode,GL_FRONT_AND_BACK,mappingGL(desc.FillMode));
 	}
 	if(desc.FrontCounterClockwise)
 	{
-		static_cast<CGLStateImp*>(state)->addState(glFrontFace,GL_CW);
+		SAVE_STATE(glFrontFace,GL_CW);
 	}
 	if(desc.MultisampleEnable)
 	{
-		static_cast<CGLStateImp*>(state)->addState(glEnable,GL_MULTISAMPLE);
+		SAVE_STATE(glEnable,GL_MULTISAMPLE);
 	}
 	if(desc.ScissorEnable)
 	{
-		static_cast<CGLStateImp*>(state)->addState(glEnable,GL_SCISSOR_TEST);
+		SAVE_STATE(glEnable,GL_SCISSOR_TEST);
 	}
 	return True;
 }
@@ -1217,7 +1219,7 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createRasterizerState(const D3D11_RA
 {
 	if(desc.ForcedSampleCount>0)
 	{
-		static_cast<CGLStateImp*>(state)->addState(glMinSampleShading,*reinterpret_cast<const GLfloat*>(&desc.ForcedSampleCount));
+		SAVE_STATE(glMinSampleShading,*reinterpret_cast<const GLfloat*>(&desc.ForcedSampleCount));
 	}
 	return createRasterizerState(*reinterpret_cast<const D3D11_RASTERIZER_DESC*>(&desc),state);
 }
@@ -1226,16 +1228,23 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createRasterizerState(const D3D11_RA
 {
 	if(desc.ConservativeRaster!=D3D11_CONSERVATIVE_RASTERIZATION_MODE_OFF)
 	{
-		static_cast<CGLStateImp*>(state)->addState(glEnable,mappingGL(desc.ConservativeRaster));
+		SAVE_STATE(glEnable,mappingGL(desc.ConservativeRaster));
 	}
 	return createRasterizerState(*reinterpret_cast<const D3D11_RASTERIZER_DESC1*>(&desc),state);
 }
 
 Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createSamplerState(const D3D10_SAMPLER_DESC& desc,OUT ISamplerState* state)
 {
-	static_cast<CGLStateImp*>(state)->addState(glTexParameteri,0,GL_TEXTURE_WRAP_S,mappingGL(desc.AddressU));
-	static_cast<CGLStateImp*>(state)->addState(glTexParameteri,0,GL_TEXTURE_WRAP_T,mappingGL(desc.AddressV));
-	static_cast<CGLStateImp*>(state)->addState(glTexParameteri,0,GL_TEXTURE_WRAP_R,mappingGL(desc.AddressW));
+	SAVE_STATE(glTexParameteri,0,GL_TEXTURE_WRAP_S,mappingGL(desc.AddressU));
+	SAVE_STATE(glTexParameteri,0,GL_TEXTURE_WRAP_T,mappingGL(desc.AddressV));
+	SAVE_STATE(glTexParameteri,0,GL_TEXTURE_WRAP_R,mappingGL(desc.AddressW));
+	auto border_color=new GLfloat[4];
+	memcpy(border_color,desc.BorderColor,sizeof(desc.BorderColor));
+	SAVE_STATE(glTexParameterfv,0,GL_TEXTURE_BORDER_COLOR,border_color);
+	SAVE_STATE(glTexParameteri,0,GL_TEXTURE_COMPARE_FUNC,mappingGL(desc.ComparisonFunc));
+	SAVE_STATE(glTexParameteri,0,GL_TEXTURE_MAG_FILTER,mappingGLMag(desc.Filter));
+	SAVE_STATE(glTexParameteri,0,GL_TEXTURE_MIN_FILTER,mappingGLMag(desc.Filter));
+	SAVE_STATE(glTexParameterf,0,GL_TEXTURE_MAX_ANISOTROPY,static_cast<GLfloat>(desc.MaxAnisotropy));
 	return True;
 }
 

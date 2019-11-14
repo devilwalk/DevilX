@@ -3,6 +3,130 @@ namespace NSDevilX
 {
 	namespace NSGraphicsAPI
 	{
+		struct SGLStateChange
+		{
+			virtual Void apply()=0;
+		};
+#define SGLState1(func,argType0) \
+struct S##func:public SGLStateChange{ \
+argType0 mV0; \
+S##func(argType0 v0):mV0(v0){} \
+virtual Void apply() override {func(mV0);}}
+#define SGLState2(func,argType0,argType1) \
+struct S##func:public SGLStateChange{ \
+argType0 mV0; \
+argType1 mV1; \
+S##func(argType0 v0,argType1 v1):mV0(v0),mV1(v1){} \
+virtual Void apply() override {func(mV0,mV1);}}
+#define SGLState3(func,argType0,argType1,argType2) \
+struct S##func:public SGLStateChange{ \
+argType0 mV0; \
+argType1 mV1; \
+argType2 mV2; \
+S##func(argType0 v0,argType1 v1,argType2 v2):mV0(v0),mV1(v1),mV2(v2){} \
+virtual Void apply() override {func(mV0,mV1,mV2);}}
+#define SGLState4(func,argType0,argType1,argType2,argType3) \
+struct S##func:public SGLStateChange{ \
+argType0 mV0; \
+argType1 mV1; \
+argType2 mV2; \
+argType3 mV3; \
+S##func(argType0 v0,argType1 v1,argType2 v2,argType3 v3):mV0(v0),mV1(v1),mV2(v2),mV3(v3){} \
+virtual Void apply() override {func(mV0,mV1,mV2,mV3);}}
+#define SGLState5(func,argType0,argType1,argType2,argType3,argType4) \
+struct S##func:public SGLStateChange{ \
+argType0 mV0; \
+argType1 mV1; \
+argType2 mV2; \
+argType3 mV3; \
+argType4 mV4; \
+S##func(argType0 v0,argType1 v1,argType2 v2,argType3 v3,argType4 v4):mV0(v0),mV1(v1),mV2(v2),mV3(v3),mV4(v4){} \
+virtual Void apply() override {func(mV0,mV1,mV2,mV3,mV4);}}
+
+#define SGLState1Generate(func) SGLState1(##func,GLenum)
+#define SGLState1iGenerate(func) SGLState2(##func,GLenum,GLuint)
+#define SGLStatei1Generate(func) SGLState2(##func,GLuint,GLenum)
+#define SGLState2Generate(func) SGLState2(##func,GLenum,GLenum)
+#define SGLStatei2Generate(func) SGLState3(##func,GLuint,GLenum,GLenum)
+#define SGLState3Generate(func) SGLState3(##func,GLenum,GLenum,GLenum)
+#define SGLStatei3Generate(func) SGLState4(##func,GLuint,GLenum,GLenum,GLenum)
+#define SGLState4Generate(func) SGLState4(##func,GLenum,GLenum,GLenum,GLenum)
+#define SGLStatei4Generate(func) SGLState5(##func,GLuint,GLenum,GLenum,GLenum,GLenum)
+
+#define SGLPointerState1(func,argType0) \
+struct S##func:public SGLStateChange{ \
+argType0 mV0; \
+S##func(argType0 v0):mV0(v0){} \
+~S##func(){delete mV0;} \
+virtual Void apply() override {func(mV0);}}
+#define SGLPointerState2(func,argType0,argType1) \
+struct S##func:public SGLStateChange{ \
+argType0 mV0; \
+argType1 mV1; \
+S##func(argType0 v0,argType1 v1):mV0(v0),mV1(v1){} \
+~S##func(){delete mV1;} \
+virtual Void apply() override {func(mV0,mV1);}}
+#define SGLPointerState3(func,argType0,argType1,argType2) \
+struct S##func:public SGLStateChange{ \
+argType0 mV0; \
+argType1 mV1; \
+argType2 mV2; \
+S##func(argType0 v0,argType1 v1,argType2 v2):mV0(v0),mV1(v1),mV2(v2){} \
+~S##func(){delete mV2;} \
+virtual Void apply() override {func(mV0,mV1,mV2);}}
+#define SGLPointerState4(func,argType0,argType1,argType2,argType3) \
+struct S##func:public SGLStateChange{ \
+argType0 mV0; \
+argType1 mV1; \
+argType2 mV2; \
+argType3 mV3; \
+S##func(argType0 v0,argType1 v1,argType2 v2,argType3 v3):mV0(v0),mV1(v1),mV2(v2),mV3(v3){} \
+~S##func(){delete mV3;} \
+virtual Void apply() override {func(mV0,mV1,mV2,mV3);}}
+#define SGLPointerState5(func,argType0,argType1,argType2,argType3,argType4) \
+struct S##func:public SGLStateChange{ \
+argType0 mV0; \
+argType1 mV1; \
+argType2 mV2; \
+argType3 mV3; \
+argType4 mV4; \
+S##func(argType0 v0,argType1 v1,argType2 v2,argType3 v3,argType4 v4):mV0(v0),mV1(v1),mV2(v2),mV3(v3),mV4(v4){} \
+~S##func(){delete mV4;} \
+virtual Void apply() override {func(mV0,mV1,mV2,mV3,mV4);}}
+
+		SGLState1Generate(glEnable);
+		SGLState1Generate(glDisable);
+		SGLState1Generate(glBlendEquation);
+		SGLState1Generate(glLogicOp);
+		SGLState1Generate(glDepthFunc);
+		SGLState1Generate(glCullFace);
+		SGLState1Generate(glFrontFace);
+		SGLState1(glDepthMask,GLboolean);
+		SGLState1(glStencilMask,GLuint);
+		SGLState1(glMinSampleShading,GLfloat);
+		SGLState1iGenerate(glEnablei);
+		SGLState1iGenerate(glDisablei);
+		SGLState2Generate(glBlendFunc);
+		SGLState2Generate(glBlendEquationi);
+		SGLState2Generate(glBlendEquationSeparate);
+		SGLState2Generate(glPolygonMode);
+		SGLState2(glPolygonOffset,GLfloat,GLfloat);
+		SGLStatei2Generate(glBlendEquationSeparatei);
+		SGLStatei2Generate(glBlendFunci);
+		SGLState3Generate(glStencilOp);
+		SGLState3(glStencilFunc,GLenum,GLint,GLuint);
+		SGLState3(glPolygonOffsetClamp,GLfloat,GLfloat,GLfloat);
+		SGLState3(glTexParameteri,GLenum,GLenum,GLint);
+		SGLState3(glTexParameterf,GLenum,GLenum,GLfloat);
+		SGLState3(glTexParameteriv,GLenum,GLenum,const GLint*);
+		SGLPointerState3(glTexParameterfv,GLenum,GLenum,GLfloat*);
+		SGLState4Generate(glBlendFuncSeparate);
+		SGLState4Generate(glStencilOpSeparate);
+		SGLState4(glStencilFuncSeparate,GLenum,GLenum,GLint,GLuint);
+		SGLState4(glColorMask,GLboolean,GLboolean,GLboolean,GLboolean);
+		SGLStatei4Generate(glBlendFuncSeparatei);
+		SGLState5(glColorMaski,GLuint,GLboolean,GLboolean,GLboolean,GLboolean);
+
 		class CGLStateImp
 			:public IBlendState
 			,public IDepthStencilState
@@ -11,108 +135,11 @@ namespace NSDevilX
 		{
 		public:
 			friend class CGLDeviceImp;
-			template<typename TValue,int TNumber>
-			struct TStateChangeParameter
-			{
-				VoidPtr mFunction;
-				TValue mValue[TNumber];
-				operator delctype(mValue)& ()
-				{
-					return mValue;
-				}
-			};
-			template<typename TValue>
-			struct TStateChangeParameter<TValue,1>
-			{
-				VoidPtr mFunction;
-				TValue mValue;
-				operator TValue& ()
-				{
-					return mValue;
-				}
-			};
 		protected:
-			TVector<TStateChangeParameter<GLint,1> > mStateChangeParameters_I;
-			TVector<TStateChangeParameter<GLint,2> > mStateChangeParameters_II;
-			TVector<TStateChangeParameter<GLint,3> > mStateChangeParameters_III;
-			TVector<TStateChangeParameter<GLint,4> > mStateChangeParameters_IIII;
-			TVector<TStateChangeParameter<GLint,5> > mStateChangeParameters_IIIII;
-			TVector<TStateChangeParameter<GLfloat,1> > mStateChangeParameters_F;
-			TVector<TStateChangeParameter<GLfloat,2> > mStateChangeParameters_FF;
-			TVector<TStateChangeParameter<GLfloat,3> > mStateChangeParameters_FFF;
+			TResourcePtrVector<SGLStateChange> mStateChanges;
 		public:
 			CGLStateImp();
 			virtual ~CGLStateImp();
-
-			Void addState(VoidPtr func,GLint value)
-			{
-				TStateChangeParameter<GLint,1> v;
-				v.mFunction=func;
-				v.mValue=value;
-				mStateChangeParameters_I.push_back(v);
-			}
-			Void addState(VoidPtr func,GLint value0,GLint value1)
-			{
-				TStateChangeParameter<GLint,2> v;
-				v.mFunction=func;
-				v.mValue[0]=value0;
-				v.mValue[1]=value1;
-				mStateChangeParameters_II.push_back(v);
-			}
-			Void addState(VoidPtr func,GLint value0,GLint value1,GLint value2)
-			{
-				TStateChangeParameter<GLint,3> v;
-				v.mFunction=func;
-				v.mValue[0]=value0;
-				v.mValue[1]=value1;
-				v.mValue[2]=value2;
-				mStateChangeParameters_III.push_back(v);
-			}
-			Void addState(VoidPtr func,GLint value0,GLint value1,GLint value2,GLint value3)
-			{
-				TStateChangeParameter<GLint,4> v;
-				v.mFunction=func;
-				v.mValue[0]=value0;
-				v.mValue[1]=value1;
-				v.mValue[2]=value2;
-				v.mValue[3]=value3;
-				mStateChangeParameters_IIII.push_back(v);
-			}
-			Void addState(VoidPtr func,GLint value0,GLint value1,GLint value2,GLint value3,GLint value4)
-			{
-				TStateChangeParameter<GLint,5> v;
-				v.mFunction=func;
-				v.mValue[0]=value0;
-				v.mValue[1]=value1;
-				v.mValue[2]=value2;
-				v.mValue[3]=value3;
-				v.mValue[4]=value4;
-				mStateChangeParameters_IIIII.push_back(v);
-			}
-			Void addState(VoidPtr func,GLfloat value)
-			{
-				TStateChangeParameter<GLfloat,1> v;
-				v.mFunction=func;
-				v.mValue=value;
-				mStateChangeParameters_F.push_back(v);
-			}
-			Void addState(VoidPtr func,GLfloat value0,GLfloat value1)
-			{
-				TStateChangeParameter<GLfloat,2> v;
-				v.mFunction=func;
-				v.mValue[0]=value0;
-				v.mValue[1]=value1;
-				mStateChangeParameters_FF.push_back(v);
-			}
-			Void addState(VoidPtr func,GLfloat value0,GLfloat value1,GLfloat value2)
-			{
-				TStateChangeParameter<GLfloat,3> v;
-				v.mFunction=func;
-				v.mValue[0]=value0;
-				v.mValue[1]=value1;
-				v.mValue[2]=value2;
-				mStateChangeParameters_FFF.push_back(v);
-			}
 		};
 	}
 }
