@@ -270,6 +270,8 @@ namespace NSDevilX
 				ret.setProfile(CGLGlobal::EProfileCore_3,GL_DEPTH_COMPONENT32F);
 				break;
 			case D3DFMT_D15S1:
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_DEPTH_COMPONENT);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_DEPTH_COMPONENT);
 				break;
 			case D3DFMT_D24FS8:
 			case D3DFMT_D24X4S4:
@@ -282,49 +284,61 @@ namespace NSDevilX
 				ret.setProfile(CGLGlobal::EProfileCore_3,GL_DEPTH32F_STENCIL8);
 				break;
 			case D3DFMT_DXT1:
-				ret=GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_COMPRESSED_RGBA_S3TC_DXT1_EXT);
+				ret.setProfile(CGLGlobal::EProfileCore_3,0,GL_COMPRESSED_RGBA_S3TC_DXT1_EXT);
 				break;
 			case D3DFMT_DXT3:
-				ret=GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_COMPRESSED_RGBA_S3TC_DXT3_EXT);
+				ret.setProfile(CGLGlobal::EProfileCore_3,0,GL_COMPRESSED_RGBA_S3TC_DXT3_EXT);
 				break;
 			case D3DFMT_DXT5:
-				ret=GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_COMPRESSED_RGBA_S3TC_DXT5_EXT);
+				ret.setProfile(CGLGlobal::EProfileCore_3,0,GL_COMPRESSED_RGBA_S3TC_DXT5_EXT);
 				break;
 			}
 			return ret;
 		}
-		static GLenum mappingGLFormat(D3DFORMAT fmt)
+		static TGLCompatible<GLenum> mappingGLFormat(D3DFORMAT fmt)
 		{
-			GLenum ret=0;
+			TGLCompatible<GLenum> ret;
 			switch(fmt)
 			{
 			case D3DFMT_A1:
 			case D3DFMT_A8:
-				ret=GL_ALPHA;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_ALPHA);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_ALPHA);
 				break;
 			case D3DFMT_R16F:
 			case D3DFMT_R32F:
-				ret=GL_RED;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RED_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RED);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RED);
 				break;
 			case D3DFMT_G16R16:
 			case D3DFMT_G16R16F:
 			case D3DFMT_G32R32F:
 			case D3DFMT_G8R8_G8B8:
-				ret=GL_RG;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RG_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RG);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RG);
 				break;
 			case D3DFMT_R5G6B5:
-				ret=GL_BGR;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_RGB);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RGB);
 				break;
 			case D3DFMT_A4R4G4B4:
 			case D3DFMT_A1R5G5B5:
-			case D3DFMT_A8R8G8B8:
-				ret=GL_BGRA;
-				break;
 			case D3DFMT_A8B8G8R8:
+				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_RGBA);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RGBA);
+				break;
+			case D3DFMT_A8R8G8B8:
+				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_RGBA);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_BGRA);
+				break;
 			case D3DFMT_DXT1:
 			case D3DFMT_DXT3:
 			case D3DFMT_DXT5:
-				ret=GL_RGBA;
 				break;
 			case D3DFMT_D16:
 			case D3DFMT_D16_LOCKABLE:
@@ -332,23 +346,26 @@ namespace NSDevilX
 			case D3DFMT_D32:
 			case D3DFMT_D32F_LOCKABLE:
 			case D3DFMT_D32_LOCKABLE:
-				ret=GL_DEPTH_COMPONENT;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_DEPTH_COMPONENT);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_DEPTH_COMPONENT);
 				break;
 			case D3DFMT_D15S1:
 			case D3DFMT_D24FS8:
 			case D3DFMT_D24X4S4:
 			case D3DFMT_D24S8:
-				ret=GL_DEPTH_STENCIL;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_DEPTH_STENCIL);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_DEPTH_STENCIL);
 				break;
 			case D3DFMT_S8_LOCKABLE:
-				ret=GL_STENCIL_INDEX;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_STENCIL_INDEX);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_STENCIL_INDEX);
 				break;
 			}
 			return ret;
 		}
-		static GLenum mappingGLInternalFormat(DXGI_FORMAT fmt)
+		static TGLCompatible<GLenum> mappingGLInternalFormat(DXGI_FORMAT fmt)
 		{
-			GLenum ret=0;
+			TGLCompatible<GLenum> ret;
 			switch(fmt)
 			{
 			case DXGI_FORMAT_A8_UNORM:
@@ -499,9 +516,9 @@ namespace NSDevilX
 			}
 			return ret;
 		}
-		static GLenum mappingGLFormat(DXGI_FORMAT fmt)
+		static TGLCompatible<GLenum> mappingGLFormat(DXGI_FORMAT fmt)
 		{
-			GLenum ret=0;
+			TGLCompatible<GLenum> ret;
 			switch(fmt)
 			{
 			case DXGI_FORMAT_A8_UNORM:
