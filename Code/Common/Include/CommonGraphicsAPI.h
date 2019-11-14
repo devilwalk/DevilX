@@ -59,18 +59,18 @@ namespace NSDevilX
 			TGLCompatible<GLenum> ret;
 			if((D3DPOOL_DEFAULT==pool)&&(usage&D3DUSAGE_DYNAMIC))
 			{
-				ret.setProfile(CGLGlobal::EESProfile_Core_GLES2,GL_DYNAMIC_DRAW);
-				ret.setProfile(CGLGlobal::EProfile_Core_GL3,GL_DYNAMIC_DRAW);
+				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_DYNAMIC_DRAW);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_DYNAMIC_DRAW);
 			}
 			else if(D3DPOOL_DEFAULT==pool)
 			{
-				ret.setProfile(CGLGlobal::EESProfile_Core_GLES2,GL_STATIC_DRAW);
-				ret.setProfile(CGLGlobal::EProfile_Core_GL3,GL_STATIC_DRAW);
+				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_STATIC_DRAW);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_STATIC_DRAW);
 			}
 			else
 			{
-				ret.setProfile(CGLGlobal::EESProfile_Core_GLES2,GL_STREAM_DRAW);
-				ret.setProfile(CGLGlobal::EProfile_Core_GL3,GL_STREAM_DRAW);
+				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_STREAM_DRAW);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_STREAM_DRAW);
 			}
 			return ret;
 		}
@@ -79,18 +79,18 @@ namespace NSDevilX
 			TGLCompatible<GLenum> ret;
 			if(D3D10_USAGE_DYNAMIC==usage)
 			{
-				ret.setProfile(CGLGlobal::EESProfile_Core_GLES2,GL_DYNAMIC_DRAW);
-				ret.setProfile(CGLGlobal::EProfile_Core_GL3,GL_DYNAMIC_DRAW);
+				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_DYNAMIC_DRAW);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_DYNAMIC_DRAW);
 			}
 			else if(D3DPOOL_DEFAULT==usage)
 			{
-				ret.setProfile(CGLGlobal::EESProfile_Core_GLES2,GL_STATIC_DRAW);
-				ret.setProfile(CGLGlobal::EProfile_Core_GL3,GL_STATIC_DRAW);
+				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_STATIC_DRAW);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_STATIC_DRAW);
 			}
 			else
 			{
-				ret.setProfile(CGLGlobal::EESProfile_Core_GLES2,GL_STREAM_DRAW);
-				ret.setProfile(CGLGlobal::EProfile_Core_GL3,GL_STREAM_DRAW);
+				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_STREAM_DRAW);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_STREAM_DRAW);
 			}
 			return ret;
 		}
@@ -188,66 +188,98 @@ namespace NSDevilX
 			}
 			return ret;
 		}
-		static GLenum mappingGLInternalFormat(D3DFORMAT fmt)
+		static TGLCompatible<GLenum> mappingGLInternalFormat(D3DFORMAT fmt)
 		{
-			GLenum ret=0;
+			TGLCompatible<GLenum> ret;
 			switch(fmt)
 			{
 			case D3DFMT_A1:
-				ret=GL_ALPHA;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_ALPHA);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_ALPHA);
 				break;
 			case D3DFMT_A8:
-				ret=GL_ALPHA8;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_ALPHA);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_ALPHA);
 				break;
 			case D3DFMT_R16F:
-				ret=GL_R16F;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_R16F_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_R16F);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_R16F);
 				break;
 			case D3DFMT_R32F:
-				ret=GL_R32F;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_R32F_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_R32F);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_R32F);
 				break;
 			case D3DFMT_G16R16:
-				ret=GL_RG16;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_R16_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_R16);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_R16);
 				break;
 			case D3DFMT_G16R16F:
-				ret=GL_RG16F;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_RG16F_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RG16F);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RG16F);
 				break;
 			case D3DFMT_G32R32F:
-				ret=GL_RG32F;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_RG32F_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RG32F);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RG32F);
 				break;
 			case D3DFMT_G8R8_G8B8:
-				ret=GL_RG8;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_RG8_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RG8);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RG8);
 				break;
 			case D3DFMT_R5G6B5:
-				ret=GL_RGB565;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_RGB565);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RGB565);
 				break;
 			case D3DFMT_A4R4G4B4:
-				ret=GL_RGBA4;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_RGBA4);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RGBA4);
 				break;
 			case D3DFMT_A1R5G5B5:
-				ret=GL_RGB5_A1;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_RGB5_A1);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RGB5_A1);
 				break;
 			case D3DFMT_A8R8G8B8:
-				ret=GL_RGBA8;
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_BGRA);
 				break;
 			case D3DFMT_A8B8G8R8:
-				ret=GL_RGBA8;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_RGBA);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RGBA);
 				break;
 			case D3DFMT_D16:
 			case D3DFMT_D16_LOCKABLE:
+				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_DEPTH_COMPONENT16);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_DEPTH_COMPONENT16);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_DEPTH_COMPONENT16);
+				break;
 			case D3DFMT_D24X8:
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_DEPTH_COMPONENT24);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_DEPTH_COMPONENT24);
+				break;
 			case D3DFMT_D32:
-			case D3DFMT_D32F_LOCKABLE:
 			case D3DFMT_D32_LOCKABLE:
-				ret=GL_DEPTH_COMPONENT;
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_DEPTH_COMPONENT32);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_DEPTH_COMPONENT32);
+				break;
+			case D3DFMT_D32F_LOCKABLE:
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_DEPTH_COMPONENT32F);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_DEPTH_COMPONENT32F);
 				break;
 			case D3DFMT_D15S1:
+				break;
 			case D3DFMT_D24FS8:
 			case D3DFMT_D24X4S4:
 			case D3DFMT_D24S8:
-				ret=GL_DEPTH_STENCIL;
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_DEPTH24_STENCIL8);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_DEPTH24_STENCIL8);
 				break;
 			case D3DFMT_S8_LOCKABLE:
-				ret=GL_STENCIL_INDEX;
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_DEPTH32F_STENCIL8);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_DEPTH32F_STENCIL8);
 				break;
 			case D3DFMT_DXT1:
 				ret=GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;

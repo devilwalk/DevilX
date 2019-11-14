@@ -15,92 +15,141 @@ namespace NSDevilX
 		class CGLGlobal
 		{
 		public:
-			enum EProfile
+			enum EProfileCore
 			{
-				EProfile_Core_GL3,
-				EProfile_Core_GL3_1,
-				EProfile_Core_GL3_2,
-				EProfile_Core_GL3_3,
-				EProfile_Core_GL4,
-				EProfile_Core_GL4_1,
-				EProfile_Core_GL4_2,
-				EProfile_Core_GL4_3,
-				EProfile_Core_GL4_4,
-				EProfile_Core_GL4_5,
-				EProfile_Core_GL4_6,
-				EProfile_Ext_GL3,
-				EProfile_Ext_GL3_1,
-				EProfile_Ext_GL3_2,
-				EProfile_Ext_GL3_3,
-				EProfile_Ext_GL4,
-				EProfile_Ext_GL4_1,
-				EProfile_Ext_GL4_2,
-				EProfile_Ext_GL4_3,
-				EProfile_Ext_GL4_4,
-				EProfile_Ext_GL4_5,
-				EProfile_Ext_GL4_6,
-				EProfile_Count
+				EProfileCore_3,
+				EProfileCore_3_1,
+				EProfileCore_3_2,
+				EProfileCore_3_3,
+				EProfileCore_4,
+				EProfileCore_4_1,
+				EProfileCore_4_2,
+				EProfileCore_4_3,
+				EProfileCore_4_4,
+				EProfileCore_4_5,
+				EProfileCore_4_6,
+				EProfileCore_Count,
 			};
-			enum EESProfile
+			enum EProfileExt
 			{
-				EESProfile_Core_GLES2,
-				EESProfile_Core_GLES3,
-				EESProfile_Core_GLES3_1,
-				EESProfile_Core_GLES3_2,
-				EESProfile_Ext_GLES2,
-				EESProfile_Ext_GLES3,
-				EESProfile_Ext_GLES3_1,
-				EESProfile_Ext_GLES3_2,
-				EESProfile_Count
+				EProfileExt_3,
+				EProfileExt_3_1,
+				EProfileExt_3_2,
+				EProfileExt_3_3,
+				EProfileExt_4,
+				EProfileExt_4_1,
+				EProfileExt_4_2,
+				EProfileExt_4_3,
+				EProfileExt_4_4,
+				EProfileExt_4_5,
+				EProfileExt_4_6,
+				EProfileExt_Count
 			};
-			static EProfile msProfile;
-			static EESProfile msESProfile;
+			enum EProfileESCore
+			{
+				EProfileESCore_2,
+				EProfileESCore_3,
+				EProfileESCore_3_1,
+				EProfileESCore_3_2,
+				EProfileESCore_Count,
+			};
+			enum EProfileESExt
+			{
+				EProfileESExt_2,
+				EProfileESExt_3,
+				EProfileESExt_3_1,
+				EProfileESExt_3_2,
+				EProfileESExt_Count,
+			};
+			static EProfileCore msProfileCore;
+			static EProfileESCore msProfileESCore;
 		};
 		template<typename T>
 		struct TGLCompatible
 		{
 			union
 			{
-				T mProfiles[CGLGlobal::EProfile_Count];
-				T mESProfiles[CGLGlobal::EESProfile_Count];
+				T mProfileCores[CGLGlobal::EProfileCore_Count];
+				T mProfileESCores[CGLGlobal::EProfileESCore_Count];
+			};
+			union
+			{
+				T mProfileExts[CGLGlobal::EProfileESCore_Count];
+				T mProfileESExts[CGLGlobal::EProfileESExt_Count];
 			};
 
-			T bestProfile(CGLGlobal::EProfile currentProfile)const
+			T bestProfile(CGLGlobal::EProfileCore currentProfile)const
 			{
 				Int32 test=currentProfile;
-				while(mProfiles[test]==T(0))
+				while((test>=0)&&(mProfileCores[test]==T(0)))
 				{
 					--test;
 				}
-				return mProfiles[test];
+				if(test<0)
+				{
+					return bestProfile(*reinterpret_cast<CGLGlobal::EProfileExt*>(&currentProfile));
+				}
+				return mProfileCores[test];
 			}
-			T bestProfile(CGLGlobal::EESProfile currentProfile)const
+			T bestProfile(CGLGlobal::EProfileESCore currentProfile)const
 			{
 				Int32 test=currentProfile;
-				while(mESProfiles[test]==T(0))
+				while((test>=0)&&(mProfileESCores[test]==T(0)))
 				{
 					--test;
 				}
-				return mESProfiles[test];
+				if(test<0)
+				{
+					return bestProfile(*reinterpret_cast<CGLGlobal::EProfileESExt*>(&currentProfile));
+				}
+				return mProfileESCores[test];
 			}
-			Void setProfile(CGLGlobal::EProfile profile,T v)
+			T bestProfile(CGLGlobal::EProfileExt currentProfile)const
 			{
-				if(CGLGlobal::msProfile==CGLGlobal::EProfile_Count)
-					return;
-				mProfiles[profile]=v;
+				Int32 test=currentProfile;
+				while((test>=0)&&(mProfileExts[test]==T(0)))
+				{
+					--test;
+				}
+				if(test<0)
+				{
+					return T(0);
+				}
+				return mProfileExts[test];
 			}
-			Void setProfile(CGLGlobal::EESProfile profile,T v)
+			T bestProfile(CGLGlobal::EProfileESExt currentProfile)const
 			{
-				if(CGLGlobal::msESProfile==CGLGlobal::EESProfile_Count)
+				Int32 test=currentProfile;
+				while((test>=0)&&(mProfileESExts[test]==T(0)))
+				{
+					--test;
+				}
+				if(test<0)
+				{
+					return T(0);
+				}
+				return mProfileESExts[test];
+			}
+			Void setProfile(CGLGlobal::EProfileCore profile,T coreValue,T extValue=0)
+			{
+				if(CGLGlobal::msProfileCore==CGLGlobal::EProfileCore_Count)
 					return;
-				mESProfiles[profile]=v;
+				mProfileCores[profile]=coreValue;
+				mProfileExts[profile]=extValue;
+			}
+			Void setProfile(CGLGlobal::EProfileESCore profile,T coreValue,T extValue=0)
+			{
+				if(CGLGlobal::msProfileESCore==CGLGlobal::EProfileESCore_Count)
+					return;
+				mProfileESCores[profile]=coreValue;
+				mProfileESExts[profile]=extValue;
 			}
 			operator T()const
 			{
-				if(CGLGlobal::msProfile==CGLGlobal::EProfile_Count)
-					return bestProfile(CGLGlobal::msESProfile);
+				if(CGLGlobal::msProfileCore==CGLGlobal::EProfileCore_Count)
+					return bestProfile(CGLGlobal::msProfileESCore);
 				else
-					return bestProfile(CGLGlobal::msProfile);
+					return bestProfile(CGLGlobal::msProfileCore);
 			}
 		};
 	}
