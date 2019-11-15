@@ -11,5 +11,5 @@ NSDevilX::NSGraphicsAPI::CGLObject::~CGLObject()
 {
 }
 
-NSDevilX::NSGraphicsAPI::CGLGlobal::EProfile NSDevilX::NSGraphicsAPI::CGLGlobal::msProfile=EProfile_Count;
-NSDevilX::NSGraphicsAPI::CGLGlobal::EESProfile NSDevilX::NSGraphicsAPI::CGLGlobal::msESProfile=EESProfile_Count;
+NSDevilX::NSGraphicsAPI::CGLGlobal::EProfileCore NSDevilX::NSGraphicsAPI::CGLGlobal::msProfileCore=EProfileCore_Count;
+NSDevilX::NSGraphicsAPI::CGLGlobal::EProfileESCore NSDevilX::NSGraphicsAPI::CGLGlobal::msProfileESCore=EProfileESCore_Count;

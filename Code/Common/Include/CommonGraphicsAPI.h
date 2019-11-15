@@ -212,22 +212,22 @@ namespace NSDevilX
 				ret.setProfile(CGLGlobal::EProfileCore_3,GL_R32F);
 				break;
 			case D3DFMT_G16R16:
-				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_R16_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_R16_EXT);
 				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_R16);
 				ret.setProfile(CGLGlobal::EProfileCore_3,GL_R16);
 				break;
 			case D3DFMT_G16R16F:
-				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_RG16F_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RG16F_EXT);
 				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RG16F);
 				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RG16F);
 				break;
 			case D3DFMT_G32R32F:
-				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_RG32F_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RG32F_EXT);
 				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RG32F);
 				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RG32F);
 				break;
 			case D3DFMT_G8R8_G8B8:
-				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_RG8_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RG8_EXT);
 				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RG8);
 				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RG8);
 				break;
@@ -244,11 +244,10 @@ namespace NSDevilX
 				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RGB5_A1);
 				break;
 			case D3DFMT_A8R8G8B8:
-				ret.setProfile(CGLGlobal::EProfileCore_3,GL_BGRA);
-				break;
 			case D3DFMT_A8B8G8R8:
-				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_RGBA);
-				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RGBA);
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RGBA8_OES);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RGBA8);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RGBA8);
 				break;
 			case D3DFMT_D16:
 			case D3DFMT_D16_LOCKABLE:
@@ -326,15 +325,15 @@ namespace NSDevilX
 				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_RGB);
 				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RGB);
 				break;
-			case D3DFMT_A4R4G4B4:
 			case D3DFMT_A1R5G5B5:
+			case D3DFMT_A4R4G4B4:
+			case D3DFMT_A8R8G8B8:
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_BGRA_EXT);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_BGRA);
+				break;
 			case D3DFMT_A8B8G8R8:
 				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_RGBA);
 				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RGBA);
-				break;
-			case D3DFMT_A8R8G8B8:
-				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_RGBA);
-				ret.setProfile(CGLGlobal::EProfileCore_3,GL_BGRA);
 				break;
 			case D3DFMT_DXT1:
 			case D3DFMT_DXT3:
@@ -369,149 +368,243 @@ namespace NSDevilX
 			switch(fmt)
 			{
 			case DXGI_FORMAT_A8_UNORM:
-				ret=GL_ALPHA8;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_ALPHA);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_ALPHA);
 				break;
 			case DXGI_FORMAT_R1_UNORM:
-				ret=GL_RED;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RED_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RED);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RED);
 				break;
 			case DXGI_FORMAT_R8_TYPELESS:
 			case DXGI_FORMAT_R8_UNORM:
 			case DXGI_FORMAT_R8_SINT:
 			case DXGI_FORMAT_R8_UINT:
-				ret=GL_R8;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_R8_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_R8);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_R8);
 				break;
 			case DXGI_FORMAT_R8_SNORM:
-				ret=GL_R8_SNORM;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_R8_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_R8_SNORM);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_R8_SNORM);
 				break;
 			case DXGI_FORMAT_R24_UNORM_X8_TYPELESS:
-				ret=GL_RED;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_DEPTH_STENCIL_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_DEPTH24_STENCIL8);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_DEPTH24_STENCIL8);
 				break;
 			case DXGI_FORMAT_R8G8_TYPELESS:
 			case DXGI_FORMAT_R8G8_UNORM:
-				ret=GL_RG8;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RG8_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RG8);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RG8);
 				break;
 			case DXGI_FORMAT_R8G8_SNORM:
-				ret=GL_RG8_SNORM;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RG8_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RG8_SNORM);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RG8_SNORM);
 				break;
 			case DXGI_FORMAT_R16G16_TYPELESS:
 			case DXGI_FORMAT_R16G16_UNORM:
-				ret=GL_RG16;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RG16_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RG16);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RG16);
 				break;
 			case DXGI_FORMAT_R16G16_SNORM:
-				ret=GL_RG16_SNORM;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RG16_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RG16_SNORM);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RG16_SNORM);
 				break;
 			case DXGI_FORMAT_R16G16_FLOAT:
-				ret=GL_RG16F;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RG16_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RG16F);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RG16F);
 				break;
 			case DXGI_FORMAT_R24G8_TYPELESS:
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RG_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RG);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RG);
 				break;
 			case DXGI_FORMAT_R32G32_TYPELESS:
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RG_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RG);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RG);
+				break;
 			case DXGI_FORMAT_R32G32_FLOAT:
-				ret=GL_RG32F;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RG_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RG32F);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RG32F);
 				break;
 			case DXGI_FORMAT_R8G8_SINT:
-				ret=GL_RG8I;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RG_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RG8I);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RG8I);
 				break;
 			case DXGI_FORMAT_R8G8_UINT:
-				ret=GL_RG8UI;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RG_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RG8UI);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RG8UI);
 				break;
 			case DXGI_FORMAT_R16G16_SINT:
-				ret=GL_RG16I;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RG_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RG16I);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RG16I);
 				break;
 			case DXGI_FORMAT_R16G16_UINT:
-				ret=GL_RG16UI;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RG_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RG16UI);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RG16UI);
 				break;
 			case DXGI_FORMAT_R32G32_SINT:
-				ret=GL_RG32I;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RG_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RG32I);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RG32I);
 				break;
 			case DXGI_FORMAT_R32G32_UINT:
-				ret=GL_RG32UI;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RG_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RG32UI);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RG32UI);
 				break;
 			case DXGI_FORMAT_R11G11B10_FLOAT:
-				ret=GL_R11F_G11F_B10F;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_R11F_G11F_B10F_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_R11F_G11F_B10F);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_R11F_G11F_B10F);
 				break;
 			case DXGI_FORMAT_R32G32B32_TYPELESS:
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RGB);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RGB);
 			case DXGI_FORMAT_R32G32B32_FLOAT:
-				ret=GL_RGB32F;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RGB32F_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RGB32F);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RGB32F);
 				break;
 			case DXGI_FORMAT_R32G32B32_SINT:
-				ret=GL_RGB32I;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RGB32I_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RGB32I);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RGB32I);
 				break;
 			case DXGI_FORMAT_R32G32B32_UINT:
-				ret=GL_RGB32UI;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RGB32UI_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RGB32UI);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RGB32UI);
 				break;
 			case DXGI_FORMAT_B5G6R5_UNORM:
-				ret=GL_RGB565;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_RGB565);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RGB565);
 				break;
 			case DXGI_FORMAT_B8G8R8X8_TYPELESS:
 			case DXGI_FORMAT_B8G8R8X8_UNORM:
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RGB8_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RGB8);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RGB8);
+				break;
 			case DXGI_FORMAT_B8G8R8X8_UNORM_SRGB:
-				ret=GL_RGB8;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_SRGB8_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_SRGB8);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_SRGB8);
 				break;
 			case DXGI_FORMAT_R8G8B8A8_TYPELESS:
 			case DXGI_FORMAT_R8G8B8A8_UNORM:
-			case DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:
 			case DXGI_FORMAT_B8G8R8A8_TYPELESS:
 			case DXGI_FORMAT_B8G8R8A8_UNORM:
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RGBA8_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RGBA8);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RGBA8);
+				break;
+			case DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:
 			case DXGI_FORMAT_B8G8R8A8_UNORM_SRGB:
-				ret=GL_RGBA8;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_SRGB8_ALPHA8_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_SRGB8_ALPHA8);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_SRGB8_ALPHA8);
 				break;
 			case DXGI_FORMAT_R8G8B8A8_SNORM:
-				ret=GL_RGBA8_SNORM;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RGBA8_OES);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RGBA8_SNORM);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RGBA8_SNORM);
 				break;
 			case DXGI_FORMAT_R10G10B10A2_TYPELESS:
 			case DXGI_FORMAT_R10G10B10A2_UNORM:
-				ret=GL_RGB10_A2;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RGB10_A2_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RGB10_A2);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RGB10_A2);
 				break;
 			case DXGI_FORMAT_R16G16B16A16_TYPELESS:
 			case DXGI_FORMAT_R16G16B16A16_UNORM:
-				ret=GL_RGBA16;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RGBA16_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RGBA16);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RGBA16);
 				break;
 			case DXGI_FORMAT_R16G16B16A16_SNORM:
-				ret=GL_RGBA16_SNORM;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RGBA16_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RGBA16_SNORM);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RGBA16_SNORM);
 				break;
 			case DXGI_FORMAT_R16G16B16A16_FLOAT:
-				ret=GL_RGBA16F;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RGBA16_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RGBA16F);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RGBA16F);
 				break;
 			case DXGI_FORMAT_R32G32B32A32_TYPELESS:
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RGBA);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RGBA);
+				break;
 			case DXGI_FORMAT_R32G32B32A32_FLOAT:
-				ret=GL_RGBA32F;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RGBA32F_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RGBA32F);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RGBA32F);
 				break;
 			case DXGI_FORMAT_R8G8B8A8_SINT:
-				ret=GL_RGBA8I;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RGBA8I_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RGBA8I);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RGBA8I);
 				break;
 			case DXGI_FORMAT_R8G8B8A8_UINT:
-				ret=GL_RGBA8UI;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RGBA8UI_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RGBA8UI);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RGBA8UI);
 				break;
 			case DXGI_FORMAT_R10G10B10A2_UINT:
-				ret=GL_RGB10_A2UI;
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RGB10_A2UI);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RGB10_A2UI);
 				break;
 			case DXGI_FORMAT_R16G16B16A16_SINT:
-				ret=GL_RGBA16I;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RGBA16I_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RGBA16I);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RGBA16I);
 				break;
 			case DXGI_FORMAT_R16G16B16A16_UINT:
-				ret=GL_RGBA16UI;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RGBA16UI_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RGBA16UI);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RGBA16UI);
 				break;
 			case DXGI_FORMAT_R32G32B32A32_SINT:
-				ret=GL_RGBA32I;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RGBA32I_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RGBA32I);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RGBA32I);
 				break;
 			case DXGI_FORMAT_R32G32B32A32_UINT:
-				ret=GL_RGBA32UI;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RGBA32UI_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RGBA32UI);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RGBA32UI);
 				break;
 			case DXGI_FORMAT_BC1_TYPELESS:
 			case DXGI_FORMAT_BC1_UNORM:
 			case DXGI_FORMAT_BC1_UNORM_SRGB:
-				ret=GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_COMPRESSED_RGBA_S3TC_DXT1_EXT);
+				ret.setProfile(CGLGlobal::EProfileCore_3,0,GL_COMPRESSED_RGBA_S3TC_DXT1_EXT);
 				break;
 			case DXGI_FORMAT_BC2_TYPELESS:
 			case DXGI_FORMAT_BC2_UNORM:
 			case DXGI_FORMAT_BC2_UNORM_SRGB:
-				ret=GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_COMPRESSED_RGBA_S3TC_DXT3_EXT);
+				ret.setProfile(CGLGlobal::EProfileCore_3,0,GL_COMPRESSED_RGBA_S3TC_DXT3_EXT);
 				break;
 			case DXGI_FORMAT_BC3_TYPELESS:
 			case DXGI_FORMAT_BC3_UNORM:
 			case DXGI_FORMAT_BC3_UNORM_SRGB:
-				ret=GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_COMPRESSED_RGBA_S3TC_DXT5_EXT);
+				ret.setProfile(CGLGlobal::EProfileCore_3,0,GL_COMPRESSED_RGBA_S3TC_DXT5_EXT);
 				break;
 			}
 			return ret;
@@ -522,18 +615,31 @@ namespace NSDevilX
 			switch(fmt)
 			{
 			case DXGI_FORMAT_A8_UNORM:
-				ret=GL_ALPHA;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_ALPHA);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_ALPHA);
 				break;
 			case DXGI_FORMAT_R1_UNORM:
 			case DXGI_FORMAT_R8_TYPELESS:
 			case DXGI_FORMAT_R8_SNORM:
 			case DXGI_FORMAT_R8_UNORM:
-			case DXGI_FORMAT_R24_UNORM_X8_TYPELESS:
-				ret=GL_RED;
+			case DXGI_FORMAT_R16_TYPELESS:
+			case DXGI_FORMAT_R16_SNORM:
+			case DXGI_FORMAT_R16_UNORM:
+			case DXGI_FORMAT_R32_TYPELESS:
+			case DXGI_FORMAT_R32_FLOAT:
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RED_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RED);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RED);
 				break;
 			case DXGI_FORMAT_R8_SINT:
 			case DXGI_FORMAT_R8_UINT:
-				ret=GL_RED_INTEGER;
+			case DXGI_FORMAT_R16_SINT:
+			case DXGI_FORMAT_R16_UINT:
+			case DXGI_FORMAT_R32_SINT:
+			case DXGI_FORMAT_R32_UINT:
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RED_INTEGER_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RED_INTEGER);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RED_INTEGER);
 				break;
 			case DXGI_FORMAT_R8G8_TYPELESS:
 			case DXGI_FORMAT_R8G8_SNORM:
@@ -545,7 +651,9 @@ namespace NSDevilX
 			case DXGI_FORMAT_R24G8_TYPELESS:
 			case DXGI_FORMAT_R32G32_TYPELESS:
 			case DXGI_FORMAT_R32G32_FLOAT:
-				ret=GL_RG;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RG_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RG);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RG);
 				break;
 			case DXGI_FORMAT_R8G8_SINT:
 			case DXGI_FORMAT_R8G8_UINT:
@@ -553,22 +661,28 @@ namespace NSDevilX
 			case DXGI_FORMAT_R16G16_UINT:
 			case DXGI_FORMAT_R32G32_SINT:
 			case DXGI_FORMAT_R32G32_UINT:
-				ret=GL_RG_INTEGER;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RG_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RG_INTEGER);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RG_INTEGER);
 				break;
 			case DXGI_FORMAT_R11G11B10_FLOAT:
 			case DXGI_FORMAT_R32G32B32_TYPELESS:
 			case DXGI_FORMAT_R32G32B32_FLOAT:
-				ret=GL_RGB;
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RGB);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RGB);
 				break;
 			case DXGI_FORMAT_R32G32B32_SINT:
 			case DXGI_FORMAT_R32G32B32_UINT:
-				ret=GL_RGB_INTEGER;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RGB_INTEGER_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RGB_INTEGER);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RGB_INTEGER);
 				break;
 			case DXGI_FORMAT_B5G6R5_UNORM:
 			case DXGI_FORMAT_B8G8R8X8_TYPELESS:
 			case DXGI_FORMAT_B8G8R8X8_UNORM:
 			case DXGI_FORMAT_B8G8R8X8_UNORM_SRGB:
-				ret=GL_BGR;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_BGR_EXT);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_BGR);
 				break;
 			case DXGI_FORMAT_R8G8B8A8_TYPELESS:
 			case DXGI_FORMAT_R8G8B8A8_SNORM:
@@ -582,6 +696,10 @@ namespace NSDevilX
 			case DXGI_FORMAT_R16G16B16A16_FLOAT:
 			case DXGI_FORMAT_R32G32B32A32_TYPELESS:
 			case DXGI_FORMAT_R32G32B32A32_FLOAT:
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RGBA);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RGBA);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RGBA);
+				break;
 			case DXGI_FORMAT_BC1_TYPELESS:
 			case DXGI_FORMAT_BC1_UNORM:
 			case DXGI_FORMAT_BC1_UNORM_SRGB:
@@ -591,7 +709,6 @@ namespace NSDevilX
 			case DXGI_FORMAT_BC3_TYPELESS:
 			case DXGI_FORMAT_BC3_UNORM:
 			case DXGI_FORMAT_BC3_UNORM_SRGB:
-				ret=GL_RGBA;
 				break;
 			case DXGI_FORMAT_R8G8B8A8_SINT:
 			case DXGI_FORMAT_R8G8B8A8_UINT:
@@ -600,12 +717,21 @@ namespace NSDevilX
 			case DXGI_FORMAT_R16G16B16A16_UINT:
 			case DXGI_FORMAT_R32G32B32A32_SINT:
 			case DXGI_FORMAT_R32G32B32A32_UINT:
-				ret=GL_RGBA_INTEGER;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_RGBA_INTEGER_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_RGBA_INTEGER);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_RGBA_INTEGER);
 				break;
 			case DXGI_FORMAT_B8G8R8A8_TYPELESS:
 			case DXGI_FORMAT_B8G8R8A8_UNORM:
 			case DXGI_FORMAT_B8G8R8A8_UNORM_SRGB:
-				ret=GL_BGRA;
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_BGRA_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_BGRA_EXT);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_BGRA);
+				break;
+			case DXGI_FORMAT_R24_UNORM_X8_TYPELESS:
+				ret.setProfile(CGLGlobal::EProfileESCore_2,0,GL_DEPTH_STENCIL_EXT);
+				ret.setProfile(CGLGlobal::EProfileESCore_3,GL_DEPTH_STENCIL);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_DEPTH_STENCIL);
 				break;
 			}
 			return ret;
