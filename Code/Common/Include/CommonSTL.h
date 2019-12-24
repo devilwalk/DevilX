@@ -1,4 +1,5 @@
 #pragma once
+#include "CommonGroup.h"
 namespace NSDevilX
 {
 	template<typename T,class TAllocator=std::allocator<T> >

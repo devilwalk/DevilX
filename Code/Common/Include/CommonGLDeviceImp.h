@@ -11,15 +11,8 @@ namespace NSDevilX
 			CGLDeviceImp();
 			virtual ~CGLDeviceImp();
 
-			// 通过 IDevice 继承
-			virtual Bool createVertexBuffer(UINT length,DWORD usage,DWORD fvf,D3DPOOL pool,OUT IBuffer* buffer) override;
-			virtual Bool createIndexBuffer(UINT length,DWORD usage,D3DFORMAT format,D3DPOOL pool,OUT IBuffer* buffer) override;
-			virtual Bool createBuffer(const D3D10_BUFFER_DESC& desc,const D3D10_SUBRESOURCE_DATA* initializeData,OUT IBuffer* buffer) override;
-			virtual Bool createBuffer(const D3D11_BUFFER_DESC& desc,const D3D11_SUBRESOURCE_DATA* initializeData,OUT IBuffer* buffer) override;
-
-			// 通过 IDevice 继承
-			virtual Bool createBufferData(GLenum target,GLsizeiptr size,ConstVoidPtr initializeData,GLenum usage,OUT IBuffer* buffer) override;
-			virtual Bool createBufferStorage(GLenum target,GLsizeiptr size,ConstVoidPtr initializeData,GLbitfield flags,OUT IBuffer* buffer) override;
+			virtual Bool createBufferPool(const TBufferPoolCreateInfos& createInfo,OUT IBufferPool* pool) override;
+			virtual Bool createBuffer(const TBufferCreateInfos& createInfo,OUT IBuffer* buffer) override;
 			virtual Bool createTexture(UINT width,UINT height,UINT levels,DWORD usage,D3DFORMAT format,D3DPOOL pool,OUT ITexture* texture) override;
 			virtual Bool createCubeTexture(UINT edageLength,UINT levels,DWORD usage,D3DFORMAT format,D3DPOOL pool,OUT ITexture* texture) override;
 			virtual Bool createVolumeTexture(UINT width,UINT height,UINT depth,UINT levels,DWORD usage,D3DFORMAT format,D3DPOOL pool,OUT ITexture* texture) override;
@@ -95,6 +88,8 @@ namespace NSDevilX
 			virtual Bool createShaderResourceView(ITexture* resource,const D3D10_SHADER_RESOURCE_VIEW_DESC1* desc,OUT IShaderResourceView* view) override;
 			virtual Bool createShaderResourceView(IBuffer* resource,const D3D11_SHADER_RESOURCE_VIEW_DESC* desc,OUT IShaderResourceView* view) override;
 			virtual Bool createShaderResourceView(ITexture* resource,const D3D11_SHADER_RESOURCE_VIEW_DESC* desc,OUT IShaderResourceView* view) override;
+		protected:
+			virtual Bool _createBuffer(GLenum target,GLsizeiptr size,ConstVoidPtr initializeData,const TGLCompatible<GLenum>& usage,GLbitfield flags,OUT CGLBufferImp* buffer);
 		};
 
 		class CGLES2GraphicsDeviceImp
@@ -103,14 +98,6 @@ namespace NSDevilX
 		public:
 			CGLES2GraphicsDeviceImp();
 			virtual ~CGLES2GraphicsDeviceImp();
-
-			virtual Bool createBufferStorage(GLenum target,GLsizeiptr size,ConstVoidPtr initializeData,GLbitfield flags,OUT IBuffer* buffer) override;
-			virtual Bool createTexture1D(GLenum target,GLint level,GLint internalformat,GLsizei width,GLint border,GLenum format,GLenum type,ConstVoidPtr initializeData,OUT ITexture* texture) override;
-			virtual Bool createTexture3D(GLenum target,GLint level,GLint internalformat,GLsizei width,GLsizei height,GLsizei depth,GLint border,GLenum format,GLenum type,ConstVoidPtr initializeData,OUT ITexture* texture) override;
-			virtual Bool createTexture2DMSAA(GLenum target,GLsizei samplers,GLenum internalformat,GLsizei width,GLsizei height,GLboolean fixedsamplelocations,OUT ITexture* texture) override;
-			virtual Bool createTexture3DMSAA(GLenum target,GLsizei samplers,GLenum internalformat,GLsizei width,GLsizei height,GLsizei depth,GLboolean fixedsamplelocations,OUT ITexture* texture) override;
-			virtual Bool createCompressedTexture1D(GLenum target,GLint level,GLint internalformat,GLsizei width,GLint border,GLsizei imageSize,ConstVoidPtr initializeData,OUT ITexture* texture) override;
-			virtual Bool createCompressedTexture3D(GLenum target,GLint level,GLint internalformat,GLsizei width,GLsizei height,GLsizei depth,GLint border,GLsizei imageSize,ConstVoidPtr initializeData,OUT ITexture* texture) override;
 		};
 
 		class CGLES3GraphicsDeviceImp

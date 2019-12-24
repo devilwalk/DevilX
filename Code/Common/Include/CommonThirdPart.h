@@ -32,5 +32,6 @@
 #endif
 #define EGLAPI
 #include "EGL/egl.h"
+#include "vulkan/vulkan.hpp"
 #include "lua.h"
 #include "noise.h"

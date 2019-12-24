@@ -234,6 +234,15 @@
     <ClInclude Include="..\..\..\Code\Common\Include\CommonGraphicsAPI.h">
       <Filter>头文件\GraphicsAPI</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonGLFrameBufferObjectImp.h">
+      <Filter>头文件\GraphicsAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonGroup.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGroup.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Common\Source\CommonColour.cpp">
@@ -297,6 +306,9 @@
       <Filter>源文件\GraphicsAPI</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Common\Source\CommonGLShaderImp.cpp">
+      <Filter>源文件\GraphicsAPI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Common\Source\CommonFrameBufferObjectImp.cpp">
       <Filter>源文件\GraphicsAPI</Filter>
     </ClCompile>
   </ItemGroup>

@@ -27,34 +27,105 @@ namespace NSDevilX
 			}
 			return ret;
 		}
-		static D3D10_USAGE mappingD3D10(D3DPOOL pool,DWORD usage)
+		static D3D11_USAGE mappingD3D11(D3DPOOL pool,DWORD usage)
 		{
-			D3D10_USAGE ret=D3D10_USAGE_DEFAULT;
+			D3D11_USAGE ret=D3D11_USAGE_DEFAULT;
 			switch(pool)
 			{
 			case D3DPOOL_DEFAULT:
 				if(usage&D3DUSAGE_DYNAMIC)
 				{
-					ret=D3D10_USAGE_DYNAMIC;
+					ret=D3D11_USAGE_DYNAMIC;
 				}
 				else
 				{
-					ret=D3D10_USAGE_IMMUTABLE;
+					ret=D3D11_USAGE_IMMUTABLE;
 				}
 				break;
-			case D3DPOOL_MANAGED:ret=D3D10_USAGE_DEFAULT;break;
+			case D3DPOOL_MANAGED:ret=D3D11_USAGE_DEFAULT;break;
 			case D3DPOOL_SYSTEMMEM:
 			case D3DPOOL_SCRATCH:
-				ret=D3D10_USAGE_STAGING;break;
+				ret=D3D11_USAGE_STAGING;break;
 			}
 			return ret;
 		}
-		static D3D11_USAGE mappingD3D11(D3DPOOL pool,DWORD usage)
+		static D3D11_USAGE mappingD3D11(D3D10_USAGE usage)
 		{
-			auto ret=mappingD3D10(pool,usage);
-			return *reinterpret_cast<D3D11_USAGE*>(&ret);
+			return *reinterpret_cast<D3D11_USAGE*>(&usage);
 		}
-		static TGLCompatible<GLenum> mappingGL(D3DPOOL pool,DWORD usage)
+		static D3D11_USAGE mappingD3D11(D3D12_HEAP_PROPERTIES properties)
+		{
+			D3D11_USAGE ret=D3D11_USAGE_DEFAULT;
+			if(properties.Type==D3D12_HEAP_TYPE_CUSTOM)
+			{
+				switch(properties.MemoryPoolPreference)
+				{
+				case D3D12_MEMORY_POOL_L0:
+					ret=D3D11_USAGE_DYNAMIC;
+					break;
+				case D3D12_MEMORY_POOL_L1:
+					switch(properties.CPUPageProperty)
+					{
+					case D3D12_CPU_PAGE_PROPERTY_NOT_AVAILABLE:
+						ret=D3D11_USAGE_DEFAULT;
+						break;
+					case D3D12_CPU_PAGE_PROPERTY_WRITE_COMBINE:
+						ret=D3D11_USAGE_DYNAMIC;
+						break;
+					case D3D12_CPU_PAGE_PROPERTY_WRITE_BACK:
+						ret=D3D11_USAGE_STAGING;
+						break;
+					}
+					break;
+				}
+			}
+			else
+			{
+				switch(properties.Type)
+				{
+				case D3D12_HEAP_TYPE_DEFAULT:
+					ret=D3D11_USAGE_DEFAULT;
+					break;
+				case D3D12_HEAP_TYPE_UPLOAD:
+					ret=D3D11_USAGE_DYNAMIC;
+					break;
+				case D3D12_HEAP_TYPE_READBACK:
+					ret=D3D11_USAGE_STAGING;
+					break;
+				}
+			}
+			return ret;
+		}
+		static D3D11_USAGE mappingD3D11(GLenum usage)
+		{
+			D3D11_USAGE ret=D3D11_USAGE_DEFAULT;
+			switch(usage)
+			{
+			case GL_DYNAMIC_DRAW:
+			case GL_DYNAMIC_READ:
+				ret=D3D11_USAGE_DYNAMIC;
+				break;
+			case GL_STREAM_DRAW:
+			case GL_STREAM_READ:
+				ret=D3D11_USAGE_STAGING;
+				break;
+			}
+			return ret;
+		}
+		static D3D11_USAGE mappingD3D11FromFlags(GLbitfield flags)
+		{
+			D3D11_USAGE ret=D3D11_USAGE_DEFAULT;
+			if((GL_MAP_WRITE_BIT&flags)||(GL_MAP_READ_BIT&flags)||(GL_MAP_WRITE_BIT_EXT&flags)||(GL_MAP_READ_BIT_EXT&flags))
+			{
+				ret=D3D11_USAGE_DYNAMIC;
+			}
+			else if(GL_CLIENT_STORAGE_BIT&flags)
+			{
+				ret=D3D11_USAGE_STAGING;
+			}
+			return ret;
+		}
+		static TGLCompatible<GLenum> mappingGLUsage(D3DPOOL pool,DWORD usage)
 		{
 			TGLCompatible<GLenum> ret;
 			if((D3DPOOL_DEFAULT==pool)&&(usage&D3DUSAGE_DYNAMIC))
@@ -62,7 +133,7 @@ namespace NSDevilX
 				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_DYNAMIC_DRAW);
 				ret.setProfile(CGLGlobal::EProfileCore_3,GL_DYNAMIC_DRAW);
 			}
-			else if(D3DPOOL_DEFAULT==pool)
+			else if((D3DPOOL_DEFAULT==pool)||(D3DPOOL_MANAGED==pool))
 			{
 				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_STATIC_DRAW);
 				ret.setProfile(CGLGlobal::EProfileCore_3,GL_STATIC_DRAW);
@@ -74,15 +145,15 @@ namespace NSDevilX
 			}
 			return ret;
 		}
-		static TGLCompatible<GLenum> mappingGL(D3D10_USAGE usage,UINT cpuAccessFlags)
+		static TGLCompatible<GLenum> mappingGLUsage(const D3D10_BUFFER_DESC& desc)
 		{
 			TGLCompatible<GLenum> ret;
-			if(D3D10_USAGE_DYNAMIC==usage)
+			if(D3D10_USAGE_DYNAMIC==desc.Usage)
 			{
 				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_DYNAMIC_DRAW);
 				ret.setProfile(CGLGlobal::EProfileCore_3,GL_DYNAMIC_DRAW);
 			}
-			else if(D3DPOOL_DEFAULT==usage)
+			else if(D3DPOOL_DEFAULT==desc.Usage)
 			{
 				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_STATIC_DRAW);
 				ret.setProfile(CGLGlobal::EProfileCore_3,GL_STATIC_DRAW);
@@ -94,9 +165,201 @@ namespace NSDevilX
 			}
 			return ret;
 		}
-		static TGLCompatible<GLenum> mappingGL(D3D11_USAGE usage,UINT cpuAccessFlags)
+		static TGLCompatible<GLenum> mappingGLUsage(const D3D11_BUFFER_DESC& desc)
 		{
-			return mappingGL(*reinterpret_cast<D3D10_USAGE*>(&usage),cpuAccessFlags);
+			return mappingGLUsage(*reinterpret_cast<const D3D10_BUFFER_DESC*>(&desc));
+		}
+		static TGLCompatible<GLenum> mappingGLUsage(D3D12_HEAP_PROPERTIES properties)
+		{
+			TGLCompatible<GLenum> ret;
+			if(properties.Type==D3D12_HEAP_TYPE_CUSTOM)
+			{
+				switch(properties.MemoryPoolPreference)
+				{
+				case D3D12_MEMORY_POOL_L0:
+					ret.setProfile(CGLGlobal::EProfileESCore_2,GL_STREAM_DRAW);
+					ret.setProfile(CGLGlobal::EProfileCore_3,GL_STREAM_DRAW);
+					break;
+				case D3D12_MEMORY_POOL_L1:
+					ret.setProfile(CGLGlobal::EProfileESCore_2,GL_STATIC_DRAW);
+					ret.setProfile(CGLGlobal::EProfileCore_3,GL_STATIC_DRAW);
+					break;
+				}
+			}
+			else
+			{
+				switch(properties.Type)
+				{
+				case D3D12_HEAP_TYPE_DEFAULT:
+					ret.setProfile(CGLGlobal::EProfileESCore_2,GL_STATIC_DRAW);
+					ret.setProfile(CGLGlobal::EProfileCore_3,GL_STATIC_DRAW);
+					break;
+				case D3D12_HEAP_TYPE_UPLOAD:
+					ret.setProfile(CGLGlobal::EProfileESCore_2,GL_DYNAMIC_DRAW);
+					ret.setProfile(CGLGlobal::EProfileCore_3,GL_DYNAMIC_DRAW);
+					break;
+				case D3D12_HEAP_TYPE_READBACK:
+					ret.setProfile(CGLGlobal::EProfileESCore_2,GL_STREAM_DRAW);
+					ret.setProfile(CGLGlobal::EProfileESCore_3,GL_STREAM_READ);
+					ret.setProfile(CGLGlobal::EProfileCore_3,GL_STREAM_READ);
+					break;
+				}
+			}
+			return ret;
+		}
+		static TGLCompatible<GLenum> mappingGLUsage(GLenum usage)
+		{
+			TGLCompatible<GLenum> ret;
+			ret.setProfile(CGLGlobal::EProfileESCore_3,usage);
+			ret.setProfile(CGLGlobal::EProfileCore_3,usage);
+			switch(usage)
+			{
+			case GL_STATIC_DRAW:
+			case GL_STATIC_READ:
+			case GL_STATIC_COPY:
+			case GL_DYNAMIC_COPY:
+			case GL_STREAM_COPY:
+				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_STATIC_DRAW);
+				break;
+			case GL_DYNAMIC_DRAW:
+			case GL_DYNAMIC_READ:
+				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_DYNAMIC_DRAW);
+				break;
+			case GL_STREAM_DRAW:
+			case GL_STREAM_READ:
+				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_STREAM_DRAW);
+				break;
+			}
+			return ret;
+		}
+		static TGLCompatible<GLenum> mappingGLUsageFromFlags(GLbitfield flags)
+		{
+			TGLCompatible<GLenum> ret;
+			if((GL_MAP_WRITE_BIT&flags)||(GL_MAP_READ_BIT&flags)||(GL_MAP_WRITE_BIT_EXT&flags)||(GL_MAP_READ_BIT_EXT&flags))
+			{
+				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_DYNAMIC_DRAW);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_DYNAMIC_DRAW);
+			}
+			else if((GL_CLIENT_STORAGE_BIT&flags)||(GL_CLIENT_STORAGE_BIT_EXT&flags))
+			{
+				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_STREAM_DRAW);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_STREAM_DRAW);
+			}
+			else
+			{
+				ret.setProfile(CGLGlobal::EProfileESCore_2,GL_STATIC_DRAW);
+				ret.setProfile(CGLGlobal::EProfileCore_3,GL_STATIC_DRAW);
+			}
+			return ret;
+		}
+		static GLbitfield mappingGLFlags(D3DPOOL pool,DWORD usage)
+		{
+			GLbitfield ret=0;
+			if((D3DPOOL_DEFAULT==pool)&&(usage&D3DUSAGE_DYNAMIC))
+			{
+				ret=GL_MAP_WRITE_BIT;
+				if(!(usage&D3DUSAGE_WRITEONLY))
+				{
+					ret|=GL_MAP_READ_BIT;
+				}
+			}
+			else if((D3DPOOL_DEFAULT==pool)||(D3DPOOL_MANAGED==pool))
+			{
+				ret=GL_DYNAMIC_STORAGE_BIT;
+			}
+			else
+			{
+				ret=GL_CLIENT_STORAGE_BIT;
+			}
+			return ret;
+		}
+		static GLbitfield mappingGLFlags(const D3D10_BUFFER_DESC& desc)
+		{
+			GLbitfield ret=0;
+			if(desc.Usage!=D3D10_USAGE_IMMUTABLE)
+			{
+				ret|=GL_DYNAMIC_STORAGE_BIT;
+			}
+			if(desc.Usage==D3D10_USAGE_STAGING)
+			{
+				ret|=GL_CLIENT_STORAGE_BIT;
+			}
+			if(desc.Usage==D3D10_USAGE_DYNAMIC)
+			{
+				if(desc.CPUAccessFlags&D3D10_CPU_ACCESS_READ)
+				{
+					ret|=GL_MAP_READ_BIT;
+				}
+				if(desc.CPUAccessFlags&D3D10_CPU_ACCESS_WRITE)
+				{
+					ret|=GL_MAP_WRITE_BIT;
+				}
+			}
+			return ret;
+		}
+		static GLbitfield mappingGLFlags(const D3D11_BUFFER_DESC& desc)
+		{
+			return mappingGLFlags(*reinterpret_cast<const D3D10_BUFFER_DESC*>(&desc));
+		}
+		static GLbitfield mappingGLFlags(const D3D12_HEAP_PROPERTIES& properties)
+		{
+			GLbitfield ret=0;
+			if(properties.Type==D3D12_HEAP_TYPE_CUSTOM)
+			{
+				switch(properties.MemoryPoolPreference)
+				{
+				case D3D12_MEMORY_POOL_L0:
+					ret|=GL_CLIENT_STORAGE_BIT;
+					break;
+				case D3D12_MEMORY_POOL_L1:
+					break;
+				}
+				switch(properties.CPUPageProperty)
+				{
+				case D3D12_CPU_PAGE_PROPERTY_NOT_AVAILABLE:
+					break;
+				case D3D12_CPU_PAGE_PROPERTY_WRITE_COMBINE:
+					ret|=GL_DYNAMIC_STORAGE_BIT|GL_MAP_WRITE_BIT;
+					break;
+				case D3D12_CPU_PAGE_PROPERTY_WRITE_BACK:
+					ret|=GL_CLIENT_STORAGE_BIT;
+					break;
+				}
+			}
+			else
+			{
+				switch(properties.Type)
+				{
+				case D3D12_HEAP_TYPE_DEFAULT:
+					ret=GL_DYNAMIC_STORAGE_BIT;
+					break;
+				case D3D12_HEAP_TYPE_UPLOAD:
+					ret=GL_DYNAMIC_STORAGE_BIT|GL_MAP_WRITE_BIT;
+					break;
+				case D3D12_HEAP_TYPE_READBACK:
+					ret=GL_CLIENT_STORAGE_BIT;
+					break;
+				}
+			}
+			return ret;
+		}
+		static GLbitfield mappingGLFlags(GLenum usage)
+		{
+			GLbitfield ret=GL_DYNAMIC_STORAGE_BIT;
+			switch(usage)
+			{
+			case GL_DYNAMIC_DRAW:
+				ret|=GL_MAP_WRITE_BIT;
+				break;
+			case GL_DYNAMIC_READ:
+				ret|=GL_MAP_READ_BIT;
+				break;
+			case GL_STREAM_DRAW:
+			case GL_STREAM_READ:
+				ret|=GL_CLIENT_STORAGE_BIT;
+				break;
+			}
+			return ret;
 		}
 		static Void mapping(const D3D10_BUFFER_DESC& src,OUT D3D11_BUFFER_DESC& dest)
 		{
@@ -765,7 +1028,7 @@ namespace NSDevilX
 				return 0;
 			}
 		}
-		static GLint getComponentCount(DXGI_FORMAT format)
+		static UInt32 getComponentCount(DXGI_FORMAT format)
 		{
 			switch(format)
 			{
@@ -890,6 +1153,25 @@ namespace NSDevilX
 				assert(0);
 				return 0;
 			}
+		}
+		static UInt32 getComponentSizeInBytes(GLenum componentType)
+		{
+			UInt32 ret=0;
+			switch(componentType)
+			{
+			case GL_BYTE:
+				ret=1;
+				break;
+			case GL_HALF_FLOAT:
+			case GL_SHORT:
+				ret=2;
+				break;
+			case GL_INT:
+			case GL_FLOAT:
+				ret=4;
+				break;
+			}
+			return ret;
 		}
 		static GLboolean needNormalize(D3DDECLTYPE format)
 		{

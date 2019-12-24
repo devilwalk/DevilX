@@ -35,11 +35,13 @@
     <ClInclude Include="..\..\..\Code\Common\Include\CommonGL.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonGLBufferImp.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonGLDeviceImp.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonGLFrameBufferObjectImp.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonGLInputLayoutImp.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonGLPipelineStateImp.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonGLShaderImp.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonGLTextureImp.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonGraphicsAPI.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonGroup.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonMath.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonMatrix.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonMessageMode.h" />
@@ -86,6 +88,7 @@
     <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsAPITexture.h" />
     <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsAPIVertexArrayObject.h" />
     <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGraphicsAPIUnorderedAccessView.h" />
+    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGroup.h" />
     <ClInclude Include="..\..\..\Code\Common\Interface\ICommonUserDataContainer.h" />
     <ClInclude Include="..\..\..\Code\Common\Source\Precompiler.h" />
   </ItemGroup>
@@ -96,6 +99,7 @@
     <ClCompile Include="..\..\..\Code\Common\Source\CommonCommandQueue.cpp" />
     <ClCompile Include="..\..\..\Code\Common\Source\CommonD3D11BufferImp.cpp" />
     <ClCompile Include="..\..\..\Code\Common\Source\CommonD3D11DeviceImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Common\Source\CommonFrameBufferObjectImp.cpp" />
     <ClCompile Include="..\..\..\Code\Common\Source\CommonGL.cpp" />
     <ClCompile Include="..\..\..\Code\Common\Source\CommonGLBufferImp.cpp" />
     <ClCompile Include="..\..\..\Code\Common\Source\CommonGLDeviceImp.cpp" />

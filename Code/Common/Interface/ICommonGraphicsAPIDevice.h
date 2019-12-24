@@ -20,27 +20,8 @@ namespace NSDevilX
 			{
 			}
 		public:
-			//d3d9 style
-			virtual Bool createVertexBuffer(
-				UINT                   length,
-				DWORD                  usage,
-				DWORD                  fvf,
-				D3DPOOL                pool,
-				OUT IBuffer* buffer
-			)=0;
-			virtual Bool createIndexBuffer(
-				UINT                  length,
-				DWORD                 usage,
-				D3DFORMAT             format,
-				D3DPOOL               pool,
-				OUT IBuffer* buffer
-			)=0;
-			//d3d10/11 style
-			virtual Bool createBuffer(const D3D10_BUFFER_DESC& desc,const D3D10_SUBRESOURCE_DATA* initializeData,OUT IBuffer* buffer)=0;
-			virtual Bool createBuffer(const D3D11_BUFFER_DESC& desc,const D3D11_SUBRESOURCE_DATA* initializeData,OUT IBuffer* buffer)=0;
-			//gl style
-			virtual Bool createBufferData(GLenum target,GLsizeiptr size,ConstVoidPtr initializeData,GLenum usage,OUT IBuffer* buffer)=0;
-			virtual Bool createBufferStorage(GLenum target,GLsizeiptr size,ConstVoidPtr initializeData,GLbitfield flags,OUT IBuffer* buffer)=0;
+			virtual Bool createBufferPool(const TBufferPoolCreateInfos& createInfo,OUT IBufferPool* pool)=0;
+			virtual Bool createBuffer(const TBufferCreateInfos& createInfo,OUT IBuffer* buffer)=0;
 			//d3d9 style
 			virtual Bool createTexture(UINT width,UINT height,UINT levels,DWORD usage,D3DFORMAT format,D3DPOOL pool,OUT ITexture* texture)=0;
 			virtual Bool createCubeTexture(UINT edageLength,UINT levels,DWORD usage,D3DFORMAT format,D3DPOOL pool,OUT ITexture* texture)=0;

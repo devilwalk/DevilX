@@ -11,72 +11,268 @@ NSDevilX::NSGraphicsAPI::CGLDeviceImp::~CGLDeviceImp()
 {
 }
 
-Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createVertexBuffer(UINT length,DWORD usage,DWORD fvf,D3DPOOL pool,OUT IBuffer* buffer)
+Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createBufferPool(const TBufferPoolCreateInfos& createInfos,OUT IBufferPool* pool)
 {
-	return createBufferData(GL_ARRAY_BUFFER,length,nullptr,mappingGL(pool,usage),buffer);
-}
-
-Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createIndexBuffer(UINT length,DWORD usage,D3DFORMAT format,D3DPOOL pool,OUT IBuffer* buffer)
-{
-	return createBufferData(GL_ELEMENT_ARRAY_BUFFER,length,nullptr,mappingGL(pool,usage),buffer);
-}
-
-Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createBuffer(const D3D10_BUFFER_DESC& desc,const D3D10_SUBRESOURCE_DATA* initializeData,OUT IBuffer* buffer)
-{
-	GLenum target=0;
-	switch(desc.BindFlags)
+	Bool success=False;
+	for(auto & create_info:createInfos)
 	{
-	case D3D10_BIND_VERTEX_BUFFER:
-		target=GL_ARRAY_BUFFER;
+		GLenum target=GL_ARRAY_BUFFER;
+		GLsizeiptr size=0;
+		TGLCompatible<GLenum> usage;
+		GLbitfield flags=0;
+		switch(create_info.mDescType)
+		{
+		case SBufferPoolCreateInfo::EDescType_D3D12:
+		{
+			if(create_info.mD3D12Desc.Flags&D3D12_HEAP_FLAG_DENY_BUFFERS)
+			{
+				break;
+			}
+			size=create_info.mD3D12Desc.SizeInBytes;
+			usage=mappingGLUsage(create_info.mD3D12Desc.Properties);
+			flags=mappingGLFlags(create_info.mD3D12Desc.Properties);
+			success=True;
+		}
 		break;
-	case D3D10_BIND_INDEX_BUFFER:
-		target=GL_ELEMENT_ARRAY_BUFFER;
+		case SBufferPoolCreateInfo::EDescType_D3D11:
+		{
+			size=create_info.mD3D11Desc.ByteWidth;
+			usage=mappingGLUsage(create_info.mD3D11Desc);
+			flags=mappingGLFlags(create_info.mD3D11Desc);
+			success=True;
+		}
 		break;
+		case SBufferPoolCreateInfo::EDescType_D3D10:
+		{
+			size=create_info.mD3D10Desc.ByteWidth;
+			usage=mappingGLUsage(create_info.mD3D10Desc);
+			flags=mappingGLFlags(create_info.mD3D10Desc);
+			success=True;
+		}
+		break;
+		case SBufferPoolCreateInfo::EDescType_D3D9Vertex:
+		{
+			size=create_info.mD3D9VertexDesc.mLength;
+			usage=mappingGLUsage(create_info.mD3D9VertexDesc.mPool,create_info.mD3D9VertexDesc.mUsage);
+			flags=mappingGLFlags(create_info.mD3D9VertexDesc.mPool,create_info.mD3D9VertexDesc.mUsage);
+			success=True;
+		}
+		break;
+		case SBufferPoolCreateInfo::EDescType_D3D9Index:
+		{
+			size=create_info.mD3D9IndexDesc.mLength;
+			usage=mappingGLUsage(create_info.mD3D9IndexDesc.mPool,create_info.mD3D9IndexDesc.mUsage);
+			flags=mappingGLFlags(create_info.mD3D9IndexDesc.mPool,create_info.mD3D9IndexDesc.mUsage);
+			success=True;
+		}
+		break;
+		case SBufferPoolCreateInfo::EDescType_Vulkan:
+		{
+			size=create_info.mVulkanDesc.allocationSize;
+			usage.setProfile(CGLGlobal::EProfileCore_3,GL_STATIC_DRAW);
+			usage.setProfile(CGLGlobal::EProfileESCore_2,GL_STATIC_DRAW);
+			flags=GL_DYNAMIC_STORAGE_BIT;
+			success=True;
+		}
+		break;
+		case SBufferPoolCreateInfo::EDescType_GLCompatible:
+		{
+			size=create_info.mGLCompatibleDesc.mSize;
+			usage=mappingGLUsage(create_info.mGLCompatibleDesc.mUsage);
+			flags=mappingGLFlags(create_info.mGLCompatibleDesc.mUsage);
+			success=True;
+		}
+		break;
+		case SBufferPoolCreateInfo::EDescType_GLStorage:
+		{
+			size=create_info.mGLStorageDesc.mSize;
+			usage=mappingGLUsageFromFlags(create_info.mGLStorageDesc.mFlags);
+			flags=create_info.mGLStorageDesc.mFlags;
+			success=True;
+		}
+		break;
+		}
+		if(success)
+		{
+			success&=_createBuffer(target,size,nullptr,usage,flags,static_cast<CGLBufferImp*>(pool));
+		}
+		if(success)
+		{
+			break;
+		}
 	}
-	ConstVoidPtr data=nullptr;
-	if(initializeData)
-	{
-		data=initializeData->pSysMem;
-	}
-	return createBufferData(target,desc.ByteWidth,data,mappingGL(desc.Usage,desc.CPUAccessFlags),buffer);
+	return success;
 }
 
-Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createBuffer(const D3D11_BUFFER_DESC& desc,const D3D11_SUBRESOURCE_DATA* initializeData,OUT IBuffer* buffer)
+Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createBuffer(const TBufferCreateInfos& createInfos,OUT IBuffer* buffer)
 {
-	GLenum target=0;
-	switch(desc.BindFlags)
+	Bool success=False;
+	for(auto& create_info:createInfos)
 	{
-	case D3D11_BIND_VERTEX_BUFFER:
-		target=GL_ARRAY_BUFFER;
-		break;
-	case D3D11_BIND_INDEX_BUFFER:
-		target=GL_ELEMENT_ARRAY_BUFFER;
-		break;
+		if(create_info.mPoolInfo.mPool)
+		{
+			GLintptr offset=create_info.mPoolInfo.mOffset;;
+			GLsizeiptr size=0;
+			switch(create_info.mDescType)
+			{
+			case SBufferCreateInfo::EDescType_D3D12Placed:
+			{
+				size=create_info.mD3D12PlacedDesc.mResourceDesc.Width
+					*create_info.mD3D12PlacedDesc.mResourceDesc.Height
+					*create_info.mD3D12PlacedDesc.mResourceDesc.DepthOrArraySize;
+				success=True;
+			}
+			break;
+			case SBufferCreateInfo::EDescType_D3D11:
+			{
+				size=create_info.mD3D11Desc.mDesc.ByteWidth;
+				success=True;
+			}
+			break;
+			case SBufferCreateInfo::EDescType_D3D10:
+			{
+				size=create_info.mD3D10Desc.mDesc.ByteWidth;
+				success=True;
+			}
+			break;
+			case SBufferCreateInfo::EDescType_D3D9Vertex:
+			{
+				size=create_info.mD3D9VertexDesc.mLength;
+				success=True;
+			}
+			break;
+			case SBufferCreateInfo::EDescType_D3D9Index:
+			{
+				size=create_info.mD3D9IndexDesc.mLength;
+				success=True;
+			}
+			break;
+			case SBufferCreateInfo::EDescType_Vulkan:
+			{
+				size=create_info.mVulkanDesc.size;
+				success=True;
+			}
+			break;
+			case SBufferCreateInfo::EDescType_GLCompatible:
+			{
+				size=create_info.mGLCompatibleDesc.mSize;
+				success=True;
+			}
+			break;
+			case SBufferCreateInfo::EDescType_GLStorage:
+			{
+				size=create_info.mGLStorageDesc.mSize;
+				success=True;
+			}
+			break;
+			}
+			if(success)
+			{
+				static_cast<CGLBufferRangeImp*>(buffer)->mPool=static_cast<CGLBufferImp*>(create_info.mPoolInfo.mPool);
+				static_cast<CGLBufferRangeImp*>(buffer)->mOffset=offset;
+				static_cast<CGLBufferRangeImp*>(buffer)->mSize=size;
+			}
+			if(success)
+			{
+				break;
+			}
+		}
+		else
+		{
+			GLenum target=GL_ARRAY_BUFFER;
+			GLsizeiptr size=0;
+			TGLCompatible<GLenum> usage;
+			GLbitfield flags=0;
+			ConstVoidPtr initialize_data=nullptr;
+			switch(create_info.mDescType)
+			{
+			case SBufferCreateInfo::EDescType_D3D12Committed:
+			{
+				if(create_info.mD3D12CommittedDesc.mHeapFlags&D3D12_HEAP_FLAG_DENY_BUFFERS)
+				{
+					break;
+				}
+				size=create_info.mD3D12CommittedDesc.mResourceDesc.Width
+					*create_info.mD3D12CommittedDesc.mResourceDesc.Height
+					*create_info.mD3D12CommittedDesc.mResourceDesc.DepthOrArraySize;
+				usage=mappingGLUsage(create_info.mD3D12CommittedDesc.mHeapProperties);
+				flags=mappingGLFlags(create_info.mD3D12CommittedDesc.mHeapProperties);
+				success=True;
+			}
+			break;
+			case SBufferCreateInfo::EDescType_D3D11:
+			{
+				size=create_info.mD3D11Desc.mDesc.ByteWidth;
+				usage=mappingGLUsage(create_info.mD3D11Desc.mDesc);
+				flags=mappingGLFlags(create_info.mD3D11Desc.mDesc);
+				initialize_data=create_info.mD3D11Desc.mInitializeData.pSysMem;
+				success=True;
+			}
+			break;
+			case SBufferCreateInfo::EDescType_D3D10:
+			{
+				size=create_info.mD3D10Desc.mDesc.ByteWidth;
+				usage=mappingGLUsage(create_info.mD3D10Desc.mDesc);
+				flags=mappingGLFlags(create_info.mD3D10Desc.mDesc);
+				initialize_data=create_info.mD3D10Desc.mInitializeData.pSysMem;
+				success=True;
+			}
+			break;
+			case SBufferCreateInfo::EDescType_D3D9Vertex:
+			{
+				size=create_info.mD3D9VertexDesc.mLength;
+				usage=mappingGLUsage(create_info.mD3D9VertexDesc.mPool,create_info.mD3D9VertexDesc.mUsage);
+				flags=mappingGLFlags(create_info.mD3D9VertexDesc.mPool,create_info.mD3D9VertexDesc.mUsage);
+				success=True;
+			}
+			break;
+			case SBufferCreateInfo::EDescType_D3D9Index:
+			{
+				size=create_info.mD3D9IndexDesc.mLength;
+				usage=mappingGLUsage(create_info.mD3D9IndexDesc.mPool,create_info.mD3D9IndexDesc.mUsage);
+				flags=mappingGLFlags(create_info.mD3D9IndexDesc.mPool,create_info.mD3D9IndexDesc.mUsage);
+				success=True;
+			}
+			break;
+			case SBufferCreateInfo::EDescType_Vulkan:
+			{
+				size=create_info.mVulkanDesc.size;
+				usage=mappingGLUsageFromVulkan(create_info.mVulkanDesc.usage);
+				flags=mappingGLFlagsFromVulkan(create_info.mVulkanDesc.usage);
+				success=True;
+			}
+			break;
+			case SBufferCreateInfo::EDescType_GLCompatible:
+			{
+				size=create_info.mGLCompatibleDesc.mSize;
+				usage=mappingGLUsage(create_info.mGLCompatibleDesc.mUsage);
+				flags=mappingGLFlags(create_info.mGLCompatibleDesc.mUsage);
+				initialize_data=create_info.mGLCompatibleDesc.mIntializeData;
+				success=True;
+			}
+			break;
+			case SBufferCreateInfo::EDescType_GLStorage:
+			{
+				size=create_info.mGLStorageDesc.mSize;
+				usage=mappingGLUsageFromFlags(create_info.mGLStorageDesc.mFlags);
+				flags=create_info.mGLStorageDesc.mFlags;
+				initialize_data=create_info.mGLStorageDesc.mIntializeData;
+				success=True;
+			}
+			break;
+			}
+			if(success)
+			{
+				static_cast<CGLBufferRangeImp*>(buffer)->mPool=DEVILX_NEW CGLBufferImp();
+				success&=_createBuffer(target,size,initialize_data,usage,flags,static_cast<CGLBufferRangeImp*>(buffer)->mPool);
+			}
+			if(success)
+			{
+				break;
+			}
+		}
 	}
-	ConstVoidPtr data=nullptr;
-	if(initializeData)
-	{
-		data=initializeData->pSysMem;
-	}
-	return createBufferData(target,desc.ByteWidth,data,mappingGL(desc.Usage,desc.CPUAccessFlags),buffer);
-}
-
-Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createBufferData(GLenum target,GLsizeiptr size,ConstVoidPtr intializeData,GLenum usage,OUT IBuffer* buffer)
-{
-	glGenBuffers(1,&static_cast<CGLBufferImp*>(buffer)->mInternal);
-	glBindBuffer(target,static_cast<CGLBufferImp*>(buffer)->mInternal);
-	glBufferData(target,size,intializeData,usage);
-	glBindBuffer(target,0);
-	return True;
-}
-
-Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createBufferStorage(GLenum target,GLsizeiptr size,ConstVoidPtr intializeData,GLbitfield flags,OUT IBuffer* buffer)
-{
-	glGenBuffers(1,&static_cast<CGLBufferImp*>(buffer)->mInternal);
-	glBindBuffer(target,static_cast<CGLBufferImp*>(buffer)->mInternal);
-	glBufferStorage(target,size,intializeData,flags);
-	glBindBuffer(target,0);
-	return True;
+	return success;
 }
 
 Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createTexture(UINT width,UINT height,UINT levels,DWORD usage,D3DFORMAT format,D3DPOOL pool,OUT ITexture* texture)
@@ -1255,52 +1451,67 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createSamplerState(const D3D11_SAMPL
 
 Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::getSurfaceLevel(ITexture* texture,UINT level,OUT ISurface* surface)
 {
-	return Bool();
+	return False;
 }
 
 Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::getCubeMapSurface(ITexture* texture,D3DCUBEMAP_FACES faceType,UINT level,OUT ISurface* surface)
 {
-	return Bool();
+	return False;
 }
 
 Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createRenderTarget(UINT width,UINT height,D3DFORMAT format,D3DMULTISAMPLE_TYPE multiSample,DWORD multiSampleQuality,BOOL lockable,OUT ISurface* surface)
 {
-	return Bool();
+	if(multiSample==D3DMULTISAMPLE_NONE)
+		return renderbufferStorage(GL_COLOR_ATTACHMENT0,mappingGLInternalFormat(format),width,height,surface);
+	else
+		return renderbufferStorageMultisample(GL_COLOR_ATTACHMENT0,multiSample,mappingGLInternalFormat(format),width,height,surface);
 }
 
 Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createDepthStencilSurface(UINT width,UINT height,D3DFORMAT format,D3DMULTISAMPLE_TYPE multiSample,DWORD multiSampleQuality,BOOL discard,OUT ISurface* surface)
 {
-	return Bool();
+	glGenRenderbuffers(1,&static_cast<CGLRenderBufferImp*>(surface)->mInternal);
+	glBindRenderbuffer(GL_DEPTH_ATTACHMENT,static_cast<CGLRenderBufferImp*>(surface)->mInternal);
+	glRenderbufferStorage(GL_DEPTH_ATTACHMENT,mappingGLInternalFormat(format),width,height);
+	glBindRenderbuffer(GL_DEPTH_ATTACHMENT,0);
+	return True;
 }
 
 Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::renderbufferStorage(GLenum target,GLenum internalformat,GLsizei width,GLsizei height,OUT ISurface* surface)
 {
-	return Bool();
+	glGenRenderbuffers(1,&static_cast<CGLRenderBufferImp*>(surface)->mInternal);
+	glBindRenderbuffer(target,static_cast<CGLRenderBufferImp*>(surface)->mInternal);
+	glRenderbufferStorage(target,internalformat,width,height);
+	glBindRenderbuffer(target,0);
+	return True;
 }
 
 Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::renderbufferStorageMultisample(GLenum target,GLsizei samples,GLenum internalformat,GLsizei width,GLsizei height,OUT ISurface* surface)
 {
-	return Bool();
+	glGenRenderbuffers(1,&static_cast<CGLRenderBufferImp*>(surface)->mInternal);
+	glBindRenderbuffer(target,static_cast<CGLRenderBufferImp*>(surface)->mInternal);
+	glRenderbufferStorageMultisample(target,samples,internalformat,width,height);
+	glBindRenderbuffer(target,0);
+	return True;
 }
 
 Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createRenderTargetView(ITexture* resource,const D3D10_RENDER_TARGET_VIEW_DESC* desc,OUT IRenderTargetView* view)
 {
-	return Bool();
+	return False;
 }
 
 Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createRenderTargetView(ITexture* resource,const D3D11_RENDER_TARGET_VIEW_DESC* desc,OUT IRenderTargetView* view)
 {
-	return Bool();
+	return False;
 }
 
 Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createDepthStencilView(ITexture* resource,const D3D10_DEPTH_STENCIL_VIEW_DESC* desc,OUT IDepthStencilView* view)
 {
-	return Bool();
+	return False;
 }
 
 Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createDepthStencilView(ITexture* resource,const D3D11_DEPTH_STENCIL_VIEW_DESC* desc,OUT IDepthStencilView* view)
 {
-	return Bool();
+	return False;
 }
 
 Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::framebufferTexture2D(GLenum target,GLenum attachment,GLenum textarget,ITexture* texture,GLint level,OUT IFrameBufferObject* fbo)
@@ -1348,47 +1559,48 @@ Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::createShaderResourceView(ITexture* r
 	return Bool();
 }
 
+Bool NSDevilX::NSGraphicsAPI::CGLDeviceImp::_createBuffer(GLenum target,GLsizeiptr size,ConstVoidPtr initializeData,const TGLCompatible<GLenum>& usage,GLbitfield flags,OUT CGLBufferImp* buffer)
+{
+	if(glCreateBuffers)
+	{
+		glCreateBuffers(1,&buffer->mInternal);
+	}
+	else
+	{
+		glGenBuffers(1,&buffer->mInternal);
+	}
+	if(glNamedBufferStorage||glNamedBufferStorageEXT)
+	{
+		decltype(glNamedBufferStorage) pf=glNamedBufferStorage?glNamedBufferStorage:glNamedBufferStorageEXT;
+		pf(buffer->mInternal,size,initializeData,flags);
+	}
+	else if(glNamedBufferData||glNamedBufferDataEXT)
+	{
+		decltype(glNamedBufferData) pf=glNamedBufferData?glNamedBufferData:glNamedBufferDataEXT;
+		pf(buffer->mInternal,size,initializeData,usage);
+	}
+	else if(glBufferStorage||glBufferStorageEXT)
+	{
+		glBindBuffer(target,buffer->mInternal);
+		decltype(glBufferStorage) pf=glBufferStorage?glBufferStorage:glBufferStorageEXT;
+		pf(target,size,initializeData,flags);
+		glBindBuffer(target,0);
+	}
+	else
+	{
+		glBindBuffer(target,buffer->mInternal);
+		glBufferData(target,size,initializeData,usage);
+		glBindBuffer(target,0);
+	}
+	return True;
+}
+
 NSDevilX::NSGraphicsAPI::CGLES2GraphicsDeviceImp::CGLES2GraphicsDeviceImp()
 {
 }
 
 NSDevilX::NSGraphicsAPI::CGLES2GraphicsDeviceImp::~CGLES2GraphicsDeviceImp()
 {
-}
-
-Bool NSDevilX::NSGraphicsAPI::CGLES2GraphicsDeviceImp::createBufferStorage(GLenum target,GLsizeiptr size,ConstVoidPtr initializeData,GLbitfield flags,OUT IBuffer* buffer)
-{
-	return createBufferData(target,size,initializeData,mappingGLBufferStorageFlagsToBufferDataUsage(flags),buffer);
-}
-
-Bool NSDevilX::NSGraphicsAPI::CGLES2GraphicsDeviceImp::createTexture1D(GLenum target,GLint level,GLint internalformat,GLsizei width,GLint border,GLenum format,GLenum type,ConstVoidPtr initializeData,OUT ITexture* texture)
-{
-	return createTexture2D(target,level,internalformat,width,1,border,format,type,initializeData,texture);
-}
-
-Bool NSDevilX::NSGraphicsAPI::CGLES2GraphicsDeviceImp::createTexture3D(GLenum target,GLint level,GLint internalformat,GLsizei width,GLsizei height,GLsizei depth,GLint border,GLenum format,GLenum type,ConstVoidPtr initializeData,OUT ITexture* texture)
-{
-	return False;
-}
-
-Bool NSDevilX::NSGraphicsAPI::CGLES2GraphicsDeviceImp::createTexture2DMSAA(GLenum target,GLsizei samplers,GLenum internalformat,GLsizei width,GLsizei height,GLboolean fixedsamplelocations,OUT ITexture* texture)
-{
-	return False;
-}
-
-Bool NSDevilX::NSGraphicsAPI::CGLES2GraphicsDeviceImp::createTexture3DMSAA(GLenum target,GLsizei samplers,GLenum internalformat,GLsizei width,GLsizei height,GLsizei depth,GLboolean fixedsamplelocations,OUT ITexture* texture)
-{
-	return False;
-}
-
-Bool NSDevilX::NSGraphicsAPI::CGLES2GraphicsDeviceImp::createCompressedTexture1D(GLenum target,GLint level,GLint internalformat,GLsizei width,GLint border,GLsizei imageSize,ConstVoidPtr initializeData,OUT ITexture* texture)
-{
-	return createCompressedTexture2D(target,level,internalformat,width,1,border,imageSize,initializeData,texture);
-}
-
-Bool NSDevilX::NSGraphicsAPI::CGLES2GraphicsDeviceImp::createCompressedTexture3D(GLenum target,GLint level,GLint internalformat,GLsizei width,GLsizei height,GLsizei depth,GLint border,GLsizei imageSize,ConstVoidPtr initializeData,OUT ITexture* texture)
-{
-	return False;
 }
 
 NSDevilX::NSGraphicsAPI::CGLES3GraphicsDeviceImp::CGLES3GraphicsDeviceImp()
