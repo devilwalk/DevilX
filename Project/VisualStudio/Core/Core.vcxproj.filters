@@ -16,20 +16,14 @@
     <Filter Include="Interface">
       <UniqueIdentifier>{edf015b7-90c1-4749-bb6c-e9e6895a2b1e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Interface\GraphicAPI">
-      <UniqueIdentifier>{d9002bdb-9908-4254-9255-af388d43629d}</UniqueIdentifier>
+    <Filter Include="Interface\GraphicsDriver">
+      <UniqueIdentifier>{4d0e2589-c890-429d-95a2-8f337aed91cb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\GraphicAPI">
-      <UniqueIdentifier>{9e4f3c1b-55ba-4131-897b-74c990fa4aca}</UniqueIdentifier>
+    <Filter Include="头文件\GraphicsDriver">
+      <UniqueIdentifier>{300f4aa0-2bfd-4f91-bf5b-28e8efd45df8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="源文件\GraphicAPI">
-      <UniqueIdentifier>{c0868085-4191-42cb-b514-c00281242e4e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Interface\GraphicAPI\HightLevel">
-      <UniqueIdentifier>{06e6869c-510f-4f90-a867-b29d0af5b3c4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Interface\GraphicAPI\LowLevel">
-      <UniqueIdentifier>{61e4fb1f-1cb3-41ed-bd44-3fc7c37c95f3}</UniqueIdentifier>
+    <Filter Include="源文件\GraphicsDriver">
+      <UniqueIdentifier>{907ce5de-478f-4384-ac66-bcecc579d11d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -186,110 +180,50 @@
     <ClInclude Include="..\..\..\Code\Core\Include\CPPScriptEnvironment.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGAEnum.h">
-      <Filter>Interface\GraphicAPI</Filter>
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDBuffer.h">
+      <Filter>Interface\GraphicsDriver</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGAStruct.h">
-      <Filter>Interface\GraphicAPI</Filter>
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDCommandBuffer.h">
+      <Filter>Interface\GraphicsDriver</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGAView.h">
-      <Filter>Interface\GraphicAPI</Filter>
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDDevice.h">
+      <Filter>Interface\GraphicsDriver</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGAInterface.h">
-      <Filter>Interface\GraphicAPI</Filter>
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDEnum.h">
+      <Filter>Interface\GraphicsDriver</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGAManager.h">
-      <Filter>Interface\GraphicAPI</Filter>
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDImage.h">
+      <Filter>Interface\GraphicsDriver</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Include\GAInclude.h">
-      <Filter>头文件\GraphicAPI</Filter>
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDInstance.h">
+      <Filter>Interface\GraphicsDriver</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Include\IGADeviceImp_DX11.h">
-      <Filter>头文件\GraphicAPI</Filter>
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDInterface.h">
+      <Filter>Interface\GraphicsDriver</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Include\IGADeviceImp_GL.h">
-      <Filter>头文件\GraphicAPI</Filter>
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDPhysicsDevice.h">
+      <Filter>Interface\GraphicsDriver</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Include\IGAResourceImp_DX11.h">
-      <Filter>头文件\GraphicAPI</Filter>
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDPipelineState.h">
+      <Filter>Interface\GraphicsDriver</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Include\IGAResourceImp_GL.h">
-      <Filter>头文件\GraphicAPI</Filter>
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDQueue.h">
+      <Filter>Interface\GraphicsDriver</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Include\GAManager_DX.h">
-      <Filter>头文件\GraphicAPI</Filter>
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDSystem.h">
+      <Filter>Interface\GraphicsDriver</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGASwapChain.h">
-      <Filter>Interface\GraphicAPI</Filter>
+    <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDSystemImp.h">
+      <Filter>头文件\GraphicsDriver</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Include\IGASwapChainImp_DX.h">
-      <Filter>头文件\GraphicAPI</Filter>
+    <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\GDInclude.h">
+      <Filter>头文件\GraphicsDriver</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Include\GAUtility_GL.h">
-      <Filter>头文件\GraphicAPI</Filter>
+    <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDInstanceImp.h">
+      <Filter>头文件\GraphicsDriver</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Include\GAUtility_DX.h">
-      <Filter>头文件\GraphicAPI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Include\IGASwapChainImp_GL.h">
-      <Filter>头文件\GraphicAPI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Include\IGADeviceContextImp_DX.h">
-      <Filter>头文件\GraphicAPI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGAProgramReflection.h">
-      <Filter>Interface\GraphicAPI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Include\IGAViewImp_DX.h">
-      <Filter>头文件\GraphicAPI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Include\IGAViewImp_GL.h">
-      <Filter>头文件\GraphicAPI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Include\IGAProgramReflectionImp_DX.h">
-      <Filter>头文件\GraphicAPI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Include\GAObject.h">
-      <Filter>头文件\GraphicAPI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Include\IGAResourceImp.h">
-      <Filter>头文件\GraphicAPI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Include\IGAViewImp.h">
-      <Filter>头文件\GraphicAPI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Include\GAEnvironment_GL.h">
-      <Filter>头文件\GraphicAPI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Include\GAManager_GL.h">
-      <Filter>头文件\GraphicAPI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Include\IGAProgramReflectionImp_GL.h">
-      <Filter>头文件\GraphicAPI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGABase.h">
-      <Filter>Interface\GraphicAPI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGADeviceContext.h">
-      <Filter>Interface\GraphicAPI\HightLevel</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGAHighLevelDevice.h">
-      <Filter>Interface\GraphicAPI\HightLevel</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGAHighLevelResource.h">
-      <Filter>Interface\GraphicAPI\HightLevel</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGACommandList.h">
-      <Filter>Interface\GraphicAPI\LowLevel</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGACommandQueue.h">
-      <Filter>Interface\GraphicAPI\LowLevel</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGALowLevelDevice.h">
-      <Filter>Interface\GraphicAPI\LowLevel</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Include\GAStateManager_GL.h">
-      <Filter>头文件\GraphicAPI</Filter>
+    <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDPhysicsDeviceImp.h">
+      <Filter>头文件\GraphicsDriver</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -368,59 +302,14 @@
     <ClCompile Include="..\..\..\Code\Core\Source\CPPScriptEnvironment.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\Source\ICoreGAManager.cpp">
-      <Filter>源文件\GraphicAPI</Filter>
+    <ClCompile Include="..\..\..\Code\Core\Source\GraphicsDriver\IGDSystemImp.cpp">
+      <Filter>源文件\GraphicsDriver</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\Source\IGADeviceImp_DX11.cpp">
-      <Filter>源文件\GraphicAPI</Filter>
+    <ClCompile Include="..\..\..\Code\Core\Source\GraphicsDriver\IGDInstanceImp.cpp">
+      <Filter>源文件\GraphicsDriver</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\Source\IGAResourceImp_DX11.cpp">
-      <Filter>源文件\GraphicAPI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\Source\IGAResourceImp_GL.cpp">
-      <Filter>源文件\GraphicAPI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\Source\GAManager_DX.cpp">
-      <Filter>源文件\GraphicAPI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\Source\IGASwapChainImp_DX.cpp">
-      <Filter>源文件\GraphicAPI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\Source\IGASwapChainImp_GL.cpp">
-      <Filter>源文件\GraphicAPI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\Source\IGADeviceContextImp_DX.cpp">
-      <Filter>源文件\GraphicAPI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\Source\IGADeviceImp_GL.cpp">
-      <Filter>源文件\GraphicAPI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\Source\IGAProgramReflectionImp_DX.cpp">
-      <Filter>源文件\GraphicAPI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\Source\IGAViewImp_DX.cpp">
-      <Filter>源文件\GraphicAPI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\Source\IGAViewImp_GL.cpp">
-      <Filter>源文件\GraphicAPI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\Source\IGAResourceImp.cpp">
-      <Filter>源文件\GraphicAPI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\Source\IGAViewImp.cpp">
-      <Filter>源文件\GraphicAPI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\Source\GAEnvironment_GL.cpp">
-      <Filter>源文件\GraphicAPI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\Source\GAManager_GL.cpp">
-      <Filter>源文件\GraphicAPI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\Source\IGAProgramReflectionImp_GL.cpp">
-      <Filter>源文件\GraphicAPI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\Source\GAStateManager_GL.cpp">
-      <Filter>源文件\GraphicAPI</Filter>
+    <ClCompile Include="..\..\..\Code\Core\Source\GraphicsDriver\IGDPhysicsDeviceImp.cpp">
+      <Filter>源文件\GraphicsDriver</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

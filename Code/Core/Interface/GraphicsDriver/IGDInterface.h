@@ -1,0 +1,11 @@
+#pragma once
+#include "IGDBuffer.h"
+#include "IGDCommandBuffer.h"
+#include "IGDDevice.h"
+#include "IGDEnum.h"
+#include "IGDImage.h"
+#include "IGDInstance.h"
+#include "IGDPhysicsDevice.h"
+#include "IGDPipelineState.h"
+#include "IGDQueue.h"
+#include "IGDSystem.h"

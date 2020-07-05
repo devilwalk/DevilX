@@ -119,34 +119,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Code\Core\Include\GAManager_GL.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\CPPScriptEnvironment.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\Define.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\FileManager.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\FunctionWorker.h" />
-    <ClInclude Include="..\..\..\Code\Core\Include\GAInclude.h" />
-    <ClInclude Include="..\..\..\Code\Core\Include\GAManager_DX.h" />
-    <ClInclude Include="..\..\..\Code\Core\Include\GAObject.h" />
-    <ClInclude Include="..\..\..\Code\Core\Include\GAEnvironment_GL.h" />
-    <ClInclude Include="..\..\..\Code\Core\Include\GAStateManager_GL.h" />
-    <ClInclude Include="..\..\..\Code\Core\Include\GAUtility_DX.h" />
-    <ClInclude Include="..\..\..\Code\Core\Include\GAUtility_GL.h" />
-    <ClInclude Include="..\..\..\Code\Core\Include\IGADeviceContextImp_DX.h" />
-    <ClInclude Include="..\..\..\Code\Core\Include\IGAProgramReflectionImp_DX.h" />
-    <ClInclude Include="..\..\..\Code\Core\Include\IGAProgramReflectionImp_GL.h" />
-    <ClInclude Include="..\..\..\Code\Core\Include\IGAResourceImp.h" />
-    <ClInclude Include="..\..\..\Code\Core\Include\IGASwapChainImp_DX.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\GDInclude.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDInstanceImp.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDPhysicsDeviceImp.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDSystemImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\ICPPScriptEnvironmentImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\IDirectoryImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\IFileImp.h" />
-    <ClInclude Include="..\..\..\Code\Core\Include\IGADeviceImp_DX11.h" />
-    <ClInclude Include="..\..\..\Code\Core\Include\IGADeviceImp_GL.h" />
-    <ClInclude Include="..\..\..\Code\Core\Include\IGAResourceImp_DX11.h" />
-    <ClInclude Include="..\..\..\Code\Core\Include\IGAResourceImp_GL.h" />
-    <ClInclude Include="..\..\..\Code\Core\Include\IGASwapChainImp_GL.h" />
-    <ClInclude Include="..\..\..\Code\Core\Include\IGAViewImp.h" />
-    <ClInclude Include="..\..\..\Code\Core\Include\IGAViewImp_DX.h" />
-    <ClInclude Include="..\..\..\Code\Core\Include\IGAViewImp_GL.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\INetworkConnectionImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\INetworkHostImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\ISemaphoreImp.h" />
@@ -169,6 +152,17 @@
     <ClInclude Include="..\..\..\Code\Core\Include\ThreadManager.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\ThreadType.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\UTFString.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDBuffer.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDCommandBuffer.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDDevice.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDEnum.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDImage.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDInstance.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDInterface.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDPhysicsDevice.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDPipelineState.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDQueue.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDSystem.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreBuffer.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreCPPScriptEnvironment.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreDirectory.h" />
@@ -176,20 +170,6 @@
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreFile.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreFileManager.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreFileProcesser.h" />
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGABase.h" />
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGACommandList.h" />
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGACommandQueue.h" />
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGADeviceContext.h" />
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGAHighLevelDevice.h" />
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGALowLevelDevice.h" />
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGAManager.h" />
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGAProgramReflection.h" />
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGASwapChain.h" />
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGAView.h" />
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGAEnum.h" />
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGAInterface.h" />
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGAHighLevelResource.h" />
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreGAStruct.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreNetworkConnection.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreNetworkManager.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreMemoryManager.h" />
@@ -209,11 +189,24 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Core\Source\CPPScriptEnvironment.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\FileManager.cpp" />
-    <ClCompile Include="..\..\..\Code\Core\Source\GAEnvironment_GL.cpp" />
-    <ClCompile Include="..\..\..\Code\Core\Source\GAManager_DX.cpp" />
-    <ClCompile Include="..\..\..\Code\Core\Source\GAManager_GL.cpp" />
-    <ClCompile Include="..\..\..\Code\Core\Source\GAStateManager_GL.cpp" />
-    <ClCompile Include="..\..\..\Code\Core\Source\ICoreGAManager.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\GraphicsDriver\IGDInstanceImp.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../Precompiler.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">../Precompiler.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../Precompiler.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../Precompiler.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\GraphicsDriver\IGDPhysicsDeviceImp.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../Precompiler.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">../Precompiler.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../Precompiler.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../Precompiler.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\GraphicsDriver\IGDSystemImp.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../Precompiler.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">../Precompiler.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../Precompiler.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../Precompiler.h</PrecompiledHeaderFile>
+    </ClCompile>
     <ClCompile Include="..\..\..\Code\Core\Source\ICoreMemoryManager.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\ICoreNetworkManager.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\ICoreSystem.cpp" />
@@ -221,19 +214,6 @@
     <ClCompile Include="..\..\..\Code\Core\Source\ICoreFileManager.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\IDirectoryImp.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\IFileImp.cpp" />
-    <ClCompile Include="..\..\..\Code\Core\Source\IGADeviceContextImp_DX.cpp" />
-    <ClCompile Include="..\..\..\Code\Core\Source\IGADeviceImp_DX11.cpp" />
-    <ClCompile Include="..\..\..\Code\Core\Source\IGADeviceImp_GL.cpp" />
-    <ClCompile Include="..\..\..\Code\Core\Source\IGAProgramReflectionImp_DX.cpp" />
-    <ClCompile Include="..\..\..\Code\Core\Source\IGAProgramReflectionImp_GL.cpp" />
-    <ClCompile Include="..\..\..\Code\Core\Source\IGAResourceImp.cpp" />
-    <ClCompile Include="..\..\..\Code\Core\Source\IGAResourceImp_DX11.cpp" />
-    <ClCompile Include="..\..\..\Code\Core\Source\IGAResourceImp_GL.cpp" />
-    <ClCompile Include="..\..\..\Code\Core\Source\IGASwapChainImp_DX.cpp" />
-    <ClCompile Include="..\..\..\Code\Core\Source\IGASwapChainImp_GL.cpp" />
-    <ClCompile Include="..\..\..\Code\Core\Source\IGAViewImp.cpp" />
-    <ClCompile Include="..\..\..\Code\Core\Source\IGAViewImp_DX.cpp" />
-    <ClCompile Include="..\..\..\Code\Core\Source\IGAViewImp_GL.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\INetworkConnectionImp.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\INetworkHostImp.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\ISemaphoreImp.cpp" />

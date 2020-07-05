@@ -32,6 +32,8 @@
 #endif
 #define EGLAPI
 #include "EGL/egl.h"
-#include "vulkan/vulkan.hpp"
+//#define VOLK_IMPLEMENTATION
+//#include "volk/volk.h"
+#include <vulkan/vulkan.h>
 #include "lua.h"
 #include "noise.h"

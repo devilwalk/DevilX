@@ -16,11 +16,11 @@ namespace NSDevilX
 		{
 
 		}
-		virtual CIterator begin()const override
+		virtual typename TContainer::iterator begin()const override
 		{
 			return TIGroup<typename TContainer::value_type,typename TContainer::iterator>::begin();
 		}
-		virtual CIterator end()const override
+		virtual typename TContainer::iterator end()const override
 		{
 			return TIGroup<typename TContainer::value_type,typename TContainer::iterator>::end();
 		}

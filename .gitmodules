@@ -70,3 +70,7 @@
 [submodule "Dependences/GPUOpen/RadeonRays_SDK"]
 	path = Dependences/GPUOpen/RadeonRays_SDK
 	url = https://github.com/GPUOpen-LibrariesAndSDKs/RadeonRays_SDK.git
+[submodule "Dependences/volk"]
+	path = Dependences/volk
+	url = git://github.com/zeux/volk.git
+	branch = master

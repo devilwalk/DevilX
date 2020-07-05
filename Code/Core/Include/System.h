@@ -13,7 +13,6 @@ namespace NSDevilX
 			IMemoryManager * mMemoryManager;
 			IThreadManager * mThreadManager;
 			INetworkManager * mNetworkManager;
-			IGAManager* mGAManager;
 			TResourcePtrSet<ITimerImp> mTimers;
 		public:
 			CSystem();
@@ -22,7 +21,6 @@ namespace NSDevilX
 			IMemoryManager*getMemoryManager()const{ return mMemoryManager; }
 			IThreadManager*getThreadManager()const{ return mThreadManager; }
 			INetworkManager * getNetworkManager()const { return mNetworkManager; }
-			IGAManager* getGAManager()const { return mGAManager; }
 			ITimerImp * createTimer();
 			Void destroyTimer(ITimerImp * timer);
 		};

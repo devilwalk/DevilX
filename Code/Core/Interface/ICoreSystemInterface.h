@@ -27,4 +27,4 @@
 #include "ICoreThreadManager.h"
 #include "ICoreThreadPool.h"
 #include "ICoreTimer.h"
-#include "ICoreGAInterface.h"
+#include "GraphicsDriver/IGDInterface.h"
