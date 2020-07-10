@@ -311,5 +311,8 @@
     <ClCompile Include="..\..\..\Code\Core\Source\GraphicsDriver\IGDPhysicsDeviceImp.cpp">
       <Filter>源文件\GraphicsDriver</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Dependences\volk\volk.c">
+      <Filter>源文件\GraphicsDriver</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

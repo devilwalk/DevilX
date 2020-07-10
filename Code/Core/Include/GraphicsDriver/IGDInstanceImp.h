@@ -9,30 +9,40 @@ namespace NSDevilX
 			class IInstanceImp: public IInstance
 			{
 			protected:
+				IEnum::EInstance mType;
 				TResourcePtrVector(IPhysicsDeviceImp) mPhysicsDevices;
 			public:
-				IInstanceImp();
+				IInstanceImp(IEnum::EInstance type);
 				virtual ~IInstanceImp();
+
+				virtual Boolean initialize()=0;
 			};
 			namespace NSDXGI
 			{
 #if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
-				class IInstanceImp: public NSGraphicsDriver::IInstanceImp
+				class IInstanceImp
+					:public NSGraphicsDriver::IInstanceImp
+					,public TBaseObject<IInstanceImp>
 				{
 				protected:
 					CComPtr<IDXGIFactory> mInternal;
 				public:
-					IInstanceImp();
+					IInstanceImp(IEnum::EInstance type);
 					virtual ~IInstanceImp();
 
 					// 通过 IInstance 继承
 					virtual UInt32 enumPhysicsDevices(IPhysicsDevice** outDevices=nullptr) override;
+
+					// 通过 IInstanceImp 继承
+					virtual Boolean initialize() override;
 				};
 #endif
 			}
 			namespace NSVulkan
 			{
-				class IInstanceImp: public NSGraphicsDriver::IInstanceImp
+				class IInstanceImp
+					:public NSGraphicsDriver::IInstanceImp
+					,public TBaseObject<IInstanceImp>
 				{
 				protected:
 					VkInstance mInternal;
@@ -42,6 +52,9 @@ namespace NSDevilX
 
 					// 通过 IInstance 继承
 					virtual UInt32 enumPhysicsDevices(IPhysicsDevice** outDevices=nullptr) override;
+
+					// 通过 IInstanceImp 继承
+					virtual Boolean initialize() override;
 				};
 			}
 		}

@@ -33,7 +33,7 @@
 #define EGLAPI
 #include "EGL/egl.h"
 //#define VOLK_IMPLEMENTATION
-//#include "volk/volk.h"
-#include <vulkan/vulkan.h>
+#include "volk/volk.h"
+//#include <vulkan/vulkan.h>
 #include "lua.h"
 #include "noise.h"

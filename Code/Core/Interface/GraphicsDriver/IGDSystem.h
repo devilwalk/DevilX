@@ -12,7 +12,7 @@ namespace NSDevilX
 			protected:
 				virtual ~ISystem(){ }
 			public:
-				virtual IInstance* createInstance(IEnum::EInstance* types)=0;
+				virtual IInstance* createInstance(IEnum::EInstance* types,UInt32 count)=0;
 			};
 		}
 	}

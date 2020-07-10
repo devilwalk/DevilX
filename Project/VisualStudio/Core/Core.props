@@ -12,9 +12,7 @@
     </ClCompile>
     <Link />
     <Lib />
-    <Link>
-      <AdditionalDependencies>vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
+    <Link />
   </ItemDefinitionGroup>
   <ItemGroup />
 </Project>

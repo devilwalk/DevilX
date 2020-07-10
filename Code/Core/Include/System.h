@@ -1,5 +1,6 @@
 #pragma once
 #include "ITimerImp.h"
+#include "GraphicsDriver/IGDSystemImp.h"
 namespace NSDevilX
 {
 	namespace NSCore
@@ -17,10 +18,26 @@ namespace NSDevilX
 		public:
 			CSystem();
 			~CSystem();
-			ISystem*getSystem()const{ return mSystem; }
-			IMemoryManager*getMemoryManager()const{ return mMemoryManager; }
-			IThreadManager*getThreadManager()const{ return mThreadManager; }
-			INetworkManager * getNetworkManager()const { return mNetworkManager; }
+			ISystem* getSystem()const
+			{
+				return mSystem;
+			}
+			IMemoryManager* getMemoryManager()const
+			{
+				return mMemoryManager;
+			}
+			IThreadManager* getThreadManager()const
+			{
+				return mThreadManager;
+			}
+			INetworkManager* getNetworkManager()const
+			{
+				return mNetworkManager;
+			}
+			auto getGraphicsDriverSystem()const
+			{
+				return NSGraphicsDriver::ISystemImp::getSingletonPtr();
+			}
 			ITimerImp * createTimer();
 			Void destroyTimer(ITimerImp * timer);
 		};

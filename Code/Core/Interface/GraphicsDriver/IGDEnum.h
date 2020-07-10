@@ -8,29 +8,33 @@ namespace NSDevilX
 			class IEnum
 			{
 			public:
-				enum class EInstance
+				enum EInstance
 				{
-					Vulkan,
-					GL4_6,
-					GL4_5,
-					GL4_4,
-					GL4_3,
-					GL4_2,
-					GL4_1,
-					GL4_0,
-					GL3_3,
-					GL3_2,
-					GL3_1,
-					GL3_0,
-					GL2_0,
-					D3D12,
-					D3D11,
-					D3D10,
-					D3D9,
-					GLES3_2,
-					GLES3_1,
-					GLES3_0,
-					GLES2_0
+					EInstance_Vulkan,
+					EInstance_D3D12_0,
+					EInstance_GL4_6,
+					EInstance_D3D11_3,
+					EInstance_D3D11_2,
+					EInstance_D3D11_1,
+					EInstance_D3D11_0,
+					EInstance_GL4_5,
+					EInstance_GL4_4,
+					EInstance_GL4_3,
+					EInstance_GL4_2,
+					EInstance_GL4_1,
+					EInstance_GL4_0,
+					EInstance_D3D10_1,
+					EInstance_D3D10_0,
+					EInstance_GL3_3,
+					EInstance_GL3_2,
+					EInstance_GL3_1,
+					EInstance_GL3_0,
+					EInstance_D3D9_3,
+					EInstance_GL2_0,
+					EInstance_GLES3_2,
+					EInstance_GLES3_1,
+					EInstance_GLES3_0,
+					EInstance_GLES2_0
 				};
 			};
 		}

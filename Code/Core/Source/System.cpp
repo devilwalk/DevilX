@@ -14,6 +14,7 @@ NSDevilX::NSCore::CSystem::CSystem()
 	mMemoryManager=DEVILX_TYPED_ALLOC(IMemoryManager,1);
 	mThreadManager=DEVILX_TYPED_ALLOC(IThreadManager,1);
 	mNetworkManager=DEVILX_TYPED_ALLOC(INetworkManager,1);
+	DEVILX_NEW NSGraphicsDriver::ISystemImp;
 }
 
 NSDevilX::NSCore::CSystem::~CSystem()
@@ -26,6 +27,7 @@ NSDevilX::NSCore::CSystem::~CSystem()
 
 	DEVILX_DELETE(CNetworkManager::getSingletonPtr());
 	DEVILX_DELETE(CThreadManager::getSingletonPtr());
+	DEVILX_DELETE(NSGraphicsDriver::ISystemImp().getSingletonPtr());
 }
 
 ITimerImp * NSDevilX::NSCore::CSystem::createTimer()

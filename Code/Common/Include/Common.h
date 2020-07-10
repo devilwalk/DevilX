@@ -42,35 +42,3 @@
 #include "CommonVector.h"
 #include "CommonVectorF.h"
 #include "CommonVectorI.h"
-
-#include "ICommonGraphicsAPICommon.h"
-
-#include "ICommonGraphicsAPIBuffer.h"
-#include "ICommonGraphicsAPICommandDriver.h"
-#include "ICommonGraphicsAPIFrameBufferObject.h"
-#include "ICommonGraphicsAPIDevice.h"
-#include "ICommonGraphicsAPIHeap.h"
-#include "ICommonGraphicsAPIInputLayout.h"
-#include "ICommonGraphicsAPIOperation.h"
-#include "ICommonGraphicsAPIPipelineState.h"
-#include "ICommonGraphicsAPIShader.h"
-#include "ICommonGraphicsAPIShaderResourceView.h"
-#include "ICommonGraphicsAPITexture.h"
-#include "ICommonGraphicsAPIUnorderedAccessView.h"
-#include "ICommonGraphicsAPIVertexArrayObject.h"
-
-#include "CommonGraphicsAPI.h"
-
-#include "CommonD3D9DeviceImp.h"
-
-#include "CommonD3D11BufferImp.h"
-#include "CommonD3D11DeviceImp.h"
-
-#include "CommonGL.h"
-#include "CommonGLBufferImp.h"
-#include "CommonGLDeviceImp.h"
-#include "CommonGLFrameBufferObjectImp.h"
-#include "CommonGLInputLayoutImp.h"
-#include "CommonGLPipelineStateImp.h"
-#include "CommonGLShaderImp.h"
-#include "CommonGLTextureImp.h"

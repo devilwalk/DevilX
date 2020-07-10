@@ -131,6 +131,9 @@ namespace NSDevilX
 	CFloat2(Float value=0.0f)
 		:DirectX::XMFLOAT2(value,value)
 	{}
+	CFloat2(float x,float y)
+		:DirectX::XMFLOAT2(x,y)
+	{ }
 	Void normalize()
 	{
 		*this=DirectX::XMVector2Normalize(*this);
@@ -144,6 +147,10 @@ namespace NSDevilX
 		:DirectX::XMFLOAT3(value,value,value)
 	{
 	}
+	CFloat3(float x,float y,float z)
+		:DirectX::XMFLOAT3(x,y,z)
+	{
+	}
 	Void normalize()
 	{
 		*this=DirectX::XMVector3Normalize(*this);
@@ -153,6 +160,10 @@ namespace NSDevilX
 	static const CFloat4 sIdentityQuaternion;
 	CFloat4(Float value=0.0f)
 		:DirectX::XMFLOAT4(value,value,value,value)
+	{
+	}
+	CFloat4(float x,float y,float z,float w)
+		:DirectX::XMFLOAT4(x,y,z,w)
 	{
 	}
 	CFloat4(const DirectX::XMFLOAT3 & vec3,Float w)

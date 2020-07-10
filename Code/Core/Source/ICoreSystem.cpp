@@ -22,6 +22,11 @@ INetworkManager * NSDevilX::NSCore::ISystem::getNetworkManager() const
 	return CSystem::getSingleton().getNetworkManager();
 }
 
+NSGraphicsDriver::ISystem* NSDevilX::NSCore::ISystem::getGraphicsDriverSystem() const
+{
+	return CSystem::getSingleton().getGraphicsDriverSystem();
+}
+
 ITimer * NSDevilX::NSCore::ISystem::createTimer() const
 {
 	return CSystem::getSingleton().createTimer();

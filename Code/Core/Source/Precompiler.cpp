@@ -2,6 +2,7 @@
 using namespace NSDevilX;
 using namespace NSCore;
 
+#if DEVILX_WINDOW_SYSTEM == DEVILX_WINDOW_SYSTEM_WINDOWS
 #pragma comment(lib,"Common.lib")
 #pragma comment(lib,"tinyxml2.lib")
 #pragma comment(lib,"FreeImage.lib")
@@ -16,10 +17,7 @@ using namespace NSCore;
 #pragma comment(lib,"d3dcompiler.lib")
 #pragma comment(lib,"opengl32.lib")
 #pragma comment(lib,"glu32.lib")
+#pragma comment(lib,"vulkan-1.lib")
 //#pragma comment(lib,"libEGL.lib")
-#pragma comment(lib,"egl.lib")
-#if DEVILX_DEBUG
-#pragma comment(lib,"tbb_debug.lib")
-#else
-#pragma comment(lib,"tbb.lib")
+//#pragma comment(lib,"egl.lib")
 #endif
