@@ -25,23 +25,46 @@ NSDevilX::NSCore::NSGraphicsDriver::NSDXGI::IInstanceImp::~IInstanceImp()
 
 UInt32 NSDevilX::NSCore::NSGraphicsDriver::NSDXGI::IInstanceImp::enumPhysicsDevices(IPhysicsDevice** outDevices)
 {
-	if(mInternal)
+	if(mPhysicsDeviceGroups.empty())
 	{
-		CComPtr<IDXGIAdapter> adapter;
-		UINT index=0;
-		while(SUCCEEDED(mInternal->EnumAdapters(index,&adapter)))
-		{
-			if(outDevices)
-			{
-				auto dev =new NSDXGI::IPhysicsDeviceImp(adapter);
-				outDevices[index]=dev;
-				mPhysicsDevices.push_back(dev);
-			}
-			++index;
-		}
-		return index;
+		_enumPhysicsDevicesAndGroups();
 	}
-	return 0;
+	UInt32 ret=0;
+	if(outDevices)
+	{
+		for(auto group:mPhysicsDeviceGroups)
+		{
+			for(UInt32 i=0; i<group->getDeviceCount(); i++)
+			{
+				outDevices[ret++]=group->getDevice(i);
+			}
+		}
+	}
+	else
+	{
+		for(auto group:mPhysicsDeviceGroups)
+		{
+			ret+=group->getDeviceCount();
+		}
+	}
+	return ret;
+}
+
+UInt32 NSDevilX::NSCore::NSGraphicsDriver::NSDXGI::IInstanceImp::enumPhysicsDeviceGroups(IPhysicsDeviceGroup** outGroups)
+{
+	if(mPhysicsDeviceGroups.empty())
+	{
+		_enumPhysicsDevicesAndGroups();
+	}
+	if(outGroups)
+	{
+		UInt32 ptr=0;
+		for(auto group:mPhysicsDeviceGroups)
+		{
+			outGroups[ptr++]=group;
+		}
+	}
+	return static_cast<UInt32>(mPhysicsDeviceGroups.size());
 }
 
 Boolean NSDevilX::NSCore::NSGraphicsDriver::NSDXGI::IInstanceImp::initialize()
@@ -65,6 +88,23 @@ Boolean NSDevilX::NSCore::NSGraphicsDriver::NSDXGI::IInstanceImp::initialize()
 	return success;
 }
 
+Void NSDevilX::NSCore::NSGraphicsDriver::NSDXGI::IInstanceImp::_enumPhysicsDevicesAndGroups()
+{
+	if(mInternal)
+	{
+		CComPtr<IDXGIAdapter> adapter;
+		UINT index=0;
+		while(SUCCEEDED(mInternal->EnumAdapters(index,&adapter)))
+		{
+			auto group=DEVILX_NEW NSDXGI::IPhysicsDeviceGroupImp(adapter);
+			auto dev=DEVILX_NEW NSDXGI::IPhysicsDeviceImp(0,group);
+			group->addDevice(dev);
+			mPhysicsDeviceGroups.push_back(group);
+			++index;
+		}
+	}
+}
+
 #endif
 
 NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IInstanceImp::IInstanceImp()
@@ -83,28 +123,46 @@ NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IInstanceImp::~IInstanceImp()
 
 UInt32 NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IInstanceImp::enumPhysicsDevices(IPhysicsDevice** outDevices)
 {
-	uint32_t count=0;
-	auto success=vkEnumeratePhysicalDeviceGroups(mInternal,&count,nullptr);
-	if((VK_SUCCESS==success)&&(outDevices!=nullptr))
+	if(mPhysicsDeviceGroups.empty())
 	{
-		TVector(VkPhysicalDeviceGroupProperties) devices;
-		devices.resize(count);
-		success=vkEnumeratePhysicalDeviceGroups(mInternal,&count,&devices[0]);
-		if(VK_SUCCESS==success)
+		_enumPhysicsDevicesAndGroups();
+	}
+	UInt32 ret=0;
+	if(outDevices)
+	{
+		for(auto group:mPhysicsDeviceGroups)
 		{
-			UInt32 index=0;
-			for(uint32_t i=0; i<count; i++)
+			for(UInt32 i=0; i<group->getDeviceCount(); i++)
 			{
-				for(uint32_t j=0; j<devices[i].physicalDeviceCount; j++)
-				{
-					auto dev=new NSVulkan::IPhysicsDeviceImp(devices[i].physicalDevices[j],i);
-					mPhysicsDevices.push_back(dev);
-					outDevices[index]=dev;
-				}
+				outDevices[ret++]=group->getDevice(i);
 			}
 		}
 	}
-	return count;
+	else
+	{
+		for(auto group:mPhysicsDeviceGroups)
+		{
+			ret+=group->getDeviceCount();
+		}
+	}
+	return static_cast<UInt32>(mPhysicsDeviceGroups.size());
+}
+
+UInt32 NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IInstanceImp::enumPhysicsDeviceGroups(IPhysicsDeviceGroup** outGroups)
+{
+	if(mPhysicsDeviceGroups.empty())
+	{
+		_enumPhysicsDevicesAndGroups();
+	}
+	if(outGroups)
+	{
+		UInt32 ptr=0;
+		for(auto dev:mPhysicsDeviceGroups)
+		{
+			outGroups[ptr++]=dev;
+		}
+	}
+	return static_cast<UInt32>(mPhysicsDeviceGroups.size());
 }
 
 Boolean NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IInstanceImp::initialize()
@@ -145,4 +203,30 @@ Boolean NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IInstanceImp::initialize()
 		}
 	}
 	return success>=VK_SUCCESS;
+}
+
+void NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IInstanceImp::_enumPhysicsDevicesAndGroups()
+{
+	uint32_t count=0;
+	auto success=vkEnumeratePhysicalDeviceGroups(mInternal,&count,nullptr);
+	if(VK_SUCCESS==success)
+	{
+		TVector(VkPhysicalDeviceGroupProperties) groups;
+		groups.resize(count);
+		success=vkEnumeratePhysicalDeviceGroups(mInternal,&count,&groups[0]);
+		if(VK_SUCCESS==success)
+		{
+			UInt32 index=0;
+			for(uint32_t i=0; i<count; i++)
+			{
+				auto group=DEVILX_NEW IPhysicsDeviceGroupImp(i);
+				for(uint32_t j=0; j<groups[i].physicalDeviceCount; j++)
+				{
+					auto dev=new NSVulkan::IPhysicsDeviceImp(groups[i].physicalDevices[j],group);
+					group->addDevice(dev);
+				}
+				mPhysicsDeviceGroups.push_back(group);
+			}
+		}
+	}
 }

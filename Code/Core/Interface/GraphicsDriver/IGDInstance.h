@@ -12,6 +12,7 @@ namespace NSDevilX
 				virtual ~IInstance(){ }
 			public:
 				virtual UInt32 enumPhysicsDevices(IPhysicsDevice** outDevices=nullptr)=0;
+				virtual UInt32 enumPhysicsDeviceGroups(IPhysicsDeviceGroup** outGroups=nullptr)=0;
 			};
 		}
 	}
