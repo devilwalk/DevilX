@@ -1,0 +1,250 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|ARM">
+      <Configuration>Debug</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|ARM">
+      <Configuration>Release</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|ARM64">
+      <Configuration>Debug</Configuration>
+      <Platform>ARM64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|ARM64">
+      <Configuration>Release</Configuration>
+      <Platform>ARM64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x86">
+      <Configuration>Debug</Configuration>
+      <Platform>x86</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x86">
+      <Configuration>Release</Configuration>
+      <Platform>x86</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\Code\Common\Include\Common.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonAngle.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonAny.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonBounding.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonBoundingTreeNode.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonColour.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonCommandQueue.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonConstant.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonDefine.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonDirtyFlagContainer.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonGroup.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonMath.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonMatrix.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonMessageMode.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonNode.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonOctree.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonPathUtility.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonPlane.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonPlatformDefine.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonPlatformInclude.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonPointer.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonRange.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonRay.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonRect.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonReferenceObject.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonResourceContainer.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonSingleton.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonSTD.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonSTL.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonStringUtility.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonStruct.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonThirdPart.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonTransformNode.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonTreeContainer.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonType.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonUserDataContainer.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonUTFChar.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonUTFString.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonUtility.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonVector.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonVectorF.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonVectorI.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\ICommonUserDataContainerImp.h" />
+    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGroup.h" />
+    <ClInclude Include="..\..\..\Code\Common\Interface\ICommonUserDataContainer.h" />
+    <ClInclude Include="..\..\..\Code\Common\Source\Precompiler.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\Code\Common\Source\CommonAngle.cpp" />
+    <ClCompile Include="..\..\..\Code\Common\Source\CommonBounding.cpp" />
+    <ClCompile Include="..\..\..\Code\Common\Source\CommonColour.cpp" />
+    <ClCompile Include="..\..\..\Code\Common\Source\CommonMatrix.cpp" />
+    <ClCompile Include="..\..\..\Code\Common\Source\CommonMessageMode.cpp" />
+    <ClCompile Include="..\..\..\Code\Common\Source\CommonTransformNode.cpp" />
+    <ClCompile Include="..\..\..\Code\Common\Source\CommonTreeContainer.cpp" />
+    <ClCompile Include="..\..\..\Code\Common\Source\CommonUTFChar.cpp" />
+    <ClCompile Include="..\..\..\Code\Common\Source\CommonVectorF.cpp" />
+    <ClCompile Include="..\..\..\Code\Common\Source\CommonVectorI.cpp" />
+    <ClCompile Include="..\..\..\Code\Common\Source\Precompiler.cpp" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{78d756e1-9e76-4435-85f1-3e0b44cec245}</ProjectGuid>
+    <Keyword>Android</Keyword>
+    <RootNamespace>Common_Android</RootNamespace>
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+    <ApplicationType>Android</ApplicationType>
+    <ApplicationTypeRevision>1.0</ApplicationTypeRevision>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>Clang_3_6</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>Clang_3_6</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>Clang_3_6</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>Clang_3_6</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>Clang_3_6</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>Clang_3_6</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>Clang_3_6</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>Clang_3_6</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+    <Import Project="Common.props" />
+    <Import Project="Android.props" />
+    <Import Project="Android.ARM.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
+    <Import Project="Common.props" />
+    <Import Project="Android.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="Common.props" />
+    <Import Project="Android.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <Import Project="Common.props" />
+    <Import Project="Android.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
+    <Import Project="Common.props" />
+    <Import Project="Android.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+    <Import Project="Common.props" />
+    <Import Project="Android.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="Common.props" />
+    <Import Project="Android.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <Import Project="Common.props" />
+    <Import Project="Android.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+    <ClCompile />
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+</Project>

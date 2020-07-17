@@ -33,15 +33,14 @@ IInstance* NSDevilX::NSCore::NSGraphicsDriver::ISystemImp::createInstance(IEnum:
 			case IEnum::EInstance_Vulkan:
 				inst=DEVILX_NEW NSVulkan::IInstanceImp();
 				break;
+			case IEnum::EInstance_D3D12_1:
 			case IEnum::EInstance_D3D12_0:
-			case IEnum::EInstance_D3D11_3:
-			case IEnum::EInstance_D3D11_2:
 			case IEnum::EInstance_D3D11_1:
 			case IEnum::EInstance_D3D11_0:
 			case IEnum::EInstance_D3D10_1:
 			case IEnum::EInstance_D3D10_0:
 			case IEnum::EInstance_D3D9_3:
-				inst=DEVILX_NEW NSDXGI::IInstanceImp(types[i]);
+				inst=DEVILX_NEW NSD3D::IInstanceImp(types[i]);
 				break;
 			}
 			if(inst && inst->initialize())

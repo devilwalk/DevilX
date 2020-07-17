@@ -1,5 +1,6 @@
 #pragma once
-#include "IGDPhysicsDevice.h"
+#include "IGDPhysicalDevice.h"
+#include "IGDDevice.h"
 namespace NSDevilX
 {
 	namespace NSCore
@@ -11,8 +12,9 @@ namespace NSDevilX
 			protected:
 				virtual ~IInstance(){ }
 			public:
-				virtual UInt32 enumPhysicsDevices(IPhysicsDevice** outDevices=nullptr)=0;
-				virtual UInt32 enumPhysicsDeviceGroups(IPhysicsDeviceGroup** outGroups=nullptr)=0;
+				virtual UInt32 enumPhysicalDevices(IPhysicalDevice** outDevices=nullptr)=0;
+				virtual UInt32 enumPhysicalDeviceGroups(IPhysicalDeviceGroup** outGroups=nullptr)=0;
+				virtual IDevice* createDevice(IPhysicalDeviceGroup* deviceGroup)=0;
 			};
 		}
 	}

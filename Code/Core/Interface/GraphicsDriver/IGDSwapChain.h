@@ -1,17 +1,15 @@
 #pragma once
-#include "IGDSwapChain.h"
 namespace NSDevilX
 {
 	namespace NSCore
 	{
 		namespace NSGraphicsDriver
 		{
-			class IQueue
+			class ISwapChain
 			{
 			protected:
-				virtual ~IQueue(){ }
+				virtual ~ISwapChain(){ }
 			public:
-				virtual ISwapChain* createSwapChain()=0;
 			};
 		}
 	}

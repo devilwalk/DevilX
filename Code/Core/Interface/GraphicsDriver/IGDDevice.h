@@ -1,4 +1,5 @@
 #pragma once
+#include "IGDQueue.h"
 namespace NSDevilX
 {
 	namespace NSCore
@@ -12,6 +13,7 @@ namespace NSDevilX
 				{
 				}
 			public:
+				virtual IQueue* createQueue(IEnum::EQueue type)=0;
 			};
 		}
 	}

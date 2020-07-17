@@ -5,28 +5,27 @@
 namespace NSDevilX
 {
 	class COctreeNode
-		:public CBoundingTreeNode
+		:public TBoundingTreeNode<CBoundingBox>
 	{
 	public:
 		const static UInt32 sChildrenIndex[];
 	protected:
-		DirectX::BoundingBox mBoundingBox;
 	public:
-		using CBoundingTreeNode::CBoundingTreeNode;
+		using TBoundingTreeNode<CBoundingBox>::CBoundingTreeNode;
 		virtual ~COctreeNode()
 		{}
 		template<class containerT>
 		Void get(const CPlaneBoundedVolume & pbv,containerT * visible,containerT * unvisible)const
 		{
-			const DirectX::ContainmentType ct=pbv.contains<DirectX::BoundingBox>(mBoundingBox);
-			if(DirectX::CONTAINS==ct)
+			const auto ct=pbv.intersect(mBoundingBox);
+			if(CBoundingBox::EIntersect_Contain==ct)
 			{
 				if(visible)
 				{
 					getAll<containerT>(*visible);
 				}
 			}
-			else if(DirectX::INTERSECTS==ct)
+			else if(CBoundingBox::EIntersect_Intersect==ct)
 			{
 				if(visible)
 				{
@@ -41,7 +40,7 @@ namespace NSDevilX
 					}
 				}
 			}
-			else if(DirectX::DISJOINT==ct)
+			else if(CBoundingBox::EIntersect_None==ct)
 			{
 				if(unvisible)
 				{
@@ -51,7 +50,7 @@ namespace NSDevilX
 		}
 	protected:
 		//得到point属于的child,-1表示不属于child
-		UInt32 _getChildIndex(DirectX::FXMVECTOR point)const
+		/*UInt32 _getChildIndex(DirectX::FXMVECTOR point)const
 		{
 			DirectX::XMVECTOR delta_vec=point-mBoundingBox.Center;
 			if(DirectX::XMVector3Equal(delta_vec,DirectX::XMVectorZero()))
@@ -76,6 +75,6 @@ namespace NSDevilX
 				ret=_getChildIndex(CFloat3(aabb.Center));
 			}
 			return ret;
-		}
+		}*/
 	};
 }

@@ -19,5 +19,5 @@ using namespace NSCore;
 #pragma comment(lib,"glu32.lib")
 #pragma comment(lib,"vulkan-1.lib")
 //#pragma comment(lib,"libEGL.lib")
-//#pragma comment(lib,"egl.lib")
+#pragma comment(lib,"egl.lib")
 #endif

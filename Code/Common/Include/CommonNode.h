@@ -9,8 +9,8 @@ namespace NSDevilX
 	public:
 		typedef childrenContainerT Children;
 	protected:
-		TNode * mParent;
-		Children * mChildren;
+		TNode* mParent;
+		Children* mChildren;
 		VoidPtr mUserData;
 	public:
 		TNode()

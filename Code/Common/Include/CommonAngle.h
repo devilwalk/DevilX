@@ -18,7 +18,7 @@ namespace NSDevilX
 		operator CRadian()const;
 		Float valueRadian()const
 		{
-			return mValue/180.0f*DirectX::XM_PI;
+			return mValue/180.0f*3.1415926f;
 		}
 	};
 	class CRadian
@@ -36,7 +36,7 @@ namespace NSDevilX
 		operator CDegree()const;
 		Float valueDegree()const
 		{
-			return mValue*DirectX::XM_1DIVPI*180.0f;
+			return mValue*180.0f/3.1415926f;
 		}
 	};
 }

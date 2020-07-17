@@ -16,3 +16,11 @@
 #include <dlfcn.h>
 #include <endian.h>
 #endif
+#if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_ANDROID
+#include <jni.h>
+#include <errno.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/resource.h>
+#include <android/log.h>
+#endif

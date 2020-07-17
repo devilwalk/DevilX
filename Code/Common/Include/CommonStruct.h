@@ -3,7 +3,7 @@ namespace NSDevilX
 {
 	struct SMemoryBlock
 	{
-		VoidPtr mData;
+		BytePtr mData;
 		SizeT mSizeInByte;
 
 		SMemoryBlock(SizeT sizeInByte=0)

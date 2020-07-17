@@ -201,9 +201,6 @@
     <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDInterface.h">
       <Filter>Interface\GraphicsDriver</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDPhysicsDevice.h">
-      <Filter>Interface\GraphicsDriver</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDPipelineState.h">
       <Filter>Interface\GraphicsDriver</Filter>
     </ClInclude>
@@ -222,10 +219,19 @@
     <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDInstanceImp.h">
       <Filter>头文件\GraphicsDriver</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDPhysicsDeviceImp.h">
+    <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDDeviceImp.h">
       <Filter>头文件\GraphicsDriver</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDPhysicsDeviceGroupImp.h">
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDSwapChain.h">
+      <Filter>Interface\GraphicsDriver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDPhysicalDevice.h">
+      <Filter>Interface\GraphicsDriver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDPhysicalDeviceImp.h">
+      <Filter>头文件\GraphicsDriver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDPhysicalDeviceGroupImp.h">
       <Filter>头文件\GraphicsDriver</Filter>
     </ClInclude>
   </ItemGroup>
@@ -311,13 +317,16 @@
     <ClCompile Include="..\..\..\Code\Core\Source\GraphicsDriver\IGDInstanceImp.cpp">
       <Filter>源文件\GraphicsDriver</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\Source\GraphicsDriver\IGDPhysicsDeviceImp.cpp">
-      <Filter>源文件\GraphicsDriver</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Dependences\volk\volk.c">
       <Filter>源文件\GraphicsDriver</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\Source\GraphicsDriver\IGDPhysicsDeviceGroupImp.cpp">
+    <ClCompile Include="..\..\..\Code\Core\Source\GraphicsDriver\IGDDeviceImp.cpp">
+      <Filter>源文件\GraphicsDriver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\GraphicsDriver\IGDPhysicalDeviceGroupImp.cpp">
+      <Filter>源文件\GraphicsDriver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\GraphicsDriver\IGDPhysicalDeviceImp.cpp">
       <Filter>源文件\GraphicsDriver</Filter>
     </ClCompile>
   </ItemGroup>

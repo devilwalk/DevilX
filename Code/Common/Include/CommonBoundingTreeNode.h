@@ -4,49 +4,34 @@
 #include "CommonResourceContainer.h"
 namespace NSDevilX
 {
-	class CBoundingTreeNode
+	template<class TBoundingVolume>
+	class TBoundingTreeNode
 		:public TNode<TResourcePtrVector<CBoundingTreeNode> >
 	{
 	protected:
-		DirectX::BoundingBox mBoundingBox;
+		TBoundingVolume mBoundingVolume;
 	public:
-		CBoundingTreeNode(const DirectX::BoundingBox & aabb,CBoundingTreeNode * parent)
-			:mBoundingBox(aabb)
+		TBoundingTreeNode(const TBoundingVolume& bv,CBoundingTreeNode * parent)
+			:mBoundingVolume(bv)
 		{
 			setParent(parent);
 		}
-		virtual ~CBoundingTreeNode()
+		virtual ~TBoundingTreeNode()
 		{
 			destroyChildren();
 		}
-		const DirectX::BoundingBox & getBoundingBox()const
+		const auto & getBoundingVolume()const
 		{
-			return mBoundingBox;
-		}
-		DirectX::BoundingBox getChildBoudingBox(UInt32 index)const
-		{
-			DirectX::BoundingBox ret;
-			ret.Center=CFloat3(DirectX::g_BoxOffset[index]*0.5f+mBoundingBox.Center);
-			ret.Extents=CFloat3(CFloat3(mBoundingBox.Extents)*0.5f);
-			return ret;
+			return mBoundingVolume;
 		}
 
 	};
 	class CQuadTreeNode
-		:public CBoundingTreeNode
+		:public TBoundingTreeNode<CBoundingBox>
 	{
 	public:
-		const static UInt32 sChildrenIndex[];
-	public:
-		using CBoundingTreeNode::CBoundingTreeNode;
+		using TBoundingTreeNode<CBoundingBox>::TBoundingTreeNode;
 		virtual ~CQuadTreeNode()
 		{}
-		Boolean childContains(const DirectX::BoundingBox & aabb)const
-		{
-			assert(DirectX::DISJOINT!=mBoundingBox.Contains(aabb));
-			DirectX::XMVECTOR delta_size=DirectX::XMVectorAbs(aabb.Center-mBoundingBox.Center);
-			DirectX::XMVECTOR half_size=aabb.Extents*CFloat3(0.5f);
-			return DirectX::XMVector2Greater(delta_size,half_size);
-		}
 	};
 }
