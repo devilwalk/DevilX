@@ -16,6 +16,7 @@
 #include <dlfcn.h>
 #include <endian.h>
 #endif
+
 #if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_ANDROID
 #include <jni.h>
 #include <errno.h>

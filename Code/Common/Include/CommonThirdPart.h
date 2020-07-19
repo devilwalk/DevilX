@@ -3,13 +3,8 @@
 #include "CommonPlatformDefine.h"
 //#include "tbb/tbb.h"
 //#include "tbb/scalable_allocator.h"
-#if DEVILX_DEBUG
-#define _XM_NO_INTRINSICS_
-#endif
-//#include "DirectXMath.h"
-//#include "DirectXPackedVector.h"
-//#include "DirectXColors.h"
-//#include "DirectXCollision.h"
+#include "glm/glm.hpp"
+#include "glm/ext.hpp"
 #ifdef DEVILX_ANDROID
 #define ANDROID_NDK
 #endif

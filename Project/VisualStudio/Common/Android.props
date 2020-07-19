@@ -13,7 +13,9 @@
       <SmallerTypeCheck>true</SmallerTypeCheck>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PreprocessorDefinitions>DEVILX_ANDROID;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <CppLanguageStandard>c++1z</CppLanguageStandard>
+      <CppLanguageStandard>Default</CppLanguageStandard>
+      <ExceptionHandling>Enabled</ExceptionHandling>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>Debug</GenerateDebugInformation>

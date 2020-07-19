@@ -6,12 +6,12 @@ namespace NSDevilX
 {
 	template<class TBoundingVolume>
 	class TBoundingTreeNode
-		:public TNode<TResourcePtrVector<CBoundingTreeNode> >
+		:public TNode<TResourcePtrVector<TBoundingTreeNode<TBoundingVolume> > >
 	{
 	protected:
 		TBoundingVolume mBoundingVolume;
 	public:
-		TBoundingTreeNode(const TBoundingVolume& bv,CBoundingTreeNode * parent)
+		TBoundingTreeNode(const TBoundingVolume& bv,TBoundingTreeNode* parent)
 			:mBoundingVolume(bv)
 		{
 			setParent(parent);

@@ -149,7 +149,7 @@ namespace NSDevilX
 		{}
 		Boolean isValidate()const
 		{
-			return getMax()>=getMin();
+			return glm::all(glm::greaterThanEqual(getMax(),getMin()));
 		}
 		Boolean isValidateX()const
 		{

@@ -24,7 +24,7 @@ namespace NSDevilX
 		}
 		Void operator delete(VoidPtr address)
 		{
-			delete(mInternal);
+			delete mInternal;
 			mInternal=nullptr;
 		}
 	};

@@ -11,13 +11,13 @@ namespace NSDevilX
 		const static UInt32 sChildrenIndex[];
 	protected:
 	public:
-		using TBoundingTreeNode<CBoundingBox>::CBoundingTreeNode;
+		using TBoundingTreeNode<CBoundingBox>::TBoundingTreeNode;
 		virtual ~COctreeNode()
 		{}
 		template<class containerT>
 		Void get(const CPlaneBoundedVolume & pbv,containerT * visible,containerT * unvisible)const
 		{
-			const auto ct=pbv.intersect(mBoundingBox);
+			const auto ct=pbv.intersect(mBoundingVolume);
 			if(CBoundingBox::EIntersect_Contain==ct)
 			{
 				if(visible)

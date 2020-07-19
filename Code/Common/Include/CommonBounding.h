@@ -3,8 +3,7 @@
 #include "CommonSTL.h"
 namespace NSDevilX
 {
-	template<class TSelf>
-	class TBoundingVolume
+	class CBoundingVolume
 	{
 	public:
 		enum EIntersect
@@ -13,6 +12,11 @@ namespace NSDevilX
 			EIntersect_Intersect=1,
 			EIntersect_Contain=(1<<1)|EIntersect_Intersect
 		};
+	};
+	template<class TSelf>
+	class TBoundingVolume
+		:public CBoundingVolume
+	{
 	public:
 		TBoundingVolume()
 		{
@@ -21,7 +25,7 @@ namespace NSDevilX
 		{
 		}
 
-		virtual EIntersect intersect(const TBoundingVolume& bound)=0;
+		virtual EIntersect intersect(const TSelf& bound)const=0;
 	};
 
 	class CBoundingBox
@@ -29,6 +33,7 @@ namespace NSDevilX
 	{
 	protected:
 	public:
+		virtual EIntersect intersect(const CBoundingBox& bound) const override;
 	};
 
 	class CPlaneBoundedVolume
@@ -36,6 +41,8 @@ namespace NSDevilX
 	{
 	protected:
 	public:
-		EIntersect intersect(const CBoundingBox& bound);
+		EIntersect intersect(const CBoundingBox& bound)const;
+
+		virtual EIntersect intersect(const CPlaneBoundedVolume& bound) const override;
 	};
 }
