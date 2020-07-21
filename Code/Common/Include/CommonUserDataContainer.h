@@ -3,7 +3,7 @@
 #include "CommonSTL.h"
 namespace NSDevilX
 {
-	template<class TStringAllocator=std::allocator<Char>,class TAllocator1=std::allocator<std::pair<const std::basic_string<Char,std::char_traits<Char>,TStringAllocator>,CAny> >,class TAllocator2=std::allocator<std::pair<ConstVoidPtr,CAny> >,class TAllocator3=std::allocator<VoidPtr> >
+	template<class TStringAllocator=std::allocator<Char>,class TAllocator1=std::allocator<std::pair<const std::basic_string<Char,std::char_traits<Char>,TStringAllocator>,CAny> >,class TAllocator2=std::allocator<std::pair<const ConstVoidPtr,CAny> >,class TAllocator3=std::allocator<VoidPtr> >
 	class TUserDataContainer
 	{
 	public:

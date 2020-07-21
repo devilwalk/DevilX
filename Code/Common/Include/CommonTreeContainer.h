@@ -24,8 +24,8 @@ namespace NSDevilX
 		VoidPtr mData;
 	public:
 		TTreeNode(const RangeT & range,TTreeNode<RangeT> * parent=nullptr)
-			:mData(nullptr)
-			,mParent(parent)
+			:mParent(parent)
+			,mData(nullptr)
 		{
 			mData=new SData(range);
 		}
@@ -157,7 +157,7 @@ namespace NSDevilX
 	protected:
 	public:
 		TTreeLeaf(const PositionT & position)
-			:TTreeNode<RangeT>(RangeT(0,0))
+			:TTreeNode<RangeT>(RangeT(typename RangeT::DATA_TYPE(0),typename RangeT::DATA_TYPE(0)))
 		{
 			delete(static_cast<typename TTreeNode<RangeT>::SData*>(this->mData));
 			this->mData=new SData(position);

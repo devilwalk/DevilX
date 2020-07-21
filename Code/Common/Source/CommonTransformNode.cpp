@@ -2,12 +2,14 @@
 using namespace NSDevilX;
 NSDevilX::CTransform2DNode::CTransform2DNode()
 	:mDirtyFlag(0)
-{}
+{
+}
 
 NSDevilX::CTransform2DNode::~CTransform2DNode()
-{}
+{
+}
 
-Void NSDevilX::CTransform2DNode::setPosition(const CFloat2 & position)
+Void NSDevilX::CTransform2DNode::setPosition(const CFloat2& position)
 {
 	if(mLocal.setPosition(position))
 	{
@@ -15,12 +17,12 @@ Void NSDevilX::CTransform2DNode::setPosition(const CFloat2 & position)
 	}
 }
 
-const CFloat2 & NSDevilX::CTransform2DNode::getPosition() const
+const CFloat2& NSDevilX::CTransform2DNode::getPosition() const
 {
 	return mLocal.getPosition();
 }
 
-Void NSDevilX::CTransform2DNode::setRotation(const CRadian & radian)
+Void NSDevilX::CTransform2DNode::setRotation(const CRadian& radian)
 {
 	if(mLocal.setRotation(radian))
 	{
@@ -28,12 +30,12 @@ Void NSDevilX::CTransform2DNode::setRotation(const CRadian & radian)
 	}
 }
 
-const CRadian & NSDevilX::CTransform2DNode::getRotation() const
+const CRadian& NSDevilX::CTransform2DNode::getRotation() const
 {
 	return mLocal.getRotation();
 }
 
-Void NSDevilX::CTransform2DNode::setScale(const CFloat2 & scale)
+Void NSDevilX::CTransform2DNode::setScale(const CFloat2& scale)
 {
 	if(mLocal.setScale(scale))
 	{
@@ -41,22 +43,22 @@ Void NSDevilX::CTransform2DNode::setScale(const CFloat2 & scale)
 	}
 }
 
-const CFloat2 & NSDevilX::CTransform2DNode::getScale() const
+const CFloat2& NSDevilX::CTransform2DNode::getScale() const
 {
 	return mLocal.getScale();
 }
 
-const CFloat2 & NSDevilX::CTransform2DNode::getUp()
+const CFloat2& NSDevilX::CTransform2DNode::getUp()
 {
 	return mLocal.getUp();
 }
 
-const CFloat2 & NSDevilX::CTransform2DNode::getRight()
+const CFloat2& NSDevilX::CTransform2DNode::getRight()
 {
 	return mLocal.getRight();
 }
 
-const CFloat2 & NSDevilX::CTransform2DNode::getDerivedUp()
+const CFloat2& NSDevilX::CTransform2DNode::getDerivedUp()
 {
 	if(getParent())
 	{
@@ -69,7 +71,7 @@ const CFloat2 & NSDevilX::CTransform2DNode::getDerivedUp()
 	}
 }
 
-const CFloat2 & NSDevilX::CTransform2DNode::getDerivedRight()
+const CFloat2& NSDevilX::CTransform2DNode::getDerivedRight()
 {
 	if(getParent())
 	{
@@ -82,7 +84,7 @@ const CFloat2 & NSDevilX::CTransform2DNode::getDerivedRight()
 	}
 }
 
-const CFloat2 & NSDevilX::CTransform2DNode::getDerivedPosition()
+const CFloat2& NSDevilX::CTransform2DNode::getDerivedPosition()
 {
 	if(getParent())
 	{
@@ -95,7 +97,7 @@ const CFloat2 & NSDevilX::CTransform2DNode::getDerivedPosition()
 	}
 }
 
-const CRadian & NSDevilX::CTransform2DNode::getDerivedRotation()
+const CRadian& NSDevilX::CTransform2DNode::getDerivedRotation()
 {
 	if(getParent())
 	{
@@ -108,7 +110,7 @@ const CRadian & NSDevilX::CTransform2DNode::getDerivedRotation()
 	}
 }
 
-const CMatrix4F & NSDevilX::CTransform2DNode::getDerivedTransform()
+const CFloat4x4& NSDevilX::CTransform2DNode::getDerivedTransform()
 {
 	_update();
 	return mDerived.getTransform();
@@ -118,20 +120,21 @@ Void NSDevilX::CTransform2DNode::_update()
 {
 	if(EDirtyFlag_DerivedTransform&mDirtyFlag)
 	{
-		mDerived.setTransform(DirectX::XMMATRIX(mLocal.getTransform())*static_cast<CTransform2DNode*>(getParent())->getDerivedTransform());
+		mDerived.setTransform(mLocal.getTransform()*static_cast<CTransform2DNode*>(getParent())->getDerivedTransform());
 		mDirtyFlag&=~EDirtyFlag_DerivedTransform;
 	}
 }
 
 NSDevilX::CTransform3DNode::CTransform3DNode()
 	:mDirtyFlag(0)
-{}
+{
+}
 
 NSDevilX::CTransform3DNode::~CTransform3DNode()
 {
 }
 
-Void NSDevilX::CTransform3DNode::setPosition(const CFloat3 & position)
+Void NSDevilX::CTransform3DNode::setPosition(const CFloat3& position)
 {
 	if(mLocal.setPosition(position))
 	{
@@ -139,12 +142,12 @@ Void NSDevilX::CTransform3DNode::setPosition(const CFloat3 & position)
 	}
 }
 
-const CFloat3 & NSDevilX::CTransform3DNode::getPosition() const
+const CFloat3& NSDevilX::CTransform3DNode::getPosition() const
 {
 	return mLocal.getPosition();
 }
 
-Void NSDevilX::CTransform3DNode::setOrientation(const CFloat4 & orientation)
+Void NSDevilX::CTransform3DNode::setOrientation(const CQuaterionF& orientation)
 {
 	if(mLocal.setOrientation(orientation))
 	{
@@ -152,12 +155,12 @@ Void NSDevilX::CTransform3DNode::setOrientation(const CFloat4 & orientation)
 	}
 }
 
-const CFloat4 & NSDevilX::CTransform3DNode::getOrientation() const
+const CQuaterionF& NSDevilX::CTransform3DNode::getOrientation() const
 {
 	return mLocal.getOrientation();
 }
 
-Void NSDevilX::CTransform3DNode::setScale(const CFloat3 & scale)
+Void NSDevilX::CTransform3DNode::setScale(const CFloat3& scale)
 {
 	if(mLocal.setScale(scale))
 	{
@@ -165,44 +168,44 @@ Void NSDevilX::CTransform3DNode::setScale(const CFloat3 & scale)
 	}
 }
 
-const CFloat3 & NSDevilX::CTransform3DNode::getScale() const
+const CFloat3& NSDevilX::CTransform3DNode::getScale() const
 {
 	return mLocal.getScale();
 }
 
-Void NSDevilX::CTransform3DNode::setDirection(const CFloat3 & direction,const CFloat3 & up)
+Void NSDevilX::CTransform3DNode::setDirection(const CFloat3& direction,const CFloat3& up)
 {
-	DirectX::XMVECTOR right_vec=DirectX::XMVector3Cross(up,direction);
-	DirectX::XMVECTOR new_up_vec=DirectX::XMVector3Cross(direction,right_vec);
+	auto right_vec=CMath::cross(up,direction);
+	auto new_up_vec=CMath::cross(direction,right_vec);
 	CFloat3 dir(direction),right(right_vec),new_up(new_up_vec);
-	DirectX::FXMMATRIX trans=DirectX::XMMatrixSet(right.x,right.y,right.z,0.0f
+	auto trans=CFloat4x4(right.x,right.y,right.z,0.0f
 		,new_up.x,new_up.y,new_up.z,0.0f
 		,dir.x,dir.y,dir.z,0.0f
 		,0.0f,0.0f,0.0f,1.0f);
-	setOrientation(DirectX::XMQuaternionRotationMatrix(trans));
+	setOrientation(CQuaterionF(trans));
 }
 
-Void NSDevilX::CTransform3DNode::setRotation(const CDegree & yaw,const CDegree & roll,const CDegree & pitch)
+Void NSDevilX::CTransform3DNode::setRotation(const CDegree& yaw,const CDegree& roll,const CDegree& pitch)
 {
-	setOrientation(DirectX::XMQuaternionRotationRollPitchYaw(pitch.valueRadian(),yaw.valueRadian(),roll.valueRadian()));
+	setOrientation(CMath::yawPitchRoll(yaw.valueRadian(),pitch.valueRadian(),roll.valueRadian()));
 }
 
-const CFloat3 & NSDevilX::CTransform3DNode::getDirection()
+const CFloat3& NSDevilX::CTransform3DNode::getDirection()
 {
 	return mLocal.getDirection();
 }
 
-const CFloat3 & NSDevilX::CTransform3DNode::getUp()
+const CFloat3& NSDevilX::CTransform3DNode::getUp()
 {
 	return mLocal.getUp();
 }
 
-const CFloat3 & NSDevilX::CTransform3DNode::getRight()
+const CFloat3& NSDevilX::CTransform3DNode::getRight()
 {
 	return mLocal.getRight();
 }
 
-const CFloat3 & NSDevilX::CTransform3DNode::getDerivedDirection()
+const CFloat3& NSDevilX::CTransform3DNode::getDerivedDirection()
 {
 	if(getParent())
 	{
@@ -215,7 +218,7 @@ const CFloat3 & NSDevilX::CTransform3DNode::getDerivedDirection()
 	}
 }
 
-const CFloat3 & NSDevilX::CTransform3DNode::getDerivedUp()
+const CFloat3& NSDevilX::CTransform3DNode::getDerivedUp()
 {
 	if(getParent())
 	{
@@ -228,7 +231,7 @@ const CFloat3 & NSDevilX::CTransform3DNode::getDerivedUp()
 	}
 }
 
-const CFloat3 & NSDevilX::CTransform3DNode::getDerivedRight()
+const CFloat3& NSDevilX::CTransform3DNode::getDerivedRight()
 {
 	if(getParent())
 	{
@@ -241,7 +244,7 @@ const CFloat3 & NSDevilX::CTransform3DNode::getDerivedRight()
 	}
 }
 
-const CFloat3 & NSDevilX::CTransform3DNode::getDerivedPosition()
+const CFloat3& NSDevilX::CTransform3DNode::getDerivedPosition()
 {
 	if(getParent())
 	{
@@ -254,7 +257,7 @@ const CFloat3 & NSDevilX::CTransform3DNode::getDerivedPosition()
 	}
 }
 
-const CFloat4 & NSDevilX::CTransform3DNode::getDerivedOrientation()
+const CQuaterionF& NSDevilX::CTransform3DNode::getDerivedOrientation()
 {
 	if(getParent())
 	{
@@ -267,7 +270,7 @@ const CFloat4 & NSDevilX::CTransform3DNode::getDerivedOrientation()
 	}
 }
 
-const CMatrix4F & NSDevilX::CTransform3DNode::getDerivedTransform()
+const CFloat4x4& NSDevilX::CTransform3DNode::getDerivedTransform()
 {
 	_update();
 	return mDerived.getTransform();
@@ -277,7 +280,7 @@ Void NSDevilX::CTransform3DNode::_update()
 {
 	if(EDirtyFlag_DerivedTransform&mDirtyFlag)
 	{
-		mDerived.setTransform(DirectX::XMMATRIX(mLocal.getTransform())*static_cast<CTransform3DNode*>(getParent())->getDerivedTransform());
+		mDerived.setTransform(mLocal.getTransform()*static_cast<CTransform3DNode*>(getParent())->getDerivedTransform());
 		mDirtyFlag&=~EDirtyFlag_DerivedTransform;
 	}
 }

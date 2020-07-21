@@ -82,7 +82,7 @@ namespace NSDevilX
 			{
                 for(auto child:*mChildren)
                 {
-                    child->getAll<containerT>(ret);
+                    child->getAll(ret);
                 }
 			}
 		}

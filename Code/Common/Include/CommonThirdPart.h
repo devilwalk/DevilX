@@ -1,11 +1,9 @@
 #pragma once
 #include "CommonDefine.h"
 #include "CommonPlatformDefine.h"
-//#include "tbb/tbb.h"
-//#include "tbb/scalable_allocator.h"
-#include "glm/glm.hpp"
-#include "glm/ext.hpp"
-#ifdef DEVILX_ANDROID
+#include "tbb/tbb.h"
+#include "tbb/scalable_allocator.h"
+#if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_ANDROID
 #define ANDROID_NDK
 #endif
 #include "tinyxml2.h"
@@ -23,7 +21,7 @@
 #include FT_FREETYPE_H
 #include FT_GLYPH_H
 #define ASIO_STANDALONE
-#include "asio.hpp"
+//#include "asio.hpp"
 #define GLEW_STATIC
 #define GLEW_EGL
 #define GLEW_NO_GLU
@@ -42,3 +40,6 @@
 //#include <vulkan/vulkan.h>
 #include "lua.h"
 #include "noise.h"
+#define GLM_ENABLE_EXPERIMENTAL
+#include "glm/glm.hpp"
+#include "glm/ext.hpp"

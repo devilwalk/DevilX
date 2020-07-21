@@ -6,7 +6,9 @@ namespace NSDevilX
 	typedef short Int16;
 	typedef unsigned short UInt16;
 	typedef int Int32;
+	typedef int Int;
 	typedef unsigned int UInt32;
+	typedef unsigned int UInt;
 	typedef long long Int64;
 	typedef unsigned long long UInt64;
 	typedef std::size_t SizeT;

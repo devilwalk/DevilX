@@ -1,9 +1,9 @@
 #include "Precompiler.h"
 using namespace NSDevilX;
 CMessageSource::CMessageSource(UInt32 message,CMessageNotifier * notifier)
-	:mMessage(message)
-	,mNotifier(notifier)
+	:mNotifier(notifier)
 	,mNotifyListenersWhenDestruction(True)
+	,mMessage(message)
 {
 }
 CMessageSource::~CMessageSource()
@@ -61,8 +61,8 @@ CMessageNotifier * CMessageSource::getNotifier()const
 
 CMessageListener::CMessageListener(CMessageReceiver * receiver)
 	:mReceiver(receiver)
-	,mNotifySourceWhenDestruction(True)
 	,mSourceList(nullptr)
+	,mNotifySourceWhenDestruction(True)
 {}
 CMessageListener::~CMessageListener()
 {

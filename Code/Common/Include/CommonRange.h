@@ -1,10 +1,11 @@
 #pragma once
-#include "CommonVectorF.h"
-#include "CommonVectorI.h"
+#include "CommonVector.h"
 namespace NSDevilX
 {
 	class CRangeI
 	{
+	public:
+		typedef Int32 DATA_TYPE;
 	protected:
 		Int32 mMin;
 		Int32 mMax;
@@ -132,6 +133,7 @@ namespace NSDevilX
 			EMergeResult_NearBy,
 			EMergeResult_Fail
 		};
+		typedef CInt3 DATA_TYPE;
 	protected:
 		CInt3 mMin;
 		CInt3 mMax;
@@ -149,7 +151,7 @@ namespace NSDevilX
 		{}
 		Boolean isValidate()const
 		{
-			return glm::all(glm::greaterThanEqual(getMax(),getMin()));
+			return CMath::all(CMath::greaterEqual(getMax(),getMin()));
 		}
 		Boolean isValidateX()const
 		{
@@ -182,18 +184,18 @@ namespace NSDevilX
 		EMergeResult merge(const CRange3I & range,OUT CRange3I * mergedRange)const
 		{
 			assert(isValidate()&&range.isValidate());
-			const DirectX::XMVECTOR src_min_vec=getMin();
-			const DirectX::XMVECTOR src_max_vec=getMax();
-			const DirectX::XMVECTOR dst_min_vec=range.getMin();
-			const DirectX::XMVECTOR dst_max_vec=range.getMax();
-			const DirectX::XMVECTOR one_vec=CInt3::sOne;
-			const CInt3 src_size=src_max_vec-src_min_vec+one_vec;
+			const auto& src_min_vec=getMin();
+			const auto& src_max_vec=getMax();
+			const auto& dst_min_vec=range.getMin();
+			const auto& dst_max_vec=range.getMax();
+			const auto& one_vec=CMath::sInt3_One;
+			const auto src_size=src_max_vec-src_min_vec+one_vec;
 			const auto src_volume=src_size.x*src_size.y*src_size.z;
-			const CInt3 dst_size=dst_max_vec-dst_min_vec+one_vec;
+			const auto dst_size=dst_max_vec-dst_min_vec+one_vec;
 			const auto dst_volume=dst_size.x*dst_size.y*dst_size.z;
-			const auto new_min=DirectX::XMVectorMin(src_min_vec,dst_min_vec);
-			const auto new_max=DirectX::XMVectorMax(src_max_vec,dst_max_vec);
-			const CInt3 new_size=new_max-new_min+one_vec;
+			const auto new_min=CMath::min(src_min_vec,dst_min_vec);
+			const auto new_max=CMath::max(src_max_vec,dst_max_vec);
+			const auto new_size=new_max-new_min+one_vec;
 			const auto new_volume=new_size.x*new_size.y*new_size.z;
 			if(new_volume<=src_volume+dst_volume)
 			{
@@ -206,7 +208,7 @@ namespace NSDevilX
 			}
 			else
 			{
-				CInt3 delta_size=new_size-(src_size+dst_size);
+				auto delta_size=new_size-(src_size+dst_size);
 				if((delta_size.x==0&&delta_size.y==0)||(delta_size.x==0&&delta_size.z==0)||(delta_size.z==0&&delta_size.y==0))
 					return EMergeResult_NearBy;
 				else
@@ -220,18 +222,18 @@ namespace NSDevilX
 		Boolean contains(const CInt3 & position)const
 		{
 			assert(isValidate());
-			return (getMin()<=position)&&(getMax()>=position);
+			return CMath::all(CMath::lessEqual(getMin(),position))&&CMath::all(CMath::greaterEqual(getMax(),position));
 		}
 		Boolean contains(const CRange3I & range)const
 		{
 			assert(isValidate()&&range.isValidate());
-			return (getMin()<=range.getMin())&&(getMax()>=range.getMax());
+			return CMath::all(CMath::lessEqual(getMin(),range.getMin()))&&CMath::all(CMath::greaterEqual(getMax(),range.getMax()));
 		}
 		static Void createIntersection(const CRange3I & r0,const CRange3I & r1,OUT CRange3I & range)
 		{
 			assert(r0.isValidate()&&r1.isValidate());
-			range.setMin(DirectX::XMVectorMax(r0.getMin(),r1.getMin()));
-			range.setMax(DirectX::XMVectorMin(r0.getMax(),r1.getMax()));
+			range.setMin(CMath::max(r0.getMin(),r1.getMin()));
+			range.setMax(CMath::min(r0.getMax(),r1.getMax()));
 		}
 		template<class srcContainerT,class dstContainerT>
 		static Void createRanges(const srcContainerT & positions,OUT dstContainerT & ranges)

@@ -23,35 +23,31 @@ namespace NSDevilX
 				EDirtyFlag_Right=EDirtyFlag_Up<<1
 			};
 		protected:
-			CFloat2 * mPosition;
+			CFloat2 mPosition;
 			CRadian mRotation;
-			CFloat2 * mScale;
-			CFloat2 * mUp;
-			CFloat2 * mRight;
-			CMatrix4F * mTransform;
+			CFloat2 mScale;
+			CFloat2 mUp;
+			CFloat2 mRight;
+			CFloat4x4 mTransform;
 			UInt32 mDirtyFlag;
 		public:
 			CLocal()
-				:mPosition(nullptr)
+				:mPosition(0)
 				,mRotation(0)
-				,mScale(nullptr)
-				,mUp(nullptr)
-				,mRight(nullptr)
-				,mTransform(nullptr)
+				,mScale(1.0f)
+				,mUp(0,1)
+				,mRight(1,0)
+				,mTransform(CMath::sFloat4x4_Identity)
 				,mDirtyFlag(0)
 			{}
 			~CLocal()
 			{
-				delete mPosition;
-				delete mScale;
-				delete mUp;
-				delete mRight;
 			}
-			Boolean setPosition(const CFloat2 & position)
+			auto setPosition(const CFloat2 & position)
 			{
-				if(position!=getPosition())
+				if(position!=mPosition)
 				{
-					_getPosition()=position;
+					mPosition=position;
 					mDirtyFlag|=EDirtyFlag_Transform;
 					return true;
 				}
@@ -60,13 +56,13 @@ namespace NSDevilX
 					return false;
 				}
 			}
-			const CFloat2 & getPosition()const
+			const auto& getPosition()const
 			{
-				return mPosition?*mPosition:CFloat2::sZero;
+				return mPosition;
 			}
-			Boolean setRotation(const CRadian & radian)
+			auto setRotation(const CRadian & radian)
 			{
-				if(radian!=getRotation())
+				if(radian!=mRotation)
 				{
 					mRotation=radian;
 					mDirtyFlag|=EDirtyFlag_Transform|EDirtyFlag_Up|EDirtyFlag_Right;
@@ -77,15 +73,15 @@ namespace NSDevilX
 					return false;
 				}
 			}
-			const CRadian & getRotation()const
+			const auto& getRotation()const
 			{
 				return mRotation;
 			}
-			Boolean setScale(const CFloat2 & scale)
+			auto setScale(const CFloat2 & scale)
 			{
-				if(scale!=getScale())
+				if(scale!=mScale)
 				{
-					_getScale()=scale;
+					mScale=scale;
 					mDirtyFlag|=EDirtyFlag_Transform;
 					return true;
 				}
@@ -94,72 +90,36 @@ namespace NSDevilX
 					return false;
 				}
 			}
-			const CFloat2 & getScale()const
+			const auto& getScale()const
 			{
-				return mScale?*mScale:CFloat2::sOne;
+				return mScale;
 			}
-			const CFloat2 & getUp()
+			const auto& getUp()
 			{
 				if(EDirtyFlag_Up&mDirtyFlag)
 				{
-					_getUp();
 					_updateCoordAxis();
 				}
-				return mUp?*mUp:CFloat2::sUnitY;
+				return mUp;
 			}
-			const CFloat2 & getRight()
+			const auto& getRight()
 			{
 				if(EDirtyFlag_Right&mDirtyFlag)
 				{
-					_getRight();
 					_updateCoordAxis();
 				}
-				return mRight?*mRight:CFloat2::sUnitX;
+				return mRight;
 			}
-			const CMatrix4F & getTransform()
+			const auto & getTransform()
 			{
 				_updateTransform();
-				return mTransform?*mTransform:CMatrix4F::sIdentity;
+				return mTransform;
 			}
 		protected:
-			CFloat2 & _getPosition()
-			{
-				if(!mPosition)
-					mPosition=new CFloat2(CFloat2::sZero);
-				return *mPosition;
-			}
-			CFloat2 & _getScale()
-			{
-				if(!mScale)
-					mScale=new CFloat2(CFloat2::sOne);
-				return *mScale;
-			}
-			CFloat2 & _getUp()
-			{
-				if(!mUp)
-					mUp=new CFloat2(CFloat2::sUnitY);
-				return *mUp;
-			}
-			CFloat2 & _getRight()
-			{
-				if(!mRight)
-					mRight=new CFloat2(CFloat2::sUnitX);
-				return *mRight;
-			}
-			CMatrix4F & _getTransform()
-			{
-				if(!mTransform)
-					mTransform=new CMatrix4F(CMatrix4F::sIdentity);
-				return *mTransform;
-			}
 			Void _updateTransform()
 			{
 				if(EDirtyFlag_Transform&mDirtyFlag)
 				{
-					DirectX::FXMMATRIX scale_matrix=DirectX::XMMatrixScalingFromVector(getScale());
-					DirectX::FXMMATRIX rotate_matrix=DirectX::XMMatrixRotationZ(getRotation());
-					DirectX::FXMMATRIX translate_matrix=DirectX::XMMatrixTranslationFromVector(getPosition());
-					_getTransform()=DirectX::XMMatrixMultiply(DirectX::XMMatrixMultiply(scale_matrix,rotate_matrix),translate_matrix);
 					mDirtyFlag&=~EDirtyFlag_Transform;
 				}
 			}
@@ -169,17 +129,6 @@ namespace NSDevilX
 					||(EDirtyFlag_Right&mDirtyFlag)
 					)
 				{
-					auto trans=DirectX::XMMatrixRotationZ(getRotation());
-					if(mUp)
-					{
-						*mUp=trans.r[1];
-						mDirtyFlag&=~EDirtyFlag_Up;
-					}
-					if(mRight)
-					{
-						*mRight=trans.r[0];
-						mDirtyFlag&=~EDirtyFlag_Right;
-					}
 				}
 			}
 		};
@@ -195,30 +144,27 @@ namespace NSDevilX
 				EDirtyFlag_Right=EDirtyFlag_Up<<1
 			};
 		protected:
-			CFloat2 * mPosition;
+			CFloat2 mPosition;
 			CRadian mRotation;
-			CFloat2 * mScale;
-			CFloat2 * mUp;
-			CFloat2 * mRight;
-			CMatrix4F mTransform;
+			CFloat2 mScale;
+			CFloat2 mUp;
+			CFloat2 mRight;
+			CFloat4x4 mTransform;
 			UInt32 mDirtyFlag;
 		public:
 			CDerived()
-				:mPosition(nullptr)
+				:mPosition(0)
 				,mRotation(0)
-				,mScale(nullptr)
-				,mUp(nullptr)
-				,mRight(nullptr)
-				,mTransform(CMatrix4F::sIdentity)
+				,mScale(1)
+				,mUp(0,1)
+				,mRight(1,0)
+				,mTransform(CMath::sFloat4x4_Identity)
 				,mDirtyFlag(0)
 			{}
 			~CDerived()
 			{
-				delete mPosition;
-				delete mUp;
-				delete mRight;
 			}
-			Void setTransform(const DirectX::XMMATRIX & trans)
+			Void setTransform(const CFloat4x4& trans)
 			{
 				if(trans!=mTransform)
 				{
@@ -226,20 +172,19 @@ namespace NSDevilX
 					mDirtyFlag|=EDirtyFlag_Position|EDirtyFlag_Rotation|EDirtyFlag_Scale|EDirtyFlag_Up|EDirtyFlag_Right;
 				}
 			}
-			const CMatrix4F & getTransform()const
+			const auto& getTransform()const
 			{
 				return mTransform;
 			}
-			const CFloat2 & getPosition()
+			const auto& getPosition()
 			{
 				if(EDirtyFlag_Position&mDirtyFlag)
 				{
-					_getPosition();
 					_updateTransform();
 				}
-				return mPosition?*mPosition:CFloat2::sZero;
+				return mPosition;
 			}
-			const CRadian & getRotation()
+			const auto& getRotation()
 			{
 				if(EDirtyFlag_Rotation&mDirtyFlag)
 				{
@@ -247,82 +192,37 @@ namespace NSDevilX
 				}
 				return mRotation;
 			}
-			const CFloat2 & getScale()
+			const auto& getScale()
 			{
 				if(EDirtyFlag_Scale&mDirtyFlag)
 				{
-					_getScale();
 					_updateTransform();
 				}
-				return mScale?*mScale:CFloat2::sUnitY;
+				return mScale;
 			}
-			const CFloat2 & getUp()
+			const auto& getUp()
 			{
 				if(EDirtyFlag_Up&mDirtyFlag)
 				{
-					_getUp();
 					_updateCoordAxis();
 				}
-				return mUp?*mUp:CFloat2::sUnitY;
+				return mUp;
 			}
-			const CFloat2 & getRight()
+			const auto& getRight()
 			{
 				if(EDirtyFlag_Right&mDirtyFlag)
 				{
-					_getRight();
 					_updateCoordAxis();
 				}
-				return mRight?*mRight:CFloat2::sUnitX;
+				return mRight;
 			}
 		protected:
-			CFloat2 & _getPosition()
-			{
-				if(!mPosition)
-					mPosition=new CFloat2(CFloat2::sZero);
-				return *mPosition;
-			}
-			CFloat2 & _getScale()
-			{
-				if(!mScale)
-					mScale=new CFloat2(CFloat2::sOne);
-				return *mScale;
-			}
-			CFloat2 & _getUp()
-			{
-				if(!mUp)
-					mUp=new CFloat2(CFloat2::sUnitY);
-				return *mUp;
-			}
-			CFloat2 & _getRight()
-			{
-				if(!mRight)
-					mRight=new CFloat2(CFloat2::sUnitX);
-				return *mRight;
-			}
 			Void _updateTransform()
 			{
 				if((EDirtyFlag_Position&mDirtyFlag)
 					||(EDirtyFlag_Rotation&mDirtyFlag)
 					)
 				{
-					DirectX::XMVECTOR translate,rotate,scale;
-					DirectX::XMMatrixDecompose(&scale,&rotate,&translate,getTransform());
-					if(mPosition)
-					{
-						*mPosition=translate;
-						mDirtyFlag&=~EDirtyFlag_Position;
-					}
-					DirectX::XMVECTOR rotate_axis;
-					Float rotate_radian;
-					DirectX::XMQuaternionToAxisAngle(&rotate_axis,&rotate_radian,rotate);
-					assert(CFloat3::sUnitZ==rotate_axis);
-					mRotation=rotate_radian;
-					mDirtyFlag&=~EDirtyFlag_Rotation;
-					if(mScale)
-					{
-						*mScale=scale;
-						mDirtyFlag&=~EDirtyFlag_Scale;
-					}
 				}
 			}
 			Void _updateCoordAxis()
@@ -331,17 +231,6 @@ namespace NSDevilX
 					||(EDirtyFlag_Right&mDirtyFlag)
 					)
 				{
-					DirectX::FXMMATRIX trans=DirectX::XMMatrixRotationZ(getRotation());
-					if(mUp)
-					{
-						*mUp=trans.r[1];
-						mDirtyFlag&=~EDirtyFlag_Up;
-					}
-					if(mRight)
-					{
-						*mRight=trans.r[0];
-						mDirtyFlag&=~EDirtyFlag_Right;
-					}
 				}
 			}
 		};
@@ -360,12 +249,12 @@ namespace NSDevilX
 		const CFloat2 & getScale()const;
 		const CFloat2 & getUp();
 		const CFloat2 & getRight();
-		const CMatrix4F & getTransform();
+		const CFloat4x4 & getTransform();
 		const CFloat2 & getDerivedUp();
 		const CFloat2 & getDerivedRight();
 		const CFloat2 & getDerivedPosition();
 		const CRadian & getDerivedRotation();
-		const CMatrix4F & getDerivedTransform();
+		const CFloat4x4& getDerivedTransform();
 	protected:
 		Void _update();
 	};
@@ -388,40 +277,33 @@ namespace NSDevilX
 				EDirtyFlag_Right=EDirtyFlag_Up<<1
 			};
 		protected:
-			CFloat3 * mPosition;
-			CFloat4 * mOrientation;
-			CFloat3 * mScale;
-			CMatrix4F * mTransform;
-			CFloat3 * mDirection;
-			CFloat3 * mUp;
-			CFloat3 * mRight;
+			CFloat3 mPosition;
+			CQuaterionF mOrientation;
+			CFloat3 mScale;
+			CFloat4x4 mTransform;
+			CFloat3 mDirection;
+			CFloat3 mUp;
+			CFloat3 mRight;
 			UInt32 mDirtyFlag;
 		public:
 			CLocal()
-				:mPosition(nullptr)
-				,mOrientation(nullptr)
-				,mScale(nullptr)
-				,mTransform(nullptr)
-				,mDirection(nullptr)
-				,mUp(nullptr)
-				,mRight(nullptr)
+				:mPosition(0)
+				,mOrientation(CMath::sQuaterionF_Identity)
+				,mScale(1)
+				,mTransform(CMath::sFloat4x4_Identity)
+				,mDirection(CMath::sUnitZ)
+				,mUp(CMath::sUnitY)
+				,mRight(CMath::sUnitX)
 				,mDirtyFlag(0)
 			{}
 			~CLocal()
 			{
-				delete mPosition;
-				delete mOrientation;
-				delete mScale;
-				delete mTransform;
-				delete mDirection;
-				delete mUp;
-				delete mRight;
 			}
-			Boolean setPosition(const CFloat3 & position)
+			auto setPosition(const CFloat3 & position)
 			{
-				if(position!=getPosition())
+				if(position!=mPosition)
 				{
-					_getPosition()=position;
+					mPosition=position;
 					mDirtyFlag|=EDirtyFlag_Transform;
 					return true;
 				}
@@ -430,16 +312,16 @@ namespace NSDevilX
 					return false;
 				}
 			}
-			const CFloat3 & getPosition()const
+			const auto& getPosition()const
 			{
-				return mPosition?*mPosition:CFloat3::sZero;
+				return mPosition;
 			}
-			Boolean setOrientation(const CFloat4 & orientation)
+			auto setOrientation(const CQuaterionF& orientation)
 			{
-				auto nor_orientation=DirectX::XMQuaternionNormalize(orientation);
-				if(nor_orientation!=getOrientation())
+				auto nor_orientation=CMath::normalize(orientation);
+				if(nor_orientation!=mOrientation)
 				{
-					_getOrientation()=nor_orientation;
+					mOrientation=nor_orientation;
 					mDirtyFlag|=EDirtyFlag_Transform|EDirtyFlag_Direction|EDirtyFlag_Up|EDirtyFlag_Right;
 					return true;
 				}
@@ -448,15 +330,15 @@ namespace NSDevilX
 					return false;
 				}
 			}
-			const CFloat4 & getOrientation()const
+			const auto& getOrientation()const
 			{
-				return mOrientation?*mOrientation:CFloat4::sIdentityQuaternion;
+				return mOrientation;
 			}
-			Boolean setScale(const CFloat3 & scale)
+			auto setScale(const CFloat3 & scale)
 			{
-				if(scale!=getScale())
+				if(scale!=mScale)
 				{
-					_getScale()=scale;
+					mScale=scale;
 					mDirtyFlag|=EDirtyFlag_Transform;
 					return true;
 				}
@@ -467,91 +349,42 @@ namespace NSDevilX
 			}
 			const CFloat3 & getScale()const
 			{
-				return mScale?*mScale:CFloat3::sOne;
+				return mScale;
 			}
 			const CFloat3 & getDirection()
 			{
 				if(EDirtyFlag_Direction&mDirtyFlag)
 				{
-					_getDirection();
 					_updateCoordAxis();
 				}
-				return mDirection?*mDirection:CFloat3::sUnitZ;
+				return mDirection;
 			}
 			const CFloat3 & getUp()
 			{
 				if(EDirtyFlag_Up&mDirtyFlag)
 				{
-					_getUp();
 					_updateCoordAxis();
 				}
-				return mUp?*mUp:CFloat3::sUnitY;
+				return mUp;
 			}
 			const CFloat3 & getRight()
 			{
 				if(EDirtyFlag_Right&mDirtyFlag)
 				{
-					_getRight();
 					_updateCoordAxis();
 				}
-				return mRight?*mRight:CFloat3::sUnitX;
+				return mRight;
 			}
-			const CMatrix4F & getTransform()
+			const CFloat4x4 & getTransform()
 			{
 				_updateTransform();
-				return mTransform?*mTransform:CMatrix4F::sIdentity;
+				return mTransform;
 			}
 		protected:
-			CFloat3 & _getPosition()
-			{
-				if(!mPosition)
-					mPosition=new CFloat3(CFloat3::sZero);
-				return *mPosition;
-			}
-			CFloat4 & _getOrientation()
-			{
-				if(!mOrientation)
-					mOrientation=new CFloat4(CFloat4::sIdentityQuaternion);
-				return *mOrientation;
-			}
-			CFloat3 & _getScale()
-			{
-				if(!mScale)
-					mScale=new CFloat3(CFloat3::sOne);
-				return *mScale;
-			}
-			CMatrix4F & _getTransform()
-			{
-				if(!mTransform)
-					mTransform=new CMatrix4F(CMatrix4F::sIdentity);
-				return *mTransform;
-			}
-			CFloat3 & _getDirection()
-			{
-				if(!mDirection)
-					mDirection=new CFloat3(CFloat3::sUnitZ);
-				return *mDirection;
-			}
-			CFloat3 & _getUp()
-			{
-				if(!mUp)
-					mUp=new CFloat3(CFloat3::sUnitY);
-				return *mUp;
-			}
-			CFloat3 & _getRight()
-			{
-				if(!mRight)
-					mRight=new CFloat3(CFloat3::sUnitX);
-				return *mRight;
-			}
 			Void _updateTransform()
 			{
 				if(EDirtyFlag_Transform&mDirtyFlag)
 				{
-					DirectX::FXMMATRIX scale_matrix=DirectX::XMMatrixScalingFromVector(getScale());
-					DirectX::FXMMATRIX rotate_matrix=DirectX::XMMatrixRotationQuaternion(getOrientation());
-					DirectX::FXMMATRIX translate_matrix=DirectX::XMMatrixTranslationFromVector(getPosition());
-					_getTransform()=DirectX::XMMatrixMultiply(DirectX::XMMatrixMultiply(scale_matrix,rotate_matrix),translate_matrix);
 					mDirtyFlag&=~EDirtyFlag_Transform;
 				}
 			}
@@ -562,22 +395,6 @@ namespace NSDevilX
 					||(EDirtyFlag_Right&mDirtyFlag)
 					)
 				{
-					DirectX::FXMMATRIX trans=DirectX::XMMatrixRotationQuaternion(getOrientation());
-					if(mDirection)
-					{
-						*mDirection=trans.r[2];
-						mDirtyFlag&=~EDirtyFlag_Direction;
-					}
-					if(mUp)
-					{
-						*mUp=trans.r[1];
-						mDirtyFlag&=~EDirtyFlag_Up;
-					}
-					if(mRight)
-					{
-						*mRight=trans.r[0];
-						mDirtyFlag&=~EDirtyFlag_Right;
-					}
 				}
 			}
 		};
@@ -593,32 +410,27 @@ namespace NSDevilX
 				EDirtyFlag_Right=EDirtyFlag_Up<<1
 			};
 		protected:
-			CFloat3 * mPosition;
-			CFloat4 * mOrientation;
-			CFloat3 * mDirection;
-			CFloat3 * mUp;
-			CFloat3 * mRight;
-			CMatrix4F mTransform;
+			CFloat3 mPosition;
+			CQuaterionF mOrientation;
+			CFloat3 mDirection;
+			CFloat3 mUp;
+			CFloat3 mRight;
+			CFloat4x4 mTransform;
 			UInt32 mDirtyFlag;
 		public:
 			CDerived()
-				:mPosition(nullptr)
-				,mOrientation(nullptr)
-				,mDirection(nullptr)
-				,mUp(nullptr)
-				,mRight(nullptr)
-				,mTransform(CMatrix4F::sIdentity)
+				:mPosition(0)
+				,mOrientation(CMath::sQuaterionF_Identity)
+				,mDirection(CMath::sUnitZ)
+				,mUp(CMath::sUnitY)
+				,mRight(CMath::sUnitX)
+				,mTransform(CMath::sFloat4x4_Identity)
 				,mDirtyFlag(0)
 			{}
 			~CDerived()
 			{
-				delete mPosition;
-				delete mOrientation;
-				delete mDirection;
-				delete mUp;
-				delete mRight;
 			}
-			Void setTransform(const DirectX::XMMATRIX & trans)
+			Void setTransform(const CFloat4x4& trans)
 			{
 				if(trans!=mTransform)
 				{
@@ -626,104 +438,57 @@ namespace NSDevilX
 					mDirtyFlag|=EDirtyFlag_Position|EDirtyFlag_Orientation|EDirtyFlag_Direction|EDirtyFlag_Up|EDirtyFlag_Right;
 				}
 			}
-			const CMatrix4F & getTransform()const
+			const auto& getTransform()const
 			{
 				return mTransform;
 			}
-			const CFloat3 & getPosition()
+			const auto& getPosition()
 			{
 				if(EDirtyFlag_Position&mDirtyFlag)
 				{
-					_getPosition();
 					_updateTransform();
 				}
-				return mPosition?*mPosition:CFloat3::sZero;
+				return mPosition;
 			}
-			const CFloat4 & getOrientation()
+			const auto& getOrientation()
 			{
 				if(EDirtyFlag_Orientation&mDirtyFlag)
 				{
-					_getOrientation();
 					_updateTransform();
 				}
-				return mOrientation?*mOrientation:CFloat4::sIdentityQuaternion;
+				return mOrientation;
 			}
-			const CFloat3 & getDirection()
+			const auto& getDirection()
 			{
 				if(EDirtyFlag_Direction&mDirtyFlag)
 				{
-					_getDirection();
 					_updateCoordAxis();
 				}
-				return mDirection?*mDirection:CFloat3::sUnitZ;
+				return mDirection;
 			}
-			const CFloat3 & getUp()
+			const auto& getUp()
 			{
 				if(EDirtyFlag_Up&mDirtyFlag)
 				{
-					_getUp();
 					_updateCoordAxis();
 				}
-				return mUp?*mUp:CFloat3::sUnitY;
+				return mUp;
 			}
-			const CFloat3 & getRight()
+			const auto& getRight()
 			{
 				if(EDirtyFlag_Right&mDirtyFlag)
 				{
-					_getRight();
 					_updateCoordAxis();
 				}
-				return mRight?*mRight:CFloat3::sUnitX;
+				return mRight;
 			}
 		protected:
-			CFloat3 & _getPosition()
-			{
-				if(!mPosition)
-					mPosition=new CFloat3(CFloat3::sZero);
-				return *mPosition;
-			}
-			CFloat4 & _getOrientation()
-			{
-				if(!mOrientation)
-					mOrientation=new CFloat4(CFloat4::sIdentityQuaternion);
-				return *mOrientation;
-			}
-			CFloat3 & _getDirection()
-			{
-				if(!mDirection)
-					mDirection=new CFloat3(CFloat3::sUnitZ);
-				return *mDirection;
-			}
-			CFloat3 & _getUp()
-			{
-				if(!mUp)
-					mUp=new CFloat3(CFloat3::sUnitY);
-				return *mUp;
-			}
-			CFloat3 & _getRight()
-			{
-				if(!mRight)
-					mRight=new CFloat3(CFloat3::sUnitX);
-				return *mRight;
-			}
 			Void _updateTransform()
 			{
 				if((EDirtyFlag_Position&mDirtyFlag)
 					||(EDirtyFlag_Orientation&mDirtyFlag)
 					)
 				{
-					DirectX::XMVECTOR translate,rotate,scale;
-					DirectX::XMMatrixDecompose(&scale,&rotate,&translate,getTransform());
-					if(mPosition)
-					{
-						*mPosition=translate;
-						mDirtyFlag&=~EDirtyFlag_Position;
-					}
-					if(mOrientation)
-					{
-						*mOrientation=rotate;
-						mDirtyFlag&=~EDirtyFlag_Orientation;
-					}
 				}
 			}
 			Void _updateCoordAxis()
@@ -733,22 +498,6 @@ namespace NSDevilX
 					||(EDirtyFlag_Right&mDirtyFlag)
 					)
 				{
-					DirectX::FXMMATRIX trans=DirectX::XMMatrixRotationQuaternion(getOrientation());
-					if(mDirection)
-					{
-						*mDirection=trans.r[2];
-						mDirtyFlag&=~EDirtyFlag_Direction;
-					}
-					if(mUp)
-					{
-						*mUp=trans.r[1];
-						mDirtyFlag&=~EDirtyFlag_Up;
-					}
-					if(mRight)
-					{
-						*mRight=trans.r[0];
-						mDirtyFlag&=~EDirtyFlag_Right;
-					}
 				}
 			}
 		};
@@ -759,24 +508,24 @@ namespace NSDevilX
 	public:
 		CTransform3DNode();
 		virtual ~CTransform3DNode();
-		Void setPosition(const CFloat3 & position);
-		const CFloat3 & getPosition()const;
-		Void setOrientation(const CFloat4 & orientation);
-		const CFloat4 & getOrientation()const;
-		Void setScale(const CFloat3 & scale);
-		const CFloat3 & getScale()const;
-		Void setDirection(const CFloat3 & direction,const CFloat3 & up);
-		Void setRotation(const CDegree & yaw,const CDegree & roll,const CDegree & pitch);
-		const CFloat3 & getDirection();
-		const CFloat3 & getUp();
-		const CFloat3 & getRight();
-		const CMatrix4F & getTransform();
-		const CFloat3 & getDerivedDirection();
-		const CFloat3 & getDerivedUp();
-		const CFloat3 & getDerivedRight();
-		const CFloat3 & getDerivedPosition();
-		const CFloat4 & getDerivedOrientation();
-		const CMatrix4F & getDerivedTransform();
+		Void setPosition(const CFloat3& position);
+		const CFloat3& getPosition()const;
+		Void setOrientation(const CQuaterionF& orientation);
+		const CQuaterionF& getOrientation()const;
+		Void setScale(const CFloat3& scale);
+		const CFloat3& getScale()const;
+		Void setDirection(const CFloat3& direction,const CFloat3& up);
+		Void setRotation(const CDegree& yaw,const CDegree& roll,const CDegree& pitch);
+		const CFloat3& getDirection();
+		const CFloat3& getUp();
+		const CFloat3& getRight();
+		const CFloat4x4& getTransform();
+		const CFloat3& getDerivedDirection();
+		const CFloat3& getDerivedUp();
+		const CFloat3& getDerivedRight();
+		const CFloat3& getDerivedPosition();
+		const CQuaterionF& getDerivedOrientation();
+		const CFloat4x4& getDerivedTransform();
 	protected:
 		Void _update();
 	};

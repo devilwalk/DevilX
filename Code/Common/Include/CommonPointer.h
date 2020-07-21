@@ -22,11 +22,6 @@ namespace NSDevilX
 		{
 			return *mInternal;
 		}
-		Void operator delete(VoidPtr address)
-		{
-			delete mInternal;
-			mInternal=nullptr;
-		}
 	};
 	template<typename TPointer>
 	class TSharedPointerObject

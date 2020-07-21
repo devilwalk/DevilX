@@ -18,7 +18,7 @@ namespace NSDevilX
 		}
 		virtual ~TBoundingTreeNode()
 		{
-			destroyChildren();
+			TNode<TResourcePtrVector<TBoundingTreeNode<TBoundingVolume> > >::destroyChildren();
 		}
 		const auto & getBoundingVolume()const
 		{

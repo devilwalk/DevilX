@@ -237,7 +237,7 @@ namespace NSDevilX
 	};
 	template<typename KeyT,typename ValueT,class HashT=std::hash<KeyT>,
 		class KeyEqualT=std::equal_to<KeyT>
-		,class TAllocator=std::allocator<std::pair<KeyT,ValueT> > >
+		,class TAllocator=std::allocator<std::pair<const KeyT,ValueT> > >
 	class TUnorderedMap
 		:public std::unordered_map<KeyT,ValueT,HashT,KeyEqualT,TAllocator>
 	{
@@ -253,8 +253,8 @@ namespace NSDevilX
 		using key_equal=typename _Mybase::key_equal;
 		using value_type=typename _Mybase::value_type;
 		using allocator_type=typename _Mybase::allocator_type;
-		using size_type=typename _Mybase::size_type;
-		using difference_type=typename _Mybase::difference_type;
+		//using size_type=typename _Mybase::size_type;
+		//using difference_type=typename _Mybase::difference_type;
 		using pointer=typename _Mybase::pointer;
 		using const_pointer=typename _Mybase::const_pointer;
 		using reference=value_type&;
@@ -277,7 +277,7 @@ namespace NSDevilX
 		}
 		Boolean has(KeyT const & key)const
 		{
-			return this->find(key)!=this->end();
+			return _Mybase::find(key)!=this->end();
 		}
 		ValueT const & get(KeyT const & key)const
 		{
