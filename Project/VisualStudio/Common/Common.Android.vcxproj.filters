@@ -135,15 +135,6 @@
     <ClInclude Include="..\..\..\Code\Common\Include\CommonUtility.h">
       <Filter>Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Common\Include\CommonVector.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Common\Include\CommonVectorF.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Common\Include\CommonVectorI.h">
-      <Filter>Include</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\Common\Include\ICommonUserDataContainerImp.h">
       <Filter>Include</Filter>
     </ClInclude>
@@ -161,9 +152,6 @@
     <ClCompile Include="..\..\..\Code\Common\Source\CommonColour.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Common\Source\CommonMatrix.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Code\Common\Source\CommonMessageMode.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -174,12 +162,6 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Common\Source\CommonUTFChar.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Common\Source\CommonVectorF.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Common\Source\CommonVectorI.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Common\Source\Precompiler.cpp">

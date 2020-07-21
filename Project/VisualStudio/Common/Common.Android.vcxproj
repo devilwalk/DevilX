@@ -74,9 +74,6 @@
     <ClInclude Include="..\..\..\Code\Common\Include\CommonUTFChar.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonUTFString.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonUtility.h" />
-    <ClInclude Include="..\..\..\Code\Common\Include\CommonVector.h" />
-    <ClInclude Include="..\..\..\Code\Common\Include\CommonVectorF.h" />
-    <ClInclude Include="..\..\..\Code\Common\Include\CommonVectorI.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\ICommonUserDataContainerImp.h" />
     <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGroup.h" />
     <ClInclude Include="..\..\..\Code\Common\Interface\ICommonUserDataContainer.h" />
@@ -86,13 +83,10 @@
     <ClCompile Include="..\..\..\Code\Common\Source\CommonAngle.cpp" />
     <ClCompile Include="..\..\..\Code\Common\Source\CommonBounding.cpp" />
     <ClCompile Include="..\..\..\Code\Common\Source\CommonColour.cpp" />
-    <ClCompile Include="..\..\..\Code\Common\Source\CommonMatrix.cpp" />
     <ClCompile Include="..\..\..\Code\Common\Source\CommonMessageMode.cpp" />
     <ClCompile Include="..\..\..\Code\Common\Source\CommonTransformNode.cpp" />
     <ClCompile Include="..\..\..\Code\Common\Source\CommonTreeContainer.cpp" />
     <ClCompile Include="..\..\..\Code\Common\Source\CommonUTFChar.cpp" />
-    <ClCompile Include="..\..\..\Code\Common\Source\CommonVectorF.cpp" />
-    <ClCompile Include="..\..\..\Code\Common\Source\CommonVectorI.cpp" />
     <ClCompile Include="..\..\..\Code\Common\Source\Precompiler.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

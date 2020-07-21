@@ -39,6 +39,3 @@
 #include "CommonUTFChar.h"
 #include "CommonUTFString.h"
 #include "CommonUtility.h"
-#include "CommonVector.h"
-#include "CommonVectorF.h"
-#include "CommonVectorI.h"
