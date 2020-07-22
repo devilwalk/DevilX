@@ -81,7 +81,7 @@ Void NSDevilX::CFontFace::getStartPositions(const CUTF8String & text,DevilXTVect
 	UInt32 start_pos=0;
 	for(auto const & c:text)
 	{
-		startPositions.push_back(start_pos);
+		startPositions.push_back(CUInt2(start_pos));
 		start_pos+=getGlyphMetrics(c).horiAdvance;
 	}
 }

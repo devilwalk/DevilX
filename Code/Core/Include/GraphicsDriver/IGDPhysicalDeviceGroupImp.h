@@ -17,11 +17,15 @@ namespace NSDevilX
 				IPhysicalDeviceGroupImp(IInstanceImp* instance);
 				virtual ~IPhysicalDeviceGroupImp();
 
+				auto getInstance()const
+				{
+					return mInstance;
+				}
 				void addDevice(IPhysicalDeviceImp* device)
 				{
 					mDevices.push_back(device);
 				}
-				const auto& getDevices()const
+				auto& getDevices()const
 				{
 					return mDevices;
 				}

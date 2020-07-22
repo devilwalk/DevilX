@@ -3,8 +3,9 @@ using namespace NSDevilX;
 using namespace NSCore;
 using namespace NSGraphicsDriver;
 
-NSDevilX::NSCore::NSGraphicsDriver::IInstanceImp::IInstanceImp(IEnum::EInstance type)
-	:mType(type)
+NSDevilX::NSCore::NSGraphicsDriver::IInstanceImp::IInstanceImp(IEnum::EInstanceMajorType majorType,Int32 minorType)
+	:mMajorType(majorType)
+	,mMinorType(minorType)
 {
 }
 
@@ -14,10 +15,20 @@ NSDevilX::NSCore::NSGraphicsDriver::IInstanceImp::~IInstanceImp()
 	mPhysicsDeviceGroups.destroyAll();
 }
 
+NSGraphicsDriver::IEnum::EInstanceMajorType NSDevilX::NSCore::NSGraphicsDriver::IInstanceImp::getMajorType() const
+{
+	return mMajorType;
+}
+
+Int32 NSDevilX::NSCore::NSGraphicsDriver::IInstanceImp::getMinorType() const
+{
+	return mMinorType;
+}
+
 #if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
 
-NSDevilX::NSCore::NSGraphicsDriver::NSD3D::IInstanceImp::IInstanceImp(IEnum::EInstance type)
-	:NSGraphicsDriver::IInstanceImp(type)
+NSDevilX::NSCore::NSGraphicsDriver::NSD3D::IInstanceImp::IInstanceImp(IEnum::EInstanceMinorType_D3D minorType)
+	:NSGraphicsDriver::IInstanceImp(IEnum::EInstanceMajorType_D3D,minorType)
 {
 }
 
@@ -71,21 +82,14 @@ UInt32 NSDevilX::NSCore::NSGraphicsDriver::NSD3D::IInstanceImp::enumPhysicalDevi
 
 Boolean NSDevilX::NSCore::NSGraphicsDriver::NSD3D::IInstanceImp::initialize()
 {
-	Boolean success=false;
-	switch(mType)
-	{
-	case IEnum::EInstance_D3D12_1:
-	case IEnum::EInstance_D3D12_0:
-	case IEnum::EInstance_D3D11_1:
-	{
-		IDXGIFactory1* ptr=nullptr;
-		success=SUCCEEDED(CreateDXGIFactory1(__uuidof(IDXGIFactory1),reinterpret_cast<void**>(&ptr)));
-		mInternal=ptr;
-	}
-	break;
-	default:
-		success=SUCCEEDED(CreateDXGIFactory1(__uuidof(mInternal),reinterpret_cast<void**>(&mInternal)));
-	}
+	Boolean success=SUCCEEDED(CreateDXGIFactory1(__uuidof(mInternal),reinterpret_cast<void**>(&mInternal)));
+	mInternal->QueryInterface(&mInternal1);
+	mInternal->QueryInterface(&mInternal2);
+	mInternal->QueryInterface(&mInternal3);
+	mInternal->QueryInterface(&mInternal4);
+	mInternal->QueryInterface(&mInternal5);
+	mInternal->QueryInterface(&mInternal6);
+	mInternal->QueryInterface(&mInternal7);
 	return success;
 }
 
@@ -99,16 +103,16 @@ Void NSDevilX::NSCore::NSGraphicsDriver::NSD3D::IInstanceImp::_enumPhysicalDevic
 		{
 			auto group=DEVILX_NEW NSD3D::IPhysicalDeviceGroupImp(adapter,this);
 			NSGraphicsDriver::IPhysicalDeviceImp* dev=nullptr;
-			switch(mType)
+			switch(mMinorType)
 			{
-			case IEnum::EInstance_D3D12_1:
-			case IEnum::EInstance_D3D12_0:
+			case IEnum::EInstanceMinorType_D3D_12_1:
+			case IEnum::EInstanceMinorType_D3D_12_0:
 				dev=DEVILX_NEW NSD3D12::IPhysicalDeviceImp(0,group);
 				break;
-			case IEnum::EInstance_D3D11_1:
-			case IEnum::EInstance_D3D11_0:
-			case IEnum::EInstance_D3D10_1:
-			case IEnum::EInstance_D3D10_0:
+			case IEnum::EInstanceMinorType_D3D_11_1:
+			case IEnum::EInstanceMinorType_D3D_11_0:
+			case IEnum::EInstanceMinorType_D3D_10_1:
+			case IEnum::EInstanceMinorType_D3D_10_0:
 				dev=DEVILX_NEW INonePhysicalDeviceImp(group);
 				break;
 			}
@@ -122,18 +126,18 @@ Void NSDevilX::NSCore::NSGraphicsDriver::NSD3D::IInstanceImp::_enumPhysicalDevic
 IDevice* NSDevilX::NSCore::NSGraphicsDriver::NSD3D::IInstanceImp::createDevice(IPhysicalDeviceGroup* deviceGroup)
 {
 	IDeviceImp* ret=nullptr;
-	switch(mType)
+	switch(mMinorType)
 	{
-	case IEnum::EInstance_D3D12_1:
-	case IEnum::EInstance_D3D12_0:
+	case IEnum::EInstanceMinorType_D3D_12_1:
+	case IEnum::EInstanceMinorType_D3D_12_0:
 		ret=_createDevice12(static_cast<IPhysicalDeviceGroupImp*>(deviceGroup));
 		break;
-	case IEnum::EInstance_D3D11_1:
-	case IEnum::EInstance_D3D11_0:
+	case IEnum::EInstanceMinorType_D3D_11_1:
+	case IEnum::EInstanceMinorType_D3D_11_0:
 		ret=_createDevice11(static_cast<IPhysicalDeviceGroupImp*>(deviceGroup));
 		break;
-	case IEnum::EInstance_D3D10_1:
-	case IEnum::EInstance_D3D10_0:
+	case IEnum::EInstanceMinorType_D3D_10_1:
+	case IEnum::EInstanceMinorType_D3D_10_0:
 		break;
 	}
 	if(ret)
@@ -178,7 +182,7 @@ IDeviceImp* NSDevilX::NSCore::NSGraphicsDriver::NSD3D::IInstanceImp::_createDevi
 #endif
 
 NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IInstanceImp::IInstanceImp()
-	:NSGraphicsDriver::IInstanceImp(IEnum::EInstance_Vulkan)
+	:NSGraphicsDriver::IInstanceImp(IEnum::EInstanceMajorType_Vulkan,-1)
 	,mInternal(VK_NULL_HANDLE)
 {
 }
@@ -433,8 +437,9 @@ IDevice* NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IInstanceImp::createDevic
 	return ret;
 }
 
-NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IInstanceImp::IInstanceImp(IEnum::EInstance type)
-	:NSGraphicsDriver::IInstanceImp(type)
+NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IInstanceImp::IInstanceImp(IEnum::EInstanceMinorType_GL minorType)
+	:NSGraphicsDriver::IInstanceImp(IEnum::EInstanceMajorType_GL,minorType)
+	,mDisplay(EGL_NO_DISPLAY)
 {
 }
 
@@ -447,8 +452,9 @@ Boolean NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IInstanceImp::initialize()
 	auto success = glewInit()>=0;
 	if(success)
 	{
-		success&=eglInitialize(eglGetDisplay(EGL_DEFAULT_DISPLAY),NULL,NULL);
-		eglBindAPI(EGL_OPENGL_API);
+		mDisplay=eglGetDisplay(EGL_DEFAULT_DISPLAY);
+		success&=(eglInitialize(mDisplay,NULL,NULL)==EGL_TRUE);
+		success&=(eglBindAPI(EGL_OPENGL_API)==EGL_TRUE);
 		mPhysicsDeviceGroups.push_back(DEVILX_NEW IPhysicalDeviceGroupImp(this));
 	}
 	return success;
@@ -492,6 +498,61 @@ UInt32 NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IInstanceImp::enumPhysicalD
 
 IDevice* NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IInstanceImp::createDevice(IPhysicalDeviceGroup* deviceGroup)
 {
-	eglCreateContext(eglGetDisplay(EGL_DEFAULT_DISPLAY),)
-	return nullptr;
+	TVector(EGLint) config_attrs;
+	if(mMinorType<=IEnum::EInstanceMinorType_GL_2_0)
+	{
+		config_attrs.push_back(EGL_RENDERABLE_TYPE);
+		config_attrs.push_back(EGL_OPENGL_BIT);
+	}
+	else
+	{
+		config_attrs.push_back(EGL_RENDERABLE_TYPE);
+		config_attrs.push_back(EGL_OPENGL_ES_BIT);
+	}
+	config_attrs.push_back(EGL_SURFACE_TYPE);
+	config_attrs.push_back(EGL_WINDOW_BIT);
+	config_attrs.push_back(EGL_NONE);
+	EGLConfig config=0;
+	EGLint num_config=0;
+	if(EGL_TRUE!=eglChooseConfig(mDisplay,&config_attrs[0],&config,1,&num_config))
+		return nullptr;
+	EGLint major_version=2;
+	EGLint minor_version=0;
+	if(mMinorType<=IEnum::EInstanceMinorType_GL_4_0)
+	{
+		major_version=4;
+		minor_version=IEnum::EInstanceMinorType_GL_4_0-mMinorType;
+	}
+	else if(mMinorType<=IEnum::EInstanceMinorType_GL_3_0)
+	{
+		major_version=3;
+		minor_version=IEnum::EInstanceMinorType_GL_3_0-mMinorType;
+	}
+	else if(mMinorType<=IEnum::EInstanceMinorType_GL_2_0)
+	{
+		major_version=2;
+		minor_version=0;
+	}
+	else if(mMinorType<=IEnum::EInstanceMinorType_GL_ES3_0)
+	{
+		major_version=3;
+		minor_version=IEnum::EInstanceMinorType_GL_ES3_0-mMinorType;
+	}
+	else if(mMinorType<=IEnum::EInstanceMinorType_GL_ES2_0)
+	{
+		major_version=2;
+		minor_version=0;
+	}
+	const EGLint context_attr[]={
+		EGL_CONTEXT_MAJOR_VERSION,major_version,
+		EGL_CONTEXT_MINOR_VERSION,minor_version,
+#ifdef DEVILX_DEBUG
+		EGL_CONTEXT_OPENGL_DEBUG,EGL_TRUE,
+#endif
+		EGL_NONE
+	};
+	auto context=eglCreateContext(mDisplay,config,EGL_NO_CONTEXT,context_attr);
+	auto ret=DEVILX_NEW IDeviceImp(context,static_cast<IPhysicalDeviceGroupImp*>(deviceGroup));
+	mDevices.push_back(ret);
+	return ret;
 }

@@ -16,6 +16,8 @@ namespace NSDevilX
 			TResourcePtrMap(UInt16,CNetworkAcceptor) mAcceptors;
 			TList(INetworkConnectionImp*) mConnections;
 		public:
+			using TMessageReceiver<CNetworkAcceptor>::onMessage;
+			using TMessageReceiver<INetworkConnectionImp>::onMessage;
 			INetworkHostImp(const String & ip);
 			~INetworkHostImp();
 

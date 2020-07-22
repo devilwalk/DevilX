@@ -19,7 +19,6 @@
 #include "CommonGroup.h"
 #include "ICommonUserDataContainerImp.h"
 #include "CommonMath.h"
-#include "CommonMatrix.h"
 #include "CommonMessageMode.h"
 #include "CommonNode.h"
 #include "CommonOctree.h"

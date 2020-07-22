@@ -128,6 +128,7 @@
     <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDInstanceImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDPhysicalDeviceGroupImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDPhysicalDeviceImp.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDSwapChainImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDSystemImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\ICPPScriptEnvironmentImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\IDirectoryImp.h" />

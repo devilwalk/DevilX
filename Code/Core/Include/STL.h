@@ -19,8 +19,8 @@ namespace NSDevilX
 #define TVector(TValue) NSDevilX::TVector<TValue,DevilXAllocator<TValue> >
 #define TList(TValue) NSDevilX::TList<TValue,DevilXAllocator<TValue> >
 #define TSet(TValue) NSDevilX::TSet<TValue,std::less<TValue>,DevilXAllocator<TValue> >
-#define TMap(TKey,TValue) NSDevilX::TMap<TKey,TValue,std::less<TKey>,DevilXAllocator<std::pair<TKey,TValue> > >
+#define TMap(TKey,TValue) NSDevilX::TMap<TKey,TValue,std::less<TKey>,DevilXAllocator<std::pair<const TKey,TValue> > >
 #define TUnorderedSet(TValue) NSDevilX::TUnorderedSet<TValue,std::hash<TValue>,std::equal_to<TValue>,DevilXAllocator<TValue> >
-#define TUnorderedMap(TKey,TValue) NSDevilX::TUnorderedMap<TKey,TValue,std::hash<TKey>,std::equal_to<TKey>,DevilXAllocator<std::pair<TKey,TValue> > >
+#define TUnorderedMap(TKey,TValue) NSDevilX::TUnorderedMap<TKey,TValue,std::hash<TKey>,std::equal_to<TKey>,DevilXAllocator<std::pair<const TKey,TValue> > >
 	}
 }

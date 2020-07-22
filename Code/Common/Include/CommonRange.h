@@ -1,5 +1,5 @@
 #pragma once
-#include "CommonVector.h"
+#include "CommonMath.h"
 namespace NSDevilX
 {
 	class CRangeI

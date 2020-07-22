@@ -1,5 +1,5 @@
 #pragma once
-#include "CommonVectorF.h"
+#include "CommonMath.h"
 namespace NSDevilX
 {
 	class CRay

@@ -234,6 +234,9 @@
     <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDPhysicalDeviceGroupImp.h">
       <Filter>头文件\GraphicsDriver</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDSwapChainImp.h">
+      <Filter>头文件\GraphicsDriver</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Core\Source\Precompiler.cpp">

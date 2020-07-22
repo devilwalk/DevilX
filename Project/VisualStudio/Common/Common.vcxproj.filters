@@ -42,9 +42,6 @@
     <ClInclude Include="..\..\..\Code\Common\Include\CommonMath.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Common\Include\CommonMatrix.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\Common\Include\CommonMessageMode.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -161,19 +158,10 @@
     <ClCompile Include="..\..\..\Code\Common\Source\CommonColour.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Common\Source\CommonMatrix.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Code\Common\Source\CommonMessageMode.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Common\Source\CommonUTFChar.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Common\Source\CommonVectorF.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Common\Source\CommonVectorI.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Common\Source\Precompiler.cpp">

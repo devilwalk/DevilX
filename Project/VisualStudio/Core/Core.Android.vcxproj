@@ -1,0 +1,314 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|ARM">
+      <Configuration>Debug</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|ARM">
+      <Configuration>Release</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|ARM64">
+      <Configuration>Debug</Configuration>
+      <Platform>ARM64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|ARM64">
+      <Configuration>Release</Configuration>
+      <Platform>ARM64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x86">
+      <Configuration>Debug</Configuration>
+      <Platform>x86</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x86">
+      <Configuration>Release</Configuration>
+      <Platform>x86</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\Code\Core\Include\CPPScriptEnvironment.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\Define.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\FileManager.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\FunctionWorker.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\GDInclude.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDDeviceImp.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDInstanceImp.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDPhysicalDeviceGroupImp.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDPhysicalDeviceImp.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDSwapChainImp.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDSystemImp.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\ICPPScriptEnvironmentImp.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\IDirectoryImp.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\IFileImp.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\INetworkConnectionImp.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\INetworkHostImp.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\IReadWriteLockImp.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\ISemaphoreImp.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\IThreadImp.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\IThreadPoolImp.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\ITimerImp.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\MemoryAllocatorObjectTemplate.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\MemoryManager.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\MemoryTracker.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\NetworkAcceptor.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\NetworkManager.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\ResourceContainer.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\SemaphoreGroup.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\STD.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\STL.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\STLMT.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\System.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\ThirdPart.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\ThreadManager.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\ThreadType.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\UTFString.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\ICoreGraphicsDriverDevice.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\ICoreGraphicsDriverInstance.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\ICoreGraphicsDriverMemoryHeap.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\ICoreGraphicsDriverQueue.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDBuffer.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDCommandBuffer.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDDevice.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDEnum.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDImage.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDInstance.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDInterface.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDPhysicalDevice.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDPipelineState.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDQueue.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDSwapChain.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDSystem.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreBuffer.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreCPPScriptEnvironment.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreDirectory.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreEnum.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreFile.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreFileManager.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreFileProcesser.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreMemoryManager.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreNetworkConnection.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreNetworkHost.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreNetworkManager.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreReadWriteLock.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreResource.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreScriptManager.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreSemaphore.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreSystem.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreSystemInterface.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreThread.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreThreadManager.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreThreadPool.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreTimer.h" />
+    <ClInclude Include="..\..\..\Code\Core\Source\Precompiler.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\Code\Core\Source\CPPScriptEnvironment.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\FileManager.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\GraphicsDriver\IGDDeviceImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\GraphicsDriver\IGDInstanceImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\GraphicsDriver\IGDPhysicalDeviceGroupImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\GraphicsDriver\IGDPhysicalDeviceImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\GraphicsDriver\IGDSystemImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\ICoreFileManager.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\ICoreGAManager.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\ICoreMemoryManager.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\ICoreNetworkManager.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\ICoreSystem.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\ICoreThreadManager.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\IDirectoryImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\IFileImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\INetworkConnectionImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\INetworkHostImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\IReadWriteLockImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\ISemaphoreImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\IThreadImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\IThreadPoolImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\ITimerImp.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\MemoryManager.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\MemoryTracker.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\NetworkAcceptor.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\NetworkManager.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\Precompiler.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\SemaphoreGroup.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\System.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\ThreadManager.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\UTFString.cpp" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{4c0edd73-c7b5-4713-ab4e-df56d022e341}</ProjectGuid>
+    <Keyword>Android</Keyword>
+    <RootNamespace>Core_Android</RootNamespace>
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+    <ApplicationType>Android</ApplicationType>
+    <ApplicationTypeRevision>1.0</ApplicationTypeRevision>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>Clang_3_6</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>Clang_3_6</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>Clang_3_6</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>Clang_3_6</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>Clang_3_6</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>Clang_3_6</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>Clang_3_6</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>Clang_3_6</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+    <Import Project="..\Common\Android.props" />
+    <Import Project="..\Common\Common.props" />
+    <Import Project="Core.props" />
+    <Import Project="..\Common\Android.ARM.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
+    <Import Project="..\Common\Android.props" />
+    <Import Project="..\Common\Common.props" />
+    <Import Project="Core.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="..\Common\Android.props" />
+    <Import Project="..\Common\Common.props" />
+    <Import Project="Core.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <Import Project="..\Common\Android.props" />
+    <Import Project="..\Common\Common.props" />
+    <Import Project="Core.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
+    <Import Project="..\Common\Android.props" />
+    <Import Project="..\Common\Common.props" />
+    <Import Project="Core.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+    <Import Project="..\Common\Android.props" />
+    <Import Project="..\Common\Common.props" />
+    <Import Project="Core.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="..\Common\Android.props" />
+    <Import Project="..\Common\Common.props" />
+    <Import Project="Core.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <Import Project="..\Common\Android.props" />
+    <Import Project="..\Common\Common.props" />
+    <Import Project="Core.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+</Project>

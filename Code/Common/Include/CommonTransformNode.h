@@ -1,7 +1,6 @@
 #pragma once
 #include "CommonNode.h"
-#include "CommonVectorF.h"
-#include "CommonMatrix.h"
+#include "CommonMath.h"
 #include "CommonAngle.h"
 namespace NSDevilX
 {

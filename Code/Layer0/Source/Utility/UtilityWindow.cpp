@@ -3,8 +3,8 @@ using namespace NSDevilX;
 
 NSDevilX::CWindow::CWindow()
 	:mHandle(nullptr)
-	,mPosition(CInt2::sZero)
-	,mSize(CUInt2::sZero)
+	,mPosition(0)
+	,mSize(0)
 {
 
 }
@@ -36,7 +36,7 @@ Void NSDevilX::CWindow::setSize(const CUInt2 & size)
 	if(size!=getSize())
 	{
 		mSize=size;
-		if(getSize()>CUInt2::sZero)
+		if(CMath::allGreater(getSize(),CMath::sUInt2_Zero))
 		{
 			if(getHandle())
 			{

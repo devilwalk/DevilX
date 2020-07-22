@@ -160,7 +160,7 @@ namespace NSDevilX
 		{
 		}
 	};
-	template<typename KeyT,class ValueT,typename SortfuncT=std::less<KeyT>,class TAllocator=std::allocator<std::pair<KeyT,ValueT*> > >
+	template<typename KeyT,class ValueT,typename SortfuncT=std::less<KeyT>,class TAllocator=std::allocator<std::pair<const KeyT,ValueT*> > >
 	class TResourcePtrMap
 		:public TMap<KeyT,ValueT*,SortfuncT,TAllocator>
 	{
@@ -224,7 +224,7 @@ namespace NSDevilX
 			this->clear();
 		}
 	};
-	template<typename KeyT,class ValueT,class THash=std::hash<KeyT>,class TEqual=std::equal_to<KeyT>,class TAllocator=std::allocator<std::pair<KeyT,ValueT*> > >
+	template<typename KeyT,class ValueT,class THash=std::hash<KeyT>,class TEqual=std::equal_to<KeyT>,class TAllocator=std::allocator<std::pair<const KeyT,ValueT*> > >
 	class TResourcePtrUnorderedMap
 		:public TUnorderedMap<KeyT,ValueT*,THash,TEqual,TAllocator>
 	{
@@ -260,7 +260,7 @@ namespace NSDevilX
 				return iter->second;
 		}
 	};
-	template<typename KeyT,class ValueT,class THash=std::hash<KeyT>,class TEqual=std::equal_to<KeyT>,class TAllocator=std::allocator<std::pair<KeyT,ValueT*> > >
+	template<typename KeyT,class ValueT,class THash=std::hash<KeyT>,class TEqual=std::equal_to<KeyT>,class TAllocator=std::allocator<std::pair<const KeyT,ValueT*> > >
 	class TRefResourcePtrUnorderedMap
 		:public TUnorderedMap<KeyT,ValueT*,THash,TEqual,TAllocator>
 	{

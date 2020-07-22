@@ -8,32 +8,40 @@ namespace NSDevilX
 			class IEnum
 			{
 			public:
-				enum EInstance
+				enum EInstanceMajorType
 				{
-					EInstance_Vulkan,
-					EInstance_D3D12_1,
-					EInstance_D3D12_0,
-					EInstance_GL4_6,
-					EInstance_D3D11_1,
-					EInstance_D3D11_0,
-					EInstance_GL4_5,
-					EInstance_GL4_4,
-					EInstance_GL4_3,
-					EInstance_GL4_2,
-					EInstance_GL4_1,
-					EInstance_GL4_0,
-					EInstance_D3D10_1,
-					EInstance_D3D10_0,
-					EInstance_GL3_3,
-					EInstance_GL3_2,
-					EInstance_GL3_1,
-					EInstance_GL3_0,
-					EInstance_D3D9_3,
-					EInstance_GL2_0,
-					EInstance_GLES3_2,
-					EInstance_GLES3_1,
-					EInstance_GLES3_0,
-					EInstance_GLES2_0
+					EInstanceMajorType_D3D,
+					EInstanceMajorType_Vulkan,
+					EInstanceMajorType_GL,
+				};
+				enum EInstanceMinorType_D3D
+				{
+					EInstanceMinorType_D3D_12_1,
+					EInstanceMinorType_D3D_12_0,
+					EInstanceMinorType_D3D_11_1,
+					EInstanceMinorType_D3D_11_0,
+					EInstanceMinorType_D3D_10_1,
+					EInstanceMinorType_D3D_10_0,
+					EInstanceMinorType_D3D_9_3,
+				};
+				enum EInstanceMinorType_GL
+				{
+					EInstanceMinorType_GL_4_6,
+					EInstanceMinorType_GL_4_5,
+					EInstanceMinorType_GL_4_4,
+					EInstanceMinorType_GL_4_3,
+					EInstanceMinorType_GL_4_2,
+					EInstanceMinorType_GL_4_1,
+					EInstanceMinorType_GL_4_0,
+					EInstanceMinorType_GL_3_3,
+					EInstanceMinorType_GL_3_2,
+					EInstanceMinorType_GL_3_1,
+					EInstanceMinorType_GL_3_0,
+					EInstanceMinorType_GL_2_0,
+					EInstanceMinorType_GL_ES3_2,
+					EInstanceMinorType_GL_ES3_1,
+					EInstanceMinorType_GL_ES3_0,
+					EInstanceMinorType_GL_ES2_0
 				};
 
 				enum EQueue

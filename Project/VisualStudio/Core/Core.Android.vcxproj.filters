@@ -1,0 +1,342 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Interface">
+      <UniqueIdentifier>{7ae00d4b-e663-49c7-a4a9-1211d849eddc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Include">
+      <UniqueIdentifier>{965e6ea2-939f-46c9-8c63-63eafb317759}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{d58b4a83-7851-40fc-93ed-6fa70186f43e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface\GraphicsDriver">
+      <UniqueIdentifier>{eae6b240-5cde-45bb-aa18-975ec45fc030}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Include\GraphicsDriver">
+      <UniqueIdentifier>{e5b3f9df-0e4f-42e9-ac7a-34050d11a873}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\GraphicsDriver">
+      <UniqueIdentifier>{1d9d02e7-769c-4fed-b1b9-7652d521b143}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreBuffer.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreCPPScriptEnvironment.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreDirectory.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreEnum.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreFile.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreFileManager.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreFileProcesser.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreMemoryManager.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreNetworkConnection.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreNetworkHost.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreNetworkManager.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreReadWriteLock.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreResource.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreScriptManager.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreSemaphore.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreSystem.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreSystemInterface.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreThread.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreThreadManager.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreThreadPool.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreTimer.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\ICoreGraphicsDriverDevice.h">
+      <Filter>Interface\GraphicsDriver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\ICoreGraphicsDriverInstance.h">
+      <Filter>Interface\GraphicsDriver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\ICoreGraphicsDriverMemoryHeap.h">
+      <Filter>Interface\GraphicsDriver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\ICoreGraphicsDriverQueue.h">
+      <Filter>Interface\GraphicsDriver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDBuffer.h">
+      <Filter>Interface\GraphicsDriver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDCommandBuffer.h">
+      <Filter>Interface\GraphicsDriver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDDevice.h">
+      <Filter>Interface\GraphicsDriver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDEnum.h">
+      <Filter>Interface\GraphicsDriver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDImage.h">
+      <Filter>Interface\GraphicsDriver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDInstance.h">
+      <Filter>Interface\GraphicsDriver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDInterface.h">
+      <Filter>Interface\GraphicsDriver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDPhysicalDevice.h">
+      <Filter>Interface\GraphicsDriver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDPipelineState.h">
+      <Filter>Interface\GraphicsDriver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDQueue.h">
+      <Filter>Interface\GraphicsDriver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDSwapChain.h">
+      <Filter>Interface\GraphicsDriver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDSystem.h">
+      <Filter>Interface\GraphicsDriver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\CPPScriptEnvironment.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\Define.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\FileManager.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\FunctionWorker.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\ICPPScriptEnvironmentImp.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\IDirectoryImp.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\IFileImp.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\INetworkConnectionImp.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\INetworkHostImp.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\IReadWriteLockImp.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\ISemaphoreImp.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\IThreadImp.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\IThreadPoolImp.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\ITimerImp.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\MemoryAllocatorObjectTemplate.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\MemoryManager.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\MemoryTracker.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\NetworkAcceptor.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\NetworkManager.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\ResourceContainer.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\SemaphoreGroup.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\STD.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\STL.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\STLMT.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\System.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\ThirdPart.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\ThreadManager.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\ThreadType.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\UTFString.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\GDInclude.h">
+      <Filter>Include\GraphicsDriver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDDeviceImp.h">
+      <Filter>Include\GraphicsDriver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDInstanceImp.h">
+      <Filter>Include\GraphicsDriver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDPhysicalDeviceGroupImp.h">
+      <Filter>Include\GraphicsDriver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDPhysicalDeviceImp.h">
+      <Filter>Include\GraphicsDriver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDSwapChainImp.h">
+      <Filter>Include\GraphicsDriver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDSystemImp.h">
+      <Filter>Include\GraphicsDriver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Source\Precompiler.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\Code\Core\Source\CPPScriptEnvironment.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\FileManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\ICoreFileManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\ICoreGAManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\ICoreMemoryManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\ICoreNetworkManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\ICoreSystem.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\ICoreThreadManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\IDirectoryImp.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\IFileImp.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\INetworkConnectionImp.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\INetworkHostImp.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\IReadWriteLockImp.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\ISemaphoreImp.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\IThreadImp.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\IThreadPoolImp.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\ITimerImp.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\MemoryManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\MemoryTracker.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\NetworkAcceptor.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\NetworkManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\Precompiler.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\SemaphoreGroup.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\System.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\ThreadManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\UTFString.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\GraphicsDriver\IGDInstanceImp.cpp">
+      <Filter>Source\GraphicsDriver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\GraphicsDriver\IGDPhysicalDeviceGroupImp.cpp">
+      <Filter>Source\GraphicsDriver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\GraphicsDriver\IGDPhysicalDeviceImp.cpp">
+      <Filter>Source\GraphicsDriver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\GraphicsDriver\IGDSystemImp.cpp">
+      <Filter>Source\GraphicsDriver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\GraphicsDriver\IGDDeviceImp.cpp">
+      <Filter>Source\GraphicsDriver</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

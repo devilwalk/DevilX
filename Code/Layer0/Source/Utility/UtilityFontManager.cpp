@@ -33,7 +33,7 @@ NSDevilX::CFontManager::SChar NSDevilX::CFontManager::get(const String & fontNam
 	}
 	if(!ret.mImage)
 	{
-		ret.mImage=DEVILX_NEW CFontImage(face,2048);
+		ret.mImage=DEVILX_NEW CFontImage(face);
 		imgs.push_back(ret.mImage);
 	}
 	ret.mImage->getPixelRange(ch,&ret.mPixelStart,&ret.mPixelEnd);

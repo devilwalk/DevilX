@@ -22,5 +22,3 @@ Void NSDevilX::trackAlignedDeallocateBytes(VoidPtr address,ConstCharPtr file,Con
 	getDefaultMemoryTracker()->deallocate(address,file,function,line);
 	DEVILX_ALIGNED_FREE(address);
 }
-const UInt32 NSDevilX::CQuadTreeNode::sChildrenIndex[]={0,1,3,2};
-const UInt32 NSDevilX::COctreeNode::sChildrenIndex[]={4,5,7,6,0,1,3,2};

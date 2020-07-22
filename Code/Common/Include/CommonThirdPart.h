@@ -21,7 +21,7 @@
 #include FT_FREETYPE_H
 #include FT_GLYPH_H
 #define ASIO_STANDALONE
-//#include "asio.hpp"
+#include "asio.hpp"
 #define GLEW_STATIC
 #define GLEW_EGL
 #define GLEW_NO_GLU

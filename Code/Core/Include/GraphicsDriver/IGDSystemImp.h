@@ -15,7 +15,7 @@ namespace NSDevilX
 				ISystemImp();
 				virtual ~ISystemImp();
 				// Í¨¹ý ISystem ¼Ì³Ð
-				virtual IInstance* createInstance(IEnum::EInstance* types,UInt32 count) override;
+				virtual IInstance* createInstance(IEnum::EInstanceMajorType majorType,Int32 minorType) override;
 			};
 		}
 	}

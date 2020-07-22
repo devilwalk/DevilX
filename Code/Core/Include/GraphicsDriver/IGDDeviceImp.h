@@ -53,7 +53,7 @@ namespace NSDevilX
 					virtual IQueue* createQueue(IEnum::EQueue type) override;
 
 					// 通过 IQueue 继承
-					virtual ISwapChain* createSwapChain() override;
+					virtual ISwapChain* createSwapChain(HWND hwnd,const DXGI_SWAP_CHAIN_DESC1& desc,const DXGI_SWAP_CHAIN_FULLSCREEN_DESC* fullscreenDesc=nullptr) override;
 				};
 			}
 #endif
@@ -82,16 +82,18 @@ namespace NSDevilX
 					,public TBaseObject<IDeviceImp>
 				{
 				protected:
-					GLenum mInternal;
+					EGLContext mInternal;
 				public:
-					IDeviceImp(GLenum context,NSGraphicsDriver::IPhysicalDeviceGroupImp* physicsDeviceGroup);
+					IDeviceImp(EGLContext context,NSGraphicsDriver::IPhysicalDeviceGroupImp* physicsDeviceGroup);
 					virtual ~IDeviceImp();
 
 					// 通过 IDeviceImp 继承
 					virtual IQueue* createQueue(IEnum::EQueue type) override;
 
 					// 通过 IQueue 继承
-					virtual ISwapChain* createSwapChain() override;
+#if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
+					virtual ISwapChain* createSwapChain(HWND hwnd,const DXGI_SWAP_CHAIN_DESC1& desc,const DXGI_SWAP_CHAIN_FULLSCREEN_DESC* fullscreenDesc=nullptr) override;
+#endif
 				};
 			}
 		}

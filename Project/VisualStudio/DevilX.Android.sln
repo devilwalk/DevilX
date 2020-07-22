@@ -7,6 +7,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{1A3B79
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Common.Android", "Common\Common.Android.vcxproj", "{78D756E1-9E76-4435-85F1-3E0B44CEC245}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{547AF702-FEB0-4856-922F-A59D1BD64151}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Core.Android", "Core\Core.Android.vcxproj", "{4C0EDD73-C7B5-4713-AB4E-DF56D022E341}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM = Debug|ARM
@@ -35,12 +39,29 @@ Global
 		{78D756E1-9E76-4435-85F1-3E0B44CEC245}.Release|x64.Build.0 = Release|x64
 		{78D756E1-9E76-4435-85F1-3E0B44CEC245}.Release|x86.ActiveCfg = Release|x86
 		{78D756E1-9E76-4435-85F1-3E0B44CEC245}.Release|x86.Build.0 = Release|x86
+		{4C0EDD73-C7B5-4713-AB4E-DF56D022E341}.Debug|ARM.ActiveCfg = Debug|ARM
+		{4C0EDD73-C7B5-4713-AB4E-DF56D022E341}.Debug|ARM.Build.0 = Debug|ARM
+		{4C0EDD73-C7B5-4713-AB4E-DF56D022E341}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{4C0EDD73-C7B5-4713-AB4E-DF56D022E341}.Debug|ARM64.Build.0 = Debug|ARM64
+		{4C0EDD73-C7B5-4713-AB4E-DF56D022E341}.Debug|x64.ActiveCfg = Debug|x64
+		{4C0EDD73-C7B5-4713-AB4E-DF56D022E341}.Debug|x64.Build.0 = Debug|x64
+		{4C0EDD73-C7B5-4713-AB4E-DF56D022E341}.Debug|x86.ActiveCfg = Debug|x86
+		{4C0EDD73-C7B5-4713-AB4E-DF56D022E341}.Debug|x86.Build.0 = Debug|x86
+		{4C0EDD73-C7B5-4713-AB4E-DF56D022E341}.Release|ARM.ActiveCfg = Release|ARM
+		{4C0EDD73-C7B5-4713-AB4E-DF56D022E341}.Release|ARM.Build.0 = Release|ARM
+		{4C0EDD73-C7B5-4713-AB4E-DF56D022E341}.Release|ARM64.ActiveCfg = Release|ARM64
+		{4C0EDD73-C7B5-4713-AB4E-DF56D022E341}.Release|ARM64.Build.0 = Release|ARM64
+		{4C0EDD73-C7B5-4713-AB4E-DF56D022E341}.Release|x64.ActiveCfg = Release|x64
+		{4C0EDD73-C7B5-4713-AB4E-DF56D022E341}.Release|x64.Build.0 = Release|x64
+		{4C0EDD73-C7B5-4713-AB4E-DF56D022E341}.Release|x86.ActiveCfg = Release|x86
+		{4C0EDD73-C7B5-4713-AB4E-DF56D022E341}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{78D756E1-9E76-4435-85F1-3E0B44CEC245} = {1A3B796F-CD0B-4092-BC3D-EFA2D831A4F3}
+		{4C0EDD73-C7B5-4713-AB4E-DF56D022E341} = {547AF702-FEB0-4856-922F-A59D1BD64151}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BF2B692F-917F-4F93-AA84-E3F55EACA776}

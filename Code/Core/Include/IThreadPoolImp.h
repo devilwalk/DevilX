@@ -17,8 +17,8 @@ namespace NSDevilX
 				IThreadPoolImp * const mPool;
 				std::atomic<Bool> mExit;
 				SThread(IThreadPoolImp * pool)
-					:mPool(pool)
-					,mThread(nullptr)
+					:mThread(nullptr)
+					,mPool(pool)
 					,mExit(False)
 				{
 					mThread=DEVILX_TYPED_ALLOC(std::thread,1);

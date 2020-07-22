@@ -177,7 +177,7 @@ namespace NSDevilX
 			return 0<this->erase(t);
 		}
 	};
-	template<typename KeyT,typename ValueT,class SortfuncT=std::less<KeyT>,class TAllocator=std::allocator<std::pair<KeyT,ValueT> > >
+	template<typename KeyT,typename ValueT,class SortfuncT=std::less<KeyT>,class TAllocator=std::allocator<std::pair<const KeyT,ValueT> > >
 	class TMap
 		:public std::map<KeyT,ValueT,SortfuncT,TAllocator>
 	{
@@ -204,8 +204,8 @@ namespace NSDevilX
 		using reverse_iterator=typename _Mybase::reverse_iterator;
 		using const_reverse_iterator=typename _Mybase::const_reverse_iterator;
 
-		using _Alnode=typename _Mybase::_Alnode;
-		using _Alnode_traits=typename _Mybase::_Alnode_traits;
+		//using _Alnode=typename _Mybase::_Alnode;
+		//using _Alnode_traits=typename _Mybase::_Alnode_traits;
 
 		TMap() {}
 		template<class TAllocator2>

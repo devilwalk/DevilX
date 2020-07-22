@@ -5,7 +5,8 @@
 #else
 #define DLLAPI _declspec(dllimport)
 #endif
-#elif defined(GCC)
+#else
+#define DLLAPI
 #endif
 #include "Common.h"
 #include "ICoreCPPScriptEnvironment.h"

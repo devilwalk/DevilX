@@ -102,7 +102,7 @@ namespace NSDevilX
 			if(mPosition)
 				return mPosition->getValue();
 			else
-				return CFloat2::sZero;
+				return CMath::sFloat2_Zero;
 		}
 		Void setRotation(Float angle);
 		Float getRotation()const
@@ -115,7 +115,7 @@ namespace NSDevilX
 			if(mScale)
 				return mScale->getValue();
 			else
-				return CFloat2::sOne;
+				return CMath::sFloat2_One;
 		}
 		virtual Void onMessage(CFrameBase * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 	};
@@ -137,7 +137,7 @@ namespace NSDevilX
 			if(mPosition)
 				return mPosition->getValue();
 			else
-				return CFloat3::sZero;
+				return CMath::sFloat3_Zero;
 		}
 		Void setRotation(const CFloat4 & rotation);
 		const CFloat4 & getRotation()const
@@ -150,7 +150,7 @@ namespace NSDevilX
 			if(mScale)
 				return mScale->getValue();
 			else
-				return CFloat3::sOne;
+				return CMath::sFloat3_One;
 		}
 		virtual Void onMessage(CFrameBase * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 	};

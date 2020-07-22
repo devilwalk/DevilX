@@ -50,7 +50,7 @@ Void NSDevilX::CFontImage::getPixelRange(const CUTF8Char & ch,CUInt2 * pixelStar
 			}
 		}
 		const CUInt2 pixel_start(pixel_start_u,fill_pixel_start_v);
-		const CUInt2 pixel_end(CUInt2(pixel_start_u,pixel_start_v)+CUInt2(bitmap.width,mFontFace->getFontPixelSize().y)-CUInt2::sOne);
+		const CUInt2 pixel_end(CUInt2(pixel_start_u,pixel_start_v)+CUInt2(bitmap.width,mFontFace->getFontPixelSize().y)-CMath::sUInt2_One);
 		mCharPixelRanges[ch]=std::pair<CUInt2,CUInt2>(pixel_start,pixel_end);
 		if(pixelStart)
 			*pixelStart=pixel_start;
