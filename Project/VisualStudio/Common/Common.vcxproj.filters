@@ -179,5 +179,8 @@
     <ClCompile Include="..\..\..\Code\Common\Source\CommonAngle.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Code\Common\Source\EGLImp.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

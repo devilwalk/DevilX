@@ -98,26 +98,6 @@ ISwapChain* NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IDeviceImp::createSwap
 	{
 		config_attrs.push_back(EGL_OPENGL_ES_BIT);
 	}
-	config_attrs.push_back(EGL_RENDER_BUFFER);
-	if(desc.BufferCount<2)
-	{
-		config_attrs.push_back(EGL_SINGLE_BUFFER);
-	}
-	else
-	{
-		config_attrs.push_back(EGL_BACK_BUFFER);
-	}
-	config_attrs.push_back(EGL_GL_COLORSPACE);
-	switch(desc.Format)
-	{
-	case DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:
-	case DXGI_FORMAT_B8G8R8A8_UNORM_SRGB:
-	case DXGI_FORMAT_B8G8R8X8_UNORM_SRGB:
-		config_attrs.push_back(EGL_GL_COLORSPACE_SRGB);
-		break;
-	default:
-		config_attrs.push_back(EGL_GL_COLORSPACE_LINEAR);
-	}
 	config_attrs.push_back(EGL_BUFFER_SIZE);
 	switch(desc.Format)
 	{
@@ -196,10 +176,31 @@ ISwapChain* NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IDeviceImp::createSwap
 	config_attrs.push_back(EGL_WINDOW_BIT);
 	config_attrs.push_back(EGL_NONE);
 	EGLConfig cfg;
-	auto success=eglChooseConfig(inst->getDisplay(),&config_attrs[0],&cfg,1,nullptr)==EGL_TRUE;
+	EGLint num_cfg;
+	auto success=eglChooseConfig(inst->getDisplay(),&config_attrs[0],&cfg,1,&num_cfg)==EGL_TRUE;
 	TVector(EGLAttrib) attrs_list;
+	attrs_list.push_back(EGL_RENDER_BUFFER);
+	if(desc.BufferCount<2)
+	{
+		attrs_list.push_back(EGL_SINGLE_BUFFER);
+	}
+	else
+	{
+		attrs_list.push_back(EGL_BACK_BUFFER);
+	}
+	attrs_list.push_back(EGL_GL_COLORSPACE);
+	switch(desc.Format)
+	{
+	case DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:
+	case DXGI_FORMAT_B8G8R8A8_UNORM_SRGB:
+	case DXGI_FORMAT_B8G8R8X8_UNORM_SRGB:
+		attrs_list.push_back(EGL_GL_COLORSPACE_SRGB);
+		break;
+	default:
+		attrs_list.push_back(EGL_GL_COLORSPACE_LINEAR);
+	}
 	attrs_list.push_back(EGL_NONE);
-	auto surface=eglCreatePlatformWindowSurface(inst->getDisplay(),cfg,hwnd,&attrs_list[0]);
+	auto surface=eglCreateWindowSurface(inst->getDisplay(),cfg,hwnd,&attrs_list[0]);
 	return nullptr;
 }
 #endif

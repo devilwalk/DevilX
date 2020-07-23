@@ -73,6 +73,7 @@
     <ClCompile Include="..\..\..\Code\Common\Source\CommonTransformNode.cpp" />
     <ClCompile Include="..\..\..\Code\Common\Source\CommonTreeContainer.cpp" />
     <ClCompile Include="..\..\..\Code\Common\Source\CommonUTFChar.cpp" />
+    <ClCompile Include="..\..\..\Code\Common\Source\EGLImp.cpp" />
     <ClCompile Include="..\..\..\Code\Common\Source\Precompiler.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

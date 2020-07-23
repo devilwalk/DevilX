@@ -24,6 +24,13 @@ public:
 		inst->enumPhysicalDeviceGroups(&physics_device_groups[0]);
 		auto dev=inst->createDevice(physics_device_groups[0]);
 		auto queu_3d=dev->createQueue(NSDevilX::NSCore::NSGraphicsDriver::IEnum::EQueue_3D);
+		DXGI_SWAP_CHAIN_DESC1 desc={};
+		desc.BufferCount=2;
+		desc.BufferUsage=DXGI_USAGE_BACK_BUFFER|DXGI_USAGE_RENDER_TARGET_OUTPUT|DXGI_USAGE_DISCARD_ON_PRESENT;
+		desc.Format=DXGI_FORMAT_R8G8B8A8_UNORM;
+		desc.SampleDesc.Count=1;
+		desc.SwapEffect=DXGI_SWAP_EFFECT_FLIP_DISCARD;
+		queu_3d->createSwapChain(wnd,desc);
 	}
 
 	NSDevilX::Void update()
