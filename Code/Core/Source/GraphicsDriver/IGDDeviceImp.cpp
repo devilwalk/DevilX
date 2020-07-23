@@ -71,7 +71,8 @@ IQueue* NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IDeviceImp::createQueue(IE
 
 NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IDeviceImp::IDeviceImp(EGLContext context,NSGraphicsDriver::IPhysicalDeviceGroupImp* physicsDeviceGroup)
 	:NSGraphicsDriver::IDeviceImp(physicsDeviceGroup)
-	,mInternal(context)
+	,mContext(context)
+	,mSurface(EGL_NO_SURFACE)
 {
 }
 
@@ -87,6 +88,8 @@ IQueue* NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IDeviceImp::createQueue(IE
 #if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
 ISwapChain* NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IDeviceImp::createSwapChain(HWND hwnd,const DXGI_SWAP_CHAIN_DESC1& desc,const DXGI_SWAP_CHAIN_FULLSCREEN_DESC* fullscreenDesc)
 {
+	if(mSurface!=EGL_NO_SURFACE)
+		return nullptr;
 	auto inst=static_cast<IInstanceImp*>(mPhysicsDeviceGroup->getInstance());
 	TVector(EGLint) config_attrs;
 	config_attrs.push_back(EGL_RENDERABLE_TYPE);
@@ -200,7 +203,12 @@ ISwapChain* NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IDeviceImp::createSwap
 		attrs_list.push_back(EGL_GL_COLORSPACE_LINEAR);
 	}
 	attrs_list.push_back(EGL_NONE);
-	auto surface=eglCreateWindowSurface(inst->getDisplay(),cfg,hwnd,&attrs_list[0]);
-	return nullptr;
+	mSurface=eglCreateWindowSurface(inst->getDisplay(),cfg,hwnd,&attrs_list[0]);
+	if(EGL_NO_SURFACE==mSurface)
+	{
+		return nullptr;
+	}
+	eglMakeCurrent(inst->getDisplay(),mSurface,mSurface,mContext);
+	return this;
 }
 #endif

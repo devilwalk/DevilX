@@ -23,8 +23,10 @@
 #define ASIO_STANDALONE
 #include "asio.hpp"
 #define GLEW_STATIC
-#define GLEW_EGL
+#define GLAPI extern
+#if DEVILX_WINDOW_SYSTEM!=DEVILX_WINDOW_SYSTEM_WINDOWS
 #define GLEW_NO_GLU
+#endif
 #include "GL/glew.h"
 #if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
 #include "GL/wglew.h"

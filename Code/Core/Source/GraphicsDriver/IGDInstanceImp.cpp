@@ -449,14 +449,10 @@ NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IInstanceImp::~IInstanceImp()
 
 Boolean NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IInstanceImp::initialize()
 {
-	auto success = glewInit()>=0;
-	if(success)
-	{
-		mDisplay=eglGetDisplay(EGL_DEFAULT_DISPLAY);
-		success&=(eglInitialize(mDisplay,NULL,NULL)==EGL_TRUE);
-		success&=(eglBindAPI(EGL_OPENGL_API)==EGL_TRUE);
-		mPhysicsDeviceGroups.push_back(DEVILX_NEW IPhysicalDeviceGroupImp(this));
-	}
+	mDisplay=eglGetDisplay(EGL_DEFAULT_DISPLAY);
+	auto success=eglInitialize(mDisplay,NULL,NULL)==EGL_TRUE;
+	success&=eglBindAPI(EGL_OPENGL_API)==EGL_TRUE;
+	mPhysicsDeviceGroups.push_back(DEVILX_NEW IPhysicalDeviceGroupImp(this));
 	return success;
 }
 

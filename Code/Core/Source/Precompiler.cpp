@@ -8,7 +8,6 @@ using namespace NSCore;
 #pragma comment(lib,"FreeImage.lib")
 #pragma comment(lib,"freetype.lib")
 #pragma comment(lib,"libfbxsdk.lib")
-#pragma comment(lib,"glew.lib")
 #pragma comment(lib,"dxgi.lib")
 #pragma comment(lib,"d3d9.lib")
 #pragma comment(lib,"d3d10.lib")
@@ -18,6 +17,7 @@ using namespace NSCore;
 #pragma comment(lib,"opengl32.lib")
 #pragma comment(lib,"glu32.lib")
 #pragma comment(lib,"vulkan-1.lib")
+//#pragma comment(lib,"glew.lib")
 //#pragma comment(lib,"libEGL.lib")
 //#pragma comment(lib,"egl.lib")
 #endif

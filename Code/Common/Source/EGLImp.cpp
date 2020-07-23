@@ -1,4 +1,5 @@
 #include "Precompiler.h"
+#include "GLEW/src/glew.c"
 #if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
 //EGL 1.0
 EGLAPI EGLBoolean EGLAPIENTRY eglChooseConfig(EGLDisplay dpy,const EGLint* attrib_list,EGLConfig* configs,EGLint config_size,EGLint* num_config)
@@ -12,6 +13,7 @@ EGLAPI EGLBoolean EGLAPIENTRY eglChooseConfig(EGLDisplay dpy,const EGLint* attri
 	pfd.add(WGL_COLOR_BITS_ARB,32);
 	pfd.add(WGL_DEPTH_BITS_ARB,24);
 	pfd.add(WGL_STENCIL_BITS_ARB,8);
+	pfd.add(WGL_ACCELERATION_ARB,WGL_FULL_ACCELERATION_ARB);
 	auto attrib_pt=attrib_list;
 	while(attrib_pt&&((*attrib_pt)!=EGL_NONE))
 	{
@@ -65,11 +67,10 @@ EGLAPI EGLBoolean EGLAPIENTRY eglChooseConfig(EGLDisplay dpy,const EGLint* attri
 		attribs.push_back(attr.first);
 		attribs.push_back(attr.second);
 	}
-	attribs.push_back(EGL_NONE);
+	attribs.push_back(GL_NONE);
 	int fmt;
 	UINT num;
-	wglChoosePixelFormatARB(static_cast<HDC>(dpy),&attribs[0],nullptr,1,&fmt,&num);
-	auto ret=fmt>0;
+	auto ret=wglChoosePixelFormatARB(static_cast<HDC>(dpy),&attribs[0],nullptr,1,&fmt,&num);
 	if(num_config)
 	{
 		*num_config=ret?1:0;
@@ -91,11 +92,11 @@ EGLAPI EGLContext EGLAPIENTRY eglCreateContext(EGLDisplay dpy,EGLConfig config,E
 		attribs.push_back(attr.first);
 		attribs.push_back(attr.second);
 	}
-	attribs.push_back(EGL_NONE);
+	attribs.push_back(GL_NONE);
 	int fmt;
 	UINT num;
-	wglChoosePixelFormatARB(static_cast<HDC>(dpy),&attribs[0],nullptr,1,&fmt,&num);
-	if(!SetPixelFormat(static_cast<HDC>(dpy),fmt,nullptr))
+	auto success=wglChoosePixelFormatARB(static_cast<HDC>(dpy),&attribs[0],nullptr,1,&fmt,&num);
+	if((!success)||(!SetPixelFormat(static_cast<HDC>(dpy),fmt,nullptr)))
 	{
 		return EGL_NO_SURFACE;
 	}
@@ -116,14 +117,18 @@ EGLAPI EGLSurface EGLAPIENTRY eglCreateWindowSurface(EGLDisplay dpy,EGLConfig co
 		case EGL_GL_COLORSPACE:
 			switch(value)
 			{
-			case EGL_GL_COLORSPACE_LINEAR:
-				break;
 			case EGL_GL_COLORSPACE_SRGB:
-				pfd[WGL_FRAMEBUFFER_SRGB_CAPABLE_ARB]=EGL_TRUE;
+				pfd[WGL_COLORSPACE_EXT]=WGL_COLORSPACE_SRGB_EXT;
 				break;
 			}
 			break;
 		case EGL_RENDER_BUFFER:
+			switch(value)
+			{
+			case EGL_SINGLE_BUFFER:
+				pfd[WGL_DOUBLE_BUFFER_ARB]=GL_FALSE;
+				break;
+			}
 			break;
 		}
 
@@ -136,11 +141,16 @@ EGLAPI EGLSurface EGLAPIENTRY eglCreateWindowSurface(EGLDisplay dpy,EGLConfig co
 		attribs.push_back(attr.first);
 		attribs.push_back(attr.second);
 	}
-	attribs.push_back(EGL_NONE);
+	attribs.push_back(GL_NONE);
+	auto dc=GetDC(win);
 	int fmt;
 	UINT num;
-	wglChoosePixelFormatARB(static_cast<HDC>(dpy),&attribs[0],nullptr,1,&fmt,&num);
-	auto dc=GetDC(win);
+	auto success=wglChoosePixelFormatARB(dc,&attribs[0],nullptr,1,&fmt,&num);
+	if(!success)
+	{
+		ReleaseDC(win,dc);
+		return EGL_NO_SURFACE;
+	}
 	if(!SetPixelFormat(dc,fmt,nullptr))
 	{
 		ReleaseDC(win,dc);
@@ -178,7 +188,51 @@ EGLAPI EGLint EGLAPIENTRY eglGetError(void)
 }
 EGLAPI EGLBoolean EGLAPIENTRY eglInitialize(EGLDisplay dpy,EGLint* major,EGLint* minor)
 {
-	return EGL_TRUE;
+	auto ret=EGL_TRUE;
+	WNDCLASS wc;
+	PIXELFORMATDESCRIPTOR pfd;
+	HDC dc=NULL;
+	int visual=0;
+	HGLRC rc=NULL;
+	HWND wnd=NULL;
+	ZeroMemory(&wc,sizeof(WNDCLASS));
+	wc.hInstance=GetModuleHandle(NULL);
+	wc.lpfnWndProc=DefWindowProc;
+	wc.lpszClassName="GLEW";
+	if(0==RegisterClass(&wc)) goto FINISH;
+	wnd=CreateWindow("GLEW","GLEW",0,CW_USEDEFAULT,CW_USEDEFAULT,
+		CW_USEDEFAULT,CW_USEDEFAULT,NULL,NULL,
+		GetModuleHandle(NULL),NULL);
+	if(NULL==wnd) goto FINISH;
+	dc=GetDC(wnd);
+	if(NULL==dc) goto FINISH;
+	ZeroMemory(&pfd,sizeof(PIXELFORMATDESCRIPTOR));
+	pfd.nSize=sizeof(PIXELFORMATDESCRIPTOR);
+	pfd.nVersion=1;
+	pfd.dwFlags=PFD_DRAW_TO_WINDOW|PFD_SUPPORT_OPENGL;
+	visual=ChoosePixelFormat(dc,&pfd);
+	if(0==visual) goto FINISH;
+	if(FALSE==SetPixelFormat(dc,visual,&pfd)) goto FINISH;
+	rc=wglCreateContext(dc);
+	if(NULL==rc) goto FINISH;
+	if(FALSE==wglMakeCurrent(dc,rc)) goto FINISH;
+	ret&=glewInit()>=0;
+FINISH:
+	if(rc)
+	{
+		wglMakeCurrent(dc,NULL);
+		wglDeleteContext(rc);
+	}
+	if(dc)
+	{
+		ReleaseDC(wnd,dc);
+	}
+	if(wnd)
+	{
+		DestroyWindow(wnd);
+		UnregisterClass(wc.lpszClassName,wc.hInstance);
+	}
+	return ret;
 }
 EGLAPI EGLBoolean EGLAPIENTRY eglMakeCurrent(EGLDisplay dpy,EGLSurface draw,EGLSurface read,EGLContext ctx)
 {

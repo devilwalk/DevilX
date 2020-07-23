@@ -79,10 +79,12 @@ namespace NSDevilX
 				class IDeviceImp
 					:public NSGraphicsDriver::IDeviceImp
 					,public IQueue
+					,public ISwapChain
 					,public TBaseObject<IDeviceImp>
 				{
 				protected:
-					EGLContext mInternal;
+					EGLContext mContext;
+					EGLSurface mSurface;
 				public:
 					IDeviceImp(EGLContext context,NSGraphicsDriver::IPhysicalDeviceGroupImp* physicsDeviceGroup);
 					virtual ~IDeviceImp();
