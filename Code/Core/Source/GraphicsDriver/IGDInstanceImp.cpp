@@ -445,6 +445,7 @@ NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IInstanceImp::IInstanceImp(IEnum::
 
 NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IInstanceImp::~IInstanceImp()
 {
+	eglTerminate(mDisplay);
 }
 
 Boolean NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IInstanceImp::initialize()

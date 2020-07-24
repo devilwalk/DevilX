@@ -1,6 +1,199 @@
 #include "Precompiler.h"
 #include "GLEW/src/glew.c"
 #if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
+struct SEGLConfig
+{
+	NSDevilX::TMap<int,int> mAttribs;
+};
+struct SEGLContext
+{
+	HGLRC mContext;
+	NSDevilX::TMap<int,int> mAttribs;
+	~SEGLContext()
+	{
+		destruction();
+	}
+	BOOL destruction()
+	{
+		return wglDeleteContext(mContext);
+	}
+};
+struct SEGLSurface
+{
+	HDC mDC;
+	HGLRC mContext;
+	NSDevilX::TMap<int,int> mAttribs;
+	~SEGLSurface()
+	{
+		destruction();
+	}
+	BOOL destruction()
+	{
+		auto ret=wglDeleteContext(mContext);
+		ret&=ReleaseDC(WindowFromDC(mDC),mDC);
+		return ret;
+	}
+};
+class CEGL
+{
+protected:
+	NSDevilX::TResourcePtrVector<SEGLConfig> mConfigs;
+	NSDevilX::TResourcePtrVector<SEGLContext> mContexts;
+	NSDevilX::TResourcePtrVector<SEGLSurface> mSurfaces;
+public:
+	CEGL()
+	{
+
+	}
+	~CEGL()
+	{
+
+	}
+	static NSDevilX::Boolean map(const EGLint* attrib_list,OUT NSDevilX::TMap<int,int>& attrs)
+	{
+		auto attrib_pt=attrib_list;
+		while(attrib_pt&&((*attrib_pt)!=EGL_NONE))
+		{
+			auto key=*attrib_pt;
+			auto value=*(attrib_pt+1);
+			switch(key)
+			{
+			case EGL_BUFFER_SIZE:
+				attrs[WGL_COLOR_BITS_ARB]=value;
+				break;
+			case EGL_RED_SIZE:
+				attrs[WGL_RED_BITS_ARB]=value;
+				break;
+			case EGL_GREEN_SIZE:
+				attrs[WGL_GREEN_BITS_ARB]=value;
+				break;
+			case EGL_BLUE_SIZE:
+				attrs[WGL_BLUE_BITS_ARB]=value;
+				break;
+			case EGL_ALPHA_SIZE:
+				attrs[WGL_ALPHA_BITS_ARB]=value;
+				break;
+			case EGL_BIND_TO_TEXTURE_RGB:
+			case EGL_BIND_TO_TEXTURE_RGBA:
+				attrs[WGL_DRAW_TO_BITMAP_ARB]=value;
+				break;
+			case EGL_COLOR_BUFFER_TYPE:
+				switch(value)
+				{
+				case EGL_RGB_BUFFER:
+					attrs[WGL_PIXEL_TYPE_ARB]=WGL_TYPE_RGBA_ARB;
+					break;
+				case EGL_LUMINANCE_BUFFER:
+					attrs[WGL_PIXEL_TYPE_ARB]=WGL_TYPE_COLORINDEX_ARB;
+					break;
+				}
+				break;
+			case EGL_DEPTH_SIZE:
+				attrs[WGL_DEPTH_BITS_ARB]=value;
+				break;
+			case EGL_STENCIL_SIZE:
+				attrs[WGL_STENCIL_BITS_ARB]=value;
+				break;
+			case EGL_GL_COLORSPACE:
+				switch(value)
+				{
+				case EGL_GL_COLORSPACE_SRGB:
+					attrs[WGL_COLORSPACE_EXT]=WGL_COLORSPACE_SRGB_EXT;
+					break;
+				}
+				break;
+			case EGL_RENDER_BUFFER:
+				switch(value)
+				{
+				case EGL_SINGLE_BUFFER:
+					attrs[WGL_DOUBLE_BUFFER_ARB]=GL_FALSE;
+					break;
+				}
+				break;
+			}
+			attrib_pt+=2;
+		}
+		return true;
+	}
+	static NSDevilX::TVector<int> toWGLArray(const NSDevilX::TMap<int,int>& attrs,NSDevilX::Boolean addNone=false)
+	{
+		NSDevilX::TVector<int> ret;
+		ret.reserve(attrs.size()+(addNone?1:0));
+		for(auto& v:attrs)
+		{
+			ret.push_back(v.first);
+			ret.push_back(v.second);
+		}
+		if(addNone)
+		{
+			ret.push_back(GL_NONE);
+		}
+		return ret;
+	}
+	SEGLConfig* createConfig()
+	{
+		auto ret=new SEGLConfig();
+		mConfigs.push_back(ret);
+		return ret;
+	}
+	SEGLContext constructContext(HDC dc,const SEGLConfig& cfg,const EGLint* attrib_list)
+	{
+		SEGLContext ret={};
+		ret.mAttribs=cfg.mAttribs;
+		map(attrib_list,ret.mAttribs);
+		int fmt=0;
+		UINT num=0;
+		wglChoosePixelFormatARB(dc,&toWGLArray(ret.mAttribs,true)[0],nullptr,1,&fmt,&num);
+		SetPixelFormat(dc,fmt,nullptr);
+		ret.mContext=wglCreateContext(dc);
+		auto success=wglMakeCurrent(dc,ret.mContext);
+		return ret;
+	}
+	SEGLContext* createContext(HDC dc,const SEGLConfig& cfg,const EGLint* attrib_list)
+	{
+		auto ctx=constructContext(dc,cfg,attrib_list);
+		if(!ctx.mContext)
+		{
+			return nullptr;
+		}
+		auto ret=new SEGLContext(ctx);
+		mContexts.push_back(ret);
+		return ret;
+	}
+	SEGLSurface* createSurface(HDC dc,const SEGLConfig& cfg,const EGLint* attrib_list)
+	{
+		auto ctx=constructContext(dc,cfg,attrib_list);
+		if(!ctx.mContext)
+		{
+			return nullptr;
+		}
+		auto success=wglMakeCurrent(dc,ctx.mContext);
+		auto ret=new SEGLSurface();
+		ret->mAttribs=ctx.mAttribs;
+		ret->mContext=ctx.mContext;
+		ret->mDC=dc;
+		mSurfaces.push_back(ret);
+		return ret;
+	}
+	BOOL destroyContext(SEGLContext* context)
+	{
+		auto ret=context->destruction();
+		mContexts.destroy(context);
+		return ret;
+	}
+	BOOL destroySurface(SEGLSurface* surface)
+	{
+		auto ret=surface->destruction();
+		mSurfaces.destroy(surface);
+		return ret;
+	}
+};
+static CEGL* gEGL=nullptr;
+static HDC gEGLDC=NULL;
+static auto _eglGetDC(EGLDisplay dpy)
+{
+	return (dpy==EGL_DEFAULT_DISPLAY)?gEGLDC:static_cast<HDC>(dpy);
+}
 //EGL 1.0
 EGLAPI EGLBoolean EGLAPIENTRY eglChooseConfig(EGLDisplay dpy,const EGLint* attrib_list,EGLConfig* configs,EGLint config_size,EGLint* num_config)
 {
@@ -14,157 +207,51 @@ EGLAPI EGLBoolean EGLAPIENTRY eglChooseConfig(EGLDisplay dpy,const EGLint* attri
 	pfd.add(WGL_DEPTH_BITS_ARB,24);
 	pfd.add(WGL_STENCIL_BITS_ARB,8);
 	pfd.add(WGL_ACCELERATION_ARB,WGL_FULL_ACCELERATION_ARB);
-	auto attrib_pt=attrib_list;
-	while(attrib_pt&&((*attrib_pt)!=EGL_NONE))
-	{
-		auto key=*attrib_pt;
-		auto value=*(attrib_pt+1);
-		switch(key)
-		{
-		case EGL_BUFFER_SIZE:
-			pfd[WGL_COLOR_BITS_ARB]=value;
-			break;
-		case EGL_RED_SIZE:
-			pfd[WGL_RED_BITS_ARB]=value;
-			break;
-		case EGL_GREEN_SIZE:
-			pfd[WGL_GREEN_BITS_ARB]=value;
-			break;
-		case EGL_BLUE_SIZE:
-			pfd[WGL_BLUE_BITS_ARB]=value;
-			break;
-		case EGL_ALPHA_SIZE:
-			pfd[WGL_ALPHA_BITS_ARB]=value;
-			break;
-		case EGL_BIND_TO_TEXTURE_RGB:
-		case EGL_BIND_TO_TEXTURE_RGBA:
-			pfd[WGL_DRAW_TO_BITMAP_ARB]=value;
-			break;
-		case EGL_COLOR_BUFFER_TYPE:
-			switch(value)
-			{
-			case EGL_RGB_BUFFER:
-				pfd[WGL_PIXEL_TYPE_ARB]=WGL_TYPE_RGBA_ARB;
-				break;
-			case EGL_LUMINANCE_BUFFER:
-				pfd[WGL_PIXEL_TYPE_ARB]=WGL_TYPE_COLORINDEX_ARB;
-				break;
-			}
-			break;
-		case EGL_DEPTH_SIZE:
-			pfd[WGL_DEPTH_BITS_ARB]=value;
-			break;
-		case EGL_STENCIL_SIZE:
-			pfd[WGL_STENCIL_BITS_ARB]=value;
-			break;
-		}
-		attrib_pt+=2;
-	}
-	NSDevilX::TVector<int> attribs;
-	attribs.reserve(pfd.size()+1);
-	for(const auto& attr:pfd)
-	{
-		attribs.push_back(attr.first);
-		attribs.push_back(attr.second);
-	}
-	attribs.push_back(GL_NONE);
+	CEGL::map(attrib_list,pfd);
+	auto attribs=CEGL::toWGLArray(pfd,true);
 	int fmt;
 	UINT num;
-	auto ret=wglChoosePixelFormatARB(static_cast<HDC>(dpy),&attribs[0],nullptr,1,&fmt,&num);
+	auto ret=wglChoosePixelFormatARB(_eglGetDC(dpy),&attribs[0],nullptr,1,&fmt,&num);
 	if(num_config)
 	{
 		*num_config=ret?1:0;
 	}
 	if(configs&&config_size)
 	{
-		configs[0]=&pfd;
+		auto cfg=gEGL->createConfig();
+		cfg->mAttribs=pfd;
+		configs[0]=cfg;
 	}
 	return ret;
 }
 EGLAPI EGLContext EGLAPIENTRY eglCreateContext(EGLDisplay dpy,EGLConfig config,EGLContext share_context,const EGLint* attrib_list)
 {
-	if(share_context!=EGL_NO_CONTEXT)
+	EGLContext ret=EGL_NO_CONTEXT;
+	HGLRC rc=NULL;
+	HWND wnd=CreateWindow("GLEW","GLEW_CONTEXT",0,CW_USEDEFAULT,CW_USEDEFAULT,
+		CW_USEDEFAULT,CW_USEDEFAULT,NULL,NULL,
+		GetModuleHandle(NULL),NULL);
+	if(NULL==wnd)
 		return EGL_NO_CONTEXT;
-	NSDevilX::TVector<int> attribs;
-	attribs.reserve(static_cast<NSDevilX::TMap<int,int>*>(config)->size()+1);
-	for(const auto& attr:*static_cast<NSDevilX::TMap<int,int>*>(config))
-	{
-		attribs.push_back(attr.first);
-		attribs.push_back(attr.second);
-	}
-	attribs.push_back(GL_NONE);
-	int fmt;
-	UINT num;
-	auto success=wglChoosePixelFormatARB(static_cast<HDC>(dpy),&attribs[0],nullptr,1,&fmt,&num);
-	if((!success)||(!SetPixelFormat(static_cast<HDC>(dpy),fmt,nullptr)))
-	{
-		return EGL_NO_SURFACE;
-	}
-	auto context=wglCreateContext(static_cast<HDC>(dpy));
+	HDC dc=GetDC(wnd);
+
+	auto context=gEGL->createContext(dc,*static_cast<const SEGLConfig*>(config),attrib_list);
+
+	ReleaseDC(wnd,dc);
+	DestroyWindow(wnd);
 	return context;
 }
 EGLAPI EGLSurface EGLAPIENTRY eglCreateWindowSurface(EGLDisplay dpy,EGLConfig config,EGLNativeWindowType win,const EGLint* attrib_list)
 {
-	auto pfd=*static_cast<NSDevilX::TMap<int,int>*>(config);
-	auto attrb_pt=attrib_list;
-	while(attrb_pt&&((*attrb_pt)!=EGL_NONE))
-	{
-		auto key=*attrb_pt;
-		auto value=*(attrb_pt+1);
-
-		switch(key)
-		{
-		case EGL_GL_COLORSPACE:
-			switch(value)
-			{
-			case EGL_GL_COLORSPACE_SRGB:
-				pfd[WGL_COLORSPACE_EXT]=WGL_COLORSPACE_SRGB_EXT;
-				break;
-			}
-			break;
-		case EGL_RENDER_BUFFER:
-			switch(value)
-			{
-			case EGL_SINGLE_BUFFER:
-				pfd[WGL_DOUBLE_BUFFER_ARB]=GL_FALSE;
-				break;
-			}
-			break;
-		}
-
-		attrb_pt+=2;
-	}
-	NSDevilX::TVector<int> attribs;
-	attribs.reserve(pfd.size()+1);
-	for(const auto& attr:pfd)
-	{
-		attribs.push_back(attr.first);
-		attribs.push_back(attr.second);
-	}
-	attribs.push_back(GL_NONE);
-	auto dc=GetDC(win);
-	int fmt;
-	UINT num;
-	auto success=wglChoosePixelFormatARB(dc,&attribs[0],nullptr,1,&fmt,&num);
-	if(!success)
-	{
-		ReleaseDC(win,dc);
-		return EGL_NO_SURFACE;
-	}
-	if(!SetPixelFormat(dc,fmt,nullptr))
-	{
-		ReleaseDC(win,dc);
-		return EGL_NO_SURFACE;
-	}
-	return dc;
+	return gEGL->createSurface(GetDC(win),*static_cast<SEGLConfig*>(config),attrib_list);
 }
 EGLAPI EGLBoolean EGLAPIENTRY eglDestroyContext(EGLDisplay dpy,EGLContext ctx)
 {
-	return wglDeleteContext(static_cast<HGLRC>(ctx))?EGL_TRUE:EGL_FALSE;
+	return gEGL->destroyContext(static_cast<SEGLContext*>(ctx));
 }
 EGLAPI EGLBoolean EGLAPIENTRY eglDestroySurface(EGLDisplay dpy,EGLSurface surface)
 {
-	return ReleaseDC(WindowFromDC(static_cast<HDC>(surface)),static_cast<HDC>(surface))?EGL_TRUE:EGL_FALSE;
+	return gEGL->destroySurface(static_cast<SEGLSurface*>(surface));
 }
 EGLAPI EGLDisplay EGLAPIENTRY eglGetCurrentDisplay(void)
 {
@@ -176,10 +263,6 @@ EGLAPI EGLSurface EGLAPIENTRY eglGetCurrentSurface(EGLint readdraw)
 }
 EGLAPI EGLDisplay EGLAPIENTRY eglGetDisplay(EGLNativeDisplayType display_id)
 {
-	if(EGL_DEFAULT_DISPLAY==display_id)
-	{
-		display_id=GetDC(NULL);
-	}
 	return display_id;
 }
 EGLAPI EGLint EGLAPIENTRY eglGetError(void)
@@ -188,11 +271,12 @@ EGLAPI EGLint EGLAPIENTRY eglGetError(void)
 }
 EGLAPI EGLBoolean EGLAPIENTRY eglInitialize(EGLDisplay dpy,EGLint* major,EGLint* minor)
 {
+	gEGL=new CEGL();
 	auto ret=EGL_TRUE;
 	WNDCLASS wc;
 	PIXELFORMATDESCRIPTOR pfd;
-	HDC dc=NULL;
 	int visual=0;
+	HDC dc=NULL;
 	HGLRC rc=NULL;
 	HWND wnd=NULL;
 	ZeroMemory(&wc,sizeof(WNDCLASS));
@@ -220,23 +304,57 @@ EGLAPI EGLBoolean EGLAPIENTRY eglInitialize(EGLDisplay dpy,EGLint* major,EGLint*
 FINISH:
 	if(rc)
 	{
-		wglMakeCurrent(dc,NULL);
+		wglMakeCurrent(NULL,rc);
 		wglDeleteContext(rc);
 	}
-	if(dc)
+	if(dpy==EGL_DEFAULT_DISPLAY)
 	{
-		ReleaseDC(wnd,dc);
+		gEGLDC=dc;
 	}
-	if(wnd)
+	else
 	{
-		DestroyWindow(wnd);
-		UnregisterClass(wc.lpszClassName,wc.hInstance);
+		if(dc)
+		{
+			ReleaseDC(wnd,dc);
+		}
+		if(wnd)
+		{
+			DestroyWindow(wnd);
+			UnregisterClass("GLEW",GetModuleHandle(NULL));
+		}
 	}
 	return ret;
 }
 EGLAPI EGLBoolean EGLAPIENTRY eglMakeCurrent(EGLDisplay dpy,EGLSurface draw,EGLSurface read,EGLContext ctx)
 {
-	return wglMakeContextCurrentARB(static_cast<HDC>(draw),static_cast<HDC>(read),static_cast<HGLRC>(ctx))?EGL_TRUE:EGL_FALSE;
+	HDC draw_dc=NULL;
+	HDC read_dc=NULL;
+	HGLRC context=NULL;
+	if(draw)
+	{
+		draw_dc=static_cast<SEGLSurface*>(draw)->mDC;
+	}
+	if(read)
+	{
+		read_dc=static_cast<SEGLSurface*>(read)->mDC;
+	}
+	if(ctx)
+	{
+		context=static_cast<SEGLContext*>(ctx)->mContext;
+	}
+	if(FALSE==wglMakeCurrent(draw_dc,context))
+	{
+		if(draw)
+		{
+			context=static_cast<SEGLSurface*>(draw)->mContext;
+		}
+		else if(read)
+		{
+			context=static_cast<SEGLSurface*>(read)->mContext;
+		}
+		return wglMakeCurrent(draw_dc,context);
+	}
+	return EGL_FALSE;
 }
 EGLAPI EGLBoolean EGLAPIENTRY eglSwapBuffers(EGLDisplay dpy,EGLSurface surface)
 {
@@ -244,6 +362,19 @@ EGLAPI EGLBoolean EGLAPIENTRY eglSwapBuffers(EGLDisplay dpy,EGLSurface surface)
 }
 EGLAPI EGLBoolean EGLAPIENTRY eglTerminate(EGLDisplay dpy)
 {
+	HWND wnd=NULL;
+	if(gEGLDC)
+	{
+		wnd=WindowFromDC(gEGLDC);
+		ReleaseDC(wnd,gEGLDC);
+	}
+	if(wnd)
+	{
+		DestroyWindow(wnd);
+		UnregisterClass("GLEW",GetModuleHandle(NULL));
+	}
+	delete gEGL;
+	gEGL=nullptr;
 	return EGL_TRUE;
 }
 //EGL 1.2
