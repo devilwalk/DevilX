@@ -27,7 +27,7 @@ public:
 		DXGI_SWAP_CHAIN_DESC1 desc={};
 		desc.BufferCount=2;
 		desc.BufferUsage=DXGI_USAGE_BACK_BUFFER|DXGI_USAGE_RENDER_TARGET_OUTPUT|DXGI_USAGE_DISCARD_ON_PRESENT;
-		desc.Format=DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+		desc.Format=DXGI_FORMAT_R8G8B8A8_UNORM;
 		desc.SampleDesc.Count=1;
 		desc.SwapEffect=DXGI_SWAP_EFFECT_FLIP_DISCARD;
 		queu_3d->createSwapChain(wnd,desc);

@@ -7,32 +7,14 @@ struct SEGLConfig
 };
 struct SEGLContext
 {
+	HDC mDC;
 	HGLRC mContext;
 	NSDevilX::TMap<int,int> mAttribs;
-	~SEGLContext()
-	{
-		destruction();
-	}
-	BOOL destruction()
-	{
-		return wglDeleteContext(mContext);
-	}
 };
 struct SEGLSurface
 {
 	HDC mDC;
-	HGLRC mContext;
 	NSDevilX::TMap<int,int> mAttribs;
-	~SEGLSurface()
-	{
-		destruction();
-	}
-	BOOL destruction()
-	{
-		auto ret=wglDeleteContext(mContext);
-		ret&=ReleaseDC(WindowFromDC(mDC),mDC);
-		return ret;
-	}
 };
 class CEGL
 {
@@ -130,29 +112,32 @@ public:
 		}
 		return ret;
 	}
-	SEGLConfig* createConfig()
+	auto createConfig()
 	{
 		auto ret=new SEGLConfig();
 		mConfigs.push_back(ret);
 		return ret;
 	}
-	SEGLContext constructContext(HDC dc,const SEGLConfig& cfg,const EGLint* attrib_list)
+	auto constructContext(HDC dc,const SEGLConfig& cfg,const EGLint* attrib_list)
 	{
-		SEGLContext ret={};
-		ret.mAttribs=cfg.mAttribs;
-		map(attrib_list,ret.mAttribs);
+		SEGLContext ctx={};
+		auto attrs=cfg.mAttribs;
+		map(attrib_list,attrs);
 		int fmt=0;
 		UINT num=0;
-		wglChoosePixelFormatARB(dc,&toWGLArray(ret.mAttribs,true)[0],nullptr,1,&fmt,&num);
-		SetPixelFormat(dc,fmt,nullptr);
-		ret.mContext=wglCreateContext(dc);
-		auto success=wglMakeCurrent(dc,ret.mContext);
-		return ret;
+		auto success=wglChoosePixelFormatARB(dc,&toWGLArray(attrs,true)[0],nullptr,1,&fmt,&num);
+		success&=SetPixelFormat(dc,fmt,nullptr);
+		if(success)
+		{
+			ctx.mDC=dc;
+			ctx.mAttribs=attrs;
+		}
+		return ctx;
 	}
 	SEGLContext* createContext(HDC dc,const SEGLConfig& cfg,const EGLint* attrib_list)
 	{
 		auto ctx=constructContext(dc,cfg,attrib_list);
-		if(!ctx.mContext)
+		if(ctx.mAttribs.empty())
 		{
 			return nullptr;
 		}
@@ -163,29 +148,23 @@ public:
 	SEGLSurface* createSurface(HDC dc,const SEGLConfig& cfg,const EGLint* attrib_list)
 	{
 		auto ctx=constructContext(dc,cfg,attrib_list);
-		if(!ctx.mContext)
+		if(ctx.mAttribs.empty())
 		{
 			return nullptr;
 		}
-		auto success=wglMakeCurrent(dc,ctx.mContext);
 		auto ret=new SEGLSurface();
 		ret->mAttribs=ctx.mAttribs;
-		ret->mContext=ctx.mContext;
 		ret->mDC=dc;
 		mSurfaces.push_back(ret);
 		return ret;
 	}
-	BOOL destroyContext(SEGLContext* context)
+	void destroyContext(SEGLContext* context)
 	{
-		auto ret=context->destruction();
 		mContexts.destroy(context);
-		return ret;
 	}
-	BOOL destroySurface(SEGLSurface* surface)
+	void destroySurface(SEGLSurface* surface)
 	{
-		auto ret=surface->destruction();
 		mSurfaces.destroy(surface);
-		return ret;
 	}
 };
 static CEGL* gEGL=nullptr;
@@ -247,11 +226,19 @@ EGLAPI EGLSurface EGLAPIENTRY eglCreateWindowSurface(EGLDisplay dpy,EGLConfig co
 }
 EGLAPI EGLBoolean EGLAPIENTRY eglDestroyContext(EGLDisplay dpy,EGLContext ctx)
 {
-	return gEGL->destroyContext(static_cast<SEGLContext*>(ctx));
+	EGLBoolean ret=EGL_TRUE;
+	if(static_cast<SEGLContext*>(ctx)->mContext)
+	{
+		ret&=wglDeleteContext(static_cast<SEGLContext*>(ctx)->mContext);
+	}
+	gEGL->destroyContext(static_cast<SEGLContext*>(ctx));
+	return ret;
 }
 EGLAPI EGLBoolean EGLAPIENTRY eglDestroySurface(EGLDisplay dpy,EGLSurface surface)
 {
-	return gEGL->destroySurface(static_cast<SEGLSurface*>(surface));
+	EGLBoolean ret=ReleaseDC(WindowFromDC(static_cast<SEGLSurface*>(surface)->mDC),static_cast<SEGLSurface*>(surface)->mDC);
+	gEGL->destroySurface(static_cast<SEGLSurface*>(surface));
+	return ret;
 }
 EGLAPI EGLDisplay EGLAPIENTRY eglGetCurrentDisplay(void)
 {
@@ -304,8 +291,8 @@ EGLAPI EGLBoolean EGLAPIENTRY eglInitialize(EGLDisplay dpy,EGLint* major,EGLint*
 FINISH:
 	if(rc)
 	{
-		wglMakeCurrent(NULL,rc);
-		wglDeleteContext(rc);
+		ret&=wglMakeCurrent(NULL,NULL);
+		ret&=wglDeleteContext(rc);
 	}
 	if(dpy==EGL_DEFAULT_DISPLAY)
 	{
@@ -315,21 +302,22 @@ FINISH:
 	{
 		if(dc)
 		{
-			ReleaseDC(wnd,dc);
+			ret&=ReleaseDC(wnd,dc);
 		}
 		if(wnd)
 		{
-			DestroyWindow(wnd);
-			UnregisterClass("GLEW",GetModuleHandle(NULL));
+			ret&=DestroyWindow(wnd);
+			ret&=UnregisterClass("GLEW",GetModuleHandle(NULL));
 		}
 	}
 	return ret;
 }
 EGLAPI EGLBoolean EGLAPIENTRY eglMakeCurrent(EGLDisplay dpy,EGLSurface draw,EGLSurface read,EGLContext ctx)
 {
+	EGLBoolean ret=EGL_TRUE;
 	HDC draw_dc=NULL;
 	HDC read_dc=NULL;
-	HGLRC context=NULL;
+	HDC context_dc=NULL;
 	if(draw)
 	{
 		draw_dc=static_cast<SEGLSurface*>(draw)->mDC;
@@ -340,21 +328,21 @@ EGLAPI EGLBoolean EGLAPIENTRY eglMakeCurrent(EGLDisplay dpy,EGLSurface draw,EGLS
 	}
 	if(ctx)
 	{
-		context=static_cast<SEGLContext*>(ctx)->mContext;
+		context_dc=static_cast<SEGLContext*>(ctx)->mDC;
+		if(static_cast<SEGLContext*>(ctx)->mContext)
+		{
+			ret&=wglDeleteContext(static_cast<SEGLContext*>(ctx)->mContext);
+		}
 	}
-	if(FALSE==wglMakeCurrent(draw_dc,context))
+	static_cast<SEGLContext*>(ctx)->mContext=wglCreateContext(context_dc);
+	if(FALSE==wglMakeContextCurrentARB(draw_dc,read_dc,static_cast<SEGLContext*>(ctx)->mContext))
 	{
-		if(draw)
-		{
-			context=static_cast<SEGLSurface*>(draw)->mContext;
-		}
-		else if(read)
-		{
-			context=static_cast<SEGLSurface*>(read)->mContext;
-		}
-		return wglMakeCurrent(draw_dc,context);
+		ret&=wglMakeCurrent(NULL,NULL);
+		ret&=wglDeleteContext(static_cast<SEGLContext*>(ctx)->mContext);
+		static_cast<SEGLContext*>(ctx)->mContext=wglCreateContext(draw_dc);
+		ret&=wglMakeContextCurrentARB(draw_dc,read_dc,static_cast<SEGLContext*>(ctx)->mContext);
 	}
-	return EGL_FALSE;
+	return ret;
 }
 EGLAPI EGLBoolean EGLAPIENTRY eglSwapBuffers(EGLDisplay dpy,EGLSurface surface)
 {
