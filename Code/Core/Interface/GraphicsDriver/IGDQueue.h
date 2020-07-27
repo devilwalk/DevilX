@@ -12,6 +12,7 @@ namespace NSDevilX
 				virtual ~IQueue(){ }
 			public:
 #if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
+				virtual ISwapChain* createSwapChain(DXGI_SWAP_CHAIN_DESC& desc)=0;
 				virtual ISwapChain* createSwapChain(HWND hwnd,const DXGI_SWAP_CHAIN_DESC1& desc,const DXGI_SWAP_CHAIN_FULLSCREEN_DESC* fullscreenDesc=nullptr)=0;
 #endif
 			};

@@ -13,6 +13,7 @@ namespace NSDevilX
 					EInstanceMajorType_D3D,
 					EInstanceMajorType_Vulkan,
 					EInstanceMajorType_GL,
+					EInstanceMajorType_Software
 				};
 				enum EInstanceMinorType_D3D
 				{
@@ -42,6 +43,10 @@ namespace NSDevilX
 					EInstanceMinorType_GL_ES3_1,
 					EInstanceMinorType_GL_ES3_0,
 					EInstanceMinorType_GL_ES2_0
+				};
+				enum EInstanceMinorType_Software
+				{
+
 				};
 
 				enum EQueue

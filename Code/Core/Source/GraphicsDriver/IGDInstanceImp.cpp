@@ -248,7 +248,7 @@ Boolean NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IInstanceImp::initialize()
 		VkInstanceCreateInfo info={};
 		memset(&info,0,sizeof(info));
 		info.sType=VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
-		#ifdef DEVILX_DEBUG
+#ifdef DEVILX_DEBUG
 
 		uint32_t count=0;
 		success&=(vkEnumerateInstanceLayerProperties(&count,nullptr)>=VK_SUCCESS);
@@ -261,6 +261,7 @@ Boolean NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IInstanceImp::initialize()
 		{
 			//layer_names.push_back(prop.layerName);
 		}
+		layer_names.push_back("VK_LAYER_KHRONOS_validation");
 		if(!layer_names.empty())
 		{
 			info.enabledLayerCount=static_cast<uint32_t>(layer_names.size());
@@ -320,8 +321,8 @@ Boolean NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IInstanceImp::initialize()
 		validation_features.pEnabledValidationFeatures=enable_validation_features;
 		info.pNext=&validation_features;
 
-		#endif
-		#ifdef DEVILX_FINAL
+#endif
+#ifdef DEVILX_FINAL
 
 		VkValidationFlagsEXT validation_flags={};
 		memset(&validation_flags,0,sizeof(validation_flags));
@@ -330,7 +331,7 @@ Boolean NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IInstanceImp::initialize()
 		validation_flags.pDisabledValidationChecks=check;
 		info.pNext=&validation_flags;
 
-		#endif
+#endif
 		success=(vkCreateInstance(&info,nullptr,&mInternal)>=VK_SUCCESS);
 		if(success)
 		{

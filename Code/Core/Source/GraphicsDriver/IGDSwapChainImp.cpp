@@ -1,4 +1,5 @@
 #include "../Precompiler.h"
+#include "..\..\Include\GraphicsDriver\IGDSwapChainImp.h"
 using namespace NSDevilX;
 using namespace NSCore;
 using namespace NSGraphicsDriver;
@@ -14,17 +15,33 @@ NSDevilX::NSCore::NSGraphicsDriver::ISwapChainImp::~ISwapChainImp()
 
 #if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
 
-NSDevilX::NSCore::NSGraphicsDriver::NSD3D12::ISwapChainImp::ISwapChainImp(IQueueImp* queue,HWND wnd,const DXGI_SWAP_CHAIN_DESC1& desc,const DXGI_SWAP_CHAIN_FULLSCREEN_DESC* fullScreenDesc)
+NSDevilX::NSCore::NSGraphicsDriver::NSD3D::ISwapChainImp::ISwapChainImp(NSD3D12::IQueueImp* queue,HWND wnd,const DXGI_SWAP_CHAIN_DESC1& desc,const DXGI_SWAP_CHAIN_FULLSCREEN_DESC* fullScreenDesc)
 	:NSGraphicsDriver::ISwapChainImp(queue)
 {
-	static_cast<NSD3D::IInstanceImp*>(queue->getDevice()->getPhysicalDeviceGroup()->getInstance())->getInternal2()->CreateSwapChainForHwnd(queue->getInternal(),wnd,&desc,fullScreenDesc,nullptr,&mInternal);
+	IDXGISwapChain1* sc=nullptr;
+	static_cast<NSD3D::IInstanceImp*>(queue->getDevice()->getPhysicalDeviceGroup()->getInstance())->getInternal2()->CreateSwapChainForHwnd(queue->getInternal(),wnd,&desc,fullScreenDesc,nullptr,&sc);
+	mInternal=sc;
 }
 
-NSDevilX::NSCore::NSGraphicsDriver::NSD3D12::ISwapChainImp::~ISwapChainImp()
+NSDevilX::NSCore::NSGraphicsDriver::NSD3D::ISwapChainImp::ISwapChainImp(NSD3D11::IDeviceImp* dev,HWND wnd,const DXGI_SWAP_CHAIN_DESC1& desc,const DXGI_SWAP_CHAIN_FULLSCREEN_DESC* fullScreenDesc)
+	:NSGraphicsDriver::ISwapChainImp(dev)
+{
+	IDXGISwapChain1* sc=nullptr;
+	static_cast<NSD3D::IInstanceImp*>(dev->getPhysicalDeviceGroup()->getInstance())->getInternal2()->CreateSwapChainForHwnd(dev->getInternal(),wnd,&desc,fullScreenDesc,nullptr,&sc);
+	mInternal=sc;
+}
+
+NSDevilX::NSCore::NSGraphicsDriver::NSD3D::ISwapChainImp::ISwapChainImp(NSD3D11::IDeviceImp* dev,DXGI_SWAP_CHAIN_DESC& desc)
+	:NSGraphicsDriver::ISwapChainImp(dev)
+{
+	static_cast<NSD3D::IInstanceImp*>(dev->getPhysicalDeviceGroup()->getInstance())->getInternal()->CreateSwapChain(dev->getInternal(),&desc,&mInternal);
+}
+
+NSDevilX::NSCore::NSGraphicsDriver::NSD3D::ISwapChainImp::~ISwapChainImp()
 {
 }
 
-void NSDevilX::NSCore::NSGraphicsDriver::NSD3D12::ISwapChainImp::swapBuffers()
+void NSDevilX::NSCore::NSGraphicsDriver::NSD3D::ISwapChainImp::swapBuffers()
 {
 	mInternal->Present(0,0);
 }

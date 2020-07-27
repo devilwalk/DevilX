@@ -5,6 +5,7 @@ namespace NSDevilX
 	{
 		namespace NSGraphicsDriver
 		{
+			class IQueueImp;
 			class ISwapChainImp
 				:public ISwapChain
 			{
@@ -17,6 +18,14 @@ namespace NSDevilX
 #if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
 			namespace NSD3D12
 			{
+				class IQueueImp;
+			}
+			namespace NSD3D11
+			{
+				class IDeviceImp;
+			}
+			namespace NSD3D
+			{
 				class ISwapChainImp
 					:public NSGraphicsDriver::ISwapChainImp
 					,public TBaseObject<ISwapChainImp>
@@ -24,7 +33,9 @@ namespace NSDevilX
 				protected:
 					CComPtr<IDXGISwapChain> mInternal;
 				public:
-					ISwapChainImp(IQueueImp* queue,HWND wnd,const DXGI_SWAP_CHAIN_DESC1& desc,const DXGI_SWAP_CHAIN_FULLSCREEN_DESC* fullScreenDesc=nullptr);
+					ISwapChainImp(NSD3D12::IQueueImp* queue,HWND wnd,const DXGI_SWAP_CHAIN_DESC1& desc,const DXGI_SWAP_CHAIN_FULLSCREEN_DESC* fullScreenDesc=nullptr);
+					ISwapChainImp(NSD3D11::IDeviceImp* dev,HWND wnd,const DXGI_SWAP_CHAIN_DESC1& desc,const DXGI_SWAP_CHAIN_FULLSCREEN_DESC* fullScreenDesc=nullptr);
+					ISwapChainImp(NSD3D11::IDeviceImp* dev,DXGI_SWAP_CHAIN_DESC& desc);
 					virtual ~ISwapChainImp();
 
 					// Í¨¹ý ISwapChainImp ¼Ì³Ð
@@ -34,6 +45,7 @@ namespace NSDevilX
 #endif
 			namespace NSVulkan
 			{
+				class IQueueImp;
 				class ISwapChainImp
 					:public NSGraphicsDriver::ISwapChainImp
 					,public TBaseObject<ISwapChainImp>

@@ -1,4 +1,5 @@
 #pragma once
+#include "IGDQueueImp.h"
 namespace NSDevilX
 {
 	namespace NSCore
@@ -45,7 +46,7 @@ namespace NSDevilX
 			{
 				class IDeviceImp
 					:public NSGraphicsDriver::IDeviceImp
-					,public IQueue
+					,public IQueueImp
 					,public TBaseObject<IDeviceImp>
 				{
 				protected:
@@ -54,10 +55,16 @@ namespace NSDevilX
 					IDeviceImp(ID3D11Device* dev,NSD3D::IPhysicalDeviceGroupImp* physicsDeviceGroup);
 					virtual ~IDeviceImp();
 
+					ID3D11Device* getInternal()const
+					{
+						return mInternal;
+					}
+
 					// 通过 IDeviceImp 继承
 					virtual IQueue* createQueue(IEnum::EQueue type) override;
 
 					// 通过 IQueue 继承
+					virtual ISwapChain* createSwapChain(DXGI_SWAP_CHAIN_DESC& desc) override;
 					virtual ISwapChain* createSwapChain(HWND hwnd,const DXGI_SWAP_CHAIN_DESC1& desc,const DXGI_SWAP_CHAIN_FULLSCREEN_DESC* fullscreenDesc=nullptr) override;
 				};
 			}
@@ -104,6 +111,7 @@ namespace NSDevilX
 
 					// 通过 IQueue 继承
 #if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
+					virtual ISwapChain* createSwapChain(DXGI_SWAP_CHAIN_DESC& desc) override;
 					virtual ISwapChain* createSwapChain(HWND hwnd,const DXGI_SWAP_CHAIN_DESC1& desc,const DXGI_SWAP_CHAIN_FULLSCREEN_DESC* fullscreenDesc=nullptr) override;
 #endif
 
