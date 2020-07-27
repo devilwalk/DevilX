@@ -14,6 +14,11 @@ namespace NSDevilX
 			public:
 				IDeviceImp(IPhysicalDeviceGroupImp* physicsDeviceGroup);
 				virtual ~IDeviceImp();
+
+				auto getPhysicalDeviceGroup()const
+				{
+					return mPhysicsDeviceGroup;
+				}
 			};
 #if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
 			namespace NSD3D
@@ -70,6 +75,11 @@ namespace NSDevilX
 					IDeviceImp(VkDevice dev,IPhysicalDeviceGroupImp* physicsDeviceGroup);
 					virtual ~IDeviceImp();
 
+					auto getInternal()const
+					{
+						return mInternal;
+					}
+
 					// 通过 IDeviceImp 继承
 					virtual IQueue* createQueue(IEnum::EQueue type) override;
 				};
@@ -96,6 +106,9 @@ namespace NSDevilX
 #if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
 					virtual ISwapChain* createSwapChain(HWND hwnd,const DXGI_SWAP_CHAIN_DESC1& desc,const DXGI_SWAP_CHAIN_FULLSCREEN_DESC* fullscreenDesc=nullptr) override;
 #endif
+
+					// 通过 ISwapChain 继承
+					virtual void swapBuffers() override;
 				};
 			}
 		}

@@ -346,7 +346,7 @@ EGLAPI EGLBoolean EGLAPIENTRY eglMakeCurrent(EGLDisplay dpy,EGLSurface draw,EGLS
 }
 EGLAPI EGLBoolean EGLAPIENTRY eglSwapBuffers(EGLDisplay dpy,EGLSurface surface)
 {
-	return SwapBuffers(static_cast<HDC>(surface))?EGL_TRUE:EGL_FALSE;
+	return SwapBuffers(static_cast<SEGLSurface*>(surface)->mDC)?EGL_TRUE:EGL_FALSE;
 }
 EGLAPI EGLBoolean EGLAPIENTRY eglTerminate(EGLDisplay dpy)
 {

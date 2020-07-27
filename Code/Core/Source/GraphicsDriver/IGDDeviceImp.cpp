@@ -212,3 +212,10 @@ ISwapChain* NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IDeviceImp::createSwap
 	return this;
 }
 #endif
+
+void NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IDeviceImp::swapBuffers()
+{
+	auto inst=static_cast<IInstanceImp*>(mPhysicsDeviceGroup->getInstance());
+	auto success=eglSwapBuffers(inst->getDisplay(),mSurface);
+	assert(success);
+}

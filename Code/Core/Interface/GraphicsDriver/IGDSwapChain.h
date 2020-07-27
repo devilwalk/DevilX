@@ -10,6 +10,7 @@ namespace NSDevilX
 			protected:
 				virtual ~ISwapChain(){ }
 			public:
+				virtual void swapBuffers()=0;
 			};
 		}
 	}
