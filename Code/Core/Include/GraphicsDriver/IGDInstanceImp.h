@@ -100,6 +100,11 @@ namespace NSDevilX
 					IInstanceImp();
 					virtual ~IInstanceImp();
 
+					auto getInternal()const
+					{
+						return mInternal;
+					}
+
 					// Í¨¹ý IInstance ¼Ì³Ð
 					virtual Boolean initialize() override;
 					virtual UInt32 enumPhysicalDevices(IPhysicalDevice** outDevices=nullptr) override;

@@ -59,6 +59,92 @@ ISwapChain* NSDevilX::NSCore::NSGraphicsDriver::NSD3D11::IDeviceImp::createSwapC
 	return ret;
 }
 
+ISwapChain* NSDevilX::NSCore::NSGraphicsDriver::NSD3D11::IDeviceImp::createSwapChain(HWND hwnd,const VkSwapchainCreateInfoKHR& info)
+{
+	DXGI_SWAP_CHAIN_DESC1 desc={};
+	switch(info.compositeAlpha)
+	{
+	case VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR:
+		desc.AlphaMode=DXGI_ALPHA_MODE_IGNORE;
+		break;
+	case VK_COMPOSITE_ALPHA_PRE_MULTIPLIED_BIT_KHR:
+		desc.AlphaMode=DXGI_ALPHA_MODE_PREMULTIPLIED;
+		break;
+	case VK_COMPOSITE_ALPHA_POST_MULTIPLIED_BIT_KHR:
+		desc.AlphaMode=DXGI_ALPHA_MODE_STRAIGHT;
+		break;
+	case VK_COMPOSITE_ALPHA_INHERIT_BIT_KHR:
+		desc.AlphaMode=DXGI_ALPHA_MODE_UNSPECIFIED;
+		break;
+	default:
+		desc.AlphaMode=DXGI_ALPHA_MODE_IGNORE;
+	}
+	desc.BufferCount=info.minImageCount;
+	desc.BufferUsage=0;
+	if((info.imageUsage&VK_IMAGE_USAGE_SAMPLED_BIT)
+		||(info.imageUsage&VK_IMAGE_USAGE_INPUT_ATTACHMENT_BIT)
+		)
+	{
+		desc.BufferUsage|=DXGI_USAGE_SHADER_INPUT;
+	}
+	if(info.imageUsage&VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT)
+	{
+		desc.BufferUsage|=DXGI_USAGE_BACK_BUFFER;
+	}
+	if(info.imageUsage&VK_IMAGE_USAGE_STORAGE_BIT)
+	{
+		desc.BufferUsage|=DXGI_USAGE_UNORDERED_ACCESS;
+	}
+	switch(info.imageFormat)
+	{
+	case VK_FORMAT_R8G8B8A8_SRGB:
+		desc.Format=DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+		break;
+	case VK_FORMAT_R8G8B8A8_UNORM:
+		desc.Format=DXGI_FORMAT_R8G8B8A8_UNORM;
+		break;
+	case VK_FORMAT_B8G8R8A8_SNORM:
+		desc.Format=DXGI_FORMAT_B8G8R8A8_UNORM;
+		break;
+	case VK_FORMAT_B8G8R8A8_SRGB:
+		desc.Format=DXGI_FORMAT_B8G8R8A8_UNORM_SRGB;
+		break;
+	case VK_FORMAT_B8G8R8_SNORM:
+	case VK_FORMAT_R8G8B8_SNORM:
+		desc.Format=DXGI_FORMAT_B8G8R8X8_UNORM;
+		break;
+	case VK_FORMAT_B8G8R8_SRGB:
+	case VK_FORMAT_R8G8B8_SRGB:
+		desc.Format=DXGI_FORMAT_B8G8R8X8_UNORM_SRGB;
+		break;
+	case VK_FORMAT_R5G5B5A1_UNORM_PACK16:
+	case VK_FORMAT_B5G5R5A1_UNORM_PACK16:
+		desc.Format=DXGI_FORMAT_B5G5R5A1_UNORM;
+		break;
+	case VK_FORMAT_R5G6B5_UNORM_PACK16:
+	case VK_FORMAT_B5G6R5_UNORM_PACK16:
+		desc.Format=DXGI_FORMAT_B5G6R5_UNORM;
+		break;
+	case VK_FORMAT_R4G4B4A4_UNORM_PACK16:
+	case VK_FORMAT_B4G4R4A4_UNORM_PACK16:
+		desc.Format=DXGI_FORMAT_B4G4R4A4_UNORM;
+		break;
+	}
+	desc.Height=info.imageExtent.height;
+	desc.SampleDesc.Count=1;
+	desc.Scaling=DXGI_SCALING_NONE;
+	desc.Stereo=FALSE;
+	desc.SwapEffect=DXGI_SWAP_EFFECT_FLIP_DISCARD;
+	desc.Width=info.imageExtent.width;
+	DXGI_SWAP_CHAIN_FULLSCREEN_DESC full_screen_desc={};
+	full_screen_desc.Windowed=TRUE;
+	if(info.pNext&&(static_cast<const VkSurfaceFullScreenExclusiveWin32InfoEXT*>(info.pNext)->sType==VK_STRUCTURE_TYPE_SURFACE_FULL_SCREEN_EXCLUSIVE_WIN32_INFO_EXT))
+	{
+		full_screen_desc.Windowed=FALSE;
+	}
+	return createSwapChain(hwnd,desc,&full_screen_desc);
+}
+
 #endif
 
 NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IDeviceImp::IDeviceImp(VkDevice dev,IPhysicalDeviceGroupImp* physicsDeviceGroup)
@@ -331,6 +417,141 @@ ISwapChain* NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IDeviceImp::createSwap
 	case DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:
 	case DXGI_FORMAT_B8G8R8A8_UNORM_SRGB:
 	case DXGI_FORMAT_B8G8R8X8_UNORM_SRGB:
+		attrs_list.push_back(EGL_GL_COLORSPACE_SRGB);
+		break;
+	default:
+		attrs_list.push_back(EGL_GL_COLORSPACE_LINEAR);
+	}
+	attrs_list.push_back(EGL_NONE);
+	mSurface=eglCreateWindowSurface(inst->getDisplay(),cfg,hwnd,&attrs_list[0]);
+	if(EGL_NO_SURFACE==mSurface)
+	{
+		return nullptr;
+	}
+	eglMakeCurrent(inst->getDisplay(),mSurface,mSurface,mContext);
+	return this;
+}
+
+ISwapChain* NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IDeviceImp::createSwapChain(HWND hwnd,const VkSwapchainCreateInfoKHR& info)
+{
+	if(mSurface!=EGL_NO_SURFACE)
+		return nullptr;
+	auto inst=static_cast<IInstanceImp*>(mPhysicsDeviceGroup->getInstance());
+	TVector(EGLint) config_attrs;
+	config_attrs.push_back(EGL_RENDERABLE_TYPE);
+	if(inst->getMinorType()<=IEnum::EInstanceMinorType_GL_2_0)
+	{
+		config_attrs.push_back(EGL_OPENGL_BIT);
+	}
+	else
+	{
+		config_attrs.push_back(EGL_OPENGL_ES_BIT);
+	}
+	config_attrs.push_back(EGL_BUFFER_SIZE);
+	switch(info.imageFormat)
+	{
+	case VK_FORMAT_R8G8B8A8_SRGB:
+	case VK_FORMAT_B8G8R8A8_SRGB:
+	case VK_FORMAT_R8G8B8A8_UNORM:
+	case VK_FORMAT_B8G8R8A8_UNORM:
+		config_attrs.push_back(32);
+		break;
+	case VK_FORMAT_R8G8B8_SRGB:
+	case VK_FORMAT_B8G8R8_SRGB:
+	case VK_FORMAT_R8G8B8_UNORM:
+	case VK_FORMAT_B8G8R8_UNORM:
+		config_attrs.push_back(24);
+		break;
+	case VK_FORMAT_R4G4B4A4_UNORM_PACK16:
+	case VK_FORMAT_B4G4R4A4_UNORM_PACK16:
+	case VK_FORMAT_R5G5B5A1_UNORM_PACK16:
+	case VK_FORMAT_B5G5R5A1_UNORM_PACK16:
+	case VK_FORMAT_R5G6B5_UNORM_PACK16:
+	case VK_FORMAT_B5G6R5_UNORM_PACK16:
+		config_attrs.push_back(16);
+		break;
+	}
+	switch(info.imageFormat)
+	{
+	case VK_FORMAT_R8G8B8A8_SRGB:
+	case VK_FORMAT_B8G8R8A8_SRGB:
+	case VK_FORMAT_R8G8B8A8_UNORM:
+	case VK_FORMAT_B8G8R8A8_UNORM:
+		config_attrs.push_back(EGL_RED_SIZE);
+		config_attrs.push_back(8);
+		config_attrs.push_back(EGL_GREEN_SIZE);
+		config_attrs.push_back(8);
+		config_attrs.push_back(EGL_BLUE_SIZE);
+		config_attrs.push_back(8);
+		config_attrs.push_back(EGL_ALPHA_SIZE);
+		config_attrs.push_back(8);
+		break;
+	case VK_FORMAT_R8G8B8_SRGB:
+	case VK_FORMAT_B8G8R8_SRGB:
+	case VK_FORMAT_R8G8B8_UNORM:
+	case VK_FORMAT_B8G8R8_UNORM:
+		config_attrs.push_back(EGL_RED_SIZE);
+		config_attrs.push_back(8);
+		config_attrs.push_back(EGL_GREEN_SIZE);
+		config_attrs.push_back(8);
+		config_attrs.push_back(EGL_BLUE_SIZE);
+		config_attrs.push_back(8);
+		break;
+	case VK_FORMAT_R4G4B4A4_UNORM_PACK16:
+	case VK_FORMAT_B4G4R4A4_UNORM_PACK16:
+		config_attrs.push_back(EGL_RED_SIZE);
+		config_attrs.push_back(4);
+		config_attrs.push_back(EGL_GREEN_SIZE);
+		config_attrs.push_back(4);
+		config_attrs.push_back(EGL_BLUE_SIZE);
+		config_attrs.push_back(4);
+		config_attrs.push_back(EGL_ALPHA_SIZE);
+		config_attrs.push_back(4);
+		break;
+	case VK_FORMAT_R5G5B5A1_UNORM_PACK16:
+	case VK_FORMAT_B5G5R5A1_UNORM_PACK16:
+		config_attrs.push_back(EGL_RED_SIZE);
+		config_attrs.push_back(5);
+		config_attrs.push_back(EGL_GREEN_SIZE);
+		config_attrs.push_back(5);
+		config_attrs.push_back(EGL_BLUE_SIZE);
+		config_attrs.push_back(5);
+		config_attrs.push_back(EGL_ALPHA_SIZE);
+		config_attrs.push_back(1);
+		break;
+	case VK_FORMAT_R5G6B5_UNORM_PACK16:
+	case VK_FORMAT_B5G6R5_UNORM_PACK16:
+		config_attrs.push_back(EGL_RED_SIZE);
+		config_attrs.push_back(5);
+		config_attrs.push_back(EGL_GREEN_SIZE);
+		config_attrs.push_back(6);
+		config_attrs.push_back(EGL_BLUE_SIZE);
+		config_attrs.push_back(5);
+		break;
+	}
+	config_attrs.push_back(EGL_SURFACE_TYPE);
+	config_attrs.push_back(EGL_WINDOW_BIT);
+	config_attrs.push_back(EGL_NONE);
+	EGLConfig cfg;
+	EGLint num_cfg;
+	auto success=eglChooseConfig(inst->getDisplay(),&config_attrs[0],&cfg,1,&num_cfg)==EGL_TRUE;
+	TVector(EGLAttrib) attrs_list;
+	attrs_list.push_back(EGL_RENDER_BUFFER);
+	if(info.minImageCount<2)
+	{
+		attrs_list.push_back(EGL_SINGLE_BUFFER);
+	}
+	else
+	{
+		attrs_list.push_back(EGL_BACK_BUFFER);
+	}
+	attrs_list.push_back(EGL_GL_COLORSPACE);
+	switch(info.imageFormat)
+	{
+	case VK_FORMAT_R8G8B8A8_SRGB:
+	case VK_FORMAT_B8G8R8A8_SRGB:
+	case VK_FORMAT_R8G8B8_SRGB:
+	case VK_FORMAT_B8G8R8_SRGB:
 		attrs_list.push_back(EGL_GL_COLORSPACE_SRGB);
 		break;
 	default:

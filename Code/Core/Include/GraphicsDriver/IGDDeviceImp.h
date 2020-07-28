@@ -66,6 +66,7 @@ namespace NSDevilX
 					// 通过 IQueue 继承
 					virtual ISwapChain* createSwapChain(DXGI_SWAP_CHAIN_DESC& desc) override;
 					virtual ISwapChain* createSwapChain(HWND hwnd,const DXGI_SWAP_CHAIN_DESC1& desc,const DXGI_SWAP_CHAIN_FULLSCREEN_DESC* fullscreenDesc=nullptr) override;
+					virtual ISwapChain* createSwapChain(HWND hwnd,const VkSwapchainCreateInfoKHR& info) override;
 				};
 			}
 #endif
@@ -113,6 +114,7 @@ namespace NSDevilX
 #if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
 					virtual ISwapChain* createSwapChain(DXGI_SWAP_CHAIN_DESC& desc) override;
 					virtual ISwapChain* createSwapChain(HWND hwnd,const DXGI_SWAP_CHAIN_DESC1& desc,const DXGI_SWAP_CHAIN_FULLSCREEN_DESC* fullscreenDesc=nullptr) override;
+					virtual ISwapChain* createSwapChain(HWND hwnd,const VkSwapchainCreateInfoKHR& info) override;
 #endif
 
 					// 通过 ISwapChain 继承

@@ -21,6 +21,11 @@ namespace NSDevilX
 				{
 					return mDevice;
 				}
+
+#if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
+				// 通过 IQueueImp 继承
+				virtual ISwapChain* createSwapChain(DXGI_SWAP_CHAIN_DESC& desc) override;
+#endif
 			};
 #if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
 			namespace NSD3D12
@@ -41,9 +46,8 @@ namespace NSDevilX
 						return mInternal;
 					}
 
-					// 通过 IQueueImp 继承
-					virtual ISwapChain* createSwapChain(DXGI_SWAP_CHAIN_DESC& desc) override;
 					virtual ISwapChain* createSwapChain(HWND hwnd,const DXGI_SWAP_CHAIN_DESC1& desc,const DXGI_SWAP_CHAIN_FULLSCREEN_DESC* fullscreenDesc=nullptr) override;
+					virtual ISwapChain* createSwapChain(HWND hwnd,const VkSwapchainCreateInfoKHR& info) override;
 				};
 			}
 #endif
@@ -64,6 +68,12 @@ namespace NSDevilX
 					{
 						return mInternal;
 					}
+
+					// 通过 IQueueImp 继承
+#if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
+					virtual ISwapChain* createSwapChain(HWND hwnd,const DXGI_SWAP_CHAIN_DESC1& desc,const DXGI_SWAP_CHAIN_FULLSCREEN_DESC* fullscreenDesc=nullptr) override;
+					virtual ISwapChain* createSwapChain(HWND hwnd,const VkSwapchainCreateInfoKHR& info) override;
+#endif
 				};
 			}
 		}

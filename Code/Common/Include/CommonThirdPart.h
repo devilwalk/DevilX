@@ -38,6 +38,9 @@
 #define EGLAPI
 #include "EGL/egl.h"
 //#define VOLK_IMPLEMENTATION
+#if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
+#define VK_USE_PLATFORM_WIN32_KHR
+#endif
 #include "volk/volk.h"
 //#include <vulkan/vulkan.h>
 #include "lua.h"
