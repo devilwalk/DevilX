@@ -1,4 +1,5 @@
 #include "../Precompiler.h"
+#include "volk.c"
 using namespace NSDevilX;
 using namespace NSCore;
 using namespace NSGraphicsDriver;
@@ -184,6 +185,9 @@ IDeviceImp* NSDevilX::NSCore::NSGraphicsDriver::NSD3D::IInstanceImp::_createDevi
 NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IInstanceImp::IInstanceImp()
 	:NSGraphicsDriver::IInstanceImp(IEnum::EInstanceMajorType_Vulkan,-1)
 	,mInternal(VK_NULL_HANDLE)
+#if DEVILX_DEBUG
+	,mDebugReportCallback(0)
+#endif
 {
 }
 
@@ -268,7 +272,7 @@ Boolean NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IInstanceImp::initialize()
 			info.ppEnabledLayerNames=reinterpret_cast<const char* const*>(&layer_names[0]);
 		}
 
-		TSet(ConstCharPtr) ext_names;
+		TMap(String,VkExtensionProperties) ext_props_table;
 		TVector(VkExtensionProperties) ext_props;
 		success&=(vkEnumerateInstanceExtensionProperties(nullptr,&count,nullptr)>=VK_SUCCESS);
 		if(count)
@@ -277,7 +281,8 @@ Boolean NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IInstanceImp::initialize()
 			success&=(vkEnumerateInstanceExtensionProperties(nullptr,&count,&ext_props[0])>=VK_SUCCESS);
 			for(auto const& prop:ext_props)
 			{
-				ext_names.insert(prop.extensionName);
+				ext_props_table[prop.extensionName].specVersion=prop.specVersion;
+				strcpy_s(ext_props_table[prop.extensionName].extensionName,prop.extensionName);
 			}
 		}
 		for(auto const & name:layer_names)
@@ -289,16 +294,21 @@ Boolean NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IInstanceImp::initialize()
 				success&=(vkEnumerateInstanceExtensionProperties(name,&count,&ext_props[0])>=VK_SUCCESS);
 				for(auto const& prop:ext_props)
 				{
-					ext_names.insert(prop.extensionName);
+					ext_props_table[prop.extensionName].specVersion=prop.specVersion;
+					strcpy_s(ext_props_table[prop.extensionName].extensionName,prop.extensionName);
 				}
 			}
 		}
-		TVector(ConstCharPtr) ext_name_array(ext_names.size());
-		if(!ext_names.empty())
+		TVector(ConstCharPtr) ext_names;
+		if(!ext_props_table.empty())
 		{
-			std::copy(ext_names.begin(),ext_names.end(),ext_name_array.begin());
-			info.enabledExtensionCount=ext_name_array.size();
-			info.ppEnabledExtensionNames=reinterpret_cast<const char* const*>(&ext_name_array[0]);
+			ext_names.reserve(ext_props_table.size());
+			for(auto const & pair:ext_props_table)
+			{
+				ext_names.push_back(pair.second.extensionName);
+			}
+			info.enabledExtensionCount=ext_names.size();
+			info.ppEnabledExtensionNames=reinterpret_cast<const char* const*>(&ext_names[0]);
 		}
 
 		VkApplicationInfo app_info={};
@@ -336,6 +346,37 @@ Boolean NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IInstanceImp::initialize()
 		if(success)
 		{
 			volkLoadInstance(mInternal);
+#if DEVILX_DEBUG
+			VkDebugReportCallbackCreateInfoEXT debug_report_callback_create_info={};
+			debug_report_callback_create_info.sType=VK_STRUCTURE_TYPE_DEBUG_REPORT_CALLBACK_CREATE_INFO_EXT;
+			debug_report_callback_create_info.flags=VK_DEBUG_REPORT_INFORMATION_BIT_EXT|VK_DEBUG_REPORT_WARNING_BIT_EXT
+				|VK_DEBUG_REPORT_PERFORMANCE_WARNING_BIT_EXT|VK_DEBUG_REPORT_ERROR_BIT_EXT|VK_DEBUG_REPORT_DEBUG_BIT_EXT;
+			debug_report_callback_create_info.pUserData=this;
+			debug_report_callback_create_info.pfnCallback=[](
+				VkDebugReportFlagsEXT                       flags,
+				VkDebugReportObjectTypeEXT                  objectType,
+				uint64_t                                    object,
+				size_t                                      location,
+				int32_t                                     messageCode,
+				const char* pLayerPrefix,
+				const char* pMessage,
+				void* pUserData)
+			{
+#ifdef _MSC_VER
+				if(flags!=VK_DEBUG_REPORT_INFORMATION_BIT_EXT)
+				{
+					OutputDebugStringA("DevilX Vulkan Message:--------------------------------------------------------\n");
+					OutputDebugStringA(pLayerPrefix);
+					OutputDebugStringA("\n");
+					OutputDebugStringA(pMessage);
+					OutputDebugStringA("\n");
+					OutputDebugStringA("DevilX Vulkan Message:========================================================\n");
+				}
+#endif
+				return static_cast<VkBool32>(VK_FALSE);
+			};
+			success=VK_SUCCESS==vkCreateDebugReportCallbackEXT(mInternal,&debug_report_callback_create_info,nullptr,&mDebugReportCallback);
+#endif
 		}
 	}
 	return success;
@@ -394,34 +435,36 @@ IDevice* NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IInstanceImp::createDevic
 		VkDeviceQueueCreateInfo& queue_create_info=queue_create_infos[i];
 		queue_create_info={};
 		queue_create_info.sType=VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
-		queue_create_info.pNext=&dev_group_create_info;
 		queue_create_info.queueCount=queue_family_props[i].queueCount;
 		queue_create_info.queueFamilyIndex=i;
 		queue_create_info.pQueuePriorities=&queue_priors[0];
 	}
 
 	VkPhysicalDeviceFeatures2 phy_dev_features={};
+	phy_dev_features.sType=VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2;
 	vkGetPhysicalDeviceFeatures2(devs[0],&phy_dev_features);
 
 	uint32_t dev_ext_prop_count=0;
 	success&=(vkEnumerateDeviceExtensionProperties(devs[0],nullptr,&dev_ext_prop_count,nullptr)>=VK_SUCCESS);
 	TVector(VkExtensionProperties) ext_props(dev_ext_prop_count);
 	success&=(vkEnumerateDeviceExtensionProperties(devs[0],nullptr,&dev_ext_prop_count,&ext_props[0])>=VK_SUCCESS);
-	TVector(ConstCharPtr) ext_prop_names;
-	ext_prop_names.reserve(ext_props.size());
+	TSet(ConstCharPtr) ext_prop_name_sets;
 	for(auto const& prop:ext_props)
 	{
-		ext_prop_names.push_back(prop.extensionName);
+		ext_prop_name_sets.insert(prop.extensionName);
 	}
+	TVector(ConstCharPtr) ext_prop_names(ext_prop_name_sets.size());
+	std::copy(ext_prop_name_sets.begin(),ext_prop_name_sets.end(),ext_prop_names.begin());
 
 	VkDeviceCreateInfo dev_create_info={};
 	dev_create_info.sType=VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
 	dev_create_info.pQueueCreateInfos=&queue_create_infos[0];
 	dev_create_info.queueCreateInfoCount=static_cast<uint32_t>(queue_create_infos.size());
 	dev_create_info.pEnabledFeatures=&phy_dev_features.features;
-	if(!ext_props.empty())
+	dev_create_info.pNext=&dev_group_create_info;
+	if(!ext_prop_names.empty())
 	{
-		dev_create_info.enabledExtensionCount=static_cast<uint32_t>(ext_props.size());
+		dev_create_info.enabledExtensionCount=static_cast<uint32_t>(ext_prop_names.size());
 		dev_create_info.ppEnabledExtensionNames=&ext_prop_names[0];
 	}
 

@@ -52,6 +52,7 @@ namespace NSDevilX
 				{
 				protected:
 					VkSwapchainKHR mInternal;
+					VkSurfaceKHR mSurface;
 					VkPresentInfoKHR mPresentInfo;
 				public:
 					ISwapChainImp(IQueueImp* queue,const VkSwapchainCreateInfoKHR& info);

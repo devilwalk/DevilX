@@ -323,9 +323,6 @@
     <ClCompile Include="..\..\..\Code\Core\Source\GraphicsDriver\IGDInstanceImp.cpp">
       <Filter>源文件\GraphicsDriver</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Dependences\volk\volk.c">
-      <Filter>源文件\GraphicsDriver</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Code\Core\Source\GraphicsDriver\IGDDeviceImp.cpp">
       <Filter>源文件\GraphicsDriver</Filter>
     </ClCompile>

@@ -96,6 +96,9 @@ namespace NSDevilX
 				{
 				protected:
 					VkInstance mInternal;
+#if DEVILX_DEBUG
+					VkDebugReportCallbackEXT mDebugReportCallback;
+#endif
 				public:
 					IInstanceImp();
 					virtual ~IInstanceImp();
