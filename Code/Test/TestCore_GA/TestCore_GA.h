@@ -29,7 +29,7 @@ public:
 		physics_device_groups.resize(inst->enumPhysicalDeviceGroups(nullptr));
 		inst->enumPhysicalDeviceGroups(&physics_device_groups[0]);
 		mDevice=inst->createDevice(physics_device_groups[0]);
-		m3DQueue=mDevice->createQueue(NSDevilX::NSCore::NSGraphicsDriver::IEnum::EQueue_3D);
+		m3DQueue=mDevice->getQueue(NSDevilX::NSCore::NSGraphicsDriver::IEnum::EQueue_3D,0);
 		DXGI_SWAP_CHAIN_DESC1 desc={};
 		desc.BufferCount=2;
 		desc.BufferUsage=DXGI_USAGE_BACK_BUFFER|DXGI_USAGE_RENDER_TARGET_OUTPUT|DXGI_USAGE_DISCARD_ON_PRESENT;

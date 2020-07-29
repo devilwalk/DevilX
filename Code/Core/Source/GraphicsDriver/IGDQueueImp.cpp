@@ -205,8 +205,16 @@ ISwapChain* NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IQueueImp::createSwapC
 		break;
 	}
 	info.imageColorSpace=VK_COLOR_SPACE_SRGB_NONLINEAR_KHR;
-	info.imageExtent.height=desc.Height;
-	info.imageExtent.width=desc.Width;
+	RECT rc={};
+	GetClientRect(hwnd,&rc);
+	if(desc.Height)
+		info.imageExtent.height=desc.Height;
+	else
+		info.imageExtent.height=rc.bottom-rc.top;
+	if(desc.Width)
+		info.imageExtent.width=desc.Width;
+	else
+		info.imageExtent.width=rc.right-rc.left;
 	info.imageArrayLayers=1;
 	info.imageUsage=0;
 	if(desc.BufferUsage&DXGI_USAGE_BACK_BUFFER)
@@ -226,7 +234,7 @@ ISwapChain* NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IQueueImp::createSwapC
 		info.imageUsage|=VK_IMAGE_USAGE_STORAGE_BIT;
 	}
 	info.imageSharingMode=VK_SHARING_MODE_EXCLUSIVE;
-	info.preTransform=VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR;
+	info.preTransform=VK_SURFACE_TRANSFORM_INHERIT_BIT_KHR;
 	switch(desc.AlphaMode)
 	{
 	case DXGI_ALPHA_MODE_IGNORE:
@@ -239,11 +247,14 @@ ISwapChain* NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IQueueImp::createSwapC
 		info.compositeAlpha=VK_COMPOSITE_ALPHA_POST_MULTIPLIED_BIT_KHR;
 		break;
 	case DXGI_ALPHA_MODE_UNSPECIFIED:
-		info.compositeAlpha=VK_COMPOSITE_ALPHA_INHERIT_BIT_KHR;
+		info.compositeAlpha=VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
 		break;
 	}
-	info.presentMode=VK_PRESENT_MODE_FIFO_RELAXED_KHR;
+	info.presentMode=VK_PRESENT_MODE_MAILBOX_KHR;
 	info.clipped=VK_TRUE;
+	info.queueFamilyIndexCount=1;
+	uint32_t queue_family=static_cast<IPhysicalDeviceImp*>(mDevice->getPhysicalDeviceGroup()->getDevice(0))->getQueueFamilies()[IEnum::EQueue_3D][0].mQueueFamilyIndex;
+	info.pQueueFamilyIndices=&queue_family;
 	return createSwapChain(hwnd,info);
 }
 #endif
@@ -260,6 +271,13 @@ ISwapChain* NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IQueueImp::createSwapC
 		surface_create_info.hwnd=hwnd;
 		vkCreateWin32SurfaceKHR(static_cast<IInstanceImp*>(mDevice->getPhysicalDeviceGroup()->getInstance())->getInternal(),&surface_create_info,nullptr,&cpy_info.surface);
 #endif
+	}
+	VkBool32 surface_support=VK_FALSE;
+	vkGetPhysicalDeviceSurfaceSupportKHR(static_cast<IPhysicalDeviceImp*>(mDevice->getPhysicalDeviceGroup()->getDevices()[0])->getInternal(),info.pQueueFamilyIndices[0],cpy_info.surface,&surface_support);
+	if(!surface_support)
+	{
+		vkDestroySurfaceKHR(static_cast<IInstanceImp*>(mDevice->getPhysicalDeviceGroup()->getInstance())->getInternal(),cpy_info.surface,nullptr);
+		return nullptr;
 	}
 	auto ret=DEVILX_NEW ISwapChainImp(this,cpy_info);
 	mSwapChains.push_back(ret);

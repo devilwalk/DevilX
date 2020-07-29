@@ -24,7 +24,12 @@ NSDevilX::NSCore::NSGraphicsDriver::NSD3D12::IDeviceImp::~IDeviceImp()
 {
 }
 
-IQueue* NSDevilX::NSCore::NSGraphicsDriver::NSD3D12::IDeviceImp::createQueue(IEnum::EQueue type)
+UInt32 NSDevilX::NSCore::NSGraphicsDriver::NSD3D12::IDeviceImp::getQueueCount(IEnum::EQueue type) const
+{
+	return -1;
+}
+
+IQueue* NSDevilX::NSCore::NSGraphicsDriver::NSD3D12::IDeviceImp::getQueue(IEnum::EQueue type,UInt32 index)
 {
 	return nullptr;
 }
@@ -40,7 +45,12 @@ NSDevilX::NSCore::NSGraphicsDriver::NSD3D11::IDeviceImp::~IDeviceImp()
 {
 }
 
-IQueue* NSDevilX::NSCore::NSGraphicsDriver::NSD3D11::IDeviceImp::createQueue(IEnum::EQueue type)
+UInt32 NSDevilX::NSCore::NSGraphicsDriver::NSD3D11::IDeviceImp::getQueueCount(IEnum::EQueue type) const
+{
+	return (IEnum::EQueue_3D==type)?1:0;
+}
+
+IQueue* NSDevilX::NSCore::NSGraphicsDriver::NSD3D11::IDeviceImp::getQueue(IEnum::EQueue type,UInt32 index)
 {
 	return this;
 }
@@ -157,8 +167,44 @@ NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IDeviceImp::~IDeviceImp()
 {
 }
 
-IQueue* NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IDeviceImp::createQueue(IEnum::EQueue type)
+UInt32 NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IDeviceImp::getQueueCount(IEnum::EQueue type) const
 {
+	UInt32 ret=0;
+	for(auto& queue_family:static_cast<IPhysicalDeviceImp*>(mPhysicsDeviceGroup->getDevices()[0])->getQueueFamilies()[type])
+	{
+		ret+=queue_family.mProp.queueFamilyProperties.queueCount;
+	}
+	return ret;
+}
+
+IQueue* NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IDeviceImp::getQueue(IEnum::EQueue type,UInt32 index)
+{
+	auto const queue_count=getQueueCount(type);
+	if(queue_count>index)
+	{
+		if(mQueues[type].size()<=queue_count)
+		{
+			mQueues[type].resize(queue_count);
+		}
+		if(!mQueues[type][index])
+		{
+			const IPhysicalDeviceImp::SQueueFamilyInfo* queue_family_info=nullptr;
+			UInt32 queue_count=0;
+			for(auto& queue_family:static_cast<IPhysicalDeviceImp*>(mPhysicsDeviceGroup->getDevices()[0])->getQueueFamilies()[type])
+			{
+				queue_count+=queue_family.mProp.queueFamilyProperties.queueCount;
+				if(queue_count>index)
+				{
+					queue_family_info=&queue_family;
+					break;
+				}
+			}
+			VkQueue queue=0;
+			vkGetDeviceQueue(mInternal,queue_family_info->mQueueFamilyIndex,queue_family_info->mProp.queueFamilyProperties.queueCount-(queue_count-index),&queue);
+			mQueues[type][index]=DEVILX_NEW IQueueImp(this,queue);
+		}
+		return mQueues[type][index];
+	}
 	return nullptr;
 }
 
@@ -173,7 +219,12 @@ NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IDeviceImp::~IDeviceImp()
 {
 }
 
-IQueue* NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IDeviceImp::createQueue(IEnum::EQueue type)
+UInt32 NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IDeviceImp::getQueueCount(IEnum::EQueue type) const
+{
+	return (IEnum::EQueue_3D==type)?1:0;
+}
+
+IQueue* NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IDeviceImp::getQueue(IEnum::EQueue type,UInt32 index)
 {
 	return this;
 }

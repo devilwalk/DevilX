@@ -12,6 +12,7 @@ namespace NSDevilX
 			{
 			protected:
 				IPhysicalDeviceGroupImp* const mPhysicsDeviceGroup;
+				TResourcePtrVector(IQueueImp) mQueues[3];
 			public:
 				IDeviceImp(IPhysicalDeviceGroupImp* physicsDeviceGroup);
 				virtual ~IDeviceImp();
@@ -34,12 +35,14 @@ namespace NSDevilX
 				{
 				protected:
 					CComPtr<ID3D12Device> mInternal;
+					TCOMResourcePtrVector(ID3D12CommandQueue) mQueues;
 				public:
 					IDeviceImp(ID3D12Device* dev,NSD3D::IPhysicalDeviceGroupImp* physicsDeviceGroup);
 					virtual ~IDeviceImp();
 
 					// 通过 IDeviceImp 继承
-					virtual IQueue* createQueue(IEnum::EQueue type) override;
+					virtual UInt32 getQueueCount(IEnum::EQueue type) const override;
+					virtual IQueue* getQueue(IEnum::EQueue type,UInt32 index) override;
 				};
 			}
 			namespace NSD3D11
@@ -61,7 +64,8 @@ namespace NSDevilX
 					}
 
 					// 通过 IDeviceImp 继承
-					virtual IQueue* createQueue(IEnum::EQueue type) override;
+					virtual UInt32 getQueueCount(IEnum::EQueue type) const override;
+					virtual IQueue* getQueue(IEnum::EQueue type,UInt32 index) override;
 
 					// 通过 IQueue 继承
 					virtual ISwapChain* createSwapChain(DXGI_SWAP_CHAIN_DESC& desc) override;
@@ -78,7 +82,7 @@ namespace NSDevilX
 					,public TBaseObject<IDeviceImp>
 				{
 				protected:
-					VkDevice mInternal;
+					const VkDevice mInternal;
 				public:
 					IDeviceImp(VkDevice dev,IPhysicalDeviceGroupImp* physicsDeviceGroup);
 					virtual ~IDeviceImp();
@@ -89,7 +93,8 @@ namespace NSDevilX
 					}
 
 					// 通过 IDeviceImp 继承
-					virtual IQueue* createQueue(IEnum::EQueue type) override;
+					virtual UInt32 getQueueCount(IEnum::EQueue type) const override;
+					virtual IQueue* getQueue(IEnum::EQueue type,UInt32 index) override;
 				};
 			}
 			namespace NSOpenGL
@@ -108,7 +113,8 @@ namespace NSDevilX
 					virtual ~IDeviceImp();
 
 					// 通过 IDeviceImp 继承
-					virtual IQueue* createQueue(IEnum::EQueue type) override;
+					virtual UInt32 getQueueCount(IEnum::EQueue type) const override;
+					virtual IQueue* getQueue(IEnum::EQueue type,UInt32 index) override;
 
 					// 通过 IQueue 继承
 #if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS

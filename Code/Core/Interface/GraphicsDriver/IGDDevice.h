@@ -13,7 +13,8 @@ namespace NSDevilX
 				{
 				}
 			public:
-				virtual IQueue* createQueue(IEnum::EQueue type)=0;
+				virtual UInt32 getQueueCount(IEnum::EQueue type)const=0;
+				virtual IQueue* getQueue(IEnum::EQueue type,UInt32 index)=0;
 			};
 		}
 	}

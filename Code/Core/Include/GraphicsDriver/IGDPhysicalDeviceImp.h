@@ -51,15 +51,26 @@ namespace NSDevilX
 					:public NSGraphicsDriver::IPhysicalDeviceImp
 					,public TBaseObject<IPhysicalDeviceImp>
 				{
+				public:
+					struct SQueueFamilyInfo
+					{
+						UInt32 mQueueFamilyIndex;
+						VkQueueFamilyProperties2 mProp;
+					};
 				protected:
 					const VkPhysicalDevice mInternal;
+					TVector(SQueueFamilyInfo) mQueueFamilies[3];
 				public:
 					IPhysicalDeviceImp(VkPhysicalDevice dev,IPhysicalDeviceGroupImp* group);
 					virtual ~IPhysicalDeviceImp();
 
-					VkPhysicalDevice getInternal()const
+					auto getInternal()const
 					{
 						return mInternal;
+					}
+					auto& getQueueFamilies()const
+					{
+						return mQueueFamilies;
 					}
 				};
 			}
