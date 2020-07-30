@@ -153,9 +153,10 @@ ISwapChain* NSDevilX::NSCore::NSGraphicsDriver::NSD3D12::IQueueImp::createSwapCh
 
 #endif
 
-NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IQueueImp::IQueueImp(IDeviceImp* dev,VkQueue queue)
+NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IQueueImp::IQueueImp(IDeviceImp* dev,VkQueue queue,UInt32 familyIndex)
 	:NSGraphicsDriver::IQueueImp(dev)
 	,mInternal(queue)
+	,mFamilyIndex(familyIndex)
 {
 }
 
@@ -273,11 +274,125 @@ ISwapChain* NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IQueueImp::createSwapC
 #endif
 	}
 	VkBool32 surface_support=VK_FALSE;
-	vkGetPhysicalDeviceSurfaceSupportKHR(static_cast<IPhysicalDeviceImp*>(mDevice->getPhysicalDeviceGroup()->getDevices()[0])->getInternal(),info.pQueueFamilyIndices[0],cpy_info.surface,&surface_support);
-	if(!surface_support)
+	if((VK_SUCCESS!=vkGetPhysicalDeviceSurfaceSupportKHR(static_cast<IPhysicalDeviceImp*>(mDevice->getPhysicalDeviceGroup()->getDevices()[0])->getInternal(),info.pQueueFamilyIndices[0],cpy_info.surface,&surface_support))
+		&&(!surface_support))
 	{
 		vkDestroySurfaceKHR(static_cast<IInstanceImp*>(mDevice->getPhysicalDeviceGroup()->getInstance())->getInternal(),cpy_info.surface,nullptr);
 		return nullptr;
+	}
+	VkPhysicalDeviceSurfaceInfo2KHR surface_info={};
+	surface_info.sType=VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SURFACE_INFO_2_KHR;
+	surface_info.surface=cpy_info.surface;
+	VkSurfaceCapabilities2KHR surface_cap={};
+	surface_cap.sType=VK_STRUCTURE_TYPE_SURFACE_CAPABILITIES_2_KHR;
+	if(VK_SUCCESS!=vkGetPhysicalDeviceSurfaceCapabilities2KHR(static_cast<IPhysicalDeviceImp*>(mDevice->getPhysicalDeviceGroup()->getDevices()[0])->getInternal(),&surface_info,&surface_cap))
+	{
+		vkDestroySurfaceKHR(static_cast<IInstanceImp*>(mDevice->getPhysicalDeviceGroup()->getInstance())->getInternal(),cpy_info.surface,nullptr);
+		return nullptr;
+	}
+	if(!(cpy_info.preTransform&surface_cap.surfaceCapabilities.supportedTransforms))
+	{
+		cpy_info.preTransform=surface_cap.surfaceCapabilities.currentTransform;
+	}
+	switch(cpy_info.presentMode)
+	{
+	case VK_PRESENT_MODE_IMMEDIATE_KHR:
+	case VK_PRESENT_MODE_MAILBOX_KHR:
+	case VK_PRESENT_MODE_FIFO_KHR:
+	case VK_PRESENT_MODE_FIFO_RELAXED_KHR:
+		if((cpy_info.imageUsage&surface_cap.surfaceCapabilities.supportedUsageFlags)!=cpy_info.imageUsage)
+		{
+			vkDestroySurfaceKHR(static_cast<IInstanceImp*>(mDevice->getPhysicalDeviceGroup()->getInstance())->getInternal(),cpy_info.surface,nullptr);
+			return nullptr;
+		}
+		break;
+	}
+	uint32_t support_count=0;
+	if(VK_SUCCESS!=vkGetPhysicalDeviceSurfaceFormats2KHR(static_cast<IPhysicalDeviceImp*>(mDevice->getPhysicalDeviceGroup()->getDevices()[0])->getInternal(),&surface_info,&support_count,nullptr))
+	{
+		vkDestroySurfaceKHR(static_cast<IInstanceImp*>(mDevice->getPhysicalDeviceGroup()->getInstance())->getInternal(),cpy_info.surface,nullptr);
+		return nullptr;
+	}
+	TVector(VkSurfaceFormat2KHR) surface_formats(support_count);
+	for(auto& fmt:surface_formats)
+	{
+		fmt.sType=VK_STRUCTURE_TYPE_SURFACE_FORMAT_2_KHR;
+	}
+	vkGetPhysicalDeviceSurfaceFormats2KHR(static_cast<IPhysicalDeviceImp*>(mDevice->getPhysicalDeviceGroup()->getDevices()[0])->getInternal(),&surface_info,&support_count,&surface_formats[0]);
+	Boolean fmt_support=false;
+	for(auto const& fmt:surface_formats)
+	{
+		if((fmt.surfaceFormat.colorSpace==cpy_info.imageColorSpace)
+			&&(fmt.surfaceFormat.format==cpy_info.imageFormat))
+		{
+			fmt_support=true;
+			break;
+		}
+	}
+	if(!fmt_support)
+	{
+		for(auto const& fmt:surface_formats)
+		{
+			if(fmt.surfaceFormat.colorSpace==cpy_info.imageColorSpace)
+			{
+				switch(fmt.surfaceFormat.format)
+				{
+				case VK_FORMAT_R8G8B8A8_SRGB:
+				case VK_FORMAT_R8G8B8_SRGB:
+				case VK_FORMAT_B8G8R8A8_SRGB:
+				case VK_FORMAT_B8G8R8_SRGB:
+				case VK_FORMAT_A8B8G8R8_SRGB_PACK32:
+					switch(cpy_info.imageFormat)
+					{
+					case VK_FORMAT_R8G8B8A8_SRGB:
+					case VK_FORMAT_R8G8B8_SRGB:
+					case VK_FORMAT_B8G8R8A8_SRGB:
+					case VK_FORMAT_B8G8R8_SRGB:
+					case VK_FORMAT_A8B8G8R8_SRGB_PACK32:
+						fmt_support=true;
+						break;
+					}
+					break;
+				case VK_FORMAT_R8G8B8A8_UNORM:
+				case VK_FORMAT_R8G8B8_UNORM:
+				case VK_FORMAT_B8G8R8A8_UNORM:
+				case VK_FORMAT_B8G8R8_UNORM:
+				case VK_FORMAT_A8B8G8R8_UNORM_PACK32:
+					switch(cpy_info.imageFormat)
+					{
+					case VK_FORMAT_R8G8B8A8_UNORM:
+					case VK_FORMAT_R8G8B8_UNORM:
+					case VK_FORMAT_B8G8R8A8_UNORM:
+					case VK_FORMAT_B8G8R8_UNORM:
+					case VK_FORMAT_A8B8G8R8_UNORM_PACK32:
+						fmt_support=true;
+						break;
+					}
+					break;
+				}
+				if(fmt_support)
+				{
+					cpy_info.imageFormat=fmt.surfaceFormat.format;
+					break;
+				}
+			}
+		}
+	}
+	if(!fmt_support)
+	{
+		vkDestroySurfaceKHR(static_cast<IInstanceImp*>(mDevice->getPhysicalDeviceGroup()->getInstance())->getInternal(),cpy_info.surface,nullptr);
+		return nullptr;
+	}
+	if(VK_SUCCESS!=vkGetPhysicalDeviceSurfacePresentModesKHR(static_cast<IPhysicalDeviceImp*>(mDevice->getPhysicalDeviceGroup()->getDevices()[0])->getInternal(),cpy_info.surface,&support_count,nullptr))
+	{
+		vkDestroySurfaceKHR(static_cast<IInstanceImp*>(mDevice->getPhysicalDeviceGroup()->getInstance())->getInternal(),cpy_info.surface,nullptr);
+		return nullptr;
+	}
+	TVector(VkPresentModeKHR) present_modes(support_count);
+	vkGetPhysicalDeviceSurfacePresentModesKHR(static_cast<IPhysicalDeviceImp*>(mDevice->getPhysicalDeviceGroup()->getDevices()[0])->getInternal(),cpy_info.surface,&support_count,&present_modes[0]);
+	if(!present_modes.has(cpy_info.presentMode))
+	{
+		cpy_info.presentMode=present_modes[0];
 	}
 	auto ret=DEVILX_NEW ISwapChainImp(this,cpy_info);
 	mSwapChains.push_back(ret);

@@ -54,6 +54,11 @@ namespace NSDevilX
 					VkSwapchainKHR mInternal;
 					VkSurfaceKHR mSurface;
 					VkPresentInfoKHR mPresentInfo;
+					TVector(VkImage) mImages;
+					VkAcquireNextImageInfoKHR mAcquireNextImageInfo;
+					uint32_t mPresentImageIndex;
+					VkFence mFence;
+					VkSemaphore mSemaphore;
 				public:
 					ISwapChainImp(IQueueImp* queue,const VkSwapchainCreateInfoKHR& info);
 					~ISwapChainImp();

@@ -59,14 +59,20 @@ namespace NSDevilX
 					,public TBaseObject<IQueueImp>
 				{
 				protected:
-					VkQueue mInternal;
+					const VkQueue mInternal;
+					const UInt32 mFamilyIndex;
 				public:
-					IQueueImp(IDeviceImp* dev,VkQueue queue);
+					IQueueImp(IDeviceImp* dev,VkQueue queue,UInt32 familyIndex);
 					~IQueueImp();
 
 					auto getInternal()const
 					{
 						return mInternal;
+					}
+
+					auto getFamilyIndex()const
+					{
+						return mFamilyIndex;
 					}
 
 					// Í¨¹ý IQueueImp ¼Ì³Ð

@@ -52,20 +52,62 @@ NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::ISwapChainImp::ISwapChainImp(IQueu
 	:NSGraphicsDriver::ISwapChainImp(queue)
 	,mInternal(VK_NULL_HANDLE)
 	,mSurface(info.surface)
+	,mPresentImageIndex(-1)
+	,mFence(VK_NULL_HANDLE)
+	,mSemaphore(VK_NULL_HANDLE)
 {
-	vkCreateSwapchainKHR(static_cast<IDeviceImp*>(mQueue->getDevice())->getInternal(),&info,nullptr,&mInternal);
+	VkFenceCreateInfo fence_create_info={};
+	fence_create_info.sType=VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
+	if(VK_SUCCESS!=vkCreateFence(static_cast<IDeviceImp*>(queue->getDevice())->getInternal(),&fence_create_info,nullptr,&mFence))
+		return;
+	VkSemaphoreCreateInfo semaphore_create_info={};
+	semaphore_create_info.sType=VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+	if(VK_SUCCESS!=vkCreateSemaphore(static_cast<IDeviceImp*>(queue->getDevice())->getInternal(),&semaphore_create_info,nullptr,&mSemaphore))
+		return;
+	if(VK_SUCCESS!=vkCreateSwapchainKHR(static_cast<IDeviceImp*>(mQueue->getDevice())->getInternal(),&info,nullptr,&mInternal))
+		return;
+	uint32_t count=0;
+	if(VK_SUCCESS!=vkGetSwapchainImagesKHR(static_cast<IDeviceImp*>(queue->getDevice())->getInternal(),mInternal,&count,nullptr))
+		return;
+	mImages.resize(count);
+	vkGetSwapchainImagesKHR(static_cast<IDeviceImp*>(queue->getDevice())->getInternal(),mInternal,&count,&mImages[0]);
+	mAcquireNextImageInfo.sType=VK_STRUCTURE_TYPE_ACQUIRE_NEXT_IMAGE_INFO_KHR;
+	mAcquireNextImageInfo.deviceMask=0;
+	for(UInt32 i=0;i<queue->getDevice()->getPhysicalDeviceGroup()->getDeviceCount();++i)
+	{
+		mAcquireNextImageInfo.deviceMask|=1<<i;
+	}
+	mAcquireNextImageInfo.fence=mFence;
+	mAcquireNextImageInfo.swapchain=mInternal;
+	mAcquireNextImageInfo.timeout=-1;
+	mAcquireNextImageInfo.semaphore=mSemaphore;
+	mAcquireNextImageInfo.pNext=nullptr;
+	if(VK_SUCCESS!=vkAcquireNextImage2KHR(static_cast<IDeviceImp*>(queue->getDevice())->getInternal(),&mAcquireNextImageInfo,&mPresentImageIndex))
+		return;
 	mPresentInfo.sType=VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
 	mPresentInfo.pNext=nullptr;
 	mPresentInfo.pSwapchains=&mInternal;
 	mPresentInfo.swapchainCount=1;
-	mPresentInfo.waitSemaphoreCount=0;
-	mPresentInfo.pWaitSemaphores=nullptr;
+	mPresentInfo.waitSemaphoreCount=1;
+	mPresentInfo.pWaitSemaphores=&mSemaphore;
 	mPresentInfo.pResults=nullptr;
-	mPresentInfo.pImageIndices=nullptr;
+	mPresentInfo.pImageIndices=&mPresentImageIndex;
+
+	VkImageMemoryBarrier barrier={};
+	barrier.sType=VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+	barrier.oldLayout=VK_IMAGE_LAYOUT_UNDEFINED;
+	barrier.newLayout=VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+	barrier.srcQueueFamilyIndex=queue->getFamilyIndex();
+	barrier.dstQueueFamilyIndex=queue->getFamilyIndex();
+	for(auto image:mImages)
+	{
+		barrier.image=image;
+	}
 }
 
 NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::ISwapChainImp::~ISwapChainImp()
 {
+	vkDestroySemaphore(static_cast<IDeviceImp*>(mQueue->getDevice())->getInternal(),mSemaphore,nullptr);
 	vkDestroySurfaceKHR(static_cast<IInstanceImp*>(mQueue->getDevice()->getPhysicalDeviceGroup()->getInstance())->getInternal(),mSurface,nullptr);
 	vkDestroySwapchainKHR(static_cast<IDeviceImp*>(mQueue->getDevice())->getInternal(),mInternal,nullptr);
 }
@@ -73,4 +115,5 @@ NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::ISwapChainImp::~ISwapChainImp()
 void NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::ISwapChainImp::swapBuffers()
 {
 	vkQueuePresentKHR(static_cast<IQueueImp*>(mQueue)->getInternal(),&mPresentInfo);
+	vkAcquireNextImage2KHR(static_cast<IDeviceImp*>(mQueue->getDevice())->getInternal(),&mAcquireNextImageInfo,&mPresentImageIndex);
 }
