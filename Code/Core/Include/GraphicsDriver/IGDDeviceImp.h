@@ -35,7 +35,6 @@ namespace NSDevilX
 				{
 				protected:
 					CComPtr<ID3D12Device> mInternal;
-					TCOMResourcePtrVector(ID3D12CommandQueue) mQueues;
 				public:
 					IDeviceImp(ID3D12Device* dev,NSD3D::IPhysicalDeviceGroupImp* physicsDeviceGroup);
 					virtual ~IDeviceImp();

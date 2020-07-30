@@ -39,6 +39,9 @@ namespace NSDevilX
 					CComPtr<IDXGIFactory5> mInternal5;
 					CComPtr<IDXGIFactory6> mInternal6;
 					CComPtr<IDXGIFactory7> mInternal7;
+#if DEVILX_DEBUG
+					CComPtr<ID3D12Debug> mDebug;
+#endif
 				public:
 					IInstanceImp(IEnum::EInstanceMinorType_D3D minorType);
 					virtual ~IInstanceImp();

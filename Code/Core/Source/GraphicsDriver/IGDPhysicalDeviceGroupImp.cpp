@@ -28,6 +28,7 @@ NSDevilX::NSCore::NSGraphicsDriver::NSD3D::IPhysicalDeviceGroupImp::IPhysicalDev
 	:NSGraphicsDriver::IPhysicalDeviceGroupImp(instance)
 	,mInternal(adapter)
 {
+	mInternal->QueryInterface(&mInternal1);
 }
 
 NSDevilX::NSCore::NSGraphicsDriver::NSD3D::IPhysicalDeviceGroupImp::~IPhysicalDeviceGroupImp()

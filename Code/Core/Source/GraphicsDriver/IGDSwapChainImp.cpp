@@ -21,6 +21,11 @@ NSDevilX::NSCore::NSGraphicsDriver::NSD3D::ISwapChainImp::ISwapChainImp(NSD3D12:
 	IDXGISwapChain1* sc=nullptr;
 	static_cast<NSD3D::IInstanceImp*>(queue->getDevice()->getPhysicalDeviceGroup()->getInstance())->getInternal2()->CreateSwapChainForHwnd(queue->getInternal(),wnd,&desc,fullScreenDesc,nullptr,&sc);
 	mInternal=sc;
+	mBackBuffers12.resize(desc.BufferCount);
+	for(UINT i=0;i<desc.BufferCount;++i)
+	{
+		sc->GetBuffer(i,__uuidof(mBackBuffers12[i]),reinterpret_cast<VoidPtr*>(&mBackBuffers12[i]));
+	}
 }
 
 NSDevilX::NSCore::NSGraphicsDriver::NSD3D::ISwapChainImp::ISwapChainImp(NSD3D11::IDeviceImp* dev,HWND wnd,const DXGI_SWAP_CHAIN_DESC1& desc,const DXGI_SWAP_CHAIN_FULLSCREEN_DESC* fullScreenDesc)
@@ -29,12 +34,22 @@ NSDevilX::NSCore::NSGraphicsDriver::NSD3D::ISwapChainImp::ISwapChainImp(NSD3D11:
 	IDXGISwapChain1* sc=nullptr;
 	static_cast<NSD3D::IInstanceImp*>(dev->getPhysicalDeviceGroup()->getInstance())->getInternal2()->CreateSwapChainForHwnd(dev->getInternal(),wnd,&desc,fullScreenDesc,nullptr,&sc);
 	mInternal=sc;
+	mBackBuffers11.resize(desc.BufferCount);
+	for(UINT i=0;i<desc.BufferCount;++i)
+	{
+		sc->GetBuffer(i,__uuidof(mBackBuffers11[i]),reinterpret_cast<VoidPtr*>(&mBackBuffers11[i]));
+	}
 }
 
 NSDevilX::NSCore::NSGraphicsDriver::NSD3D::ISwapChainImp::ISwapChainImp(NSD3D11::IDeviceImp* dev,DXGI_SWAP_CHAIN_DESC& desc)
 	:NSGraphicsDriver::ISwapChainImp(dev)
 {
 	static_cast<NSD3D::IInstanceImp*>(dev->getPhysicalDeviceGroup()->getInstance())->getInternal()->CreateSwapChain(dev->getInternal(),&desc,&mInternal);
+	mBackBuffers11.resize(desc.BufferCount);
+	for(UINT i=0;i<desc.BufferCount;++i)
+	{
+		mInternal->GetBuffer(i,__uuidof(mBackBuffers11[i]),reinterpret_cast<VoidPtr*>(&mBackBuffers11[i]));
+	}
 }
 
 NSDevilX::NSCore::NSGraphicsDriver::NSD3D::ISwapChainImp::~ISwapChainImp()

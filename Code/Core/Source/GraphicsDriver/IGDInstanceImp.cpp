@@ -150,8 +150,27 @@ IDevice* NSDevilX::NSCore::NSGraphicsDriver::NSD3D::IInstanceImp::createDevice(I
 
 IDeviceImp* NSDevilX::NSCore::NSGraphicsDriver::NSD3D::IInstanceImp::_createDevice12(IPhysicalDeviceGroup* deviceGroup)
 {
+#if DEVILX_DEBUG
+	D3D12GetDebugInterface(__uuidof(mDebug),reinterpret_cast<VoidPtr*>(&mDebug));
+	mDebug->EnableDebugLayer();
+#endif
 	ID3D12Device* dev=nullptr;
-	auto success=SUCCEEDED(D3D12CreateDevice(static_cast<IPhysicalDeviceGroupImp*>(deviceGroup)->getInternal(),D3D_FEATURE_LEVEL_10_0,__uuidof(dev),reinterpret_cast<VoidPtr*>(&dev)));
+	D3D_FEATURE_LEVEL levels[]=
+	{
+		D3D_FEATURE_LEVEL_12_1,
+		D3D_FEATURE_LEVEL_12_0,
+		D3D_FEATURE_LEVEL_11_1,
+		D3D_FEATURE_LEVEL_11_0,
+		D3D_FEATURE_LEVEL_10_1,
+		D3D_FEATURE_LEVEL_10_0
+	};
+	Boolean success=false;
+	for(auto level:levels)
+	{
+		success=SUCCEEDED(D3D12CreateDevice(static_cast<IPhysicalDeviceGroupImp*>(deviceGroup)->getInternal1(),level,__uuidof(dev),reinterpret_cast<VoidPtr*>(&dev)));
+		if(success)
+			break;
+	}
 	IDeviceImp* ret=nullptr;
 	if(success)
 	{

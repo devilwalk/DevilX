@@ -44,6 +44,7 @@ namespace NSDevilX
 				{
 				protected:
 					CComPtr<IDXGIAdapter> mInternal;
+					CComPtr<IDXGIAdapter1> mInternal1;
 				public:
 					IPhysicalDeviceGroupImp(IDXGIAdapter* adapter,IInstanceImp* instance);
 					~IPhysicalDeviceGroupImp();
@@ -51,6 +52,10 @@ namespace NSDevilX
 					IDXGIAdapter* getInternal()const
 					{
 						return mInternal;
+					}
+					IDXGIAdapter1* getInternal1()const
+					{
+						return mInternal1;
 					}
 				};
 			}

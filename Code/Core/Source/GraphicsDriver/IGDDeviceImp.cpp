@@ -31,7 +31,18 @@ UInt32 NSDevilX::NSCore::NSGraphicsDriver::NSD3D12::IDeviceImp::getQueueCount(IE
 
 IQueue* NSDevilX::NSCore::NSGraphicsDriver::NSD3D12::IDeviceImp::getQueue(IEnum::EQueue type,UInt32 index)
 {
-	return nullptr;
+	if(mQueues[type].size()>index&&mQueues[type][index])
+		return mQueues[type][index];
+	D3D12_COMMAND_QUEUE_DESC queue_desc={};
+	ID3D12CommandQueue* queue=nullptr;
+	mInternal->CreateCommandQueue(&queue_desc,__uuidof(ID3D12CommandQueue),reinterpret_cast<VoidPtr*>(&queue));
+	auto ret=DEVILX_NEW IQueueImp(this,queue);
+	if(mQueues[type].size()<=index)
+	{
+		mQueues[type].resize(index+1);
+	}
+	mQueues[type][index]=ret;
+	return ret;
 }
 
 NSDevilX::NSCore::NSGraphicsDriver::NSD3D11::IDeviceImp::IDeviceImp(ID3D11Device* dev,NSD3D::IPhysicalDeviceGroupImp* physicsDeviceGroup)
@@ -201,7 +212,7 @@ IQueue* NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IDeviceImp::getQueue(IEnum
 			}
 			VkQueue queue=0;
 			vkGetDeviceQueue(mInternal,queue_family_info->mQueueFamilyIndex,queue_family_info->mProp.queueFamilyProperties.queueCount-(queue_count-index),&queue);
-			mQueues[type][index]=DEVILX_NEW IQueueImp(this,queue);
+			mQueues[type][index]=DEVILX_NEW IQueueImp(this,queue,queue_family_info->mQueueFamilyIndex);
 		}
 		return mQueues[type][index];
 	}
