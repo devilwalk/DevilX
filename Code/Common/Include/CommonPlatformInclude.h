@@ -6,6 +6,7 @@
 #include <process.h>
 #include <tchar.h>
 #include <dxgi1_6.h>
+#include <dxgidebug.h>
 #include <d3d9.h>
 #include <d3d10_1.h>
 #include <d3d11_4.h>

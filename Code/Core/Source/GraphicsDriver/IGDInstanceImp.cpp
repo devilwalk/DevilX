@@ -83,6 +83,19 @@ UInt32 NSDevilX::NSCore::NSGraphicsDriver::NSD3D::IInstanceImp::enumPhysicalDevi
 
 Boolean NSDevilX::NSCore::NSGraphicsDriver::NSD3D::IInstanceImp::initialize()
 {
+#if DEVILX_DEBUG
+	switch(mMinorType)
+	{
+	case IEnum::EInstanceMinorType_D3D_12_1:
+	case IEnum::EInstanceMinorType_D3D_12_0:
+	{
+		CComPtr<ID3D12Debug> debug;
+		D3D12GetDebugInterface(__uuidof(debug),reinterpret_cast<VoidPtr*>(&debug));
+		debug->EnableDebugLayer();
+	}
+		break;
+	}
+#endif
 	Boolean success=SUCCEEDED(CreateDXGIFactory1(__uuidof(mInternal),reinterpret_cast<void**>(&mInternal)));
 	mInternal->QueryInterface(&mInternal1);
 	mInternal->QueryInterface(&mInternal2);
@@ -150,10 +163,6 @@ IDevice* NSDevilX::NSCore::NSGraphicsDriver::NSD3D::IInstanceImp::createDevice(I
 
 IDeviceImp* NSDevilX::NSCore::NSGraphicsDriver::NSD3D::IInstanceImp::_createDevice12(IPhysicalDeviceGroup* deviceGroup)
 {
-#if DEVILX_DEBUG
-	D3D12GetDebugInterface(__uuidof(mDebug),reinterpret_cast<VoidPtr*>(&mDebug));
-	mDebug->EnableDebugLayer();
-#endif
 	ID3D12Device* dev=nullptr;
 	D3D_FEATURE_LEVEL levels[]=
 	{
@@ -189,8 +198,8 @@ IDeviceImp* NSDevilX::NSCore::NSGraphicsDriver::NSD3D::IInstanceImp::_createDevi
 #else
 	UINT flag=0;
 #endif
-	auto success=SUCCEEDED(D3D11CreateDevice(static_cast<IPhysicalDeviceGroupImp*>(deviceGroup)->getInternal(),D3D_DRIVER_TYPE_HARDWARE,NULL
-		,flag,levels,_countof(levels),D3D_SDK_VERSION,&dev,&o_level,nullptr));
+	auto success=SUCCEEDED(D3D11CreateDevice(static_cast<IPhysicalDeviceGroupImp*>(deviceGroup)->getInternal(),D3D_DRIVER_TYPE_UNKNOWN,NULL
+		,flag,levels,_countof(levels),D3D11_SDK_VERSION,&dev,&o_level,nullptr));
 	IDeviceImp* ret=nullptr;
 	if(success)
 	{

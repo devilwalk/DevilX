@@ -34,6 +34,18 @@ IQueue* NSDevilX::NSCore::NSGraphicsDriver::NSD3D12::IDeviceImp::getQueue(IEnum:
 	if(mQueues[type].size()>index&&mQueues[type][index])
 		return mQueues[type][index];
 	D3D12_COMMAND_QUEUE_DESC queue_desc={};
+	switch (type)
+	{
+	case NSDevilX::NSCore::NSGraphicsDriver::IEnum::EQueue_3D:
+		queue_desc.Type=D3D12_COMMAND_LIST_TYPE_DIRECT;
+		break;
+	case NSDevilX::NSCore::NSGraphicsDriver::IEnum::EQueue_Compute:
+		queue_desc.Type=D3D12_COMMAND_LIST_TYPE_COMPUTE;
+		break;
+	case NSDevilX::NSCore::NSGraphicsDriver::IEnum::EQueue_PCIETransfer:
+		queue_desc.Type=D3D12_COMMAND_LIST_TYPE_COPY;
+		break;
+	}
 	ID3D12CommandQueue* queue=nullptr;
 	mInternal->CreateCommandQueue(&queue_desc,__uuidof(ID3D12CommandQueue),reinterpret_cast<VoidPtr*>(&queue));
 	auto ret=DEVILX_NEW IQueueImp(this,queue);
