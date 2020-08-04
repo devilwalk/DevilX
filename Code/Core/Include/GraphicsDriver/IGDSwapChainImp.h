@@ -34,10 +34,10 @@ namespace NSDevilX
 					CComPtr<IDXGISwapChain> mInternal;
 					TCOMResourcePtrVector(ID3D12Resource) mBackBuffers12;
 					TCOMResourcePtrVector(ID3D11Texture2D) mBackBuffers11;
+
+					UINT mCurrentBufferIndex12;
 				public:
-					ISwapChainImp(NSD3D12::IQueueImp* queue,HWND wnd,const DXGI_SWAP_CHAIN_DESC1& desc,const DXGI_SWAP_CHAIN_FULLSCREEN_DESC* fullScreenDesc=nullptr);
-					ISwapChainImp(NSD3D11::IDeviceImp* dev,HWND wnd,const DXGI_SWAP_CHAIN_DESC1& desc,const DXGI_SWAP_CHAIN_FULLSCREEN_DESC* fullScreenDesc=nullptr);
-					ISwapChainImp(NSD3D11::IDeviceImp* dev,DXGI_SWAP_CHAIN_DESC& desc);
+					ISwapChainImp(IQueueImp* queue,IDXGISwapChain* v);
 					virtual ~ISwapChainImp();
 
 					// Í¨¹ý ISwapChainImp ¼Ì³Ð

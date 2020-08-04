@@ -18,7 +18,6 @@ NSDevilX::NSCore::NSGraphicsDriver::IQueueImp::~IQueueImp()
 ISwapChain* NSDevilX::NSCore::NSGraphicsDriver::IQueueImp::createSwapChain(DXGI_SWAP_CHAIN_DESC& desc)
 {
 	DXGI_SWAP_CHAIN_DESC1 desc1={};
-	desc1.AlphaMode=DXGI_ALPHA_MODE_IGNORE;
 	desc1.BufferCount=desc.BufferCount;
 	desc1.BufferUsage=desc.BufferUsage;
 	desc1.Flags=desc.Flags;
@@ -28,13 +27,13 @@ ISwapChain* NSDevilX::NSCore::NSGraphicsDriver::IQueueImp::createSwapChain(DXGI_
 	switch(desc.BufferDesc.Scaling)
 	{
 	case DXGI_MODE_SCALING_UNSPECIFIED:
-		desc1.Scaling=DXGI_SCALING_NONE;
+		desc1.Scaling=DXGI_SCALING_STRETCH;
 		break;
 	case DXGI_MODE_SCALING_CENTERED:
-		desc1.Scaling=DXGI_SCALING_ASPECT_RATIO_STRETCH;
+		desc1.Scaling=DXGI_SCALING_NONE;
 		break;
 	case DXGI_MODE_SCALING_STRETCHED:
-		desc1.Scaling=DXGI_SCALING_STRETCH;
+		desc1.Scaling=DXGI_SCALING_ASPECT_RATIO_STRETCH;
 		break;
 	}
 	desc1.Stereo=FALSE;
@@ -46,6 +45,114 @@ ISwapChain* NSDevilX::NSCore::NSGraphicsDriver::IQueueImp::createSwapChain(DXGI_
 	full_screen_desc.ScanlineOrdering=desc.BufferDesc.ScanlineOrdering;
 	full_screen_desc.Windowed=desc.Windowed;
 	return static_cast<IQueue*>(this)->createSwapChain(desc.OutputWindow,desc1,&full_screen_desc);
+}
+
+ISwapChain* NSDevilX::NSCore::NSGraphicsDriver::IQueueImp::createSwapChain(DXGI_SWAP_CHAIN_DESC& desc,const DXGI_FORMAT* formats,UInt32 formatCount)
+{
+	auto ret=createSwapChain(desc);
+	auto validate_desc=desc;
+	UInt32 index=0;
+	while(!ret)
+	{
+		if(index==formatCount)
+		{
+			break;
+		}
+		validate_desc.BufferDesc.Format=formats[index];
+		ret=createSwapChain(validate_desc);
+
+		++index;
+	}
+	return ret;
+}
+
+ISwapChain* NSDevilX::NSCore::NSGraphicsDriver::IQueueImp::createSwapChain(DXGI_SWAP_CHAIN_DESC* descs,UInt32 descsCount)
+{
+	ISwapChain* ret=nullptr;
+	UInt32 index=0;
+	while(!ret)
+	{
+		if(index==descsCount)
+		{
+			break;
+		}
+		ret=createSwapChain(descs[index]);
+
+		++index;
+	}
+	return ret;
+}
+
+ISwapChain* NSDevilX::NSCore::NSGraphicsDriver::IQueueImp::createSwapChain(HWND hwnd,const DXGI_SWAP_CHAIN_DESC1& desc,const DXGI_FORMAT* formats,UInt32 formatCount,const DXGI_SWAP_CHAIN_FULLSCREEN_DESC* fullscreenDesc)
+{
+	auto ret=static_cast<IQueue*>(this)->createSwapChain(hwnd,desc,fullscreenDesc);
+	auto validate_desc=desc;
+	UInt32 index=0;
+	while(!ret)
+	{
+		if(index==formatCount)
+		{
+			break;
+		}
+		validate_desc.Format=formats[index];
+		ret=static_cast<IQueue*>(this)->createSwapChain(hwnd,validate_desc,fullscreenDesc);
+
+		++index;
+	}
+	return ret;
+}
+
+ISwapChain* NSDevilX::NSCore::NSGraphicsDriver::IQueueImp::createSwapChain(HWND hwnd,const DXGI_SWAP_CHAIN_DESC1* descs,UInt32 descCount,const DXGI_SWAP_CHAIN_FULLSCREEN_DESC* fullscreenDesc)
+{
+	ISwapChain* ret=nullptr;
+	UInt32 index=0;
+	while(!ret)
+	{
+		if(index==descCount)
+		{
+			break;
+		}
+		ret=static_cast<IQueue*>(this)->createSwapChain(hwnd,descs[index],fullscreenDesc);
+
+		++index;
+	}
+	return ret;
+}
+
+ISwapChain* NSDevilX::NSCore::NSGraphicsDriver::IQueueImp::createSwapChain(HWND hwnd,const VkSwapchainCreateInfoKHR& info,const VkFormat* formats,UInt32 formatCount)
+{
+	auto ret=static_cast<IQueue*>(this)->createSwapChain(hwnd,info);
+	auto validate_desc=info;
+	UInt32 index=0;
+	while(!ret)
+	{
+		if(index==formatCount)
+		{
+			break;
+		}
+		validate_desc.imageFormat=formats[index];
+		ret=static_cast<IQueue*>(this)->createSwapChain(hwnd,validate_desc);
+
+		++index;
+	}
+	return ret;
+}
+
+ISwapChain* NSDevilX::NSCore::NSGraphicsDriver::IQueueImp::createSwapChain(HWND hwnd,const VkSwapchainCreateInfoKHR* infos,UInt32 infoCount)
+{
+	ISwapChain* ret=nullptr;
+	UInt32 index=0;
+	while(!ret)
+	{
+		if(index==infoCount)
+		{
+			break;
+		}
+		ret=static_cast<IQueue*>(this)->createSwapChain(hwnd,infos[index]);
+
+		++index;
+	}
+	return ret;
 }
 
 NSDevilX::NSCore::NSGraphicsDriver::NSD3D12::IQueueImp::IQueueImp(IDeviceImp* dev,ID3D12CommandQueue* queue)
@@ -60,9 +167,15 @@ NSDevilX::NSCore::NSGraphicsDriver::NSD3D12::IQueueImp::~IQueueImp()
 
 ISwapChain* NSDevilX::NSCore::NSGraphicsDriver::NSD3D12::IQueueImp::createSwapChain(HWND hwnd,const DXGI_SWAP_CHAIN_DESC1& desc,const DXGI_SWAP_CHAIN_FULLSCREEN_DESC* fullscreenDesc)
 {
-	auto ret=DEVILX_NEW NSD3D::ISwapChainImp(this,hwnd,desc,fullscreenDesc);
-	mSwapChains.push_back(ret);
-	return ret;
+	IDXGISwapChain1* sc=nullptr;
+	auto success=SUCCEEDED(static_cast<NSD3D::IInstanceImp*>(mDevice->getPhysicalDeviceGroup()->getInstance())->getInternal2()->CreateSwapChainForHwnd(mInternal,hwnd,&desc,fullscreenDesc,nullptr,&sc));
+	if(success)
+	{
+		auto ret=DEVILX_NEW NSD3D::ISwapChainImp(this,sc);
+		mSwapChains.push_back(ret);
+		return ret;
+	}
+	return nullptr;
 }
 
 ISwapChain* NSDevilX::NSCore::NSGraphicsDriver::NSD3D12::IQueueImp::createSwapChain(HWND hwnd,const VkSwapchainCreateInfoKHR& info)
@@ -168,6 +281,7 @@ NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IQueueImp::~IQueueImp()
 ISwapChain* NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IQueueImp::createSwapChain(HWND hwnd,const DXGI_SWAP_CHAIN_DESC1& desc,const DXGI_SWAP_CHAIN_FULLSCREEN_DESC* fullscreenDesc)
 {
 	VkSwapchainCreateInfoKHR info={};
+	TVector(VkFormat) formats;
 	info.sType=VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
 	VkWin32SurfaceCreateInfoKHR surface_create_info={};
 	surface_create_info.sType=VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
@@ -179,21 +293,37 @@ ISwapChain* NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IQueueImp::createSwapC
 	{
 	case DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:
 		info.imageFormat=VK_FORMAT_R8G8B8A8_SRGB;
+		formats.push_back(VK_FORMAT_B8G8R8A8_SRGB);
+		formats.push_back(VK_FORMAT_A8B8G8R8_SRGB_PACK32);
 		break;
 	case DXGI_FORMAT_B8G8R8A8_UNORM_SRGB:
 		info.imageFormat=VK_FORMAT_B8G8R8A8_SRGB;
+		formats.push_back(VK_FORMAT_R8G8B8A8_SRGB);
+		formats.push_back(VK_FORMAT_A8B8G8R8_SRGB_PACK32);
 		break;
 	case DXGI_FORMAT_R8G8B8A8_UNORM:
 		info.imageFormat=VK_FORMAT_R8G8B8A8_SNORM;
+		formats.push_back(VK_FORMAT_B8G8R8A8_SNORM);
+		formats.push_back(VK_FORMAT_A8B8G8R8_SNORM_PACK32);
 		break;
 	case DXGI_FORMAT_B8G8R8A8_UNORM:
 		info.imageFormat=VK_FORMAT_B8G8R8A8_SNORM;
+		formats.push_back(VK_FORMAT_R8G8B8A8_SNORM);
+		formats.push_back(VK_FORMAT_A8B8G8R8_SNORM_PACK32);
 		break;
 	case DXGI_FORMAT_B8G8R8X8_UNORM_SRGB:
 		info.imageFormat=VK_FORMAT_B8G8R8_SRGB;
+		formats.push_back(VK_FORMAT_R8G8B8_SRGB);
+		formats.push_back(VK_FORMAT_R8G8B8A8_SRGB);
+		formats.push_back(VK_FORMAT_B8G8R8A8_SRGB);
+		formats.push_back(VK_FORMAT_A8B8G8R8_SRGB_PACK32);
 		break;
 	case DXGI_FORMAT_B8G8R8X8_UNORM:
 		info.imageFormat=VK_FORMAT_B8G8R8_UNORM;
+		formats.push_back(VK_FORMAT_R8G8B8_SNORM);
+		formats.push_back(VK_FORMAT_B8G8R8A8_SNORM);
+		formats.push_back(VK_FORMAT_R8G8B8A8_SNORM);
+		formats.push_back(VK_FORMAT_A8B8G8R8_SNORM_PACK32);
 		break;
 	case DXGI_FORMAT_B4G4R4A4_UNORM:
 		info.imageFormat=VK_FORMAT_B4G4R4A4_UNORM_PACK16;
@@ -256,13 +386,33 @@ ISwapChain* NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IQueueImp::createSwapC
 	info.queueFamilyIndexCount=1;
 	uint32_t queue_family=static_cast<IPhysicalDeviceImp*>(mDevice->getPhysicalDeviceGroup()->getDevice(0))->getQueueFamilies()[IEnum::EQueue_3D][0].mQueueFamilyIndex;
 	info.pQueueFamilyIndices=&queue_family;
-	return createSwapChain(hwnd,info);
+	return createSwapChain(hwnd,info,&formats[0],static_cast<UInt32>(formats.size()));
 }
 #endif
 
 ISwapChain* NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IQueueImp::createSwapChain(HWND hwnd,const VkSwapchainCreateInfoKHR& info)
 {
 	auto cpy_info=info;
+	if(cpy_info.sType==0)
+	{
+		cpy_info.sType=VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
+	}
+	uint32_t queue_family=static_cast<IPhysicalDeviceImp*>(mDevice->getPhysicalDeviceGroup()->getDevice(0))->getQueueFamilies()[IEnum::EQueue_3D][0].mQueueFamilyIndex;
+	if(!cpy_info.pQueueFamilyIndices)
+	{
+		cpy_info.pQueueFamilyIndices=&queue_family;
+		cpy_info.queueFamilyIndexCount=1;
+	}
+	RECT rc={};
+	GetClientRect(hwnd,&rc);
+	if(!cpy_info.imageExtent.width)
+	{
+		cpy_info.imageExtent.width=rc.right-rc.left;
+	}
+	if(!cpy_info.imageExtent.height)
+	{
+		cpy_info.imageExtent.height=rc.bottom-rc.top;
+	}
 	if(cpy_info.surface==0)
 	{
 #if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
@@ -274,7 +424,7 @@ ISwapChain* NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IQueueImp::createSwapC
 #endif
 	}
 	VkBool32 surface_support=VK_FALSE;
-	if((VK_SUCCESS!=vkGetPhysicalDeviceSurfaceSupportKHR(static_cast<IPhysicalDeviceImp*>(mDevice->getPhysicalDeviceGroup()->getDevices()[0])->getInternal(),info.pQueueFamilyIndices[0],cpy_info.surface,&surface_support))
+	if((VK_SUCCESS!=vkGetPhysicalDeviceSurfaceSupportKHR(static_cast<IPhysicalDeviceImp*>(mDevice->getPhysicalDeviceGroup()->getDevices()[0])->getInternal(),cpy_info.pQueueFamilyIndices[0],cpy_info.surface,&surface_support))
 		&&(!surface_support))
 	{
 		vkDestroySurfaceKHR(static_cast<IInstanceImp*>(mDevice->getPhysicalDeviceGroup()->getInstance())->getInternal(),cpy_info.surface,nullptr);
@@ -290,9 +440,14 @@ ISwapChain* NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IQueueImp::createSwapC
 		vkDestroySurfaceKHR(static_cast<IInstanceImp*>(mDevice->getPhysicalDeviceGroup()->getInstance())->getInternal(),cpy_info.surface,nullptr);
 		return nullptr;
 	}
-	if(!(cpy_info.preTransform&surface_cap.surfaceCapabilities.supportedTransforms))
+	if(cpy_info.preTransform==0)
 	{
 		cpy_info.preTransform=surface_cap.surfaceCapabilities.currentTransform;
+	}
+	if(!(cpy_info.preTransform&surface_cap.surfaceCapabilities.supportedTransforms))
+	{
+		vkDestroySurfaceKHR(static_cast<IInstanceImp*>(mDevice->getPhysicalDeviceGroup()->getInstance())->getInternal(),cpy_info.surface,nullptr);
+		return nullptr;
 	}
 	switch(cpy_info.presentMode)
 	{
@@ -327,55 +482,6 @@ ISwapChain* NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IQueueImp::createSwapC
 		{
 			fmt_support=true;
 			break;
-		}
-	}
-	if(!fmt_support)
-	{
-		for(auto const& fmt:surface_formats)
-		{
-			if(fmt.surfaceFormat.colorSpace==cpy_info.imageColorSpace)
-			{
-				switch(fmt.surfaceFormat.format)
-				{
-				case VK_FORMAT_R8G8B8A8_SRGB:
-				case VK_FORMAT_R8G8B8_SRGB:
-				case VK_FORMAT_B8G8R8A8_SRGB:
-				case VK_FORMAT_B8G8R8_SRGB:
-				case VK_FORMAT_A8B8G8R8_SRGB_PACK32:
-					switch(cpy_info.imageFormat)
-					{
-					case VK_FORMAT_R8G8B8A8_SRGB:
-					case VK_FORMAT_R8G8B8_SRGB:
-					case VK_FORMAT_B8G8R8A8_SRGB:
-					case VK_FORMAT_B8G8R8_SRGB:
-					case VK_FORMAT_A8B8G8R8_SRGB_PACK32:
-						fmt_support=true;
-						break;
-					}
-					break;
-				case VK_FORMAT_R8G8B8A8_UNORM:
-				case VK_FORMAT_R8G8B8_UNORM:
-				case VK_FORMAT_B8G8R8A8_UNORM:
-				case VK_FORMAT_B8G8R8_UNORM:
-				case VK_FORMAT_A8B8G8R8_UNORM_PACK32:
-					switch(cpy_info.imageFormat)
-					{
-					case VK_FORMAT_R8G8B8A8_UNORM:
-					case VK_FORMAT_R8G8B8_UNORM:
-					case VK_FORMAT_B8G8R8A8_UNORM:
-					case VK_FORMAT_B8G8R8_UNORM:
-					case VK_FORMAT_A8B8G8R8_UNORM_PACK32:
-						fmt_support=true;
-						break;
-					}
-					break;
-				}
-				if(fmt_support)
-				{
-					cpy_info.imageFormat=fmt.surfaceFormat.format;
-					break;
-				}
-			}
 		}
 	}
 	if(!fmt_support)

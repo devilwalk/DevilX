@@ -89,21 +89,56 @@ Boolean NSDevilX::NSCore::NSGraphicsDriver::NSD3D::IInstanceImp::initialize()
 	case IEnum::EInstanceMinorType_D3D_12_1:
 	case IEnum::EInstanceMinorType_D3D_12_0:
 	{
-		CComPtr<ID3D12Debug> debug;
-		D3D12GetDebugInterface(__uuidof(debug),reinterpret_cast<VoidPtr*>(&debug));
-		debug->EnableDebugLayer();
+		D3D12GetDebugInterface(__uuidof(mDebug),reinterpret_cast<VoidPtr*>(&mDebug));
+		mDebug->EnableDebugLayer();
+		CComPtr<ID3D12Debug1> debug1;
+		mDebug->QueryInterface(&debug1);
+		if(debug1.p)
+		{
+			debug1->SetEnableGPUBasedValidation(TRUE);
+			debug1->SetEnableSynchronizedCommandQueueValidation(TRUE);
+		}
 	}
 		break;
 	}
 #endif
-	Boolean success=SUCCEEDED(CreateDXGIFactory1(__uuidof(mInternal),reinterpret_cast<void**>(&mInternal)));
-	mInternal->QueryInterface(&mInternal1);
-	mInternal->QueryInterface(&mInternal2);
-	mInternal->QueryInterface(&mInternal3);
-	mInternal->QueryInterface(&mInternal4);
-	mInternal->QueryInterface(&mInternal5);
-	mInternal->QueryInterface(&mInternal6);
-	mInternal->QueryInterface(&mInternal7);
+	Boolean success=false;
+	if(success=SUCCEEDED(CreateDXGIFactory1(__uuidof(mInternal7),reinterpret_cast<void**>(&mInternal7))))
+	{
+		mInternal=mInternal1=mInternal2=mInternal3=mInternal4=mInternal5=mInternal6=mInternal7;
+	}
+	else if(success=SUCCEEDED(CreateDXGIFactory1(__uuidof(mInternal6),reinterpret_cast<void**>(&mInternal6))))
+	{
+		mInternal=mInternal1=mInternal2=mInternal3=mInternal4=mInternal5=mInternal6;
+	}
+	else if(success=SUCCEEDED(CreateDXGIFactory1(__uuidof(mInternal5),reinterpret_cast<void**>(&mInternal5))))
+	{
+		mInternal=mInternal1=mInternal2=mInternal3=mInternal4=mInternal5;
+	}
+	else if(success=SUCCEEDED(CreateDXGIFactory1(__uuidof(mInternal4),reinterpret_cast<void**>(&mInternal4))))
+	{
+		mInternal=mInternal1=mInternal2=mInternal3=mInternal4;
+	}
+	else if(success=SUCCEEDED(CreateDXGIFactory1(__uuidof(mInternal3),reinterpret_cast<void**>(&mInternal3))))
+	{
+		mInternal=mInternal1=mInternal2=mInternal3;
+	}
+	else if(success=SUCCEEDED(CreateDXGIFactory1(__uuidof(mInternal2),reinterpret_cast<void**>(&mInternal2))))
+	{
+		mInternal=mInternal1=mInternal2;
+	}
+	else if(success=SUCCEEDED(CreateDXGIFactory1(__uuidof(mInternal1),reinterpret_cast<void**>(&mInternal1))))
+	{
+		mInternal=mInternal1;
+	}
+	else if(success=SUCCEEDED(CreateDXGIFactory1(__uuidof(mInternal),reinterpret_cast<void**>(&mInternal))))
+	{
+
+	}
+	else
+	{
+		success=SUCCEEDED(CreateDXGIFactory(__uuidof(mInternal),reinterpret_cast<void**>(&mInternal)));
+	}
 	return success;
 }
 
@@ -115,6 +150,8 @@ Void NSDevilX::NSCore::NSGraphicsDriver::NSD3D::IInstanceImp::_enumPhysicalDevic
 		UINT index=0;
 		while(SUCCEEDED(mInternal->EnumAdapters(index,&adapter)))
 		{
+			DXGI_ADAPTER_DESC desc={};
+			adapter->GetDesc(&desc);
 			auto group=DEVILX_NEW NSD3D::IPhysicalDeviceGroupImp(adapter,this);
 			NSGraphicsDriver::IPhysicalDeviceImp* dev=nullptr;
 			switch(mMinorType)

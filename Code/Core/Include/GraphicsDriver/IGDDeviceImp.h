@@ -100,7 +100,7 @@ namespace NSDevilX
 			{
 				class IDeviceImp
 					:public NSGraphicsDriver::IDeviceImp
-					,public IQueue
+					,public IQueueImp
 					,public ISwapChain
 					,public TBaseObject<IDeviceImp>
 				{
@@ -117,7 +117,6 @@ namespace NSDevilX
 
 					// Í¨¹ý IQueue ¼Ì³Ð
 #if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
-					virtual ISwapChain* createSwapChain(DXGI_SWAP_CHAIN_DESC& desc) override;
 					virtual ISwapChain* createSwapChain(HWND hwnd,const DXGI_SWAP_CHAIN_DESC1& desc,const DXGI_SWAP_CHAIN_FULLSCREEN_DESC* fullscreenDesc=nullptr) override;
 					virtual ISwapChain* createSwapChain(HWND hwnd,const VkSwapchainCreateInfoKHR& info) override;
 #endif
