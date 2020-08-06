@@ -5,6 +5,7 @@
 #include "IGDEnum.h"
 #include "IGDImage.h"
 #include "IGDInstance.h"
+#include "IGDMemoryAllocator.h"
 #include "IGDPhysicalDevice.h"
 #include "IGDPipelineState.h"
 #include "IGDQueue.h"

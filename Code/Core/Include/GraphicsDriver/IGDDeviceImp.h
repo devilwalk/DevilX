@@ -1,5 +1,6 @@
 #pragma once
 #include "IGDQueueImp.h"
+#include "IGDMemoryAllocatorImp.h"
 namespace NSDevilX
 {
 	namespace NSCore
@@ -13,6 +14,7 @@ namespace NSDevilX
 			protected:
 				IPhysicalDeviceGroupImp* const mPhysicsDeviceGroup;
 				TResourcePtrVector(IQueueImp) mQueues[3];
+				TResourcePtrVector(IMemoryAllocatorImp) mMemoryAllocators;
 			public:
 				IDeviceImp(IPhysicalDeviceGroupImp* physicsDeviceGroup);
 				virtual ~IDeviceImp();
@@ -42,6 +44,7 @@ namespace NSDevilX
 					// 通过 IDeviceImp 继承
 					virtual UInt32 getQueueCount(IEnum::EQueue type) const override;
 					virtual IQueue* getQueue(IEnum::EQueue type,UInt32 index) override;
+					virtual IMemoryAllocator* createMemoryAllocator(UInt32 flags,UInt32 preferredBlockSize) override;
 				};
 			}
 			namespace NSD3D11
@@ -65,6 +68,7 @@ namespace NSDevilX
 					// 通过 IDeviceImp 继承
 					virtual UInt32 getQueueCount(IEnum::EQueue type) const override;
 					virtual IQueue* getQueue(IEnum::EQueue type,UInt32 index) override;
+					virtual IMemoryAllocator* createMemoryAllocator(UInt32 flags,UInt32 preferredBlockSize) override;
 
 					// 通过 IQueue 继承
 					virtual ISwapChain* createSwapChain(DXGI_SWAP_CHAIN_DESC& desc) override;
@@ -94,6 +98,7 @@ namespace NSDevilX
 					// 通过 IDeviceImp 继承
 					virtual UInt32 getQueueCount(IEnum::EQueue type) const override;
 					virtual IQueue* getQueue(IEnum::EQueue type,UInt32 index) override;
+					virtual IMemoryAllocator* createMemoryAllocator(UInt32 flags,UInt32 preferredBlockSize) override;
 				};
 			}
 			namespace NSOpenGL
@@ -114,6 +119,7 @@ namespace NSDevilX
 					// 通过 IDeviceImp 继承
 					virtual UInt32 getQueueCount(IEnum::EQueue type) const override;
 					virtual IQueue* getQueue(IEnum::EQueue type,UInt32 index) override;
+					virtual IMemoryAllocator* createMemoryAllocator(UInt32 flags,UInt32 preferredBlockSize) override;
 
 					// 通过 IQueue 继承
 #if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS

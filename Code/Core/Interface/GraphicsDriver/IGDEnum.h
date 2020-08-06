@@ -55,6 +55,13 @@ namespace NSDevilX
 					EQueue_Compute,
 					EQueue_PCIETransfer
 				};
+
+				enum EMemoryAllocatorCreateFlag
+				{
+					EMemoryAllocatorCreateFlag_None,
+					EMemoryAllocatorCreateFlag_SingleThread,
+					EMemoryAllocatorCreateFlag_Debug
+				};
 			};
 		}
 	}

@@ -57,6 +57,18 @@ IQueue* NSDevilX::NSCore::NSGraphicsDriver::NSD3D12::IDeviceImp::getQueue(IEnum:
 	return ret;
 }
 
+IMemoryAllocator* NSDevilX::NSCore::NSGraphicsDriver::NSD3D12::IDeviceImp::createMemoryAllocator(UInt32 flags,UInt32 preferredBlockSize)
+{
+	D3D12MA::ALLOCATOR_DESC desc={};
+	desc.Flags=*reinterpret_cast<D3D12MA::ALLOCATOR_FLAGS*>(&flags);
+	desc.PreferredBlockSize=preferredBlockSize;
+	desc.pAdapter=static_cast<NSD3D::IPhysicalDeviceGroupImp*>(mPhysicsDeviceGroup)->getInternal();
+	desc.pDevice=mInternal;
+	auto ret=DEVILX_NEW IMemoryAllocatorImp(this,desc);
+	mMemoryAllocators.push_back(ret);
+	return ret;
+}
+
 NSDevilX::NSCore::NSGraphicsDriver::NSD3D11::IDeviceImp::IDeviceImp(ID3D11Device* dev,NSD3D::IPhysicalDeviceGroupImp* physicsDeviceGroup)
 	:NSGraphicsDriver::IDeviceImp(physicsDeviceGroup)
 	,IQueueImp(this)
@@ -76,6 +88,11 @@ UInt32 NSDevilX::NSCore::NSGraphicsDriver::NSD3D11::IDeviceImp::getQueueCount(IE
 IQueue* NSDevilX::NSCore::NSGraphicsDriver::NSD3D11::IDeviceImp::getQueue(IEnum::EQueue type,UInt32 index)
 {
 	return this;
+}
+
+IMemoryAllocator* NSDevilX::NSCore::NSGraphicsDriver::NSD3D11::IDeviceImp::createMemoryAllocator(UInt32 flags,UInt32 preferredBlockSize)
+{
+	return nullptr;
 }
 
 ISwapChain* NSDevilX::NSCore::NSGraphicsDriver::NSD3D11::IDeviceImp::createSwapChain(DXGI_SWAP_CHAIN_DESC& desc)
@@ -243,6 +260,21 @@ IQueue* NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IDeviceImp::getQueue(IEnum
 	return nullptr;
 }
 
+IMemoryAllocator* NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IDeviceImp::createMemoryAllocator(UInt32 flags,UInt32 preferredBlockSize)
+{
+	VmaAllocatorCreateInfo info={};
+	info.device=mInternal;
+	info.flags=flags|VMA_ALLOCATOR_CREATE_KHR_BIND_MEMORY2_BIT|VMA_ALLOCATOR_CREATE_EXT_MEMORY_BUDGET_BIT|VMA_ALLOCATOR_CREATE_BUFFER_DEVICE_ADDRESS_BIT;
+	info.frameInUseCount=0;
+	info.instance=static_cast<IInstanceImp*>(mPhysicsDeviceGroup->getInstance())->getInternal();
+	info.physicalDevice=static_cast<IPhysicalDeviceImp*>(mPhysicsDeviceGroup->getDevice(0))->getInternal();
+	info.preferredLargeHeapBlockSize=preferredBlockSize;
+	info.vulkanApiVersion=VK_API_VERSION_1_1;
+	auto ret=DEVILX_NEW IMemoryAllocatorImp(this,info);
+	mMemoryAllocators.push_back(ret);
+	return ret;
+}
+
 NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IDeviceImp::IDeviceImp(EGLContext context,NSGraphicsDriver::IPhysicalDeviceGroupImp* physicsDeviceGroup)
 	:NSGraphicsDriver::IDeviceImp(physicsDeviceGroup)
 	,NSGraphicsDriver::IQueueImp(this)
@@ -263,6 +295,11 @@ UInt32 NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IDeviceImp::getQueueCount(I
 IQueue* NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IDeviceImp::getQueue(IEnum::EQueue type,UInt32 index)
 {
 	return this;
+}
+
+IMemoryAllocator* NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IDeviceImp::createMemoryAllocator(UInt32 flags,UInt32 preferredBlockSize)
+{
+	return nullptr;
 }
 
 #if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS

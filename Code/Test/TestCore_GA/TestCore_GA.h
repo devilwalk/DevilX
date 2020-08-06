@@ -8,11 +8,13 @@ class CGATester
 protected:
 	NSDevilX::NSCore::NSGraphicsDriver::IDevice* mDevice;
 	NSDevilX::NSCore::NSGraphicsDriver::IQueue* m3DQueue;
+	NSDevilX::NSCore::NSGraphicsDriver::IMemoryAllocator* mMemoryAllocator;
 	NSDevilX::NSCore::NSGraphicsDriver::ISwapChain* mSwapChain;
 public:
 	CGATester()
 		:mDevice(nullptr)
 		,m3DQueue(nullptr)
+		,mMemoryAllocator(nullptr)
 		,mSwapChain(nullptr)
 	{
 	}
@@ -29,6 +31,7 @@ public:
 		physics_device_groups.resize(inst->enumPhysicalDeviceGroups(nullptr));
 		inst->enumPhysicalDeviceGroups(&physics_device_groups[0]);
 		mDevice=inst->createDevice(physics_device_groups[0]);
+		mMemoryAllocator=mDevice->createMemoryAllocator(0);
 		m3DQueue=mDevice->getQueue(NSDevilX::NSCore::NSGraphicsDriver::IEnum::EQueue_3D,0);
 		if(0)
 		{

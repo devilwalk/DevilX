@@ -48,3 +48,8 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include "glm/glm.hpp"
 #include "glm/ext.hpp"
+#define VULKAN_H_
+#include "vk_mem_alloc.h"
+#if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
+#include "D3D12MemAlloc.h"
+#endif
