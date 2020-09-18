@@ -260,6 +260,9 @@ NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IInstanceImp::~IInstanceImp()
 {
 	if(mInternal!=VK_NULL_HANDLE)
 	{
+#if DEVILX_DEBUG
+		vkDestroyDebugReportCallbackEXT(mInternal,mDebugReportCallback,nullptr);
+#endif
 		vkDestroyInstance(mInternal,nullptr);
 	}
 }
@@ -330,6 +333,7 @@ Boolean NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IInstanceImp::initialize()
 		{
 			//layer_names.push_back(prop.layerName);
 		}
+		layer_names.push_back("VK_LAYER_LUNARG_standard_validation");
 		layer_names.push_back("VK_LAYER_KHRONOS_validation");
 		if(!layer_names.empty())
 		{

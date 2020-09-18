@@ -1,4 +1,5 @@
 #pragma once
+#include "IGDPhysicalDeviceMemoryHeapImp.h"
 namespace NSDevilX
 {
 	namespace NSCore
@@ -10,12 +11,15 @@ namespace NSDevilX
 			{
 			protected:
 				IPhysicalDeviceGroupImp* const mGroup;
+				TResourcePtrVector(IPhysicalDeviceMemoryHeapImp) mMemoryHeaps;
 			public:
 				IPhysicalDeviceImp(IPhysicalDeviceGroupImp* group);
 				virtual ~IPhysicalDeviceImp();
 
 				// 通过 IPhysicalDeviceImp 继承
 				virtual IPhysicalDeviceGroup* getGroup() const override;
+				virtual UInt32 getMemoryHeapCount() const override;
+				virtual IPhysicalDeviceMemoryHeap* getMemoryHeap(UInt32 index) const override;
 			};
 			class INonePhysicalDeviceImp
 				:public IPhysicalDeviceImp
@@ -34,6 +38,7 @@ namespace NSDevilX
 			{
 				class IPhysicalDeviceImp
 					:public NSGraphicsDriver::IPhysicalDeviceImp
+					,public IPhysicalDeviceMemoryHeapImp
 					,public TBaseObject<IPhysicalDeviceImp>
 				{
 				protected:
@@ -41,6 +46,9 @@ namespace NSDevilX
 				public:
 					IPhysicalDeviceImp(UINT node,NSD3D::IPhysicalDeviceGroupImp* group);
 					virtual ~IPhysicalDeviceImp();
+
+					// 通过 IPhysicalDeviceMemoryHeapImp 继承
+					virtual UInt32 getVkMemoryPropertyFlags() const override;
 				};
 			}
 #endif

@@ -5,10 +5,10 @@ namespace NSDevilX
 	{
 		namespace NSGraphicsDriver
 		{
-			class IImage
+			class IDeviceMemory
 			{
 			protected:
-				virtual ~IImage(){}
+				virtual ~IDeviceMemory(){ }
 			public:
 			};
 		}

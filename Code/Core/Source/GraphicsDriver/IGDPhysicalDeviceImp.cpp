@@ -17,6 +17,16 @@ IPhysicalDeviceGroup* NSDevilX::NSCore::NSGraphicsDriver::IPhysicalDeviceImp::ge
 	return mGroup;
 }
 
+UInt32 NSDevilX::NSCore::NSGraphicsDriver::IPhysicalDeviceImp::getMemoryHeapCount() const
+{
+	return static_cast<UInt32>(mMemoryHeaps.size());
+}
+
+IPhysicalDeviceMemoryHeap* NSDevilX::NSCore::NSGraphicsDriver::IPhysicalDeviceImp::getMemoryHeap(UInt32 index) const
+{
+	return mMemoryHeaps[index];
+}
+
 NSDevilX::NSCore::NSGraphicsDriver::INonePhysicalDeviceImp::INonePhysicalDeviceImp(IPhysicalDeviceGroupImp* group)
 	:NSGraphicsDriver::IPhysicalDeviceImp(group)
 {
@@ -32,10 +42,18 @@ NSDevilX::NSCore::NSGraphicsDriver::NSD3D12::IPhysicalDeviceImp::IPhysicalDevice
 	:NSGraphicsDriver::IPhysicalDeviceImp(group)
 	,mInternal(node)
 {
+	mMemoryHeaps.resize(1);
+	mMemoryHeaps[0]=this;
 }
 
 NSDevilX::NSCore::NSGraphicsDriver::NSD3D12::IPhysicalDeviceImp::~IPhysicalDeviceImp()
 {
+	mMemoryHeaps.clear();
+}
+
+UInt32 NSDevilX::NSCore::NSGraphicsDriver::NSD3D12::IPhysicalDeviceImp::getVkMemoryPropertyFlags() const
+{
+	return -1;
 }
 
 #endif
@@ -73,6 +91,24 @@ NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IPhysicalDeviceImp::IPhysicalDevic
 				family_index++;
 			}
 		}
+	}
+
+	VkPhysicalDeviceMemoryProperties2 mem_prop={};
+	mem_prop.sType=VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_MEMORY_PROPERTIES_2;
+	vkGetPhysicalDeviceMemoryProperties2(mInternal,&mem_prop);
+
+	for(uint32_t heap_index=0;heap_index<mem_prop.memoryProperties.memoryHeapCount;++heap_index)
+	{
+		TVector(IPhysicalDeviceMemoryHeapImp::SMemoryType) mem_types;
+		for(UInt32 type_index=0;type_index<mem_prop.memoryProperties.memoryTypeCount;++type_index)
+		{
+			if(mem_prop.memoryProperties.memoryTypes[type_index].heapIndex==heap_index)
+			{
+				mem_types.push_back(IPhysicalDeviceMemoryHeapImp::SMemoryType(mem_prop.memoryProperties.memoryTypes[type_index].propertyFlags,type_index));
+			}
+		}
+
+		mMemoryHeaps.push_back(DEVILX_NEW IPhysicalDeviceMemoryHeapImp(heap_index,&mem_types[0],static_cast<UInt32>(mem_types.size())));
 	}
 }
 

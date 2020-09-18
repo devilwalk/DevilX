@@ -28,6 +28,10 @@ namespace NSDevilX
 				public:
 					IMemoryAllocatorImp(IDeviceImp* dev,const D3D12MA::ALLOCATOR_DESC& desc);
 					~IMemoryAllocatorImp();
+
+					// 通过 IMemoryAllocatorImp 继承
+					virtual IDeviceMemory* createMemory(D3D12_HEAP_TYPE type,D3D12_HEAP_FLAGS flags,const D3D12_RESOURCE_ALLOCATION_INFO& info) override;
+					virtual IDeviceMemory* createMemory(const VkMemoryRequirements& requirements,VkMemoryPropertyFlags requiredFlags,VkMemoryPropertyFlags preferredFlags) override;
 				};
 			}
 			namespace NSD3D
@@ -55,6 +59,10 @@ namespace NSDevilX
 				public:
 					IMemoryAllocatorImp(IDeviceImp* dev,const VmaAllocatorCreateInfo& info);
 					~IMemoryAllocatorImp();
+
+					// 通过 IMemoryAllocatorImp 继承
+					virtual IDeviceMemory* createMemory(D3D12_HEAP_TYPE type,D3D12_HEAP_FLAGS flags,const D3D12_RESOURCE_ALLOCATION_INFO& info) override;
+					virtual IDeviceMemory* createMemory(const VkMemoryRequirements& requirements,VkMemoryPropertyFlags requiredFlags,VkMemoryPropertyFlags preferredFlags) override;
 				};
 			}
 			namespace NSOpenGL

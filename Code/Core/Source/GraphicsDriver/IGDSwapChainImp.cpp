@@ -87,7 +87,7 @@ NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::ISwapChainImp::ISwapChainImp(IQueu
 	{
 		mAcquireNextImageInfo.deviceMask|=1<<i;
 	}
-	mAcquireNextImageInfo.fence=mFence;
+	mAcquireNextImageInfo.fence=VK_NULL_HANDLE;
 	mAcquireNextImageInfo.swapchain=mInternal;
 	mAcquireNextImageInfo.timeout=-1;
 	mAcquireNextImageInfo.semaphore=mSemaphore;

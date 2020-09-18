@@ -4,6 +4,7 @@
 #include "IGDMemoryAllocatorImp.h"
 #include "IGDPhysicalDeviceGroupImp.h"
 #include "IGDPhysicalDeviceImp.h"
+#include "IGDPhysicalDeviceMemoryHeapImp.h"
 #include "IGDQueueImp.h"
 #include "IGDSwapChainImp.h"
 #include "IGDSystemImp.h"
