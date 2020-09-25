@@ -4,7 +4,7 @@ namespace NSDevilX
 	namespace NSCore
 	{
 		class ITimerImp
-			:public TBaseObject<ITimerImp>
+			:public TMemoryAllocatorObject<ITimerImp>
 			,public ITimer
 		{
 		protected:

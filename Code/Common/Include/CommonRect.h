@@ -3,6 +3,7 @@ namespace NSDevilX
 {
 	template<typename TValue>
 	class TRect
+		:public TMemoryAllocatorObject<TRect<TValue> >
 	{
 	public:
 		TValue mLeft;

@@ -7,11 +7,11 @@ namespace NSDevilX
 	{
 		class IThreadPoolImp
 			:public IThreadPool
-			,public TBaseObject<IThreadPoolImp>
+			,public TMemoryAllocatorObject<IThreadPoolImp>
 		{
 		public:
 			struct SThread
-				:public TBaseObject<SThread>
+				:public TMemoryAllocatorObject<SThread>
 			{
 				std::thread * mThread;
 				IThreadPoolImp * const mPool;
@@ -21,13 +21,13 @@ namespace NSDevilX
 					,mPool(pool)
 					,mExit(False)
 				{
-					mThread=DEVILX_TYPED_ALLOC(std::thread,1);
+					mThread=new std::thread;
 					mThread->std::thread::thread(IThreadPoolImp::threadFunction,this);
 				}
 				~SThread()
 				{
 					mThread->join();
-					DEVILX_OBJECT_DELETE(mThread);
+					delete mThread;
 				}
 			};
 		protected:

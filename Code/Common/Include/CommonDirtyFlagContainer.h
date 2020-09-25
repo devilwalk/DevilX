@@ -5,6 +5,7 @@
 namespace NSDevilX
 {
 	class CDirtyFlagContainer
+		:public TMemoryAllocatorObject<CDirtyFlagContainer>
 	{
 	protected:
 		UInt32 mDirtyFlag;

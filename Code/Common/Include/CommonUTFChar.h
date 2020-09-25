@@ -36,6 +36,7 @@ namespace NSDevilX
 	};
 	class CUTF8Char
 		:public CUTFChar
+		,public TMemoryAllocatorObject<CUTF8Char>
 	{
 	public:
 		CUTF8Char(){ }
@@ -47,6 +48,7 @@ namespace NSDevilX
 	};
 	class CUTF16Char
 		:public CUTFChar
+		,public TMemoryAllocatorObject<CUTF16Char>
 	{
 	protected:
 		const Bool mBigEndian;

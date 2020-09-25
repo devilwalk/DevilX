@@ -1,4 +1,5 @@
 #pragma once
+#include "UtilityReadWriteLocker.h"
 namespace NSDevilX
 {
 	class CDirtyFlagContainerMT

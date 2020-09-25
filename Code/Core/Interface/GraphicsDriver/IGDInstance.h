@@ -1,5 +1,5 @@
 #pragma once
-#include "IGDPhysicalDevice.h"
+#include "IGDPhysical.h"
 #include "IGDDevice.h"
 namespace NSDevilX
 {

@@ -1,7 +1,9 @@
 #pragma once
+#include "CommonMemoryAllocator.h"
 namespace NSDevilX
 {
 	struct SMemoryBlock
+		:public TMemoryAllocatorObject<SMemoryBlock>
 	{
 		BytePtr mData;
 		SizeT mSizeInByte;

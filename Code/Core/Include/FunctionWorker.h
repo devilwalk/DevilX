@@ -1,12 +1,11 @@
 #pragma once
-#include "MemoryAllocatorObjectTemplate.h"
 #include "ISemaphoreImp.h"
 namespace NSDevilX
 {
 	namespace NSCore
 	{
 		class CFunctionWorker
-			:public TBaseObject<CFunctionWorker>
+			:public TMemoryAllocatorObject<CFunctionWorker>
 		{
 		public:
 			typedef Void(*WorkFunction)(VoidPtr);

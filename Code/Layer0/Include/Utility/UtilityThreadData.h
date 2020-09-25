@@ -87,14 +87,14 @@ namespace NSDevilX
 		{
 			if(this->mData)
 			{
-				DEVILX_FREE(this->mData);
+				delete(this->mData);
 			}
 		}
 		virtual T & _get() override
 		{
 			if(!this->mData)
 			{
-				this->mData=static_cast<decltype(this->mData)>(DEVILX_ALLOC(sizeof(T)));
+				this->mData=new T;
 			}
 			return *this->mData;
 		}

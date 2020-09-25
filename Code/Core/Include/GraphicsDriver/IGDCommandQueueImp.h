@@ -7,15 +7,15 @@ namespace NSDevilX
 		namespace NSGraphicsDriver
 		{
 			class IDeviceImp;
-			class IQueueImp
-				:public IQueue
+			class ICommandQueueImp
+				:public ICommandQueue
 			{
 			protected:
 				IDeviceImp* const mDevice;
-				TResourcePtrList(ISwapChainImp) mSwapChains;
+				TResourcePtrList<ISwapChainImp> mSwapChains;
 			public:
-				IQueueImp(IDeviceImp* dev);
-				virtual ~IQueueImp();
+				ICommandQueueImp(IDeviceImp* dev);
+				virtual ~ICommandQueueImp();
 
 				auto getDevice()const
 				{
@@ -34,20 +34,45 @@ namespace NSDevilX
 #endif
 			};
 #if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
+			namespace NSD3D11
+			{
+				class IDeviceImp;
+				class ICommandQueueImp
+					:public NSGraphicsDriver::ICommandQueueImp
+					,public TMemoryAllocatorObject<ICommandQueueImp>
+				{
+				protected:
+					CComPtr<ID3D11DeviceContext> mInternal;
+				public:
+					ICommandQueueImp(IDeviceImp* dev,ID3D11DeviceContext* context);
+					~ICommandQueueImp();
+
+					using NSGraphicsDriver::ICommandQueueImp::createSwapChain;
+
+					ID3D11DeviceContext* getInternal()const
+					{
+						return mInternal;
+					}
+
+					virtual ISwapChain* createSwapChain(DXGI_SWAP_CHAIN_DESC& desc) override;
+					virtual ISwapChain* createSwapChain(HWND hwnd,const DXGI_SWAP_CHAIN_DESC1& desc,const DXGI_SWAP_CHAIN_FULLSCREEN_DESC* fullscreenDesc=nullptr) override;
+					virtual ISwapChain* createSwapChain(HWND hwnd,const VkSwapchainCreateInfoKHR& info) override;
+				};
+			}
 			namespace NSD3D12
 			{
 				class IDeviceImp;
-				class IQueueImp
-					:public NSGraphicsDriver::IQueueImp
-					,public TBaseObject<IQueueImp>
+				class ICommandQueueImp
+					:public NSGraphicsDriver::ICommandQueueImp
+					,public TMemoryAllocatorObject<ICommandQueueImp>
 				{
 				protected:
 					CComPtr<ID3D12CommandQueue> mInternal;
 				public:
-					IQueueImp(IDeviceImp* dev,ID3D12CommandQueue* queue);
-					~IQueueImp();
+					ICommandQueueImp(IDeviceImp* dev,ID3D12CommandQueue* queue);
+					~ICommandQueueImp();
 
-					using NSGraphicsDriver::IQueueImp::createSwapChain;
+					using NSGraphicsDriver::ICommandQueueImp::createSwapChain;
 
 					ID3D12CommandQueue* getInternal()const
 					{
@@ -62,18 +87,19 @@ namespace NSDevilX
 			namespace NSVulkan
 			{
 				class IDeviceImp;
-				class IQueueImp
-					:public NSGraphicsDriver::IQueueImp
-					,public TBaseObject<IQueueImp>
+				class ICommandQueueImp
+					:public NSGraphicsDriver::ICommandQueueImp
+					,public TMemoryAllocatorObject<ICommandQueueImp>
 				{
 				protected:
-					const VkQueue mInternal;
+					VkQueue mInternal;
 					const UInt32 mFamilyIndex;
+					const UInt32 mQueueIndex;
 				public:
-					IQueueImp(IDeviceImp* dev,VkQueue queue,UInt32 familyIndex);
-					~IQueueImp();
+					ICommandQueueImp(IDeviceImp* dev,UInt32 familyIndex,UInt32 queueIndex);
+					~ICommandQueueImp();
 
-					using NSGraphicsDriver::IQueueImp::createSwapChain;
+					using NSGraphicsDriver::ICommandQueueImp::createSwapChain;
 
 					auto getInternal()const
 					{

@@ -1,9 +1,11 @@
 #pragma once
 #include "CommonType.h"
+#include "CommonMemoryAllocator.h"
 namespace NSDevilX
 {
 	class CRadian;
 	class CDegree
+		:public TMemoryAllocatorObject<CDegree>
 	{
 	protected:
 		Float mValue;
@@ -22,6 +24,7 @@ namespace NSDevilX
 		}
 	};
 	class CRadian
+		:public TMemoryAllocatorObject<CRadian>
 	{
 	protected:
 		Float mValue;

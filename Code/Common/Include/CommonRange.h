@@ -3,6 +3,7 @@
 namespace NSDevilX
 {
 	class CRangeI
+		:public TMemoryAllocatorObject<CRangeI>
 	{
 	public:
 		typedef Int32 DATA_TYPE;
@@ -69,6 +70,7 @@ namespace NSDevilX
 	};
 	class COrderedRangesI
 		:public TList<CRangeI>
+		,public TMemoryAllocatorObject<COrderedRangesI>
 	{
 	public:
 		using TList<CRangeI>::TList;
@@ -125,6 +127,7 @@ namespace NSDevilX
 		}
 	};
 	class CRange3I
+		:public TMemoryAllocatorObject<CRange3I>
 	{
 	public:
 		enum EMergeResult

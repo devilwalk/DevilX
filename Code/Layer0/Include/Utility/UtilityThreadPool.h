@@ -3,7 +3,7 @@ namespace NSDevilX
 {
 	typedef NSCore::IThreadPool::WorkFunction ThreadWorkFunction;
 	class CThreadPool
-		:public TBaseObject<CThreadPool>
+		:public TMemoryAllocatorObject<CThreadPool>
 	{
 	protected:
 		NSCore::IThreadPool * mPool;

@@ -9,12 +9,6 @@ NSDevilX::NSCore::ISystem::~ISystem()
 void NSDevilX::NSCore::ISystem::shutdown()
 {
 	DEVILX_DELETE(CSystem::getSingletonPtr());
-	delete CMemoryManager::getSingletonPtr();
-}
-
-IMemoryManager * NSDevilX::NSCore::ISystem::getMemoryManager() const
-{
-	return CSystem::getSingleton().getMemoryManager();
 }
 
 INetworkManager * NSDevilX::NSCore::ISystem::getNetworkManager() const

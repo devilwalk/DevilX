@@ -47,7 +47,8 @@
     <ClInclude Include="..\..\..\Code\Common\Include\CommonDirtyFlagContainer.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonGroup.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonMath.h" />
-    <ClInclude Include="..\..\..\Code\Common\Include\CommonMatrix.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonMemoryAllocator.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonMemoryTracer.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonMessageMode.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonNode.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonOctree.h" />

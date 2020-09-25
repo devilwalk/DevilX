@@ -7,9 +7,8 @@ namespace NSDevilX
 	{
 		class DLLAPI INetworkManager
 		{
-		protected:
-			~INetworkManager(){}
 		public:
+			~INetworkManager(){}
 			SizeT getNumHostIPs()const;
 			ConstCharPtr getHostIP(SizeT index)const;
 			INetworkHost * createOrRetrieveHost(ConstCharPtr ip);

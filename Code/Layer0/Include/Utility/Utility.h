@@ -4,7 +4,6 @@
 
 #include "UtilityThirdPart.h"
 #include "UtilityDefine.h"
-#include "UtilityMemoryAllocatorObjectTemplate.h"
 
 #include "UtilityAnimationFrame.h"
 #include "UtilityBinaryFile.h"
@@ -19,11 +18,9 @@
 #include "UtilityLuaEngine.h"
 #include "UtilityManager.h"
 #include "UtilityMemoryStream.h"
-#include "UtilityMemoryTracker.h"
 #include "UtilityModule.h"
 #include "UtilityReadWriteLocker.h"
 #include "UtilityResourceContainer.h"
-#include "UtilitySTL.h"
 #include "UtilitySTLMT.h"
 #include "UtilityThreadData.h"
 #include "UtilityThreadManager.h"

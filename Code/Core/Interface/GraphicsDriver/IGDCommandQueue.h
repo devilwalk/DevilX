@@ -6,10 +6,10 @@ namespace NSDevilX
 	{
 		namespace NSGraphicsDriver
 		{
-			class IQueue
+			class ICommandQueue
 			{
 			protected:
-				virtual ~IQueue(){ }
+				virtual ~ICommandQueue(){ }
 			public:
 #if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
 				virtual ISwapChain* createSwapChain(DXGI_SWAP_CHAIN_DESC& desc)=0;

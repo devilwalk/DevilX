@@ -17,7 +17,7 @@ namespace NSDevilX
 			{
 				class IPhysicalDeviceMemoryHeapImp
 					:public NSGraphicsDriver::IPhysicalDeviceMemoryHeapImp
-					,public TBaseObject<IPhysicalDeviceMemoryHeapImp>
+					,public TMemoryAllocatorObject<IPhysicalDeviceMemoryHeapImp>
 				{
 				public:
 					struct SMemoryType
@@ -36,7 +36,7 @@ namespace NSDevilX
 				protected:
 					const UInt32 mIndex;
 					UInt32 mFlags;
-					TVector(SMemoryType) mTypes;
+					TVector<SMemoryType> mTypes;
 				public:
 					IPhysicalDeviceMemoryHeapImp(UInt32 index, const SMemoryType* types, UInt32 typeCount);
 					~IPhysicalDeviceMemoryHeapImp();

@@ -21,7 +21,7 @@ namespace NSDevilX
 				class IDeviceImp;
 				class IMemoryAllocatorImp
 					:public NSGraphicsDriver::IMemoryAllocatorImp
-					,public TBaseObject<IMemoryAllocatorImp>
+					,public TMemoryAllocatorObject<IMemoryAllocatorImp>
 				{
 				protected:
 					D3D12MA::Allocator* mInternal;
@@ -38,7 +38,7 @@ namespace NSDevilX
 			{
 				class IMemoryAllocatorImp
 					:public NSGraphicsDriver::IMemoryAllocatorImp
-					,public TBaseObject<IMemoryAllocatorImp>
+					,public TMemoryAllocatorObject<IMemoryAllocatorImp>
 				{
 				protected:
 				public:
@@ -52,7 +52,7 @@ namespace NSDevilX
 				class IDeviceImp;
 				class IMemoryAllocatorImp
 					:public NSGraphicsDriver::IMemoryAllocatorImp
-					,public TBaseObject<IMemoryAllocatorImp>
+					,public TMemoryAllocatorObject<IMemoryAllocatorImp>
 				{
 				protected:
 					VmaAllocator mInternal;
@@ -70,7 +70,7 @@ namespace NSDevilX
 				class IDeviceImp;
 				class IMemoryAllocatorImp
 					:public NSGraphicsDriver::IMemoryAllocatorImp
-					,public TBaseObject<IMemoryAllocatorImp>
+					,public TMemoryAllocatorObject<IMemoryAllocatorImp>
 				{
 				protected:
 				public:

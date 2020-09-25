@@ -49,11 +49,12 @@ namespace NSDevilX
 
 				};
 
-				enum EQueue
+				enum ECommandQueue
 				{
-					EQueue_3D,
-					EQueue_Compute,
-					EQueue_PCIETransfer
+					ECommandQueue_3D,
+					ECommandQueue_Compute,
+					ECommandQueue_PCIETransfer,
+					ECommandQueue_Max
 				};
 
 				enum EMemoryAllocatorCreateFlag

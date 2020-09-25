@@ -19,6 +19,7 @@ namespace NSDevilX
 	template<class TValue>
 	class TBoundingBox
 		:public CBoundingVolume
+		,public TMemoryAllocatorObject<TBoundingBox<TValue> >
 	{
 	public:
 		typedef TBoundingBox TYPE;
@@ -121,6 +122,7 @@ namespace NSDevilX
 
 	class CPlaneBoundedVolume
 		:public CBoundingVolume
+		,public TMemoryAllocatorObject<CPlaneBoundedVolume >
 	{
 	public:
 		typedef CPlaneBoundedVolume TYPE;

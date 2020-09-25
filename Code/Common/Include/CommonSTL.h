@@ -1,10 +1,12 @@
 #pragma once
 #include "CommonGroup.h"
+#include "CommonMemoryAllocator.h"
 namespace NSDevilX
 {
-	template<typename T,class TAllocator=std::allocator<T> >
+	template<typename T,class TAllocator=TDevilXAllocator<T> >
 	class TVector
 		:public std::vector<T,TAllocator>
+		,public TMemoryAllocatorObject<TVector<T,TAllocator> >
 	{
 	public:
 		using std::vector<T,TAllocator>::vector;
@@ -40,10 +42,13 @@ namespace NSDevilX
 			}
 			return ret;
 		}
+		template<typename T2>
+		T2 sizeT()const{ return static_cast<T2>(this->size()); }
 	};
-	template<typename T,class TAllocator=std::allocator<T> >
+	template<typename T,class TAllocator=TDevilXAllocator<T> >
 	class TList
 		:public std::list<T,TAllocator>
+		,public TMemoryAllocatorObject<TList<T,TAllocator> >
 	{
 	public:
 		using std::list<T,TAllocator>::list;
@@ -92,9 +97,10 @@ namespace NSDevilX
 			return ret;
 		}
 	};
-	template<typename T,class SortfuncT=std::less<T>,class TAllocator=std::allocator<T> >
+	template<typename T,class SortfuncT=std::less<T>,class TAllocator=TDevilXAllocator<T> >
 	class TSet
 		:public std::set<T,SortfuncT,TAllocator>
+		,public TMemoryAllocatorObject<TSet<T,SortfuncT,TAllocator> >
 	{
 	public:
 		using std::set<T,SortfuncT,TAllocator>::set;
@@ -134,9 +140,10 @@ namespace NSDevilX
 	};
 	template<typename T,class HashT=std::hash<T>,
 		class KeyEqualT=std::equal_to<T>
-		,class TAllocator=std::allocator<T> >
+		,class TAllocator=TDevilXAllocator<T> >
 		class TUnorderedSet
 		:public std::unordered_set<T,HashT,KeyEqualT,TAllocator>
+		,public TMemoryAllocatorObject<TUnorderedSet<T,HashT,KeyEqualT,TAllocator> >
 	{
 	public:
 		using std::unordered_set<T,HashT,KeyEqualT,TAllocator>::unordered_set;
@@ -177,9 +184,10 @@ namespace NSDevilX
 			return 0<this->erase(t);
 		}
 	};
-	template<typename KeyT,typename ValueT,class SortfuncT=std::less<KeyT>,class TAllocator=std::allocator<std::pair<const KeyT,ValueT> > >
+	template<typename KeyT,typename ValueT,class SortfuncT=std::less<KeyT>,class TAllocator=TDevilXAllocator<std::pair<const KeyT,ValueT> > >
 	class TMap
 		:public std::map<KeyT,ValueT,SortfuncT,TAllocator>
+		,public TMemoryAllocatorObject<TMap<KeyT,ValueT,SortfuncT,TAllocator> >
 	{
 	public:
 		using std::map<KeyT,ValueT,SortfuncT,TAllocator>::map;
@@ -237,9 +245,10 @@ namespace NSDevilX
 	};
 	template<typename KeyT,typename ValueT,class HashT=std::hash<KeyT>,
 		class KeyEqualT=std::equal_to<KeyT>
-		,class TAllocator=std::allocator<std::pair<const KeyT,ValueT> > >
+		,class TAllocator=TDevilXAllocator<std::pair<const KeyT,ValueT> > >
 	class TUnorderedMap
 		:public std::unordered_map<KeyT,ValueT,HashT,KeyEqualT,TAllocator>
+		,public TMemoryAllocatorObject<TUnorderedMap<KeyT,ValueT,HashT,KeyEqualT,TAllocator> >
 	{
 	public:
 		using std::unordered_map<KeyT,ValueT,HashT,KeyEqualT,TAllocator>::unordered_map;
@@ -293,4 +302,16 @@ namespace NSDevilX
 			return 0<this->erase(t);
 		}
 	};
+
+	typedef std::basic_string<Char,std::char_traits<Char>,TDevilXAllocator<Char> > String;
+	typedef std::basic_string<WChar,std::char_traits<WChar>,TDevilXAllocator<WChar> > WString;
+	typedef std::basic_stringstream<Char,std::char_traits<Char>,TDevilXAllocator<Char> > StringStream;
+	typedef std::basic_stringstream<WChar,std::char_traits<WChar>,TDevilXAllocator<WChar> > WStringStream;
+#ifdef UNICODE
+	typedef WString TString;
+	typedef WStringStream TStringStream;
+#else
+	typedef String TString;
+	typedef StringStream TStringStream;
+#endif
 }

@@ -5,9 +5,7 @@
 
 #include "Define.h"
 #include "FunctionWorker.h"
-#include "MemoryAllocatorObjectTemplate.h"
 #include "ResourceContainer.h"
-#include "STL.h"
 #include "STLMT.h"
 #include "ThreadType.h"
 #include "UTFString.h"
@@ -24,8 +22,6 @@
 #include "IThreadPoolImp.h"
 #include "ITimerImp.h"
 #include "FileManager.h"
-#include "MemoryManager.h"
-#include "MemoryTracker.h"
 #include "NetworkAcceptor.h"
 #include "NetworkManager.h"
 #include "SemaphoreGroup.h"

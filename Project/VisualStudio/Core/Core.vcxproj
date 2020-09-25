@@ -124,13 +124,15 @@
     <ClInclude Include="..\..\..\Code\Core\Include\FileManager.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\FunctionWorker.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\GDInclude.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDCommandListImp.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDCommandAllocatorImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDDeviceImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDInstanceImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDMemoryAllocatorImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDPhysicalDeviceGroupImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDPhysicalDeviceImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDPhysicalDeviceMemoryHeapImp.h" />
-    <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDQueueImp.h" />
+    <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDCommandQueueImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDSwapChainImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDSystemImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\ICPPScriptEnvironmentImp.h" />
@@ -142,16 +144,12 @@
     <ClInclude Include="..\..\..\Code\Core\Include\IThreadImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\IThreadPoolImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\ITimerImp.h" />
-    <ClInclude Include="..\..\..\Code\Core\Include\MemoryAllocatorObjectTemplate.h" />
-    <ClInclude Include="..\..\..\Code\Core\Include\MemoryManager.h" />
-    <ClInclude Include="..\..\..\Code\Core\Include\MemoryTracker.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\NetworkAcceptor.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\NetworkManager.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\IReadWriteLockImp.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\ResourceContainer.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\SemaphoreGroup.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\STD.h" />
-    <ClInclude Include="..\..\..\Code\Core\Include\STL.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\STLMT.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\System.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\ThirdPart.h" />
@@ -159,7 +157,8 @@
     <ClInclude Include="..\..\..\Code\Core\Include\ThreadType.h" />
     <ClInclude Include="..\..\..\Code\Core\Include\UTFString.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDBuffer.h" />
-    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDCommandBuffer.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDCommandAllocator.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDCommandList.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDDevice.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDEnum.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDImage.h" />
@@ -167,9 +166,9 @@
     <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDInterface.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDDeviceMemory.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDMemoryAllocator.h" />
-    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDPhysicalDevice.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDPhysical.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDPipelineState.h" />
-    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDQueue.h" />
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDCommandQueue.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDSwapChain.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDSystem.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreBuffer.h" />
@@ -181,7 +180,6 @@
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreFileProcesser.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreNetworkConnection.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreNetworkManager.h" />
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreMemoryManager.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreReadWriteLock.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreResource.h" />
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreScriptManager.h" />
@@ -198,6 +196,18 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Core\Source\CPPScriptEnvironment.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\FileManager.cpp" />
+    <ClCompile Include="..\..\..\Code\Core\Source\GraphicsDriver\IGDCommandListImp.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../Precompiler.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">../Precompiler.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../Precompiler.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../Precompiler.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\GraphicsDriver\IGDCommandAllocatorImp.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../Precompiler.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">../Precompiler.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../Precompiler.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../Precompiler.h</PrecompiledHeaderFile>
+    </ClCompile>
     <ClCompile Include="..\..\..\Code\Core\Source\GraphicsDriver\IGDDeviceImp.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../Precompiler.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">../Precompiler.h</PrecompiledHeaderFile>
@@ -234,7 +244,7 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../Precompiler.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../Precompiler.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\Source\GraphicsDriver\IGDQueueImp.cpp">
+    <ClCompile Include="..\..\..\Code\Core\Source\GraphicsDriver\IGDCommandQueueImp.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../Precompiler.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">../Precompiler.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../Precompiler.h</PrecompiledHeaderFile>
@@ -252,7 +262,6 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../Precompiler.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../Precompiler.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\Source\ICoreMemoryManager.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\ICoreNetworkManager.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\ICoreSystem.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\ICoreThreadManager.cpp" />
@@ -265,13 +274,11 @@
     <ClCompile Include="..\..\..\Code\Core\Source\IThreadImp.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\IThreadPoolImp.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\ITimerImp.cpp" />
-    <ClCompile Include="..\..\..\Code\Core\Source\MemoryManager.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\NetworkAcceptor.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\NetworkManager.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\SemaphoreGroup.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\System.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\ThreadManager.cpp" />
-    <ClCompile Include="..\..\..\Code\Core\Source\MemoryTracker.cpp" />
     <ClCompile Include="..\..\..\Code\Core\Source\Precompiler.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

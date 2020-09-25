@@ -1,9 +1,8 @@
 #pragma once
-#include "UtilitySTL.h"
 namespace NSDevilX
 {
 	class CModule
-		:public TBaseObject<CModule>
+		:public TMemoryAllocatorObject<CModule>
 	{
 	public:
 		typedef Void(*ProAddress)();

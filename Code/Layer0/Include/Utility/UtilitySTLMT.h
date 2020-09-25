@@ -1,17 +1,16 @@
 #pragma once
-#include "UtilitySTL.h"
 #include "UtilityReadWriteLocker.h"
 #include "UtilityThreadData.h"
 namespace NSDevilX
 {
 	template<typename T>
 	class TVectorMT
-		:public DevilXTVector(T)
+		:public TVector<T>
 		,public CReadWriteLocker
 	{
 	public:
-		using DevilXTVector(T)::TVector;
-		using DevilXTVector(T)::operator=;
+		using TVector<T>::TVector;
+		using TVector<T>::operator=;
 		Void pushBackMT(T const & t)
 		{
 			lockWrite();
@@ -27,12 +26,12 @@ namespace NSDevilX
 	};
 	template<typename T>
 	class TListMT
-		:public DevilXTList(T)
+		:public TList<T>
 		,public CReadWriteLocker
 	{
 	public:
-		using DevilXTList(T)::TList;
-		using DevilXTList(T)::operator=;
+		using TList<T>::TList;
+		using TList<T>::operator=;
 		Void pushBackMT(T const & t)
 		{
 			lockWrite();
@@ -54,12 +53,12 @@ namespace NSDevilX
 	};
 	template<typename T>
 	class TSetMT
-		:public DevilXTSet(T)
+		:public TSet<T>
 		,public CReadWriteLocker
 	{
 	public:
-		using DevilXTSet(T)::TSet;
-		using DevilXTSet(T)::operator=;
+		using TSet<T>::TSet;
+		using TSet<T>::operator=;
 		Void insertMT(T const & t)
 		{
 			lockWrite();
@@ -75,7 +74,7 @@ namespace NSDevilX
 	};
 	template<typename KeyT,typename ValueT>
 	class TMapMT
-		:public DevilXTMap(KeyT,ValueT)
+		:public TMap<KeyT,ValueT>
 		,public CReadWriteLocker
 	{
 	public:
@@ -93,7 +92,7 @@ namespace NSDevilX
 		}
 	};
 	class CPointerQueueMT
-		:public TBaseObject<CPointerQueueMT>
+		:public TMemoryAllocatorObject<CPointerQueueMT>
 	{
 	protected:
 		VoidPtr mInternalQueue;
@@ -138,10 +137,10 @@ namespace NSDevilX
 		Boolean _tryPop(VoidPtr & data);
 	};
 	class CUnorderListMT
-		:public TBaseObject<CUnorderListMT>
+		:public TMemoryAllocatorObject<CUnorderListMT>
 	{
 	protected:
-		TSharedReadObject<DevilXTVector(TSharedReadData<VoidPtr>*) > mDatas;
+		TSharedReadObject<TVector<TSharedReadData<VoidPtr>*> > mDatas;
 	public:
 		CUnorderListMT();
 		Void pushMT(VoidPtr value);

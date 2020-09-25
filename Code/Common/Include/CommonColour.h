@@ -73,6 +73,7 @@ namespace NSDevilX
 	};
 	class CFloatAlpha
 		:public CColour
+		,public TMemoryAllocatorObject<CFloatAlpha>
 	{
 	protected:
 		Float mValue;
@@ -93,6 +94,7 @@ namespace NSDevilX
 	class CFloatRGB
 		:public CFloat3
 		,public CColour
+		,public TMemoryAllocatorObject<CFloatRGB>
 	{
 	public:
 		static const CFloatRGB sBlack;
@@ -121,6 +123,7 @@ namespace NSDevilX
 	class CFloatRGBA
 		:public CFloat4
 		,public CColour
+		,public TMemoryAllocatorObject<CFloatRGBA>
 	{
 	public:
 		static const CFloatRGBA sZero;
@@ -151,6 +154,7 @@ namespace NSDevilX
 	class CFloatHSV
 		:public CFloat3
 		,public CColour
+		,public TMemoryAllocatorObject<CFloatHSV>
 	{
 	public:
 		using CFloat3::CFloat3;

@@ -1,14 +1,15 @@
 #pragma once
+#include "IGDCommandList.h"
 namespace NSDevilX
 {
 	namespace NSCore
 	{
 		namespace NSGraphicsDriver
 		{
-			class ICommandBuffer
+			class ICommandAllocator
 			{
 			protected:
-				virtual ~ICommandBuffer(){}
+				virtual ~ICommandAllocator(){}
 			public:
 			};
 		}

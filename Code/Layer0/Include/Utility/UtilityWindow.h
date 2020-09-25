@@ -2,7 +2,7 @@
 namespace NSDevilX
 {
 	class CDesktop
-		:public TBaseObject<CDesktop>
+		:public TMemoryAllocatorObject<CDesktop>
 	{
 	public:
 		CDesktop();
@@ -53,13 +53,13 @@ namespace NSDevilX
 		{}
 	};
 	class CWindow
-		:public TBaseObject<CWindow>
+		:public TMemoryAllocatorObject<CWindow>
 	{
 	protected:
 		VoidPtr mHandle;
 		CInt2 mPosition;
 		CUInt2 mSize;
-		DevilXTUnorderedSet(CWindowEventListener*) mEventListeners;
+		TUnorderedSet<CWindowEventListener*> mEventListeners;
 	public:
 		CWindow();
 		~CWindow();

@@ -42,9 +42,6 @@
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreSystem.h">
       <Filter>Interface</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Interface\ICoreMemoryManager.h">
-      <Filter>Interface</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreSystemInterface.h">
       <Filter>Interface</Filter>
     </ClInclude>
@@ -52,9 +49,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Core\Include\ThirdPart.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Include\MemoryTracker.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Core\Include\ThreadType.h">
@@ -69,16 +63,10 @@
     <ClInclude Include="..\..\..\Code\Core\Include\IReadWriteLockImp.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Include\MemoryManager.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\Core\Include\ThreadManager.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Core\Include\System.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Include\MemoryAllocatorObjectTemplate.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Core\Interface\ICoreThreadPool.h">
@@ -94,9 +82,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Core\Include\STLMT.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Include\STL.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Core\Include\SemaphoreGroup.h">
@@ -183,9 +168,6 @@
     <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDBuffer.h">
       <Filter>Interface\GraphicsDriver</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDCommandBuffer.h">
-      <Filter>Interface\GraphicsDriver</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDDevice.h">
       <Filter>Interface\GraphicsDriver</Filter>
     </ClInclude>
@@ -202,9 +184,6 @@
       <Filter>Interface\GraphicsDriver</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDPipelineState.h">
-      <Filter>Interface\GraphicsDriver</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDQueue.h">
       <Filter>Interface\GraphicsDriver</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDSystem.h">
@@ -225,9 +204,6 @@
     <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDSwapChain.h">
       <Filter>Interface\GraphicsDriver</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDPhysicalDevice.h">
-      <Filter>Interface\GraphicsDriver</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDPhysicalDeviceImp.h">
       <Filter>头文件\GraphicsDriver</Filter>
     </ClInclude>
@@ -235,9 +211,6 @@
       <Filter>头文件\GraphicsDriver</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDSwapChainImp.h">
-      <Filter>头文件\GraphicsDriver</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDQueueImp.h">
       <Filter>头文件\GraphicsDriver</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDMemoryAllocatorImp.h">
@@ -252,27 +225,39 @@
     <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDPhysicalDeviceMemoryHeapImp.h">
       <Filter>头文件\GraphicsDriver</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDPhysical.h">
+      <Filter>Interface\GraphicsDriver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDCommandList.h">
+      <Filter>Interface\GraphicsDriver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDCommandQueue.h">
+      <Filter>Interface\GraphicsDriver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDCommandQueueImp.h">
+      <Filter>头文件\GraphicsDriver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Interface\GraphicsDriver\IGDCommandAllocator.h">
+      <Filter>Interface\GraphicsDriver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDCommandAllocatorImp.h">
+      <Filter>头文件\GraphicsDriver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Core\Include\GraphicsDriver\IGDCommandListImp.h">
+      <Filter>头文件\GraphicsDriver</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Core\Source\Precompiler.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\Source\ICoreMemoryManager.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Code\Core\Source\ICoreSystem.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\Source\MemoryTracker.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Core\Source\IReadWriteLockImp.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Core\Source\ICoreThreadManager.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\Source\MemoryManager.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Core\Source\ThreadManager.cpp">
@@ -347,13 +332,19 @@
     <ClCompile Include="..\..\..\Code\Core\Source\GraphicsDriver\IGDSwapChainImp.cpp">
       <Filter>源文件\GraphicsDriver</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Code\Core\Source\GraphicsDriver\IGDQueueImp.cpp">
-      <Filter>源文件\GraphicsDriver</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Code\Core\Source\GraphicsDriver\IGDMemoryAllocatorImp.cpp">
       <Filter>源文件\GraphicsDriver</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Core\Source\GraphicsDriver\IGDPhysicalDeviceMemoryHeapImp.cpp">
+      <Filter>源文件\GraphicsDriver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\GraphicsDriver\IGDCommandQueueImp.cpp">
+      <Filter>源文件\GraphicsDriver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\GraphicsDriver\IGDCommandListImp.cpp">
+      <Filter>源文件\GraphicsDriver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Core\Source\GraphicsDriver\IGDCommandAllocatorImp.cpp">
       <Filter>源文件\GraphicsDriver</Filter>
     </ClCompile>
   </ItemGroup>

@@ -5,7 +5,7 @@ namespace NSDevilX
 	class CMemoryStream;
 	class CMemoryStreamReader
 		:public CDataStreamReader
-		,public TBaseObject<CMemoryStreamReader>
+		,public TMemoryAllocatorObject<CMemoryStreamReader>
 	{
 	protected:
 		UInt32 mPosition;
@@ -21,7 +21,7 @@ namespace NSDevilX
 	};
 	class CMemoryStreamWriter
 		:public CDataStreamWriter
-		,public TBaseObject<CMemoryStreamWriter>
+		,public TMemoryAllocatorObject<CMemoryStreamWriter>
 	{
 	protected:
 		UInt32 mPosition;
@@ -37,10 +37,10 @@ namespace NSDevilX
 	};
 	class CMemoryStream
 		:public CDataStream
-		,public TBaseObject<CMemoryStream>
+		,public TMemoryAllocatorObject<CMemoryStream>
 	{
 	public:
-		typedef DevilXTVector(Byte) Data;
+		typedef TVector<Byte> Data;
 	protected:
 		Data mData;
 	public:

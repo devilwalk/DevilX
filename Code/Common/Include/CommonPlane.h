@@ -3,6 +3,7 @@
 namespace NSDevilX
 {
 	class CPlane
+		:public TMemoryAllocatorObject<CPlane>
 	{
 	public:
 		enum EFaceForward

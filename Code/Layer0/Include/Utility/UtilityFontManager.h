@@ -5,11 +5,11 @@
 namespace NSDevilX
 {
 	class CFontManager
-		:public TBaseObject<CFontManager>
+		:public TMemoryAllocatorObject<CFontManager>
 	{
 	public:
 		struct SChar
-			:public TBaseObject<SChar>
+			:public TMemoryAllocatorObject<SChar>
 		{
 			CFontImage * mImage;
 			CUInt2 mPixelStart;
@@ -20,9 +20,9 @@ namespace NSDevilX
 			{}
 		};
 	protected:
-		TNamedResourcePtrMap(const CMemoryStream) mFonts;
-		DevilXTUnorderedMap(const CMemoryStream*,TResourcePtrVector(CFontFace) ) mFaces;
-		DevilXTUnorderedMap(const CMemoryStream*,TResourcePtrVector(CFontImage) ) mImages;
+		TNamedResourcePtrMap<const CMemoryStream> mFonts;
+		TUnorderedMap<const CMemoryStream*,TResourcePtrVector<CFontFace> > mFaces;
+		TUnorderedMap<const CMemoryStream*,TResourcePtrVector<CFontImage> > mImages;
 	public:
 		CFontManager();
 		~CFontManager();

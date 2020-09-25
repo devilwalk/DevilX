@@ -5,7 +5,7 @@ namespace NSDevilX
 	{
 		class IReadWriteLockImp
 			:public IReadWriteLock
-			,public TBaseObject<IReadWriteLockImp>
+			,public TMemoryAllocatorObject<IReadWriteLockImp>
 		{
 		protected:
 			tbb::interface5::reader_writer_lock mLock;

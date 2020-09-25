@@ -5,7 +5,7 @@ namespace NSDevilX
 	{
 		class ICPPScriptEnvironmentImp
 			:public ICPPScriptEnvironment
-			,public TBaseObject<ICPPScriptEnvironmentImp>
+			,public TMemoryAllocatorObject<ICPPScriptEnvironmentImp>
 		{
 		protected:
 		public:

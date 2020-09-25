@@ -6,7 +6,7 @@ namespace NSDevilX
 	{
 		class IDirectoryImp;
 		class IFileImp
-			:public TBaseObject<IFileImp>
+			:public TMemoryAllocatorObject<IFileImp>
 			,public IFile
 		{
 		protected:

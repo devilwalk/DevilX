@@ -12,8 +12,8 @@ namespace NSDevilX
 			protected:
 				const IEnum::EInstanceMajorType mMajorType;
 				const Int32 mMinorType;
-				TResourcePtrVector(IPhysicalDeviceGroupImp) mPhysicsDeviceGroups;
-				TResourcePtrVector(IDeviceImp) mDevices;
+				TResourcePtrVector<IPhysicalDeviceGroupImp> mPhysicsDeviceGroups;
+				TResourcePtrVector<IDeviceImp> mDevices;
 			public:
 				IInstanceImp(IEnum::EInstanceMajorType majorType,Int32 minorType);
 				virtual ~IInstanceImp();
@@ -28,7 +28,7 @@ namespace NSDevilX
 			{
 				class IInstanceImp
 					:public NSGraphicsDriver::IInstanceImp
-					,public TBaseObject<IInstanceImp>
+					,public TMemoryAllocatorObject<IInstanceImp>
 				{
 				protected:
 					CComPtr<IDXGIFactory> mInternal;
@@ -93,7 +93,7 @@ namespace NSDevilX
 			{
 				class IInstanceImp
 					:public NSGraphicsDriver::IInstanceImp
-					,public TBaseObject<IInstanceImp>
+					,public TMemoryAllocatorObject<IInstanceImp>
 				{
 				protected:
 					VkInstance mInternal;
@@ -123,7 +123,7 @@ namespace NSDevilX
 			{
 				class IInstanceImp
 					:public NSGraphicsDriver::IInstanceImp
-					,public TBaseObject<IInstanceImp>
+					,public TMemoryAllocatorObject<IInstanceImp>
 				{
 				protected:
 					EGLDisplay mDisplay;

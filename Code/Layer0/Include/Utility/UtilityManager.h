@@ -4,7 +4,7 @@ namespace NSDevilX
 {
 	class CCommonManager
 		:public TSingletonEx<CCommonManager>
-		,public TBaseObject<CCommonManager>
+		,public TMemoryAllocatorObject<CCommonManager>
 	{
 	protected:
 		CThreadPool*mThreadPool;

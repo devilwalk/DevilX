@@ -4,7 +4,7 @@ namespace NSDevilX
 	namespace NSCore
 	{
 		class CCPPScriptEnvironment
-			:public TBaseObject<CCPPScriptEnvironment>
+			:public TMemoryAllocatorObject<CCPPScriptEnvironment>
 		{
 		protected:
 		public:

@@ -6,6 +6,7 @@ namespace NSDevilX
 {
 	class CTransform2DNode
 		:public TNode<TList<CTransform2DNode*> >
+		,public TMemoryAllocatorObject<CTransform2DNode>
 	{
 	public:
 		enum EDirtyFlag
@@ -13,6 +14,7 @@ namespace NSDevilX
 			EDirtyFlag_DerivedTransform=1,
 		};
 		class CLocal
+			:public TMemoryAllocatorObject<CLocal>
 		{
 		public:
 			enum EDirtyFlag
@@ -132,6 +134,7 @@ namespace NSDevilX
 			}
 		};
 		class CDerived
+			:public TMemoryAllocatorObject<CDerived>
 		{
 		public:
 			enum EDirtyFlag
@@ -266,6 +269,7 @@ namespace NSDevilX
 			EDirtyFlag_DerivedTransform=1,
 		};
 		class CLocal
+			:public TMemoryAllocatorObject<CLocal>
 		{
 		public:
 			enum EDirtyFlag
@@ -398,6 +402,7 @@ namespace NSDevilX
 			}
 		};
 		class CDerived
+			:public TMemoryAllocatorObject<CDerived>
 		{
 		public:
 			enum EDirtyFlag

@@ -4,6 +4,7 @@
 namespace NSDevilX
 {
 	class CReferenceObject
+		:public TMemoryAllocatorObject<CReferenceObject>
 	{
 	protected:
 		Int32 mRefCount;
@@ -32,6 +33,7 @@ namespace NSDevilX
 		}
 	};
 	class CReferenceObjectMT
+		:public TMemoryAllocatorObject<CReferenceObjectMT>
 	{
 	protected:
 		std::atomic<Int32> mRefCount;

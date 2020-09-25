@@ -11,19 +11,21 @@ namespace NSDevilX
 			{
 			protected:
 				IPhysicalDeviceGroupImp* const mGroup;
-				TResourcePtrVector(IPhysicalDeviceMemoryHeapImp) mMemoryHeaps;
+				const UInt32 mIndex;
+				TResourcePtrVector<IPhysicalDeviceMemoryHeapImp> mMemoryHeaps;
 			public:
-				IPhysicalDeviceImp(IPhysicalDeviceGroupImp* group);
+				IPhysicalDeviceImp(IPhysicalDeviceGroupImp* group,UInt32 index=0);
 				virtual ~IPhysicalDeviceImp();
 
 				// Í¨¹ý IPhysicalDeviceImp ¼Ì³Ð
+				virtual UInt32 getIndex() const override;
 				virtual IPhysicalDeviceGroup* getGroup() const override;
 				virtual UInt32 getMemoryHeapCount() const override;
 				virtual IPhysicalDeviceMemoryHeap* getMemoryHeap(UInt32 index) const override;
 			};
 			class INonePhysicalDeviceImp
 				:public IPhysicalDeviceImp
-				,public TBaseObject<INonePhysicalDeviceImp>
+				,public TMemoryAllocatorObject<INonePhysicalDeviceImp>
 			{
 			public:
 				INonePhysicalDeviceImp(IPhysicalDeviceGroupImp* group);
@@ -39,7 +41,7 @@ namespace NSDevilX
 				class IPhysicalDeviceImp
 					:public NSGraphicsDriver::IPhysicalDeviceImp
 					,public IPhysicalDeviceMemoryHeapImp
-					,public TBaseObject<IPhysicalDeviceImp>
+					,public TMemoryAllocatorObject<IPhysicalDeviceImp>
 				{
 				protected:
 					const UINT mInternal;
@@ -57,19 +59,25 @@ namespace NSDevilX
 				class IPhysicalDeviceGroupImp;
 				class IPhysicalDeviceImp
 					:public NSGraphicsDriver::IPhysicalDeviceImp
-					,public TBaseObject<IPhysicalDeviceImp>
+					,public TMemoryAllocatorObject<IPhysicalDeviceImp>
 				{
 				public:
 					struct SQueueFamilyInfo
+						:public TMemoryAllocatorObject<SQueueFamilyInfo>
 					{
 						UInt32 mQueueFamilyIndex;
+						UInt32 mUseCount;
 						VkQueueFamilyProperties2 mProp;
+						SQueueFamilyInfo()
+							:mQueueFamilyIndex(-1)
+							,mUseCount(0)
+						{}
 					};
 				protected:
 					const VkPhysicalDevice mInternal;
-					TVector(SQueueFamilyInfo) mQueueFamilies[3];
+					TVector<SQueueFamilyInfo> mQueueFamilies[3];
 				public:
-					IPhysicalDeviceImp(VkPhysicalDevice dev,IPhysicalDeviceGroupImp* group);
+					IPhysicalDeviceImp(VkPhysicalDevice dev,IPhysicalDeviceGroupImp* group,UInt32 index);
 					virtual ~IPhysicalDeviceImp();
 
 					auto getInternal()const

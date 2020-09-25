@@ -4,7 +4,7 @@ namespace NSDevilX
 	namespace NSCore
 	{
 		class CNetworkAcceptor
-			:public TBaseObject<CNetworkAcceptor>
+			:public TMemoryAllocatorObject<CNetworkAcceptor>
 			,public CMessageNotifier
 		{
 		public:

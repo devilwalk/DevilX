@@ -7,7 +7,7 @@ namespace NSDevilX
 	{
 		class CThreadManager
 			:public TSingleton<CThreadManager>
-			,public TBaseObject<CThreadManager>
+			,public TMemoryAllocatorObject<CThreadManager>
 		{
 		protected:
 			CSemaphorePool*mSemaphorePool;

@@ -54,9 +54,6 @@
     <ClInclude Include="..\..\..\Code\Common\Include\CommonMath.h">
       <Filter>Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Common\Include\CommonMatrix.h">
-      <Filter>Include</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\Common\Include\CommonMessageMode.h">
       <Filter>Include</Filter>
     </ClInclude>
@@ -140,6 +137,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Common\Source\Precompiler.h">
       <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonMemoryAllocator.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonMemoryTracer.h">
+      <Filter>Include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

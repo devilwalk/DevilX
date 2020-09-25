@@ -5,6 +5,7 @@
 namespace NSDevilX
 {
 	class CNameGenerator
+		:public TMemoryAllocatorObject<CNameGenerator>
 	{
 	protected:
 		std::string mBaseName;

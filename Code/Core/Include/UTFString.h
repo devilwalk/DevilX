@@ -5,10 +5,10 @@ namespace NSDevilX
 	namespace NSCore
 	{
 		class CUTF8String
-			:public TUTFString<CUTF8Char,DevilXAllocator<CUTF8Char> >
+			:public TUTFString<CUTF8Char,TDevilXAllocator<CUTF8Char> >
 		{
 		public:
-			using TUTFString<CUTF8Char,DevilXAllocator<CUTF8Char> >::TUTFString;
+			using TUTFString<CUTF8Char,TDevilXAllocator<CUTF8Char> >::TUTFString;
 			template<class TAllocator>
 			operator std::vector<CUTF16Char,TAllocator>()const
 			{
@@ -21,10 +21,10 @@ namespace NSDevilX
 			}
 		};
 		class CUTF16String
-			:public TUTFString<CUTF16Char,DevilXAllocator<CUTF16Char> >
+			:public TUTFString<CUTF16Char,TDevilXAllocator<CUTF16Char> >
 		{
 		public:
-			using TUTFString<CUTF16Char,DevilXAllocator<CUTF16Char> >::TUTFString;
+			using TUTFString<CUTF16Char,TDevilXAllocator<CUTF16Char> >::TUTFString;
 			CUTF16String(ConstVoidPtr utf16Buffer,SizeT sizeInBytes,Bool bigEndian=DEVILX_BYTE_ORDER==DEVILX_BYTE_ORDER_BIG_ENDIAN);
 			template<class TAllocator>
 			CUTF16String(const std::basic_string<Char,std::char_traits<Char>,TAllocator> & ansiiText,Bool bigEndian=DEVILX_BYTE_ORDER==DEVILX_BYTE_ORDER_BIG_ENDIAN)

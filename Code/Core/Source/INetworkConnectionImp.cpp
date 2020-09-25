@@ -47,7 +47,7 @@ UInt16 NSDevilX::NSCore::INetworkConnectionImp::getEndPointPort() const
 
 void NSDevilX::NSCore::INetworkConnectionImp::send(ConstVoidPtr data,SizeT sizeInBytes)
 {
-	auto buf=DEVILX_ALLOC(sizeInBytes);
+	auto buf=new UInt8[sizeInBytes];
 	memcpy(buf,data,sizeInBytes);
 	asio::async_write(*mSocket,asio::buffer(buf,sizeInBytes),[buf,this](const asio::error_code& ec,std::size_t bytes_transferred)
 	{
@@ -58,7 +58,7 @@ void NSDevilX::NSCore::INetworkConnectionImp::send(ConstVoidPtr data,SizeT sizeI
 #endif
 			mValidate=False;
 		}
-		DEVILX_FREE(buf);
+		delete buf;
 	});
 }
 

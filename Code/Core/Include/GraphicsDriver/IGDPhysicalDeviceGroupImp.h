@@ -12,7 +12,7 @@ namespace NSDevilX
 			{
 			protected:
 				IInstanceImp* const mInstance;
-				TResourcePtrVector(IPhysicalDeviceImp) mDevices;
+				TResourcePtrVector<IPhysicalDeviceImp> mDevices;
 			public:
 				IPhysicalDeviceGroupImp(IInstanceImp* instance);
 				virtual ~IPhysicalDeviceGroupImp();
@@ -40,7 +40,7 @@ namespace NSDevilX
 				class IInstanceImp;
 				class IPhysicalDeviceGroupImp
 					:public NSGraphicsDriver::IPhysicalDeviceGroupImp
-					,public TBaseObject<IPhysicalDeviceGroupImp>
+					,public TMemoryAllocatorObject<IPhysicalDeviceGroupImp>
 				{
 				protected:
 					CComPtr<IDXGIAdapter> mInternal;
@@ -65,7 +65,7 @@ namespace NSDevilX
 				class IInstanceImp;
 				class IPhysicalDeviceGroupImp
 					:public NSGraphicsDriver::IPhysicalDeviceGroupImp
-					,public TBaseObject<IPhysicalDeviceGroupImp>
+					,public TMemoryAllocatorObject<IPhysicalDeviceGroupImp>
 				{
 				protected:
 					const UInt32 mInternal;
@@ -79,7 +79,7 @@ namespace NSDevilX
 				class IInstanceImp;
 				class IPhysicalDeviceGroupImp
 					:public NSGraphicsDriver::IPhysicalDeviceGroupImp
-					,public TBaseObject<IPhysicalDeviceGroupImp>
+					,public TMemoryAllocatorObject<IPhysicalDeviceGroupImp>
 				{
 				protected:
 				public:

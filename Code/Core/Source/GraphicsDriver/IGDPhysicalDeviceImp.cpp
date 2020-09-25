@@ -3,13 +3,19 @@ using namespace NSDevilX;
 using namespace NSCore;
 using namespace NSGraphicsDriver;
 
-NSDevilX::NSCore::NSGraphicsDriver::IPhysicalDeviceImp::IPhysicalDeviceImp(IPhysicalDeviceGroupImp* group)
+NSDevilX::NSCore::NSGraphicsDriver::IPhysicalDeviceImp::IPhysicalDeviceImp(IPhysicalDeviceGroupImp* group,UInt32 index)
 	:mGroup(group)
+	,mIndex(index)
 {
 }
 
 NSDevilX::NSCore::NSGraphicsDriver::IPhysicalDeviceImp::~IPhysicalDeviceImp()
 {
+}
+
+UInt32 NSDevilX::NSCore::NSGraphicsDriver::IPhysicalDeviceImp::getIndex() const
+{
+	return mIndex;
 }
 
 IPhysicalDeviceGroup* NSDevilX::NSCore::NSGraphicsDriver::IPhysicalDeviceImp::getGroup() const
@@ -58,15 +64,15 @@ UInt32 NSDevilX::NSCore::NSGraphicsDriver::NSD3D12::IPhysicalDeviceImp::getVkMem
 
 #endif
 
-NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IPhysicalDeviceImp::IPhysicalDeviceImp(VkPhysicalDevice dev,IPhysicalDeviceGroupImp* group)
-	:NSGraphicsDriver::IPhysicalDeviceImp(group)
+NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IPhysicalDeviceImp::IPhysicalDeviceImp(VkPhysicalDevice dev,IPhysicalDeviceGroupImp* group,UInt32 index)
+	:NSGraphicsDriver::IPhysicalDeviceImp(group,index)
 	,mInternal(dev)
 {
 	uint32_t num_queue_family=0;
 	vkGetPhysicalDeviceQueueFamilyProperties2(mInternal,&num_queue_family,nullptr);
 	if(num_queue_family)
 	{
-		TVector(VkQueueFamilyProperties2) props(num_queue_family);
+		TVector<VkQueueFamilyProperties2> props(num_queue_family);
 		for(auto& prop:props)
 		{
 			prop.sType=VK_STRUCTURE_TYPE_QUEUE_FAMILY_PROPERTIES_2;
@@ -99,7 +105,7 @@ NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IPhysicalDeviceImp::IPhysicalDevic
 
 	for(uint32_t heap_index=0;heap_index<mem_prop.memoryProperties.memoryHeapCount;++heap_index)
 	{
-		TVector(IPhysicalDeviceMemoryHeapImp::SMemoryType) mem_types;
+		TVector<IPhysicalDeviceMemoryHeapImp::SMemoryType> mem_types;
 		for(UInt32 type_index=0;type_index<mem_prop.memoryProperties.memoryTypeCount;++type_index)
 		{
 			if(mem_prop.memoryProperties.memoryTypes[type_index].heapIndex==heap_index)

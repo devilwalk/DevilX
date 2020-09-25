@@ -7,11 +7,9 @@ namespace NSDevilX
 	{
 		class CSystem
 			:public TSingleton<CSystem>
-			,public TBaseObject<CSystem>
 		{
 		protected:
 			ISystem*mSystem;
-			IMemoryManager * mMemoryManager;
 			IThreadManager * mThreadManager;
 			INetworkManager * mNetworkManager;
 			TResourcePtrSet<ITimerImp> mTimers;
@@ -21,10 +19,6 @@ namespace NSDevilX
 			ISystem* getSystem()const
 			{
 				return mSystem;
-			}
-			IMemoryManager* getMemoryManager()const
-			{
-				return mMemoryManager;
 			}
 			IThreadManager* getThreadManager()const
 			{

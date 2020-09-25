@@ -1,5 +1,5 @@
 #pragma once
-#include "IGDQueueImp.h"
+#include "IGDCommandQueueImp.h"
 #include "IGDMemoryAllocatorImp.h"
 namespace NSDevilX
 {
@@ -13,8 +13,8 @@ namespace NSDevilX
 			{
 			protected:
 				IPhysicalDeviceGroupImp* const mPhysicsDeviceGroup;
-				TResourcePtrVector(IQueueImp) mQueues[3];
-				TResourcePtrVector(IMemoryAllocatorImp) mMemoryAllocators;
+				TResourcePtrVector<ICommandQueueImp> mQueues[IEnum::ECommandQueue_Max];
+				TResourcePtrVector<IMemoryAllocatorImp> mMemoryAllocators;
 			public:
 				IDeviceImp(IPhysicalDeviceGroupImp* physicsDeviceGroup);
 				virtual ~IDeviceImp();
@@ -33,7 +33,7 @@ namespace NSDevilX
 			{
 				class IDeviceImp
 					:public NSGraphicsDriver::IDeviceImp
-					,public TBaseObject<IDeviceImp>
+					,public TMemoryAllocatorObject<IDeviceImp>
 				{
 				protected:
 					CComPtr<ID3D12Device> mInternal;
@@ -41,9 +41,11 @@ namespace NSDevilX
 					IDeviceImp(ID3D12Device* dev,NSD3D::IPhysicalDeviceGroupImp* physicsDeviceGroup);
 					virtual ~IDeviceImp();
 
+					ID3D12Device* getInternal()const{ return mInternal; }
+
 					// 通过 IDeviceImp 继承
-					virtual UInt32 getQueueCount(IEnum::EQueue type) const override;
-					virtual IQueue* getQueue(IEnum::EQueue type,UInt32 index) override;
+					virtual ICommandQueue* createCommandQueue(IEnum::ECommandQueue type,IPhysicalDevice* physicalDevice) override;
+					virtual ICommandAllocator* createCommandAllocator(IEnum::ECommandQueue type) override;
 					virtual IMemoryAllocator* createMemoryAllocator(UInt32 flags,UInt32 preferredBlockSize) override;
 				};
 			}
@@ -51,8 +53,7 @@ namespace NSDevilX
 			{
 				class IDeviceImp
 					:public NSGraphicsDriver::IDeviceImp
-					,public IQueueImp
-					,public TBaseObject<IDeviceImp>
+					,public TMemoryAllocatorObject<IDeviceImp>
 				{
 				protected:
 					CComPtr<ID3D11Device> mInternal;
@@ -66,14 +67,9 @@ namespace NSDevilX
 					}
 
 					// 通过 IDeviceImp 继承
-					virtual UInt32 getQueueCount(IEnum::EQueue type) const override;
-					virtual IQueue* getQueue(IEnum::EQueue type,UInt32 index) override;
+					virtual ICommandQueue* createCommandQueue(IEnum::ECommandQueue type,IPhysicalDevice* physicalDevice) override;
+					virtual ICommandAllocator* createCommandAllocator(IEnum::ECommandQueue type) override;
 					virtual IMemoryAllocator* createMemoryAllocator(UInt32 flags,UInt32 preferredBlockSize) override;
-
-					// 通过 IQueue 继承
-					virtual ISwapChain* createSwapChain(DXGI_SWAP_CHAIN_DESC& desc) override;
-					virtual ISwapChain* createSwapChain(HWND hwnd,const DXGI_SWAP_CHAIN_DESC1& desc,const DXGI_SWAP_CHAIN_FULLSCREEN_DESC* fullscreenDesc=nullptr) override;
-					virtual ISwapChain* createSwapChain(HWND hwnd,const VkSwapchainCreateInfoKHR& info) override;
 				};
 			}
 #endif
@@ -82,7 +78,7 @@ namespace NSDevilX
 				class IPhysicalDeviceGroupImp;
 				class IDeviceImp
 					:public NSGraphicsDriver::IDeviceImp
-					,public TBaseObject<IDeviceImp>
+					,public TMemoryAllocatorObject<IDeviceImp>
 				{
 				protected:
 					const VkDevice mInternal;
@@ -96,8 +92,8 @@ namespace NSDevilX
 					}
 
 					// 通过 IDeviceImp 继承
-					virtual UInt32 getQueueCount(IEnum::EQueue type) const override;
-					virtual IQueue* getQueue(IEnum::EQueue type,UInt32 index) override;
+					virtual ICommandQueue* createCommandQueue(IEnum::ECommandQueue type,IPhysicalDevice* physicalDevice) override;
+					virtual ICommandAllocator* createCommandAllocator(IEnum::ECommandQueue type) override;
 					virtual IMemoryAllocator* createMemoryAllocator(UInt32 flags,UInt32 preferredBlockSize) override;
 				};
 			}
@@ -105,9 +101,10 @@ namespace NSDevilX
 			{
 				class IDeviceImp
 					:public NSGraphicsDriver::IDeviceImp
-					,public IQueueImp
-					,public ISwapChain
-					,public TBaseObject<IDeviceImp>
+					,public ICommandQueueImp
+					,public ICommandAllocatorImp
+					,public ISwapChainImp
+					,public TMemoryAllocatorObject<IDeviceImp>
 				{
 				protected:
 					EGLContext mContext;
@@ -117,8 +114,8 @@ namespace NSDevilX
 					virtual ~IDeviceImp();
 
 					// 通过 IDeviceImp 继承
-					virtual UInt32 getQueueCount(IEnum::EQueue type) const override;
-					virtual IQueue* getQueue(IEnum::EQueue type,UInt32 index) override;
+					virtual ICommandQueue* createCommandQueue(IEnum::ECommandQueue type,IPhysicalDevice* physicalDevice) override;
+					virtual ICommandAllocator* createCommandAllocator(IEnum::ECommandQueue type) override;
 					virtual IMemoryAllocator* createMemoryAllocator(UInt32 flags,UInt32 preferredBlockSize) override;
 
 					// 通过 IQueue 继承

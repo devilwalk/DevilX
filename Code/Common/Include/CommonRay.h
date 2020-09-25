@@ -3,6 +3,7 @@
 namespace NSDevilX
 {
 	class CRay
+		:public TMemoryAllocatorObject<CRay>
 	{
 	protected:
 		CFloat3 mOrigin;

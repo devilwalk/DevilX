@@ -18,43 +18,43 @@ NSDevilX::NSCore::NSGraphicsDriver::NSD3D12::IDeviceImp::IDeviceImp(ID3D12Device
 	:NSGraphicsDriver::IDeviceImp(physicsDeviceGroup)
 	,mInternal(dev)
 {
+	D3D12_COMMAND_QUEUE_DESC queue_desc={};
+	queue_desc.Type=D3D12_COMMAND_LIST_TYPE_DIRECT;
+	ID3D12CommandQueue* queue=nullptr;
+	mInternal->CreateCommandQueue(&queue_desc,__uuidof(ID3D12CommandQueue),reinterpret_cast<VoidPtr*>(&queue));
 }
 
 NSDevilX::NSCore::NSGraphicsDriver::NSD3D12::IDeviceImp::~IDeviceImp()
 {
 }
 
-UInt32 NSDevilX::NSCore::NSGraphicsDriver::NSD3D12::IDeviceImp::getQueueCount(IEnum::EQueue type) const
+ICommandQueue* NSDevilX::NSCore::NSGraphicsDriver::NSD3D12::IDeviceImp::createCommandQueue(IEnum::ECommandQueue type,IPhysicalDevice* physicalDevice)
 {
-	return -1;
-}
-
-IQueue* NSDevilX::NSCore::NSGraphicsDriver::NSD3D12::IDeviceImp::getQueue(IEnum::EQueue type,UInt32 index)
-{
-	if(mQueues[type].size()>index&&mQueues[type][index])
-		return mQueues[type][index];
 	D3D12_COMMAND_QUEUE_DESC queue_desc={};
 	switch (type)
 	{
-	case NSDevilX::NSCore::NSGraphicsDriver::IEnum::EQueue_3D:
+	case NSDevilX::NSCore::NSGraphicsDriver::IEnum::ECommandQueue_3D:
 		queue_desc.Type=D3D12_COMMAND_LIST_TYPE_DIRECT;
 		break;
-	case NSDevilX::NSCore::NSGraphicsDriver::IEnum::EQueue_Compute:
+	case NSDevilX::NSCore::NSGraphicsDriver::IEnum::ECommandQueue_Compute:
 		queue_desc.Type=D3D12_COMMAND_LIST_TYPE_COMPUTE;
 		break;
-	case NSDevilX::NSCore::NSGraphicsDriver::IEnum::EQueue_PCIETransfer:
+	case NSDevilX::NSCore::NSGraphicsDriver::IEnum::ECommandQueue_PCIETransfer:
 		queue_desc.Type=D3D12_COMMAND_LIST_TYPE_COPY;
 		break;
 	}
+	if(physicalDevice)
+		queue_desc.NodeMask=1<<physicalDevice->getIndex();
 	ID3D12CommandQueue* queue=nullptr;
 	mInternal->CreateCommandQueue(&queue_desc,__uuidof(ID3D12CommandQueue),reinterpret_cast<VoidPtr*>(&queue));
-	auto ret=DEVILX_NEW IQueueImp(this,queue);
-	if(mQueues[type].size()<=index)
-	{
-		mQueues[type].resize(index+1);
-	}
-	mQueues[type][index]=ret;
+	auto ret=DEVILX_NEW ICommandQueueImp(this,queue);
+	mQueues[type].push_back(ret);
 	return ret;
+}
+
+ICommandAllocator* NSDevilX::NSCore::NSGraphicsDriver::NSD3D12::IDeviceImp::createCommandAllocator(IEnum::ECommandQueue type)
+{
+	return nullptr;
 }
 
 IMemoryAllocator* NSDevilX::NSCore::NSGraphicsDriver::NSD3D12::IDeviceImp::createMemoryAllocator(UInt32 flags,UInt32 preferredBlockSize)
@@ -71,7 +71,6 @@ IMemoryAllocator* NSDevilX::NSCore::NSGraphicsDriver::NSD3D12::IDeviceImp::creat
 
 NSDevilX::NSCore::NSGraphicsDriver::NSD3D11::IDeviceImp::IDeviceImp(ID3D11Device* dev,NSD3D::IPhysicalDeviceGroupImp* physicsDeviceGroup)
 	:NSGraphicsDriver::IDeviceImp(physicsDeviceGroup)
-	,IQueueImp(this)
 	,mInternal(dev)
 {
 }
@@ -80,131 +79,19 @@ NSDevilX::NSCore::NSGraphicsDriver::NSD3D11::IDeviceImp::~IDeviceImp()
 {
 }
 
-UInt32 NSDevilX::NSCore::NSGraphicsDriver::NSD3D11::IDeviceImp::getQueueCount(IEnum::EQueue type) const
+ICommandQueue* NSDevilX::NSCore::NSGraphicsDriver::NSD3D11::IDeviceImp::createCommandQueue(IEnum::ECommandQueue type,IPhysicalDevice* physicalDevice)
 {
-	return (IEnum::EQueue_3D==type)?1:0;
+	return nullptr;
 }
 
-IQueue* NSDevilX::NSCore::NSGraphicsDriver::NSD3D11::IDeviceImp::getQueue(IEnum::EQueue type,UInt32 index)
+ICommandAllocator* NSDevilX::NSCore::NSGraphicsDriver::NSD3D11::IDeviceImp::createCommandAllocator(IEnum::ECommandQueue type)
 {
-	return this;
+	return nullptr;
 }
 
 IMemoryAllocator* NSDevilX::NSCore::NSGraphicsDriver::NSD3D11::IDeviceImp::createMemoryAllocator(UInt32 flags,UInt32 preferredBlockSize)
 {
 	return nullptr;
-}
-
-ISwapChain* NSDevilX::NSCore::NSGraphicsDriver::NSD3D11::IDeviceImp::createSwapChain(DXGI_SWAP_CHAIN_DESC& desc)
-{
-	IDXGISwapChain* sc=nullptr;
-	auto success=SUCCEEDED(static_cast<NSD3D::IInstanceImp*>(mPhysicsDeviceGroup->getInstance())->getInternal()->CreateSwapChain(mInternal,&desc,&sc));
-	if(success)
-	{
-		auto ret=DEVILX_NEW NSD3D::ISwapChainImp(this,sc);
-		mSwapChains.push_back(ret);
-		return ret;
-	}
-	return nullptr;
-}
-
-ISwapChain* NSDevilX::NSCore::NSGraphicsDriver::NSD3D11::IDeviceImp::createSwapChain(HWND hwnd,const DXGI_SWAP_CHAIN_DESC1& desc,const DXGI_SWAP_CHAIN_FULLSCREEN_DESC* fullscreenDesc)
-{
-	IDXGISwapChain1* sc=nullptr;
-	auto success=SUCCEEDED(static_cast<NSD3D::IInstanceImp*>(mPhysicsDeviceGroup->getInstance())->getInternal2()->CreateSwapChainForHwnd(mInternal,hwnd,&desc,fullscreenDesc,nullptr,&sc));
-	if(success)
-	{
-		auto ret=DEVILX_NEW NSD3D::ISwapChainImp(this,sc);
-		mSwapChains.push_back(ret);
-		return ret;
-	}
-	return nullptr;
-}
-
-ISwapChain* NSDevilX::NSCore::NSGraphicsDriver::NSD3D11::IDeviceImp::createSwapChain(HWND hwnd,const VkSwapchainCreateInfoKHR& info)
-{
-	DXGI_SWAP_CHAIN_DESC1 desc={};
-	switch(info.compositeAlpha)
-	{
-	case VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR:
-		desc.AlphaMode=DXGI_ALPHA_MODE_IGNORE;
-		break;
-	case VK_COMPOSITE_ALPHA_PRE_MULTIPLIED_BIT_KHR:
-		desc.AlphaMode=DXGI_ALPHA_MODE_PREMULTIPLIED;
-		break;
-	case VK_COMPOSITE_ALPHA_POST_MULTIPLIED_BIT_KHR:
-		desc.AlphaMode=DXGI_ALPHA_MODE_STRAIGHT;
-		break;
-	case VK_COMPOSITE_ALPHA_INHERIT_BIT_KHR:
-		desc.AlphaMode=DXGI_ALPHA_MODE_UNSPECIFIED;
-		break;
-	default:
-		desc.AlphaMode=DXGI_ALPHA_MODE_IGNORE;
-	}
-	desc.BufferCount=info.minImageCount;
-	desc.BufferUsage=0;
-	if((info.imageUsage&VK_IMAGE_USAGE_SAMPLED_BIT)
-		||(info.imageUsage&VK_IMAGE_USAGE_INPUT_ATTACHMENT_BIT)
-		)
-	{
-		desc.BufferUsage|=DXGI_USAGE_SHADER_INPUT;
-	}
-	if(info.imageUsage&VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT)
-	{
-		desc.BufferUsage|=DXGI_USAGE_BACK_BUFFER;
-	}
-	if(info.imageUsage&VK_IMAGE_USAGE_STORAGE_BIT)
-	{
-		desc.BufferUsage|=DXGI_USAGE_UNORDERED_ACCESS;
-	}
-	switch(info.imageFormat)
-	{
-	case VK_FORMAT_R8G8B8A8_SRGB:
-		desc.Format=DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
-		break;
-	case VK_FORMAT_R8G8B8A8_UNORM:
-		desc.Format=DXGI_FORMAT_R8G8B8A8_UNORM;
-		break;
-	case VK_FORMAT_B8G8R8A8_SNORM:
-		desc.Format=DXGI_FORMAT_B8G8R8A8_UNORM;
-		break;
-	case VK_FORMAT_B8G8R8A8_SRGB:
-		desc.Format=DXGI_FORMAT_B8G8R8A8_UNORM_SRGB;
-		break;
-	case VK_FORMAT_B8G8R8_SNORM:
-	case VK_FORMAT_R8G8B8_SNORM:
-		desc.Format=DXGI_FORMAT_B8G8R8X8_UNORM;
-		break;
-	case VK_FORMAT_B8G8R8_SRGB:
-	case VK_FORMAT_R8G8B8_SRGB:
-		desc.Format=DXGI_FORMAT_B8G8R8X8_UNORM_SRGB;
-		break;
-	case VK_FORMAT_R5G5B5A1_UNORM_PACK16:
-	case VK_FORMAT_B5G5R5A1_UNORM_PACK16:
-		desc.Format=DXGI_FORMAT_B5G5R5A1_UNORM;
-		break;
-	case VK_FORMAT_R5G6B5_UNORM_PACK16:
-	case VK_FORMAT_B5G6R5_UNORM_PACK16:
-		desc.Format=DXGI_FORMAT_B5G6R5_UNORM;
-		break;
-	case VK_FORMAT_R4G4B4A4_UNORM_PACK16:
-	case VK_FORMAT_B4G4R4A4_UNORM_PACK16:
-		desc.Format=DXGI_FORMAT_B4G4R4A4_UNORM;
-		break;
-	}
-	desc.Height=info.imageExtent.height;
-	desc.SampleDesc.Count=1;
-	desc.Scaling=DXGI_SCALING_NONE;
-	desc.Stereo=FALSE;
-	desc.SwapEffect=DXGI_SWAP_EFFECT_FLIP_DISCARD;
-	desc.Width=info.imageExtent.width;
-	DXGI_SWAP_CHAIN_FULLSCREEN_DESC full_screen_desc={};
-	full_screen_desc.Windowed=TRUE;
-	if(info.pNext&&(static_cast<const VkSurfaceFullScreenExclusiveWin32InfoEXT*>(info.pNext)->sType==VK_STRUCTURE_TYPE_SURFACE_FULL_SCREEN_EXCLUSIVE_WIN32_INFO_EXT))
-	{
-		full_screen_desc.Windowed=FALSE;
-	}
-	return createSwapChain(hwnd,desc,&full_screen_desc);
 }
 
 #endif
@@ -219,44 +106,29 @@ NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IDeviceImp::~IDeviceImp()
 {
 }
 
-UInt32 NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IDeviceImp::getQueueCount(IEnum::EQueue type) const
+ICommandQueue* NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IDeviceImp::createCommandQueue(IEnum::ECommandQueue type,IPhysicalDevice* physicalDevice)
 {
-	UInt32 ret=0;
-	for(auto& queue_family:static_cast<IPhysicalDeviceImp*>(mPhysicsDeviceGroup->getDevices()[0])->getQueueFamilies()[type])
+	UInt32 physical_device_index=0;
+	if(physicalDevice)
+		physical_device_index=physicalDevice->getIndex();
+	auto queue_family_infos=static_cast<IPhysicalDeviceImp*>(static_cast<IPhysicalDeviceGroupImp*>(mPhysicsDeviceGroup)->getDevices()[physical_device_index])->getQueueFamilies()[type];
+	UInt32 use_count=-1;
+	UInt32 queue_index=0;
+	for(UInt32 i=0;i<queue_family_infos.sizeT<UInt32>();++i)
 	{
-		ret+=queue_family.mProp.queueFamilyProperties.queueCount;
+		if(queue_family_infos[i].mUseCount<use_count)
+		{
+			queue_index=i;
+			use_count=queue_family_infos[i].mUseCount;
+		}
 	}
+	auto ret=DEVILX_NEW ICommandQueueImp(this,queue_family_infos[0].mQueueFamilyIndex,queue_index);
+	mQueues[type].push_back(ret);
 	return ret;
 }
 
-IQueue* NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IDeviceImp::getQueue(IEnum::EQueue type,UInt32 index)
+ICommandAllocator* NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IDeviceImp::createCommandAllocator(IEnum::ECommandQueue type)
 {
-	auto const queue_count=getQueueCount(type);
-	if(queue_count>index)
-	{
-		if(mQueues[type].size()<=queue_count)
-		{
-			mQueues[type].resize(queue_count);
-		}
-		if(!mQueues[type][index])
-		{
-			const IPhysicalDeviceImp::SQueueFamilyInfo* queue_family_info=nullptr;
-			UInt32 queue_count=0;
-			for(auto& queue_family:static_cast<IPhysicalDeviceImp*>(mPhysicsDeviceGroup->getDevices()[0])->getQueueFamilies()[type])
-			{
-				queue_count+=queue_family.mProp.queueFamilyProperties.queueCount;
-				if(queue_count>index)
-				{
-					queue_family_info=&queue_family;
-					break;
-				}
-			}
-			VkQueue queue=0;
-			vkGetDeviceQueue(mInternal,queue_family_info->mQueueFamilyIndex,queue_family_info->mProp.queueFamilyProperties.queueCount-(queue_count-index),&queue);
-			mQueues[type][index]=DEVILX_NEW IQueueImp(this,queue,queue_family_info->mQueueFamilyIndex);
-		}
-		return mQueues[type][index];
-	}
 	return nullptr;
 }
 
@@ -277,7 +149,9 @@ IMemoryAllocator* NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IDeviceImp::crea
 
 NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IDeviceImp::IDeviceImp(EGLContext context,NSGraphicsDriver::IPhysicalDeviceGroupImp* physicsDeviceGroup)
 	:NSGraphicsDriver::IDeviceImp(physicsDeviceGroup)
-	,NSGraphicsDriver::IQueueImp(this)
+	,ICommandQueueImp(this)
+	,ICommandAllocatorImp(IEnum::ECommandQueue_3D,this)
+	,ISwapChainImp(this)
 	,mContext(context)
 	,mSurface(EGL_NO_SURFACE)
 {
@@ -287,12 +161,12 @@ NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IDeviceImp::~IDeviceImp()
 {
 }
 
-UInt32 NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IDeviceImp::getQueueCount(IEnum::EQueue type) const
+ICommandQueue* NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IDeviceImp::createCommandQueue(IEnum::ECommandQueue type,IPhysicalDevice* physicalDevice)
 {
-	return (IEnum::EQueue_3D==type)?1:0;
+	return this;
 }
 
-IQueue* NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IDeviceImp::getQueue(IEnum::EQueue type,UInt32 index)
+ICommandAllocator* NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IDeviceImp::createCommandAllocator(IEnum::ECommandQueue type)
 {
 	return this;
 }
@@ -309,7 +183,7 @@ ISwapChain* NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IDeviceImp::createSwap
 	if(mSurface!=EGL_NO_SURFACE)
 		return nullptr;
 	auto inst=static_cast<IInstanceImp*>(mPhysicsDeviceGroup->getInstance());
-	TVector(EGLint) config_attrs;
+	TVector<EGLint> config_attrs;
 	config_attrs.push_back(EGL_RENDERABLE_TYPE);
 	if(inst->getMinorType()<=IEnum::EInstanceMinorType_GL_2_0)
 	{
@@ -399,7 +273,7 @@ ISwapChain* NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IDeviceImp::createSwap
 	EGLConfig cfg;
 	EGLint num_cfg;
 	auto success=eglChooseConfig(inst->getDisplay(),&config_attrs[0],&cfg,1,&num_cfg)==EGL_TRUE;
-	TVector(EGLAttrib) attrs_list;
+	TVector<EGLAttrib> attrs_list;
 	attrs_list.push_back(EGL_RENDER_BUFFER);
 	if(desc.BufferCount<2)
 	{
@@ -435,7 +309,7 @@ ISwapChain* NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IDeviceImp::createSwap
 	if(mSurface!=EGL_NO_SURFACE)
 		return nullptr;
 	auto inst=static_cast<IInstanceImp*>(mPhysicsDeviceGroup->getInstance());
-	TVector(EGLint) config_attrs;
+	TVector<EGLint> config_attrs;
 	config_attrs.push_back(EGL_RENDERABLE_TYPE);
 	if(inst->getMinorType()<=IEnum::EInstanceMinorType_GL_2_0)
 	{
@@ -533,7 +407,7 @@ ISwapChain* NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IDeviceImp::createSwap
 	EGLConfig cfg;
 	EGLint num_cfg;
 	auto success=eglChooseConfig(inst->getDisplay(),&config_attrs[0],&cfg,1,&num_cfg)==EGL_TRUE;
-	TVector(EGLAttrib) attrs_list;
+	TVector<EGLAttrib> attrs_list;
 	attrs_list.push_back(EGL_RENDER_BUFFER);
 	if(info.minImageCount<2)
 	{

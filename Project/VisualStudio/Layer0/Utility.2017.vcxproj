@@ -33,13 +33,10 @@
     <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilityImage.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilityLuaEngine.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilityManager.h" />
-    <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilityMemoryAllocatorObjectTemplate.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilityMemoryStream.h" />
-    <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilityMemoryTracker.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilityModule.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilityReadWriteLocker.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilityResourceContainer.h" />
-    <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilitySTL.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilitySTLMT.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilityThirdPart.h" />
     <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilityThreadData.h" />
@@ -63,7 +60,6 @@
     <ClCompile Include="..\..\..\Code\Layer0\Source\Utility\UtilityLuaEngine.cpp" />
     <ClCompile Include="..\..\..\Code\Layer0\Source\Utility\UtilityManager.cpp" />
     <ClCompile Include="..\..\..\Code\Layer0\Source\Utility\UtilityMemoryStream.cpp" />
-    <ClCompile Include="..\..\..\Code\Layer0\Source\Utility\UtilityMemoryTracker.cpp" />
     <ClCompile Include="..\..\..\Code\Layer0\Source\Utility\UtilityModule.cpp" />
     <ClCompile Include="..\..\..\Code\Layer0\Source\Utility\UtilityReadWriteLocker.cpp" />
     <ClCompile Include="..\..\..\Code\Layer0\Source\Utility\UtilitySTLMT.cpp" />

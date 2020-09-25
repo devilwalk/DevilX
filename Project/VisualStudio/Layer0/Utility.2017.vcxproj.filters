@@ -54,13 +54,7 @@
     <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilityManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilityMemoryAllocatorObjectTemplate.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilityMemoryStream.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilityMemoryTracker.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilityModule.h">
@@ -70,9 +64,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilityResourceContainer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilitySTL.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Code\Layer0\Include\Utility\UtilitySTLMT.h">
@@ -144,9 +135,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Layer0\Source\Utility\UtilityMemoryStream.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Code\Layer0\Source\Utility\UtilityMemoryTracker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Layer0\Source\Utility\UtilityModule.cpp">

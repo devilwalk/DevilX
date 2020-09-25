@@ -1,9 +1,8 @@
 #pragma once
-#include "UtilitySTL.h"
 namespace NSDevilX
 {
 	class CDirectory
-		:public TBaseObject<CDirectory>
+		:public TMemoryAllocatorObject<CDirectory>
 	{
 	protected:
 		const String mName;
@@ -58,6 +57,6 @@ namespace NSDevilX
 		}
 		Boolean hasDirectory(const String & name)const;
 		Void create();
-		Void getChildFiles(DevilXTVector(String) & files)const;
+		Void getChildFiles(TVector<String> & files)const;
 	};
 }

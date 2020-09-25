@@ -7,7 +7,7 @@ namespace NSDevilX
 		{
 			class ISystemImp
 				:public ISystem
-				,public TBaseObject<ISystemImp>
+				,public TMemoryAllocatorObject<ISystemImp>
 				,public TSingleton<ISystemImp>
 			{
 			protected:

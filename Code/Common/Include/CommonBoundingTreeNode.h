@@ -28,6 +28,7 @@ namespace NSDevilX
 	};
 	class CQuadTreeNode
 		:public TBoundingTreeNode<CBoundingBox>
+		,public TMemoryAllocatorObject<CQuadTreeNode>
 	{
 	public:
 		using TBoundingTreeNode<CBoundingBox>::TBoundingTreeNode;

@@ -324,10 +324,10 @@ Boolean NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IInstanceImp::initialize()
 
 		uint32_t count=0;
 		success&=(vkEnumerateInstanceLayerProperties(&count,nullptr)>=VK_SUCCESS);
-		TVector(VkLayerProperties) layer_props;
+		TVector<VkLayerProperties> layer_props;
 		layer_props.resize(count);
 		success&=(vkEnumerateInstanceLayerProperties(&count,&layer_props[0])>=VK_SUCCESS);
-		TVector(ConstCharPtr) layer_names;
+		TVector<ConstCharPtr> layer_names;
 		layer_names.reserve(count);
 		for(auto const& prop:layer_props)
 		{
@@ -341,8 +341,8 @@ Boolean NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IInstanceImp::initialize()
 			info.ppEnabledLayerNames=reinterpret_cast<const char* const*>(&layer_names[0]);
 		}
 
-		TMap(String,VkExtensionProperties) ext_props_table;
-		TVector(VkExtensionProperties) ext_props;
+		TMap<String,VkExtensionProperties> ext_props_table;
+		TVector<VkExtensionProperties> ext_props;
 		success&=(vkEnumerateInstanceExtensionProperties(nullptr,&count,nullptr)>=VK_SUCCESS);
 		if(count)
 		{
@@ -368,7 +368,7 @@ Boolean NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IInstanceImp::initialize()
 				}
 			}
 		}
-		TVector(ConstCharPtr) ext_names;
+		TVector<ConstCharPtr> ext_names;
 		if(!ext_props_table.empty())
 		{
 			ext_names.reserve(ext_props_table.size());
@@ -457,7 +457,7 @@ void NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IInstanceImp::_enumPhysicalDe
 	auto success=vkEnumeratePhysicalDeviceGroups(mInternal,&count,nullptr);
 	if(VK_SUCCESS==success)
 	{
-		TVector(VkPhysicalDeviceGroupProperties) groups;
+		TVector<VkPhysicalDeviceGroupProperties> groups;
 		groups.resize(count);
 		success=vkEnumeratePhysicalDeviceGroups(mInternal,&count,&groups[0]);
 		if(VK_SUCCESS==success)
@@ -468,7 +468,7 @@ void NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IInstanceImp::_enumPhysicalDe
 				auto group=DEVILX_NEW IPhysicalDeviceGroupImp(i,this);
 				for(uint32_t j=0; j<groups[i].physicalDeviceCount; j++)
 				{
-					auto dev=new NSVulkan::IPhysicalDeviceImp(groups[i].physicalDevices[j],group);
+					auto dev=new NSVulkan::IPhysicalDeviceImp(groups[i].physicalDevices[j],group,j);
 					group->addDevice(dev);
 				}
 				mPhysicsDeviceGroups.push_back(group);
@@ -484,7 +484,7 @@ IDevice* NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IInstanceImp::createDevic
 	VkDeviceGroupDeviceCreateInfo dev_group_create_info={};
 	dev_group_create_info.sType=VK_STRUCTURE_TYPE_DEVICE_GROUP_DEVICE_CREATE_INFO;
 	dev_group_create_info.physicalDeviceCount=static_cast<IPhysicalDeviceGroupImp*>(deviceGroup)->getDeviceCount();
-	TVector(VkPhysicalDevice) devs;
+	TVector<VkPhysicalDevice> devs;
 	devs.reserve(static_cast<IPhysicalDeviceGroupImp*>(deviceGroup)->getDeviceCount());
 	for(auto dev:static_cast<IPhysicalDeviceGroupImp*>(deviceGroup)->getDevices())
 	{
@@ -494,11 +494,11 @@ IDevice* NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IInstanceImp::createDevic
 
 	uint32_t queue_family_count=0;
 	vkGetPhysicalDeviceQueueFamilyProperties(devs[0],&queue_family_count,nullptr);
-	TVector(VkQueueFamilyProperties) queue_family_props(queue_family_count);
+	TVector<VkQueueFamilyProperties> queue_family_props(queue_family_count);
 	vkGetPhysicalDeviceQueueFamilyProperties(devs[0],&queue_family_count,&queue_family_props[0]);
 
-	TVector(float) queue_priors(256,0);
-	TVector(VkDeviceQueueCreateInfo) queue_create_infos(queue_family_count);
+	TVector<float> queue_priors(256,0);
+	TVector<VkDeviceQueueCreateInfo> queue_create_infos(queue_family_count);
 	for(uint32_t i=0;i<queue_family_count;++i)
 	{
 		VkDeviceQueueCreateInfo& queue_create_info=queue_create_infos[i];
@@ -515,14 +515,14 @@ IDevice* NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IInstanceImp::createDevic
 
 	uint32_t dev_ext_prop_count=0;
 	success&=(vkEnumerateDeviceExtensionProperties(devs[0],nullptr,&dev_ext_prop_count,nullptr)>=VK_SUCCESS);
-	TVector(VkExtensionProperties) ext_props(dev_ext_prop_count);
+	TVector<VkExtensionProperties> ext_props(dev_ext_prop_count);
 	success&=(vkEnumerateDeviceExtensionProperties(devs[0],nullptr,&dev_ext_prop_count,&ext_props[0])>=VK_SUCCESS);
-	TSet(ConstCharPtr) ext_prop_name_sets;
+	TSet<ConstCharPtr> ext_prop_name_sets;
 	for(auto const& prop:ext_props)
 	{
 		ext_prop_name_sets.insert(prop.extensionName);
 	}
-	TVector(ConstCharPtr) ext_prop_names(ext_prop_name_sets.size());
+	TVector<ConstCharPtr> ext_prop_names(ext_prop_name_sets.size());
 	std::copy(ext_prop_name_sets.begin(),ext_prop_name_sets.end(),ext_prop_names.begin());
 
 	VkDeviceCreateInfo dev_create_info={};
@@ -608,7 +608,7 @@ UInt32 NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IInstanceImp::enumPhysicalD
 
 IDevice* NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IInstanceImp::createDevice(IPhysicalDeviceGroup* deviceGroup)
 {
-	TVector(EGLint) config_attrs;
+	TVector<EGLint> config_attrs;
 	if(mMinorType<=IEnum::EInstanceMinorType_GL_2_0)
 	{
 		config_attrs.push_back(EGL_RENDERABLE_TYPE);

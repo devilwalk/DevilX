@@ -3,6 +3,7 @@ namespace NSDevilX
 {
 	template<typename TPointer>
 	class TPointerProxy
+		:public TMemoryAllocatorObject<TPointerProxy<TPointer> >
 	{
 	protected:
 		TPointer * mInternal;
@@ -26,6 +27,7 @@ namespace NSDevilX
 	template<typename TPointer>
 	class TSharedPointerObject
 		:public std::shared_ptr<TPointerProxy<TPointer> >
+		,public TMemoryAllocatorObject<TSharedPointerObject<TPointer> >
 	{
 	public:
 		using std::shared_ptr<TPointerProxy<TPointer> >::shared_ptr;

@@ -1,5 +1,6 @@
 #pragma once
-#include "IGDQueue.h"
+#include "IGDCommandQueue.h"
+#include "IGDCommandAllocator.h"
 #include "IGDMemoryAllocator.h"
 namespace NSDevilX
 {
@@ -14,8 +15,8 @@ namespace NSDevilX
 				{
 				}
 			public:
-				virtual UInt32 getQueueCount(IEnum::EQueue type)const=0;
-				virtual IQueue* getQueue(IEnum::EQueue type,UInt32 index)=0;
+				virtual ICommandQueue* createCommandQueue(IEnum::ECommandQueue type,IPhysicalDevice* physicalDevice=nullptr)=0;
+				virtual ICommandAllocator* createCommandAllocator(IEnum::ECommandQueue type)=0;
 				virtual IMemoryAllocator* createMemoryAllocator(UInt32 flags,UInt32 preferredBlockSize=0)=0;
 			};
 		}

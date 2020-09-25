@@ -6,6 +6,7 @@ namespace NSDevilX
 {
 	class COctreeNode
 		:public TBoundingTreeNode<CBoundingBox>
+		,public TMemoryAllocatorObject<COctreeNode>
 	{
 	public:
 		const static UInt32 sChildrenIndex[];

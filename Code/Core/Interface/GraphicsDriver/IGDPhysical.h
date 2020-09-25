@@ -15,11 +15,20 @@ namespace NSDevilX
 				virtual UInt32 getVkMemoryPropertyFlags()const=0;
 			};
 
+			class IPhysicalQueue
+			{
+			protected:
+				virtual ~IPhysicalQueue(){}
+			public:
+				virtual IEnum::ECommandQueue getType()const=0;
+			};
+
 			class IPhysicalDevice
 			{
 			protected:
 				virtual ~IPhysicalDevice(){ }
 			public:
+				virtual UInt32 getIndex()const=0;
 				virtual IPhysicalDeviceGroup* getGroup()const=0;
 				virtual UInt32 getMemoryHeapCount()const=0;
 				virtual IPhysicalDeviceMemoryHeap* getMemoryHeap(UInt32 index)const=0;

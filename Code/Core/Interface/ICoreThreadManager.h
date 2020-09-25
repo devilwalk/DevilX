@@ -9,9 +9,8 @@ namespace NSDevilX
 	{
 		class DLLAPI IThreadManager
 		{
-		protected:
-			~IThreadManager();
 		public:
+			~IThreadManager();
 			IReadWriteLock*createReadWriteLock();
 			Void destroyReadWriteLock(IReadWriteLock*lock);
 			ISemaphore*createSemaphore();

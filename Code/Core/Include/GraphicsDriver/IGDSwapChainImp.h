@@ -5,20 +5,22 @@ namespace NSDevilX
 	{
 		namespace NSGraphicsDriver
 		{
-			class IQueueImp;
+			class ICommandQueueImp;
 			class ISwapChainImp
 				:public ISwapChain
 			{
 			protected:
-				IQueueImp* const mQueue;
+				ICommandQueueImp* const mQueue;
 			public:
-				ISwapChainImp(IQueueImp* queue);
+				ISwapChainImp(ICommandQueueImp* queue);
 				virtual ~ISwapChainImp();
+
+				virtual ICommandQueue* getCommandQueue() const override;
 			};
 #if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
 			namespace NSD3D12
 			{
-				class IQueueImp;
+				class ICommandQueueImp;
 			}
 			namespace NSD3D11
 			{
@@ -28,16 +30,16 @@ namespace NSDevilX
 			{
 				class ISwapChainImp
 					:public NSGraphicsDriver::ISwapChainImp
-					,public TBaseObject<ISwapChainImp>
+					,public TMemoryAllocatorObject<ISwapChainImp>
 				{
 				protected:
 					CComPtr<IDXGISwapChain> mInternal;
-					TCOMResourcePtrVector(ID3D12Resource) mBackBuffers12;
-					TCOMResourcePtrVector(ID3D11Texture2D) mBackBuffers11;
+					TCOMResourcePtrVector<ID3D12Resource> mBackBuffers12;
+					TCOMResourcePtrVector<ID3D11Texture2D> mBackBuffers11;
 
 					UINT mCurrentBufferIndex12;
 				public:
-					ISwapChainImp(IQueueImp* queue,IDXGISwapChain* v);
+					ISwapChainImp(ICommandQueueImp* queue,IDXGISwapChain* v);
 					virtual ~ISwapChainImp();
 
 					// 通过 ISwapChainImp 继承
@@ -47,22 +49,22 @@ namespace NSDevilX
 #endif
 			namespace NSVulkan
 			{
-				class IQueueImp;
+				class ICommandQueueImp;
 				class ISwapChainImp
 					:public NSGraphicsDriver::ISwapChainImp
-					,public TBaseObject<ISwapChainImp>
+					,public TMemoryAllocatorObject<ISwapChainImp>
 				{
 				protected:
 					VkSwapchainKHR mInternal;
 					VkSurfaceKHR mSurface;
 					VkPresentInfoKHR mPresentInfo;
-					TVector(VkImage) mImages;
+					TVector<VkImage> mImages;
 					VkAcquireNextImageInfoKHR mAcquireNextImageInfo;
 					uint32_t mPresentImageIndex;
 					VkFence mFence;
 					VkSemaphore mSemaphore;
 				public:
-					ISwapChainImp(IQueueImp* queue,const VkSwapchainCreateInfoKHR& info);
+					ISwapChainImp(ICommandQueueImp* queue,const VkSwapchainCreateInfoKHR& info);
 					~ISwapChainImp();
 
 					// 通过 ISwapChainImp 继承

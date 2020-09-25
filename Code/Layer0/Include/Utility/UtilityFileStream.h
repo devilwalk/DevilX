@@ -5,7 +5,7 @@ namespace NSDevilX
 	class CFileStream;
 	class CFileStreamReader
 		:public CDataStreamReader
-		,public TBaseObject<CFileStreamReader>
+		,public TMemoryAllocatorObject<CFileStreamReader>
 	{
 	protected:
 		std::ifstream mStream;
@@ -21,7 +21,7 @@ namespace NSDevilX
 	};
 	class CFileStreamWriter
 		:public CDataStreamWriter
-		,public TBaseObject<CFileStreamWriter>
+		,public TMemoryAllocatorObject<CFileStreamWriter>
 	{
 	protected:
 		std::ofstream mStream;
@@ -37,7 +37,7 @@ namespace NSDevilX
 	};
 	class CFileStream
 		:public CDataStream
-		,public TBaseObject<CFileStream>
+		,public TMemoryAllocatorObject<CFileStream>
 	{
 	protected:
 		String mFullName;

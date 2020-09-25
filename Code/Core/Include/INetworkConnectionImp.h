@@ -6,7 +6,7 @@ namespace NSDevilX
 		class INetworkHostImp;
 		class INetworkConnectionImp
 			:public INetworkConnection
-			,public TBaseObject<INetworkConnectionImp>
+			,public TMemoryAllocatorObject<INetworkConnectionImp>
 			,public CMessageNotifier
 		{
 		public:
@@ -19,8 +19,8 @@ namespace NSDevilX
 			INetworkHostImp*const mHost;
 			asio::ip::tcp::socket * const mSocket;
 			Bool mValidate;
-			TVector(Byte) mReceives;
-			TVector(Byte) mReceiveTemp;
+			TVector<Byte> mReceives;
+			TVector<Byte> mReceiveTemp;
 		public:
 			INetworkConnectionImp(INetworkHostImp * host,asio::ip::tcp::socket * s);
 			~INetworkConnectionImp();

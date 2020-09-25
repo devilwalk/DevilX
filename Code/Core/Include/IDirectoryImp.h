@@ -5,7 +5,7 @@ namespace NSDevilX
 	namespace NSCore
 	{
 		class IDirectoryImp
-			:public TBaseObject<IDirectoryImp>
+			:public TMemoryAllocatorObject<IDirectoryImp>
 			,public IDirectory
 		{
 		protected:

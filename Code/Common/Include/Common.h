@@ -19,6 +19,8 @@
 #include "CommonGroup.h"
 #include "ICommonUserDataContainerImp.h"
 #include "CommonMath.h"
+#include "CommonMemoryAllocator.h"
+#include "CommonMemoryTracer.h"
 #include "CommonMessageMode.h"
 #include "CommonNode.h"
 #include "CommonOctree.h"

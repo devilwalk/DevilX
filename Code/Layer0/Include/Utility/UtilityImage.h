@@ -3,7 +3,7 @@
 namespace NSDevilX
 {
 	class CImage
-		:public TBaseObject<CImage>
+		:public TMemoryAllocatorObject<CImage>
 	{
 	public:
 		enum EPixelType
@@ -17,7 +17,7 @@ namespace NSDevilX
 		UInt32 mBPP;
 		UInt32 mWidth;
 		UInt32 mHeight;
-		DevilXTVector(Byte) mPixels;
+		TVector<Byte> mPixels;
 	public:
 		static Void convertRGB8ToRGBA8(const Byte * src,Byte * dst,UInt32 pixelCount);
 		static Void convertRGBA8ToRGB8(const Byte * src,Byte * dst,UInt32 pixelCount);

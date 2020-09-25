@@ -16,7 +16,7 @@ namespace NSDevilX
 	};
 	template<typename TValueType>
 	class TNumberFrame
-		:public TBaseObject<TNumberFrame<TValueType> >
+		:public TMemoryAllocatorObject<TNumberFrame<TValueType> >
 		,public CFrameBase
 	{
 	protected:
@@ -53,7 +53,7 @@ namespace NSDevilX
 	typedef TNumberFrame<DoubleFloat> CDoubleFloatFrame;
 	template<class TValueType>
 	class TVectorFrame
-		:public TBaseObject<TVectorFrame<TValueType> >
+		:public TMemoryAllocatorObject<TVectorFrame<TValueType> >
 		,public CFrameBase
 	{
 	protected:
@@ -85,7 +85,7 @@ namespace NSDevilX
 	typedef TVectorFrame<CInt3> CInt3Frame;
 	typedef TVectorFrame<CInt4> CInt4Frame;
 	class CTransform2DFrame
-		:public TBaseObject<CTransform2DFrame>
+		:public TMemoryAllocatorObject<CTransform2DFrame>
 		,public CFrameBase
 		,public TMessageReceiver<CFrameBase>
 	{
@@ -120,7 +120,7 @@ namespace NSDevilX
 		virtual Void onMessage(CFrameBase * notifier,UInt32 message,VoidPtr data,Bool & needNextProcess) override;
 	};
 	class CTransform3DFrame
-		:public TBaseObject<CTransform3DFrame>
+		:public TMemoryAllocatorObject<CTransform3DFrame>
 		,public CFrameBase
 		,public TMessageReceiver<CFrameBase>
 	{

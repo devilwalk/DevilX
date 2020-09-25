@@ -7,11 +7,10 @@ namespace NSDevilX
 	{
 		class CFileManager
 			:public TSingleton<CFileManager>
-			,public TMemoryAllocatorObject<CFileManager>
 		{
 		protected:
-			TResourcePtrMap(WString,IDirectoryImp) mDirectories;
-			TResourcePtrMap(WString,IFileImp) mFiles;
+			TResourcePtrMap<WString,IDirectoryImp> mDirectories;
+			TResourcePtrMap<WString,IFileImp> mFiles;
 		public:
 			CFileManager();
 			~CFileManager();
@@ -30,9 +29,9 @@ namespace NSDevilX
 			IFileImp * getFile(const WString & path,SizeT index);
 		protected:
 			Boolean _findDirectory(const WString & path)const;
-			Void _findSubDirectories(const WString & path,OUT TVector(WString) & outSubDirectorys)const;
+			Void _findSubDirectories(const WString & path,OUT TVector<WString> & outSubDirectorys)const;
 			Boolean _findFile(const WString & path)const;
-			Void _findFiles(const WString & path,OUT TVector(WString) & outFiles)const;
+			Void _findFiles(const WString & path,OUT TVector<WString> & outFiles)const;
 		};
 	}
 }

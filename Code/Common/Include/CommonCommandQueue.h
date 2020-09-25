@@ -3,6 +3,7 @@
 namespace NSDevilX
 {
 	class CCommandQueue
+		:public TMemoryAllocatorObject<CCommandQueue>
 	{
 	public:
 		class CCommand

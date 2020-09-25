@@ -5,7 +5,7 @@ namespace NSDevilX
 	{
 		class ISemaphoreImp
 			:public ISemaphore
-			,public TBaseObject<ISemaphoreImp>
+			,public TMemoryAllocatorObject<ISemaphoreImp>
 		{
 		protected:
 #if DEVILX_OPERATING_SYSTEM==DEVILX_OPERATING_SYSTEM_WINDOWS

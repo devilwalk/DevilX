@@ -3,7 +3,7 @@ using namespace NSDevilX;
 using namespace NSCore;
 using namespace NSGraphicsDriver;
 
-NSDevilX::NSCore::NSGraphicsDriver::ISwapChainImp::ISwapChainImp(IQueueImp* queue)
+NSDevilX::NSCore::NSGraphicsDriver::ISwapChainImp::ISwapChainImp(ICommandQueueImp* queue)
 	:mQueue(queue)
 {
 }
@@ -12,9 +12,14 @@ NSDevilX::NSCore::NSGraphicsDriver::ISwapChainImp::~ISwapChainImp()
 {
 }
 
+ICommandQueue* NSDevilX::NSCore::NSGraphicsDriver::ISwapChainImp::getCommandQueue() const
+{
+	return mQueue;
+}
+
 #if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
 
-NSDevilX::NSCore::NSGraphicsDriver::NSD3D::ISwapChainImp::ISwapChainImp(IQueueImp* queue,IDXGISwapChain* v)
+NSDevilX::NSCore::NSGraphicsDriver::NSD3D::ISwapChainImp::ISwapChainImp(ICommandQueueImp* queue,IDXGISwapChain* v)
 	:NSGraphicsDriver::ISwapChainImp(queue)
 	,mInternal(v)
 	,mCurrentBufferIndex12(-1)
@@ -58,7 +63,7 @@ void NSDevilX::NSCore::NSGraphicsDriver::NSD3D::ISwapChainImp::swapBuffers()
 
 #endif
 
-NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::ISwapChainImp::ISwapChainImp(IQueueImp* queue,const VkSwapchainCreateInfoKHR& info)
+NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::ISwapChainImp::ISwapChainImp(ICommandQueueImp* queue,const VkSwapchainCreateInfoKHR& info)
 	:NSGraphicsDriver::ISwapChainImp(queue)
 	,mInternal(VK_NULL_HANDLE)
 	,mSurface(info.surface)
@@ -124,6 +129,6 @@ NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::ISwapChainImp::~ISwapChainImp()
 
 void NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::ISwapChainImp::swapBuffers()
 {
-	vkQueuePresentKHR(static_cast<IQueueImp*>(mQueue)->getInternal(),&mPresentInfo);
+	vkQueuePresentKHR(static_cast<ICommandQueueImp*>(mQueue)->getInternal(),&mPresentInfo);
 	vkAcquireNextImage2KHR(static_cast<IDeviceImp*>(mQueue->getDevice())->getInternal(),&mAcquireNextImageInfo,&mPresentImageIndex);
 }

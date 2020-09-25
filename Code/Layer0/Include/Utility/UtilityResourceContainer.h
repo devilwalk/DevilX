@@ -1,21 +1,7 @@
 #pragma once
-#include "UtilitySTL.h"
 #include "UtilitySTLMT.h"
 namespace NSDevilX
 {
-#define TResourcePtrVector(x) TResourcePtrVector<x,DevilXAllocator<x*> >
-#define TRefResourcePtrVector(x) TRefResourcePtrVector<x,DevilXAllocator<x*> >
-#define TCOMResourcePtrVector(x) TCOMResourcePtrVector<x,DevilXAllocator<x*> >
-#define TResourcePtrList(x) TResourcePtrList<x,DevilXAllocator<x*> >
-#define TResourcePtrSet(x) TResourcePtrSet<x,std::less<x*>,DevilXAllocator<x*> >
-#define TRefResourcePtrSet(x) TRefResourcePtrSet<x,std::less<x*>,DevilXAllocator<x*> >
-#define TResourcePtrMap(key,value) TResourcePtrMap<key,value,std::less<key>,DevilXAllocator<std::pair<key,value*> > >
-#define TRefResourcePtrMap(key,value) TRefResourcePtrMap<key,value,std::less<key>,DevilXAllocator<std::pair<key,value*> > >
-#define TNamedResourcePtrMap(x) TNamedResourcePtrMap<x,DevilXStringAllocator,DevilXAllocator<std::pair<const std::basic_string<Char,std::char_traits<Char>,DevilXStringAllocator>,x*> > >
-#define TNamedRefResourcePtrMap(x) TNamedRefResourcePtrMap<x,DevilXStringAllocator,DevilXAllocator<std::pair<const std::basic_string<Char,std::char_traits<Char>,DevilXStringAllocator>,x*> > >
-#define TBaseNamedIndexResourcePtrContainer(x) TBaseNamedIndexResourcePtrContainer<x,DevilXStringAllocator,DevilXAllocator<x*> >
-#define TNamedIndexResourcePtrContainer(x) TNamedIndexResourcePtrContainer<x,DevilXStringAllocator,DevilXAllocator<x*> >
-#define TNamedIndexRefResourcePtrContainer(x) TNamedIndexRefResourcePtrContainer<x,DevilXStringAllocator,DevilXAllocator<x*> >
 	template<class ValueT>
 	class TResourcePtrVectorMT
 		:public TResourcePtrContainer<TVectorMT<ValueT*> >

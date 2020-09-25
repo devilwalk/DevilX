@@ -1,10 +1,9 @@
 #pragma once
-#include "UtilitySTL.h"
 #include "UtilityDataStream.h"
 namespace NSDevilX
 {
 	class CBinaryFileChunk
-		:public TBaseObject<CBinaryFileChunk>
+		:public TMemoryAllocatorObject<CBinaryFileChunk>
 	{
 	public:
 		struct SChunkBase
@@ -23,7 +22,7 @@ namespace NSDevilX
 		};
 		struct STagChunk
 			:public SChunkBase
-			,public TBaseObject<STagChunk>
+			,public TMemoryAllocatorObject<STagChunk>
 		{
 		protected:
 			std::array<Char,8> mValue;
@@ -38,7 +37,7 @@ namespace NSDevilX
 			virtual UInt32 _getReadSize()const override;
 		};
 		struct SSizeChunk
-			:public TBaseObject<SSizeChunk>
+			:public TMemoryAllocatorObject<SSizeChunk>
 			,public SChunkBase
 		{
 		protected:
@@ -61,11 +60,11 @@ namespace NSDevilX
 		};
 		struct SDataChunk
 			:public SChunkBase
-			,public TBaseObject<SDataChunk>
+			,public TMemoryAllocatorObject<SDataChunk>
 		{
 		protected:
 			SSizeChunk * mSizeChunk;
-			DevilXTVector(Byte) mData;
+			TVector<Byte> mData;
 		public:
 			SDataChunk();
 			SDataChunk(ConstVoidPtr data,UInt32 sizeInBytes);
@@ -128,14 +127,15 @@ namespace NSDevilX
 		Boolean readFrom(CDataStreamReader * reader,Bool movePointer=True);
 	};
 	class CBinaryFile
-		:public TBaseObject<CBinaryFile>
+		:public TMemoryAllocatorObject<CBinaryFile>
 	{
 	public:
-		typedef DevilXTVector(CBinaryFileChunk*) Chunks;
+		typedef TResourcePtrVector<CBinaryFileChunk> Chunks;
 	protected:
 		Chunks mChunks;
 	public:
 		CBinaryFile();
+		~CBinaryFile();
 		Boolean addChunk(const String & name,ConstVoidPtr data,UInt32 sizeInBytes);
 		const CBinaryFileChunk * getChunk(const String & name)const;
 		const CBinaryFileChunk * getChunk(SizeT index)const

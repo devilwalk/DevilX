@@ -4,12 +4,12 @@ namespace NSDevilX
 	namespace NSCore
 	{
 		class IThreadImp
-			:public TBaseObject<IThreadImp>
+			:public TMemoryAllocatorObject<IThreadImp>
 			,public IThread
 		{
 		public:
 			struct SContext
-				:public TBaseObject<SContext>
+				:public TMemoryAllocatorObject<SContext>
 			{
 				IThreadImp * const mThread;
 				VoidPtr const mParameters;

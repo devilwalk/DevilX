@@ -4,7 +4,7 @@ namespace NSDevilX
 	namespace NSCore
 	{
 		class CSemaphorePool
-			:public TBaseObject<CSemaphorePool>
+			:public TMemoryAllocatorObject<CSemaphorePool>
 		{
 		protected:
 			tbb::concurrent_bounded_queue<ISemaphoreImp*> mFreeWorkerPool;
@@ -15,7 +15,7 @@ namespace NSDevilX
 			Void pushSemaphore(ISemaphoreImp * semaphore);
 		};
 		class CSemaphoreGroup
-			:public TBaseObject<CSemaphoreGroup>
+			:public TMemoryAllocatorObject<CSemaphoreGroup>
 		{
 		protected:
 			TVectorMT<ISemaphoreImp*> mSemaphores;

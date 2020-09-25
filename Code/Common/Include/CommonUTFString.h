@@ -6,6 +6,7 @@ namespace NSDevilX
 	template<class TUTFChar,class TAllocator=std::allocator<TUTFChar> >
 	class TUTFString
 		:public TVector<TUTFChar,TAllocator>
+		,public TMemoryAllocatorObject<TUTFString<TUTFChar,TAllocator> >
 	{
 	public:
 		using TVector<TUTFChar,TAllocator>::TVector;

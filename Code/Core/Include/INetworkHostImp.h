@@ -6,15 +6,15 @@ namespace NSDevilX
 	namespace NSCore
 	{
 		class INetworkHostImp
-			:public TBaseObject<INetworkHostImp>
+			:public TMemoryAllocatorObject<INetworkHostImp>
 			,public INetworkHost
 			,public TMessageReceiver<CNetworkAcceptor>
 			,public TMessageReceiver<INetworkConnectionImp>
 		{
 		protected:
 			const String mIP;
-			TResourcePtrMap(UInt16,CNetworkAcceptor) mAcceptors;
-			TList(INetworkConnectionImp*) mConnections;
+			TResourcePtrMap<UInt16,CNetworkAcceptor> mAcceptors;
+			TList<INetworkConnectionImp*> mConnections;
 		public:
 			using TMessageReceiver<CNetworkAcceptor>::onMessage;
 			using TMessageReceiver<INetworkConnectionImp>::onMessage;

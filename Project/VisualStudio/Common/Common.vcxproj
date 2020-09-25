@@ -31,6 +31,8 @@
     <ClInclude Include="..\..\..\Code\Common\Include\CommonDirtyFlagContainer.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonGroup.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonMath.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonMemoryAllocator.h" />
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonMemoryTracer.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonMessageMode.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonNode.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonOctree.h" />
@@ -57,9 +59,6 @@
     <ClInclude Include="..\..\..\Code\Common\Include\CommonUTFChar.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonUTFString.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\CommonUtility.h" />
-    <ClInclude Include="..\..\..\Code\Common\Include\CommonVector.h" />
-    <ClInclude Include="..\..\..\Code\Common\Include\CommonVectorF.h" />
-    <ClInclude Include="..\..\..\Code\Common\Include\CommonVectorI.h" />
     <ClInclude Include="..\..\..\Code\Common\Include\ICommonUserDataContainerImp.h" />
     <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGroup.h" />
     <ClInclude Include="..\..\..\Code\Common\Interface\ICommonUserDataContainer.h" />
@@ -69,6 +68,7 @@
     <ClCompile Include="..\..\..\Code\Common\Source\CommonAngle.cpp" />
     <ClCompile Include="..\..\..\Code\Common\Source\CommonBounding.cpp" />
     <ClCompile Include="..\..\..\Code\Common\Source\CommonColour.cpp" />
+    <ClCompile Include="..\..\..\Code\Common\Source\CommonMemoryTracer.cpp" />
     <ClCompile Include="..\..\..\Code\Common\Source\CommonMessageMode.cpp" />
     <ClCompile Include="..\..\..\Code\Common\Source\CommonTransformNode.cpp" />
     <ClCompile Include="..\..\..\Code\Common\Source\CommonTreeContainer.cpp" />

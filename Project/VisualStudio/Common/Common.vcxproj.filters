@@ -87,15 +87,6 @@
     <ClInclude Include="..\..\..\Code\Common\Include\CommonUtility.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Code\Common\Include\CommonVector.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Common\Include\CommonVectorF.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Code\Common\Include\CommonVectorI.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Code\Common\Include\ICommonUserDataContainerImp.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -153,6 +144,12 @@
     <ClInclude Include="..\..\..\Code\Common\Interface\ICommonGroup.h">
       <Filter>Interface</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonMemoryAllocator.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Code\Common\Include\CommonMemoryTracer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Code\Common\Source\CommonColour.cpp">
@@ -180,6 +177,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Code\Common\Source\EGLImp.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Code\Common\Source\CommonMemoryTracer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -80,7 +80,7 @@ namespace NSDevilX
 			this->clear();
 		}
 	};
-	template<class ValueT,class TAllocator=std::allocator<ValueT*> >
+	template<class ValueT,class TAllocator=TDevilXAllocator<ValueT*> >
 	class TResourcePtrVector
 		:public TResourcePtrContainer<TVector<ValueT*,TAllocator> >
 	{
@@ -89,7 +89,7 @@ namespace NSDevilX
 		using TResourcePtrContainer<TVector<ValueT*,TAllocator> >::operator=;
 		virtual ~TResourcePtrVector(){}
 	};
-	template<class ValueT,class TAllocator=std::allocator<ValueT*> >
+	template<class ValueT,class TAllocator=TDevilXAllocator<ValueT*> >
 	class TRefResourcePtrVector
 		:public TRefResourcePtrContainer<TVector<ValueT*,TAllocator> >
 	{
@@ -99,7 +99,7 @@ namespace NSDevilX
 		virtual ~TRefResourcePtrVector()
 		{}
 	};
-	template<class ValueT,class TAllocator=std::allocator<ValueT*> >
+	template<class ValueT,class TAllocator=TDevilXAllocator<ValueT*> >
 	class TCOMResourcePtrVector
 		:public TCOMResourcePtrContainer<TVector<ValueT*,TAllocator> >
 	{
@@ -109,7 +109,7 @@ namespace NSDevilX
 		virtual ~TCOMResourcePtrVector()
 		{}
 	};
-	template<class ValueT,class TAllocator=std::allocator<ValueT*> >
+	template<class ValueT,class TAllocator=TDevilXAllocator<ValueT*> >
 	class TResourcePtrList
 		:public TResourcePtrContainer<TList<ValueT*,TAllocator> >
 	{
@@ -118,7 +118,7 @@ namespace NSDevilX
 		using TResourcePtrContainer<TList<ValueT*,TAllocator> >::operator=;
 		virtual ~TResourcePtrList(){}
 	};
-	template<class ValueT,class TSortFunc=std::less<ValueT*>,class TAllocator=std::allocator<ValueT*> >
+	template<class ValueT,class TSortFunc=std::less<ValueT*>,class TAllocator=TDevilXAllocator<ValueT*> >
 	class TResourcePtrSet
 		:public TResourcePtrContainer<TSet<ValueT*,TSortFunc,TAllocator> >
 	{
@@ -128,7 +128,7 @@ namespace NSDevilX
 		virtual ~TResourcePtrSet()
 		{}
 	};
-	template<class ValueT,class TSortFunc=std::less<ValueT*>,class TAllocator=std::allocator<ValueT*> >
+	template<class ValueT,class TSortFunc=std::less<ValueT*>,class TAllocator=TDevilXAllocator<ValueT*> >
 	class TRefResourcePtrSet
 		:public TRefResourcePtrContainer<TSet<ValueT*,TSortFunc,TAllocator> >
 	{
@@ -138,7 +138,7 @@ namespace NSDevilX
 		virtual ~TRefResourcePtrSet()
 		{}
 	};
-	template<class ValueT,class THash=std::hash<ValueT*>,class TEqual=std::equal_to<ValueT*>,class TAllocator=std::allocator<ValueT*> >
+	template<class ValueT,class THash=std::hash<ValueT*>,class TEqual=std::equal_to<ValueT*>,class TAllocator=TDevilXAllocator<ValueT*> >
 	class TResourcePtrUnorderedSet
 		:public TResourcePtrContainer<TUnorderedSet<ValueT*,THash,TEqual,TAllocator> >
 	{
@@ -149,7 +149,7 @@ namespace NSDevilX
 		{
 		}
 	};
-	template<class ValueT,class THash=std::hash<ValueT*>,class TEqual=std::equal_to<ValueT*>,class TAllocator=std::allocator<ValueT*> >
+	template<class ValueT,class THash=std::hash<ValueT*>,class TEqual=std::equal_to<ValueT*>,class TAllocator=TDevilXAllocator<ValueT*> >
 	class TRefResourcePtrUnorderedSet
 		:public TRefResourcePtrContainer<TUnorderedSet<ValueT*,THash,TEqual,TAllocator> >
 	{
@@ -160,7 +160,7 @@ namespace NSDevilX
 		{
 		}
 	};
-	template<typename KeyT,class ValueT,typename SortfuncT=std::less<KeyT>,class TAllocator=std::allocator<std::pair<const KeyT,ValueT*> > >
+	template<typename KeyT,class ValueT,typename SortfuncT=std::less<KeyT>,class TAllocator=TDevilXAllocator<std::pair<const KeyT,ValueT*> > >
 	class TResourcePtrMap
 		:public TMap<KeyT,ValueT*,SortfuncT,TAllocator>
 	{
@@ -196,7 +196,7 @@ namespace NSDevilX
 				return iter->second;
 		}
 	};
-	template<typename KeyT,class ValueT,typename SortfuncT=std::less<KeyT>,class TAllocator=std::allocator<std::pair<const KeyT,ValueT*> > >
+	template<typename KeyT,class ValueT,typename SortfuncT=std::less<KeyT>,class TAllocator=TDevilXAllocator<std::pair<const KeyT,ValueT*> > >
 	class TRefResourcePtrMap
 		:public TMap<KeyT,ValueT*,SortfuncT,TAllocator>
 	{
@@ -224,7 +224,7 @@ namespace NSDevilX
 			this->clear();
 		}
 	};
-	template<typename KeyT,class ValueT,class THash=std::hash<KeyT>,class TEqual=std::equal_to<KeyT>,class TAllocator=std::allocator<std::pair<const KeyT,ValueT*> > >
+	template<typename KeyT,class ValueT,class THash=std::hash<KeyT>,class TEqual=std::equal_to<KeyT>,class TAllocator=TDevilXAllocator<std::pair<const KeyT,ValueT*> > >
 	class TResourcePtrUnorderedMap
 		:public TUnorderedMap<KeyT,ValueT*,THash,TEqual,TAllocator>
 	{
@@ -260,7 +260,7 @@ namespace NSDevilX
 				return iter->second;
 		}
 	};
-	template<typename KeyT,class ValueT,class THash=std::hash<KeyT>,class TEqual=std::equal_to<KeyT>,class TAllocator=std::allocator<std::pair<const KeyT,ValueT*> > >
+	template<typename KeyT,class ValueT,class THash=std::hash<KeyT>,class TEqual=std::equal_to<KeyT>,class TAllocator=TDevilXAllocator<std::pair<const KeyT,ValueT*> > >
 	class TRefResourcePtrUnorderedMap
 		:public TUnorderedMap<KeyT,ValueT*,THash,TEqual,TAllocator>
 	{
@@ -288,7 +288,7 @@ namespace NSDevilX
 			this->clear();
 		}
 	};
-	template<class T,class TStringAllocator=std::allocator<Char>,class TAllocator=std::allocator<std::pair<const std::basic_string<Char,std::char_traits<Char>,TStringAllocator>,T*> > >
+	template<class T,class TStringAllocator=TDevilXAllocator<Char>,class TAllocator=TDevilXAllocator<std::pair<const std::basic_string<Char,std::char_traits<Char>,TStringAllocator>,T*> > >
 	class TNamedResourcePtrMap
 		:public TResourcePtrUnorderedMap<const std::basic_string<Char,std::char_traits<Char>,TStringAllocator>,T,std::hash<std::basic_string<Char,std::char_traits<Char>,TStringAllocator> >,std::equal_to<std::basic_string<Char,std::char_traits<Char>,TStringAllocator> >,TAllocator>
 	{
@@ -297,7 +297,7 @@ namespace NSDevilX
 		using TResourcePtrUnorderedMap<const std::basic_string<Char,std::char_traits<Char>,TStringAllocator>,T,std::hash<std::basic_string<Char,std::char_traits<Char>,TStringAllocator> >,std::equal_to<std::basic_string<Char,std::char_traits<Char>,TStringAllocator> >,TAllocator>::operator[];
 		using TResourcePtrUnorderedMap<const std::basic_string<Char,std::char_traits<Char>,TStringAllocator>,T,std::hash<std::basic_string<Char,std::char_traits<Char>,TStringAllocator> >,std::equal_to<std::basic_string<Char,std::char_traits<Char>,TStringAllocator> >,TAllocator>::operator=;
 	};
-	template<class T,class TStringAllocator=std::allocator<Char>,class TAllocator=std::allocator<std::pair<const std::basic_string<Char,std::char_traits<Char>,TStringAllocator>,T*> > >
+	template<class T,class TStringAllocator=TDevilXAllocator<Char>,class TAllocator=TDevilXAllocator<std::pair<const std::basic_string<Char,std::char_traits<Char>,TStringAllocator>,T*> > >
 	class TNamedRefResourcePtrMap
 		:public TRefResourcePtrUnorderedMap<const std::basic_string<Char,std::char_traits<Char>,TStringAllocator>,T,std::hash<std::basic_string<Char,std::char_traits<Char>,TStringAllocator> >,std::equal_to<std::basic_string<Char,std::char_traits<Char>,TStringAllocator> >,TAllocator>
 	{
@@ -306,7 +306,7 @@ namespace NSDevilX
 		using TRefResourcePtrUnorderedMap<const std::basic_string<Char,std::char_traits<Char>,TStringAllocator>,T,std::hash<std::basic_string<Char,std::char_traits<Char>,TStringAllocator> >,std::equal_to<std::basic_string<Char,std::char_traits<Char>,TStringAllocator> >,TAllocator>::operator[];
 		using TRefResourcePtrUnorderedMap<const std::basic_string<Char,std::char_traits<Char>,TStringAllocator>,T,std::hash<std::basic_string<Char,std::char_traits<Char>,TStringAllocator> >,std::equal_to<std::basic_string<Char,std::char_traits<Char>,TStringAllocator> >,TAllocator>::operator=;
 	};
-	template<class T,class TStringAllocator=std::allocator<Char>,class TAllocator=std::allocator<T*> >
+	template<class T,class TStringAllocator=TDevilXAllocator<Char>,class TAllocator=TDevilXAllocator<T*> >
 	class TBaseNamedIndexResourcePtrContainer
 	{
 	public:
@@ -384,7 +384,7 @@ namespace NSDevilX
 			return ret;
 		}
 	};
-	template<class T,class TStringAllocator=std::allocator<Char>,class TAllocator=std::allocator<T*> >
+	template<class T,class TStringAllocator=TDevilXAllocator<Char>,class TAllocator=TDevilXAllocator<T*> >
 	class TNamedIndexResourcePtrContainer
 		:public TBaseNamedIndexResourcePtrContainer<T,TStringAllocator,TAllocator>
 	{
@@ -409,7 +409,7 @@ namespace NSDevilX
 			this->mIndices.clear();
 		}
 	};
-	template<class T,class TStringAllocator=std::allocator<Char>,class TAllocator=std::allocator<T*> >
+	template<class T,class TStringAllocator=TDevilXAllocator<Char>,class TAllocator=TDevilXAllocator<T*> >
 	class TNamedIndexRefResourcePtrContainer
 		:public TBaseNamedIndexResourcePtrContainer<T,TStringAllocator,TAllocator>
 	{

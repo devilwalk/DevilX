@@ -2,7 +2,7 @@
 namespace NSDevilX
 {
 	class CTimer
-		:public TBaseObject<CTimer>
+		:public TMemoryAllocatorObject<CTimer>
 	{
 	protected:
 		NSCore::ITimer * mInternal;
