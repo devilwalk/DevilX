@@ -21,8 +21,7 @@ namespace NSDevilX
 					,mPool(pool)
 					,mExit(False)
 				{
-					mThread=new std::thread;
-					mThread->std::thread::thread(IThreadPoolImp::threadFunction,this);
+					mThread=new std::thread(IThreadPoolImp::threadFunction,this);
 				}
 				~SThread()
 				{

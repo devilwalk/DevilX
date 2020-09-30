@@ -1,6 +1,7 @@
 #pragma once
 #include "IGDCommandQueueImp.h"
 #include "IGDMemoryAllocatorImp.h"
+#include "IGDCommandAllocatorImp.h"
 namespace NSDevilX
 {
 	namespace NSCore
@@ -14,7 +15,7 @@ namespace NSDevilX
 			protected:
 				IPhysicalDeviceGroupImp* const mPhysicsDeviceGroup;
 				TResourcePtrVector<ICommandQueueImp> mQueues[IEnum::ECommandQueue_Max];
-				TResourcePtrVector<IMemoryAllocatorImp> mMemoryAllocators;
+				IMemoryAllocatorImp* mDefaultMemoryAllocator;
 			public:
 				IDeviceImp(IPhysicalDeviceGroupImp* physicsDeviceGroup);
 				virtual ~IDeviceImp();
@@ -23,6 +24,8 @@ namespace NSDevilX
 				{
 					return mPhysicsDeviceGroup;
 				}
+
+				virtual IMemoryAllocator* getDefaultMemoryAllocator() const override;
 			};
 #if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
 			namespace NSD3D
@@ -46,7 +49,6 @@ namespace NSDevilX
 					// 通过 IDeviceImp 继承
 					virtual ICommandQueue* createCommandQueue(IEnum::ECommandQueue type,IPhysicalDevice* physicalDevice) override;
 					virtual ICommandAllocator* createCommandAllocator(IEnum::ECommandQueue type) override;
-					virtual IMemoryAllocator* createMemoryAllocator(UInt32 flags,UInt32 preferredBlockSize) override;
 				};
 			}
 			namespace NSD3D11
@@ -69,7 +71,6 @@ namespace NSDevilX
 					// 通过 IDeviceImp 继承
 					virtual ICommandQueue* createCommandQueue(IEnum::ECommandQueue type,IPhysicalDevice* physicalDevice) override;
 					virtual ICommandAllocator* createCommandAllocator(IEnum::ECommandQueue type) override;
-					virtual IMemoryAllocator* createMemoryAllocator(UInt32 flags,UInt32 preferredBlockSize) override;
 				};
 			}
 #endif
@@ -94,7 +95,6 @@ namespace NSDevilX
 					// 通过 IDeviceImp 继承
 					virtual ICommandQueue* createCommandQueue(IEnum::ECommandQueue type,IPhysicalDevice* physicalDevice) override;
 					virtual ICommandAllocator* createCommandAllocator(IEnum::ECommandQueue type) override;
-					virtual IMemoryAllocator* createMemoryAllocator(UInt32 flags,UInt32 preferredBlockSize) override;
 				};
 			}
 			namespace NSOpenGL
@@ -116,7 +116,6 @@ namespace NSDevilX
 					// 通过 IDeviceImp 继承
 					virtual ICommandQueue* createCommandQueue(IEnum::ECommandQueue type,IPhysicalDevice* physicalDevice) override;
 					virtual ICommandAllocator* createCommandAllocator(IEnum::ECommandQueue type) override;
-					virtual IMemoryAllocator* createMemoryAllocator(UInt32 flags,UInt32 preferredBlockSize) override;
 
 					// 通过 IQueue 继承
 #if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS

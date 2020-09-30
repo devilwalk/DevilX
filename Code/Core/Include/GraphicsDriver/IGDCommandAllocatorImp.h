@@ -16,6 +16,7 @@ namespace NSDevilX
 				ICommandAllocatorImp(IEnum::ECommandQueue queueType,IDeviceImp* device);
 				virtual ~ICommandAllocatorImp();
 			};
+#if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
 			namespace NSD3D12
 			{
 				class IDeviceImp;
@@ -30,6 +31,7 @@ namespace NSDevilX
 					~ICommandAllocatorImp();
 				};
 			}
+#endif
 			namespace NSVulkan
 			{
 				class IDeviceImp;

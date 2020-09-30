@@ -373,7 +373,8 @@ EGLAPI EGLBoolean EGLAPIENTRY eglBindAPI(EGLenum api)
 //EGL 1.5
 EGLAPI EGLSurface EGLAPIENTRY eglCreatePlatformWindowSurface(EGLDisplay dpy,EGLConfig config,void* native_window,const EGLAttrib* attrib_list)
 {
-	return eglCreateWindowSurface(dpy,config,static_cast<EGLNativeWindowType>(native_window),attrib_list);
+	return EGL_NO_CONTEXT;
+	//return eglCreateWindowSurface(dpy,config,static_cast<EGLNativeWindowType>(native_window),attrib_list);
 }
 #elif DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_X
 //EGL 1.0

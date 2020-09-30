@@ -1,4 +1,5 @@
 #pragma once
+#include "IGDInstanceImp.h"
 namespace NSDevilX
 {
 	namespace NSCore

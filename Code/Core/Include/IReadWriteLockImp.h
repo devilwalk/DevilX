@@ -8,7 +8,8 @@ namespace NSDevilX
 			,public TMemoryAllocatorObject<IReadWriteLockImp>
 		{
 		protected:
-			tbb::interface5::reader_writer_lock mLock;
+			tbb::queuing_rw_mutex::scoped_lock mLock;
+			tbb::queuing_rw_mutex mMutex;
 		public:
 			IReadWriteLockImp();
 			virtual ~IReadWriteLockImp();

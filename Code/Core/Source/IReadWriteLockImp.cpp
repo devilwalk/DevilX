@@ -12,30 +12,30 @@ NSDevilX::NSCore::IReadWriteLockImp::~IReadWriteLockImp()
 
 Void NSDevilX::NSCore::IReadWriteLockImp::lockRead()
 {
-	mLock.lock_read();
+	mLock.acquire(mMutex,false);
 }
 
 Void NSDevilX::NSCore::IReadWriteLockImp::lockWrite()
 {
-	mLock.lock();
+	mLock.acquire(mMutex);
 }
 
 Boolean NSDevilX::NSCore::IReadWriteLockImp::tryLockRead()
 {
-	return mLock.try_lock_read();
+	return mLock.try_acquire(mMutex,false);
 }
 
 Boolean NSDevilX::NSCore::IReadWriteLockImp::tryLockWrite()
 {
-	return mLock.try_lock();
+	return mLock.try_acquire(mMutex);
 }
 
 Void NSDevilX::NSCore::IReadWriteLockImp::unLockRead()
 {
-	return mLock.unlock();
+	return mLock.release();
 }
 
 Void NSDevilX::NSCore::IReadWriteLockImp::unLockWrite()
 {
-	return mLock.unlock();
+	return mLock.release();
 }

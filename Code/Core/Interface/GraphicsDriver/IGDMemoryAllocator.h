@@ -1,5 +1,5 @@
 #pragma once
-#include "IGDDeviceMemory.h"
+#include "IGDResource.h"
 namespace NSDevilX
 {
 	namespace NSCore
@@ -11,8 +11,8 @@ namespace NSDevilX
 			protected:
 				virtual ~IMemoryAllocator(){}
 			public:
-				virtual IDeviceMemory* createMemory(D3D12_HEAP_TYPE type,D3D12_HEAP_FLAGS flags,const D3D12_RESOURCE_ALLOCATION_INFO& info)=0;
-				virtual IDeviceMemory* createMemory(const VkMemoryRequirements& requirements,VkMemoryPropertyFlags requiredFlags,VkMemoryPropertyFlags preferredFlags)=0;
+				virtual IImage* createImage(const VkImageCreateInfo& info,const VmaAllocationCreateInfo& allocationInfo)=0;
+				virtual IBuffer* createBuffer(const VkImageCreateInfo& info,const VmaAllocationCreateInfo& allocationInfo)=0;
 			};
 		}
 	}

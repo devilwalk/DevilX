@@ -5,11 +5,18 @@ using namespace NSGraphicsDriver;
 
 NSDevilX::NSCore::NSGraphicsDriver::IDeviceImp::IDeviceImp(IPhysicalDeviceGroupImp* physicsDeviceGroup)
 	:mPhysicsDeviceGroup(physicsDeviceGroup)
+	,mDefaultMemoryAllocator(nullptr)
 {
 }
 
 NSDevilX::NSCore::NSGraphicsDriver::IDeviceImp::~IDeviceImp()
 {
+	DEVILX_DELETE(mDefaultMemoryAllocator);
+}
+
+IMemoryAllocator* NSDevilX::NSCore::NSGraphicsDriver::IDeviceImp::getDefaultMemoryAllocator() const
+{
+	return mDefaultMemoryAllocator;
 }
 
 #if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
@@ -57,18 +64,6 @@ ICommandAllocator* NSDevilX::NSCore::NSGraphicsDriver::NSD3D12::IDeviceImp::crea
 	return nullptr;
 }
 
-IMemoryAllocator* NSDevilX::NSCore::NSGraphicsDriver::NSD3D12::IDeviceImp::createMemoryAllocator(UInt32 flags,UInt32 preferredBlockSize)
-{
-	D3D12MA::ALLOCATOR_DESC desc={};
-	desc.Flags=*reinterpret_cast<D3D12MA::ALLOCATOR_FLAGS*>(&flags);
-	desc.PreferredBlockSize=preferredBlockSize;
-	desc.pAdapter=static_cast<NSD3D::IPhysicalDeviceGroupImp*>(mPhysicsDeviceGroup)->getInternal();
-	desc.pDevice=mInternal;
-	auto ret=DEVILX_NEW IMemoryAllocatorImp(this,desc);
-	mMemoryAllocators.push_back(ret);
-	return ret;
-}
-
 NSDevilX::NSCore::NSGraphicsDriver::NSD3D11::IDeviceImp::IDeviceImp(ID3D11Device* dev,NSD3D::IPhysicalDeviceGroupImp* physicsDeviceGroup)
 	:NSGraphicsDriver::IDeviceImp(physicsDeviceGroup)
 	,mInternal(dev)
@@ -85,11 +80,6 @@ ICommandQueue* NSDevilX::NSCore::NSGraphicsDriver::NSD3D11::IDeviceImp::createCo
 }
 
 ICommandAllocator* NSDevilX::NSCore::NSGraphicsDriver::NSD3D11::IDeviceImp::createCommandAllocator(IEnum::ECommandQueue type)
-{
-	return nullptr;
-}
-
-IMemoryAllocator* NSDevilX::NSCore::NSGraphicsDriver::NSD3D11::IDeviceImp::createMemoryAllocator(UInt32 flags,UInt32 preferredBlockSize)
 {
 	return nullptr;
 }
@@ -132,21 +122,6 @@ ICommandAllocator* NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IDeviceImp::cre
 	return nullptr;
 }
 
-IMemoryAllocator* NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IDeviceImp::createMemoryAllocator(UInt32 flags,UInt32 preferredBlockSize)
-{
-	VmaAllocatorCreateInfo info={};
-	info.device=mInternal;
-	info.flags=flags|VMA_ALLOCATOR_CREATE_KHR_BIND_MEMORY2_BIT|VMA_ALLOCATOR_CREATE_EXT_MEMORY_BUDGET_BIT|VMA_ALLOCATOR_CREATE_BUFFER_DEVICE_ADDRESS_BIT;
-	info.frameInUseCount=0;
-	info.instance=static_cast<IInstanceImp*>(mPhysicsDeviceGroup->getInstance())->getInternal();
-	info.physicalDevice=static_cast<IPhysicalDeviceImp*>(mPhysicsDeviceGroup->getDevice(0))->getInternal();
-	info.preferredLargeHeapBlockSize=preferredBlockSize;
-	info.vulkanApiVersion=VK_API_VERSION_1_1;
-	auto ret=DEVILX_NEW IMemoryAllocatorImp(this,info);
-	mMemoryAllocators.push_back(ret);
-	return ret;
-}
-
 NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IDeviceImp::IDeviceImp(EGLContext context,NSGraphicsDriver::IPhysicalDeviceGroupImp* physicsDeviceGroup)
 	:NSGraphicsDriver::IDeviceImp(physicsDeviceGroup)
 	,ICommandQueueImp(this)
@@ -169,11 +144,6 @@ ICommandQueue* NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IDeviceImp::createC
 ICommandAllocator* NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IDeviceImp::createCommandAllocator(IEnum::ECommandQueue type)
 {
 	return this;
-}
-
-IMemoryAllocator* NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IDeviceImp::createMemoryAllocator(UInt32 flags,UInt32 preferredBlockSize)
-{
-	return nullptr;
 }
 
 #if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_WINDOWS
@@ -273,7 +243,7 @@ ISwapChain* NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IDeviceImp::createSwap
 	EGLConfig cfg;
 	EGLint num_cfg;
 	auto success=eglChooseConfig(inst->getDisplay(),&config_attrs[0],&cfg,1,&num_cfg)==EGL_TRUE;
-	TVector<EGLAttrib> attrs_list;
+	TVector<EGLint> attrs_list;
 	attrs_list.push_back(EGL_RENDER_BUFFER);
 	if(desc.BufferCount<2)
 	{
@@ -407,7 +377,7 @@ ISwapChain* NSDevilX::NSCore::NSGraphicsDriver::NSOpenGL::IDeviceImp::createSwap
 	EGLConfig cfg;
 	EGLint num_cfg;
 	auto success=eglChooseConfig(inst->getDisplay(),&config_attrs[0],&cfg,1,&num_cfg)==EGL_TRUE;
-	TVector<EGLAttrib> attrs_list;
+	TVector<EGLint> attrs_list;
 	attrs_list.push_back(EGL_RENDER_BUFFER);
 	if(info.minImageCount<2)
 	{

@@ -3,6 +3,8 @@
 #include "IGDCommandListImp.h"
 #include "IGDCommandQueueImp.h"
 #include "IGDDeviceImp.h"
+#include "IGDImageImp.h"
+#include "IGDImageViewImp.h"
 #include "IGDInstanceImp.h"
 #include "IGDMemoryAllocatorImp.h"
 #include "IGDPhysicalDeviceGroupImp.h"

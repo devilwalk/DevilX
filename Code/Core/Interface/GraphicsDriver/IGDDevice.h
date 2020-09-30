@@ -17,7 +17,7 @@ namespace NSDevilX
 			public:
 				virtual ICommandQueue* createCommandQueue(IEnum::ECommandQueue type,IPhysicalDevice* physicalDevice=nullptr)=0;
 				virtual ICommandAllocator* createCommandAllocator(IEnum::ECommandQueue type)=0;
-				virtual IMemoryAllocator* createMemoryAllocator(UInt32 flags,UInt32 preferredBlockSize=0)=0;
+				virtual IMemoryAllocator* getDefaultMemoryAllocator()const=0;
 			};
 		}
 	}

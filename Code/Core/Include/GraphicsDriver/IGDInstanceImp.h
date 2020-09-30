@@ -1,6 +1,7 @@
 #pragma once
 #include "IGDPhysicalDeviceImp.h"
 #include "IGDPhysicalDeviceGroupImp.h"
+#include "IGDDeviceImp.h"
 namespace NSDevilX
 {
 	namespace NSCore

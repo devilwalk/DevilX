@@ -376,7 +376,7 @@ Boolean NSDevilX::NSCore::NSGraphicsDriver::NSVulkan::IInstanceImp::initialize()
 			{
 				ext_names.push_back(pair.second.extensionName);
 			}
-			info.enabledExtensionCount=ext_names.size();
+			info.enabledExtensionCount=static_cast<uint32_t>(ext_names.size());
 			info.ppEnabledExtensionNames=reinterpret_cast<const char* const*>(&ext_names[0]);
 		}
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "CommonDefine.h"
 #include "CommonPlatformDefine.h"
+#define __TBB_SOURCE_DIRECTLY_INCLUDED 1
 #include "tbb/tbb.h"
 #include "tbb/scalable_allocator.h"
 #if DEVILX_WINDOW_SYSTEM==DEVILX_WINDOW_SYSTEM_ANDROID
